@@ -6,7 +6,7 @@ const context = [
 
 module.exports = function (app) {
     const appProxy = createProxyMiddleware(context, {
-        target: 'https://api-jobmarket.tenx.local:7000',
+        target: process.env.REACT_APP_JOBMARKET_API_BASE_URL,
         secure: false
     });
 

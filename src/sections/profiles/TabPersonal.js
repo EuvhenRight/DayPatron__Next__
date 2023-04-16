@@ -104,7 +104,7 @@ const TabPersonal = () => {
 
   const fetchContractor = async () => {
     try {
-      let response = await fetch('https://api-jobmarket.tenx.local:7000/Contractor',
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/Contractor',
         {
           method: 'GET',
           headers: {
