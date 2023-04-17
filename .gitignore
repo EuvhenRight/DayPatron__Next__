@@ -1,0 +1,20 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+netcoreapp2.0
+netcoreapp2.1
+netcoreapp3.0
+netcoreapp3.1
+obj
+net6.0
+bin
+.vs
+
+*.suo
+*.v2
+
+/docker/logs
+/docker/Cert/ansible-tmp*
+node_modules
