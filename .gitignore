@@ -17,3 +17,4 @@ bin
 
 /docker/logs
 /docker/Cert/ansible-tmp*
+node_modules
