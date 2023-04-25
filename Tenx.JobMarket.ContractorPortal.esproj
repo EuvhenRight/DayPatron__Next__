@@ -3,12 +3,12 @@
     <ProjectGuid>e5a3e60f-04fe-40cf-a340-658cfbf03a73</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupCommand>set BROWSER=none&amp;&amp;npm start</StartupCommand>
+    <StartupCommand>set BROWSER=none&amp;&amp;npm run start-dev</StartupCommand>
     <JavaScriptTestRoot>src\</JavaScriptTestRoot>
     <JavaScriptTestFramework>Jest</JavaScriptTestFramework>
-	<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-	<DockerComposeProjectPath>..\..\10x-alldocker-compose.dcproj</DockerComposeProjectPath>
-	<DockerfileContext>..\</DockerfileContext>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerComposeProjectPath>..\..\10x-alldocker-compose.dcproj</DockerComposeProjectPath>
+    <DockerfileContext>..\</DockerfileContext>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\configs\" />

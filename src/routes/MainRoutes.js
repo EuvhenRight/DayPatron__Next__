@@ -13,15 +13,19 @@ const MaintenanceUnderConstruction = Loadable(lazy(() => import('pages/maintenan
 const MaintenanceComingSoon = Loadable(lazy(() => import('pages/maintenance/coming-soon')));
 
 const ProfilePage = Loadable(lazy(() => import('pages/profile-page')));
-const UserTabPersonal = Loadable(lazy(() => import('sections/profiles/TabPersonal')));
-const UserTabPayment = Loadable(lazy(() => import('sections/profiles/TabPayment')));
-const UserTabPassword = Loadable(lazy(() => import('sections/profiles/TabPassword')));
-const UserTabSettings = Loadable(lazy(() => import('sections/profiles/TabSettings')));
+const TabProfilePersonal = Loadable(lazy(() => import('sections/profile/TabProfilePersonal')));
+const TabProfileExpertise = Loadable(lazy(() => import('sections/profile/TabProfileExpertise')));
 
-const RatesPage = Loadable(lazy(() => import('pages/rates-page')));
-const AvailabilityPage = Loadable(lazy(() => import('pages/availability-page')));
-const VacancySearchPage = Loadable(lazy(() => import('pages/vacancy-search-page')));
-const VacancyApplicationsPage = Loadable(lazy(() => import('pages/vacancy-applications-page')));
+const PreferencePage = Loadable(lazy(() => import('pages/preference-page')));
+const TabPreferenceRate = Loadable(lazy(() => import('sections/preference/TabPreferenceRate')));
+const TabPreferenceAvailability = Loadable(lazy(() => import('sections/preference/TabPreferenceAvailability')));
+const TabPreferenceWorkplace = Loadable(lazy(() => import('sections/preference/TabPreferenceWorkplace')));
+const TabPreferenceTravel = Loadable(lazy(() => import('sections/preference/TabPreferenceTravel')));
+
+const MissionPage = Loadable(lazy(() => import('pages/mission-page')));
+const TabMissionSearch = Loadable(lazy(() => import('sections/mission/TabMissionSearch')));
+const TabMissionPending = Loadable(lazy(() => import('sections/mission/TabMissionPending')));
+const TabMissionHistory = Loadable(lazy(() => import('sections/mission/TabMissionHistory')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -45,42 +49,53 @@ const MainRoutes = {
               children: [
                 {
                   path: 'personal',
-                  element: <UserTabPersonal />
+                  element: <TabProfilePersonal />
                 },
                 {
-                  path: 'payment',
-                  element: <UserTabPayment />
-                },
-                {
-                  path: 'password',
-                  element: <UserTabPassword />
-                },
-                {
-                  path: 'settings',
-                  element: <UserTabSettings />
+                  path: 'expertise',
+                  element: <TabProfileExpertise />
                 }
               ]
             },
             {
-              path: 'rates',
-              element: <RatesPage />
-            },
-            {
-              path: 'availability',
-              element: <AvailabilityPage />
+              path: 'preferences',
+              element: <PreferencePage />,
+              children: [
+                {
+                  path: 'rate',
+                  element: <TabPreferenceRate />
+                },
+                {
+                  path: 'availability',
+                  element: <TabPreferenceAvailability />
+                },
+                {
+                  path: 'workplace',
+                  element: <TabPreferenceWorkplace/>
+                },
+                {
+                  path: 'travel',
+                  element: <TabPreferenceTravel />
+                }
+              ]
             }
           ]
         },
         {
-          path: 'vacancies',
+          path: 'missions',
+          element: <MissionPage />,
           children: [
             {
               path: 'search',
-              element: <VacancySearchPage />
+              element: <TabMissionSearch />
             },
             {
-              path: 'applications',
-              element: <VacancyApplicationsPage />
+              path: 'pending',
+              element: <TabMissionPending />
+            },
+            {
+              path: 'history',
+              element: <TabMissionHistory />
             }
           ]
         }

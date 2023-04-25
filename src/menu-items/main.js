@@ -3,34 +3,16 @@ import { FormattedMessage } from 'react-intl';
 
 // assets
 import {
-  BorderOutlined,
-  BoxPlotOutlined,
-  ChromeOutlined,
   DeploymentUnitOutlined,
-  GatewayOutlined,
-  MenuUnfoldOutlined,
-  QuestionOutlined,
-  SmileOutlined,
-  StopOutlined,
   UserOutlined,
-  DollarOutlined,
-  CalendarOutlined
+  AimOutlined
 } from '@ant-design/icons';
 
 // icons
 const icons = {
-  ChromeOutlined,
-  MenuUnfoldOutlined,
-  BoxPlotOutlined,
-  StopOutlined,
-  BorderOutlined,
-  SmileOutlined,
-  GatewayOutlined,
-  QuestionOutlined,
   DeploymentUnitOutlined,
   UserOutlined,
-  DollarOutlined,
-  CalendarOutlined
+  AimOutlined
 };
 
 // ==============================|| MENU ITEMS - CONTRACTOR ||============================== //
@@ -48,18 +30,18 @@ const other = {
       icon: icons.UserOutlined
     },
     {
-      id: 'contractor-rates',
-      title: <FormattedMessage id="contractor-rates" />,
+      id: 'contractor-preferences',
+      title: <FormattedMessage id="contractor-preferences" />,
       type: 'item',
-      url: '/contractor/rates',
-      icon: icons.DollarOutlined
+      url: '/contractor/preferences',
+      icon: icons.AimOutlined
     },
     {
-      id: 'contractor-availability',
-      title: <FormattedMessage id="contractor-availability" />,
+      id: 'missions',
+      title: <FormattedMessage id="missions" />,
       type: 'item',
-      url: '/contractor/availability',
-      icon: icons.CalendarOutlined
+      url: '/missions',
+      icon: icons.DeploymentUnitOutlined
     }
   ]
 };
