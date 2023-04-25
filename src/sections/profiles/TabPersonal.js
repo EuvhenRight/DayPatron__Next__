@@ -100,11 +100,11 @@ function useInputRef() {
 const TabPersonal = () => {
 
   const {keycloak} = useKeycloak();
-  const [contractor, setContractor] = useState([]);
+  const [contractor, setContractor] = useState({firstName: '', lastName: '', email: ''});
 
   const fetchContractor = async () => {
     try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/Contractor',
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + keycloak.idTokenParsed.preferred_username,
         {
           method: 'GET',
           headers: {
@@ -113,10 +113,8 @@ const TabPersonal = () => {
         }
       );
       let json = await response.json();
-      console.log(json);
       return { success: true, data: json };
     } catch (error) {
-      console.log(error);
       return { success: false };
     }
   }
@@ -124,7 +122,6 @@ const TabPersonal = () => {
     (async () => {
       let res = await fetchContractor();
       if (res.success) {
-        console.log(res);
         setContractor(res.data);
       }
     })();
@@ -194,24 +191,46 @@ const TabPersonal = () => {
           state: Yup.string().required('State is required'),
           note: Yup.string().min(150, 'Not shoulde be more then 150 char.')
         })}
-        onSubmit={(values, { setErrors, setStatus, setSubmitting }) => {
+        onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            dispatch(
-              openSnackbar({
-                open: true,
-                message: 'Personal profile updated successfully.',
-                variant: 'alert',
-                alert: {
-                  color: 'success'
+            let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + keycloak.idTokenParsed.preferred_username,
+              {
+                method: 'PUT',
+                headers: {
+                  'Authorization': 'Bearer ' + keycloak.idToken,
+                  'Content-Type': 'application/json'
                 },
-                close: false
-              })
+                body: JSON.stringify(values)
+              }
             );
-            setStatus({ success: false });
+
+            if (!reponse.ok) {
+              dispatch(
+                openSnackbar({
+                  open: true,
+                  message: 'Personal profile update failed.',
+                  variant: 'alert',
+                  alert: {
+                    color: 'error'
+                  },
+                  close: false
+                })
+              );
+
+              setStatus({ success: false });
+              setSubmitting(false);
+
+              return;
+            }
+
+            let json = await response.json();
+
+            setContractor(json);
+            setStatus({ success: true });
             setSubmitting(false);
           } catch (err) {
-            setStatus({ success: false });
             setErrors({ submit: err.message });
+            setStatus({ success: false });
             setSubmitting(false);
           }
         }}
