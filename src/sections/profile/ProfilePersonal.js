@@ -97,7 +97,7 @@ function useInputRef() {
 
 // ==============================|| TAB - PERSONAL ||============================== //
 
-const TabPersonal = () => {
+const ProfilePersonal = () => {
 
   const {keycloak} = useKeycloak();
   const [contractor, setContractor] = useState({firstName: '', lastName: '', email: ''});
@@ -613,4 +613,4 @@ const TabPersonal = () => {
   );
 };
 
-export default TabPersonal;
+export default ProfilePersonal;

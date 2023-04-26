@@ -4,14 +4,14 @@ import { Typography } from '@mui/material';
 // project import
 import MainCard from 'components/MainCard';
 
-const VacancyApplicationsPage = () => {
+const PreferenceWorkplacePage = () => {
   return (
     <MainCard title="Sample Card">
       <Typography variant="body2">
-        VacancyApplicationsPage
+        PreferenceWorkplacePage
       </Typography>
     </MainCard>
   );
 };
 
-export default VacancyApplicationsPage;
+export default PreferenceWorkplacePage;

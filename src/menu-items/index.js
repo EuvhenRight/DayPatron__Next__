@@ -1,10 +1,11 @@
 // project import
-import contractor from './main';
+import contractor from './contractor';
+import vacancies from './vacancies';
 
 // ==============================|| MENU ITEMS ||============================== //
 
 const menuItems = {
-  items: [main]
+  items: [profile, preference, mission]
 };
 
 export default menuItems;

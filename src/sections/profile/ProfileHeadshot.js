@@ -10,7 +10,6 @@ import { Box, Divider, FormLabel, Grid, TextField, Menu, MenuItem, Stack, Typogr
 import MainCard from 'components/MainCard';
 import IconButton from 'components/@extended/IconButton';
 import Avatar from 'components/@extended/Avatar';
-import ProfileTab from './ProfileTab';
 import { facebookColor, linkedInColor, twitterColor } from 'config';
 
 // assets
@@ -20,7 +19,7 @@ const avatarImage = require.context('assets/images/users', true);
 
 // ==============================|| USER PROFILE - TAB CONTENT ||============================== //
 
-const ProfileTabs = ({ focusInput }) => {
+const ProfileHeadshot = ({ focusInput }) => {
   const theme = useTheme();
   const [selectedImage, setSelectedImage] = useState(undefined);
   const [avatar, setAvatar] = useState(avatarImage(`./default.png`));
@@ -156,22 +155,19 @@ const ProfileTabs = ({ focusInput }) => {
               <Typography color="secondary">Project</Typography>
             </Stack>
             <Divider orientation="vertical" flexItem />
-            <Stack spacing={0.5} alignItems="center">
+            <Stack spacing={0.5} alignItems="center">F
               <Typography variant="h5">4.5K</Typography>
               <Typography color="secondary">Members</Typography>
             </Stack>
           </Stack>
-        </Grid>
-        <Grid item xs={12}>
-          <ProfileTab />
         </Grid>
       </Grid>
     </MainCard>
   );
 };
 
-ProfileTabs.propTypes = {
+ProfileHeadshot.propTypes = {
   focusInput: PropTypes.func
 };
 
-export default ProfileTabs;
+export default ProfileHeadshot;

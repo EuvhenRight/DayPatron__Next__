@@ -1,11 +1,16 @@
 {
-  "contractor": "Contractor",
-  "contractor-profile": "Profile",
-  "contractor-rates": "Rates",
-  "contractor-availability": "Availability",
-  "vacancies": "Vacancies",
-  "vacancy-search": "Search",
-  "vacancy-applications": "Applications",
+  "profile": "Profile",
+  "profile-personal": "Personal Information",
+  "profile-expertise": "Expertise",
+  "preference": "Preferences",
+  "preference-rate": "Rate",
+  "preference-availability": "Availability",
+  "preference-workplace": "Workplace",
+  "preference-travel": "Travel",
+  "mission": "Missions",
+  "mission-search": "Search",
+  "mission-pending": "Pending",
+  "mission-history": "History",
   "documentation": "Documentation",
   "roadmap": "Roadmap"
 }

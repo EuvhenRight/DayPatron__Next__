@@ -12,20 +12,17 @@ const MaintenanceError500 = Loadable(lazy(() => import('pages/maintenance/500'))
 const MaintenanceUnderConstruction = Loadable(lazy(() => import('pages/maintenance/under-construction')));
 const MaintenanceComingSoon = Loadable(lazy(() => import('pages/maintenance/coming-soon')));
 
-const ProfilePage = Loadable(lazy(() => import('pages/profile-page')));
-const TabProfilePersonal = Loadable(lazy(() => import('sections/profile/TabProfilePersonal')));
-const TabProfileExpertise = Loadable(lazy(() => import('sections/profile/TabProfileExpertise')));
+const ProfilePersonalPage = Loadable(lazy(() => import('pages/profile-personal-page')));
+const ProfileExpertisePage = Loadable(lazy(() => import('pages/profile-expertise-page')));
 
-const PreferencePage = Loadable(lazy(() => import('pages/preference-page')));
-const TabPreferenceRate = Loadable(lazy(() => import('sections/preference/TabPreferenceRate')));
-const TabPreferenceAvailability = Loadable(lazy(() => import('sections/preference/TabPreferenceAvailability')));
-const TabPreferenceWorkplace = Loadable(lazy(() => import('sections/preference/TabPreferenceWorkplace')));
-const TabPreferenceTravel = Loadable(lazy(() => import('sections/preference/TabPreferenceTravel')));
+const PreferenceRatePage = Loadable(lazy(() => import('pages/preference-rate-page')));
+const PreferenceAvailabilityPage = Loadable(lazy(() => import('pages/preference-availability-page')));
+const PreferenceWorkplacePage = Loadable(lazy(() => import('pages/preference-workplace-page')));
+const PreferenceTravelPage = Loadable(lazy(() => import('pages/preference-travel-page')));
 
-const MissionPage = Loadable(lazy(() => import('pages/mission-page')));
-const TabMissionSearch = Loadable(lazy(() => import('sections/mission/TabMissionSearch')));
-const TabMissionPending = Loadable(lazy(() => import('sections/mission/TabMissionPending')));
-const TabMissionHistory = Loadable(lazy(() => import('sections/mission/TabMissionHistory')));
+const MissionSearchPage = Loadable(lazy(() => import('pages/mission-search-page')));
+const MissionPendingPage = Loadable(lazy(() => import('pages/mission-pending-page')));
+const MissionHistoryPage = Loadable(lazy(() => import('pages/mission-history-page')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -41,61 +38,53 @@ const MainRoutes = {
       ),
       children: [
         {
-          path: 'contractor',
+          path: 'profile',
           children: [
             {
-              path: 'profile',
-              element: <ProfilePage />,
-              children: [
-                {
-                  path: 'personal',
-                  element: <TabProfilePersonal />
-                },
-                {
-                  path: 'expertise',
-                  element: <TabProfileExpertise />
-                }
-              ]
+              path: 'personal',
+              element: <ProfilePersonalPage />
             },
             {
-              path: 'preferences',
-              element: <PreferencePage />,
-              children: [
-                {
-                  path: 'rate',
-                  element: <TabPreferenceRate />
-                },
-                {
-                  path: 'availability',
-                  element: <TabPreferenceAvailability />
-                },
-                {
-                  path: 'workplace',
-                  element: <TabPreferenceWorkplace/>
-                },
-                {
-                  path: 'travel',
-                  element: <TabPreferenceTravel />
-                }
-              ]
+              path: 'expertise',
+              element: <ProfileExpertisePage />
             }
           ]
         },
         {
-          path: 'missions',
-          element: <MissionPage />,
+          path: 'preference',
+          children: [
+            {
+              path: 'rate',
+              element: <PreferenceRatePage />
+            },
+            {
+              path: 'availability',
+              element: <PreferenceAvailabilityPage />
+            },
+            {
+              path: 'workplace',
+              element: <PreferenceWorkplacePage />
+            },
+            {
+              path: 'travel',
+              element: <PreferenceTravelPage />
+            }
+          ]
+        },
+        {
+          path: 'mission',
           children: [
             {
               path: 'search',
-              element: <TabMissionSearch />
+              element: <MissionSearchPage />
             },
             {
               path: 'pending',
-              element: <TabMissionPending />
+              element: <MissionPendingPage />
             },
             {
               path: 'history',
-              element: <TabMissionHistory />
+              element: <MissionHistoryPage />
             }
           ]
         }
