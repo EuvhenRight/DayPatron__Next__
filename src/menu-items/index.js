@@ -1,6 +1,7 @@
 // project import
-import contractor from './contractor';
-import vacancies from './vacancies';
+import profile from './profile';
+import preference from './preference';
+import mission from './mission';
 
 // ==============================|| MENU ITEMS ||============================== //
 

@@ -3,17 +3,17 @@ import { FormattedMessage } from 'react-intl';
 
 // assets
 import {
-  UserOutlined,
+  DollarOutlined,
   CalendarOutlined,
-  HomeOutlined,
+  BankOutlined,
   CarOutlined
 } from '@ant-design/icons';
 
 // icons
 const icons = {
-  UserOutlined,
+  DollarOutlined,
   CalendarOutlined,
-  HomeOutlined,
+  BankOutlined,
   CarOutlined
 };
 
@@ -43,7 +43,7 @@ const preference = {
       title: <FormattedMessage id="preference-workplace" />,
       type: 'item',
       url: '/preference/workplace',
-      icon: icons.HomeOutlined
+      icon: icons.BankOutlined
     },
     {
       id: 'preference-travel',

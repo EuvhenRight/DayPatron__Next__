@@ -76,7 +76,7 @@ const ProfileHeadshot = ({ focusInput }) => {
             >
               <MenuItem
                 component={Link}
-                to="/contractor/profile/personal"
+                to="/profile/personal"
                 onClick={() => {
                   handleClose();
                   setTimeout(() => {
