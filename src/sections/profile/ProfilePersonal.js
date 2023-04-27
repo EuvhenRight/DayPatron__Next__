@@ -1,6 +1,6 @@
 // material-ui
 import { useOutletContext } from 'react-router';
-
+import countries from 'data/countries';
 import { useDispatch } from 'react-redux';
 
 import { useEffect, useState } from 'react';
@@ -8,6 +8,7 @@ import { useKeycloak } from '@react-keycloak/web';
 
 // material-ui
 import {
+  Autocomplete,
   Box,
   Button,
   Divider,
@@ -17,8 +18,6 @@ import {
   Stack,
   TextField
 } from '@mui/material';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 // third party
 import * as Yup from 'yup';
@@ -38,7 +37,7 @@ function useInputRef() {
 const ProfilePersonal = () => {
 
   const {keycloak} = useKeycloak();
-  const [contractor, setContractor] = useState({ firstName: '', lastName: '', email: '', dateOfBirth: null });
+  const [contractor, setContractor] = useState({ firstName: '', lastName: '', email: '', country: null });
 
   const fetchContractor = async () => {
     try {
@@ -79,14 +78,14 @@ const ProfilePersonal = () => {
           firstname: contractor.firstName,
           lastname: contractor.lastName,
           email: contractor.email,
-          dateOfBirth: contractor.dateOfBirth ? new Date(contractor.dateOfBirth) : '',
+          country: contractor.country,
           submit: null
         }}
         validationSchema={Yup.object().shape({
           firstname: Yup.string().max(255).required('First Name is required.'),
           lastname: Yup.string().max(255).required('Last Name is required.'),
           email: Yup.string().email('Invalid email address.').max(255).required('Email is required.'),
-          dateOfBirth: Yup.date().max(maxDate, 'Age should be 18+ years.').required('Date of birth is requird.')
+          country: Yup.string().required('Country is required'),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
@@ -198,24 +197,49 @@ const ProfilePersonal = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
-                    <InputLabel htmlFor="personal-date">Date of Birth</InputLabel>
-                    <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
-                      <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <DatePicker
-                          value={values.dateOfBirth ? values.dateOfBirth : null}
-                          inputFormat="yyyy-MM-dd"
-                          openTo="year"
-                          maxDate={maxDate}
-                          onChange={(newValue) => {
-                            setFieldValue('dateOfBirth', newValue);
+                    <InputLabel htmlFor="personal-country">Country</InputLabel>
+                    <Autocomplete
+                      id="personal-country"
+                      fullWidth
+                      value={values?.country ? countries.filter((item) => item.code === values?.country)[0] : null}
+                      onBlur={handleBlur}
+                      onChange={(event, newValue) => {
+                        setFieldValue('country', newValue === null ? '' : newValue.code);
+                      }}
+                      options={countries}
+                      autoHighlight
+                      isOptionEqualToValue={(option, value) => option.code === value?.code}
+                      getOptionLabel={(option) => option.label}
+                      renderOption={(props, option) => (
+                        <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                          {option.code && (
+                            <img
+                              loading="lazy"
+                              width="20"
+                              src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
+                              srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
+                              alt=""
+                            />
+                          )}
+                          {option.label}
+                          {option.code && `(${option.code})`}
+                        </Box>
+                      )}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          placeholder="Choose a country"
+                          name="country"
+                          inputProps={{
+                            ...params.inputProps,
+                            autoComplete: 'new-password' // disable autocomplete and autofill
                           }}
-                          renderInput={(params) => <TextField fullWidth {...params} helperText={null} />}
                         />
-                      </LocalizationProvider>
-                    </Stack>
-                    {touched.dateOfBirth && errors.dateOfBirth && (
-                      <FormHelperText error id="personal-dob-helper">
-                        {errors.dateOfBirth}
+                      )}
+                    />
+                    {touched.country && errors.country && (
+                      <FormHelperText error id="personal-country-helper">
+                        {errors.country}
                       </FormHelperText>
                     )}
                   </Stack>
