@@ -155,7 +155,7 @@ const ProfileHeadshot = ({ focusInput }) => {
               <Typography color="secondary">Project</Typography>
             </Stack>
             <Divider orientation="vertical" flexItem />
-            <Stack spacing={0.5} alignItems="center">F
+            <Stack spacing={0.5} alignItems="center">
               <Typography variant="h5">4.5K</Typography>
               <Typography color="secondary">Members</Typography>
             </Stack>

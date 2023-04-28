@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 
 import { useEffect, useState } from 'react';
 import { useKeycloak } from '@react-keycloak/web';
+import { normalizeInputValue } from 'utils/inputUtils';
 
 // material-ui
 import {
@@ -37,7 +38,7 @@ function useInputRef() {
 const ProfilePersonal = () => {
 
   const {keycloak} = useKeycloak();
-  const [contractor, setContractor] = useState({ firstName: '', lastName: '', email: '', country: null });
+  const [contractor, setContractor] = useState({ firstName: null, lastName: null, email: null, phoneNumber: null, country: null, linkedInUrl: null });
 
   const fetchContractor = async () => {
     try {
@@ -78,14 +79,18 @@ const ProfilePersonal = () => {
           firstname: contractor.firstName,
           lastname: contractor.lastName,
           email: contractor.email,
+          phoneNumber: contractor.phoneNumber,
           country: contractor.country,
+          linkedInUrl: contractor.linkedInUrl,
           submit: null
         }}
         validationSchema={Yup.object().shape({
           firstname: Yup.string().max(255).required('First Name is required.'),
           lastname: Yup.string().max(255).required('Last Name is required.'),
           email: Yup.string().email('Invalid email address.').max(255).required('Email is required.'),
-          country: Yup.string().required('Country is required'),
+          phoneNumber: Yup.string().matches(/^[+]*[0-9]{3,}$/g, 'Phone Number is not valid').max(20).nullable(true),
+          country: Yup.string().nullable(true),
+          linkedInUrl: Yup.string().max(255).nullable(true),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
@@ -100,7 +105,7 @@ const ProfilePersonal = () => {
               }
             );
 
-            if (!reponse.ok) {
+            if (!response.ok) {
               dispatch(
                 openSnackbar({
                   open: true,
@@ -122,9 +127,24 @@ const ProfilePersonal = () => {
             let json = await response.json();
 
             setContractor(json);
+
+            dispatch(
+              openSnackbar({
+                open: true,
+                message: 'Personal profile updated.',
+                variant: 'alert',
+                alert: {
+                  color: 'success'
+                },
+                close: false
+              })
+            );
+
             setStatus({ success: true });
             setSubmitting(false);
+            setErrors({ });
           } catch (err) {
+            console.log(err);
             setErrors({ submit: err.message });
             setStatus({ success: false });
             setSubmitting(false);
@@ -141,7 +161,7 @@ const ProfilePersonal = () => {
                     <TextField
                       fullWidth
                       id="personal-first-name"
-                      value={values.firstname}
+                      value={normalizeInputValue(values.firstname)}
                       name="firstname"
                       onBlur={handleBlur}
                       onChange={handleChange}
@@ -162,7 +182,7 @@ const ProfilePersonal = () => {
                     <TextField
                       fullWidth
                       id="personal-last-name"
-                      value={values.lastname}
+                      value={normalizeInputValue(values.lastname)}
                       name="lastname"
                       onBlur={handleBlur}
                       onChange={handleChange}
@@ -181,7 +201,7 @@ const ProfilePersonal = () => {
                     <TextField
                       type="email"
                       fullWidth
-                      value={values.email}
+                      value={normalizeInputValue(values.email)}
                       name="email"
                       onBlur={handleBlur}
                       onChange={handleChange}
@@ -195,6 +215,29 @@ const ProfilePersonal = () => {
                     )}
                   </Stack>
                 </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <InputLabel htmlFor="personal-phone-number">Phone Number</InputLabel>
+                    <TextField
+                      fullWidth
+                      id="personal-phone-number"
+                      value={normalizeInputValue(values.phoneNumber)}
+                      name="phoneNumber"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      placeholder="Phone Number"
+                      autoFocus
+                      inputRef={inputRef}
+                    />
+                    {touched.phoneNumber && errors.phoneNumber && (
+                      <FormHelperText error id="personal-phone-number-helper">
+                        {errors.phoneNumber}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                </Grid>
+
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
                     <InputLabel htmlFor="personal-country">Country</InputLabel>
@@ -240,6 +283,27 @@ const ProfilePersonal = () => {
                     {touched.country && errors.country && (
                       <FormHelperText error id="personal-country-helper">
                         {errors.country}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <InputLabel htmlFor="personal-linked-in-url">LinkedIn Url</InputLabel>
+                    <TextField
+                      fullWidth
+                      id="personal-linked-in-url"
+                      value={normalizeInputValue(values.linkedInUrl)}
+                      name="linkedInUrl"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      placeholder="LinkedIn Url"
+                      autoFocus
+                      inputRef={inputRef}
+                    />
+                    {touched.linkedInUrl && errors.linkedInUrl && (
+                      <FormHelperText error id="personal-linked-in-url-helper">
+                        {errors.linkedInUrl}
                       </FormHelperText>
                     )}
                   </Stack>
