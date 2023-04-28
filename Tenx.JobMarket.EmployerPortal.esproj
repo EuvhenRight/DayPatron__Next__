@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/0.5.83-alpha">
   <PropertyGroup Label="Globals">
-    <ProjectGuid>bc45374f-c2f8-401a-9cfb-e5b10c2eeb14</ProjectGuid>
+    <ProjectGuid>e5a3e60f-04fe-40cf-a340-658cfbf03a73</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupCommand>set BROWSER=none&amp;&amp;npm start</StartupCommand>
+    <StartupCommand>set BROWSER=none&amp;&amp;npm run start-dev</StartupCommand>
     <JavaScriptTestRoot>src\</JavaScriptTestRoot>
     <JavaScriptTestFramework>Jest</JavaScriptTestFramework>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>

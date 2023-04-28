@@ -3,65 +3,38 @@ import { FormattedMessage } from 'react-intl';
 
 // assets
 import {
-  BorderOutlined,
-  BoxPlotOutlined,
-  ChromeOutlined,
-  DeploymentUnitOutlined,
-  GatewayOutlined,
-  MenuUnfoldOutlined,
-  QuestionOutlined,
-  SmileOutlined,
-  StopOutlined,
   UserOutlined,
-  DollarOutlined,
-  CalendarOutlined
+  BankOutlined
 } from '@ant-design/icons';
 
 // icons
 const icons = {
-  ChromeOutlined,
-  MenuUnfoldOutlined,
-  BoxPlotOutlined,
-  StopOutlined,
-  BorderOutlined,
-  SmileOutlined,
-  GatewayOutlined,
-  QuestionOutlined,
-  DeploymentUnitOutlined,
   UserOutlined,
-  DollarOutlined,
-  CalendarOutlined
+  BankOutlined
 };
 
-// ==============================|| MENU ITEMS - EMPLOYER ||============================== //
+// ==============================|| MENU ITEMS - PROFILE ||============================== //
 
-const other = {
+const profile = {
   id: 'employer',
   title: <FormattedMessage id="employer" />,
   type: 'group',
   children: [
     {
-      id: 'employer-profile',
-      title: <FormattedMessage id="employer-profile" />,
+      id: 'employer-details',
+      title: <FormattedMessage id="employer-details" />,
       type: 'item',
-      url: '/employer/profile/personal',
+      url: '/employer/details',
+      icon: icons.BankOutlined
+    },
+    {
+      id: 'employer-users',
+      title: <FormattedMessage id="employer-users" />,
+      type: 'item',
+      url: '/employer/users',
       icon: icons.UserOutlined
-    },
-    {
-      id: 'employer-rates',
-      title: <FormattedMessage id="employer-rates" />,
-      type: 'item',
-      url: '/employer/rates',
-      icon: icons.DollarOutlined
-    },
-    {
-      id: 'employer-availability',
-      title: <FormattedMessage id="employer-availability" />,
-      type: 'item',
-      url: '/employer/availability',
-      icon: icons.CalendarOutlined
     }
   ]
 };
 
-export default other;
+export default profile;

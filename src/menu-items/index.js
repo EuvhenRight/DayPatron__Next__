@@ -1,11 +1,11 @@
 // project import
 import employer from './employer';
-import vacancies from './vacancies';
+import mission from './mission';
 
 // ==============================|| MENU ITEMS ||============================== //
 
 const menuItems = {
-  items: [employer, vacancies]
+  items: [employer, mission]
 };
 
 export default menuItems;

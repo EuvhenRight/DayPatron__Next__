@@ -238,12 +238,6 @@ const MegaMenuSection = () => {
                                 </ListItemIcon>
                                 <ListItemText primary="Pricing" />
                               </ListItemButton>
-                              <ListItemButton disableRipple component={Link} to="/employer/profile/payment">
-                                <ListItemIcon>
-                                  <Dot size={7} color="secondary" variant="outlined" />
-                                </ListItemIcon>
-                                <ListItemText primary="Payment" />
-                              </ListItemButton>
                               <ListItemButton disableRipple component={Link} target="_blank" to="/maintenance/under-construction">
                                 <ListItemIcon>
                                   <Dot size={7} color="secondary" variant="outlined" />

@@ -46,7 +46,7 @@ const Breadcrumbs = ({
   }
 
   useEffect(() => {
-    if (currentPath.includes('/employer/profile/payment')) {
+    if (currentPath.includes('/profile/personal')) {
       setItem(undefined);
     }
   }, [item, currentPath]);

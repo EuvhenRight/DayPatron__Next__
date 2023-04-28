@@ -17,7 +17,7 @@ const NavCard = () => (
       <Stack alignItems="center">
         <Typography variant="h5">Help?</Typography>
         <Typography variant="h6" color="secondary">
-          Get to resolve query
+          We are happy to help
         </Typography>
       </Stack>
       <AnimateButton>

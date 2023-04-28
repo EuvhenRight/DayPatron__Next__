@@ -12,16 +12,17 @@ const MaintenanceError500 = Loadable(lazy(() => import('pages/maintenance/500'))
 const MaintenanceUnderConstruction = Loadable(lazy(() => import('pages/maintenance/under-construction')));
 const MaintenanceComingSoon = Loadable(lazy(() => import('pages/maintenance/coming-soon')));
 
-const ProfilePage = Loadable(lazy(() => import('pages/profile-page')));
-const UserTabPersonal = Loadable(lazy(() => import('sections/profiles/TabPersonal')));
-const UserTabPayment = Loadable(lazy(() => import('sections/profiles/TabPayment')));
-const UserTabPassword = Loadable(lazy(() => import('sections/profiles/TabPassword')));
-const UserTabSettings = Loadable(lazy(() => import('sections/profiles/TabSettings')));
+const ProfilePersonalPage = Loadable(lazy(() => import('pages/profile-personal-page')));
+const ProfileExpertisePage = Loadable(lazy(() => import('pages/profile-expertise-page')));
 
-const RatesPage = Loadable(lazy(() => import('pages/rates-page')));
-const AvailabilityPage = Loadable(lazy(() => import('pages/availability-page')));
-const VacancySearchPage = Loadable(lazy(() => import('pages/vacancy-search-page')));
-const VacancyApplicationsPage = Loadable(lazy(() => import('pages/vacancy-applications-page')));
+const PreferenceRatePage = Loadable(lazy(() => import('pages/preference-rate-page')));
+const PreferenceAvailabilityPage = Loadable(lazy(() => import('pages/preference-availability-page')));
+const PreferenceWorkplacePage = Loadable(lazy(() => import('pages/preference-workplace-page')));
+const PreferenceTravelPage = Loadable(lazy(() => import('pages/preference-travel-page')));
+
+const MissionSearchPage = Loadable(lazy(() => import('pages/mission-search-page')));
+const MissionPendingPage = Loadable(lazy(() => import('pages/mission-pending-page')));
+const MissionHistoryPage = Loadable(lazy(() => import('pages/mission-history-page')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -40,47 +41,33 @@ const MainRoutes = {
           path: 'employer',
           children: [
             {
-              path: 'profile',
-              element: <ProfilePage />,
-              children: [
-                {
-                  path: 'personal',
-                  element: <UserTabPersonal />
-                },
-                {
-                  path: 'payment',
-                  element: <UserTabPayment />
-                },
-                {
-                  path: 'password',
-                  element: <UserTabPassword />
-                },
-                {
-                  path: 'settings',
-                  element: <UserTabSettings />
-                }
-              ]
+              path: 'details',
+              element: <EmployerDetailsPage />
             },
             {
-              path: 'rates',
-              element: <RatesPage />
-            },
-            {
-              path: 'availability',
-              element: <AvailabilityPage />
+              path: 'users',
+              element: <EmployerUsersPage />
             }
           ]
         },
         {
-          path: 'vacancies',
+          path: 'mission',
           children: [
             {
-              path: 'search',
-              element: <VacancySearchPage />
+              path: 'create',
+              element: <MissionCreatePage />
             },
             {
-              path: 'applications',
-              element: <VacancyApplicationsPage />
+              path: 'pending',
+              element: <MissionPendingPage />
+            },
+            {
+              path: 'filled',
+              element: <MissionPendingPage />
+            },
+            {
+              path: 'closed',
+              element: <MissionClosedPage />
             }
           ]
         }

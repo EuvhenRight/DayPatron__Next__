@@ -1,11 +1,12 @@
 {
   "employer": "Employer",
-  "employer-profile": "Profile",
-  "employer-rates": "Rates",
-  "employer-availability": "Availability",
-  "vacancies": "Vacancies",
-  "vacancy-search": "Search",
-  "vacancy-applications": "Applications",
+  "employer-details": "Details",
+  "employer-users": "Users",
+  "mission": "Missions",
+  "mission-create": "Create",
+  "mission-pending": "Pending",
+  "mission-filled": "Filled",
+  "mission-closed": "Closed",
   "documentation": "Documentation",
   "roadmap": "Roadmap"
 }
