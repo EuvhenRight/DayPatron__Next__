@@ -1,25 +1,29 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Box, Divider, FormLabel, Grid, TextField, Menu, MenuItem, Stack, Typography } from '@mui/material';
+import { Box, Divider, FormLabel, Grid, TextField, Menu, MenuItem, Stack, Typography, Link as MuiLink  } from '@mui/material';
 
 // project import
 import MainCard from 'components/MainCard';
 import IconButton from 'components/@extended/IconButton';
 import Avatar from 'components/@extended/Avatar';
-import { facebookColor, linkedInColor, twitterColor } from 'config';
+import { linkedInColor } from 'config';
 
 // assets
-import { FacebookFilled, LinkedinFilled, MoreOutlined, TwitterSquareFilled, CameraOutlined } from '@ant-design/icons';
+import { LinkedinFilled, MoreOutlined, CameraOutlined } from '@ant-design/icons';
 
 const avatarImage = require.context('assets/images/users', true);
 
 // ==============================|| USER PROFILE - TAB CONTENT ||============================== //
 
 const ProfileHeadshot = ({ focusInput }) => {
+
+  const state = useSelector(state => state.personalInformation);
+
   const theme = useTheme();
   const [selectedImage, setSelectedImage] = useState(undefined);
   const [avatar, setAvatar] = useState(avatarImage(`./default.png`));
@@ -40,7 +44,7 @@ const ProfileHeadshot = ({ focusInput }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+  
   return (
     <MainCard>
       <Grid container spacing={6}>
@@ -132,13 +136,13 @@ const ProfileHeadshot = ({ focusInput }) => {
               onChange={(e) => setSelectedImage(e.target.files?.[0])}
             />
             <Stack spacing={0.5} alignItems="center">
-              <Typography variant="h5">Stebin Ben</Typography>
-              <Typography color="secondary">Full Stack Developer</Typography>
+              <Typography variant="h5">{ state.firstName } { state.lastName }</Typography>
+              <Typography color="secondary">
+                <MuiLink href={`mailto:${state.email}`} target="_blank" rel="noreferrer">{state.email}</MuiLink>
+              </Typography>
             </Stack>
             <Stack direction="row" spacing={3} sx={{ '& svg': { fontSize: '1.15rem', cursor: 'pointer' } }}>
-              <TwitterSquareFilled style={{ color: twitterColor }} />
-              <FacebookFilled style={{ color: facebookColor }} />
-              <LinkedinFilled style={{ color: linkedInColor }} />
+              <a href={state.linkedInUrl} target="_blank" rel="noreferrer"><LinkedinFilled style={{ color: linkedInColor }} /></a>
             </Stack>
           </Stack>
         </Grid>
@@ -146,18 +150,13 @@ const ProfileHeadshot = ({ focusInput }) => {
         <Grid item xs={12} sm={6} md={12}>
           <Stack direction="row" justifyContent="space-around" alignItems="center">
             <Stack spacing={0.5} alignItems="center">
-              <Typography variant="h5">86</Typography>
-              <Typography color="secondary">Post</Typography>
+              <Typography variant="h5">0</Typography>
+              <Typography color="secondary">Pending</Typography>
             </Stack>
             <Divider orientation="vertical" flexItem />
             <Stack spacing={0.5} alignItems="center">
-              <Typography variant="h5">40</Typography>
-              <Typography color="secondary">Project</Typography>
-            </Stack>
-            <Divider orientation="vertical" flexItem />
-            <Stack spacing={0.5} alignItems="center">
-              <Typography variant="h5">4.5K</Typography>
-              <Typography color="secondary">Members</Typography>
+              <Typography variant="h5">0</Typography>
+              <Typography color="secondary">Completed</Typography>
             </Stack>
           </Stack>
         </Grid>

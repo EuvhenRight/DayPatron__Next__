@@ -13,6 +13,7 @@ import MainCard from 'components/MainCard';
 import Transitions from 'components/@extended/Transitions';
 import IconButton from 'components/@extended/IconButton';
 import useAuth from 'hooks/useAuth';
+import { useSelector } from 'react-redux';
 
 // assets
 import avatar1 from 'assets/images/users/avatar-1.png';
@@ -45,7 +46,9 @@ function a11yProps(index) {
 const Profile = () => {
   const theme = useTheme();
 
-  const { logout, user } = useAuth();
+  const { logout } = useAuth();
+  const personalInformation = useSelector(state => state.personalInformation);
+
   const handleLogout = async () => {
     try {
       await logout();
@@ -96,7 +99,7 @@ const Profile = () => {
       >
         <Stack direction="row" spacing={2} alignItems="center" sx={{ p: 0.5 }}>
           <Avatar alt="profile user" src={avatar1} size="xs" />
-          <Typography variant="subtitle1">{user?.name}</Typography>
+          <Typography variant="subtitle1">{personalInformation?.firstName} {personalInformation?.lastName}</Typography>
         </Stack>
       </ButtonBase>
       <Popper
@@ -138,7 +141,7 @@ const Profile = () => {
                         <Stack direction="row" spacing={1.25} alignItems="center">
                           <Avatar alt="profile user" src={avatar1} sx={{ width: 32, height: 32 }} />
                           <Stack>
-                            <Typography variant="h6">{user?.name}</Typography>
+                            <Typography variant="h6">{personalInformation?.firstName} {personalInformation?.lastName}</Typography>
                             <Typography variant="body2" color="textSecondary">
                               UI/UX Designer
                             </Typography>

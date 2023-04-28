@@ -1,10 +1,11 @@
 // material-ui
 import { useOutletContext } from 'react-router';
 import countries from 'data/countries';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useKeycloak } from '@react-keycloak/web';
+import { PERSONAL_INFORMATION_UPDATE, PERSONAL_INFORMATION_GET } from 'store/reducers/actions';
 import { normalizeInputValue } from 'utils/inputUtils';
 
 // material-ui
@@ -26,7 +27,6 @@ import { Formik } from 'formik';
 
 // project import
 import { openSnackbar } from 'store/reducers/snackbar';
-// import { useInputRef } from './index';
 import MainCard from 'components/MainCard';
 
 function useInputRef() {
@@ -36,9 +36,7 @@ function useInputRef() {
 // ==============================|| PERSONAL ||============================== //
 
 const ProfilePersonal = () => {
-
   const {keycloak} = useKeycloak();
-  const [contractor, setContractor] = useState({ firstName: null, lastName: null, email: null, phoneNumber: null, country: null, linkedInUrl: null });
 
   const fetchContractor = async () => {
     try {
@@ -60,7 +58,7 @@ const ProfilePersonal = () => {
     (async () => {
       let res = await fetchContractor();
       if (res.success) {
-        setContractor(res.data);
+        dispatch({ type: PERSONAL_INFORMATION_GET, payload: res.data });
       }
     })();
   }, []);
@@ -69,6 +67,7 @@ const ProfilePersonal = () => {
   maxDate.setFullYear(maxDate.getFullYear() - 18);
 
   const dispatch = useDispatch();
+  const state = useSelector(state => state.personalInformation);
   const inputRef = useInputRef();
 
   return (
@@ -76,12 +75,12 @@ const ProfilePersonal = () => {
       <Formik
         enableReinitialize={true}
         initialValues={{
-          firstname: contractor.firstName,
-          lastname: contractor.lastName,
-          email: contractor.email,
-          phoneNumber: contractor.phoneNumber,
-          country: contractor.country,
-          linkedInUrl: contractor.linkedInUrl,
+          firstname: state.firstName,
+          lastname: state.lastName,
+          email: state.email,
+          phoneNumber: state.phoneNumber,
+          country: state.country,
+          linkedInUrl: state.linkedInUrl,
           submit: null
         }}
         validationSchema={Yup.object().shape({
@@ -126,7 +125,7 @@ const ProfilePersonal = () => {
 
             let json = await response.json();
 
-            setContractor(json);
+            dispatch({ type: PERSONAL_INFORMATION_UPDATE, payload: json });
 
             dispatch(
               openSnackbar({
@@ -144,7 +143,6 @@ const ProfilePersonal = () => {
             setSubmitting(false);
             setErrors({ });
           } catch (err) {
-            console.log(err);
             setErrors({ submit: err.message });
             setStatus({ success: false });
             setSubmitting(false);
@@ -313,9 +311,6 @@ const ProfilePersonal = () => {
             <Divider />
             <Box sx={{ p: 2.5 }}>
               <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 2.5 }}>
-                <Button variant="outlined" color="secondary">
-                  Cancel
-                </Button>
                 <Button disabled={isSubmitting || Object.keys(errors).length !== 0} type="submit" variant="contained">
                   Save
                 </Button>
