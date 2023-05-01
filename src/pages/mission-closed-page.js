@@ -6,9 +6,9 @@ import MainCard from 'components/MainCard';
 
 const MissionClosedPage = () => {
   return (
-    <MainCard title="Sample Card">
+    <MainCard>
       <Typography variant="body2">
-        MissionClosedPage
+        Coming soon
       </Typography>
     </MainCard>
   );

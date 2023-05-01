@@ -71,7 +71,7 @@ const EmployerDetails = () => {
   const inputRef = useInputRef();
 
   return (
-    <MainCard content={false} title="Personal Information" sx={{ '& .MuiInputLabel-root': { fontSize: '0.875rem' } }}>
+    <MainCard content={false} sx={{ '& .MuiInputLabel-root': { fontSize: '0.875rem' } }}>
       <Formik
         enableReinitialize={true}
         initialValues={{

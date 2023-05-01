@@ -6,9 +6,9 @@ import MainCard from 'components/MainCard';
 
 const MissionPendingPage = () => {
   return (
-    <MainCard title="Sample Card">
+    <MainCard>
       <Typography variant="body2">
-        MissionPendingPage
+        Coming soon
       </Typography>
     </MainCard>
   );

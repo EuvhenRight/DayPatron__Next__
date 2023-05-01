@@ -6,9 +6,9 @@ import MainCard from 'components/MainCard';
 
 const EmployerUsersPage = () => {
   return (
-    <MainCard title="Sample Card">
+    <MainCard>
       <Typography variant="body2">
-        EmployerUsersPage
+        Coming soon
       </Typography>
     </MainCard>
   );
