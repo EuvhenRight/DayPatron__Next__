@@ -6,9 +6,9 @@ import MainCard from 'components/MainCard';
 
 const ProfileExpertisePage = () => {
   return (
-    <MainCard title="Sample Card">
+    <MainCard>
       <Typography variant="body2">
-        ProfileExpertisePage
+        Coming soon
       </Typography>
     </MainCard>
   );

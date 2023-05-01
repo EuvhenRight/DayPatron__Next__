@@ -6,9 +6,9 @@ import MainCard from 'components/MainCard';
 
 const PreferenceTravelPage = () => {
   return (
-    <MainCard title="Sample Card">
+    <MainCard>
       <Typography variant="body2">
-        PreferenceTravelPage
+        Coming soon
       </Typography>
     </MainCard>
   );
