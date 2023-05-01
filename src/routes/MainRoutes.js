@@ -12,17 +12,13 @@ const MaintenanceError500 = Loadable(lazy(() => import('pages/maintenance/500'))
 const MaintenanceUnderConstruction = Loadable(lazy(() => import('pages/maintenance/under-construction')));
 const MaintenanceComingSoon = Loadable(lazy(() => import('pages/maintenance/coming-soon')));
 
-const ProfilePersonalPage = Loadable(lazy(() => import('pages/profile-personal-page')));
-const ProfileExpertisePage = Loadable(lazy(() => import('pages/profile-expertise-page')));
+const EmployerDetailsPage = Loadable(lazy(() => import('pages/employer-details-page')));
+const EmployerUsersPage = Loadable(lazy(() => import('pages/employer-users-page')));
 
-const PreferenceRatePage = Loadable(lazy(() => import('pages/preference-rate-page')));
-const PreferenceAvailabilityPage = Loadable(lazy(() => import('pages/preference-availability-page')));
-const PreferenceWorkplacePage = Loadable(lazy(() => import('pages/preference-workplace-page')));
-const PreferenceTravelPage = Loadable(lazy(() => import('pages/preference-travel-page')));
-
-const MissionSearchPage = Loadable(lazy(() => import('pages/mission-search-page')));
+const MissionCreatePage = Loadable(lazy(() => import('pages/mission-create-page')));
 const MissionPendingPage = Loadable(lazy(() => import('pages/mission-pending-page')));
-const MissionHistoryPage = Loadable(lazy(() => import('pages/mission-history-page')));
+const MissionFilledPage = Loadable(lazy(() => import('pages/mission-filled-page')));
+const MissionClosedPage = Loadable(lazy(() => import('pages/mission-closed-page')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -63,7 +59,7 @@ const MainRoutes = {
             },
             {
               path: 'filled',
-              element: <MissionPendingPage />
+              element: <MissionFilledPage />
             },
             {
               path: 'closed',
