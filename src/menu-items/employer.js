@@ -13,9 +13,9 @@ const icons = {
   BankOutlined
 };
 
-// ==============================|| MENU ITEMS - PROFILE ||============================== //
+// ==============================|| MENU ITEMS - EMPLOYER ||============================== //
 
-const profile = {
+const employer = {
   id: 'employer',
   title: <FormattedMessage id="employer" />,
   type: 'group',
@@ -37,4 +37,4 @@ const profile = {
   ]
 };
 
-export default profile;
+export default employer;

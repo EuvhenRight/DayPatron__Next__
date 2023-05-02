@@ -4,10 +4,10 @@ import { useRef } from 'react';
 import { Grid } from '@mui/material';
 
 // project import
-import EmployerHeadshot from 'sections/profile/EmployerHeadshot';
-import EmployerDetails from 'sections/profile/EmployerDetails';
+import EmployerHeadshot from 'sections/employer/EmployerHeadshot';
+import EmployerDetails from 'sections/employer/EmployerDetails';
 
-// ==============================|| PROFILE - PERSONAL ||============================== //
+// ==============================|| EMPLOYER - DETAILS ||============================== //
 
 const EmployerDetailsPage = () => {
   const inputRef = useRef(null);

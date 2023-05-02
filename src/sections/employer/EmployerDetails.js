@@ -108,7 +108,7 @@ const EmployerDetails = () => {
               dispatch(
                 openSnackbar({
                   open: true,
-                  message: 'Personal profile update failed.',
+                  message: 'Update failed.',
                   variant: 'alert',
                   alert: {
                     color: 'error'
@@ -130,7 +130,7 @@ const EmployerDetails = () => {
             dispatch(
               openSnackbar({
                 open: true,
-                message: 'Personal profile updated.',
+                message: 'Employer details updated.',
                 variant: 'alert',
                 alert: {
                   color: 'success'

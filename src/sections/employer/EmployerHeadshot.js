@@ -80,7 +80,7 @@ const EmployerHeadshot = ({ focusInput }) => {
             >
               <MenuItem
                 component={Link}
-                to="/profile/personal"
+                to="/employer/details"
                 onClick={() => {
                   handleClose();
                   setTimeout(() => {

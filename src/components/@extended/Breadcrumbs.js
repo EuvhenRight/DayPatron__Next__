@@ -46,7 +46,7 @@ const Breadcrumbs = ({
   }
 
   useEffect(() => {
-    if (currentPath.includes('/profile/personal')) {
+    if (currentPath.includes('/employer/details')) {
       setItem(undefined);
     }
   }, [item, currentPath]);
