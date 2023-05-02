@@ -43,7 +43,7 @@ const mission = {
       title: <FormattedMessage id="mission-filled" />,
       type: 'item',
       url: '/mission/filled',
-      icon: icons.HistoryOutlined
+      icon: icons.FileDoneOutlined
     },
     {
       id: 'mission-closed',
