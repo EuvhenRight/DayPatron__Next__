@@ -1,12 +1,7 @@
 {
-  "employer": "Employer",
-  "employer-details": "Details",
-  "employer-users": "Users",
-  "mission": "Missions",
-  "mission-create": "Create",
-  "mission-pending": "Pending",
-  "mission-filled": "Filled",
-  "mission-closed": "Closed",
+  "personal-information": "Personal Information",
+  "employers": "Employers",
+  "missions": "Missions",
   "documentation": "Documentation",
   "roadmap": "Roadmap"
 }

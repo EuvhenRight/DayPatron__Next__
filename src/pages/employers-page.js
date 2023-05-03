@@ -4,7 +4,7 @@ import { Typography } from '@mui/material';
 // project import
 import MainCard from 'components/MainCard';
 
-const MissionPendingPage = () => {
+const EmployersPage = () => {
   return (
     <MainCard>
       <Typography variant="body2">
@@ -14,4 +14,4 @@ const MissionPendingPage = () => {
   );
 };
 
-export default MissionPendingPage;
+export default EmployersPage;

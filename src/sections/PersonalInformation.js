@@ -33,14 +33,14 @@ function useInputRef() {
   return useOutletContext();
 }
 
-// ==============================|| DETAILS ||============================== //
+// ==============================|| PERSONAL INFORMATION ||============================== //
 
-const EmployerDetails = () => {
+const PersonalInformation = () => {
   const {keycloak} = useKeycloak();
 
-  const fetchEmployer = async () => {
+  const fetchEmployerUser = async () => {
     try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers/' + keycloak.idTokenParsed.preferred_username,
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers/users/' + keycloak.idTokenParsed.preferred_username,
         {
           method: 'GET',
           headers: {
@@ -56,15 +56,12 @@ const EmployerDetails = () => {
   }
   useEffect(() => {
     (async () => {
-      let res = await fetchEmployer();
+      let res = await fetchEmployerUser();
       if (res.success) {
         dispatch({ type: PERSONAL_INFORMATION_GET, payload: res.data });
       }
     })();
   }, []);
-
-  const maxDate = new Date();
-  maxDate.setFullYear(maxDate.getFullYear() - 18);
 
   const dispatch = useDispatch();
   const state = useSelector(state => state.personalInformation);
@@ -93,7 +90,7 @@ const EmployerDetails = () => {
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers/' + keycloak.idTokenParsed.preferred_username,
+            let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers/users/' + keycloak.idTokenParsed.preferred_username,
               {
                 method: 'PUT',
                 headers: {
@@ -130,7 +127,7 @@ const EmployerDetails = () => {
             dispatch(
               openSnackbar({
                 open: true,
-                message: 'Employer details updated.',
+                message: 'Data updated.',
                 variant: 'alert',
                 alert: {
                   color: 'success'
@@ -323,4 +320,4 @@ const EmployerDetails = () => {
   );
 };
 
-export default EmployerDetails;
+export default PersonalInformation;

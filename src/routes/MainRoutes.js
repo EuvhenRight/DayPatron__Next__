@@ -12,13 +12,11 @@ const MaintenanceError500 = Loadable(lazy(() => import('pages/maintenance/500'))
 const MaintenanceUnderConstruction = Loadable(lazy(() => import('pages/maintenance/under-construction')));
 const MaintenanceComingSoon = Loadable(lazy(() => import('pages/maintenance/coming-soon')));
 
-const EmployerDetailsPage = Loadable(lazy(() => import('pages/employer-details-page')));
-const EmployerUsersPage = Loadable(lazy(() => import('pages/employer-users-page')));
+const PersonalInformationPage = Loadable(lazy(() => import('pages/personal-information-page')));
 
-const MissionCreatePage = Loadable(lazy(() => import('pages/mission-create-page')));
-const MissionPendingPage = Loadable(lazy(() => import('pages/mission-pending-page')));
-const MissionFilledPage = Loadable(lazy(() => import('pages/mission-filled-page')));
-const MissionClosedPage = Loadable(lazy(() => import('pages/mission-closed-page')));
+const EmployersPage = Loadable(lazy(() => import('pages/employers-page')));
+
+const MissionsPage = Loadable(lazy(() => import('pages/missions-page')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -34,38 +32,16 @@ const MainRoutes = {
       ),
       children: [
         {
-          path: 'employer',
-          children: [
-            {
-              path: 'details',
-              element: <EmployerDetailsPage />
-            },
-            {
-              path: 'users',
-              element: <EmployerUsersPage />
-            }
-          ]
+          path: 'personal-information',
+          element: <PersonalInformationPage />
         },
         {
-          path: 'mission',
-          children: [
-            {
-              path: 'create',
-              element: <MissionCreatePage />
-            },
-            {
-              path: 'pending',
-              element: <MissionPendingPage />
-            },
-            {
-              path: 'filled',
-              element: <MissionFilledPage />
-            },
-            {
-              path: 'closed',
-              element: <MissionClosedPage />
-            }
-          ]
+          path: 'employers',
+          element: <EmployersPage />
+        },
+        {
+          path: 'missions',
+          element: <MissionsPage />
         }
       ]
     },
