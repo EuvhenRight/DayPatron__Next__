@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useKeycloak } from '@react-keycloak/web';
 import { PERSONAL_INFORMATION_UPDATE, PERSONAL_INFORMATION_GET } from 'store/reducers/actions';
-import { normalizeInputValue } from 'utils/inputUtils';
+import { normalizeInputValue, prepareApiBody } from 'utils/stringUtils';
 
 // material-ui
 import {
@@ -97,7 +97,7 @@ const PersonalInformation = () => {
                   'Authorization': 'Bearer ' + keycloak.idToken,
                   'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(values)
+                body: prepareApiBody(values)
               }
             );
 
