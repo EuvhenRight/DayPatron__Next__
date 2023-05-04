@@ -5,10 +5,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useKeycloak } from '@react-keycloak/web';
 import { RATE_UPDATE, RATE_GET } from 'store/reducers/actions';
-import { normalizeInputValue } from 'utils/inputUtils';
+import { normalizeInputValue, prepareApiBody } from 'utils/stringUtils';
+import currencies from 'data/currencies';
 
 // material-ui
 import {
+  Autocomplete,
   Box,
   Button,
   Divider,
@@ -68,12 +70,14 @@ const PreferenceRatePage = () => {
       <Formik
         enableReinitialize={true}
         initialValues={{
+          currency: state.currency,
           lowerLimit: state.lowerLimit,
           upperLimit: state.upperLimit,
           submit: null
         }}
         validationSchema={Yup.object().shape({
-          lowerLimit: Yup.number().positive().integer().max(1000000).nullable(true),
+          currency: Yup.string().required('Currency is required.').nullable(true),
+          lowerLimit: Yup.number().positive().integer().max(1000000).required('Lower Limit is required.').nullable(true),
           upperLimit: Yup.number().positive().integer().max(1000000).nullable(true),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
@@ -85,7 +89,7 @@ const PreferenceRatePage = () => {
                   'Authorization': 'Bearer ' + keycloak.idToken,
                   'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(values)
+                body: prepareApiBody(values)
               }
             );
 
@@ -134,11 +138,59 @@ const PreferenceRatePage = () => {
           }
         }}
       >
-        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
+        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, setFieldValue, touched, values }) => (
           <form noValidate onSubmit={handleSubmit}>
             <Box sx={{ p: 2.5 }}>
               <Grid container spacing={3}>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={2}>
+                  <Stack spacing={1.25}>
+                    <InputLabel htmlFor="rate-currency">Currency</InputLabel>
+                    <Autocomplete
+                      id="rate-currency"
+                      fullWidth
+                      value={values?.currency ? currencies.filter((item) => item.code === values?.currency)[0] : null}
+                      onBlur={handleBlur}
+                      onChange={(event, newValue) => {
+                        setFieldValue('currency', newValue === null ? '' : newValue.code);
+                      }}
+                      options={currencies}
+                      autoHighlight
+                      isOptionEqualToValue={(option, value) => option.code === value?.code}
+                      getOptionLabel={(option) => option.code}
+                      renderOption={(props, option) => (
+                        <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                          {option.regionCode && (
+                            <img
+                              loading="lazy"
+                              width="20"
+                              src={`https://flagcdn.com/w20/${option.regionCode.toLowerCase()}.png`}
+                              srcSet={`https://flagcdn.com/w40/${option.regionCode.toLowerCase()}.png 2x`}
+                              alt=""
+                            />
+                          )}
+                          {option.code}
+                        </Box>
+                      )}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          placeholder="Choose a currency"
+                          name="currency"
+                          inputProps={{
+                            ...params.inputProps,
+                            autoComplete: 'new-password' // disable autocomplete and autofill
+                          }}
+                        />
+                      )}
+                    />
+                    {touched.currency && errors.currency && (
+                      <FormHelperText error id="rate-currency-helper">
+                        {errors.currency}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={5}>
                   <Stack spacing={1.25}>
                     <InputLabel htmlFor="rate-lower-limit">Lower Limit</InputLabel>
                     <TextField
@@ -159,7 +211,7 @@ const PreferenceRatePage = () => {
                     )}
                   </Stack>
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={5}>
                   <Stack spacing={1.25}>
                     <InputLabel htmlFor="rate-upper-limit">Upper Limit</InputLabel>
                     <TextField

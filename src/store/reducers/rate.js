@@ -1,6 +1,6 @@
 import { RATE_UPDATE, RATE_GET } from './actions';
 
-export const initialState = { lowerLimit: null, upperLimit: null };
+export const initialState = { currency: null, lowerLimit: null, upperLimit: null };
 
 const rate = (state = initialState, action) => {
 
