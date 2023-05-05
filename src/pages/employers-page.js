@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
-import { useCallback, useEffect, useMemo, useState, Fragment } from 'react';
+import { useEffect, useMemo, useState, Fragment } from 'react';
 
 // material-ui
-import { alpha, useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import {
   Button,
   Chip,
@@ -20,7 +20,7 @@ import {
 
 // third-party
 import NumberFormat from 'react-number-format';
-import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useTable, usePagination } from 'react-table';
+import { useFilters, useExpanded, useGlobalFilter, useSortBy, useTable, usePagination } from 'react-table';
 
 // project import
 import MainCard from 'components/MainCard';
@@ -29,25 +29,20 @@ import Avatar from 'components/@extended/Avatar';
 import IconButton from 'components/@extended/IconButton';
 import { PopupTransition } from 'components/@extended/Transitions';
 import {
-  CSVExport,
   HeaderSort,
-  IndeterminateCheckbox,
-  SortingSelect,
-  TablePagination,
-  TableRowSelection
+  TablePagination
 } from 'components/third-party/ReactTable';
 
-import AddCustomer from 'sections/AddCustomer';
-import CustomerView from 'sections/CustomerView';
-import AlertCustomerDelete from 'sections/AlertCustomerDelete';
+import UpsertEmployer from 'sections/UpsertEmployer';
+import AlertEmployerDelete from 'sections/AlertEmployerDelete';
 
-import makeData from 'data/react-table';
+import makeEmployerData from 'data/react-table';
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 
 // assets
-import { CloseOutlined, PlusOutlined, EyeTwoTone, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
+import { PlusOutlined, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
 
-const avatarImage = require.context('assets/images/users', true);
+const avatarImage = require.context('assets/images/companies', true);
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -56,7 +51,7 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
   const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   const filterTypes = useMemo(() => renderFilterTypes, []);
-  const sortBy = { id: 'fatherName', desc: false };
+  const sortBy = { id: 'name', desc: false };
 
   const {
     getTableProps,
@@ -64,17 +59,14 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
     headerGroups,
     prepareRow,
     setHiddenColumns,
-    allColumns,
     visibleColumns,
     rows,
     page,
     gotoPage,
     setPageSize,
-    state: { globalFilter, selectedRowIds, pageIndex, pageSize, expanded },
+    state: { globalFilter, pageIndex, pageSize, expanded },
     preGlobalFilteredRows,
     setGlobalFilter,
-    setSortBy,
-    selectedFlatRows
   } = useTable(
     {
       columns,
@@ -82,28 +74,26 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
       // @ts-ignore
       filterTypes,
       // @ts-ignore
-      initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: ['avatar', 'email'], sortBy: [sortBy] }
+      initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: ['id', 'avatar'], sortBy: [sortBy] }
     },
     useGlobalFilter,
     useFilters,
     useSortBy,
     useExpanded,
-    usePagination,
-    useRowSelect
+    usePagination
   );
 
   useEffect(() => {
     if (matchDownSM) {
-      setHiddenColumns(['age', 'contact', 'visits', 'email', 'status', 'avatar']);
+      setHiddenColumns(['id', 'avatar', 'email', 'linkedInUrl']);
     } else {
-      setHiddenColumns(['avatar', 'email']);
+      setHiddenColumns(['id', 'avatar']);
     }
     // eslint-disable-next-line
   }, [matchDownSM]);
 
   return (
     <>
-      <TableRowSelection selected={Object.keys(selectedRowIds).length} />
       <Stack spacing={3}>
         <Stack
           direction={matchDownSM ? 'column' : 'row'}
@@ -119,11 +109,9 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
             size="small"
           />
           <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
-            <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
             <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd} size="small">
-              Add Customer
+              Add Employer
             </Button>
-            <CSVExport data={selectedFlatRows.length > 0 ? selectedFlatRows.map((d) => d.original) : data} filename={'customer-list.csv'} />
           </Stack>
         </Stack>
 
@@ -148,10 +136,6 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
                 <Fragment key={i}>
                   <TableRow
                     {...row.getRowProps()}
-                    onClick={() => {
-                      row.toggleRowSelected();
-                    }}
-                    sx={{ cursor: 'pointer', bgcolor: row.isSelected ? alpha(theme.palette.primary.lighter, 0.35) : 'inherit' }}
                   >
                     {row.cells.map((cell, index) => (
                       <TableCell key={index} {...cell.getCellProps([{ className: cell.column.className }])}>
@@ -183,24 +167,15 @@ ReactTable.propTypes = {
   renderRowSubComponent: PropTypes.any
 };
 
-// ==============================|| CUSTOMER - LIST ||============================== //
-
-// Section Cell and Header
-const SelectionCell = ({ row }) => <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />;
-const SelectionHeader = ({ getToggleAllPageRowsSelectedProps }) => (
-  <IndeterminateCheckbox indeterminate {...getToggleAllPageRowsSelectedProps()} />
-);
+// ==============================|| EMPLOYER - LIST ||============================== //
 
 const CustomCell = ({ row }) => {
   const { values } = row;
   return (
     <Stack direction="row" spacing={1.5} alignItems="center">
-      <Avatar alt="Avatar 1" size="sm" src={avatarImage(`./avatar-${!values.avatar ? 1 : values.avatar}.png`)} />
+      <Avatar alt="Avatar 1" size="sm" src={values.logoImageUrl ? values.logoImageUrl : avatarImage('./default.png')} />
       <Stack spacing={0}>
-        <Typography variant="subtitle1">{values.fatherName}</Typography>
-        <Typography variant="caption" color="textSecondary">
-          {values.email}
-        </Typography>
+        <Typography variant="subtitle1">{values.name}</Typography>
       </Stack>
     </Stack>
   );
@@ -220,31 +195,15 @@ const StatusCell = ({ value }) => {
   }
 };
 
-const ActionCell = (row, setCustomer, setCustomerDeleteId, handleClose, theme) => {
-  const collapseIcon = row.isExpanded ? (
-    <CloseOutlined style={{ color: theme.palette.error.main }} />
-  ) : (
-    <EyeTwoTone twoToneColor={theme.palette.secondary.main} />
-  );
+const ActionCell = (row, setEmployer, setEmployerDeleteId, handleClose, handleAdd, theme) => {
   return (
-    <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-      <Tooltip title="View">
-        <IconButton
-          color="secondary"
-          onClick={(e) => {
-            e.stopPropagation();
-            row.toggleRowExpanded();
-          }}
-        >
-          {collapseIcon}
-        </IconButton>
-      </Tooltip>
+    <Stack direction="row" spacing={0}>
       <Tooltip title="Edit">
         <IconButton
           color="primary"
           onClick={(e) => {
             e.stopPropagation();
-            setCustomer(row.values);
+            setEmployer(row.values);
             handleAdd();
           }}
         >
@@ -257,7 +216,7 @@ const ActionCell = (row, setCustomer, setCustomerDeleteId, handleClose, theme) =
           onClick={(e) => {
             e.stopPropagation();
             handleClose();
-            setCustomerDeleteId(row.values.fatherName);
+            setEmployerDeleteId(row.values.name);
           }}
         >
           <DeleteTwoTone twoToneColor={theme.palette.error.main} />
@@ -279,27 +238,18 @@ CustomCell.propTypes = {
   row: PropTypes.object
 };
 
-SelectionCell.propTypes = {
-  row: PropTypes.object
-};
-
-SelectionHeader.propTypes = {
-  getToggleAllPageRowsSelectedProps: PropTypes.func
-};
-
 const EmployersPage = () => {
   const theme = useTheme();
 
-  const data = useMemo(() => makeData(200), []);
-
+  const data = useMemo(() => makeEmployerData(200), []);
   const [add, setAdd] = useState(false);
   const [open, setOpen] = useState(false);
-  const [customer, setCustomer] = useState();
-  const [customerDeleteId, setCustomerDeleteId] = useState();
+  const [employer, setEmployer] = useState();
+  const [employerDeleteId, setEmployerDeleteId] = useState();
 
   const handleAdd = () => {
     setAdd(!add);
-    if (customer && !add) setCustomer(null);
+    if (employer && !add) setEmployer(null);
   };
 
   const handleClose = () => {
@@ -309,62 +259,39 @@ const EmployersPage = () => {
   const columns = useMemo(
     () => [
       {
-        title: 'Row Selection',
-        Header: SelectionHeader,
-        accessor: 'selection',
-        Cell: SelectionCell,
-        disableSortBy: true
-      },
-      {
         Header: '#',
         accessor: 'id',
-        className: 'cell-center'
-      },
-      {
-        Header: 'User Name',
-        accessor: 'fatherName',
-        Cell: CustomCell
-      },
-      {
-        Header: 'Avatar',
-        accessor: 'avatar',
+        className: 'cell-center',
         disableSortBy: true
+      },
+      {
+        Header: 'Name',
+        accessor: 'name',
+        className: 'cell-name',
+        Cell: CustomCell
       },
       {
         Header: 'Email',
         accessor: 'email'
       },
       {
-        Header: 'Contact',
-        accessor: 'contact',
-        Cell: NumberFormatCell
+        Header: 'Industry',
+        accessor: 'industry'
       },
       {
-        Header: 'Age',
-        accessor: 'age',
-        className: 'cell-right'
-      },
-      {
-        Header: 'Country',
-        accessor: 'country'
-      },
-      {
-        Header: 'Status',
-        accessor: 'status',
-        Cell: StatusCell
+        Header: 'LinkedIn',
+        accessor: 'linkedInUrl'
       },
       {
         Header: 'Actions',
-        className: 'cell-center',
         disableSortBy: true,
-        Cell: ({ row }) => ActionCell(row, setCustomer, setCustomerDeleteId, handleClose, theme)
+        className: 'cell-actions',
+        Cell: ({ row }) => ActionCell(row, setEmployer, setEmployerDeleteId, handleClose, handleAdd, theme)
       }
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [theme]
   );
-
-  const renderRowSubComponent = useCallback(({ row }) => <CustomerView data={data[row.id]} />, [data]);
 
   return (
     <MainCard content={false}>
@@ -374,10 +301,9 @@ const EmployersPage = () => {
           data={data}
           handleAdd={handleAdd}
           getHeaderProps={(column) => column.getSortByToggleProps()}
-          renderRowSubComponent={renderRowSubComponent}
         />
       </ScrollX>
-      <AlertCustomerDelete title={customerDeleteId} open={open} handleClose={handleClose} />
+      <AlertEmployerDelete title={employerDeleteId} open={open} handleClose={handleClose} />
       {/* add user dialog */}
       <Dialog
         maxWidth="sm"
@@ -389,7 +315,7 @@ const EmployersPage = () => {
         sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
         aria-describedby="alert-dialog-slide-description"
       >
-        <AddCustomer customer={customer} onCancel={handleAdd} />
+        <UpsertEmployer employer={employer} onCancel={handleAdd} />
       </Dialog>
     </MainCard>
   );

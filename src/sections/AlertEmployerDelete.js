@@ -12,7 +12,7 @@ import { DeleteFilled } from '@ant-design/icons';
 
 // ==============================|| CUSTOMER - DELETE ||============================== //
 
-export default function AlertCustomerDelete({ title, open, handleClose }) {
+export default function AlertEmployerDelete({ title, open, handleClose }) {
   return (
     <Dialog
       open={open}
@@ -30,15 +30,16 @@ export default function AlertCustomerDelete({ title, open, handleClose }) {
           </Avatar>
           <Stack spacing={2}>
             <Typography variant="h4" align="center">
-              Are you sure you want to delete?
+              Are you sure you want to archive{' '}
+              &quot;{title}&quot;{' '}?
             </Typography>
             <Typography align="center">
-              By deleting
+              By archiving
               <Typography variant="subtitle1" component="span">
                 {' '}
                 &quot;{title}&quot;{' '}
               </Typography>
-              user, all task assigned to that user will also be deleted.
+              , all missions assigned to that employer will also be archived.
             </Typography>
           </Stack>
 
@@ -47,7 +48,7 @@ export default function AlertCustomerDelete({ title, open, handleClose }) {
               Cancel
             </Button>
             <Button fullWidth color="error" variant="contained" onClick={() => handleClose(true)} autoFocus>
-              Delete
+              Archive
             </Button>
           </Stack>
         </Stack>
@@ -56,7 +57,7 @@ export default function AlertCustomerDelete({ title, open, handleClose }) {
   );
 }
 
-AlertCustomerDelete.propTypes = {
+AlertEmployerDelete.propTypes = {
   title: PropTypes.string,
   open: PropTypes.bool,
   handleClose: PropTypes.func

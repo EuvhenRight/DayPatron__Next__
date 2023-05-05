@@ -20,7 +20,6 @@ const icons = {
 const menuItems = {
   items: [{
     id: '10x',
-    title: <FormattedMessage id="10x" />,
     type: 'group',
     children: [
       {

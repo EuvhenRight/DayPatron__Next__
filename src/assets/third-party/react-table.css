@@ -11,3 +11,9 @@
 .cell-right > * {
   margin: 0 0 0 auto;
 }
+.cell-actions {
+    width:100px;
+}
+.cell-name {
+    white-space: nowrap;
+}

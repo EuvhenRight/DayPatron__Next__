@@ -5,24 +5,18 @@ import { useDispatch } from 'react-redux';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import {
+  Autocomplete,
   Box,
   Button,
   DialogActions,
   DialogContent,
   DialogTitle,
   Divider,
-  FormControl,
-  FormControlLabel,
   FormLabel,
   Grid,
   FormHelperText,
   InputLabel,
-  ListItemText,
-  MenuItem,
-  OutlinedInput,
-  Select,
   Stack,
-  Switch,
   TextField,
   Tooltip,
   Typography
@@ -36,39 +30,43 @@ import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
 
 // project imports
-import AlertCustomerDelete from './AlertCustomerDelete';
+import AlertEmployerDelete from './AlertEmployerDelete';
 import Avatar from 'components/@extended/Avatar';
 import IconButton from 'components/@extended/IconButton';
 import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
 import { CameraOutlined, DeleteFilled } from '@ant-design/icons';
+import { normalizeInputValue } from 'utils/stringUtils';
+import industries from 'data/industries';
 
-const avatarImage = require.context('assets/images/users', true);
+const avatarImage = require.context('assets/images/companies', true);
 
 // constant
-const getInitialValues = (customer) => {
-  const newCustomer = {
-    name: '',
-    email: '',
-    location: '',
-    orderStatus: ''
+const getInitialValues = (employer) => {
+  const newEmployer = {
+    name: null,
+    email: null,
+    industry: null,
+    chamberOfCommerceIdentifier: null,
+    linkedInUrl: null
   };
 
-  if (customer) {
-    newCustomer.name = customer.fatherName;
-    newCustomer.location = customer.address;
-    return _.merge({}, newCustomer, customer);
+  if (employer) {
+    newEmployer.name = employer.name;
+    newEmployer.email = employer.email;
+    newEmployer.industry = employer.industry;
+    newEmployer.chamberOfCommerceIdentifier = employer.chamberOfCommerceIdentifier;
+    newEmployer.linkedInUrl = employer.linkedInUrl;
+    return _.merge({}, newEmployer, employer);
   }
 
-  return newCustomer;
+  return newEmployer;
 };
 
-const allStatus = ['Complicated', 'Single', 'Relationship'];
+// ==============================|| EMPLOYER ADD / EDIT / DELETE ||============================== //
 
-// ==============================|| CUSTOMER ADD / EDIT / DELETE ||============================== //
-
-const AddCustomer = ({ customer, onCancel }) => {
+const UpsertEmployer = ({ employer, onCancel }) => {
   const [openAlert, setOpenAlert] = useState(false);
 
   const handleAlertClose = () => {
@@ -78,10 +76,10 @@ const AddCustomer = ({ customer, onCancel }) => {
 
   const theme = useTheme();
   const dispatch = useDispatch();
-  const isCreating = !customer;
+  const isCreating = !employer;
 
   const [selectedImage, setSelectedImage] = useState(undefined);
-  const [avatar, setAvatar] = useState(avatarImage(`./avatar-${isCreating && !customer?.avatar ? 1 : customer.avatar}.png`));
+  const [avatar, setAvatar] = useState(employer?.logoImageUrl ? employer.logoImageUrl : avatarImage('./default.png'));
 
   useEffect(() => {
     if (selectedImage) {
@@ -89,31 +87,32 @@ const AddCustomer = ({ customer, onCancel }) => {
     }
   }, [selectedImage]);
 
-  const CustomerSchema = Yup.object().shape({
-    name: Yup.string().max(255).required('Name is required'),
-    orderStatus: Yup.string().required('Name is required'),
-    email: Yup.string().max(255).required('Email is required').email('Must be a valid email'),
-    location: Yup.string().max(500)
+  const EmployerSchema = Yup.object().shape({
+    name: Yup.string().max(255).required('Name is required').nullable(true),
+    email: Yup.string().max(255).required('Email is required').email('Must be a valid email').nullable(true),
+    industry: Yup.string().required('Industry is required').nullable(true),
+    chamberOfCommerceIdentifier: Yup.string().max(50).nullable(true),
+    linkedInUrl: Yup.string().max(255).nullable(true)
   });
 
   const formik = useFormik({
-    initialValues: getInitialValues(customer),
-    validationSchema: CustomerSchema,
+    initialValues: getInitialValues(employer),
+    validationSchema: EmployerSchema,
     onSubmit: (values, { setSubmitting }) => {
       try {
-        // const newCustomer = {
+        // const newEmployer = {
         //   name: values.name,
         //   email: values.email,
         //   location: values.location,
         //   orderStatus: values.orderStatus
         // };
 
-        if (customer) {
-          // dispatch(updateCustomer(customer.id, newCustomer)); - update
+        if (employer) {
+          // dispatch(updateEmployer(employer.id, newEmployer)); - update
           dispatch(
             openSnackbar({
               open: true,
-              message: 'Customer update successfully.',
+              message: 'Data updated successfully.',
               variant: 'alert',
               alert: {
                 color: 'success'
@@ -122,11 +121,11 @@ const AddCustomer = ({ customer, onCancel }) => {
             })
           );
         } else {
-          // dispatch(createCustomer(newCustomer)); - add
+          // dispatch(createEmployer(newEmployer)); - add
           dispatch(
             openSnackbar({
               open: true,
-              message: 'Customer add successfully.',
+              message: 'Employer created successfully.',
               variant: 'alert',
               alert: {
                 color: 'success'
@@ -144,21 +143,21 @@ const AddCustomer = ({ customer, onCancel }) => {
     }
   });
 
-  const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue } = formik;
+  const { errors, handleBlur, handleChange, touched, handleSubmit, isSubmitting, setFieldValue, values } = formik;
 
   return (
     <>
       <FormikProvider value={formik}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-            <DialogTitle>{customer ? 'Edit Customer' : 'New Customer'}</DialogTitle>
+            <DialogTitle>{employer ? 'Edit Employer' : 'New Employer'}</DialogTitle>
             <Divider />
             <DialogContent sx={{ p: 2.5 }}>
               <Grid container spacing={3}>
                 <Grid item xs={12} md={3}>
                   <Stack direction="row" justifyContent="center" sx={{ mt: 3 }}>
                     <FormLabel
-                      htmlFor="change-avtar"
+                      htmlFor="change-avatar"
                       sx={{
                         position: 'relative',
                         borderRadius: '50%',
@@ -190,7 +189,7 @@ const AddCustomer = ({ customer, onCancel }) => {
                     </FormLabel>
                     <TextField
                       type="file"
-                      id="change-avtar"
+                      id="change-avatar"
                       placeholder="Outlined"
                       variant="outlined"
                       sx={{ display: 'none' }}
@@ -202,12 +201,15 @@ const AddCustomer = ({ customer, onCancel }) => {
                   <Grid container spacing={3}>
                     <Grid item xs={12}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="customer-name">Name</InputLabel>
+                        <InputLabel htmlFor="employer-name">Name</InputLabel>
                         <TextField
                           fullWidth
-                          id="customer-name"
-                          placeholder="Enter Customer Name"
-                          {...getFieldProps('name')}
+                          id="employer-name"
+                          placeholder="Enter Employer Name"
+                          value={normalizeInputValue(values.name)}
+                          name="name"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
                           error={Boolean(touched.name && errors.name)}
                           helperText={touched.name && errors.name}
                         />
@@ -215,12 +217,15 @@ const AddCustomer = ({ customer, onCancel }) => {
                     </Grid>
                     <Grid item xs={12}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="customer-email">Email</InputLabel>
+                        <InputLabel htmlFor="employer-email">Email</InputLabel>
                         <TextField
                           fullWidth
-                          id="customer-email"
-                          placeholder="Enter Customer Email"
-                          {...getFieldProps('email')}
+                          id="employer-email"
+                          placeholder="Enter Employer Email"
+                          value={normalizeInputValue(values.email)}
+                          name="email"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
                           error={Boolean(touched.email && errors.email)}
                           helperText={touched.email && errors.email}
                         />
@@ -228,31 +233,38 @@ const AddCustomer = ({ customer, onCancel }) => {
                     </Grid>
                     <Grid item xs={12}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="customer-orderStatus">Status</InputLabel>
-                        <FormControl fullWidth>
-                          <Select
-                            id="column-hiding"
-                            displayEmpty
-                            {...getFieldProps('orderStatus')}
-                            onChange={(event) => setFieldValue('orderStatus', event.target.value)}
-                            input={<OutlinedInput id="select-column-hiding" placeholder="Sort by" />}
-                            renderValue={(selected) => {
-                              if (!selected) {
-                                return <Typography variant="subtitle1">Select Status</Typography>;
-                              }
-
-                              return <Typography variant="subtitle2">{selected}</Typography>;
-                            }}
-                          >
-                            {allStatus.map((column) => (
-                              <MenuItem key={column} value={column}>
-                                <ListItemText primary={column} />
-                              </MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
-                        {touched.orderStatus && errors.orderStatus && (
-                          <FormHelperText error id="standard-weight-helper-text-email-login" sx={{ pl: 1.75 }}>
+                        <InputLabel htmlFor="employer-industry">Industry</InputLabel>
+                        <Autocomplete
+                          id="employer-industry"
+                          fullWidth
+                          value={values?.industry ? industries.filter((item) => item.code === values?.industry)[0] : null}
+                          onBlur={handleBlur}
+                          onChange={(event, newValue) => {
+                            setFieldValue('industry', newValue === null ? '' : newValue.code);
+                          }}
+                          options={industries}
+                          autoHighlight
+                          isOptionEqualToValue={(option, value) => option.code === value?.code}
+                          getOptionLabel={(option) => option.label}
+                          renderOption={(props, option) => (
+                            <Box component="li" {...props}>
+                              {option.label}
+                            </Box>
+                          )}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              placeholder="Choose an industry"
+                              name="industry"
+                              inputProps={{
+                                ...params.inputProps,
+                                autoComplete: 'new-password' // disable autocomplete and autofill
+                              }}
+                            />
+                          )}
+                        />
+                        {touched.industry && errors.industry && (
+                          <FormHelperText error id="employer-industry-helper" sx={{ pl: 1.75 }}>
                             {errors.orderStatus}
                           </FormHelperText>
                         )}
@@ -260,38 +272,34 @@ const AddCustomer = ({ customer, onCancel }) => {
                     </Grid>
                     <Grid item xs={12}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="customer-location">Location</InputLabel>
+                        <InputLabel htmlFor="employer-coc-identifier">Chamber of Commerce Identifier</InputLabel>
                         <TextField
                           fullWidth
-                          id="customer-location"
-                          multiline
-                          rows={2}
-                          placeholder="Enter Location"
-                          {...getFieldProps('location')}
-                          error={Boolean(touched.location && errors.location)}
-                          helperText={touched.location && errors.location}
+                          id="employer-coc-identifier"
+                          placeholder="Enter Chamber of Commerce Identifier"
+                          value={normalizeInputValue(values.chamberOfCommerceIdentifier)}
+                          name="chamberOfCommerceIdentifier"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          error={Boolean(touched.chamberOfCommerceIdentifier && errors.chamberOfCommerceIdentifier)}
+                          helperText={touched.chamberOfCommerceIdentifier && errors.chamberOfCommerceIdentifier}
                         />
                       </Stack>
                     </Grid>
                     <Grid item xs={12}>
-                      <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
-                        <Stack spacing={0.5}>
-                          <Typography variant="subtitle1">Make Contact Info Public</Typography>
-                          <Typography variant="caption" color="textSecondary">
-                            Means that anyone viewing your profile will be able to see your contacts details
-                          </Typography>
-                        </Stack>
-                        <FormControlLabel control={<Switch defaultChecked sx={{ mt: 0 }} />} label="" labelPlacement="start" />
-                      </Stack>
-                      <Divider sx={{ my: 2 }} />
-                      <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
-                        <Stack spacing={0.5}>
-                          <Typography variant="subtitle1">Available to hire</Typography>
-                          <Typography variant="caption" color="textSecondary">
-                            Toggling this will let your teammates know that you are available for acquiring new projects
-                          </Typography>
-                        </Stack>
-                        <FormControlLabel control={<Switch sx={{ mt: 0 }} />} label="" labelPlacement="start" />
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="employer-linkedin-url">LinkedIn Url</InputLabel>
+                        <TextField
+                          fullWidth
+                          id="employer-linkedin-url"
+                          placeholder="Enter LinkedIn Url"
+                          value={normalizeInputValue(values.linkedInUrl)}
+                          name="linkedInUrl"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          error={Boolean(touched.linkedInUrl && errors.linkedInUrl)}
+                          helperText={touched.linkedInUrl && errors.linkedInUrl}
+                        />
                       </Stack>
                     </Grid>
                   </Grid>
@@ -303,7 +311,7 @@ const AddCustomer = ({ customer, onCancel }) => {
               <Grid container justifyContent="space-between" alignItems="center">
                 <Grid item>
                   {!isCreating && (
-                    <Tooltip title="Delete Customer" placement="top">
+                    <Tooltip title="Delete Employer" placement="top">
                       <IconButton onClick={() => setOpenAlert(true)} size="large" color="error">
                         <DeleteFilled />
                       </IconButton>
@@ -316,7 +324,7 @@ const AddCustomer = ({ customer, onCancel }) => {
                       Cancel
                     </Button>
                     <Button type="submit" variant="contained" disabled={isSubmitting}>
-                      {customer ? 'Edit' : 'Add'}
+                      {employer ? 'Edit' : 'Add'}
                     </Button>
                   </Stack>
                 </Grid>
@@ -325,14 +333,14 @@ const AddCustomer = ({ customer, onCancel }) => {
           </Form>
         </LocalizationProvider>
       </FormikProvider>
-      {!isCreating && <AlertCustomerDelete title={customer.fatherName} open={openAlert} handleClose={handleAlertClose} />}
+      {!isCreating && <AlertEmployerDelete title={employer.name} open={openAlert} handleClose={handleAlertClose} />}
     </>
   );
 };
 
-AddCustomer.propTypes = {
-  customer: PropTypes.any,
+UpsertEmployer.propTypes = {
+  employer: PropTypes.any,
   onCancel: PropTypes.func
 };
 
-export default AddCustomer;
+export default UpsertEmployer;
