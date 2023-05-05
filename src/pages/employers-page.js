@@ -241,7 +241,24 @@ CustomCell.propTypes = {
 const EmployersPage = () => {
   const theme = useTheme();
 
-  const data = useMemo(() => makeEmployerData(200), []);
+  const fetchEmployers = async () => {
+    try {
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers',
+        {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + keycloak.idToken
+          }
+        }
+      );
+      let json = await response.json();
+      return json;
+    } catch (error) {
+      return {};
+    }
+  }
+
+  const data = useMemo(() => fetchEmployers(), []);
   const [add, setAdd] = useState(false);
   const [open, setOpen] = useState(false);
   const [employer, setEmployer] = useState();
