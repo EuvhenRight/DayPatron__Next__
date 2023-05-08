@@ -37,7 +37,7 @@ import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
 import { CameraOutlined, DeleteFilled } from '@ant-design/icons';
-import { normalizeInputValue } from 'utils/stringUtils';
+import { normalizeInputValue, prepareApiBody } from 'utils/stringUtils';
 import industries from 'data/industries';
 
 const avatarImage = require.context('assets/images/companies', true);
@@ -45,6 +45,7 @@ const avatarImage = require.context('assets/images/companies', true);
 // constant
 const getInitialValues = (employer) => {
   const newEmployer = {
+    id: null,
     name: null,
     email: null,
     industry: null,
@@ -53,12 +54,14 @@ const getInitialValues = (employer) => {
   };
 
   if (employer) {
+    newEmployer.id = employer.id;
     newEmployer.name = employer.name;
     newEmployer.email = employer.email;
     newEmployer.industry = employer.industry;
     newEmployer.chamberOfCommerceIdentifier = employer.chamberOfCommerceIdentifier;
     newEmployer.linkedInUrl = employer.linkedInUrl;
-    return _.merge({}, newEmployer, employer);
+    var result = _.merge({}, newEmployer, employer);
+    return result;
   }
 
   return newEmployer;
@@ -96,23 +99,45 @@ const UpsertEmployer = ({ employer, onCancel }) => {
   });
 
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: getInitialValues(employer),
     validationSchema: EmployerSchema,
     onSubmit: (values, { setSubmitting }) => {
       try {
-        // const newEmployer = {
-        //   name: values.name,
-        //   email: values.email,
-        //   location: values.location,
-        //   orderStatus: values.orderStatus
-        // };
-
         if (employer) {
-          // dispatch(updateEmployer(employer.id, newEmployer)); - update
+
+          let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers/' + employer.id,
+            {
+              method: 'PUT',
+              headers: {
+                'Authorization': 'Bearer ' + keycloak.idToken,
+                'Content-Type': 'application/json'
+              },
+              body: prepareApiBody(values)
+            }
+          );
+
+          if (!response.ok) {
+            dispatch(
+              openSnackbar({
+                open: true,
+                message: 'Update failed.',
+                variant: 'alert',
+                alert: {
+                  color: 'error'
+                },
+                close: false
+              })
+            );
+            setSubmitting(false);
+            onCancel();
+            return;
+          }
+
           dispatch(
             openSnackbar({
               open: true,
-              message: 'Data updated successfully.',
+              message: 'Employer updated.',
               variant: 'alert',
               alert: {
                 color: 'success'
@@ -120,12 +145,41 @@ const UpsertEmployer = ({ employer, onCancel }) => {
               close: false
             })
           );
+
         } else {
-          // dispatch(createEmployer(newEmployer)); - add
+
+          let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers',
+            {
+              method: 'POST',
+              headers: {
+                'Authorization': 'Bearer ' + keycloak.idToken,
+                'Content-Type': 'application/json'
+              },
+              body: prepareApiBody(values)
+            }
+          );
+
+          if (!response.ok) {
+            dispatch(
+              openSnackbar({
+                open: true,
+                message: 'Adding an employer failed.',
+                variant: 'alert',
+                alert: {
+                  color: 'error'
+                },
+                close: false
+              })
+            );
+            setSubmitting(false);
+            onCancel();
+            return;
+          }
+
           dispatch(
             openSnackbar({
               open: true,
-              message: 'Employer created successfully.',
+              message: 'Employer created.',
               variant: 'alert',
               alert: {
                 color: 'success'
@@ -133,6 +187,7 @@ const UpsertEmployer = ({ employer, onCancel }) => {
               close: false
             })
           );
+
         }
 
         setSubmitting(false);
@@ -150,7 +205,7 @@ const UpsertEmployer = ({ employer, onCancel }) => {
       <FormikProvider value={formik}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-            <DialogTitle>{employer ? 'Edit Employer' : 'New Employer'}</DialogTitle>
+            <DialogTitle>{employer ? 'Update Employer' : 'Add Employer'}</DialogTitle>
             <Divider />
             <DialogContent sx={{ p: 2.5 }}>
               <Grid container spacing={3}>
@@ -324,7 +379,7 @@ const UpsertEmployer = ({ employer, onCancel }) => {
                       Cancel
                     </Button>
                     <Button type="submit" variant="contained" disabled={isSubmitting}>
-                      {employer ? 'Edit' : 'Add'}
+                      {employer ? 'Update' : 'Add'}
                     </Button>
                   </Stack>
                 </Grid>

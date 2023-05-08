@@ -21,6 +21,6 @@ export default function makeEmployerData(...lens) {
       subRows: lens[depth + 1] ? makeDataLevel(depth + 1) : undefined
     }));
   };
-
-  return makeDataLevel();
+  var result = makeDataLevel();
+  return result;
 }

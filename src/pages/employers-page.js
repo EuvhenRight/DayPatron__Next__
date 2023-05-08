@@ -36,11 +36,11 @@ import {
 import UpsertEmployer from 'sections/UpsertEmployer';
 import AlertEmployerDelete from 'sections/AlertEmployerDelete';
 
-import makeEmployerData from 'data/react-table';
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 
 // assets
 import { PlusOutlined, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
+import { useKeycloak } from '@react-keycloak/web';
 
 const avatarImage = require.context('assets/images/companies', true);
 
@@ -239,11 +239,12 @@ CustomCell.propTypes = {
 };
 
 const EmployersPage = () => {
+  const { keycloak } = useKeycloak();
   const theme = useTheme();
 
   const fetchEmployers = async () => {
     try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers',
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers?userName=' + encodeURIComponent(keycloak.idTokenParsed.preferred_username),
         {
           method: 'GET',
           headers: {
@@ -252,17 +253,25 @@ const EmployersPage = () => {
         }
       );
       let json = await response.json();
-      return json;
+      return json.employers;
     } catch (error) {
-      return {};
+      console.log(error);
+      return [];
     }
   }
 
-  const data = useMemo(() => fetchEmployers(), []);
+  const [data, setData] = useState([]);
   const [add, setAdd] = useState(false);
   const [open, setOpen] = useState(false);
   const [employer, setEmployer] = useState();
   const [employerDeleteId, setEmployerDeleteId] = useState();
+
+  useEffect(() => {
+    (async () => {
+      let res = await fetchEmployers();
+      setData(res);
+    })();
+  }, []);
 
   const handleAdd = () => {
     setAdd(!add);

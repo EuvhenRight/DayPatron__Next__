@@ -40,7 +40,7 @@ const PersonalInformation = () => {
 
   const fetchEmployerUser = async () => {
     try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers/users/' + keycloak.idTokenParsed.preferred_username,
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers/users/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username),
         {
           method: 'GET',
           headers: {
@@ -54,6 +54,7 @@ const PersonalInformation = () => {
       return { success: false };
     }
   }
+
   useEffect(() => {
     (async () => {
       let res = await fetchEmployerUser();
@@ -90,7 +91,7 @@ const PersonalInformation = () => {
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers/users/' + keycloak.idTokenParsed.preferred_username,
+            let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers/users/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username),
               {
                 method: 'PUT',
                 headers: {
@@ -127,7 +128,7 @@ const PersonalInformation = () => {
             dispatch(
               openSnackbar({
                 open: true,
-                message: 'Data updated.',
+                message: 'Personal information updated.',
                 variant: 'alert',
                 alert: {
                   color: 'success'
