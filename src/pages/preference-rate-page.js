@@ -37,7 +37,7 @@ const PreferenceRatePage = () => {
 
   const fetchRate = async () => {
     try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + keycloak.idTokenParsed.preferred_username + '/rates',
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username) + '/rates',
         {
           method: 'GET',
           headers: {
@@ -82,7 +82,7 @@ const PreferenceRatePage = () => {
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + keycloak.idTokenParsed.preferred_username + '/rates',
+            let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username) + '/rates',
               {
                 method: 'PUT',
                 headers: {
