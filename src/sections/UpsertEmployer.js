@@ -39,6 +39,7 @@ import { openSnackbar } from 'store/reducers/snackbar';
 import { CameraOutlined, DeleteFilled } from '@ant-design/icons';
 import { normalizeInputValue, prepareApiBody } from 'utils/stringUtils';
 import industries from 'data/industries';
+import { useKeycloak } from '@react-keycloak/web';
 
 const avatarImage = require.context('assets/images/companies', true);
 
@@ -70,6 +71,7 @@ const getInitialValues = (employer) => {
 // ==============================|| EMPLOYER ADD / EDIT / DELETE ||============================== //
 
 const UpsertEmployer = ({ employer, onCancel }) => {
+  const { keycloak } = useKeycloak();
   const [openAlert, setOpenAlert] = useState(false);
 
   const handleAlertClose = () => {
@@ -102,7 +104,7 @@ const UpsertEmployer = ({ employer, onCancel }) => {
     enableReinitialize: true,
     initialValues: getInitialValues(employer),
     validationSchema: EmployerSchema,
-    onSubmit: (values, { setSubmitting }) => {
+    onSubmit: async (values, { setSubmitting }) => {
       try {
         if (employer) {
 
