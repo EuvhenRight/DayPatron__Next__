@@ -85,9 +85,9 @@ function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, hand
 
   useEffect(() => {
     if (matchDownSM) {
-      setHiddenColumns(['id', 'avatar', 'email', 'linkedInUrl']);
+      setHiddenColumns(['id', 'avatar', 'email', 'chamberOfCommerceIdentifier', 'linkedInUrl']);
     } else {
-      setHiddenColumns(['id', 'avatar']);
+      setHiddenColumns(['id', 'avatar', 'chamberOfCommerceIdentifier']);
     }
     // eslint-disable-next-line
   }, [matchDownSM]);
@@ -303,6 +303,10 @@ const EmployersPage = () => {
       {
         Header: 'Industry',
         accessor: 'industry'
+      },
+      {
+        Header: 'Chamber Of Commerce Identifier',
+        accessor: 'chamberOfCommerceIdentifier'
       },
       {
         Header: 'LinkedIn',

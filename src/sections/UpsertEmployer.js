@@ -149,7 +149,8 @@ const UpsertEmployer = ({ employer, onCancel }) => {
           );
 
         } else {
-
+          values.userName = keycloak.idTokenParsed.preferred_username;
+          var body = prepareApiBody(values);
           let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers',
             {
               method: 'POST',
@@ -157,7 +158,7 @@ const UpsertEmployer = ({ employer, onCancel }) => {
                 'Authorization': 'Bearer ' + keycloak.idToken,
                 'Content-Type': 'application/json'
               },
-              body: prepareApiBody(values)
+              body: body
             }
           );
 
