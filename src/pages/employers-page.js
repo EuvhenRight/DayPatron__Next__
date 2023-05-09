@@ -41,6 +41,7 @@ import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 // assets
 import { PlusOutlined, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
 import { useKeycloak } from '@react-keycloak/web';
+import industries from 'data/industries';
 
 const avatarImage = require.context('assets/images/companies', true);
 
@@ -195,7 +196,7 @@ const StatusCell = ({ value }) => {
   }
 };
 
-const ActionCell = (row, setEmployer, setEmployerDeleteId, handleClose, handleAdd, theme) => {
+const ActionCell = (row, setEmployer, setEmployerToDelete, handleClose, handleAdd, theme) => {
   return (
     <Stack direction="row" spacing={0}>
       <Tooltip title="Edit">
@@ -215,8 +216,8 @@ const ActionCell = (row, setEmployer, setEmployerDeleteId, handleClose, handleAd
           color="error"
           onClick={(e) => {
             e.stopPropagation();
+            setEmployerToDelete(row.values);
             handleClose();
-            setEmployerDeleteId(row.values.name);
           }}
         >
           <DeleteTwoTone twoToneColor={theme.palette.error.main} />
@@ -242,7 +243,7 @@ const EmployersPage = () => {
   const { keycloak } = useKeycloak();
   const theme = useTheme();
 
-  const fetchEmployers = async () => {
+  const bindEmployers = async () => {
     try {
       let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers?userName=' + encodeURIComponent(keycloak.idTokenParsed.preferred_username),
         {
@@ -252,11 +253,12 @@ const EmployersPage = () => {
           }
         }
       );
+
       let json = await response.json();
-      return json.employers;
+
+      setData(json.employers);
     } catch (error) {
       console.log(error);
-      return [];
     }
   }
 
@@ -264,12 +266,11 @@ const EmployersPage = () => {
   const [add, setAdd] = useState(false);
   const [open, setOpen] = useState(false);
   const [employer, setEmployer] = useState();
-  const [employerDeleteId, setEmployerDeleteId] = useState();
+  const [employerToDelete, setEmployerToDelete] = useState();
 
   useEffect(() => {
     (async () => {
-      let res = await fetchEmployers();
-      setData(res);
+      await bindEmployers();
     })();
   }, []);
 
@@ -302,7 +303,8 @@ const EmployersPage = () => {
       },
       {
         Header: 'Industry',
-        accessor: 'industry'
+        accessor: 'industry',
+        Cell: ({ row }) => <span>{row?.values?.industry ? industries.filter((item) => item.code === row?.values?.industry)[0]?.label : null}</span>
       },
       {
         Header: 'Chamber Of Commerce Identifier',
@@ -316,7 +318,7 @@ const EmployersPage = () => {
         Header: 'Actions',
         disableSortBy: true,
         className: 'cell-actions',
-        Cell: ({ row }) => ActionCell(row, setEmployer, setEmployerDeleteId, handleClose, handleAdd, theme)
+        Cell: ({ row }) => ActionCell(row, setEmployer, setEmployerToDelete, handleClose, handleAdd, theme)
       }
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -333,7 +335,7 @@ const EmployersPage = () => {
           getHeaderProps={(column) => column.getSortByToggleProps()}
         />
       </ScrollX>
-      <AlertEmployerDelete title={employerDeleteId} open={open} handleClose={handleClose} />
+      <AlertEmployerDelete employer={employerToDelete} open={open} handleClose={handleClose} bindEmployers={bindEmployers} />
       {/* add user dialog */}
       <Dialog
         maxWidth="sm"
@@ -345,7 +347,7 @@ const EmployersPage = () => {
         sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
         aria-describedby="alert-dialog-slide-description"
       >
-        <UpsertEmployer employer={employer} onCancel={handleAdd} />
+        <UpsertEmployer employer={employer} onCancel={handleAdd} bindEmployers={bindEmployers} />
       </Dialog>
     </MainCard>
   );

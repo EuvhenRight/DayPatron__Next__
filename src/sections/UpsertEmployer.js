@@ -70,7 +70,7 @@ const getInitialValues = (employer) => {
 
 // ==============================|| EMPLOYER ADD / EDIT / DELETE ||============================== //
 
-const UpsertEmployer = ({ employer, onCancel }) => {
+const UpsertEmployer = ({ employer, onCancel, bindEmployers }) => {
   const { keycloak } = useKeycloak();
   const [openAlert, setOpenAlert] = useState(false);
 
@@ -136,6 +136,8 @@ const UpsertEmployer = ({ employer, onCancel }) => {
             return;
           }
 
+          bindEmployers();
+
           dispatch(
             openSnackbar({
               open: true,
@@ -178,6 +180,8 @@ const UpsertEmployer = ({ employer, onCancel }) => {
             onCancel();
             return;
           }
+
+          bindEmployers();
 
           dispatch(
             openSnackbar({
@@ -391,14 +395,15 @@ const UpsertEmployer = ({ employer, onCancel }) => {
           </Form>
         </LocalizationProvider>
       </FormikProvider>
-      {!isCreating && <AlertEmployerDelete title={employer.name} open={openAlert} handleClose={handleAlertClose} />}
+      {!isCreating && <AlertEmployerDelete employer={employer} open={openAlert} handleClose={handleAlertClose} bindEmployers={ bindEmployers } />}
     </>
   );
 };
 
 UpsertEmployer.propTypes = {
   employer: PropTypes.any,
-  onCancel: PropTypes.func
+  onCancel: PropTypes.func,
+  bindEmployers: PropTypes.func
 };
 
 export default UpsertEmployer;

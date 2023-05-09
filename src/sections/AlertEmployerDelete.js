@@ -9,10 +9,61 @@ import { PopupTransition } from 'components/@extended/Transitions';
 
 // assets
 import { DeleteFilled } from '@ant-design/icons';
+import { useKeycloak } from '@react-keycloak/web';
+import { useDispatch } from 'react-redux';
+import { openSnackbar } from 'store/reducers/snackbar';
 
 // ==============================|| CUSTOMER - DELETE ||============================== //
 
-export default function AlertEmployerDelete({ title, open, handleClose }) {
+export default function AlertEmployerDelete({ employer, open, handleClose, bindEmployers }) {
+  const { keycloak } = useKeycloak();
+  const dispatch = useDispatch();
+
+  const handleArchive = async () => {
+
+    let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers/' + employer.id,
+      {
+        method: 'DELETE',
+        headers: {
+          'Authorization': 'Bearer ' + keycloak.idToken,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    if (!response.ok) {
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Archiving failed.',
+          variant: 'alert',
+          alert: {
+            color: 'error'
+          },
+          close: false
+        })
+      );
+      handleClose(false);
+      return;
+    }
+
+    bindEmployers();
+
+    dispatch(
+      openSnackbar({
+        open: true,
+        message: 'Employer archived.',
+        variant: 'alert',
+        alert: {
+          color: 'success'
+        },
+        close: false
+      })
+    );
+
+    handleClose(false);
+  };
+
   return (
     <Dialog
       open={open}
@@ -30,16 +81,16 @@ export default function AlertEmployerDelete({ title, open, handleClose }) {
           </Avatar>
           <Stack spacing={2}>
             <Typography variant="h4" align="center">
-              Are you sure you want to archive{' '}
-              &quot;{title}&quot;{' '}?
+              Are you sure you want to archive employer{' '}
+              &quot;{employer?.name}&quot;{' '}?
             </Typography>
             <Typography align="center">
               By archiving
               <Typography variant="subtitle1" component="span">
                 {' '}
-                &quot;{title}&quot;{' '}
+                &quot;{employer?.name}&quot;{' '}
               </Typography>
-              , all missions assigned to that employer will also be archived.
+              , all its missions will also be archived.
             </Typography>
           </Stack>
 
@@ -47,7 +98,7 @@ export default function AlertEmployerDelete({ title, open, handleClose }) {
             <Button fullWidth onClick={() => handleClose(false)} color="secondary" variant="outlined">
               Cancel
             </Button>
-            <Button fullWidth color="error" variant="contained" onClick={() => handleClose(true)} autoFocus>
+            <Button fullWidth color="error" variant="contained" onClick={() => handleArchive()} autoFocus>
               Archive
             </Button>
           </Stack>
@@ -58,7 +109,8 @@ export default function AlertEmployerDelete({ title, open, handleClose }) {
 }
 
 AlertEmployerDelete.propTypes = {
-  title: PropTypes.string,
+  employer: PropTypes.object,
   open: PropTypes.bool,
-  handleClose: PropTypes.func
+  handleClose: PropTypes.func,
+  bindEmployers: PropTypes.func
 };
