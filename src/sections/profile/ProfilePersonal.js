@@ -263,7 +263,7 @@ const ProfilePersonal = () => {
                             />
                           )}
                           {option.label}
-                          {option.code && `(${option.code})`}
+                          {option.code && ` (${option.code})`}
                         </Box>
                       )}
                       renderInput={(params) => (
