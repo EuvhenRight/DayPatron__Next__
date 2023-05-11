@@ -5,7 +5,6 @@ import { useEffect, useMemo, useState, Fragment } from 'react';
 import { useTheme } from '@mui/material/styles';
 import {
   Button,
-  Chip,
   Dialog,
   Stack,
   Table,
@@ -14,18 +13,15 @@ import {
   TableHead,
   TableRow,
   Tooltip,
-  Typography,
   useMediaQuery
 } from '@mui/material';
 
 // third-party
-import NumberFormat from 'react-number-format';
 import { useFilters, useExpanded, useGlobalFilter, useSortBy, useTable, usePagination } from 'react-table';
 
 // project import
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
-import Avatar from 'components/@extended/Avatar';
 import IconButton from 'components/@extended/IconButton';
 import { PopupTransition } from 'components/@extended/Transitions';
 import {
@@ -41,9 +37,6 @@ import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
 // assets
 import { PlusOutlined, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
 import { useKeycloak } from '@react-keycloak/web';
-import industries from 'data/industries';
-
-const avatarImage = require.context('assets/images/companies', true);
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -170,32 +163,6 @@ ReactTable.propTypes = {
 
 // ==============================|| MISSION - LIST ||============================== //
 
-const CustomCell = ({ row }) => {
-  const { values } = row;
-  return (
-    <Stack direction="row" spacing={1.5} alignItems="center">
-      <Avatar alt="Avatar 1" size="sm" src={values.logoImageUrl ? values.logoImageUrl : avatarImage('./default.png')} />
-      <Stack spacing={0}>
-        <Typography variant="subtitle1">{values.name}</Typography>
-      </Stack>
-    </Stack>
-  );
-};
-
-const NumberFormatCell = ({ value }) => <NumberFormat displayType="text" format="+1 (###) ###-####" mask="_" defaultValue={value} />;
-
-const StatusCell = ({ value }) => {
-  switch (value) {
-    case 'Complicated':
-      return <Chip color="error" label="Rejected" size="small" variant="light" />;
-    case 'Relationship':
-      return <Chip color="success" label="Verified" size="small" variant="light" />;
-    case 'Single':
-    default:
-      return <Chip color="info" label="Pending" size="small" variant="light" />;
-  }
-};
-
 const ActionCell = (row, setMission, setMissionToDelete, handleClose, handleAdd, theme) => {
   return (
     <Stack direction="row" spacing={0}>
@@ -227,25 +194,13 @@ const ActionCell = (row, setMission, setMissionToDelete, handleClose, handleAdd,
   );
 };
 
-StatusCell.propTypes = {
-  value: PropTypes.number
-};
-
-NumberFormatCell.propTypes = {
-  value: PropTypes.string
-};
-
-CustomCell.propTypes = {
-  row: PropTypes.object
-};
-
 const MissionsPage = () => {
   const { keycloak } = useKeycloak();
   const theme = useTheme();
 
   const bindMissions = async () => {
     try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions?userName=' + encodeURIComponent(keycloak.idTokenParsed.preferred_username),
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers/users/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username) + '/missions',
         {
           method: 'GET',
           headers: {
@@ -286,39 +241,25 @@ const MissionsPage = () => {
   const columns = useMemo(
     () => [
       {
+        Header: 'Actions',
+        disableSortBy: true,
+        className: 'cell-actions',
+        Cell: ({ row }) => ActionCell(row, setMission, setMissionToDelete, handleClose, handleAdd, theme)
+      },
+      {
         Header: '#',
         accessor: 'id',
         className: 'cell-center',
         disableSortBy: true
       },
       {
-        Header: 'Name',
-        accessor: 'name',
-        className: 'cell-name',
-        Cell: CustomCell
+        Header: 'Title',
+        accessor: 'title',
+        className: 'cell-nowrap'
       },
       {
-        Header: 'Email',
-        accessor: 'email'
-      },
-      {
-        Header: 'Industry',
-        accessor: 'industry',
-        Cell: ({ row }) => <span>{row?.values?.industry ? industries.filter((item) => item.code === row?.values?.industry)[0]?.label : null}</span>
-      },
-      {
-        Header: 'Chamber Of Commerce Identifier',
-        accessor: 'chamberOfCommerceIdentifier'
-      },
-      {
-        Header: 'LinkedIn',
-        accessor: 'linkedInUrl'
-      },
-      {
-        Header: 'Actions',
-        disableSortBy: true,
-        className: 'cell-actions',
-        Cell: ({ row }) => ActionCell(row, setMission, setMissionToDelete, handleClose, handleAdd, theme)
+        Header: 'Description',
+        accessor: 'description'
       }
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -5,7 +5,6 @@ import { useEffect, useMemo, useState, Fragment } from 'react';
 import { useTheme } from '@mui/material/styles';
 import {
   Button,
-  Chip,
   Dialog,
   Stack,
   Table,
@@ -19,7 +18,6 @@ import {
 } from '@mui/material';
 
 // third-party
-import NumberFormat from 'react-number-format';
 import { useFilters, useExpanded, useGlobalFilter, useSortBy, useTable, usePagination } from 'react-table';
 
 // project import
@@ -182,20 +180,6 @@ const CustomCell = ({ row }) => {
   );
 };
 
-const NumberFormatCell = ({ value }) => <NumberFormat displayType="text" format="+1 (###) ###-####" mask="_" defaultValue={value} />;
-
-const StatusCell = ({ value }) => {
-  switch (value) {
-    case 'Complicated':
-      return <Chip color="error" label="Rejected" size="small" variant="light" />;
-    case 'Relationship':
-      return <Chip color="success" label="Verified" size="small" variant="light" />;
-    case 'Single':
-    default:
-      return <Chip color="info" label="Pending" size="small" variant="light" />;
-  }
-};
-
 const ActionCell = (row, setEmployer, setEmployerToDelete, handleClose, handleAdd, theme) => {
   return (
     <Stack direction="row" spacing={0}>
@@ -225,14 +209,6 @@ const ActionCell = (row, setEmployer, setEmployerToDelete, handleClose, handleAd
       </Tooltip>
     </Stack>
   );
-};
-
-StatusCell.propTypes = {
-  value: PropTypes.number
-};
-
-NumberFormatCell.propTypes = {
-  value: PropTypes.string
 };
 
 CustomCell.propTypes = {
@@ -286,6 +262,12 @@ const EmployersPage = () => {
   const columns = useMemo(
     () => [
       {
+        Header: 'Actions',
+        disableSortBy: true,
+        className: 'cell-actions',
+        Cell: ({ row }) => ActionCell(row, setEmployer, setEmployerToDelete, handleClose, handleAdd, theme)
+      },
+      {
         Header: '#',
         accessor: 'id',
         className: 'cell-center',
@@ -294,7 +276,7 @@ const EmployersPage = () => {
       {
         Header: 'Name',
         accessor: 'name',
-        className: 'cell-name',
+        className: 'cell-nowrap',
         Cell: CustomCell
       },
       {
@@ -313,12 +295,6 @@ const EmployersPage = () => {
       {
         Header: 'LinkedIn',
         accessor: 'linkedInUrl'
-      },
-      {
-        Header: 'Actions',
-        disableSortBy: true,
-        className: 'cell-actions',
-        Cell: ({ row }) => ActionCell(row, setEmployer, setEmployerToDelete, handleClose, handleAdd, theme)
       }
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps

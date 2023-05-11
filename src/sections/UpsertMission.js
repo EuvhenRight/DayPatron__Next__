@@ -3,7 +3,6 @@ import {  useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 // material-ui
-import { useTheme } from '@mui/material/styles';
 import {
   Button,
   DialogActions,
@@ -67,7 +66,6 @@ const UpsertMission = ({ mission, onCancel, bindMissions }) => {
     onCancel();
   };
 
-  const theme = useTheme();
   const dispatch = useDispatch();
   const isCreating = !mission;
 
@@ -127,7 +125,7 @@ const UpsertMission = ({ mission, onCancel, bindMissions }) => {
           );
 
         } else {
-          values.userName = keycloak.idTokenParsed.preferred_username;
+          values.employerId = '645cafabecf7911bcc5a02cf';
           var body = prepareApiBody(values);
           let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions',
             {
@@ -181,7 +179,7 @@ const UpsertMission = ({ mission, onCancel, bindMissions }) => {
     }
   });
 
-  const { errors, handleBlur, handleChange, touched, handleSubmit, isSubmitting, setFieldValue, values } = formik;
+  const { errors, handleBlur, handleChange, touched, handleSubmit, isSubmitting, values } = formik;
 
   return (
     <>

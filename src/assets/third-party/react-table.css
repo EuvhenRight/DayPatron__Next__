@@ -14,6 +14,6 @@
 .cell-actions {
     width:100px;
 }
-.cell-name {
+.nowrap {
     white-space: nowrap;
 }
