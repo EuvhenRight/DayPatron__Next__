@@ -1,297 +1,178 @@
-import PropTypes from 'prop-types';
-import { useEffect, useMemo, useState, Fragment } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 
 // material-ui
-import { useTheme } from '@mui/material/styles';
 import {
-  Button,
-  Dialog,
+  Grid,
   Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Tooltip,
-  useMediaQuery
+  useMediaQuery,
+  Button,
+  FormControl,
+  Select,
+  MenuItem,
+  Box,
+  Slide,
+  Pagination,
+  Typography
 } from '@mui/material';
 
-// third-party
-import { useFilters, useExpanded, useGlobalFilter, useSortBy, useTable, usePagination } from 'react-table';
-
 // project import
-import MainCard from 'components/MainCard';
-import ScrollX from 'components/ScrollX';
-import IconButton from 'components/@extended/IconButton';
-import { PopupTransition } from 'components/@extended/Transitions';
-import {
-  HeaderSort,
-  TablePagination
-} from 'components/third-party/ReactTable';
-
-import UpsertMission from 'sections/UpsertMission';
+import EmptyMissions from 'components/cards/skeleton/EmptyMissions';
+import MissionCard from 'sections/MissionCard';
 import AlertMissionDelete from 'sections/AlertMissionDelete';
 
-import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
+import makeData from 'data/react-table';
+import { GlobalFilter } from 'utils/react-table';
+import usePagination from 'hooks/usePagination';
 
 // assets
-import { PlusOutlined, EditTwoTone, DeleteTwoTone } from '@ant-design/icons';
-import { useKeycloak } from '@react-keycloak/web';
+import { PlusOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 
-// ==============================|| REACT TABLE ||============================== //
+// ==============================|| MISSIONS - PAGE ||============================== //
 
-function ReactTable({ columns, data, getHeaderProps, renderRowSubComponent, handleAdd }) {
-  const theme = useTheme();
-  const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
+const allColumns = [
+  {
+    id: 1,
+    header: 'Id'
+  },
+  {
+    id: 2,
+    header: 'Title'
+  },
+  {
+    id: 3,
+    header: 'Description'
+  }
+];
 
-  const filterTypes = useMemo(() => renderFilterTypes, []);
-  const sortBy = { id: 'name', desc: false };
+const MissionCardPage = () => {
+  const navigate = useNavigate();
+  const data = useMemo(() => makeData(12), []);
+  const matchDownSM = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    prepareRow,
-    setHiddenColumns,
-    visibleColumns,
-    rows,
-    page,
-    gotoPage,
-    setPageSize,
-    state: { globalFilter, pageIndex, pageSize, expanded },
-    preGlobalFilteredRows,
-    setGlobalFilter,
-  } = useTable(
-    {
-      columns,
-      data,
-      // @ts-ignore
-      filterTypes,
-      // @ts-ignore
-      initialState: { pageIndex: 0, pageSize: 10, hiddenColumns: ['id', 'avatar'], sortBy: [sortBy] }
-    },
-    useGlobalFilter,
-    useFilters,
-    useSortBy,
-    useExpanded,
-    usePagination
-  );
+  const [sortBy, setSortBy] = useState('Id');
+  const [globalFilter, setGlobalFilter] = useState('');
+  const [missions, setMissions] = useState([]);
+  const [page, setPage] = useState(1);
+  const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
+  const [missionToDelete, setMissionToDelete] = useState(null);
+  
+  const handleChangeSort = (event) => {
+    setSortBy(event.target.value);
+  };
 
+  const handleAdd = () => {
+    navigate('/missions/new', {
+      replace: true
+    });
+  };
+
+  const handleDeleteAlertClose = () => {
+    setOpenDeleteAlert(false);
+    setMissionToDelete(null);
+  };
+
+  // search
   useEffect(() => {
-    if (matchDownSM) {
-      setHiddenColumns(['id', 'avatar', 'email', 'chamberOfCommerceIdentifier', 'linkedInUrl']);
-    } else {
-      setHiddenColumns(['id', 'avatar', 'chamberOfCommerceIdentifier']);
-    }
-    // eslint-disable-next-line
-  }, [matchDownSM]);
+    const newData = data.filter((value) => {
+      if (globalFilter) {
+        return value.title.toLowerCase().includes(globalFilter.toLowerCase());
+      } else {
+        return value;
+      }
+    });
+    setMissions(newData);
+  }, [globalFilter, data]);
+
+  const PER_PAGE = 6;
+
+  const count = Math.ceil(missions.length / PER_PAGE);
+  const _DATA = usePagination(missions, PER_PAGE);
+
+  const handleChangePage = (e, p) => {
+    setPage(p);
+    _DATA.jump(p);
+  };
 
   return (
     <>
-      <Stack spacing={3}>
-        <Stack
-          direction={matchDownSM ? 'column' : 'row'}
-          spacing={1}
-          justifyContent="space-between"
-          alignItems="center"
-          sx={{ p: 3, pb: 0 }}
-        >
-          <GlobalFilter
-            preGlobalFilteredRows={preGlobalFilteredRows}
-            globalFilter={globalFilter}
-            setGlobalFilter={setGlobalFilter}
-            size="small"
-          />
-          <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
-            <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd} size="small">
-              Add Mission
-            </Button>
+      <Box sx={{ position: 'relative', marginBottom: 3 }}>
+        <Stack direction="row" alignItems="center">
+          <Stack
+            direction={matchDownSM ? 'column' : 'row'}
+            sx={{ width: '100%' }}
+            spacing={1}
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <GlobalFilter preGlobalFilteredRows={data} globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
+            <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
+              <FormControl sx={{ m: 1, minWidth: 120 }}>
+                <Select
+                  value={sortBy}
+                  onChange={handleChangeSort}
+                  displayEmpty
+                  inputProps={{ 'aria-label': 'Without label' }}
+                  renderValue={(selected) => {
+                    if (!selected) {
+                      return <Typography variant="subtitle1">Sort By</Typography>;
+                    }
+
+                    return <Typography variant="subtitle2">Sort by ({sortBy})</Typography>;
+                  }}
+                >
+                  {allColumns.map((column) => {
+                    return (
+                      <MenuItem key={column.id} value={column.header}>
+                        {column.header}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+              <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd}>
+                Add Mission
+              </Button>
+            </Stack>
           </Stack>
         </Stack>
-
-        <Table {...getTableProps()}>
-          <TableHead>
-            {headerGroups.map((headerGroup, i) => (
-              <TableRow key={i} {...headerGroup.getHeaderGroupProps()} sx={{ '& > th:first-of-type': { width: '58px' } }}>
-                {headerGroup.headers.map((column, index) => (
-                  <TableCell key={index} {...column.getHeaderProps([{ className: column.className }, getHeaderProps(column)])}>
-                    <HeaderSort column={column} />
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableHead>
-          <TableBody {...getTableBodyProps()}>
-            {page.map((row, i) => {
-              prepareRow(row);
-              const rowProps = row.getRowProps();
-
-              return (
-                <Fragment key={i}>
-                  <TableRow
-                    {...row.getRowProps()}
-                  >
-                    {row.cells.map((cell, index) => (
-                      <TableCell key={index} {...cell.getCellProps([{ className: cell.column.className }])}>
-                        {cell.render('Cell')}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                  {row.isExpanded && renderRowSubComponent({ row, rowProps, visibleColumns, expanded })}
-                </Fragment>
-              );
-            })}
-            <TableRow sx={{ '&:hover': { bgcolor: 'transparent !important' } }}>
-              <TableCell sx={{ p: 2, py: 3 }} colSpan={9}>
-                <TablePagination gotoPage={gotoPage} rows={rows} setPageSize={setPageSize} pageSize={pageSize} pageIndex={pageIndex} />
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
+      </Box>
+      <Grid container spacing={3}>
+        {missions.length > 0 ? (
+          _DATA
+            .currentData()
+            .sort(function (a, b) {
+              if (sortBy === 'Title') return a.title.localeCompare(b.title);
+              if (sortBy === 'Description') return a.description.localeCompare(b.description);
+              return a;
+            })
+            .map((mission, index) => (
+              <Slide key={index} direction="up" in={true} timeout={50}>
+                <Grid item xs={12} sm={6} lg={4}>
+                  <MissionCard mission={mission} setMissionToDelete={setMissionToDelete} />
+                </Grid>
+              </Slide>
+            ))
+        ) : (
+          <EmptyMissions title={'You have not created any missions yet.'} />
+        )}
+      </Grid>
+      <Stack spacing={2} sx={{ p: 2.5 }} alignItems="flex-end">
+        <Pagination
+          count={count}
+          size="medium"
+          page={page}
+          showFirstButton
+          showLastButton
+          variant="combined"
+          color="primary"
+          onChange={handleChangePage}
+        />
       </Stack>
+
+      <AlertMissionDelete title={missionToDelete.title} open={openDeleteAlert} handleClose={handleDeleteAlertClose} />
     </>
   );
-}
-
-ReactTable.propTypes = {
-  columns: PropTypes.array,
-  data: PropTypes.array,
-  getHeaderProps: PropTypes.func,
-  handleAdd: PropTypes.func,
-  renderRowSubComponent: PropTypes.any
 };
 
-// ==============================|| MISSION - LIST ||============================== //
-
-const ActionCell = (row, setMission, setMissionToDelete, handleClose, handleAdd, theme) => {
-  return (
-    <Stack direction="row" spacing={0}>
-      <Tooltip title="Edit">
-        <IconButton
-          color="primary"
-          onClick={(e) => {
-            e.stopPropagation();
-            setMission(row.values);
-            handleAdd();
-          }}
-        >
-          <EditTwoTone twoToneColor={theme.palette.primary.main} />
-        </IconButton>
-      </Tooltip>
-      <Tooltip title="Delete">
-        <IconButton
-          color="error"
-          onClick={(e) => {
-            e.stopPropagation();
-            setMissionToDelete(row.values);
-            handleClose();
-          }}
-        >
-          <DeleteTwoTone twoToneColor={theme.palette.error.main} />
-        </IconButton>
-      </Tooltip>
-    </Stack>
-  );
-};
-
-const MissionsPage = () => {
-  const { keycloak } = useKeycloak();
-  const theme = useTheme();
-
-  const bindMissions = async () => {
-    try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers/users/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username) + '/missions',
-        {
-          method: 'GET',
-          headers: {
-            'Authorization': 'Bearer ' + keycloak.idToken
-          }
-        }
-      );
-
-      let json = await response.json();
-
-      setData(json.missions);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  const [data, setData] = useState([]);
-  const [add, setAdd] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [mission, setMission] = useState();
-  const [missionToDelete, setMissionToDelete] = useState();
-
-  useEffect(() => {
-    (async () => {
-      await bindMissions();
-    })();
-  }, []);
-
-  const handleAdd = () => {
-    setAdd(!add);
-    if (mission && !add) setMission(null);
-  };
-
-  const handleClose = () => {
-    setOpen(!open);
-  };
-
-  const columns = useMemo(
-    () => [
-      {
-        Header: 'Actions',
-        disableSortBy: true,
-        className: 'cell-actions',
-        Cell: ({ row }) => ActionCell(row, setMission, setMissionToDelete, handleClose, handleAdd, theme)
-      },
-      {
-        Header: '#',
-        accessor: 'id',
-        className: 'cell-center',
-        disableSortBy: true
-      },
-      {
-        Header: 'Title',
-        accessor: 'title',
-        className: 'cell-nowrap'
-      },
-      {
-        Header: 'Description',
-        accessor: 'description'
-      }
-    ],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [theme]
-  );
-
-  return (
-    <MainCard content={false}>
-      <ScrollX>
-        <ReactTable
-          columns={columns}
-          data={data}
-          handleAdd={handleAdd}
-          getHeaderProps={(column) => column.getSortByToggleProps()}
-        />
-      </ScrollX>
-      <AlertMissionDelete mission={missionToDelete} open={open} handleClose={handleClose} bindMissions={bindMissions} />
-      {/* add user dialog */}
-      <Dialog
-        maxWidth="sm"
-        TransitionComponent={PopupTransition}
-        keepMounted
-        fullWidth
-        onClose={handleAdd}
-        open={add}
-        sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <UpsertMission mission={mission} onCancel={handleAdd} bindMissions={bindMissions} />
-      </Dialog>
-    </MainCard>
-  );
-};
-
-export default MissionsPage;
+export default MissionCardPage;
