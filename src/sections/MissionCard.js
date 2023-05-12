@@ -31,7 +31,7 @@ import { useNavigate } from 'react-router-dom';
 
 // ==============================|| MISSION - CARD ||============================== //
 
-const MissionCard = ({ mission, setMissionToDelete }) => {
+const MissionCard = ({ mission, alertMissionToDelete }) => {
   const navigate = useNavigate();
 
   const handleClickDetails = () => {
@@ -41,7 +41,7 @@ const MissionCard = ({ mission, setMissionToDelete }) => {
   };
 
   const handleClickDelete = () => {
-    setMissionToDelete(mission);
+    alertMissionToDelete(mission);
   };
 
   const [anchorEl, setAnchorEl] = useState(null);

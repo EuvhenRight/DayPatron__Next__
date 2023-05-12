@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 // material-ui
 import {
@@ -16,17 +16,17 @@ import {
 } from '@mui/material';
 
 // project import
-import EmptyMissions from 'components/cards/skeleton/EmptyMissions';
+import EmptyCardList from 'components/cards/skeleton/EmptyCardList';
 import MissionCard from 'sections/MissionCard';
 import AlertMissionDelete from 'sections/AlertMissionDelete';
 
-import makeData from 'data/react-table';
 import { GlobalFilter } from 'utils/react-table';
 import usePagination from 'hooks/usePagination';
 
 // assets
 import { PlusOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import { useKeycloak } from '@react-keycloak/web';
 
 // ==============================|| MISSIONS - PAGE ||============================== //
 
@@ -45,18 +45,39 @@ const allColumns = [
   }
 ];
 
-const MissionCardPage = () => {
+const MissionsPage = () => {
+  const { keycloak } = useKeycloak();
   const navigate = useNavigate();
-  const data = useMemo(() => makeData(12), []);
   const matchDownSM = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   const [sortBy, setSortBy] = useState('Id');
   const [globalFilter, setGlobalFilter] = useState('');
   const [missions, setMissions] = useState([]);
+  const [filteredMissions, setFilteredMissions] = useState([]);
   const [page, setPage] = useState(1);
   const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
   const [missionToDelete, setMissionToDelete] = useState(null);
-  
+
+  const bindMissions = async () => {
+    try {
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers/users/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username) + '/missions',
+        {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + keycloak.idToken
+          }
+        }
+      );
+
+      let json = await response.json();
+
+      setMissions(json.missions);
+      setFilteredMissions(json.missions);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const handleChangeSort = (event) => {
     setSortBy(event.target.value);
   };
@@ -72,22 +93,32 @@ const MissionCardPage = () => {
     setMissionToDelete(null);
   };
 
-  // search
+  const alertMissionToDelete = (mission) => {
+    setOpenDeleteAlert(true);
+    setMissionToDelete(mission);
+  };
+
   useEffect(() => {
-    const newData = data.filter((value) => {
+    (async () => {
+      await bindMissions();
+    })();
+  }, []);
+
+  useEffect(() => {
+    const newMissions = missions.filter((value) => {
       if (globalFilter) {
         return value.title.toLowerCase().includes(globalFilter.toLowerCase());
       } else {
         return value;
       }
     });
-    setMissions(newData);
-  }, [globalFilter, data]);
+    setFilteredMissions(newMissions);
+  }, [globalFilter]);
 
-  const PER_PAGE = 6;
+  const PER_PAGE = 1;
 
-  const count = Math.ceil(missions.length / PER_PAGE);
-  const _DATA = usePagination(missions, PER_PAGE);
+  const count = Math.ceil(filteredMissions.length / PER_PAGE);
+  const _DATA = usePagination(filteredMissions, PER_PAGE);
 
   const handleChangePage = (e, p) => {
     setPage(p);
@@ -105,7 +136,7 @@ const MissionCardPage = () => {
             justifyContent="space-between"
             alignItems="center"
           >
-            <GlobalFilter preGlobalFilteredRows={data} globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
+            <GlobalFilter preGlobalFilteredRows={filteredMissions} globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
             <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
               <FormControl sx={{ m: 1, minWidth: 120 }}>
                 <Select
@@ -138,7 +169,7 @@ const MissionCardPage = () => {
         </Stack>
       </Box>
       <Grid container spacing={3}>
-        {missions.length > 0 ? (
+        {filteredMissions.length > 0 ? (
           _DATA
             .currentData()
             .sort(function (a, b) {
@@ -149,12 +180,12 @@ const MissionCardPage = () => {
             .map((mission, index) => (
               <Slide key={index} direction="up" in={true} timeout={50}>
                 <Grid item xs={12} sm={6} lg={4}>
-                  <MissionCard mission={mission} setMissionToDelete={setMissionToDelete} />
+                  <MissionCard mission={mission} alertMissionToDelete={alertMissionToDelete} />
                 </Grid>
               </Slide>
             ))
         ) : (
-          <EmptyMissions title={'You have not created any missions yet.'} />
+          <EmptyCardList title={'No missions.'} />
         )}
       </Grid>
       <Stack spacing={2} sx={{ p: 2.5 }} alignItems="flex-end">
@@ -170,9 +201,9 @@ const MissionCardPage = () => {
         />
       </Stack>
 
-      <AlertMissionDelete title={missionToDelete.title} open={openDeleteAlert} handleClose={handleDeleteAlertClose} />
+      <AlertMissionDelete mission={missionToDelete} open={openDeleteAlert} handleClose={handleDeleteAlertClose} bindMissions={bindMissions} />
     </>
   );
 };
 
-export default MissionCardPage;
+export default MissionsPage;

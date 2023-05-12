@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { Box, Grid, Stack, Typography } from '@mui/material';
 
 // project import
-import UserCard from './UserCard';
+import EmptyCard from './EmptyCard';
 
 // ==============================|| EMPTY STATE ||============================== //
 
-const EmptyUserCard = ({ title }) => {
+const EmptyCardList = ({ title }) => {
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
@@ -25,10 +25,10 @@ const EmptyUserCard = ({ title }) => {
             <Grid item>
               <Box sx={{ ml: -9, mb: { xs: -8, sm: -5 } }}>
                 <Box sx={{ position: 'relative' }}>
-                  <UserCard />
+                  <EmptyCard />
                 </Box>
                 <Box sx={{ position: 'relative', top: -120, left: 72 }}>
-                  <UserCard />
+                  <EmptyCard />
                 </Box>
               </Box>
             </Grid>
@@ -46,8 +46,8 @@ const EmptyUserCard = ({ title }) => {
   );
 };
 
-EmptyUserCard.propTypes = {
+EmptyCardList.propTypes = {
   title: PropTypes.string
 };
 
-export default EmptyUserCard;
+export default EmptyCardList;

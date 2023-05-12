@@ -1,16 +1,9 @@
 import PropTypes from 'prop-types';
 
-//material-ui
-import { useTheme } from '@mui/material/styles';
-
 // third-party
-import { Page, View, Document, StyleSheet, Image, Text, Link } from '@react-pdf/renderer';
+import { Page, View, Document, StyleSheet, Image, Text } from '@react-pdf/renderer';
 
-//asset
-import LinkIcon from 'assets/images/icons/link.png';
-import Mail from 'assets/images/icons/mail.png';
-import Maps from 'assets/images/icons/map.png';
-import Phone from 'assets/images/icons/phone.png';
+const avatarImage = require.context('assets/images/companies', true);
 
 const textPrimary = '#262626';
 const textSecondary = '#8c8c8c';
@@ -107,13 +100,12 @@ const styles = StyleSheet.create({
 });
 
 const MissionPdfCard = ({ mission }) => {
-  const theme = useTheme();
   return (
     <Document title={`${mission?.title}`}>
       <Page size="A4" style={styles.page}>
         <View style={styles.container}>
           <View style={styles.row}>
-            <Image style={styles.image} src={mission.mainImageUrl} />
+            <Image style={styles.image} src={mission.mainImageUrl ? mission.mainImageUrl : avatarImage('./default.png')} />
             <View style={styles.CardInfo}>
               <Text style={styles.title}>{mission.title}</Text>
             </View>
