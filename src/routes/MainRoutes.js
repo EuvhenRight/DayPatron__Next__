@@ -15,6 +15,9 @@ const MaintenanceComingSoon = Loadable(lazy(() => import('pages/maintenance/comi
 const PersonalInformationPage = Loadable(lazy(() => import('pages/personal-information-page')));
 
 const EmployersPage = Loadable(lazy(() => import('pages/employers-page')));
+const CreateEmployerSection = Loadable(lazy(() => import('sections/employer/CreateEmployerSection')));
+const MyEmployersSection = Loadable(lazy(() => import('sections/employer/MyEmployersSection')));
+const EmployerSection = Loadable(lazy(() => import('sections/employer/EmployerSection')));
 
 const MissionsPage = Loadable(lazy(() => import('pages/missions-page')));
 const CreateMissionSection = Loadable(lazy(() => import('sections/mission/CreateMissionSection')));
@@ -40,7 +43,21 @@ const MainRoutes = {
         },
         {
           path: 'employers',
-          element: <EmployersPage />
+          element: <EmployersPage />,
+          children: [
+            {
+              path: 'create',
+              element: <CreateEmployerSection />
+            },
+            {
+              path: 'my',
+              element: <MyEmployersSection />
+            },
+            {
+              path: ':id',
+              element: <EmployerSection />
+            }
+          ]
         },
         {
           path: 'missions',

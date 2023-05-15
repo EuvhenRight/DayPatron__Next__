@@ -13,7 +13,7 @@ import { useKeycloak } from '@react-keycloak/web';
 import { useDispatch } from 'react-redux';
 import { openSnackbar } from 'store/reducers/snackbar';
 
-// ==============================|| CUSTOMER - DELETE ||============================== //
+// ==============================|| MISSION - DELETE ||============================== //
 
 export default function AlertMissionDelete({ mission, open, handleClose, onArchive }) {
   const { keycloak } = useKeycloak();

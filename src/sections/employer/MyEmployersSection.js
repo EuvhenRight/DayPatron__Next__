@@ -17,8 +17,8 @@ import {
 
 // project import
 import EmptyCardList from 'components/cards/skeleton/EmptyCardList';
-import MissionCard from 'sections/mission/MissionCard';
-import AlertMissionDelete from 'sections/mission/AlertMissionDelete';
+import EmployerCard from 'sections/employer/EmployerCard';
+import AlertEmployerDelete from 'sections/employer/AlertEmployerDelete';
 
 import { GlobalFilter } from 'utils/react-table';
 import usePagination from 'hooks/usePagination';
@@ -28,7 +28,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useKeycloak } from '@react-keycloak/web';
 
-// ==============================|| MISSIONS - PAGE ||============================== //
+// ==============================|| EMPLOYERS - PAGE ||============================== //
 
 const allColumns = [
   {
@@ -37,30 +37,42 @@ const allColumns = [
   },
   {
     id: 2,
-    header: 'Title'
+    header: 'Name'
   },
   {
     id: 3,
-    header: 'Description'
+    header: 'Email'
+  },
+  {
+    id: 4,
+    header: 'Industry'
+  },
+  {
+    id: 5,
+    header: 'Chamber Of Commerce Identifier'
+  },
+  {
+    id: 6,
+    header: 'LinkedIn'
   }
 ];
 
-const MyMissionsSection = () => {
+const MyEmployersSection = () => {
   const { keycloak } = useKeycloak();
   const navigate = useNavigate();
   const matchDownSM = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   const [sortBy, setSortBy] = useState('Id');
   const [globalFilter, setGlobalFilter] = useState('');
-  const [missions, setMissions] = useState([]);
-  const [filteredMissions, setFilteredMissions] = useState([]);
+  const [employers, setEmployers] = useState([]);
+  const [filteredEmployers, setFilteredEmployers] = useState([]);
   const [page, setPage] = useState(1);
   const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
-  const [missionToDelete, setMissionToDelete] = useState(null);
+  const [employerToDelete, setEmployerToDelete] = useState(null);
 
-  const bindMissions = async () => {
+  const bindEmployers = async () => {
     try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions?userName=' + encodeURIComponent(keycloak.idTokenParsed.preferred_username),
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers?userName=' + encodeURIComponent(keycloak.idTokenParsed.preferred_username),
         {
           method: 'GET',
           headers: {
@@ -71,8 +83,8 @@ const MyMissionsSection = () => {
 
       let json = await response.json();
 
-      setMissions(json.missions);
-      setFilteredMissions(json.missions);
+      setEmployers(json.employers);
+      setFilteredEmployers(json.employers);
     } catch (error) {
       console.log(error);
     }
@@ -83,40 +95,40 @@ const MyMissionsSection = () => {
   };
 
   const handleAdd = () => {
-    navigate('/missions/create');
+    navigate('/employers/create');
   };
 
   const handleDeleteAlertClose = () => {
     setOpenDeleteAlert(false);
-    setMissionToDelete(null);
+    setEmployerToDelete(null);
   };
 
-  const alertMissionToDelete = (mission) => {
+  const alertEmployerToDelete = (employer) => {
     setOpenDeleteAlert(true);
-    setMissionToDelete(mission);
+    setEmployerToDelete(employer);
   };
 
   useEffect(() => {
     (async () => {
-      await bindMissions();
+      await bindEmployers();
     })();
   }, []);
 
   useEffect(() => {
-    const newMissions = missions.filter((value) => {
+    const newEmployers = employers.filter((value) => {
       if (globalFilter) {
-        return value.title.toLowerCase().includes(globalFilter.toLowerCase());
+        return value.name.toLowerCase().includes(globalFilter.toLowerCase());
       } else {
         return value;
       }
     });
-    setFilteredMissions(newMissions);
+    setFilteredEmployers(newEmployers);
   }, [globalFilter]);
 
   const PER_PAGE = 1;
 
-  const count = Math.ceil(filteredMissions.length / PER_PAGE);
-  const _DATA = usePagination(filteredMissions, PER_PAGE);
+  const count = Math.ceil(filteredEmployers.length / PER_PAGE);
+  const _DATA = usePagination(filteredEmployers, PER_PAGE);
 
   const handleChangePage = (e, p) => {
     setPage(p);
@@ -134,7 +146,7 @@ const MyMissionsSection = () => {
             justifyContent="space-between"
             alignItems="center"
           >
-            <GlobalFilter preGlobalFilteredRows={filteredMissions} globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
+            <GlobalFilter preGlobalFilteredRows={filteredEmployers} globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
             <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
               <FormControl sx={{ m: 1, minWidth: 120 }}>
                 <Select
@@ -160,30 +172,33 @@ const MyMissionsSection = () => {
                 </Select>
               </FormControl>
               <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd}>
-                Create Mission
+                Create Employer
               </Button>
             </Stack>
           </Stack>
         </Stack>
       </Box>
       <Grid container spacing={3}>
-        {filteredMissions.length > 0 ? (
+        {filteredEmployers.length > 0 ? (
           _DATA
             .currentData()
             .sort(function (a, b) {
-              if (sortBy === 'Title') return a.title.localeCompare(b.title);
-              if (sortBy === 'Description') return a.description.localeCompare(b.description);
+              if (sortBy === 'Name') return a.name.localeCompare(b.name);
+              if (sortBy === 'Email') return a.email.localeCompare(b.email);
+              if (sortBy === 'Industry') return a.industry.localeCompare(b.industry);
+              if (sortBy === 'Chamber Of Commerce Identifier') return a.chamberOfCommerceIdentifier.localeCompare(b.chamberOfCommerceIdentifier);
+              if (sortBy === 'LinkedIn') return a.linkedInUrl.localeCompare(b.linkedInUrl);
               return a;
             })
-            .map((mission, index) => (
+            .map((employer, index) => (
               <Slide key={index} direction="up" in={true} timeout={50}>
                 <Grid item xs={12} sm={6} lg={4}>
-                  <MissionCard mission={mission} alertMissionToDelete={alertMissionToDelete} />
+                  <EmployerCard employer={employer} alertEmployerToDelete={alertEmployerToDelete} />
                 </Grid>
               </Slide>
             ))
         ) : (
-          <EmptyCardList title={'No missions.'} />
+          <EmptyCardList title={'No employers.'} />
         )}
       </Grid>
       <Stack spacing={2} sx={{ p: 2.5 }} alignItems="flex-end">
@@ -199,9 +214,9 @@ const MyMissionsSection = () => {
         />
       </Stack>
 
-      <AlertMissionDelete mission={missionToDelete} open={openDeleteAlert} handleClose={handleDeleteAlertClose} bindMissions={bindMissions} />
+      <AlertEmployerDelete employer={employerToDelete} open={openDeleteAlert} handleClose={handleDeleteAlertClose} bindEmployers={bindEmployers} />
     </>
   );
 };
 
-export default MyMissionsSection;
+export default MyEmployersSection;

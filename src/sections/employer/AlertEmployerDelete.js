@@ -13,9 +13,9 @@ import { useKeycloak } from '@react-keycloak/web';
 import { useDispatch } from 'react-redux';
 import { openSnackbar } from 'store/reducers/snackbar';
 
-// ==============================|| CUSTOMER - DELETE ||============================== //
+// ==============================|| EMPLOYER - DELETE ||============================== //
 
-export default function AlertEmployerDelete({ employer, open, handleClose, bindEmployers }) {
+export default function AlertEmployerDelete({ employer, open, handleClose, onArchive }) {
   const { keycloak } = useKeycloak();
   const dispatch = useDispatch();
 
@@ -47,7 +47,7 @@ export default function AlertEmployerDelete({ employer, open, handleClose, bindE
       return;
     }
 
-    bindEmployers();
+    onArchive();
 
     dispatch(
       openSnackbar({
@@ -84,14 +84,6 @@ export default function AlertEmployerDelete({ employer, open, handleClose, bindE
               Are you sure you want to archive employer{' '}
               &quot;{employer?.name}&quot;{' '}?
             </Typography>
-            <Typography align="center">
-              By archiving
-              <Typography variant="subtitle1" component="span">
-                {' '}
-                &quot;{employer?.name}&quot;{' '}
-              </Typography>
-              , all its missions will also be archived.
-            </Typography>
           </Stack>
 
           <Stack direction="row" spacing={2} sx={{ width: 1 }}>
@@ -112,5 +104,5 @@ AlertEmployerDelete.propTypes = {
   employer: PropTypes.object,
   open: PropTypes.bool,
   handleClose: PropTypes.func,
-  bindEmployers: PropTypes.func
+  onArchive: PropTypes.func
 };

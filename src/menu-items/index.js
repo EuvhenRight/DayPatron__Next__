@@ -33,7 +33,7 @@ const menuItems = {
         id: 'employers',
         title: <FormattedMessage id="employers" />,
         type: 'item',
-        url: '/employers',
+        url: '/employers/my',
         icon: icons.BankOutlined
       },
       {
