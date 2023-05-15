@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
-import {  useState } from 'react';
+import {  useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 // material-ui
 import {
@@ -37,11 +38,8 @@ import { useKeycloak } from '@react-keycloak/web';
 const getInitialValues = (mission) => {
   const newMission = {
     id: null,
-    name: null,
-    email: null,
-    industry: null,
-    chamberOfCommerceIdentifier: null,
-    linkedInUrl: null
+    title: null,
+    description: null
   };
 
   if (mission) {
@@ -57,17 +55,46 @@ const getInitialValues = (mission) => {
 
 // ==============================|| MISSION ADD / EDIT / DELETE ||============================== //
 
-const UpsertMission = ({ mission, onCancel, bindMissions }) => {
+const UpsertMission = ({ missionId }) => {
   const { keycloak } = useKeycloak();
   const [openAlert, setOpenAlert] = useState(false);
+  const [mission, setMission] = useState(null);
+  const [isCreating, setIsCreating] = useState(true);
+  const navigate = useNavigate();
 
   const handleAlertClose = () => {
     setOpenAlert(!openAlert);
-    onCancel();
   };
 
+  const bindMission = async () => {
+    try {
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/' + missionId,
+        {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + keycloak.idToken
+          }
+        }
+      );
+
+      let json = await response.json();
+
+      setMission(json.mission);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    (async () => {
+      if (missionId) {
+        setIsCreating(false);
+        await bindMission();
+      }
+    })();
+  }, []);
+
   const dispatch = useDispatch();
-  const isCreating = !mission;
 
   const MissionSchema = Yup.object().shape({
     title: Yup.string().max(255).required('Title is required').nullable(true),
@@ -106,11 +133,10 @@ const UpsertMission = ({ mission, onCancel, bindMissions }) => {
               })
             );
             setSubmitting(false);
-            onCancel();
             return;
           }
 
-          bindMissions();
+          navigate('/missions/my');
 
           dispatch(
             openSnackbar({
@@ -151,11 +177,10 @@ const UpsertMission = ({ mission, onCancel, bindMissions }) => {
               })
             );
             setSubmitting(false);
-            onCancel();
             return;
           }
 
-          bindMissions();
+          navigate('/missions/my');
 
           dispatch(
             openSnackbar({
@@ -172,7 +197,6 @@ const UpsertMission = ({ mission, onCancel, bindMissions }) => {
         }
 
         setSubmitting(false);
-        onCancel();
       } catch (error) {
         console.error(error);
       }
@@ -186,7 +210,7 @@ const UpsertMission = ({ mission, onCancel, bindMissions }) => {
       <FormikProvider value={formik}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-            <DialogTitle>{mission ? 'Update Mission' : 'Add Mission'}</DialogTitle>
+            <DialogTitle>{mission ? 'Update Mission' : 'Create Mission'}</DialogTitle>
             <Divider />
             <DialogContent sx={{ p: 2.5 }}>
               <Grid container spacing={3}>
@@ -242,11 +266,11 @@ const UpsertMission = ({ mission, onCancel, bindMissions }) => {
                 </Grid>
                 <Grid item>
                   <Stack direction="row" spacing={2} alignItems="center">
-                    <Button color="error" onClick={onCancel}>
+                    <Button color="error" onClick={() => { navigate('/missions/my'); } }>
                       Cancel
                     </Button>
                     <Button type="submit" variant="contained" disabled={isSubmitting}>
-                      {mission ? 'Update' : 'Add'}
+                      {mission ? 'Update' : 'Create'}
                     </Button>
                   </Stack>
                 </Grid>
@@ -255,15 +279,13 @@ const UpsertMission = ({ mission, onCancel, bindMissions }) => {
           </Form>
         </LocalizationProvider>
       </FormikProvider>
-      {!isCreating && <AlertMissionDelete mission={mission} open={openAlert} handleClose={handleAlertClose} bindMissions={ bindMissions } />}
+      {!isCreating && <AlertMissionDelete mission={mission} open={openAlert} handleClose={handleAlertClose} onArchive={() => { navigate('/missions/my'); } } />}
     </>
   );
 };
 
 UpsertMission.propTypes = {
-  mission: PropTypes.any,
-  onCancel: PropTypes.func,
-  bindMissions: PropTypes.func
+  missionId: PropTypes.any
 };
 
 export default UpsertMission;

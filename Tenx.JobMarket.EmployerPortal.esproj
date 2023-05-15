@@ -11,6 +11,7 @@
     <DockerfileContext>..\</DockerfileContext>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="src\assets\css\" />
     <Folder Include="src\configs\" />
   </ItemGroup>
 </Project>

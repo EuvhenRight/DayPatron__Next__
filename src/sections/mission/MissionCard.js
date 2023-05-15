@@ -23,7 +23,7 @@ import { PDFDownloadLink } from '@react-pdf/renderer';
 import MainCard from 'components/MainCard';
 import Avatar from 'components/@extended/Avatar';
 import IconButton from 'components/@extended/IconButton';
-import MissionPdfCard from 'sections//MissionPdfCard';
+import MissionPdfCard from 'sections/mission/MissionPdfCard';
 
 // assets
 import { MoreOutlined } from '@ant-design/icons';
@@ -35,13 +35,16 @@ const MissionCard = ({ mission, alertMissionToDelete }) => {
   const navigate = useNavigate();
 
   const handleClickDetails = () => {
-    navigate('/missions/' + mission.id, {
-      replace: true
-    });
+    navigate('/missions/' + mission.id);
   };
 
   const handleClickDelete = () => {
     alertMissionToDelete(mission);
+    setAnchorEl(null);
+  };
+
+  const handleClickExportPdf = () => {
+    setAnchorEl(null);
   };
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -97,7 +100,7 @@ const MissionCard = ({ mission, alertMissionToDelete }) => {
               <MenuItem sx={{ a: { textDecoration: 'none', color: 'inherit' } }}>
                 <>
                   {' '}
-                  <PDFDownloadLink document={<MissionPdfCard mission={mission} />} fileName={`mission-${mission.title}.pdf`}>
+                  <PDFDownloadLink onClick={handleClickExportPdf} document={<MissionPdfCard mission={mission} />} fileName={`mission-${mission.title}.pdf`}>
                     Export PDF
                   </PDFDownloadLink>
                 </>
@@ -122,7 +125,7 @@ const MissionCard = ({ mission, alertMissionToDelete }) => {
           justifyContent="space-between"
           sx={{ mt: 'auto', mb: 0, pt: 2.25 }}
         >
-          <Button variant="outlined" size="small" onClick={handleClickDetails}>
+          <Button variant="outlined" size="small" onClick={handleClickDetails} className="card-button-right">
             Details
           </Button>
         </Stack>

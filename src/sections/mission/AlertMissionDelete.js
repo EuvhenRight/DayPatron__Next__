@@ -15,7 +15,7 @@ import { openSnackbar } from 'store/reducers/snackbar';
 
 // ==============================|| CUSTOMER - DELETE ||============================== //
 
-export default function AlertMissionDelete({ mission, open, handleClose, bindMissions }) {
+export default function AlertMissionDelete({ mission, open, handleClose, onArchive }) {
   const { keycloak } = useKeycloak();
   const dispatch = useDispatch();
 
@@ -47,7 +47,7 @@ export default function AlertMissionDelete({ mission, open, handleClose, bindMis
       return;
     }
 
-    bindMissions();
+    onArchive();
 
     dispatch(
       openSnackbar({
@@ -104,5 +104,5 @@ AlertMissionDelete.propTypes = {
   mission: PropTypes.object,
   open: PropTypes.bool,
   handleClose: PropTypes.func,
-  bindMissions: PropTypes.func
+  onArchive: PropTypes.func
 };

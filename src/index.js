@@ -10,6 +10,7 @@ import 'simplebar/src/simplebar.css';
 // apex-chart
 import 'assets/third-party/apex-chart.css';
 import 'assets/third-party/react-table.css';
+import 'assets/css/common.css';
 
 // load mock apis
 import '_api';

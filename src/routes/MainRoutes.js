@@ -17,6 +17,9 @@ const PersonalInformationPage = Loadable(lazy(() => import('pages/personal-infor
 const EmployersPage = Loadable(lazy(() => import('pages/employers-page')));
 
 const MissionsPage = Loadable(lazy(() => import('pages/missions-page')));
+const CreateMissionSection = Loadable(lazy(() => import('sections/mission/CreateMissionSection')));
+const MyMissionsSection = Loadable(lazy(() => import('sections/mission/MyMissionsSection')));
+const MissionSection = Loadable(lazy(() => import('sections/mission/MissionSection')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -41,7 +44,21 @@ const MainRoutes = {
         },
         {
           path: 'missions',
-          element: <MissionsPage />
+          element: <MissionsPage />,
+          children: [
+            {
+              path: 'create',
+              element: <CreateMissionSection />
+            },
+            {
+              path: 'my',
+              element: <MyMissionsSection />
+            },
+            {
+              path: ':id',
+              element: <MissionSection />
+            }
+          ]
         }
       ]
     },

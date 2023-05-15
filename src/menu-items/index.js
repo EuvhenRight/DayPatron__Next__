@@ -40,7 +40,7 @@ const menuItems = {
         id: 'missions',
         title: <FormattedMessage id="missions" />,
         type: 'item',
-        url: '/missions',
+        url: '/missions/my',
         icon: icons.ProjectOutlined
       }
     ]
