@@ -31,6 +31,8 @@ import { useNavigate } from 'react-router-dom';
 
 // ==============================|| MISSION - CARD ||============================== //
 
+const avatarImage = require.context('assets/images/missions', true);
+
 const MissionCard = ({ mission, alertMissionToDelete }) => {
   const navigate = useNavigate();
 
@@ -72,10 +74,10 @@ const MissionCard = ({ mission, alertMissionToDelete }) => {
                 }
               >
                 <ListItemAvatar>
-                  <Avatar alt={mission.title} src={mission.mainImageUrl} />
+                  <Avatar onClick={handleClickDetails} className="clickable" alt={mission.title} src={mission?.mainImageUrl ? mission.mainImageUrl : avatarImage('./default.png')} />
                 </ListItemAvatar>
                 <ListItemText
-                  primary={<Typography variant="subtitle1">{mission.title}</Typography>}
+                  primary={<Typography onClick={handleClickDetails} className="clickable left" variant="subtitle1">{mission.title}</Typography>}
                 />
               </ListItem>
             </List>

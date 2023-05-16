@@ -214,41 +214,37 @@ const UpsertMission = ({ missionId }) => {
             <Divider />
             <DialogContent sx={{ p: 2.5 }}>
               <Grid container spacing={3}>
-                <Grid item xs={12} md={8}>
-                  <Grid container spacing={3}>
-                    <Grid item xs={12}>
-                      <Stack spacing={1.25}>
-                        <InputLabel htmlFor="mission-title">Title</InputLabel>
-                        <TextField
-                          fullWidth
-                          id="mission-title"
-                          placeholder="Enter Mission Title"
-                          value={normalizeInputValue(values.title)}
-                          name="title"
-                          onBlur={handleBlur}
-                          onChange={handleChange}
-                          error={Boolean(touched.title && errors.title)}
-                          helperText={touched.title && errors.title}
-                        />
-                      </Stack>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Stack spacing={1.25}>
-                        <InputLabel htmlFor="mission-description">Description</InputLabel>
-                        <TextField
-                          fullWidth
-                          id="mission-description"
-                          placeholder="Enter Mission Description"
-                          value={normalizeInputValue(values.description)}
-                          name="description"
-                          onBlur={handleBlur}
-                          onChange={handleChange}
-                          error={Boolean(touched.description && errors.description)}
-                          helperText={touched.description && errors.description}
-                        />
-                      </Stack>
-                    </Grid>
-                  </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <InputLabel htmlFor="mission-title">Title</InputLabel>
+                    <TextField
+                      fullWidth
+                      id="mission-title"
+                      placeholder="Enter Mission Title"
+                      value={normalizeInputValue(values.title)}
+                      name="title"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      error={Boolean(touched.title && errors.title)}
+                      helperText={touched.title && errors.title}
+                    />
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <InputLabel htmlFor="mission-description">Description</InputLabel>
+                    <TextField
+                      fullWidth
+                      id="mission-description"
+                      placeholder="Enter Mission Description"
+                      value={normalizeInputValue(values.description)}
+                      name="description"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      error={Boolean(touched.description && errors.description)}
+                      helperText={touched.description && errors.description}
+                    />
+                  </Stack>
                 </Grid>
               </Grid>
             </DialogContent>

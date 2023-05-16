@@ -246,206 +246,202 @@ const UpsertEmployer = ({ employerId }) => {
             <Divider />
             <DialogContent sx={{ p: 2.5 }}>
               <Grid container spacing={3}>
-                <Grid item xs={12} md={8}>
+                <Grid item xs={12} md={2}>
+                  <Stack direction="row" justifyContent="center" sx={{ mt: 3 }}>
+                    <FormLabel
+                      htmlFor="change-avatar"
+                      sx={{
+                        position: 'relative',
+                        borderRadius: '50%',
+                        overflow: 'hidden',
+                        '&:hover .MuiBox-root': { opacity: 1 },
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <Avatar alt="Avatar 1" src={avatar} sx={{ width: 72, height: 72, border: '1px dashed' }} />
+                      <Box
+                        sx={{
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, .75)' : 'rgba(0,0,0,.65)',
+                          width: '100%',
+                          height: '100%',
+                          opacity: 0,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center'
+                        }}
+                      >
+                        <Stack spacing={0.5} alignItems="center">
+                          <CameraOutlined style={{ color: theme.palette.secondary.lighter, fontSize: '2rem' }} />
+                          <Typography sx={{ color: 'secondary.lighter' }}>Upload</Typography>
+                        </Stack>
+                      </Box>
+                    </FormLabel>
+                    <TextField
+                      type="file"
+                      id="change-avatar"
+                      placeholder="Outlined"
+                      variant="outlined"
+                      sx={{ display: 'none' }}
+                      onChange={(e) => setSelectedImage(e.target.files?.[0])}
+                    />
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} md={10}>
                   <Grid container spacing={3}>
-                    <Grid item xs={12} md={3}>
-                      <Stack direction="row" justifyContent="center" sx={{ mt: 3 }}>
-                        <FormLabel
-                          htmlFor="change-avatar"
-                          sx={{
-                            position: 'relative',
-                            borderRadius: '50%',
-                            overflow: 'hidden',
-                            '&:hover .MuiBox-root': { opacity: 1 },
-                            cursor: 'pointer'
-                          }}
-                        >
-                          <Avatar alt="Avatar 1" src={avatar} sx={{ width: 72, height: 72, border: '1px dashed' }} />
-                          <Box
-                            sx={{
-                              position: 'absolute',
-                              top: 0,
-                              left: 0,
-                              backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, .75)' : 'rgba(0,0,0,.65)',
-                              width: '100%',
-                              height: '100%',
-                              opacity: 0,
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center'
-                            }}
-                          >
-                            <Stack spacing={0.5} alignItems="center">
-                              <CameraOutlined style={{ color: theme.palette.secondary.lighter, fontSize: '2rem' }} />
-                              <Typography sx={{ color: 'secondary.lighter' }}>Upload</Typography>
-                            </Stack>
-                          </Box>
-                        </FormLabel>
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="employer-name">Name</InputLabel>
                         <TextField
-                          type="file"
-                          id="change-avatar"
-                          placeholder="Outlined"
-                          variant="outlined"
-                          sx={{ display: 'none' }}
-                          onChange={(e) => setSelectedImage(e.target.files?.[0])}
+                          fullWidth
+                          id="employer-name"
+                          placeholder="Enter Employer Name"
+                          value={normalizeInputValue(values.name)}
+                          name="name"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          error={Boolean(touched.name && errors.name)}
+                          helperText={touched.name && errors.name}
                         />
                       </Stack>
                     </Grid>
-                    <Grid item xs={12} md={8}>
-                      <Grid container spacing={3}>
-                        <Grid item xs={12}>
-                          <Stack spacing={1.25}>
-                            <InputLabel htmlFor="employer-name">Name</InputLabel>
-                            <TextField
-                              fullWidth
-                              id="employer-name"
-                              placeholder="Enter Employer Name"
-                              value={normalizeInputValue(values.name)}
-                              name="name"
-                              onBlur={handleBlur}
-                              onChange={handleChange}
-                              error={Boolean(touched.name && errors.name)}
-                              helperText={touched.name && errors.name}
-                            />
-                          </Stack>
-                        </Grid>
-                        <Grid item xs={12}>
-                          <Stack spacing={1.25}>
-                            <InputLabel htmlFor="employer-email">Email</InputLabel>
-                            <TextField
-                              fullWidth
-                              id="employer-email"
-                              placeholder="Enter Employer Email"
-                              value={normalizeInputValue(values.email)}
-                              name="email"
-                              onBlur={handleBlur}
-                              onChange={handleChange}
-                              error={Boolean(touched.email && errors.email)}
-                              helperText={touched.email && errors.email}
-                            />
-                          </Stack>
-                        </Grid>
-                        <Grid item xs={12}>
-                          <Stack spacing={1.25}>
-                            <InputLabel htmlFor="employer-country">Country</InputLabel>
-                            <Autocomplete
-                              id="employer-country"
-                              fullWidth
-                              value={values?.country ? countries.filter((item) => item.code === values?.country)[0] : null}
-                              onBlur={handleBlur}
-                              onChange={(event, newValue) => {
-                                setFieldValue('country', newValue === null ? '' : newValue.code);
-                              }}
-                              options={countries}
-                              autoHighlight
-                              isOptionEqualToValue={(option, value) => option.code === value?.code}
-                              getOptionLabel={(option) => option.label}
-                              renderOption={(props, option) => (
-                                <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-                                  {option.code && (
-                                    <img
-                                      loading="lazy"
-                                      width="20"
-                                      src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
-                                      srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
-                                      alt=""
-                                    />
-                                  )}
-                                  {option.label}
-                                  {option.code && ` (${option.code})`}
-                                </Box>
-                              )}
-                              renderInput={(params) => (
-                                <TextField
-                                  {...params}
-                                  placeholder="Choose a country"
-                                  name="country"
-                                  inputProps={{
-                                    ...params.inputProps,
-                                    autoComplete: 'new-password' // disable autocomplete and autofill
-                                  }}
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="employer-email">Email</InputLabel>
+                        <TextField
+                          fullWidth
+                          id="employer-email"
+                          placeholder="Enter Employer Email"
+                          value={normalizeInputValue(values.email)}
+                          name="email"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          error={Boolean(touched.email && errors.email)}
+                          helperText={touched.email && errors.email}
+                        />
+                      </Stack>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="employer-country">Country</InputLabel>
+                        <Autocomplete
+                          id="employer-country"
+                          fullWidth
+                          value={values?.country ? countries.filter((item) => item.code === values?.country)[0] : null}
+                          onBlur={handleBlur}
+                          onChange={(event, newValue) => {
+                            setFieldValue('country', newValue === null ? '' : newValue.code);
+                          }}
+                          options={countries}
+                          autoHighlight
+                          isOptionEqualToValue={(option, value) => option.code === value?.code}
+                          getOptionLabel={(option) => option.label}
+                          renderOption={(props, option) => (
+                            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                              {option.code && (
+                                <img
+                                  loading="lazy"
+                                  width="20"
+                                  src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
+                                  srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
+                                  alt=""
                                 />
                               )}
-                            />
-                            {touched.country && errors.country && (
-                              <FormHelperText error id="employer-country-helper">
-                                {errors.country}
-                              </FormHelperText>
-                            )}
-                          </Stack>
-                        </Grid>
-                        <Grid item xs={12}>
-                          <Stack spacing={1.25}>
-                            <InputLabel htmlFor="employer-industry">Industry</InputLabel>
-                            <Autocomplete
-                              id="employer-industry"
-                              fullWidth
-                              value={values?.industry ? industries.filter((item) => item.code === values?.industry)[0] : null}
-                              onBlur={handleBlur}
-                              onChange={(event, newValue) => {
-                                setFieldValue('industry', newValue === null ? '' : newValue.code);
+                              {option.label}
+                              {option.code && ` (${option.code})`}
+                            </Box>
+                          )}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              placeholder="Choose a country"
+                              name="country"
+                              inputProps={{
+                                ...params.inputProps,
+                                autoComplete: 'new-password' // disable autocomplete and autofill
                               }}
-                              options={industries}
-                              autoHighlight
-                              isOptionEqualToValue={(option, value) => option.code === value?.code}
-                              getOptionLabel={(option) => option.label}
-                              renderOption={(props, option) => (
-                                <Box component="li" {...props}>
-                                  {option.label}
-                                </Box>
-                              )}
-                              renderInput={(params) => (
-                                <TextField
-                                  {...params}
-                                  placeholder="Choose an industry"
-                                  name="industry"
-                                  inputProps={{
-                                    ...params.inputProps,
-                                    autoComplete: 'new-password' // disable autocomplete and autofill
-                                  }}
-                                />
-                              )}
                             />
-                            {touched.industry && errors.industry && (
-                              <FormHelperText error id="employer-industry-helper" sx={{ pl: 1.75 }}>
-                                {errors.orderStatus}
-                              </FormHelperText>
-                            )}
-                          </Stack>
-                        </Grid>
-                        <Grid item xs={12}>
-                          <Stack spacing={1.25}>
-                            <InputLabel htmlFor="employer-coc-identifier">Chamber of Commerce Identifier</InputLabel>
+                          )}
+                        />
+                        {touched.country && errors.country && (
+                          <FormHelperText error id="employer-country-helper">
+                            {errors.country}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="employer-industry">Industry</InputLabel>
+                        <Autocomplete
+                          id="employer-industry"
+                          fullWidth
+                          value={values?.industry ? industries.filter((item) => item.code === values?.industry)[0] : null}
+                          onBlur={handleBlur}
+                          onChange={(event, newValue) => {
+                            setFieldValue('industry', newValue === null ? '' : newValue.code);
+                          }}
+                          options={industries}
+                          autoHighlight
+                          isOptionEqualToValue={(option, value) => option.code === value?.code}
+                          getOptionLabel={(option) => option.label}
+                          renderOption={(props, option) => (
+                            <Box component="li" {...props}>
+                              {option.label}
+                            </Box>
+                          )}
+                          renderInput={(params) => (
                             <TextField
-                              fullWidth
-                              id="employer-coc-identifier"
-                              placeholder="Enter Chamber of Commerce Identifier"
-                              value={normalizeInputValue(values.chamberOfCommerceIdentifier)}
-                              name="chamberOfCommerceIdentifier"
-                              onBlur={handleBlur}
-                              onChange={handleChange}
-                              error={Boolean(touched.chamberOfCommerceIdentifier && errors.chamberOfCommerceIdentifier)}
-                              helperText={touched.chamberOfCommerceIdentifier && errors.chamberOfCommerceIdentifier}
+                              {...params}
+                              placeholder="Choose an industry"
+                              name="industry"
+                              inputProps={{
+                                ...params.inputProps,
+                                autoComplete: 'new-password' // disable autocomplete and autofill
+                              }}
                             />
-                          </Stack>
-                        </Grid>
-                        <Grid item xs={12}>
-                          <Stack spacing={1.25}>
-                            <InputLabel htmlFor="employer-linkedin-url">LinkedIn Url</InputLabel>
-                            <TextField
-                              fullWidth
-                              id="employer-linkedin-url"
-                              placeholder="Enter LinkedIn Url"
-                              value={normalizeInputValue(values.linkedInUrl)}
-                              name="linkedInUrl"
-                              onBlur={handleBlur}
-                              onChange={handleChange}
-                              error={Boolean(touched.linkedInUrl && errors.linkedInUrl)}
-                              helperText={touched.linkedInUrl && errors.linkedInUrl}
-                            />
-                          </Stack>
-                        </Grid>
-                      </Grid>
+                          )}
+                        />
+                        {touched.industry && errors.industry && (
+                          <FormHelperText error id="employer-industry-helper" sx={{ pl: 1.75 }}>
+                            {errors.orderStatus}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="employer-coc-identifier">Chamber of Commerce Identifier</InputLabel>
+                        <TextField
+                          fullWidth
+                          id="employer-coc-identifier"
+                          placeholder="Enter Chamber of Commerce Identifier"
+                          value={normalizeInputValue(values.chamberOfCommerceIdentifier)}
+                          name="chamberOfCommerceIdentifier"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          error={Boolean(touched.chamberOfCommerceIdentifier && errors.chamberOfCommerceIdentifier)}
+                          helperText={touched.chamberOfCommerceIdentifier && errors.chamberOfCommerceIdentifier}
+                        />
+                      </Stack>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="employer-linkedin-url">LinkedIn Url</InputLabel>
+                        <TextField
+                          fullWidth
+                          id="employer-linkedin-url"
+                          placeholder="Enter LinkedIn Url"
+                          value={normalizeInputValue(values.linkedInUrl)}
+                          name="linkedInUrl"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          error={Boolean(touched.linkedInUrl && errors.linkedInUrl)}
+                          helperText={touched.linkedInUrl && errors.linkedInUrl}
+                        />
+                      </Stack>
                     </Grid>
                   </Grid>
                 </Grid>

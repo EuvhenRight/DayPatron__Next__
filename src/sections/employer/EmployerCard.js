@@ -30,6 +30,8 @@ import countries from 'data/countries';
 
 // ==============================|| EMPLOYER - CARD ||============================== //
 
+const avatarImage = require.context('assets/images/companies', true);
+
 const EmployerCard = ({ employer, alertEmployerToDelete }) => {
   const navigate = useNavigate();
 
@@ -67,7 +69,7 @@ const EmployerCard = ({ employer, alertEmployerToDelete }) => {
                 }
               >
                 <ListItemAvatar>
-                  <Avatar onClick={handleClickDetails} className="clickable" alt={employer.name} src={employer.logoImageUrl} />
+                  <Avatar onClick={handleClickDetails} className="clickable" alt={employer.name} src={employer?.logoImageUrl ? employer.logoImageUrl : avatarImage('./default.png')} />
                 </ListItemAvatar>
                 <ListItemText
                   primary={<Typography onClick={handleClickDetails} className="clickable left" variant="subtitle1">{employer.name}</Typography>}
