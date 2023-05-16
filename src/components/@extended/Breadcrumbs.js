@@ -151,7 +151,7 @@ const Breadcrumbs = ({
 
     ItemIcon = item.icon ? item.icon : ApartmentOutlined;
     itemContent = (
-      <Typography variant="subtitle1" color="textPrimary">
+      <Typography component={Link} to={item.url} variant="subtitle1" color="textPrimary" className="no-text-decoration">
         {icons && <ItemIcon style={iconSX} />}
         {itemTitle}
       </Typography>

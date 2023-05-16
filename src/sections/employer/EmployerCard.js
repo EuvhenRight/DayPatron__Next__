@@ -6,9 +6,11 @@ import {
   Divider,
   Fade,
   Grid,
+  Link,
   List,
   ListItem,
   ListItemAvatar,
+  ListItemIcon,
   ListItemText,
   Menu,
   MenuItem,
@@ -16,14 +18,15 @@ import {
   Typography
 } from '@mui/material';
 
-// project import
 import MainCard from 'components/MainCard';
 import Avatar from 'components/@extended/Avatar';
 import IconButton from 'components/@extended/IconButton';
 
 // assets
-import { MoreOutlined } from '@ant-design/icons';
+import { EnvironmentOutlined, LinkOutlined, MailOutlined, MoreOutlined, ShopOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import industries from 'data/industries';
+import countries from 'data/countries';
 
 // ==============================|| EMPLOYER - CARD ||============================== //
 
@@ -64,10 +67,10 @@ const EmployerCard = ({ employer, alertEmployerToDelete }) => {
                 }
               >
                 <ListItemAvatar>
-                  <Avatar alt={employer.name} src={employer.mainImageUrl} />
+                  <Avatar onClick={handleClickDetails} className="clickable" alt={employer.name} src={employer.logoImageUrl} />
                 </ListItemAvatar>
                 <ListItemText
-                  primary={<Typography variant="subtitle1">{employer.name}</Typography>}
+                  primary={<Typography onClick={handleClickDetails} className="clickable left" variant="subtitle1">{employer.name}</Typography>}
                 />
               </ListItem>
             </List>
@@ -90,14 +93,61 @@ const EmployerCard = ({ employer, alertEmployerToDelete }) => {
               }}
             >
               <MenuItem onClick={handleClickDetails}>Details</MenuItem>
-              <MenuItem onClick={handleClickDelete}>Delete</MenuItem>
+              <MenuItem onClick={handleClickDelete}>Archive</MenuItem>
             </Menu>
           </Grid>
           <Grid item xs={12}>
             <Divider />
           </Grid>
+
           <Grid item xs={12}>
-            <Typography>{employer.email}</Typography>
+            <Grid container spacing={1}>
+              <Grid item xs={12}>
+                <List sx={{ p: 0, overflow: 'hidden', '& .MuiListItem-root': { px: 0, py: 0.5 } }}>
+                  {employer.email &&
+                    <ListItem>
+                      <ListItemIcon>
+                        <MailOutlined />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={
+                          <Link href={'mailto:' + employer.email} target="_blank" sx={{ textTransform: 'lowercase' }}>
+                            {employer.email}
+                          </Link>
+                        }
+                      />
+                    </ListItem>}
+                  {employer.industry &&
+                    <ListItem>
+                      <ListItemIcon>
+                        <ShopOutlined />
+                      </ListItemIcon>
+                      <ListItemText primary={<Typography color="secondary">{industries.find(item => item.code === employer.industry)?.label}</Typography>} />
+                    </ListItem>}
+                </List>
+                <List sx={{ p: 0, overflow: 'hidden', '& .MuiListItem-root': { px: 0, py: 0.5 } }}>
+                  {employer.country && <ListItem>
+                    <ListItemIcon>
+                      <EnvironmentOutlined />
+                    </ListItemIcon>
+                    <ListItemText primary={<Typography color="secondary">{countries.find(x => x.code === employer.country)?.label}</Typography>} />
+                  </ListItem>}
+                  {employer.linkedInUrl &&
+                    <ListItem>
+                      <ListItemIcon>
+                        <LinkOutlined />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={
+                          <Link href={employer.linkedInUrl} target="_blank" sx={{ textTransform: 'lowercase' }}>
+                            {employer.linkedInUrl}
+                          </Link>
+                        }
+                      />
+                    </ListItem>}
+                </List>
+              </Grid>
+            </Grid>
           </Grid>
           
         </Grid>

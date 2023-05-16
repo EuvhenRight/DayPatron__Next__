@@ -125,7 +125,7 @@ const MyEmployersSection = () => {
     setFilteredEmployers(newEmployers);
   }, [globalFilter]);
 
-  const PER_PAGE = 1;
+  const PER_PAGE = 10;
 
   const count = Math.ceil(filteredEmployers.length / PER_PAGE);
   const _DATA = usePagination(filteredEmployers, PER_PAGE);

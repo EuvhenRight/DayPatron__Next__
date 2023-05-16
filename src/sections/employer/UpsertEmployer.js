@@ -40,6 +40,7 @@ import { openSnackbar } from 'store/reducers/snackbar';
 import { CameraOutlined, DeleteFilled } from '@ant-design/icons';
 import { normalizeInputValue, prepareApiBody } from 'utils/stringUtils';
 import industries from 'data/industries';
+import countries from 'data/countries';
 import { useKeycloak } from '@react-keycloak/web';
 
 const avatarImage = require.context('assets/images/companies', true);
@@ -50,6 +51,7 @@ const getInitialValues = (employer) => {
     id: null,
     name: null,
     email: null,
+    country: null,
     industry: null,
     chamberOfCommerceIdentifier: null,
     linkedInUrl: null
@@ -59,6 +61,7 @@ const getInitialValues = (employer) => {
     newEmployer.id = employer.id;
     newEmployer.name = employer.name;
     newEmployer.email = employer.email;
+    newEmployer.country = employer.country;
     newEmployer.industry = employer.industry;
     newEmployer.chamberOfCommerceIdentifier = employer.chamberOfCommerceIdentifier;
     newEmployer.linkedInUrl = employer.linkedInUrl;
@@ -124,6 +127,7 @@ const UpsertEmployer = ({ employerId }) => {
   const EmployerSchema = Yup.object().shape({
     name: Yup.string().max(255).required('Name is required').nullable(true),
     email: Yup.string().max(255).required('Email is required').email('Must be a valid email').nullable(true),
+    country: Yup.string().nullable(true),
     industry: Yup.string().required('Industry is required').nullable(true),
     chamberOfCommerceIdentifier: Yup.string().max(50).nullable(true),
     linkedInUrl: Yup.string().max(255).nullable(true)
@@ -323,6 +327,55 @@ const UpsertEmployer = ({ employerId }) => {
                         </Grid>
                         <Grid item xs={12}>
                           <Stack spacing={1.25}>
+                            <InputLabel htmlFor="employer-country">Country</InputLabel>
+                            <Autocomplete
+                              id="employer-country"
+                              fullWidth
+                              value={values?.country ? countries.filter((item) => item.code === values?.country)[0] : null}
+                              onBlur={handleBlur}
+                              onChange={(event, newValue) => {
+                                setFieldValue('country', newValue === null ? '' : newValue.code);
+                              }}
+                              options={countries}
+                              autoHighlight
+                              isOptionEqualToValue={(option, value) => option.code === value?.code}
+                              getOptionLabel={(option) => option.label}
+                              renderOption={(props, option) => (
+                                <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                                  {option.code && (
+                                    <img
+                                      loading="lazy"
+                                      width="20"
+                                      src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
+                                      srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
+                                      alt=""
+                                    />
+                                  )}
+                                  {option.label}
+                                  {option.code && ` (${option.code})`}
+                                </Box>
+                              )}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  placeholder="Choose a country"
+                                  name="country"
+                                  inputProps={{
+                                    ...params.inputProps,
+                                    autoComplete: 'new-password' // disable autocomplete and autofill
+                                  }}
+                                />
+                              )}
+                            />
+                            {touched.country && errors.country && (
+                              <FormHelperText error id="employer-country-helper">
+                                {errors.country}
+                              </FormHelperText>
+                            )}
+                          </Stack>
+                        </Grid>
+                        <Grid item xs={12}>
+                          <Stack spacing={1.25}>
                             <InputLabel htmlFor="employer-industry">Industry</InputLabel>
                             <Autocomplete
                               id="employer-industry"
@@ -403,7 +456,7 @@ const UpsertEmployer = ({ employerId }) => {
               <Grid container justifyContent="space-between" alignItems="center">
                 <Grid item>
                   {!isCreating && (
-                    <Tooltip title="Delete Employer" placement="top">
+                    <Tooltip title="Archive Employer" placement="top">
                       <IconButton onClick={() => setOpenAlert(true)} size="large" color="error">
                         <DeleteFilled />
                       </IconButton>
