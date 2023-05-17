@@ -13,7 +13,10 @@ import {
   Menu,
   MenuItem,
   Stack,
-  Typography
+  Typography,
+  ListItemIcon,
+  Box,
+  Chip
 } from '@mui/material';
 
 // third-party
@@ -26,8 +29,10 @@ import IconButton from 'components/@extended/IconButton';
 import MissionPdfCard from 'sections/mission/MissionPdfCard';
 
 // assets
-import { MoreOutlined } from '@ant-design/icons';
+import { MoreOutlined, EnvironmentOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import countries from 'data/countries';
+import languages from 'data/languages';
 
 // ==============================|| MISSION - CARD ||============================== //
 
@@ -76,8 +81,13 @@ const MissionCard = ({ mission, alertMissionToDelete }) => {
                 <ListItemAvatar>
                   <Avatar onClick={handleClickDetails} className="clickable" alt={mission.title} src={mission?.mainImageUrl ? mission.mainImageUrl : avatarImage('./default.png')} />
                 </ListItemAvatar>
-                <ListItemText
-                  primary={<Typography onClick={handleClickDetails} className="clickable left" variant="subtitle1">{mission.title}</Typography>}
+                <ListItemText className="list-card-title"
+                  primary={<Typography onClick={handleClickDetails} variant="subtitle1">{mission.title}</Typography>}
+                  secondary={
+                    <Typography variant="caption" color="secondary">
+                      {mission.role}
+                    </Typography>
+                  }
                 />
               </ListItem>
             </List>
@@ -117,7 +127,40 @@ const MissionCard = ({ mission, alertMissionToDelete }) => {
           <Grid item xs={12}>
             <Typography>{mission.description}</Typography>
           </Grid>
-          
+
+          <Grid item xs={6}>
+            <List sx={{ p: 0, overflow: 'hidden', '& .MuiListItem-root': { px: 0, py: 0.5 } }}>
+              {mission.country &&
+                <ListItem>
+                  <ListItemIcon>
+                    <EnvironmentOutlined />
+                  </ListItemIcon>
+                  <ListItemText primary={<Typography color="secondary">{countries.find(x => x.code === mission.country)?.label}</Typography>} />
+                </ListItem>}
+            </List>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  listStyle: 'none',
+                  p: 0.5,
+                  m: 0
+                }}
+                component="ul"
+              >
+                {mission.languages.map((language, index) => (
+                  <ListItem disablePadding key={index} sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
+                    <Chip color="secondary" variant="outlined" size="small" label={languages.find(x => x.code === language)?.label} />
+                  </ListItem>
+                ))}
+              </Box>
+            </Box>
+          </Grid>
+
         </Grid>
         <Stack
           direction="row"

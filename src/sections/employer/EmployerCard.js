@@ -71,8 +71,8 @@ const EmployerCard = ({ employer, alertEmployerToDelete }) => {
                 <ListItemAvatar>
                   <Avatar onClick={handleClickDetails} className="clickable" alt={employer.name} src={employer?.logoImageUrl ? employer.logoImageUrl : avatarImage('./default.png')} />
                 </ListItemAvatar>
-                <ListItemText
-                  primary={<Typography onClick={handleClickDetails} className="clickable left" variant="subtitle1">{employer.name}</Typography>}
+                <ListItemText className="list-card-title"
+                  primary={<Typography onClick={handleClickDetails}variant="subtitle1">{employer.name}</Typography>}
                 />
               </ListItem>
             </List>
@@ -128,7 +128,8 @@ const EmployerCard = ({ employer, alertEmployerToDelete }) => {
                     </ListItem>}
                 </List>
                 <List sx={{ p: 0, overflow: 'hidden', '& .MuiListItem-root': { px: 0, py: 0.5 } }}>
-                  {employer.country && <ListItem>
+                  {employer.country && 
+                  <ListItem>
                     <ListItemIcon>
                       <EnvironmentOutlined />
                     </ListItemIcon>

@@ -7,7 +7,6 @@ import { useTheme } from '@mui/material/styles';
 // material-ui
 import {
   Autocomplete,
-  Chip,
   FormHelperText,
   Box,
   Button,
@@ -20,9 +19,7 @@ import {
   InputLabel,
   Stack,
   TextField,
-  Tooltip,
-  Typography,
-  Checkbox
+  Typography
 } from '@mui/material';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -34,13 +31,11 @@ import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
 
 // project imports
-import AlertMissionDelete from './AlertMissionDelete';
-import IconButton from 'components/@extended/IconButton';
 import { openSnackbar } from 'store/reducers/snackbar';
 import Avatar from 'components/@extended/Avatar';
 
 // assets
-import { CameraOutlined, DeleteFilled, CloseOutlined } from '@ant-design/icons';
+import { CameraOutlined } from '@ant-design/icons';
 import { normalizeInputValue, normalizeNullableInputValue, prepareApiBody } from 'utils/stringUtils';
 import { useKeycloak } from '@react-keycloak/web';
 
@@ -53,14 +48,20 @@ const getInitialValues = (mission) => {
   const newMission = {
     id: null,
     title: null,
-    description: null
+    description: null,
+    role: null,
+    outcome: null,
+    country: null,
+    yearsExperience: null,
+    startDate: null,
+    endDate: null,
+    effortHours: null,
+    languages: null
   };
-
+  
   if (mission) {
-    newMission.id = mission.id;
-    newMission.title = mission.title;
-    newMission.description = mission.description;
     var result = _.merge({}, newMission, mission);
+    result.languages = languages.filter(x => mission.languages.find(y => x.code === y));
     return result;
   }
 
@@ -71,9 +72,7 @@ const getInitialValues = (mission) => {
 
 const UpsertMission = ({ missionId }) => {
   const { keycloak } = useKeycloak();
-  const [openAlert, setOpenAlert] = useState(false);
   const [mission, setMission] = useState(null);
-  const [isCreating, setIsCreating] = useState(true);
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState(undefined);
   const [avatar, setAvatar] = useState(mission?.mainImageUrl ? mission.mainImageUrl : avatarImage('./default.png'));
@@ -84,10 +83,6 @@ const UpsertMission = ({ missionId }) => {
       setAvatar(URL.createObjectURL(selectedImage));
     }
   }, [selectedImage]);
-
-  const handleAlertClose = () => {
-    setOpenAlert(!openAlert);
-  };
 
   const bindMission = async () => {
     try {
@@ -111,7 +106,6 @@ const UpsertMission = ({ missionId }) => {
   useEffect(() => {
     (async () => {
       if (missionId) {
-        setIsCreating(false);
         await bindMission();
       }
     })();
@@ -121,11 +115,15 @@ const UpsertMission = ({ missionId }) => {
 
   const MissionSchema = Yup.object().shape({
     title: Yup.string().max(255).required('Title is required').nullable(true),
-    description: Yup.string().max(255).required('Description is required').nullable(true),
+    description: Yup.string().max(2000).required('Description is required').nullable(true),
     role: Yup.string().max(255).required('Role is required').nullable(true),
     outcome: Yup.string().max(1000).nullable(true),
-    country: Yup.string().nullable(true),
-    yearsExperience: Yup.number("Should be a positive integer").integer("Should be a positive integer").min(0, "Should be a positive integer").max(100, "Maximum 100").nullable(true)
+    country: Yup.string().required('Country is required').nullable(true),
+    yearsExperience: Yup.number("Should be a positive integer").integer("Should be a positive integer").min(0, "Should be a positive integer").max(100, "Maximum 100").nullable(true),
+    startDate: Yup.string().required('Start Date is required').nullable(true),
+    endDate: Yup.string().nullable(true),
+    effortHouts: Yup.number("Should be a positive integer").integer("Should be a positive integer").min(0, "Should be a positive integer").max(100, "Maximum 100").nullable(true),
+    languages: Yup.array().of(Yup.object()).nullable(true)
   });
 
   const formik = useFormik({
@@ -133,8 +131,9 @@ const UpsertMission = ({ missionId }) => {
     initialValues: getInitialValues(mission),
     validationSchema: MissionSchema,
     onSubmit: async (values, { setSubmitting }) => {
-      console.log(values);
       try {
+        values.languages = values?.languages?.map(x => x.code);
+
         if (mission) {
 
           let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/' + mission.id,
@@ -242,7 +241,7 @@ const UpsertMission = ({ missionId }) => {
             <Divider />
             <DialogContent sx={{ p: 2.5 }}>
               <Grid container spacing={3}>
-                <Grid item xs={12} md={2}>
+                <Grid item xs={12} md={1}>
                   <Stack direction="row" justifyContent="center" sx={{ mt: 3 }}>
                     <FormLabel
                       htmlFor="change-avatar"
@@ -285,7 +284,7 @@ const UpsertMission = ({ missionId }) => {
                     />
                   </Stack>
                 </Grid>
-                <Grid item xs={12} md={10}>
+                <Grid item xs={12} md={11}>
                   <Grid container spacing={3}>
                     <Grid item xs={12}>
                       <Stack spacing={1.25}>
@@ -298,9 +297,12 @@ const UpsertMission = ({ missionId }) => {
                           name="title"
                           onBlur={handleBlur}
                           onChange={handleChange}
-                          error={Boolean(touched.title && errors.title)}
-                          helperText={touched.title && errors.title}
                         />
+                        {touched.title && errors.title && (
+                          <FormHelperText error id="mission-title-helper">
+                            {errors.title}
+                          </FormHelperText>
+                        )}
                       </Stack>
                     </Grid>
                     <Grid item xs={12}>
@@ -316,9 +318,12 @@ const UpsertMission = ({ missionId }) => {
                           name="description"
                           onBlur={handleBlur}
                           onChange={handleChange}
-                          error={Boolean(touched.description && errors.description)}
-                          helperText={touched.description && errors.description}
                         />
+                        {touched.description && errors.description && (
+                          <FormHelperText error id="mission-description-helper">
+                            {errors.description}
+                          </FormHelperText>
+                        )}
                       </Stack>
                     </Grid>
                     <Grid item xs={12} md={6}>
@@ -332,9 +337,12 @@ const UpsertMission = ({ missionId }) => {
                           name="role"
                           onBlur={handleBlur}
                           onChange={handleChange}
-                          error={Boolean(touched.role && errors.role)}
-                          helperText={touched.role && errors.role}
                         />
+                        {touched.role && errors.role && (
+                          <FormHelperText error id="mission-role-helper">
+                            {errors.role}
+                          </FormHelperText>
+                        )}
                       </Stack>
                     </Grid>
                     <Grid item xs={12} md={6}>
@@ -348,9 +356,12 @@ const UpsertMission = ({ missionId }) => {
                           name="outcome"
                           onBlur={handleBlur}
                           onChange={handleChange}
-                          error={Boolean(touched.outcome && errors.outcome)}
-                          helperText={touched.outcome && errors.outcome}
                         />
+                        {touched.outcome && errors.outcome && (
+                          <FormHelperText error id="mission-outcome-helper">
+                            {errors.outcome}
+                          </FormHelperText>
+                        )}
                       </Stack>
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -414,9 +425,12 @@ const UpsertMission = ({ missionId }) => {
                           name="yearsExperience"
                           onBlur={handleBlur}
                           onChange={handleChange}
-                          error={Boolean(touched.yearsExperience && errors.yearsExperience)}
-                          helperText={touched.yearsExperience && errors.yearsExperience}
                         />
+                        {touched.yearsExperience && errors.yearsExperience && (
+                          <FormHelperText error id="mission-years-experience-helper">
+                            {errors.yearsExperience}
+                          </FormHelperText>
+                        )}
                       </Stack>
                     </Grid>
                     <Grid item xs={12} md={6}>
@@ -428,7 +442,21 @@ const UpsertMission = ({ missionId }) => {
                           onChange={(date) => {
                             setFieldValue('startDate', date);
                           }}
-                          renderInput={(props) => <TextField fullWidth {...props} placeholder="Start Date" />}
+                          renderInput={(props) =>
+                            <>
+                              <TextField
+                                fullWidth
+                                {...props}
+                                placeholder="Start Date"
+                                name="startDate"
+                              />
+                              {touched.startDate && errors.startDate && (
+                                <FormHelperText error id="mission-start-date-helper">
+                                  {errors.startDate}
+                                </FormHelperText>
+                              )}
+                            </>
+                          }
                         />
                       </Stack>
                     </Grid>
@@ -441,7 +469,16 @@ const UpsertMission = ({ missionId }) => {
                           onChange={(date) => {
                             setFieldValue('endDate', date);
                           }}
-                          renderInput={(props) => <TextField fullWidth {...props} placeholder="End Date" />}
+                          renderInput={(props) =>
+                            <>
+                              <TextField fullWidth {...props} placeholder="End Date" name="endDate" />
+                              {touched.endDate && errors.endDate && (
+                                <FormHelperText error id="mission-end-date-helper">
+                                  {errors.endDate}
+                                </FormHelperText>
+                              )}
+                            </>
+                          }
                         />
                       </Stack>
                     </Grid>
@@ -458,12 +495,14 @@ const UpsertMission = ({ missionId }) => {
                           name="effortHours"
                           onBlur={handleBlur}
                           onChange={handleChange}
-                          error={Boolean(touched.effortHours && errors.effortHours)}
-                          helperText={touched.effortHours && errors.effortHours}
                         />
+                        {touched.effortHours && errors.effortHours && (
+                          <FormHelperText error id="mission-effort-hours-helper">
+                            {errors.effortHours}
+                          </FormHelperText>
+                        )}
                       </Stack>
                     </Grid>
-
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
                         <InputLabel htmlFor="mission-languages">Languages</InputLabel>
@@ -475,16 +514,10 @@ const UpsertMission = ({ missionId }) => {
                           options={languages}
                           value={values.languages ?? []}
                           onBlur={handleBlur}
-                          getOptionLabel={(option) => option.label}
+                          getOptionLabel={(option) => option?.label}
                           onChange={(event, newValue) => {
                             setFieldValue('languages', newValue);
                           }}
-                          renderOption={(props, option, { selected }) => (
-                            <li {...props}>
-                              <Checkbox style={{ marginRight: 8 }} checked={selected} />
-                              {option.label}
-                            </li>
-                          )}
                           renderInput={(params) => (
                             <TextField
                               {...params}
@@ -496,18 +529,6 @@ const UpsertMission = ({ missionId }) => {
                               }}
                             />
                           )}
-                          renderTags={(value, getTagProps) =>
-                            value.map((option, index) => (
-                              <Chip
-                                key={index}
-                                {...getTagProps({ index })}
-                                variant="combined"
-                                label={option.label}
-                                deleteIcon={<CloseOutlined style={{ fontSize: '0.75rem' }} />}
-                                sx={{ color: 'text.primary' }}
-                              />
-                            ))
-                          }
                         />
                         {touched.languages && errors.languages && (
                           <FormHelperText error id="mission-languages">
@@ -521,34 +542,19 @@ const UpsertMission = ({ missionId }) => {
                 </Grid>
               </Grid>
             </DialogContent>
-            <Divider />
             <DialogActions sx={{ p: 2.5 }}>
-              <Grid container justifyContent="space-between" alignItems="center">
-                <Grid item>
-                  {!isCreating && (
-                    <Tooltip title="Delete Mission" placement="top">
-                      <IconButton onClick={() => setOpenAlert(true)} size="large" color="error">
-                        <DeleteFilled />
-                      </IconButton>
-                    </Tooltip>
-                  )}
-                </Grid>
-                <Grid item>
-                  <Stack direction="row" spacing={2} alignItems="center">
-                    <Button color="error" onClick={() => { navigate('/missions/my'); } }>
-                      Cancel
-                    </Button>
-                    <Button type="submit" variant="contained" disabled={isSubmitting}>
-                      {mission ? 'Update' : 'Create'}
-                    </Button>
-                  </Stack>
-                </Grid>
-              </Grid>
+              <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 2.5 }}>
+                <Button color="error" onClick={() => { navigate('/missions/my'); }}>
+                  Cancel
+                </Button>
+                <Button type="submit" variant="contained" disabled={isSubmitting || Object.keys(errors).length !== 0}>
+                  {mission ? 'Update' : 'Create'}
+                </Button>
+              </Stack>
             </DialogActions>
           </Form>
         </LocalizationProvider>
       </FormikProvider>
-      {!isCreating && <AlertMissionDelete mission={mission} open={openAlert} handleClose={handleAlertClose} onArchive={() => { navigate('/missions/my'); } } />}
     </>
   );
 };

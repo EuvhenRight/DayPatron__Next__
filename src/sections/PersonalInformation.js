@@ -13,7 +13,6 @@ import {
   Autocomplete,
   Box,
   Button,
-  Divider,
   FormHelperText,
   Grid,
   InputLabel,
@@ -306,7 +305,6 @@ const PersonalInformation = () => {
                 </Grid>
               </Grid>
             </Box>
-            <Divider />
             <Box sx={{ p: 2.5 }}>
               <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 2.5 }}>
                 <Button disabled={isSubmitting || Object.keys(errors).length !== 0} type="submit" variant="contained">

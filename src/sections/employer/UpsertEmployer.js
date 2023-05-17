@@ -19,7 +19,6 @@ import {
   InputLabel,
   Stack,
   TextField,
-  Tooltip,
   Typography
 } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -31,13 +30,11 @@ import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
 
 // project imports
-import AlertEmployerDelete from './AlertEmployerDelete';
 import Avatar from 'components/@extended/Avatar';
-import IconButton from 'components/@extended/IconButton';
 import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
-import { CameraOutlined, DeleteFilled } from '@ant-design/icons';
+import { CameraOutlined } from '@ant-design/icons';
 import { normalizeInputValue, prepareApiBody } from 'utils/stringUtils';
 import industries from 'data/industries';
 import countries from 'data/countries';
@@ -58,13 +55,6 @@ const getInitialValues = (employer) => {
   };
 
   if (employer) {
-    newEmployer.id = employer.id;
-    newEmployer.name = employer.name;
-    newEmployer.email = employer.email;
-    newEmployer.country = employer.country;
-    newEmployer.industry = employer.industry;
-    newEmployer.chamberOfCommerceIdentifier = employer.chamberOfCommerceIdentifier;
-    newEmployer.linkedInUrl = employer.linkedInUrl;
     var result = _.merge({}, newEmployer, employer);
     return result;
   }
@@ -76,9 +66,7 @@ const getInitialValues = (employer) => {
 
 const UpsertEmployer = ({ employerId }) => {
   const { keycloak } = useKeycloak();
-  const [openAlert, setOpenAlert] = useState(false);
   const [employer, setEmployer] = useState(null);
-  const [isCreating, setIsCreating] = useState(true);
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState(undefined);
   const [avatar, setAvatar] = useState(employer?.logoImageUrl ? employer.logoImageUrl : avatarImage('./default.png'));
@@ -89,10 +77,6 @@ const UpsertEmployer = ({ employerId }) => {
       setAvatar(URL.createObjectURL(selectedImage));
     }
   }, [selectedImage]);
-
-  const handleAlertClose = () => {
-    setOpenAlert(!openAlert);
-  };
 
   const bindEmployer = async () => {
     try {
@@ -116,7 +100,6 @@ const UpsertEmployer = ({ employerId }) => {
   useEffect(() => {
     (async () => {
       if (employerId) {
-        setIsCreating(false);
         await bindEmployer();
       }
     })();
@@ -246,7 +229,7 @@ const UpsertEmployer = ({ employerId }) => {
             <Divider />
             <DialogContent sx={{ p: 2.5 }}>
               <Grid container spacing={3}>
-                <Grid item xs={12} md={2}>
+                <Grid item xs={12} md={1}>
                   <Stack direction="row" justifyContent="center" sx={{ mt: 3 }}>
                     <FormLabel
                       htmlFor="change-avatar"
@@ -289,7 +272,7 @@ const UpsertEmployer = ({ employerId }) => {
                     />
                   </Stack>
                 </Grid>
-                <Grid item xs={12} md={10}>
+                <Grid item xs={12} md={11}>
                   <Grid container spacing={3}>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
@@ -302,9 +285,12 @@ const UpsertEmployer = ({ employerId }) => {
                           name="name"
                           onBlur={handleBlur}
                           onChange={handleChange}
-                          error={Boolean(touched.name && errors.name)}
-                          helperText={touched.name && errors.name}
                         />
+                        {touched.name && errors.name && (
+                          <FormHelperText error id="employer-name-helper">
+                            {errors.name}
+                          </FormHelperText>
+                        )}
                       </Stack>
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -318,9 +304,12 @@ const UpsertEmployer = ({ employerId }) => {
                           name="email"
                           onBlur={handleBlur}
                           onChange={handleChange}
-                          error={Boolean(touched.email && errors.email)}
-                          helperText={touched.email && errors.email}
                         />
+                        {touched.email && errors.email && (
+                          <FormHelperText error id="employer-email-helper">
+                            {errors.email}
+                          </FormHelperText>
+                        )}
                       </Stack>
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -422,9 +411,12 @@ const UpsertEmployer = ({ employerId }) => {
                           name="chamberOfCommerceIdentifier"
                           onBlur={handleBlur}
                           onChange={handleChange}
-                          error={Boolean(touched.chamberOfCommerceIdentifier && errors.chamberOfCommerceIdentifier)}
-                          helperText={touched.chamberOfCommerceIdentifier && errors.chamberOfCommerceIdentifier}
                         />
+                        {touched.chamberOfCommerceIdentifier && errors.chamberOfCommerceIdentifier && (
+                          <FormHelperText error id="employer-coc-identifier-helper">
+                            {errors.chamberOfCommerceIdentifier}
+                          </FormHelperText>
+                        )}
                       </Stack>
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -438,43 +430,31 @@ const UpsertEmployer = ({ employerId }) => {
                           name="linkedInUrl"
                           onBlur={handleBlur}
                           onChange={handleChange}
-                          error={Boolean(touched.linkedInUrl && errors.linkedInUrl)}
-                          helperText={touched.linkedInUrl && errors.linkedInUrl}
                         />
+                        {touched.linkedInUrl && errors.linkedInUrl && (
+                          <FormHelperText error id="employer-linkedin-url-helper">
+                            {errors.linkedInUrl}
+                          </FormHelperText>
+                        )}
                       </Stack>
                     </Grid>
                   </Grid>
                 </Grid>
               </Grid>
             </DialogContent>
-            <Divider />
             <DialogActions sx={{ p: 2.5 }}>
-              <Grid container justifyContent="space-between" alignItems="center">
-                <Grid item>
-                  {!isCreating && (
-                    <Tooltip title="Archive Employer" placement="top">
-                      <IconButton onClick={() => setOpenAlert(true)} size="large" color="error">
-                        <DeleteFilled />
-                      </IconButton>
-                    </Tooltip>
-                  )}
-                </Grid>
-                <Grid item>
-                  <Stack direction="row" spacing={2} alignItems="center">
-                    <Button color="error" onClick={() => { navigate('/employers/my'); } }>
-                      Cancel
-                    </Button>
-                    <Button type="submit" variant="contained" disabled={isSubmitting}>
-                      {employer ? 'Update' : 'Create'}
-                    </Button>
-                  </Stack>
-                </Grid>
-              </Grid>
+              <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 2.5 }}>
+                <Button color="error" onClick={() => { navigate('/employers/my'); }}>
+                  Cancel
+                </Button>
+                <Button type="submit" variant="contained" disabled={isSubmitting || Object.keys(errors).length !== 0}>
+                  {employer ? 'Update' : 'Create'}
+                </Button>
+              </Stack>
             </DialogActions>
           </Form>
         </LocalizationProvider>
       </FormikProvider>
-      {!isCreating && <AlertEmployerDelete employer={employer} open={openAlert} handleClose={handleAlertClose} onArchive={() => { navigate('/employers/my'); } } />}
     </>
   );
 };

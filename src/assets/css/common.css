@@ -10,3 +10,7 @@
 .no-text-decoration {
     text-decoration: none;
 }
+.list-card-title {
+    cursor: pointer;
+    margin-right:50px;
+}

@@ -113,7 +113,7 @@ const MyMissionsSection = () => {
     setFilteredMissions(newMissions);
   }, [globalFilter]);
 
-  const PER_PAGE = 1;
+  const PER_PAGE = 10;
 
   const count = Math.ceil(filteredMissions.length / PER_PAGE);
   const _DATA = usePagination(filteredMissions, PER_PAGE);
