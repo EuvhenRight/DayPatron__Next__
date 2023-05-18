@@ -31,7 +31,7 @@ const root = createRoot(container);
 // ==============================|| MAIN - REACT DOM RENDER  ||============================== //
 
 root.render(
-  <ReactKeycloakProvider authClient={keycloak} initOptions={{ onLoad: 'login-required' }}>
+  <ReactKeycloakProvider authClient={keycloak} initOptions={{ onLoad: 'login-required', checkLoginIframe: false }}>
     <ReduxProvider store={store}>
       <ConfigProvider>
         <BrowserRouter>

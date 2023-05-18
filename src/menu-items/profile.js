@@ -4,13 +4,17 @@ import { FormattedMessage } from 'react-intl';
 // assets
 import {
   UserOutlined,
-  BulbOutlined
+  BulbOutlined,
+  SettingOutlined,
+  CalendarOutlined
 } from '@ant-design/icons';
 
 // icons
 const icons = {
   UserOutlined,
-  BulbOutlined
+  BulbOutlined,
+  SettingOutlined,
+  CalendarOutlined
 };
 
 // ==============================|| MENU ITEMS - PROFILE ||============================== //
@@ -33,6 +37,20 @@ const profile = {
       type: 'item',
       url: '/profile/expertise',
       icon: icons.BulbOutlined
+    },
+    {
+      id: 'profile-preferences',
+      title: <FormattedMessage id="profile-preferences" />,
+      type: 'item',
+      url: '/profile/preferences',
+      icon: icons.SettingOutlined
+    },
+    {
+      id: 'profile-availability',
+      title: <FormattedMessage id="profile-availability" />,
+      type: 'item',
+      url: '/profile/availability',
+      icon: icons.CalendarOutlined
     }
   ]
 };

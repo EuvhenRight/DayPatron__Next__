@@ -1,15 +1,15 @@
 // project import
-import { useOutletContext } from 'react-router';
 import MainCard from 'components/MainCard';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
 import { useKeycloak } from '@react-keycloak/web';
-import { RATE_UPDATE, RATE_GET } from 'store/reducers/actions';
 import { normalizeInputValue, prepareApiBody } from 'utils/stringUtils';
 import currencies from 'data/currencies';
+import workplaces from 'data/workplaces';
 
 // material-ui
 import {
+  Select,
   Autocomplete,
   Box,
   Button,
@@ -18,7 +18,9 @@ import {
   Grid,
   InputLabel,
   Stack,
-  TextField
+  TextField,
+  ListItemText,
+  MenuItem
 } from '@mui/material';
 
 // third party
@@ -28,16 +30,13 @@ import { Formik } from 'formik';
 // project import
 import { openSnackbar } from 'store/reducers/snackbar';
 
-function useInputRef() {
-  return useOutletContext();
-}
-
-const PreferenceRatePage = () => {
+const ProfilePreferencesPage = () => {
   const { keycloak } = useKeycloak();
+  const [preferences, setPreferences] = useState(null);
 
-  const fetchRate = async () => {
+  const fetchPreferences = async () => {
     try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username) + '/rates',
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username) + '/preferences',
         {
           method: 'GET',
           headers: {
@@ -53,36 +52,36 @@ const PreferenceRatePage = () => {
   }
   useEffect(() => {
     (async () => {
-      let res = await fetchRate();
+      let res = await fetchPreferences();
       if (res.success) {
-        dispatch({ type: RATE_GET, payload: res.data });
+        setPreferences(res.data);
       }
     })();
   }, []);
 
 
   const dispatch = useDispatch();
-  const state = useSelector(state => state.rate);
-  const inputRef = useInputRef();
 
   return (
     <MainCard>
       <Formik
         enableReinitialize={true}
         initialValues={{
-          currency: state.currency,
-          lowerLimit: state.lowerLimit,
-          upperLimit: state.upperLimit,
+          currency: preferences?.rate?.currency,
+          lowerLimit: preferences?.rate?.lowerLimit,
+          upperLimit: preferences?.rate?.upperLimit,
+          workplace: preferences?.workplace,
           submit: null
         }}
         validationSchema={Yup.object().shape({
           currency: Yup.string().required('Currency is required.').nullable(true),
           lowerLimit: Yup.number().positive().integer().max(1000000).required('Lower Limit is required.').nullable(true),
           upperLimit: Yup.number().positive().integer().max(1000000).nullable(true),
+          workplace: Yup.string().required('Workplace Preference is required.').nullable(true)
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username) + '/rates',
+            let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username) + '/preferences',
               {
                 method: 'PUT',
                 headers: {
@@ -97,7 +96,7 @@ const PreferenceRatePage = () => {
               dispatch(
                 openSnackbar({
                   open: true,
-                  message: 'Rate update failed.',
+                  message: 'Update failed.',
                   variant: 'alert',
                   alert: {
                     color: 'error'
@@ -114,12 +113,12 @@ const PreferenceRatePage = () => {
 
             let json = await response.json();
 
-            dispatch({ type: RATE_UPDATE, payload: json });
+            setPreferences(json);
 
             dispatch(
               openSnackbar({
                 open: true,
-                message: 'Rate updated.',
+                message: 'Preferences updated.',
                 variant: 'alert',
                 alert: {
                   color: 'success'
@@ -202,7 +201,6 @@ const PreferenceRatePage = () => {
                       onChange={handleChange}
                       placeholder="Lower Limit"
                       autoFocus
-                      inputRef={inputRef}
                     />
                     {touched.lowerLimit && errors.lowerLimit && (
                       <FormHelperText error id="rate-lower-limit-helper">
@@ -223,11 +221,35 @@ const PreferenceRatePage = () => {
                       onChange={handleChange}
                       placeholder="Upper Limit"
                       autoFocus
-                      inputRef={inputRef}
                     />
                     {touched.upperLimit && errors.upperLimit && (
                       <FormHelperText error id="rate-upper-limit-helper">
                         {errors.upperLimit}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                </Grid>
+                <Grid item xs={12}>
+                  <Stack spacing={1.25}>
+                    <InputLabel htmlFor="mission-title">Workplace</InputLabel>
+
+                    <Select
+                      id="workplace"
+                      name="workplace"
+                      displayEmpty
+                      value={normalizeInputValue(values.workplace)}
+                      onChange={handleChange}
+                      size="small"
+                    >
+                      {workplaces.map((workplace) => (
+                        <MenuItem key={workplace.code} value={workplace.code}>
+                          <ListItemText primary={workplace.label} />
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    {touched.workplace && errors.workplace && (
+                      <FormHelperText error id="mission-workplace-helper">
+                        {errors.workplace}
                       </FormHelperText>
                     )}
                   </Stack>
@@ -237,7 +259,7 @@ const PreferenceRatePage = () => {
             <Divider />
             <Box sx={{ p: 2.5 }}>
               <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 2.5 }}>
-                <Button disabled={isSubmitting || Object.keys(errors).length !== 0} type="submit" variant="contained">
+                <Button disabled={isSubmitting} type="submit" variant="contained">
                   Save
                 </Button>
               </Stack>
@@ -249,4 +271,4 @@ const PreferenceRatePage = () => {
   );
 };
 
-export default PreferenceRatePage;
+export default ProfilePreferencesPage;

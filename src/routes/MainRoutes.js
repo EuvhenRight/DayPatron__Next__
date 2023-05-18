@@ -14,11 +14,8 @@ const MaintenanceComingSoon = Loadable(lazy(() => import('pages/maintenance/comi
 
 const ProfilePersonalPage = Loadable(lazy(() => import('pages/profile-personal-page')));
 const ProfileExpertisePage = Loadable(lazy(() => import('pages/profile-expertise-page')));
-
-const PreferenceRatePage = Loadable(lazy(() => import('pages/preference-rate-page')));
-const PreferenceAvailabilityPage = Loadable(lazy(() => import('pages/preference-availability-page')));
-const PreferenceWorkplacePage = Loadable(lazy(() => import('pages/preference-workplace-page')));
-const PreferenceTravelPage = Loadable(lazy(() => import('pages/preference-travel-page')));
+const ProfilePreferencesPage = Loadable(lazy(() => import('pages/profile-preferences-page')));
+const ProfileAvailabilityPage = Loadable(lazy(() => import('pages/profile-availability-page')));
 
 const MissionSearchPage = Loadable(lazy(() => import('pages/mission-search-page')));
 const MissionPendingPage = Loadable(lazy(() => import('pages/mission-pending-page')));
@@ -47,27 +44,14 @@ const MainRoutes = {
             {
               path: 'expertise',
               element: <ProfileExpertisePage />
-            }
-          ]
-        },
-        {
-          path: 'preference',
-          children: [
+            },
             {
-              path: 'rate',
-              element: <PreferenceRatePage />
+              path: 'preferences',
+              element: <ProfilePreferencesPage />
             },
             {
               path: 'availability',
-              element: <PreferenceAvailabilityPage />
-            },
-            {
-              path: 'workplace',
-              element: <PreferenceWorkplacePage />
-            },
-            {
-              path: 'travel',
-              element: <PreferenceTravelPage />
+              element: <ProfileAvailabilityPage />
             }
           ]
         },

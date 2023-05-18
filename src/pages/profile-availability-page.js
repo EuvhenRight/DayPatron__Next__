@@ -4,7 +4,7 @@ import { Typography } from '@mui/material';
 // project import
 import MainCard from 'components/MainCard';
 
-const PreferenceAvailabilityPage = () => {
+const ProfileAvailabilityPage = () => {
   return (
     <MainCard>
       <Typography variant="body2">
@@ -14,4 +14,4 @@ const PreferenceAvailabilityPage = () => {
   );
 };
 
-export default PreferenceAvailabilityPage;
+export default ProfileAvailabilityPage;
