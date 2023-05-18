@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 // third-party
 import { Page, View, Document, StyleSheet, Image, Text } from '@react-pdf/renderer';
 
-const avatarImage = require.context('assets/images/companies', true);
+import Maps from 'assets/images/icons/map.png';
+import countries from 'data/countries';
 
+const avatarImage = require.context('assets/images/missions', true);
 const textPrimary = '#262626';
 const textSecondary = '#8c8c8c';
 const border = '#f0f0f0';
@@ -113,6 +115,12 @@ const MissionPdfCard = ({ mission }) => {
           <View style={styles.hr} />
           <View>
             <Text style={styles.about}>{mission.description}</Text>
+          </View>
+          <View style={styles.IconContainer}>
+            <View style={[styles.row, styles.IconRow]}>
+              <Image src={Maps} style={styles.icon} />
+              <Text style={styles.iconTitle}>{countries.find(x => x.code === mission.country)?.label}</Text>
+            </View>
           </View>
         </View>
       </Page>

@@ -447,7 +447,7 @@ const UpsertEmployer = ({ employerId }) => {
                 <Button color="error" onClick={() => { navigate('/employers/my'); }}>
                   Cancel
                 </Button>
-                <Button type="submit" variant="contained" disabled={isSubmitting || Object.keys(errors).length !== 0}>
+                <Button type="submit" variant="contained" disabled={isSubmitting}>
                   {employer ? 'Update' : 'Create'}
                 </Button>
               </Stack>

@@ -29,10 +29,11 @@ import IconButton from 'components/@extended/IconButton';
 import MissionPdfCard from 'sections/mission/MissionPdfCard';
 
 // assets
-import { MoreOutlined, EnvironmentOutlined } from '@ant-design/icons';
+import { MoreOutlined, EnvironmentOutlined, FieldTimeOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import countries from 'data/countries';
 import languages from 'data/languages';
+import { getEllipsis } from 'utils/stringUtils';
 
 // ==============================|| MISSION - CARD ||============================== //
 
@@ -125,7 +126,7 @@ const MissionCard = ({ mission, alertMissionToDelete }) => {
             <Divider />
           </Grid>
           <Grid item xs={12}>
-            <Typography>{mission.description}</Typography>
+            <Typography className="card-description-text">{getEllipsis(mission?.description, 135)}</Typography>
           </Grid>
 
           <Grid item xs={6}>
@@ -136,6 +137,18 @@ const MissionCard = ({ mission, alertMissionToDelete }) => {
                     <EnvironmentOutlined />
                   </ListItemIcon>
                   <ListItemText primary={<Typography color="secondary">{countries.find(x => x.code === mission.country)?.label}</Typography>} />
+                </ListItem>}
+            </List>
+          </Grid>
+
+          <Grid item xs={6}>
+            <List sx={{ p: 0, overflow: 'hidden', '& .MuiListItem-root': { px: 0, py: 0.5 } }}>
+              {mission.effortHours &&
+                <ListItem>
+                  <ListItemIcon>
+                    <FieldTimeOutlined />
+                  </ListItemIcon>
+                  <ListItemText primary={<Typography color="secondary">{mission.effortHours} hour(s)</Typography>} />
                 </ListItem>}
             </List>
           </Grid>
@@ -152,7 +165,7 @@ const MissionCard = ({ mission, alertMissionToDelete }) => {
                 }}
                 component="ul"
               >
-                {mission.languages.map((language, index) => (
+                {mission?.languages?.map((language, index) => (
                   <ListItem disablePadding key={index} sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
                     <Chip color="secondary" variant="outlined" size="small" label={languages.find(x => x.code === language)?.label} />
                   </ListItem>

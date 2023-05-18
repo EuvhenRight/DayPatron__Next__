@@ -23,7 +23,7 @@ import Avatar from 'components/@extended/Avatar';
 import IconButton from 'components/@extended/IconButton';
 
 // assets
-import { EnvironmentOutlined, LinkOutlined, MailOutlined, MoreOutlined, ShopOutlined } from '@ant-design/icons';
+import { EnvironmentOutlined, LinkedinOutlined, MailOutlined, MoreOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import industries from 'data/industries';
 import countries from 'data/countries';
@@ -72,7 +72,12 @@ const EmployerCard = ({ employer, alertEmployerToDelete }) => {
                   <Avatar onClick={handleClickDetails} className="clickable" alt={employer.name} src={employer?.logoImageUrl ? employer.logoImageUrl : avatarImage('./default.png')} />
                 </ListItemAvatar>
                 <ListItemText className="list-card-title"
-                  primary={<Typography onClick={handleClickDetails}variant="subtitle1">{employer.name}</Typography>}
+                  primary={<Typography onClick={handleClickDetails} variant="subtitle1">{employer.name}</Typography>}
+                  secondary={
+                    <Typography variant="caption" color="secondary">
+                      {industries.find(item => item.code === employer.industry)?.label}
+                    </Typography>
+                  }
                 />
               </ListItem>
             </List>
@@ -119,13 +124,6 @@ const EmployerCard = ({ employer, alertEmployerToDelete }) => {
                         }
                       />
                     </ListItem>}
-                  {employer.industry &&
-                    <ListItem>
-                      <ListItemIcon>
-                        <ShopOutlined />
-                      </ListItemIcon>
-                      <ListItemText primary={<Typography color="secondary">{industries.find(item => item.code === employer.industry)?.label}</Typography>} />
-                    </ListItem>}
                 </List>
                 <List sx={{ p: 0, overflow: 'hidden', '& .MuiListItem-root': { px: 0, py: 0.5 } }}>
                   {employer.country && 
@@ -138,7 +136,7 @@ const EmployerCard = ({ employer, alertEmployerToDelete }) => {
                   {employer.linkedInUrl &&
                     <ListItem>
                       <ListItemIcon>
-                        <LinkOutlined />
+                        <LinkedinOutlined />
                       </ListItemIcon>
                       <ListItemText
                         primary={

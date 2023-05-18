@@ -14,3 +14,6 @@
     cursor: pointer;
     margin-right:50px;
 }
+.card-description-text {
+    min-height: 50px;
+}

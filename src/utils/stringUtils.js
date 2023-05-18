@@ -19,4 +19,13 @@ function removeEmptyOrNull(obj) {
   return obj;
 }
 
-export { normalizeInputValue, normalizeNullableInputValue, prepareApiBody, removeEmptyOrNull };
+function getEllipsis(str, charactersCount) {
+  if (!str)
+    return null;
+
+  var result = str?.length <= charactersCount ? str : str.substring(0, charactersCount - 3) + '...';
+
+  return result;
+}
+
+export { normalizeInputValue, normalizeNullableInputValue, prepareApiBody, removeEmptyOrNull, getEllipsis };

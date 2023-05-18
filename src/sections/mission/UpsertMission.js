@@ -19,7 +19,10 @@ import {
   InputLabel,
   Stack,
   TextField,
-  Typography
+  Typography,
+  Select,
+  ListItemText,
+  MenuItem
 } from '@mui/material';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -47,6 +50,7 @@ const avatarImage = require.context('assets/images/missions', true);
 const getInitialValues = (mission) => {
   const newMission = {
     id: null,
+    employerId: null,
     title: null,
     description: null,
     role: null,
@@ -61,7 +65,8 @@ const getInitialValues = (mission) => {
   
   if (mission) {
     var result = _.merge({}, newMission, mission);
-    result.languages = languages.filter(x => mission.languages.find(y => x.code === y));
+    if (mission.languages)
+      result.languages = languages.filter(x => mission.languages.find(y => x.code === y));
     return result;
   }
 
@@ -73,6 +78,7 @@ const getInitialValues = (mission) => {
 const UpsertMission = ({ missionId }) => {
   const { keycloak } = useKeycloak();
   const [mission, setMission] = useState(null);
+  const [employers, setEmployers] = useState([]);
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState(undefined);
   const [avatar, setAvatar] = useState(mission?.mainImageUrl ? mission.mainImageUrl : avatarImage('./default.png'));
@@ -103,8 +109,28 @@ const UpsertMission = ({ missionId }) => {
     }
   };
 
+  const bindEmployers = async () => {
+    try {
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers?userName=' + encodeURIComponent(keycloak.idTokenParsed.preferred_username),
+        {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + keycloak.idToken
+          }
+        }
+      );
+
+      let json = await response.json();
+
+      setEmployers(json.employers);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     (async () => {
+      bindEmployers();
       if (missionId) {
         await bindMission();
       }
@@ -114,6 +140,7 @@ const UpsertMission = ({ missionId }) => {
   const dispatch = useDispatch();
 
   const MissionSchema = Yup.object().shape({
+    employerId: Yup.string().required('Employer is required').nullable(true),
     title: Yup.string().max(255).required('Title is required').nullable(true),
     description: Yup.string().max(2000).required('Description is required').nullable(true),
     role: Yup.string().max(255).required('Role is required').nullable(true),
@@ -178,7 +205,6 @@ const UpsertMission = ({ missionId }) => {
           );
 
         } else {
-          values.employerId = '645cafabecf7911bcc5a02cf';
           var body = prepareApiBody(values);
           let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions',
             {
@@ -286,6 +312,32 @@ const UpsertMission = ({ missionId }) => {
                 </Grid>
                 <Grid item xs={12} md={11}>
                   <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="mission-title">Employer</InputLabel>
+
+                        <Select
+                          id="employerId"
+                          name="employerId"
+                          displayEmpty
+                          value={normalizeInputValue(values.employerId)}
+                          onChange={handleChange}
+                          size="small"
+                        >
+                          {employers.map((employer) => (
+                            <MenuItem key={employer.id} value={employer.id}>
+                              <ListItemText primary={employer.name} />
+                            </MenuItem>
+                          ))}
+                        </Select>
+                        {touched.employerId && errors.employerId && (
+                          <FormHelperText error id="mission-employer-id-helper">
+                            {errors.employerId}
+                          </FormHelperText>
+                        )}
+
+                      </Stack>
+                    </Grid>
                     <Grid item xs={12}>
                       <Stack spacing={1.25}>
                         <InputLabel htmlFor="mission-title">Title</InputLabel>
@@ -547,7 +599,7 @@ const UpsertMission = ({ missionId }) => {
                 <Button color="error" onClick={() => { navigate('/missions/my'); }}>
                   Cancel
                 </Button>
-                <Button type="submit" variant="contained" disabled={isSubmitting || Object.keys(errors).length !== 0}>
+                <Button type="submit" variant="contained" disabled={isSubmitting}>
                   {mission ? 'Update' : 'Create'}
                 </Button>
               </Stack>
