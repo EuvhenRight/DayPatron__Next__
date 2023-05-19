@@ -3,24 +3,22 @@ import MainCard from 'components/MainCard';
 import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useKeycloak } from '@react-keycloak/web';
-import { normalizeInputValue, prepareApiBody } from 'utils/stringUtils';
+import { normalizeInputValue, normalizeBooleanInputValue, prepareApiBody } from 'utils/stringUtils';
 import currencies from 'data/currencies';
 import workplaces from 'data/workplaces';
 
 // material-ui
 import {
   Select,
-  Autocomplete,
   Box,
   Button,
-  Divider,
   FormHelperText,
   Grid,
   InputLabel,
   Stack,
   TextField,
-  ListItemText,
-  MenuItem
+  MenuItem,
+  Switch
 } from '@mui/material';
 
 // third party
@@ -63,211 +61,255 @@ const ProfilePreferencesPage = () => {
   const dispatch = useDispatch();
 
   return (
-    <MainCard>
-      <Formik
-        enableReinitialize={true}
-        initialValues={{
-          currency: preferences?.rate?.currency,
-          lowerLimit: preferences?.rate?.lowerLimit,
-          upperLimit: preferences?.rate?.upperLimit,
-          workplace: preferences?.workplace,
-          submit: null
-        }}
-        validationSchema={Yup.object().shape({
-          currency: Yup.string().required('Currency is required.').nullable(true),
-          lowerLimit: Yup.number().positive().integer().max(1000000).required('Lower Limit is required.').nullable(true),
-          upperLimit: Yup.number().positive().integer().max(1000000).nullable(true),
-          workplace: Yup.string().required('Workplace Preference is required.').nullable(true)
-        })}
-        onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          try {
-            let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username) + '/preferences',
-              {
-                method: 'PUT',
-                headers: {
-                  'Authorization': 'Bearer ' + keycloak.idToken,
-                  'Content-Type': 'application/json'
-                },
-                body: prepareApiBody(values)
-              }
-            );
 
-            if (!response.ok) {
-              dispatch(
-                openSnackbar({
-                  open: true,
-                  message: 'Update failed.',
-                  variant: 'alert',
-                  alert: {
-                    color: 'error'
-                  },
-                  close: false
-                })
-              );
-
-              setStatus({ success: false });
-              setSubmitting(false);
-
-              return;
+    <Formik
+      enableReinitialize={true}
+      initialValues={{
+        rateCurrency: preferences?.rate?.currency,
+        rateLowerLimit: preferences?.rate?.lowerLimit,
+        rateUpperLimit: preferences?.rate?.upperLimit,
+        workplace: preferences?.workplace,
+        travelRadiusKms: preferences?.travel?.radiusKms,
+        isInternationalTravelAcceptable: preferences?.travel?.isInternationalTravelAcceptable,
+        submit: null
+      }}
+      validationSchema={Yup.object().shape({
+        rateCurrency: Yup.string().required('Currency is required.').nullable(true),
+        rateLowerLimit: Yup.number().positive().integer().max(1000000).required('Lower Limit is required.').nullable(true),
+        rateUpperLimit: Yup.number().positive().integer().max(1000000).nullable(true),
+        workplace: Yup.string().required('Workplace Preference is required.').nullable(true),
+        travelRadiusKms: Yup.number().positive().integer().max(50000).nullable(true),
+        isInternationalTravelAcceptable: Yup.boolean().nullable(true)
+      })}
+      onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
+        try {
+          var requestBody = {
+            rate: { currency: values.rateCurrency, lowerLimit: values.rateLowerLimit, upperLimit: values.rateUpperLimit },
+            workplace: values.workplace,
+            travel: { radiusKms: values.travelRadiusKms, isInternationalTravelAcceptable: values.isInternationalTravelAcceptable }
+          };
+          let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username) + '/preferences',
+            {
+              method: 'PUT',
+              headers: {
+                'Authorization': 'Bearer ' + keycloak.idToken,
+                'Content-Type': 'application/json'
+              },
+              body: prepareApiBody(requestBody)
             }
+          );
 
-            let json = await response.json();
-
-            setPreferences(json);
-
+          if (!response.ok) {
             dispatch(
               openSnackbar({
                 open: true,
-                message: 'Preferences updated.',
+                message: 'Update failed.',
                 variant: 'alert',
                 alert: {
-                  color: 'success'
+                  color: 'error'
                 },
                 close: false
               })
             );
 
-            setStatus({ success: true });
-            setSubmitting(false);
-            setErrors({});
-          } catch (err) {
-            setErrors({ submit: err.message });
             setStatus({ success: false });
             setSubmitting(false);
-          }
-        }}
-      >
-        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, setFieldValue, touched, values }) => (
-          <form noValidate onSubmit={handleSubmit}>
-            <Box sx={{ p: 2.5 }}>
-              <Grid container spacing={3}>
-                <Grid item xs={12} sm={2}>
-                  <Stack spacing={1.25}>
-                    <InputLabel htmlFor="rate-currency">Currency</InputLabel>
-                    <Autocomplete
-                      id="rate-currency"
-                      fullWidth
-                      value={values?.currency ? currencies.filter((item) => item.code === values?.currency)[0] : null}
-                      onBlur={handleBlur}
-                      onChange={(event, newValue) => {
-                        setFieldValue('currency', newValue === null ? '' : newValue.code);
-                      }}
-                      options={currencies}
-                      autoHighlight
-                      isOptionEqualToValue={(option, value) => option.code === value?.code}
-                      getOptionLabel={(option) => option.code}
-                      renderOption={(props, option) => (
-                        <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-                          {option.regionCode && (
-                            <img
-                              loading="lazy"
-                              width="20"
-                              src={`https://flagcdn.com/w20/${option.regionCode.toLowerCase()}.png`}
-                              srcSet={`https://flagcdn.com/w40/${option.regionCode.toLowerCase()}.png 2x`}
-                              alt=""
-                            />
-                          )}
-                          {option.code}
-                        </Box>
-                      )}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          placeholder="Choose a currency"
-                          name="currency"
-                          inputProps={{
-                            ...params.inputProps,
-                            autoComplete: 'new-password' // disable autocomplete and autofill
-                          }}
-                        />
-                      )}
-                    />
-                    {touched.currency && errors.currency && (
-                      <FormHelperText error id="rate-currency-helper">
-                        {errors.currency}
-                      </FormHelperText>
-                    )}
-                  </Stack>
-                </Grid>
-                <Grid item xs={12} sm={5}>
-                  <Stack spacing={1.25}>
-                    <InputLabel htmlFor="rate-lower-limit">Lower Limit</InputLabel>
-                    <TextField
-                      fullWidth
-                      id="rate-lower-limit"
-                      value={normalizeInputValue(values.lowerLimit)}
-                      name="lowerLimit"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      placeholder="Lower Limit"
-                      autoFocus
-                    />
-                    {touched.lowerLimit && errors.lowerLimit && (
-                      <FormHelperText error id="rate-lower-limit-helper">
-                        {errors.lowerLimit}
-                      </FormHelperText>
-                    )}
-                  </Stack>
-                </Grid>
-                <Grid item xs={12} sm={5}>
-                  <Stack spacing={1.25}>
-                    <InputLabel htmlFor="rate-upper-limit">Upper Limit</InputLabel>
-                    <TextField
-                      fullWidth
-                      id="rate-upper-limit"
-                      value={normalizeInputValue(values.upperLimit)}
-                      name="upperLimit"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      placeholder="Upper Limit"
-                      autoFocus
-                    />
-                    {touched.upperLimit && errors.upperLimit && (
-                      <FormHelperText error id="rate-upper-limit-helper">
-                        {errors.upperLimit}
-                      </FormHelperText>
-                    )}
-                  </Stack>
-                </Grid>
-                <Grid item xs={12}>
-                  <Stack spacing={1.25}>
-                    <InputLabel htmlFor="mission-title">Workplace</InputLabel>
 
-                    <Select
-                      id="workplace"
-                      name="workplace"
-                      displayEmpty
-                      value={normalizeInputValue(values.workplace)}
-                      onChange={handleChange}
-                      size="small"
-                    >
-                      {workplaces.map((workplace) => (
-                        <MenuItem key={workplace.code} value={workplace.code}>
-                          <ListItemText primary={workplace.label} />
-                        </MenuItem>
-                      ))}
-                    </Select>
-                    {touched.workplace && errors.workplace && (
-                      <FormHelperText error id="mission-workplace-helper">
-                        {errors.workplace}
-                      </FormHelperText>
-                    )}
-                  </Stack>
-                </Grid>
+            return;
+          }
+
+          let json = await response.json();
+
+          setPreferences(json);
+
+          dispatch(
+            openSnackbar({
+              open: true,
+              message: 'Preferences updated.',
+              variant: 'alert',
+              alert: {
+                color: 'success'
+              },
+              close: false
+            })
+          );
+
+          setStatus({ success: true });
+          setSubmitting(false);
+          setErrors({});
+        } catch (err) {
+          setErrors({ submit: err.message });
+          setStatus({ success: false });
+          setSubmitting(false);
+        }
+      }}
+    >
+      {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, setFieldValue, values }) => (
+        <form noValidate onSubmit={handleSubmit}>
+          <Box>
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={5}>
+                <MainCard title="Rate">
+                  <Grid container spacing={3}>
+                    <Grid item xs={12} sm={4}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="rate-currency">Currency</InputLabel>
+                        <Select
+                          id="rateCurrency"
+                          name="rateCurrency"
+                          displayEmpty
+                          value={normalizeInputValue(values.rateCurrency)}
+                          onChange={handleChange}
+                        >
+                          {currencies.map((currency) => (
+                            <MenuItem key={currency.code} value={currency.code}>
+                              {currency.code}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                        {touched.rateCurrency && errors.rateCurrency && (
+                          <FormHelperText error id="mission-rate-currency-helper">
+                            {errors.rateCurrency}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="rate-lower-limit">Lower Limit</InputLabel>
+                        <TextField
+                          fullWidth
+                          id="rate-lower-limit"
+                          value={normalizeInputValue(values.rateLowerLimit)}
+                          name="rateLowerLimit"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          placeholder="Lower Limit"
+                          type="number"
+                          autoFocus
+                        />
+                        {touched.rateLowerLimit && errors.rateLowerLimit && (
+                          <FormHelperText error id="rate-lower-limit-helper">
+                            {errors.rateLowerLimit}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="rate-upper-limit">Upper Limit</InputLabel>
+                        <TextField
+                          fullWidth
+                          id="rate-upper-limit"
+                          value={normalizeInputValue(values.rateUpperLimit)}
+                          name="rateUpperLimit"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          placeholder="Upper Limit"
+                          type="number"
+                          autoFocus
+                        />
+                        {touched.rateUpperLimit && errors.rateUpperLimit && (
+                          <FormHelperText error id="rate-upper-limit-helper">
+                            {errors.rateUpperLimit}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
+                  </Grid>
+                </MainCard>
               </Grid>
-            </Box>
-            <Divider />
-            <Box sx={{ p: 2.5 }}>
-              <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 2.5 }}>
-                <Button disabled={isSubmitting} type="submit" variant="contained">
-                  Save
-                </Button>
-              </Stack>
-            </Box>
-          </form>
-        )}
-      </Formik>
-    </MainCard>
+              <Grid item xs={12} md={3}>
+                <MainCard title="Workplace">
+                  <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="workplace">Workplace</InputLabel>
+                        <Select
+                          id="workplace"
+                          name="workplace"
+                          displayEmpty
+                          value={normalizeInputValue(values.workplace)}
+                          onChange={handleChange}
+                        >
+                          {workplaces.map((workplace) => (
+                            <MenuItem key={workplace.code} value={workplace.code}>
+                              {workplace.label}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                        {touched.workplace && errors.workplace && (
+                          <FormHelperText error id="mission-workplace-helper">
+                            {errors.workplace}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
+                  </Grid>
+                </MainCard>
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <MainCard title="Travel">
+                  <Grid container spacing={3}>
+
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="travel-radius-kms">Radius (kms)</InputLabel>
+                        <TextField
+                          fullWidth
+                          id="travel-radius-kms"
+                          value={normalizeInputValue(values.travelRadiusKms)}
+                          name="travelRadiusKms"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          placeholder="Radius (kms)"
+                          type="number"
+                          autoFocus
+                        />
+                        {touched.travelRadiusKms && errors.travelRadiusKms && (
+                          <FormHelperText error id="travel-radius-kms-helper">
+                            {errors.travelRadiusKms}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="travel-international-acceptable">International?</InputLabel>
+                        <Stack direction="row" alignItems="center">
+                          <Switch
+                            id="travel-international-acceptable"
+                            name="isInternationalTravelAcceptable"
+                            checked={normalizeBooleanInputValue(values?.isInternationalTravelAcceptable)}
+                            onChange={(event, checked) => {
+                              setFieldValue("isInternationalTravelAcceptable", checked);
+                            }}
+                          />
+                          {touched.isInternationalTravelAcceptable && errors.isInternationalTravelAcceptable && (
+                            <FormHelperText error id="travel-international-acceptable-helper">
+                              {errors.isInternationalTravelAcceptable}
+                            </FormHelperText>
+                          )}
+                        </Stack>
+                      </Stack>
+                    </Grid>
+
+                  </Grid>
+                </MainCard>
+              </Grid>
+
+            </Grid>
+          </Box>
+          <Box sx={{ p: 2.5 }}>
+            <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 2.5 }}>
+              <Button disabled={isSubmitting} type="submit" variant="contained">
+                Save
+              </Button>
+            </Stack>
+          </Box>
+        </form>
+      )}
+    </Formik>
   );
 };
 

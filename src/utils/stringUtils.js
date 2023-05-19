@@ -2,6 +2,14 @@ function normalizeInputValue(value) {
   return value ? value : '';
 }
 
+function normalizeNullableInputValue(value) {
+  return value ? value : null;
+}
+
+function normalizeBooleanInputValue(value) {
+  return value ? value : false;
+}
+
 function prepareApiBody(obj) {
   return JSON.stringify(removeEmptyOrNull(obj));
 }
@@ -15,4 +23,4 @@ function removeEmptyOrNull(obj) {
   return obj;
 }
 
-export { normalizeInputValue, prepareApiBody };
+export { normalizeInputValue, normalizeNullableInputValue, normalizeBooleanInputValue, prepareApiBody };
