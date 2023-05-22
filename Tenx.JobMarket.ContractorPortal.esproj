@@ -12,6 +12,5 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\configs\" />
-    <Folder Include="src\sections\calendar\" />
   </ItemGroup>
 </Project>

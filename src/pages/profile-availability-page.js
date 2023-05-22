@@ -14,7 +14,7 @@ import timelinePlugin from '@fullcalendar/timeline';
 // project import
 import CalendarStyled from 'sections/calendar/CalendarStyled';
 import Toolbar from 'sections/calendar/Toolbar';
-import AddEventForm from 'sections/calendar/AddEventForm';
+import UpsertEventForm from 'sections/calendar/UpsertEventForm';
 import { getEvents, selectEvent, selectRange, toggleModal, updateCalendarView, updateEvent } from 'store/reducers/calendar';
 import { PopupTransition } from 'components/@extended/Transitions';
 import { dispatch, useSelector } from 'store';
@@ -178,7 +178,7 @@ const ProfileAvailabilityPage = () => {
         open={isModalOpen}
         sx={{ '& .MuiDialog-paper': { p: 0 } }}
       >
-        <AddEventForm event={selectedEvent} range={selectedRange} onCancel={handleModal} />
+        <UpsertEventForm event={selectedEvent} range={selectedRange} onCancel={handleModal} />
       </Dialog>
       <Tooltip title="Add New Event">
         <SpeedDial

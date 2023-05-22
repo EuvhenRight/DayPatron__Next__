@@ -76,7 +76,7 @@ const calendar = createSlice({
     deleteEvent(state, action) {
       const { eventId } = action.payload;
       state.isModalOpen = false;
-      const deleteEvent = state.events.filter((user) => user.id !== eventId);
+      const deleteEvent = state.events.filter((event) => event.id !== eventId);
       state.events = deleteEvent;
     },
 
