@@ -21,6 +21,7 @@ import { dispatch, useSelector } from 'store';
 
 // assets
 import { PlusOutlined } from '@ant-design/icons';
+import { useKeycloak } from '@react-keycloak/web';
 
 // ==============================|| CALENDAR - MAIN ||============================== //
 
@@ -34,9 +35,10 @@ const ProfileAvailabilityPage = () => {
     }
     return null;
   });
+  const { keycloak } = useKeycloak();
 
   useEffect(() => {
-    dispatch(getEvents());
+    dispatch(getEvents(keycloak));
   }, []);
 
   const calendarRef = useRef(null);

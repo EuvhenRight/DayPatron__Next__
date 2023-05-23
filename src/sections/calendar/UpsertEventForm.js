@@ -80,7 +80,7 @@ const UpsertEventFrom = ({ event, range, onCancel }) => {
   });
 
   const deleteHandler = () => {
-    dispatch(deleteEvent(event?.id));
+    dispatch(deleteEvent(event?.id, keycloak));
     dispatch(
       openSnackbar({
         open: true,
@@ -115,7 +115,7 @@ const UpsertEventFrom = ({ event, range, onCancel }) => {
         };
 
         if (event) {
-          dispatch(updateEvent(event.id, newEvent));
+          dispatch(updateEvent(event.id, newEvent, keycloak));
           dispatch(
             openSnackbar({
               open: true,
@@ -128,7 +128,7 @@ const UpsertEventFrom = ({ event, range, onCancel }) => {
             })
           );
         } else {
-          dispatch(createEvent(newEvent));
+          dispatch(createEvent(newEvent, keycloak));
           dispatch(
             openSnackbar({
               open: true,

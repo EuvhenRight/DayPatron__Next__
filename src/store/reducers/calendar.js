@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // project import
 import axios from 'utils/axios';
-import { dispatch } from 'store';
+import { dispatch, store } from 'store';
 
 const initialState = {
   calendarView: 'dayGridMonth',
@@ -68,6 +68,7 @@ const calendar = createSlice({
     // event list
     setEvents(state, action) {
       state.isLoader = false;
+      state.isModalOpen = false;
       state.events = action.payload;
       state.fcEvents = convertAvailabilityToFullCalendarEvents(state.events);
     },
@@ -80,6 +81,7 @@ const calendar = createSlice({
     // select event
     selectEvent(state, action) {
       const eventId = action.payload;
+      console.log(eventId);
       state.isModalOpen = true;
       state.selectedEventId = eventId;
     },
@@ -90,31 +92,6 @@ const calendar = createSlice({
       state.isLoader = false;
       state.isModalOpen = false;
       state.events = [...state.events, newEvent];
-      state.fcEvents = convertAvailabilityToFullCalendarEvents(state.events);
-    },
-
-    // update event
-    updateEvent(state, action) {
-      const event = action.payload;
-      const eventUpdate = state.events.map((item) => {
-        if (item.id === event.id) {
-          return event;
-        }
-        return item;
-      });
-
-      state.isLoader = false;
-      state.isModalOpen = false;
-      state.events = eventUpdate;
-      state.fcEvents = convertAvailabilityToFullCalendarEvents(state.events);
-    },
-
-    // delete event
-    deleteEvent(state, action) {
-      const { eventId } = action.payload;
-      state.isModalOpen = false;
-      const deleteEvent = state.events.filter((event) => event.id !== eventId);
-      state.events = deleteEvent;
       state.fcEvents = convertAvailabilityToFullCalendarEvents(state.events);
     },
 
@@ -140,16 +117,17 @@ export default calendar.reducer;
 
 export const { selectEvent, toggleModal, updateCalendarView } = calendar.actions;
 
-export function getEvents() {
+export function getEvents(keycloak) {
   return async () => {
     dispatch(calendar.actions.loading());
     try {
-      //const response = await axios.get('/api/calendar/events');
-      //dispatch(calendar.actions.setEvents(response.data.events));
-      var events = [
+      const response = await axios.get(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username) + '/availability');
+      dispatch(calendar.actions.setEvents(response.data.periods));
+
+      /*var events = [
         {
           id: 'avl1',
-          notes: 'Availability notes',
+          notes: 'Availability notes 1',
           hasMonday: true,
           hasTuesday: true,
           hasWednesday: true,
@@ -160,49 +138,69 @@ export function getEvents() {
           startTime: '09:00:00',
           endTime: '18:00:00',
           startDate: '2023-05-01',
+          endDate: '2023-05-15'
+        },
+        {
+          id: 'avl2',
+          notes: 'Availability notes 2',
+          hasMonday: true,
+          hasTuesday: true,
+          hasWednesday: true,
+          hasThursday: true,
+          hasFriday: true,
+          hasSaturday: true,
+          hasSunday: false,
+          startTime: '09:00:00',
+          endTime: '18:00:00',
+          startDate: '2023-05-16',
           endDate: '2023-05-22'
         }
       ];
-      dispatch(calendar.actions.setEvents(events));
+      dispatch(calendar.actions.setEvents(events));*/
     } catch (error) {
       dispatch(calendar.actions.hasError(error));
     }
   };
 }
 
-export function createEvent(newEvent) {
+export function createEvent(newEvent, keycloak) {
   return async () => {
     dispatch(calendar.actions.loading());
     try {
-      const response = await axios.post('/api/calendar/events/add', newEvent);
-      dispatch(calendar.actions.createEvent(response.data.event));
+      var newEvents = [...store.calendar.events, newEvent];
+      const response = await axios.put(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username) + '/availability', newEvents);
+      dispatch(calendar.actions.setEvents(response.data.periods));
     } catch (error) {
       dispatch(calendar.actions.hasError(error));
     }
   };
 }
 
-export function updateEvent(eventId, updateEvent) {
+export function updateEvent(eventId, updateEvent, keycloak) {
   return async () => {
     dispatch(calendar.actions.loading());
     try {
-      const response = await axios.post('/api/calendar/events/update', {
-        eventId,
-        update: updateEvent
+      const newEvents = store.calendar.events.map((item) => {
+        if (item.id === eventId) {
+          return updateEvent;
+        }
+        return item;
       });
-      dispatch(calendar.actions.updateEvent(response.data.event));
+      const response = await axios.put(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username) + '/availability', newEvents);
+      dispatch(calendar.actions.setEvents(response.data.periods));
     } catch (error) {
       dispatch(calendar.actions.hasError(error));
     }
   };
 }
 
-export function deleteEvent(eventId) {
+export function deleteEvent(eventId, keycloak) {
   return async () => {
     dispatch(calendar.actions.loading());
     try {
-      await axios.post('/api/calendar/events/delete', { eventId });
-      dispatch(calendar.actions.deleteEvent({ eventId }));
+      const newEvents = store.calendar.events.filter((event) => event.id !== eventId);
+      const response = await axios.put(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username) + '/availability', newEvents);
+      dispatch(calendar.actions.setEvents(response.data.periods));
     } catch (error) {
       dispatch(calendar.actions.hasError(error));
     }
