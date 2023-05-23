@@ -33,6 +33,7 @@ import { createEvent, deleteEvent, updateEvent } from 'store/reducers/calendar';
 // assets
 import { CalendarOutlined, DeleteFilled } from '@ant-design/icons';
 import { normalizeBooleanInputValue } from 'utils/stringUtils';
+import { useKeycloak } from '@react-keycloak/web';
 
 // constant
 const getInitialValues = (event, range) => {
@@ -61,6 +62,7 @@ const getInitialValues = (event, range) => {
 // ==============================|| CALENDAR EVENT ADD / EDIT / DELETE ||============================== //
 
 const UpsertEventFrom = ({ event, range, onCancel }) => {
+  const { keycloak } = useKeycloak();
   const dispatch = useDispatch();
   const isCreating = !event;
 
@@ -84,7 +86,7 @@ const UpsertEventFrom = ({ event, range, onCancel }) => {
     dispatch(
       openSnackbar({
         open: true,
-        message: 'Event deleted successfully.',
+        message: 'Avilability deleted successfully.',
         variant: 'alert',
         alert: {
           color: 'success'

@@ -41,7 +41,8 @@ const convertAvailabilityToFullCalendarEvents = (events) => {
       startTime: event.startTime,
       endTime: event.endTime,
       startRecur: event.startDate,
-      endRecur: event.endDate
+      endRecur: event.endDate,
+      allDay: false
     };
   });
 
@@ -86,15 +87,6 @@ const calendar = createSlice({
       state.selectedEventId = eventId;
     },
 
-    // create event
-    createEvent(state, action) {
-      const newEvent = action.payload;
-      state.isLoader = false;
-      state.isModalOpen = false;
-      state.events = [...state.events, newEvent];
-      state.fcEvents = convertAvailabilityToFullCalendarEvents(state.events);
-    },
-
     // select date range
     selectRange(state, action) {
       const { start, end } = action.payload;
@@ -121,7 +113,10 @@ export function getEvents(keycloak) {
   return async () => {
     dispatch(calendar.actions.loading());
     try {
-      const response = await axios.get(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username) + '/availability');
+      const response = await axios.get(
+        process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username) + '/availability',
+        { headers: { Authorization: 'Bearer ' + keycloak.idToken } }
+      );
       dispatch(calendar.actions.setEvents(response.data.periods));
 
       /*var events = [
@@ -167,8 +162,12 @@ export function createEvent(newEvent, keycloak) {
   return async () => {
     dispatch(calendar.actions.loading());
     try {
-      var newEvents = [...store.calendar.events, newEvent];
-      const response = await axios.put(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username) + '/availability', newEvents);
+      var newEvents = [...store.getState().calendar.events, newEvent];
+      const response = await axios.put(
+        process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username) + '/availability',
+        { periods: newEvents },
+        { headers: { Authorization: 'Bearer ' + keycloak.idToken } }
+      );
       dispatch(calendar.actions.setEvents(response.data.periods));
     } catch (error) {
       dispatch(calendar.actions.hasError(error));
@@ -180,13 +179,17 @@ export function updateEvent(eventId, updateEvent, keycloak) {
   return async () => {
     dispatch(calendar.actions.loading());
     try {
-      const newEvents = store.calendar.events.map((item) => {
+      const newEvents = store.getState().calendar.events.map((item) => {
         if (item.id === eventId) {
           return updateEvent;
         }
         return item;
       });
-      const response = await axios.put(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username) + '/availability', newEvents);
+      const response = await axios.put(
+        process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username) + '/availability',
+        { periods: newEvents },
+        { headers: { Authorization: 'Bearer ' + keycloak.idToken } }
+      );
       dispatch(calendar.actions.setEvents(response.data.periods));
     } catch (error) {
       dispatch(calendar.actions.hasError(error));
@@ -198,8 +201,12 @@ export function deleteEvent(eventId, keycloak) {
   return async () => {
     dispatch(calendar.actions.loading());
     try {
-      const newEvents = store.calendar.events.filter((event) => event.id !== eventId);
-      const response = await axios.put(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username) + '/availability', newEvents);
+      const newEvents = store.getState().calendar.events.filter((event) => event.id !== eventId);
+      const response = await axios.put(
+        process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username) + '/availability',
+        { periods: newEvents },
+        { headers: { Authorization: 'Bearer ' + keycloak.idToken } }
+      );
       dispatch(calendar.actions.setEvents(response.data.periods));
     } catch (error) {
       dispatch(calendar.actions.hasError(error));
