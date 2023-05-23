@@ -37,18 +37,18 @@ import { normalizeBooleanInputValue } from 'utils/stringUtils';
 // constant
 const getInitialValues = (event, range) => {
   const newEvent = {
-    notes: '',
-    hasMonday: false,
-    hasTuesday: false,
-    hasWednesday: false,
-    hasThursday: false,
-    hasFriday: false,
+    notes: 'I am available in this period',
+    hasMonday: true,
+    hasTuesday: true,
+    hasWednesday: true,
+    hasThursday: true,
+    hasFriday: true,
     hasSaturday: false,
     hasSunday: false,
     startDate: range ? new Date(range.start) : new Date(),
     endDate: range ? new Date(range.end) : new Date(),
-    startTime: '09:00:00',
-    endTime: '17:30:00'
+    startTime: '09:00',
+    endTime: '17:30'
   };
 
   if (event || range) {

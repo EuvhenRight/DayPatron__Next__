@@ -26,7 +26,7 @@ import { PlusOutlined } from '@ant-design/icons';
 
 const ProfileAvailabilityPage = () => {
   const matchDownSM = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-  const { calendarView, events, isModalOpen, selectedRange } = useSelector((state) => state.calendar);
+  const { calendarView, fcEvents, isModalOpen, selectedRange } = useSelector((state) => state.calendar);
   const selectedEvent = useSelector((state) => {
     const { events, selectedEventId } = state.calendar;
     if (selectedEventId) {
@@ -150,7 +150,7 @@ const ProfileAvailabilityPage = () => {
           editable
           droppable
           selectable
-          events={events}
+          events={fcEvents}
           ref={calendarRef}
           rerenderDelay={10}
           initialDate={date}

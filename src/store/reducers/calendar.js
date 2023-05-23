@@ -8,10 +8,44 @@ const initialState = {
   calendarView: 'dayGridMonth',
   error: false,
   events: [],
+  fcEvents: [],
   isLoader: false,
   isModalOpen: false,
   selectedEventId: null,
   selectedRange: null
+};
+
+const convertAvailabilityToFullCalendarEvents = (events) => {
+  var result = events.map((event) => {
+    var daysOfWeek = [];
+    if (event.hasMonday)
+      daysOfWeek.push(1);
+    if (event.hasTuesday)
+      daysOfWeek.push(2);
+    if (event.hasWednesday)
+      daysOfWeek.push(3);
+    if (event.hasThursday)
+      daysOfWeek.push(4);
+    if (event.hasFriday)
+      daysOfWeek.push(5);
+    if (event.hasSaturday)
+      daysOfWeek.push(6);
+    if (event.hasSunday)
+      daysOfWeek.push(7);
+
+    return {
+      id: event.id,
+      title: 'Available',
+      description: event.notes,
+      daysOfWeek: daysOfWeek,
+      startTime: event.startTime,
+      endTime: event.endTime,
+      startRecur: event.startDate,
+      endRecur: event.endDate
+    };
+  });
+
+  return result;
 };
 
 // ==============================|| CALENDAR - SLICE ||============================== //
@@ -35,6 +69,7 @@ const calendar = createSlice({
     setEvents(state, action) {
       state.isLoader = false;
       state.events = action.payload;
+      state.fcEvents = convertAvailabilityToFullCalendarEvents(state.events);
     },
 
     // update calendar view
@@ -55,6 +90,7 @@ const calendar = createSlice({
       state.isLoader = false;
       state.isModalOpen = false;
       state.events = [...state.events, newEvent];
+      state.fcEvents = convertAvailabilityToFullCalendarEvents(state.events);
     },
 
     // update event
@@ -70,6 +106,7 @@ const calendar = createSlice({
       state.isLoader = false;
       state.isModalOpen = false;
       state.events = eventUpdate;
+      state.fcEvents = convertAvailabilityToFullCalendarEvents(state.events);
     },
 
     // delete event
@@ -78,6 +115,7 @@ const calendar = createSlice({
       state.isModalOpen = false;
       const deleteEvent = state.events.filter((event) => event.id !== eventId);
       state.events = deleteEvent;
+      state.fcEvents = convertAvailabilityToFullCalendarEvents(state.events);
     },
 
     // select date range
@@ -110,21 +148,19 @@ export function getEvents() {
       //dispatch(calendar.actions.setEvents(response.data.events));
       var events = [
         {
-          id: 'blue',
-          title: 'Blue events',
-          description: 'Blue events body',
-          groupId: 'blueEvents', // recurrent events in this group move together
-          daysOfWeek: ['4'],
-          startTime: '10:45:00',
-          endTime: '12:45:00',
-          startRecur: '2023-05-01',
-          endRecur: '2023-05-22'
-        },
-        {
-          daysOfWeek: ['3'], // these recurrent events move separately
-          startTime: '11:00:00',
-          endTime: '11:30:00',
-          color: 'red'
+          id: 'avl1',
+          notes: 'Availability notes',
+          hasMonday: true,
+          hasTuesday: true,
+          hasWednesday: true,
+          hasThursday: true,
+          hasFriday: true,
+          hasSaturday: true,
+          hasSunday: false,
+          startTime: '09:00:00',
+          endTime: '18:00:00',
+          startDate: '2023-05-01',
+          endDate: '2023-05-22'
         }
       ];
       dispatch(calendar.actions.setEvents(events));
