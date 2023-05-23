@@ -1,8 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { addDays, subDays } from 'date-fns';
 
 // project import
 import axios from 'utils/axios';
 import { dispatch, store } from 'store';
+import { dateTimeToTimeString } from 'utils/stringUtils';
 
 const initialState = {
   calendarView: 'dayGridMonth',
@@ -38,10 +40,10 @@ const convertAvailabilityToFullCalendarEvents = (events) => {
       title: 'Available',
       description: event.notes,
       daysOfWeek: daysOfWeek,
-      startTime: event.startTime,
-      endTime: event.endTime,
+      startTime: dateTimeToTimeString(event.startTime),
+      endTime: dateTimeToTimeString(event.endTime),
       startRecur: event.startDate,
-      endRecur: event.endDate,
+      endRecur: addDays(new Date(event.endDate), 1),
       allDay: false
     };
   });
@@ -82,7 +84,6 @@ const calendar = createSlice({
     // select event
     selectEvent(state, action) {
       const eventId = action.payload;
-      console.log(eventId);
       state.isModalOpen = true;
       state.selectedEventId = eventId;
     },
@@ -91,7 +92,7 @@ const calendar = createSlice({
     selectRange(state, action) {
       const { start, end } = action.payload;
       state.isModalOpen = true;
-      state.selectedRange = { start, end };
+      state.selectedRange = { start, end: subDays(new Date(end), 1).valueOf() };
     },
 
     // modal toggle

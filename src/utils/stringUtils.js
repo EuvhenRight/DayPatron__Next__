@@ -23,4 +23,14 @@ function removeEmptyOrNull(obj) {
   return obj;
 }
 
-export { normalizeInputValue, normalizeNullableInputValue, normalizeBooleanInputValue, prepareApiBody };
+function dateTimeToTimeString(dateTimeString) {
+  var dateTime = new Date(dateTimeString);
+  var result =
+    dateTime.getHours().toString().padStart(2, '0') + ':' +
+    dateTime.getMinutes().toString().padStart(2, '0') + ':' +
+    dateTime.getSeconds().toString().padStart(2, '0');
+
+  return result;
+}
+
+export { normalizeInputValue, normalizeNullableInputValue, normalizeBooleanInputValue, prepareApiBody, dateTimeToTimeString };
