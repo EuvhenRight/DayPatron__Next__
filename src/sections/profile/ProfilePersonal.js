@@ -81,6 +81,7 @@ const ProfilePersonal = () => {
           phoneNumber: state.phoneNumber,
           country: state.country,
           linkedInUrl: state.linkedInUrl,
+          peraInterviewUrl: state.peraInterviewUrl,
           submit: null
         }}
         validationSchema={Yup.object().shape({
@@ -90,6 +91,7 @@ const ProfilePersonal = () => {
           phoneNumber: Yup.string().matches(/^[+]*[0-9]{3,}$/g, 'Phone Number is not valid').max(20).nullable(true),
           country: Yup.string().nullable(true),
           linkedInUrl: Yup.string().max(255).nullable(true),
+          peraInterviewUrl: Yup.string().max(255).nullable(true),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
@@ -302,6 +304,27 @@ const ProfilePersonal = () => {
                     {touched.linkedInUrl && errors.linkedInUrl && (
                       <FormHelperText error id="personal-linked-in-url-helper">
                         {errors.linkedInUrl}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <InputLabel htmlFor="personal-pera-interview-url">Pera Interview Url</InputLabel>
+                    <TextField
+                      fullWidth
+                      id="personal-pera-interview-url"
+                      value={normalizeInputValue(values.peraInterviewUrl)}
+                      name="peraInterviewUrl"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      placeholder="Pera Interview Url"
+                      autoFocus
+                      inputRef={inputRef}
+                    />
+                    {touched.peraInterviewUrl && errors.peraInterviewUrl && (
+                      <FormHelperText error id="personal-pera-interview-url-helper">
+                        {errors.peraInterviewUrl}
                       </FormHelperText>
                     )}
                   </Stack>
