@@ -263,8 +263,13 @@ const UpsertMission = ({ missionId }) => {
       <FormikProvider value={formik}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-            <DialogTitle>{mission ? 'Update Mission' : 'Create Mission'}</DialogTitle>
-            <Divider />
+            {!mission && 
+              <>
+                <DialogTitle>Create Mission</DialogTitle>
+                <Divider />
+              </>  
+            }
+            
             <DialogContent sx={{ p: 2.5 }}>
               <Grid container spacing={3}>
                 <Grid item xs={12} md={1}>

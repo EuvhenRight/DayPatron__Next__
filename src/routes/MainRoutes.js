@@ -23,6 +23,8 @@ const MissionsPage = Loadable(lazy(() => import('pages/missions-page')));
 const CreateMissionSection = Loadable(lazy(() => import('sections/mission/CreateMissionSection')));
 const MyMissionsSection = Loadable(lazy(() => import('sections/mission/MyMissionsSection')));
 const MissionSection = Loadable(lazy(() => import('sections/mission/MissionSection')));
+const MissionOverview = Loadable(lazy(() => import('sections/mission/MissionOverview')));
+const MissionContractorMatches = Loadable(lazy(() => import('sections/mission/MissionContractorMatches')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -73,7 +75,17 @@ const MainRoutes = {
             },
             {
               path: ':id',
-              element: <MissionSection />
+              element: <MissionSection />,
+              children: [
+                {
+                  path: 'overview',
+                  element: <MissionOverview />
+                },
+                {
+                  path: 'matches',
+                  element: <MissionContractorMatches />
+                }
+              ]
             }
           ]
         }

@@ -43,7 +43,7 @@ const MissionCard = ({ mission, alertMissionToDelete }) => {
   const navigate = useNavigate();
 
   const handleClickDetails = () => {
-    navigate('/missions/' + mission.id);
+    navigate('/missions/' + mission.id + '/overview');
   };
 
   const handleClickDelete = () => {
