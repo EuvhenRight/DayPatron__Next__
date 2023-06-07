@@ -11,15 +11,16 @@ import MainCard from 'components/MainCard';
 import { FileTextOutlined, BlockOutlined } from '@ant-design/icons';
 
 const MissionSection = () => {
-  let { id } = useParams();
+  let { missionId, contractorId } = useParams();
   const { pathname } = useLocation();
 
   let selectedTab = 0;
   switch (pathname) {
-    case '/missions/' + id + '/matches':
+    case '/missions/' + missionId + '/matches/' + contractorId:
+    case '/missions/' + missionId + '/matches':
       selectedTab = 1;
       break;
-    case '/missions/' + id + '/overview':
+    case '/missions/' + missionId + '/overview':
     default:
       selectedTab = 0;
   }
@@ -35,8 +36,8 @@ const MissionSection = () => {
 
       <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%' }}>
         <Tabs value={value} onChange={handleChange} variant="scrollable" scrollButtons="auto" aria-label="account profile tab">
-          <Tab label="Overview" component={Link} to={'/missions/' + id + '/overview'} icon={<FileTextOutlined />} iconPosition="start" />
-          <Tab label="Matches" component={Link} to={'/missions/' + id + '/matches'} icon={<BlockOutlined />} iconPosition="start" />
+          <Tab label="Overview" component={Link} to={'/missions/' + missionId + '/overview'} icon={<FileTextOutlined />} iconPosition="start" />
+          <Tab label="Matches" component={Link} to={'/missions/' + missionId + '/matches'} icon={<BlockOutlined />} iconPosition="start" />
         </Tabs>
       </Box>
       <Box sx={{ mt: 2.5 }}>

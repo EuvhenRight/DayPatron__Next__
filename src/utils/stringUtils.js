@@ -28,4 +28,10 @@ function getEllipsis(str, charactersCount) {
   return result;
 }
 
-export { normalizeInputValue, normalizeNullableInputValue, prepareApiBody, removeEmptyOrNull, getEllipsis };
+function compareSortValues(a, b) {
+  var result = (a ?? '')?.localeCompare(b ?? '');
+
+  return result;
+}
+
+export { normalizeInputValue, normalizeNullableInputValue, prepareApiBody, removeEmptyOrNull, getEllipsis, compareSortValues };

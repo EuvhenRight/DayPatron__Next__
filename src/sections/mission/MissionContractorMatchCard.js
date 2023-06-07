@@ -25,23 +25,17 @@ import IconButton from 'components/@extended/IconButton';
 // assets
 import { EnvironmentOutlined, LinkedinOutlined, MailOutlined, MoreOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import industries from 'data/industries';
 import countries from 'data/countries';
 
 // ==============================|| MISSION CONTRACTOR MATCH - CARD ||============================== //
 
-const avatarImage = require.context('assets/images/companies', true);
+const avatarImage = require.context('assets/images/users', true);
 
-const MissionContractorMatchCard = ({ employer, alertEmployerToDelete }) => {
+const MissionContractorMatchCard = ({ missionContractorMatch, missionId }) => {
   const navigate = useNavigate();
 
   const handleClickDetails = () => {
-    navigate('/contractors/' + employer.id);
-  };
-
-  const handleClickDelete = () => {
-    alertEmployerToDelete(employer);
-    setAnchorEl(null);
+    navigate('/missions/' + missionId + '/matches/' + missionContractorMatch?.contractor?.id);
   };
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -69,15 +63,10 @@ const MissionContractorMatchCard = ({ employer, alertEmployerToDelete }) => {
                 }
               >
                 <ListItemAvatar>
-                  <Avatar onClick={handleClickDetails} className="clickable" alt={employer.name} src={employer?.logoImageUrl ? employer.logoImageUrl : avatarImage('./default.png')} />
+                  <Avatar onClick={handleClickDetails} className="clickable" alt={missionContractorMatch?.contractor?.firstName + ' ' + missionContractorMatch?.contractor?.lastName} src={missionContractorMatch?.contractor?.mainImageUrl ? missionContractorMatch.contractor.mainImageUrl : avatarImage('./default.png')} />
                 </ListItemAvatar>
                 <ListItemText className="list-card-title"
-                  primary={<Typography onClick={handleClickDetails} variant="subtitle1">{employer.name}</Typography>}
-                  secondary={
-                    <Typography variant="caption" color="secondary">
-                      {industries.find(item => item.code === employer.industry)?.label}
-                    </Typography>
-                  }
+                  primary={<Typography onClick={handleClickDetails} variant="subtitle1">{missionContractorMatch?.contractor?.firstName + ' ' + missionContractorMatch?.contractor?.lastName}</Typography>}
                 />
               </ListItem>
             </List>
@@ -100,7 +89,6 @@ const MissionContractorMatchCard = ({ employer, alertEmployerToDelete }) => {
               }}
             >
               <MenuItem onClick={handleClickDetails}>Details</MenuItem>
-              <MenuItem onClick={handleClickDelete}>Archive</MenuItem>
             </Menu>
           </Grid>
           <Grid item xs={12}>
@@ -111,37 +99,37 @@ const MissionContractorMatchCard = ({ employer, alertEmployerToDelete }) => {
             <Grid container spacing={1}>
               <Grid item xs={12}>
                 <List sx={{ p: 0, overflow: 'hidden', '& .MuiListItem-root': { px: 0, py: 0.5 } }}>
-                  {employer.email &&
+                  {missionContractorMatch?.contractor?.email &&
                     <ListItem>
                       <ListItemIcon>
                         <MailOutlined />
                       </ListItemIcon>
                       <ListItemText
                         primary={
-                          <Link href={'mailto:' + employer.email} target="_blank" sx={{ textTransform: 'lowercase' }}>
-                            {employer.email}
+                          <Link href={'mailto:' + missionContractorMatch?.contractor?.email} target="_blank" sx={{ textTransform: 'lowercase' }}>
+                            {missionContractorMatch?.contractor?.email}
                           </Link>
                         }
                       />
                     </ListItem>}
                 </List>
                 <List sx={{ p: 0, overflow: 'hidden', '& .MuiListItem-root': { px: 0, py: 0.5 } }}>
-                  {employer.country && 
+                  {missionContractorMatch?.contractor?.country && 
                   <ListItem>
                     <ListItemIcon>
                       <EnvironmentOutlined />
                     </ListItemIcon>
-                    <ListItemText primary={<Typography color="secondary">{countries.find(x => x.code === employer.country)?.label}</Typography>} />
+                    <ListItemText primary={<Typography color="secondary">{countries.find(x => x.code === missionContractorMatch?.contractor?.country)?.label}</Typography>} />
                   </ListItem>}
-                  {employer.linkedInUrl &&
+                  {missionContractorMatch?.contractor?.linkedInUrl &&
                     <ListItem>
                       <ListItemIcon>
                         <LinkedinOutlined />
                       </ListItemIcon>
                       <ListItemText
                         primary={
-                          <Link href={employer.linkedInUrl} target="_blank" sx={{ textTransform: 'lowercase' }}>
-                            {employer.linkedInUrl}
+                          <Link href={missionContractorMatch?.contractor?.linkedInUrl} target="_blank" sx={{ textTransform: 'lowercase' }}>
+                            {missionContractorMatch?.contractor?.linkedInUrl}
                           </Link>
                         }
                       />
@@ -169,7 +157,8 @@ const MissionContractorMatchCard = ({ employer, alertEmployerToDelete }) => {
 };
 
 MissionContractorMatchCard.propTypes = {
-  employer: PropTypes.object
+  missionContractorMatch: PropTypes.object,
+  missionId: PropTypes.string
 };
 
 export default MissionContractorMatchCard;

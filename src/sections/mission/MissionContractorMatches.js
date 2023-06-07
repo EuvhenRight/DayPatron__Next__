@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 
 // material-ui
 import {
@@ -24,6 +23,7 @@ import usePagination from 'hooks/usePagination';
 
 // assets
 import { useKeycloak } from '@react-keycloak/web';
+import { compareSortValues } from 'utils/stringUtils';
 
 // ==============================|| MISSION CONTRACTOR MATCHES ||============================== //
 
@@ -50,8 +50,7 @@ const allColumns = [
   }
 ];
 
-const MissionContractorMatches = () => {
-  let { id } = useParams();
+const MissionContractorMatches = ({ missionId }) => {
   const { keycloak } = useKeycloak();
   const matchDownSM = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
@@ -63,7 +62,7 @@ const MissionContractorMatches = () => {
 
   const bindMissionContractorMatches = async () => {
     try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/' + encodeURIComponent(id) + '/contractor-matches',
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/' + encodeURIComponent(missionId) + '/matches',
         {
           method: 'GET',
           headers: {
@@ -157,16 +156,16 @@ const MissionContractorMatches = () => {
           _DATA
             .currentData()
             .sort(function (a, b) {
-              if (sortBy === 'First Name') return a.firstName.localeCompare(b.firstName);
-              if (sortBy === 'Last Name') return a.lastName.localeCompare(b.lastName);
-              if (sortBy === 'Email') return a.email.localeCompare(b.email);
-              if (sortBy === 'LinkedIn') return a.linkedInUrl.localeCompare(b.linkedInUrl);
+              if (sortBy === 'First Name') return compareSortValues(a?.contractor?.firstName, b?.contractor?.firstName);
+              if (sortBy === 'Last Name') return compareSortValues(a?.contractor?.lastName, b?.contractor?.lastName);
+              if (sortBy === 'Email') return compareSortValues(a?.contractor?.email, b?.contractor?.email);
+              if (sortBy === 'LinkedIn') return compareSortValues(a?.contractor?.linkedInUrl, b?.contractor?.linkedInUrl);
               return a;
             })
             .map((missionContractorMatch, index) => (
               <Slide key={index} direction="up" in={true} timeout={50}>
                 <Grid item xs={12} sm={6} lg={4}>
-                  <MissionContractorMatchCard missionContractorMatch={missionContractorMatch} />
+                  <MissionContractorMatchCard missionContractorMatch={missionContractorMatch} missionId={missionId} />
                 </Grid>
               </Slide>
             ))

@@ -27,6 +27,7 @@ import usePagination from 'hooks/usePagination';
 import { PlusOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useKeycloak } from '@react-keycloak/web';
+import { compareSortValues } from 'utils/stringUtils';
 
 // ==============================|| EMPLOYERS - PAGE ||============================== //
 
@@ -183,11 +184,11 @@ const MyEmployersSection = () => {
           _DATA
             .currentData()
             .sort(function (a, b) {
-              if (sortBy === 'Name') return a.name.localeCompare(b.name);
-              if (sortBy === 'Email') return a.email.localeCompare(b.email);
-              if (sortBy === 'Industry') return a.industry.localeCompare(b.industry);
-              if (sortBy === 'Chamber Of Commerce Identifier') return a.chamberOfCommerceIdentifier.localeCompare(b.chamberOfCommerceIdentifier);
-              if (sortBy === 'LinkedIn') return a.linkedInUrl.localeCompare(b.linkedInUrl);
+              if (sortBy === 'Name') return compareSortValues(a?.name, b?.name);
+              if (sortBy === 'Email') return compareSortValues(a?.email, b?.email);
+              if (sortBy === 'Industry') return compareSortValues(a?.industry, b?.industry);
+              if (sortBy === 'Chamber Of Commerce Identifier') return compareSortValues(a?.chamberOfCommerceIdentifier, b?.chamberOfCommerceIdentifier);
+              if (sortBy === 'LinkedIn') return compareSortValues(a?.linkedInUrl, b?.linkedInUrl);
               return a;
             })
             .map((employer, index) => (

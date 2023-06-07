@@ -27,6 +27,7 @@ import usePagination from 'hooks/usePagination';
 import { PlusOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useKeycloak } from '@react-keycloak/web';
+import { compareSortValues } from 'utils/stringUtils';
 
 // ==============================|| MISSIONS - PAGE ||============================== //
 
@@ -171,8 +172,8 @@ const MyMissionsSection = () => {
           _DATA
             .currentData()
             .sort(function (a, b) {
-              if (sortBy === 'Title') return a.title.localeCompare(b.title);
-              if (sortBy === 'Description') return a.description.localeCompare(b.description);
+              if (sortBy === 'Title') return compareSortValues(a?.title, b?.title);
+              if (sortBy === 'Description') return compareSortValues(a?.description, b?.description);
               return a;
             })
             .map((mission, index) => (
