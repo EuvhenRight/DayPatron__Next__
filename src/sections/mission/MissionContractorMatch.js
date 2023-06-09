@@ -14,12 +14,17 @@ import {
   ListItemSecondaryAction,
   Stack,
   Typography,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  ButtonBase
 } from '@mui/material';
 import { LinkedinOutlined, EnvironmentOutlined, MailOutlined, PhoneOutlined, RightOutlined } from '@ant-design/icons';
 import MainCard from 'components/MainCard';
 import Avatar from 'components/@extended/Avatar';
 import { getEllipsis } from 'utils/stringUtils';
 import countries from 'data/countries';
+import { PopupTransition } from 'components/@extended/Transitions';
 
 const avatarImage = require.context('assets/images/users', true);
 
@@ -28,6 +33,7 @@ const avatarImage = require.context('assets/images/users', true);
 const MissionContractorMatch = ({ missionId, contractorId }) => {
   const { keycloak } = useKeycloak();
   const [missionContractorMatch, setMissionContractorMatch] = useState({});
+  const [selectedTraitResult, setSelectedTraitResult] = useState(null);
 
   const theme = useTheme();
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -53,6 +59,14 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  const handleOpenTraitDetails = async (traitResult) => {
+    setSelectedTraitResult(traitResult);
+  }
+
+  const handleCloseTraitDetails = async () => {
+    setSelectedTraitResult(null);
   }
 
   useEffect(() => {
@@ -199,7 +213,10 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                       <Grid key={index} item xs={12}>
                         <Grid container spacing={3}>
                           <Grid item xs={12} sm={3}>
-                            <Typography variant="h5">{item?.trait?.hrPage?.title}</Typography>
+                            <ButtonBase component={Link} onClick={() => { handleOpenTraitDetails(item); }} underline="none">
+                              <Typography variant="h5" sx={{ mr: 1.25 }}>{item?.trait?.hrPage?.title}</Typography>
+                              <RightOutlined />
+                            </ButtonBase>
                           </Grid>
                           <Grid item xs={12} sm={9}>
                             <LinearWithLabel value={item?.percentile * 100} />
@@ -214,6 +231,26 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
           </Grid>
         </Grid>
       </Grid>
+
+      <Dialog
+        maxWidth="sm"
+        fullWidth
+        TransitionComponent={PopupTransition}
+        onClose={handleCloseTraitDetails}
+        open={selectedTraitResult ? true : false}
+        sx={{ '& .MuiDialog-paper': { p: 0 } }}
+      >
+        <DialogTitle>{selectedTraitResult?.trait?.hrPage?.title}</DialogTitle>
+        <Divider />
+        <DialogContent sx={{ p: 2.5 }}>
+          <Typography>{selectedTraitResult?.trait?.hrPage?.body}</Typography>
+          <Typography variant="caption">
+            Other associated competencies:
+            {selectedTraitResult?.trait?.relatedTraits?.map((item, index) => { return ' ' + item?.hrPage?.title + (index < selectedTraitResult?.trait?.relatedTraits?.length - 1 ? ',' : ''); })}
+          </Typography>
+        </DialogContent>
+      </Dialog>
+
     </Grid>
   );
 };
