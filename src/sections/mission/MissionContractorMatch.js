@@ -176,40 +176,40 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <MainCard>
+              {selectedPeraAssessment &&
+                <Grid container spacing={3}>
+                  <Grid item xs={12}>
+                    <Typography variant="h3">{selectedPeraAssessment?.linkedAssessment?.assessment?.name}</Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="h4">{selectedPeraAssessment?.linkedAssessment?.assessment?.hrPage?.subtitle?.replace('{candidateName}', missionContractorMatch?.contractor?.firstName + ' ' + missionContractorMatch?.contractor?.lastName)}</Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <LinearWithLabel value={selectedPeraAssessment?.percentile * 100} />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography variant="h4">Results</Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography>{selectedPeraAssessment?.linkedAssessment?.assessment?.hrPage?.body}</Typography>
+                  </Grid>
 
-              <Grid container spacing={3}>
-                <Grid item xs={12}>
-                  <Typography variant="h3">{selectedPeraAssessment?.linkedAssessment?.assessment?.name}</Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="h4">{selectedPeraAssessment?.linkedAssessment?.assessment?.hrPage?.subtitle?.replace('{candidateName}', missionContractorMatch?.contractor?.firstName + ' ' + missionContractorMatch?.contractor?.lastName)}</Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <LinearWithLabel value={selectedPeraAssessment?.percentile * 100} />
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography variant="h4">Results</Typography>
-                </Grid>
-                <Grid item xs={12}>
-                  <Typography>{selectedPeraAssessment?.linkedAssessment?.assessment?.hrPage?.body}</Typography>
-                </Grid>
-
-                {selectedPeraAssessment?.traitResults?.map((item, index) => {
-                  return (
-                    <Grid key={index} item xs={12}>
-                      <Grid container spacing={3}>
-                        <Grid item xs={12} sm={3}>
-                          <Typography variant="h5">{item?.trait?.hrPage?.title}</Typography>
-                        </Grid>
-                        <Grid item xs={12} sm={9}>
-                          <LinearWithLabel value={item?.percentile * 100} />
+                  {selectedPeraAssessment?.traitResults?.map((item, index) => {
+                    return (
+                      <Grid key={index} item xs={12}>
+                        <Grid container spacing={3}>
+                          <Grid item xs={12} sm={3}>
+                            <Typography variant="h5">{item?.trait?.hrPage?.title}</Typography>
+                          </Grid>
+                          <Grid item xs={12} sm={9}>
+                            <LinearWithLabel value={item?.percentile * 100} />
+                          </Grid>
                         </Grid>
                       </Grid>
-                    </Grid>
-                  );
-                })}
-
-              </Grid>
+                    );
+                  })}
+                </Grid>
+              }
             </MainCard>
           </Grid>
         </Grid>
