@@ -175,8 +175,8 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
       <Grid item xs={12} sm={7} md={8} xl={9}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <MainCard>
-              {selectedPeraAssessment &&
+            {selectedPeraAssessment &&
+              <MainCard>
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
                     <Typography variant="h3">{selectedPeraAssessment?.linkedAssessment?.assessment?.name}</Typography>
@@ -209,8 +209,8 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                     );
                   })}
                 </Grid>
-              }
-            </MainCard>
+              </MainCard>
+            }
           </Grid>
         </Grid>
       </Grid>
