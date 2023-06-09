@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useKeycloak } from '@react-keycloak/web';
 import LinearWithLabel from 'components/@extended/progress/LinearWithLabel';
+import { useTheme } from '@mui/material/styles';
 import {
   Divider,
   Grid,
@@ -8,11 +9,13 @@ import {
   List,
   ListItem,
   ListItemIcon,
+  ListItemButton,
+  ListItemText,
   ListItemSecondaryAction,
   Stack,
-  Typography
+  Typography,
 } from '@mui/material';
-import { LinkedinOutlined, EnvironmentOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
+import { LinkedinOutlined, EnvironmentOutlined, MailOutlined, PhoneOutlined, RightOutlined } from '@ant-design/icons';
 import MainCard from 'components/MainCard';
 import Avatar from 'components/@extended/Avatar';
 import { getEllipsis } from 'utils/stringUtils';
@@ -25,6 +28,13 @@ const avatarImage = require.context('assets/images/users', true);
 const MissionContractorMatch = ({ missionId, contractorId }) => {
   const { keycloak } = useKeycloak();
   const [missionContractorMatch, setMissionContractorMatch] = useState({});
+
+  const theme = useTheme();
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const handleListItemClick = (index) => {
+    setSelectedIndex(index);
+  };
 
   const bindMissionContractorMatch = async () => {
     try {
@@ -50,6 +60,8 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
       await bindMissionContractorMatch();
     })();
   }, []);
+
+  let selectedPeraAssessment = missionContractorMatch?.contractorPeraSurveyResponse?.responseResultsTree[selectedIndex];
 
   return (
     <Grid container spacing={3}>
@@ -137,9 +149,26 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                     }
                   </List>
                 </Grid>
+
+                <Grid item xs={12}>
+                  <List component="nav" sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32, color: theme.palette.grey[500] } }}>
+                    {missionContractorMatch?.contractorPeraSurveyResponse?.responseResultsTree?.map((item, index) => {
+                      return (
+                        <ListItemButton key={index} selected={selectedIndex === index} onClick={() => handleListItemClick(index)}>
+                          <ListItemIcon>
+                            <RightOutlined />
+                          </ListItemIcon>
+                          <ListItemText primary={item?.linkedAssessment?.assessment?.name} />
+                        </ListItemButton>
+                      );
+                    })}
+                  </List>
+                </Grid>
+
               </Grid>
             </MainCard>
           </Grid>
+
         </Grid>
 
       </Grid>
@@ -147,12 +176,40 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <MainCard>
-              {missionContractorMatch?.contractor?.firstName}
-              {missionContractorMatch?.contractorPeraSurveyResponse?.responseResultsTree?.map((item, index) => {
-                return (
-                  <LinearWithLabel key={index} value={item?.percentile * 100} />
-                );
-              })}
+
+              <Grid container spacing={3}>
+                <Grid item xs={12}>
+                  <Typography variant="h3">{selectedPeraAssessment?.linkedAssessment?.assessment?.name}</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="h4">{selectedPeraAssessment?.linkedAssessment?.assessment?.hrPage?.subtitle?.replace('{candidateName}', missionContractorMatch?.contractor?.firstName + ' ' + missionContractorMatch?.contractor?.lastName)}</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <LinearWithLabel value={selectedPeraAssessment?.percentile * 100} />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="h4">Results</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography>{selectedPeraAssessment?.linkedAssessment?.assessment?.hrPage?.body}</Typography>
+                </Grid>
+
+                {selectedPeraAssessment?.traitResults?.map((item, index) => {
+                  return (
+                    <Grid key={index} item xs={12}>
+                      <Grid container spacing={3}>
+                        <Grid item xs={12} sm={3}>
+                          <Typography variant="h5">{item?.trait?.hrPage?.title}</Typography>
+                        </Grid>
+                        <Grid item xs={12} sm={9}>
+                          <LinearWithLabel value={item?.percentile * 100} />
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  );
+                })}
+
+              </Grid>
             </MainCard>
           </Grid>
         </Grid>

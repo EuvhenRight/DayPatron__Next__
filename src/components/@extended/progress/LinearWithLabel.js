@@ -6,7 +6,7 @@ import { styled } from '@mui/material/styles';
 
 // ==============================|| PROGRESS - LINEAR WITH LABEL ||============================== //
 const StyledLinearProgress = styled(LinearProgress)(() => ({
-  height: 15
+  height: 30
 }));
 
 export default function LinearWithLabel({ value, ...others }) {
