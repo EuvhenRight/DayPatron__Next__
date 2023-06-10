@@ -17,9 +17,12 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
-  ButtonBase
+  ButtonBase,
+  Tab,
+  Tabs,
+  Box
 } from '@mui/material';
-import { LinkedinOutlined, EnvironmentOutlined, MailOutlined, PhoneOutlined, RightOutlined } from '@ant-design/icons';
+import { LinkedinOutlined, EnvironmentOutlined, MailOutlined, PhoneOutlined, RightOutlined, RiseOutlined, QuestionOutlined } from '@ant-design/icons';
 import MainCard from 'components/MainCard';
 import Avatar from 'components/@extended/Avatar';
 import { getEllipsis } from 'utils/stringUtils';
@@ -37,6 +40,11 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
 
   const theme = useTheme();
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [traitDetailsTabsValue, setTraitDetailsTabsValue] = useState(0);
+
+  const handleChangeTraitDetailsTabs = (event, newValue) => {
+    setTraitDetailsTabsValue(newValue);
+  };
 
   const handleListItemClick = (index) => {
     setSelectedIndex(index);
@@ -243,11 +251,44 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
         <DialogTitle>{selectedTraitResult?.trait?.hrPage?.title}</DialogTitle>
         <Divider />
         <DialogContent sx={{ p: 2.5 }}>
-          <Typography>{selectedTraitResult?.trait?.hrPage?.body}</Typography>
-          <Typography variant="caption">
+          <Typography paragraph="true">{selectedTraitResult?.trait?.hrPage?.body}</Typography>
+          <Typography variant="caption" paragraph="true">
             Other associated competencies:
             {selectedTraitResult?.trait?.relatedTraits?.map((item, index) => { return ' ' + item?.hrPage?.title + (index < selectedTraitResult?.trait?.relatedTraits?.length - 1 ? ',' : ''); })}
           </Typography>
+
+          <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%' }}>
+            <Tabs value={traitDetailsTabsValue} onChange={handleChangeTraitDetailsTabs} variant="scrollable" scrollButtons="auto">
+              <Tab label="Growth tip" component={Link} icon={<RiseOutlined />} iconPosition="start" />
+              <Tab label="Follow-up questions" component={Link} icon={<QuestionOutlined />} iconPosition="start" />
+            </Tabs>
+          </Box>
+          {traitDetailsTabsValue === 0 && 
+            <Box sx={{ mt: 2.5 }}>
+              {selectedTraitResult?.trait?.tips?.map((tip) => {
+                return (
+                  <>
+                    <Typography variant="h5">{tip?.title}</Typography>
+                    <Typography paragraph="true">{tip?.body}</Typography>
+                  </>
+                );
+              })}
+            </Box>
+          }
+          {traitDetailsTabsValue === 1 &&
+            <Box sx={{ mt: 2.5 }}>
+              <Typography variant="h5">Questions</Typography>
+              <ol>
+                {selectedTraitResult?.trait?.hrQuestions?.map((question, questionIndex) => {
+                  return (
+                    <li key={questionIndex}>
+                      {question?.page?.title}
+                    </li>
+                  );
+                })}
+              </ol>
+            </Box>
+          }
         </DialogContent>
       </Dialog>
 
