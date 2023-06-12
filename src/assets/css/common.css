@@ -17,3 +17,17 @@
 .card-description-text {
     min-height: 50px;
 }
+.small-chip {
+    height: 14px;
+    font-size: 7pt;
+}
+.positive-chip span {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.button-h5-chip {
+    position: absolute;
+    margin: 0;
+    left: 0;
+    top: -14px;
+}

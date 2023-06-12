@@ -11,7 +11,7 @@
     "@emotion/styled": "^11.10.5",
     "@mui/base": "^5.0.0-alpha.101",
     "@mui/lab": "^5.0.0-alpha.103",
-    "@mui/material": "^5.10.9",
+    "@mui/material": "5.11.4",
     "@react-keycloak/web": "^3.4.0",
     "@reduxjs/toolkit": "^1.8.6",
     "@svgr/webpack": "^6.5.0",

@@ -3,6 +3,7 @@ import { useKeycloak } from '@react-keycloak/web';
 import LinearWithLabel from 'components/@extended/progress/LinearWithLabel';
 import { useTheme } from '@mui/material/styles';
 import {
+  Chip,
   Divider,
   Grid,
   Link,
@@ -20,9 +21,10 @@ import {
   ButtonBase,
   Tab,
   Tabs,
-  Box
+  Box,
+  IconButton
 } from '@mui/material';
-import { LinkedinOutlined, EnvironmentOutlined, MailOutlined, PhoneOutlined, RightOutlined, RiseOutlined, QuestionOutlined } from '@ant-design/icons';
+import { LinkedinOutlined, EnvironmentOutlined, MailOutlined, PhoneOutlined, RightOutlined, RiseOutlined, QuestionOutlined, CloseOutlined } from '@ant-design/icons';
 import MainCard from 'components/MainCard';
 import Avatar from 'components/@extended/Avatar';
 import { getEllipsis } from 'utils/stringUtils';
@@ -64,6 +66,7 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
       let json = await response.json();
 
       setMissionContractorMatch(json.missionContractorMatch);
+      console.log(json);
     } catch (error) {
       console.log(error);
     }
@@ -210,29 +213,66 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                     <LinearWithLabel value={selectedPeraAssessment?.percentile * 100} />
                   </Grid>
                   <Grid item xs={12}>
+                    <Grid container>
+                      <Grid item xs={6}>
+                        <Chip label="STRENGTH" size="small" color="success" className="small-chip" />
+                        {selectedPeraAssessment?.traitResults?.filter(x => x.isStrength)?.map((traitResult, traitResultIndex) => {
+                          return (
+                            <div key={traitResultIndex}>
+                              <ButtonBase component={Link} onClick={() => { handleOpenTraitDetails(traitResult); }} underline="none">
+                                <Typography variant="h5" sx={{mr: 1.25}} >{traitResult?.trait?.hrPage?.title}</Typography>
+                                <RightOutlined />
+                              </ButtonBase>
+                            </div>
+                          );
+                        })}
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Chip label="GROWTH OPPORTUNITY" size="small" color="error" className="small-chip" />
+                        {selectedPeraAssessment?.traitResults?.filter(x => x.isGrowthOpportunity)?.map((traitResult, traitResultIndex) => {
+                          return (
+                            <div key={traitResultIndex}>
+                              <ButtonBase component={Link} onClick={() => { handleOpenTraitDetails(traitResult); }} underline="none">
+                                <Typography variant="h5" sx={{ mr: 1.25 }} >{traitResult?.trait?.hrPage?.title}</Typography>
+                                <RightOutlined />
+                              </ButtonBase>
+                            </div>
+                          );
+                        })}
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12}>
                     <Typography variant="h4">Results</Typography>
                   </Grid>
                   <Grid item xs={12}>
                     <Typography>{selectedPeraAssessment?.linkedAssessment?.assessment?.hrPage?.body}</Typography>
                   </Grid>
 
-                  {selectedPeraAssessment?.traitResults?.map((item, index) => {
-                    return (
-                      <Grid key={index} item xs={12}>
-                        <Grid container spacing={3}>
-                          <Grid item xs={12} sm={3}>
-                            <ButtonBase component={Link} onClick={() => { handleOpenTraitDetails(item); }} underline="none">
-                              <Typography variant="h5" sx={{ mr: 1.25 }}>{item?.trait?.hrPage?.title}</Typography>
-                              <RightOutlined />
-                            </ButtonBase>
+                  <Grid item xs={12}>
+                    <Grid container spacing={6}>
+                      {selectedPeraAssessment?.traitResults?.map((item, index) => {
+                        return (
+                          <Grid key={index} item xs={12}>
+                            <Grid container spacing={3}>
+                              <Grid item xs={12} sm={3}>
+                                <ButtonBase component={Link} onClick={() => { handleOpenTraitDetails(item); }} underline="none">
+                                  <Typography variant="h5" sx={{mr: 1.25}} >{item?.trait?.hrPage?.title}</Typography>
+                                  <RightOutlined />
+                                  {item?.isStrength && <Chip label="STRENGTH" size="small" color="success" className="small-chip button-h5-chip" />}
+                                  {item?.isGrowthOpportunity && <Chip label="GROWTH OPPORTUNITY" size="small" color="error" className="small-chip button-h5-chip" />}
+                                </ButtonBase>
+                              </Grid>
+                              <Grid item xs={12} sm={9}>
+                                <LinearWithLabel value={item?.percentile * 100} />
+                              </Grid>
+                            </Grid>
                           </Grid>
-                          <Grid item xs={12} sm={9}>
-                            <LinearWithLabel value={item?.percentile * 100} />
-                          </Grid>
-                        </Grid>
-                      </Grid>
-                    );
-                  })}
+                        );
+                      })}
+                    </Grid>
+                  </Grid>
+                  
                 </Grid>
               </MainCard>
             }
@@ -248,7 +288,12 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
         open={selectedTraitResult ? true : false}
         sx={{ '& .MuiDialog-paper': { p: 0 } }}
       >
-        <DialogTitle>{selectedTraitResult?.trait?.hrPage?.title}</DialogTitle>
+        <DialogTitle sx={{ display: 'flex', alignItems: 'center' }}>
+          {selectedTraitResult?.trait?.hrPage?.title}
+          <IconButton sx={{ ml: 'auto' }} onClick={handleCloseTraitDetails}>
+            <CloseOutlined />
+          </IconButton>
+        </DialogTitle>
         <Divider />
         <DialogContent sx={{ p: 2.5 }}>
           <Typography paragraph={true} >{selectedTraitResult?.trait?.hrPage?.body}</Typography>
@@ -258,9 +303,9 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
           </Typography>
 
           <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%' }}>
-            <Tabs value={traitDetailsTabsValue} onChange={handleChangeTraitDetailsTabs} variant="scrollable" scrollButtons="auto">
-              <Tab label="Growth tip" component={Link} icon={<RiseOutlined />} iconPosition="start" />
-              <Tab label="Follow-up questions" component={Link} icon={<QuestionOutlined />} iconPosition="start" />
+            <Tabs value={traitDetailsTabsValue} onChange={handleChangeTraitDetailsTabs} variant="scrollable" scrollButtons="auto" aria-label="trait details tabs">
+              <Tab value={0} label="Growth tip" icon={<RiseOutlined />} iconPosition="start" />
+              <Tab value={1} label="Follow-up questions" icon={<QuestionOutlined />} iconPosition="start" />
             </Tabs>
           </Box>
           {traitDetailsTabsValue === 0 && 
@@ -277,6 +322,16 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
           }
           {traitDetailsTabsValue === 1 &&
             <Box sx={{ mt: 2.5 }}>
+              <Typography variant="h5">Use these questions to look for answers related to</Typography>
+              <ul>
+                {selectedTraitResult?.trait?.hrQuestionTopics?.map((questionTopic, questionTopicIndex) => {
+                  return (
+                    <li key={questionTopicIndex}>
+                      {questionTopic}
+                    </li>
+                  );
+                })}
+              </ul>
               <Typography variant="h5">Questions</Typography>
               <ol>
                 {selectedTraitResult?.trait?.hrQuestions?.map((question, questionIndex) => {

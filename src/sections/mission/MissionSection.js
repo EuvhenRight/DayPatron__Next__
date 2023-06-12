@@ -35,7 +35,7 @@ const MissionSection = () => {
     <MainCard>
 
       <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%' }}>
-        <Tabs value={value} onChange={handleChange} variant="scrollable" scrollButtons="auto" aria-label="account profile tab">
+        <Tabs value={value} onChange={handleChange} variant="scrollable" scrollButtons="auto" aria-label="mission tabs">
           <Tab label="Overview" component={Link} to={'/missions/' + missionId + '/overview'} icon={<FileTextOutlined />} iconPosition="start" />
           <Tab label="Matches" component={Link} to={'/missions/' + missionId + '/matches'} icon={<BlockOutlined />} iconPosition="start" />
         </Tabs>
