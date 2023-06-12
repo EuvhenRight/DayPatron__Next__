@@ -251,10 +251,10 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
         <DialogTitle>{selectedTraitResult?.trait?.hrPage?.title}</DialogTitle>
         <Divider />
         <DialogContent sx={{ p: 2.5 }}>
-          <Typography paragraph="true">{selectedTraitResult?.trait?.hrPage?.body}</Typography>
-          <Typography variant="caption" paragraph="true">
+          <Typography paragraph={true} >{selectedTraitResult?.trait?.hrPage?.body}</Typography>
+          <Typography variant="caption" paragraph={true}>
             Other associated competencies:
-            {selectedTraitResult?.trait?.relatedTraits?.map((item, index) => { return ' ' + item?.hrPage?.title + (index < selectedTraitResult?.trait?.relatedTraits?.length - 1 ? ',' : ''); })}
+            {selectedTraitResult?.trait?.relatedTraits?.map((item, index) => { return (<span key={index}>{' ' + item?.hrPage?.title + (index < selectedTraitResult?.trait?.relatedTraits?.length - 1 ? ',' : '')}</span>); })}
           </Typography>
 
           <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%' }}>
@@ -265,12 +265,12 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
           </Box>
           {traitDetailsTabsValue === 0 && 
             <Box sx={{ mt: 2.5 }}>
-              {selectedTraitResult?.trait?.tips?.map((tip) => {
+              {selectedTraitResult?.trait?.tips?.map((tip, tipIndex) => {
                 return (
-                  <>
+                  <div key={tipIndex}>
                     <Typography variant="h5">{tip?.title}</Typography>
-                    <Typography paragraph="true">{tip?.body}</Typography>
-                  </>
+                    <Typography paragraph={true}>{tip?.body}</Typography>
+                  </div>
                 );
               })}
             </Box>
