@@ -17,17 +17,16 @@
 .card-description-text {
     min-height: 50px;
 }
-.small-chip {
-    height: 14px;
-    font-size: 7pt;
+div.small-chip {
+    height: 15px;
+    font-size: 0.6125rem;
 }
-.positive-chip span {
-    padding-left: 5px;
-    padding-right: 5px;
+div.small-chip span {
+    padding: 0px 5px 0px 5px;
 }
 .button-h5-chip {
     position: absolute;
     margin: 0;
     left: 0;
-    top: -14px;
+    top: -13px;
 }
