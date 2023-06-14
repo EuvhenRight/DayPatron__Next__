@@ -24,7 +24,7 @@ import {
   Box,
   IconButton
 } from '@mui/material';
-import { LinkedinOutlined, EnvironmentOutlined, MailOutlined, PhoneOutlined, RightOutlined, RiseOutlined, QuestionOutlined, CloseOutlined } from '@ant-design/icons';
+import { LinkedinOutlined, EnvironmentOutlined, MailOutlined, PhoneOutlined, RightOutlined, RiseOutlined, QuestionOutlined, CloseOutlined, FileTextOutlined } from '@ant-design/icons';
 import MainCard from 'components/MainCard';
 import Avatar from 'components/@extended/Avatar';
 import { getEllipsis } from 'utils/stringUtils';
@@ -36,20 +36,24 @@ const avatarImage = require.context('assets/images/users', true);
 // ==============================|| MISSION CONTRACTOR MATCH ||============================== //
 
 const MissionContractorMatch = ({ missionId, contractorId }) => {
+  const peraResponseResultTabGroup = 'peraResponseResultTabGroup';
+  const peraQuestionsAndAnswersTabGroup = 'peraQuestionsAndAnswersTabGroup';
   const { keycloak } = useKeycloak();
   const [missionContractorMatch, setMissionContractorMatch] = useState({});
   const [selectedTraitResult, setSelectedTraitResult] = useState(null);
 
   const theme = useTheme();
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [tabGroup, setTabGroup] = useState(peraResponseResultTabGroup);
+  const [selectedPeraResponseResultIndex, setSelectedPeraResponseResultIndex] = useState(0);
   const [traitDetailsTabsValue, setTraitDetailsTabsValue] = useState(0);
 
   const handleChangeTraitDetailsTabs = (event, newValue) => {
     setTraitDetailsTabsValue(newValue);
   };
 
-  const handleListItemClick = (index) => {
-    setSelectedIndex(index);
+  const handleTabClick = (group, index) => {
+    setTabGroup(group);
+    setSelectedPeraResponseResultIndex(index ?? null);
   };
 
   const bindMissionContractorMatch = async () => {
@@ -64,7 +68,6 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
       );
 
       let json = await response.json();
-
       setMissionContractorMatch(json.missionContractorMatch);
     } catch (error) {
       console.log(error);
@@ -85,7 +88,9 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
     })();
   }, []);
 
-  let selectedPeraAssessment = missionContractorMatch?.contractorPeraSurveyResponse?.responseResultsTree[selectedIndex];
+  let selectedPeraAssessment = null;
+  if (tabGroup === peraResponseResultTabGroup)
+    selectedPeraAssessment = missionContractorMatch?.contractorPeraSurveyResponse?.responseResultsTree[selectedPeraResponseResultIndex];
 
   return (
     <Grid container spacing={3}>
@@ -178,14 +183,22 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                   <List component="nav" sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32, color: theme.palette.grey[500] } }}>
                     {missionContractorMatch?.contractorPeraSurveyResponse?.responseResultsTree?.map((item, index) => {
                       return (
-                        <ListItemButton key={index} selected={selectedIndex === index} onClick={() => handleListItemClick(index)}>
+                        <ListItemButton key={index} selected={selectedPeraResponseResultIndex === index} onClick={() => handleTabClick(peraResponseResultTabGroup, index)}>
+                          <ListItemText primary={item?.linkedAssessment?.assessment?.name} />
                           <ListItemIcon>
                             <RightOutlined />
                           </ListItemIcon>
-                          <ListItemText primary={item?.linkedAssessment?.assessment?.name} />
                         </ListItemButton>
                       );
                     })}
+
+                    <ListItemButton selected={tabGroup === peraQuestionsAndAnswersTabGroup} onClick={() => handleTabClick(peraQuestionsAndAnswersTabGroup)}>
+                      <ListItemText primary="Questions & Answers" />
+                      <ListItemIcon>
+                        <RightOutlined />
+                      </ListItemIcon>
+                    </ListItemButton>
+
                   </List>
                 </Grid>
 
@@ -199,7 +212,7 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
       <Grid item xs={12} sm={7} md={8} xl={9}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            {selectedPeraAssessment &&
+            {tabGroup === peraResponseResultTabGroup &&
               <MainCard>
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
@@ -280,6 +293,47 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                     </Grid>
                   </Grid>
                   
+                </Grid>
+              </MainCard>
+            }
+            {tabGroup === peraQuestionsAndAnswersTabGroup &&
+              <MainCard>
+                <Grid container spacing={3}>
+                  <Grid item xs={12}>
+                    <Typography variant="h3">Questions & Answers</Typography>
+                  </Grid>
+                  {missionContractorMatch?.contractorPeraSurveyResponse?.surveyAnswers.map((surveyAnswer, surveyAnswerIndex) => {
+                    return (
+                      <Grid key={surveyAnswerIndex} item xs={12}>
+                        <Grid container spacing={3} alignItems="center">
+                          <Grid item xs={12}>
+                            <Typography variant="h4">{surveyAnswer?.survey?.name}</Typography>
+                          </Grid>
+                          {surveyAnswer?.answers?.map((answer, answerIndex) => {
+                            return (
+                              <Grid key={answerIndex} item xs={12}>
+                                <Grid container spacing={2}>
+                                  <Grid item>
+                                    <Avatar>
+                                      <FileTextOutlined />
+                                    </Avatar>
+                                  </Grid>
+                                  <Grid item xs zeroMinWidth>
+                                    <Typography align="left" variant="h5">
+                                      {answer?.question?.page?.title}
+                                    </Typography>
+                                    <Typography align="left" variant="body1" color="secondary">
+                                      {answer?.body}
+                                    </Typography>
+                                  </Grid>
+                                </Grid>
+                              </Grid>
+                            );
+                          })}
+                        </Grid>
+                      </Grid>
+                    );
+                  })}
                 </Grid>
               </MainCard>
             }
