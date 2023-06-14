@@ -191,14 +191,14 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                         </ListItemButton>
                       );
                     })}
-
-                    <ListItemButton selected={tabGroup === peraQuestionsAndAnswersTabGroup} onClick={() => handleTabClick(peraQuestionsAndAnswersTabGroup)}>
-                      <ListItemText primary="Questions & Answers" />
-                      <ListItemIcon>
-                        <RightOutlined />
-                      </ListItemIcon>
-                    </ListItemButton>
-
+                    {missionContractorMatch?.contractorPeraSurveyResponse &&
+                      <ListItemButton selected={tabGroup === peraQuestionsAndAnswersTabGroup} onClick={() => handleTabClick(peraQuestionsAndAnswersTabGroup)}>
+                        <ListItemText primary="Questions & Answers" />
+                        <ListItemIcon>
+                          <RightOutlined />
+                        </ListItemIcon>
+                      </ListItemButton>
+                    }
                   </List>
                 </Grid>
 
@@ -212,7 +212,7 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
       <Grid item xs={12} sm={7} md={8} xl={9}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            {tabGroup === peraResponseResultTabGroup &&
+            {tabGroup === peraResponseResultTabGroup && selectedPeraAssessment &&
               <MainCard>
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
