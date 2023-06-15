@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import { createContext, useEffect, useReducer } from 'react';
+import { useDispatch } from 'react-redux';
 
 // project imports
 import Loader from 'components/Loader';
-import { LOGIN, LOGOUT } from 'store/reducers/actions';
+import { LOGIN, LOGOUT, PERSONAL_INFORMATION_GET } from 'store/reducers/actions';
 import authReducer from 'store/reducers/auth';
 
 import { useKeycloak } from '@react-keycloak/web';
@@ -22,8 +23,27 @@ const KeycloakContext = createContext(null);
 export const KeycloakProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
   const { keycloak } = useKeycloak();
-  useEffect(
-    () => {
+  const dispatchGlobal = useDispatch();
+
+  const fetchContractor = async () => {
+    try {
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username),
+        {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + keycloak.idToken
+          }
+        }
+      );
+      let json = await response.json();
+      return { success: true, data: json };
+    } catch (error) {
+      return { success: false };
+    }
+  }
+
+  useEffect(() => {
+    (async () => {
       if (keycloak?.authenticated) {
         dispatch({
           type: LOGIN,
@@ -35,9 +55,13 @@ export const KeycloakProvider = ({ children }) => {
           }
         });
       }
-    },
-    [keycloak.authenticated]
-  );
+
+      let fetchContractorResponse = await fetchContractor();
+      if (fetchContractorResponse.success) {
+        dispatchGlobal({ type: PERSONAL_INFORMATION_GET, payload: fetchContractorResponse.data });
+      }
+    })();
+  }, [keycloak.authenticated]);
 
   const logout = () => {
     keycloak.logout();

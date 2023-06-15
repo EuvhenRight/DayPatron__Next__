@@ -38,31 +38,6 @@ function useInputRef() {
 const ProfilePersonal = () => {
   const {keycloak} = useKeycloak();
 
-  const fetchContractor = async () => {
-    try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username),
-        {
-          method: 'GET',
-          headers: {
-            'Authorization': 'Bearer ' + keycloak.idToken
-          }
-        }
-      );
-      let json = await response.json();
-      return { success: true, data: json };
-    } catch (error) {
-      return { success: false };
-    }
-  }
-  useEffect(() => {
-    (async () => {
-      let res = await fetchContractor();
-      if (res.success) {
-        dispatch({ type: PERSONAL_INFORMATION_GET, payload: res.data });
-      }
-    })();
-  }, []);
-
   const maxDate = new Date();
   maxDate.setFullYear(maxDate.getFullYear() - 18);
 
