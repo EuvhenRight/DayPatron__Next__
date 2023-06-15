@@ -3,9 +3,8 @@ import { useOutletContext } from 'react-router';
 import countries from 'data/countries';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { useEffect } from 'react';
 import { useKeycloak } from '@react-keycloak/web';
-import { PERSONAL_INFORMATION_UPDATE, PERSONAL_INFORMATION_GET } from 'store/reducers/actions';
+import { PERSONAL_INFORMATION_UPDATE } from 'store/reducers/actions';
 import { normalizeInputValue, prepareApiBody } from 'utils/stringUtils';
 
 // material-ui
