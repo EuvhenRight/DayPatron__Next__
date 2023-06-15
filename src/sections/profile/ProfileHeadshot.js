@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Box, Divider, FormLabel, Grid, TextField, Menu, MenuItem, Stack, Typography, Link as MuiLink  } from '@mui/material';
+import { Button, Box, Divider, FormLabel, Grid, TextField, Menu, MenuItem, Stack, Typography, Link as MuiLink  } from '@mui/material';
 
 // project import
 import MainCard from 'components/MainCard';
@@ -25,17 +25,23 @@ const ProfileHeadshot = ({ focusInput }) => {
   const state = useSelector(state => state.personalInformation);
 
   const theme = useTheme();
-  const [selectedImage, setSelectedImage] = useState(undefined);
+  const [newMainImage, setNewMainImage] = useState(undefined);
   const [avatar, setAvatar] = useState(avatarImage(`./default.png`));
-
-  useEffect(() => {
-    if (selectedImage) {
-      setAvatar(URL.createObjectURL(selectedImage));
-    }
-  }, [selectedImage]);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+
+  const handleChangeMainImage = (event) => {
+    var newImage = event.target.files?.[0];
+    if (newImage) {
+      setNewMainImage(newImage);
+      setAvatar(URL.createObjectURL(newImage));
+    }
+  };
+
+  const handleUploadClick = () => {
+    setNewMainImage(null);
+  };
 
   const handleClick = (event) => {
     setAnchorEl(event?.currentTarget);
@@ -133,8 +139,17 @@ const ProfileHeadshot = ({ focusInput }) => {
               placeholder="Outlined"
               variant="outlined"
               sx={{ display: 'none' }}
-              onChange={(e) => setSelectedImage(e.target.files?.[0])}
+              onChange={handleChangeMainImage}
             />
+
+            {newMainImage && 
+              <Stack alignItems="center" spacing={2}>
+                <Button onClick={handleUploadClick} variant="contained">
+                  Upload
+                </Button>
+              </Stack>
+            }
+            
             <Stack spacing={0.5} alignItems="center">
               <Typography variant="h5">{ state.firstName } { state.lastName }</Typography>
               <Typography color="secondary">
