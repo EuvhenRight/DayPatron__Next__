@@ -3,9 +3,8 @@ import { useOutletContext } from 'react-router';
 import countries from 'data/countries';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { useEffect } from 'react';
 import { useKeycloak } from '@react-keycloak/web';
-import { PERSONAL_INFORMATION_UPDATE, PERSONAL_INFORMATION_GET } from 'store/reducers/actions';
+import { PERSONAL_INFORMATION_UPDATE } from 'store/reducers/actions';
 import { normalizeInputValue, prepareApiBody } from 'utils/stringUtils';
 
 // material-ui
@@ -36,32 +35,6 @@ function useInputRef() {
 
 const PersonalInformation = () => {
   const {keycloak} = useKeycloak();
-
-  const fetchEmployerUser = async () => {
-    try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers/users/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username),
-        {
-          method: 'GET',
-          headers: {
-            'Authorization': 'Bearer ' + keycloak.idToken
-          }
-        }
-      );
-      let json = await response.json();
-      return { success: true, data: json };
-    } catch (error) {
-      return { success: false };
-    }
-  }
-
-  useEffect(() => {
-    (async () => {
-      let res = await fetchEmployerUser();
-      if (res.success) {
-        dispatch({ type: PERSONAL_INFORMATION_GET, payload: res.data });
-      }
-    })();
-  }, []);
 
   const dispatch = useDispatch();
   const state = useSelector(state => state.personalInformation);
