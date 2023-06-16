@@ -1,11 +1,13 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { openSnackbar } from 'store/reducers/snackbar';
+import { useKeycloak } from '@react-keycloak/web';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Button, Box, Divider, FormLabel, Grid, TextField, Menu, MenuItem, Stack, Typography, Link as MuiLink  } from '@mui/material';
+import { Button, Box, Divider, FormLabel, Grid, TextField, Menu, MenuItem, Stack, Typography, Link as MuiLink, CircularProgress  } from '@mui/material';
 
 // project import
 import MainCard from 'components/MainCard';
@@ -21,10 +23,12 @@ const avatarImage = require.context('assets/images/users', true);
 // ==============================|| USER PROFILE - TAB CONTENT ||============================== //
 
 const ProfileHeadshot = ({ focusInput }) => {
-
+  const { keycloak } = useKeycloak();
+  const dispatch = useDispatch();
   const state = useSelector(state => state.personalInformation);
 
   const theme = useTheme();
+  const [uploading, setUploading] = useState(false);
   const [newMainImage, setNewMainImage] = useState(undefined);
   const [avatar, setAvatar] = useState(avatarImage(`./default.png`));
 
@@ -39,7 +43,70 @@ const ProfileHeadshot = ({ focusInput }) => {
     }
   };
 
-  const handleUploadClick = () => {
+  const handleUploadClick = async () => {
+
+    setUploading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("mainImage", newMainImage);
+
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username) + '/main-images',
+        {
+          method: 'PUT',
+          headers: {
+            'Authorization': 'Bearer ' + keycloak.idToken
+          },
+          body: formData
+        }
+      );
+
+      if (!response.ok) {
+        dispatch(
+          openSnackbar({
+            open: true,
+            message: 'Upload failed.',
+            variant: 'alert',
+            alert: {
+              color: 'error'
+            },
+            close: false
+          })
+        );
+
+        return;
+      }
+
+      let json = await response.json();
+      setAvatar(json.mainImageUrl);
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Image uploaded.',
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
+        })
+      );
+
+    } catch (err) {
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Upload failed.',
+          variant: 'alert',
+          alert: {
+            color: 'error'
+          },
+          close: false
+        })
+      );
+
+    }
+
+    setUploading(false);
     setNewMainImage(null);
   };
 
@@ -145,7 +212,8 @@ const ProfileHeadshot = ({ focusInput }) => {
             {newMainImage && 
               <Stack alignItems="center" spacing={2}>
                 <Button onClick={handleUploadClick} variant="contained">
-                  Upload
+                  {!uploading && <>Upload</> }
+                  {uploading && <CircularProgress />}
                 </Button>
               </Stack>
             }
