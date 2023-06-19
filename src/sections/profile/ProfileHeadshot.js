@@ -212,7 +212,7 @@ const ProfileHeadshot = ({ focusInput }) => {
                 cursor: 'pointer'
               }}
             >
-              <Avatar alt="Avatar 1" src={avatar} sx={{ width: 124, height: 124, border: '1px dashed' }} />
+              <Avatar alt={state?.firstName + ' ' + state?.lastName} src={avatar} sx={{ width: 124, height: 124, border: '1px dashed' }} />
               <Box
                 sx={{
                   position: 'absolute',
