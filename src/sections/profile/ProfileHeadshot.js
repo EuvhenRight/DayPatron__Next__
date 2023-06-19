@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { useKeycloak } from '@react-keycloak/web';
+import { PERSONAL_INFORMATION_UPDATE } from 'store/reducers/actions';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -25,15 +26,43 @@ const avatarImage = require.context('assets/images/users', true);
 const ProfileHeadshot = ({ focusInput }) => {
   const { keycloak } = useKeycloak();
   const dispatch = useDispatch();
-  const state = useSelector(state => state.personalInformation);
 
   const theme = useTheme();
   const [uploading, setUploading] = useState(false);
   const [newMainImage, setNewMainImage] = useState(undefined);
   const [avatar, setAvatar] = useState(avatarImage(`./default.png`));
+  const state = useSelector(state => state.personalInformation);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+
+  const handleMainImageUrlChange = async (newMainImageUrl) => {
+    try {
+      if (!newMainImageUrl) {
+        setAvatar(avatarImage(`./default.png`));
+        return;
+      }
+
+      let response = await fetch(newMainImageUrl,
+        {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + keycloak.idToken
+          }
+        }
+      );
+
+      let imageBlob = await response.blob();
+
+      setAvatar(URL.createObjectURL(imageBlob));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    handleMainImageUrlChange(state.mainImageUrl);
+  }, [state.mainImageUrl]);
 
   const handleChangeMainImage = (event) => {
     var newImage = event.target.files?.[0];
@@ -78,7 +107,11 @@ const ProfileHeadshot = ({ focusInput }) => {
       }
 
       let json = await response.json();
-      setAvatar(json.mainImageUrl);
+      var newState = { ...state };
+      newState.mainImageUrl = json.mainImageUrl;
+
+      dispatch({ type: PERSONAL_INFORMATION_UPDATE, payload: newState });
+
       dispatch(
         openSnackbar({
           open: true,
@@ -103,7 +136,7 @@ const ProfileHeadshot = ({ focusInput }) => {
           close: false
         })
       );
-
+      console.log(err);
     }
 
     setUploading(false);
