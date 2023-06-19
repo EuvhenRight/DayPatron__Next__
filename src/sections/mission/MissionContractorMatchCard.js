@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 // material-ui
 import {
   Button,
@@ -26,26 +26,59 @@ import IconButton from 'components/@extended/IconButton';
 import { EnvironmentOutlined, LinkedinOutlined, MailOutlined, MoreOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import countries from 'data/countries';
+import { useKeycloak } from '@react-keycloak/web';
 
 // ==============================|| MISSION CONTRACTOR MATCH - CARD ||============================== //
 
 const avatarImage = require.context('assets/images/users', true);
 
 const MissionContractorMatchCard = ({ missionContractorMatch, missionId }) => {
+  const { keycloak } = useKeycloak();
   const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [avatar, setAvatar] = useState(avatarImage(`./default.png`));
+  const openMenu = Boolean(anchorEl);
+
+  useEffect(() => {
+    (async () => {
+      var imgSrc = await getImageSrc(missionContractorMatch?.contractor?.mainImageUrl);
+      setAvatar(imgSrc);
+    })();
+  }, [missionContractorMatch?.contractor?.mainImageUrl]);
 
   const handleClickDetails = () => {
     navigate('/missions/' + missionId + '/matches/' + missionContractorMatch?.contractor?.id);
   };
 
-  const [anchorEl, setAnchorEl] = useState(null);
-  const openMenu = Boolean(anchorEl);
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+
+  const getImageSrc = async (imageUrl) => {
+    try {
+      if (!imageUrl) {
+        return avatarImage(`./default.png`);
+      }
+
+      let response = await fetch(imageUrl,
+        {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + keycloak.idToken
+          }
+        }
+      );
+
+      let imageBlob = await response.blob();
+
+      return URL.createObjectURL(imageBlob);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -63,7 +96,12 @@ const MissionContractorMatchCard = ({ missionContractorMatch, missionId }) => {
                 }
               >
                 <ListItemAvatar>
-                  <Avatar onClick={handleClickDetails} className="clickable" alt={missionContractorMatch?.contractor?.firstName + ' ' + missionContractorMatch?.contractor?.lastName} src={missionContractorMatch?.contractor?.mainImageUrl ? missionContractorMatch.contractor.mainImageUrl : avatarImage('./default.png')} />
+                  <Avatar
+                    onClick={handleClickDetails}
+                    className="clickable"
+                    alt={missionContractorMatch?.contractor?.firstName + ' ' + missionContractorMatch?.contractor?.lastName}
+                    src={avatar}
+                  />
                 </ListItemAvatar>
                 <ListItemText className="list-card-title"
                   primary={<Typography onClick={handleClickDetails} variant="subtitle1">{missionContractorMatch?.contractor?.firstName + ' ' + missionContractorMatch?.contractor?.lastName}</Typography>}
