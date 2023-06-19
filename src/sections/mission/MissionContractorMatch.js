@@ -129,7 +129,10 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
               <Grid container spacing={3}>
                 <Grid item xs={12}>
                   <Stack spacing={2.5} alignItems="center">
-                    <Avatar alt="Avatar 1" size="xl" src={missionContractorMatch?.contractor?.mainImageSrc} />
+                    <Avatar
+                      alt={missionContractorMatch?.contractor?.firstName + ' ' + missionContractorMatch?.contractor?.lastName}
+                      sx={{ width: 124, height: 124, border: '1px dashed' }}
+                      src={missionContractorMatch?.contractor?.mainImageSrc} />
                     <Stack spacing={0.5} alignItems="center">
                       <Typography variant="h5">{missionContractorMatch?.contractor?.firstName + ' ' + missionContractorMatch?.contractor?.lastName}</Typography>
                     </Stack>
