@@ -53,8 +53,13 @@ const ProfileHeadshot = ({ focusInput }) => {
       );
 
       let imageBlob = await response.blob();
+      var avatarSrc = URL.createObjectURL(imageBlob);
+      setAvatar(avatarSrc);
 
-      setAvatar(URL.createObjectURL(imageBlob));
+      if (avatarSrc)
+        setTimeout(function () {
+            URL.revokeObjectURL(avatarSrc);
+        }, 1000);
     } catch (error) {
       console.log(error);
     }
@@ -68,7 +73,13 @@ const ProfileHeadshot = ({ focusInput }) => {
     var newImage = event.target.files?.[0];
     if (newImage) {
       setNewMainImage(newImage);
-      setAvatar(URL.createObjectURL(newImage));
+      var avatarSrc = URL.createObjectURL(newImage);
+      setAvatar(avatarSrc);
+
+      if (avatarSrc)
+        setTimeout(function () {
+            URL.revokeObjectURL(avatarSrc);
+        }, 1000);
     }
   };
 
