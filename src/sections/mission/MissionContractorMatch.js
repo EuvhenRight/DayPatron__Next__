@@ -73,6 +73,12 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
         json.missionContractorMatch.contractor.mainImageSrc = await getImageSrc(json.missionContractorMatch.contractor.mainImageUrl);
 
       setMissionContractorMatch(json.missionContractorMatch);
+
+      if (json?.missionContractorMatch?.contractor?.mainImageSrc)
+        setTimeout(function () {
+              URL.revokeObjectURL(json.missionContractorMatch.contractor.mainImageSrc);
+        }, 1000);
+
     } catch (error) {
       console.log(error);
     }

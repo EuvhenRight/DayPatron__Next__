@@ -43,6 +43,12 @@ const MissionContractorMatchCard = ({ missionContractorMatch, missionId }) => {
     (async () => {
       var imgSrc = await getImageSrc(missionContractorMatch?.contractor?.mainImageUrl);
       setAvatar(imgSrc);
+
+      if (imgSrc)
+        setTimeout(function () {
+            URL.revokeObjectURL(imgSrc);
+        }, 1000);
+
     })();
   }, [missionContractorMatch?.contractor?.mainImageUrl]);
 
