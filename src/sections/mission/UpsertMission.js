@@ -44,6 +44,8 @@ import { useKeycloak } from '@react-keycloak/web';
 
 import countries from 'data/countries';
 import languages from 'data/languages';
+import jobRoles from 'data/jobRoles';
+import industries from 'data/industries';
 const avatarImage = require.context('assets/images/missions', true);
 
 // constant
@@ -54,19 +56,30 @@ const getInitialValues = (mission) => {
     title: null,
     description: null,
     role: null,
+    alternativeRoles: null,
+    industry: null,
+    alternativeIndustries: null,
+    requiredLanguages: null,
+    yearsExperience: null,
     outcome: null,
     country: null,
-    yearsExperience: null,
     startDate: null,
     endDate: null,
-    effortHours: null,
-    languages: null
+    effortHours: null
   };
   
   if (mission) {
     var result = _.merge({}, newMission, mission);
-    if (mission.languages)
-      result.languages = languages.filter(x => mission.languages.find(y => x.code === y));
+
+    if (mission.alternativeRoles)
+      result.alternativeRoles = jobRoles.filter(x => mission.alternativeRoles.find(y => x.code === y));
+
+    if (mission.alternativeIndustries)
+      result.alternativeIndustries = industries.filter(x => mission.alternativeIndustries.find(y => x.code === y));
+
+    if (mission.requiredLanguages)
+      result.requiredLanguages = languages.filter(x => mission.requiredLanguages.find(y => x.code === y));
+
     return result;
   }
 
@@ -81,6 +94,10 @@ const UpsertMission = ({ missionId }) => {
   const [employers, setEmployers] = useState([]);
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState(undefined);
+  const [alternativeRolesInputText, setAlternativeRolesInputText] = useState('');
+  const [alternativeIndustriesInputText, setAlternativeIndustriesInputText] = useState('');
+  const [requiredLanguagesInputText, setRequiredLanguagesInputText] = useState('');
+
   const [avatar, setAvatar] = useState(mission?.mainImageUrl ? mission.mainImageUrl : avatarImage('./default.png'));
   const theme = useTheme();
 
@@ -144,13 +161,16 @@ const UpsertMission = ({ missionId }) => {
     title: Yup.string().max(255).required('Title is required').nullable(true),
     description: Yup.string().max(2000).required('Description is required').nullable(true),
     role: Yup.string().max(255).required('Role is required').nullable(true),
+    alternativeRoles: Yup.array().of(Yup.object()).nullable(true),
+    industry: Yup.string().max(255).required('Industry is required').nullable(true),
+    alternativeIndustries: Yup.array().of(Yup.object()).nullable(true),
+    requiredLanguages: Yup.array().of(Yup.object()).nullable(true),
+    yearsExperience: Yup.number("Should be a positive integer").integer("Should be a positive integer").min(0, "Should be a positive integer").max(100, "Maximum 100").nullable(true),
     outcome: Yup.string().max(1000).nullable(true),
     country: Yup.string().required('Country is required').nullable(true),
-    yearsExperience: Yup.number("Should be a positive integer").integer("Should be a positive integer").min(0, "Should be a positive integer").max(100, "Maximum 100").nullable(true),
     startDate: Yup.string().required('Start Date is required').nullable(true),
     endDate: Yup.string().nullable(true),
-    effortHouts: Yup.number("Should be a positive integer").integer("Should be a positive integer").min(0, "Should be a positive integer").max(100, "Maximum 100").nullable(true),
-    languages: Yup.array().of(Yup.object()).nullable(true)
+    effortHouts: Yup.number("Should be a positive integer").integer("Should be a positive integer").min(0, "Should be a positive integer").max(100, "Maximum 100").nullable(true)
   });
 
   const formik = useFormik({
@@ -159,7 +179,11 @@ const UpsertMission = ({ missionId }) => {
     validationSchema: MissionSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        values.languages = values?.languages?.map(x => x.code);
+        var body = {
+          alternativeRoles: values?.alternativeRoles?.map(x => x.code),
+          alternativeIndustries: values?.alternativeIndustries?.map(x => x.code),
+          requiredLanguages: values?.requiredLanguages?.map(x => x.code)
+        };
 
         if (mission) {
 
@@ -170,7 +194,7 @@ const UpsertMission = ({ missionId }) => {
                 'Authorization': 'Bearer ' + keycloak.idToken,
                 'Content-Type': 'application/json'
               },
-              body: prepareApiBody(values)
+              body: prepareApiBody(body)
             }
           );
 
@@ -205,7 +229,6 @@ const UpsertMission = ({ missionId }) => {
           );
 
         } else {
-          var body = prepareApiBody(values);
           let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions',
             {
               method: 'POST',
@@ -213,7 +236,7 @@ const UpsertMission = ({ missionId }) => {
                 'Authorization': 'Bearer ' + keycloak.idToken,
                 'Content-Type': 'application/json'
               },
-              body: body
+              body: prepareApiBody(body)
             }
           );
 
@@ -470,6 +493,210 @@ const UpsertMission = ({ missionId }) => {
                         )}
                       </Stack>
                     </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="mission-role">Role</InputLabel>
+                        <Autocomplete
+                          id="mission-role"
+                          fullWidth
+                          disableCloseOnSelect
+                          options={jobRoles}
+                          value={values.role ?? []}
+                          onBlur={handleBlur}
+                          getOptionLabel={(option) => option?.label}
+                          onChange={(event, newValue, reason) => {
+                            setFieldValue('role', newValue);
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              placeholder="Select role"
+                              name="role"
+                              inputProps={{
+                                ...params.inputProps,
+                                autoComplete: 'new-password'
+                              }}
+                            />
+                          )}
+                        />
+                        {touched.role && errors.role && (
+                          <FormHelperText error id="mission-role-helper">
+                            {errors.role}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="mission-alternative-roles">Alternative Roles</InputLabel>
+                        <Autocomplete
+                          id="mission-alternative-roles"
+                          multiple
+                          fullWidth
+                          disableCloseOnSelect
+                          options={jobRoles}
+                          value={values.alternativeRoles ?? []}
+                          onBlur={handleBlur}
+                          getOptionLabel={(option) => option?.label}
+                          onChange={(event, newValue, reason) => {
+                            if (reason === 'clear') {
+                              setAlternativeRolesInputText('');
+                            } else {
+                              setFieldValue('alternativeRoles', newValue);
+                            }
+                          }}
+                          inputValue={alternativeRolesInputText}
+                          onInputChange={(event, value, reason) => {
+                            if (event && event.type === 'blur') {
+                              setAlternativeRolesInputText('');
+                            } else if (reason !== 'reset') {
+                              setAlternativeRolesInputText(value);
+                            }
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              placeholder="Select alternative roles"
+                              name="alternativeRoles"
+                              inputProps={{
+                                ...params.inputProps,
+                                autoComplete: 'new-password'
+                              }}
+                            />
+                          )}
+                        />
+                        {touched.alternativeRoles && errors.alternativeRoles && (
+                          <FormHelperText error id="mission-alternative-roles-helper">
+                            {errors.alternativeRoles}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="mission-industry">Industry</InputLabel>
+                        <Autocomplete
+                          id="mission-industry"
+                          fullWidth
+                          disableCloseOnSelect
+                          options={industries}
+                          value={values.industry ?? []}
+                          onBlur={handleBlur}
+                          getOptionLabel={(option) => option?.label}
+                          onChange={(event, newValue, reason) => {
+                            setFieldValue('industry', newValue);
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              placeholder="Select industry"
+                              name="industry"
+                              inputProps={{
+                                ...params.inputProps,
+                                autoComplete: 'new-password'
+                              }}
+                            />
+                          )}
+                        />
+                        {touched.industry && errors.industry && (
+                          <FormHelperText error id="mission-industry-helper">
+                            {errors.industry}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="mission-alternative-industries">Alternative Industries</InputLabel>
+                        <Autocomplete
+                          id="mission-alternative-industries"
+                          multiple
+                          fullWidth
+                          disableCloseOnSelect
+                          options={industries}
+                          value={values.alternativeIndustries ?? []}
+                          onBlur={handleBlur}
+                          getOptionLabel={(option) => option?.label}
+                          onChange={(event, newValue, reason) => {
+                            if (reason === 'clear') {
+                              setAlternativeIndustriesInputText('');
+                            } else {
+                              setFieldValue('alternativeIndustries', newValue);
+                            }
+                          }}
+                          inputValue={alternativeIndustriesInputText}
+                          onInputChange={(event, value, reason) => {
+                            if (event && event.type === 'blur') {
+                              setAlternativeIndustriesInputText('');
+                            } else if (reason !== 'reset') {
+                              setAlternativeIndustriesInputText(value);
+                            }
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              placeholder="Select alternative industries"
+                              name="alternativeIndustries"
+                              inputProps={{
+                                ...params.inputProps,
+                                autoComplete: 'new-password'
+                              }}
+                            />
+                          )}
+                        />
+                        {touched.alternativeIndustries && errors.alternativeIndustries && (
+                          <FormHelperText error id="mission-alternative-industries-helper">
+                            {errors.alternativeIndustries}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="mission-required-languages">Required Languages</InputLabel>
+                        <Autocomplete
+                          id="mission-required-languages"
+                          multiple
+                          fullWidth
+                          disableCloseOnSelect
+                          options={languages}
+                          value={values.requiredLanguages ?? []}
+                          onBlur={handleBlur}
+                          getOptionLabel={(option) => option?.label}
+                          onChange={(event, newValue, reason) => {
+                            if (reason === 'clear') {
+                              setRequiredLanguagesInputText('');
+                            } else {
+                              setFieldValue('requiredLanguages', newValue);
+                            }
+                          }}
+                          inputValue={requiredLanguagesInputText}
+                          onInputChange={(event, value, reason) => {
+                            if (event && event.type === 'blur') {
+                              setRequiredLanguagesInputText('');
+                            } else if (reason !== 'reset') {
+                              setRequiredLanguagesInputText(value);
+                            }
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              placeholder="Select required languages"
+                              name="requiredLanguages"
+                              inputProps={{
+                                ...params.inputProps,
+                                autoComplete: 'new-password' // disable autocomplete and autofill
+                              }}
+                            />
+                          )}
+                        />
+                        {touched.requiredLanguages && errors.requiredLanguages && (
+                          <FormHelperText error id="mission-required-languages-helper">
+                            {errors.requiredLanguages}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
                     <Grid item xs={12} md={6}>
                       <Stack spacing={1.25}>
                         <InputLabel htmlFor="mission-years-experience">Years Experience</InputLabel>
@@ -556,40 +783,6 @@ const UpsertMission = ({ missionId }) => {
                         {touched.effortHours && errors.effortHours && (
                           <FormHelperText error id="mission-effort-hours-helper">
                             {errors.effortHours}
-                          </FormHelperText>
-                        )}
-                      </Stack>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Stack spacing={1.25}>
-                        <InputLabel htmlFor="mission-languages">Languages</InputLabel>
-                        <Autocomplete
-                          id="mission-languages"
-                          multiple
-                          fullWidth
-                          disableCloseOnSelect
-                          options={languages}
-                          value={values.languages ?? []}
-                          onBlur={handleBlur}
-                          getOptionLabel={(option) => option?.label}
-                          onChange={(event, newValue) => {
-                            setFieldValue('languages', newValue);
-                          }}
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              placeholder="Select languages"
-                              name="languages"
-                              inputProps={{
-                                ...params.inputProps,
-                                autoComplete: 'new-password' // disable autocomplete and autofill
-                              }}
-                            />
-                          )}
-                        />
-                        {touched.languages && errors.languages && (
-                          <FormHelperText error id="mission-languages">
-                            {errors.languages}
                           </FormHelperText>
                         )}
                       </Stack>
