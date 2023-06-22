@@ -412,7 +412,6 @@ const UpsertMission = ({ missionId }) => {
                         <Autocomplete
                           id="mission-role"
                           fullWidth
-                          disableCloseOnSelect
                           options={jobRoles}
                           value={values?.role ? jobRoles.filter((item) => item.code === values?.role)[0] : null}
                           onBlur={handleBlur}
@@ -641,10 +640,12 @@ const UpsertMission = ({ missionId }) => {
                       </Stack>
                     </Grid>
 
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12}>
                       <Stack spacing={1.25}>
                         <InputLabel htmlFor="mission-outcome">Outcome</InputLabel>
                         <TextField
+                          multiline
+                          rows="5"
                           fullWidth
                           id="mission-outcome"
                           placeholder="Enter Mission Outcome"
