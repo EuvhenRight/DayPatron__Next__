@@ -7,7 +7,7 @@ import companyStages from 'data/companyStages';
 import financingStages from 'data/financingStages';
 
 import { useKeycloak } from '@react-keycloak/web';
-import { prepareApiBody } from 'utils/stringUtils';
+import { normalizeInputValue, prepareApiBody } from 'utils/stringUtils';
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -65,6 +65,8 @@ const ProfileExpertisePage = () => {
     })();
   }, []);
 
+  let currentYear = new Date().getFullYear();
+
   return (
     <MainCard content={false} sx={{ '& .MuiInputLabel-root': { fontSize: '0.875rem' } }}>
       <Formik
@@ -75,7 +77,8 @@ const ProfileExpertisePage = () => {
           languages: expertise?.languages ?languages.filter(x => expertise.languages.find(y => x.code === y)) : null,
           countries: expertise?.countries ?countries.filter(x => expertise.countries.find(y => x.code === y)) : null,
           companyStages: expertise?.companyStages ?companyStages.filter(x => expertise.companyStages.find(y => x.code === y)) : null,
-          financingStages: expertise?.financingStages ?financingStages.filter(x => expertise.financingStages.find(y => x.code === y)) : null,
+          financingStages: expertise?.financingStages ? financingStages.filter(x => expertise.financingStages.find(y => x.code === y)) : null,
+          startYear: expertise?.startYear,
           submit: null
         }}
         validationSchema={Yup.object().shape({
@@ -84,7 +87,8 @@ const ProfileExpertisePage = () => {
           languages: Yup.array().of(Yup.object()).nullable(true),
           countries: Yup.array().of(Yup.object()).nullable(true),
           companyStages: Yup.array().of(Yup.object()).nullable(true),
-          financingStages: Yup.array().of(Yup.object()).nullable(true)
+          financingStages: Yup.array().of(Yup.object()).nullable(true),
+          startYear: Yup.number("Should be a year between 1950 and " + currentYear).integer("Should be a year between 1950 and " + currentYear).min(1950, "Should be a year between 1950 and " + currentYear).max(currentYear, "Should be a year between 1950 and " + currentYear).nullable(true)
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
@@ -94,7 +98,8 @@ const ProfileExpertisePage = () => {
               languages: values?.languages?.map(x => x.code),
               countries: values?.countries?.map(x => x.code),
               companyStages: values?.companyStages?.map(x => x.code),
-              financingStages: values?.financingStages?.map(x => x.code)
+              financingStages: values?.financingStages?.map(x => x.code),
+              startYear: values?.startYear
             }
             let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username) + '/expertise',
               {
@@ -164,7 +169,7 @@ const ProfileExpertisePage = () => {
           }
         }}
       >
-        {({ errors, handleBlur, handleSubmit, isSubmitting, setFieldValue, touched, values }) => (
+        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, setFieldValue, touched, values }) => (
           <form noValidate onSubmit={handleSubmit}>
             <Box sx={{ p: 2.5 }}>
               <Grid container spacing={3}>
@@ -183,7 +188,10 @@ const ProfileExpertisePage = () => {
                       getOptionLabel={(option) => option?.label}
                       onChange={(event, newValue, reason) => {
                         if (reason === 'clear') {
-                          setIndustriesInputText('');
+                          if (industriesInputText)
+                            setIndustriesInputText('');
+                          else
+                            setFieldValue('industries', null);
                         } else {
                           setFieldValue('industries', newValue);
                         }
@@ -231,7 +239,10 @@ const ProfileExpertisePage = () => {
                       getOptionLabel={(option) => option?.label}
                       onChange={(event, newValue, reason) => {
                         if (reason === 'clear') {
-                          setJobRolesInputText('');
+                          if (jobRolesInputText)
+                            setJobRolesInputText('');
+                          else
+                            setFieldValue('jobRoles', null);
                         } else {
                           setFieldValue('jobRoles', newValue);
                         }
@@ -280,7 +291,10 @@ const ProfileExpertisePage = () => {
                       getOptionLabel={(option) => option?.label}
                       onChange={(event, newValue, reason) => {
                         if (reason === 'clear') {
-                          setLanguagesInputText('');
+                          if (languagesInputText)
+                            setLanguagesInputText('');
+                          else
+                            setFieldValue('languages', null);
                         } else {
                           setFieldValue('languages', newValue);
                         }
@@ -328,7 +342,10 @@ const ProfileExpertisePage = () => {
                       getOptionLabel={(option) => option?.label}
                       onChange={(event, newValue, reason) => {
                         if (reason === 'clear') {
-                          setCountriesInputText('');
+                          if (countriesInputText)
+                            setCountriesInputText('');
+                          else
+                            setFieldValue('countries', null);
                         } else {
                           setFieldValue('countries', newValue);
                         }
@@ -377,7 +394,10 @@ const ProfileExpertisePage = () => {
                       getOptionLabel={(option) => option?.label}
                       onChange={(event, newValue, reason) => {
                         if (reason === 'clear') {
-                          setCompanyStagesInputText('');
+                          if (companyStagesInputText)
+                            setCompanyStagesInputText('');
+                          else
+                            setFieldValue('companyStages', null);
                         } else {
                           setFieldValue('companyStages', newValue);
                         }
@@ -425,7 +445,10 @@ const ProfileExpertisePage = () => {
                       getOptionLabel={(option) => option?.label}
                       onChange={(event, newValue, reason) => {
                         if (reason === 'clear') {
-                          setFinancingStagesInputText('');
+                          if (financingStagesInputText)
+                            setFinancingStagesInputText('');
+                          else
+                            setFieldValue('financingStages', null);
                         } else {
                           setFieldValue('financingStages', newValue);
                         }
@@ -453,6 +476,29 @@ const ProfileExpertisePage = () => {
                     {touched.financingStages && errors.financingStages && (
                       <FormHelperText error id="financing-stages-helper">
                         {errors.financingStages}
+                      </FormHelperText>
+                    )}
+
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <InputLabel htmlFor="start-year">Start Year</InputLabel>
+
+                    <TextField
+                      fullWidth
+                      id="start-year"
+                      type="number"
+                      inputProps={{ min: 1950, max: currentYear }}
+                      placeholder="Enter Start Year"
+                      value={normalizeInputValue(values.startYear)}
+                      name="startYear"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                    />
+                    {touched.startYear && errors.startYear && (
+                      <FormHelperText error id="start-year-helper">
+                        {errors.startYear}
                       </FormHelperText>
                     )}
 
