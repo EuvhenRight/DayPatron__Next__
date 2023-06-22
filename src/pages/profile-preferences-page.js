@@ -18,7 +18,8 @@ import {
   Stack,
   TextField,
   MenuItem,
-  Switch
+  Switch,
+  Typography
 } from '@mui/material';
 
 // third party
@@ -151,6 +152,11 @@ const ProfilePreferencesPage = () => {
               <Grid item xs={12} md={5}>
                 <MainCard title="Rate">
                   <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                      <Typography color="secondary">
+                        Here you can provide your preferred hourly rate by specifying currency, lower limit and upper limit.
+                      </Typography>
+                    </Grid>
                     <Grid item xs={12} sm={4}>
                       <Stack spacing={1.25}>
                         <InputLabel htmlFor="rate-currency">Currency</InputLabel>
@@ -176,7 +182,7 @@ const ProfilePreferencesPage = () => {
                     </Grid>
                     <Grid item xs={12} sm={4}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="rate-lower-limit">Lower Limit</InputLabel>
+                        <InputLabel htmlFor="rate-lower-limit">Lower Limit (per hour)</InputLabel>
                         <TextField
                           fullWidth
                           id="rate-lower-limit"
@@ -184,7 +190,7 @@ const ProfilePreferencesPage = () => {
                           name="rateLowerLimit"
                           onBlur={handleBlur}
                           onChange={handleChange}
-                          placeholder="Lower Limit"
+                          placeholder="Lower Limit (per hour)"
                           type="number"
                           autoFocus
                         />
@@ -197,7 +203,7 @@ const ProfilePreferencesPage = () => {
                     </Grid>
                     <Grid item xs={12} sm={4}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="rate-upper-limit">Upper Limit</InputLabel>
+                        <InputLabel htmlFor="rate-upper-limit">Upper Limit (per hour)</InputLabel>
                         <TextField
                           fullWidth
                           id="rate-upper-limit"
@@ -205,7 +211,7 @@ const ProfilePreferencesPage = () => {
                           name="rateUpperLimit"
                           onBlur={handleBlur}
                           onChange={handleChange}
-                          placeholder="Upper Limit"
+                          placeholder="Upper Limit (per hour)"
                           type="number"
                           autoFocus
                         />
@@ -222,6 +228,11 @@ const ProfilePreferencesPage = () => {
               <Grid item xs={12} md={3}>
                 <MainCard title="Workplace">
                   <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                      <Typography color="secondary">
+                        Here you can provide your preferred workplace type.
+                      </Typography>
+                    </Grid>
                     <Grid item xs={12}>
                       <Stack spacing={1.25}>
                         <InputLabel htmlFor="workplace">Workplace</InputLabel>
@@ -251,7 +262,11 @@ const ProfilePreferencesPage = () => {
               <Grid item xs={12} md={4}>
                 <MainCard title="Travel">
                   <Grid container spacing={3}>
-
+                    <Grid item xs={12}>
+                      <Typography color="secondary">
+                        Here you can specify your preferred maximum travel distance (one direction) and whether you can travel internationally.
+                      </Typography>
+                    </Grid>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
                         <InputLabel htmlFor="travel-radius-kms">Radius (kms)</InputLabel>
