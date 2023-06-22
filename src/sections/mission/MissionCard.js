@@ -34,6 +34,7 @@ import { useNavigate } from 'react-router-dom';
 import countries from 'data/countries';
 import languages from 'data/languages';
 import { getEllipsis } from 'utils/stringUtils';
+import jobRoles from 'data/jobRoles';
 
 // ==============================|| MISSION - CARD ||============================== //
 
@@ -86,7 +87,7 @@ const MissionCard = ({ mission, alertMissionToDelete }) => {
                   primary={<Typography onClick={handleClickDetails} variant="subtitle1">{mission.title}</Typography>}
                   secondary={
                     <Typography variant="caption" color="secondary">
-                      {mission.role}
+                      {jobRoles.find(x => x.code === mission.role)?.label}
                     </Typography>
                   }
                 />

@@ -170,7 +170,7 @@ const MissionContractorMatches = ({ missionId }) => {
               </Slide>
             ))
         ) : (
-          <EmptyCardList title={'No missionContractorMatches.'} />
+          <EmptyCardList title={'No matches.'} />
         )}
       </Grid>
       <Stack spacing={2} sx={{ p: 2.5 }} alignItems="flex-end">
