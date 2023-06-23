@@ -30,3 +30,7 @@ div.small-chip span {
     left: 0;
     top: -13px;
 }
+.card-description-container {
+    height:80px;
+    overflow:hidden;
+}

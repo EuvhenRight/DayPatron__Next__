@@ -21,6 +21,7 @@ import {
 
 // third-party
 import { PDFDownloadLink } from '@react-pdf/renderer';
+import SanitizedHTML from 'react-sanitized-html';
 
 // project import
 import MainCard from 'components/MainCard';
@@ -33,7 +34,6 @@ import { MoreOutlined, EnvironmentOutlined, FieldTimeOutlined } from '@ant-desig
 import { useNavigate } from 'react-router-dom';
 import countries from 'data/countries';
 import languages from 'data/languages';
-import { getEllipsis } from 'utils/stringUtils';
 import jobRoles from 'data/jobRoles';
 
 // ==============================|| MISSION - CARD ||============================== //
@@ -127,7 +127,9 @@ const MissionCard = ({ mission, alertMissionToDelete }) => {
             <Divider />
           </Grid>
           <Grid item xs={12}>
-            <Typography className="card-description-text">{getEllipsis(mission?.description, 135)}</Typography>
+            <div className="card-description-container">
+              <SanitizedHTML html={mission?.description} />
+            </div>
           </Grid>
 
           <Grid item xs={6}>

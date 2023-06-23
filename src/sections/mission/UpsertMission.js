@@ -3,6 +3,8 @@ import {  useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 // material-ui
 import {
@@ -61,7 +63,11 @@ const getInitialValues = (mission) => {
     alternativeIndustries: null,
     requiredLanguages: null,
     yearsExperience: null,
+    aboutTheCompany: null,
+    currentSetup: null,
+    whyWeNeedYou: null,
     outcome: null,
+    profileType: null,
     country: null,
     startDate: null,
     endDate: null,
@@ -166,7 +172,11 @@ const UpsertMission = ({ missionId }) => {
     alternativeIndustries: Yup.array().of(Yup.object()).nullable(true),
     requiredLanguages: Yup.array().of(Yup.object()).nullable(true),
     yearsExperience: Yup.number("Should be a positive integer").integer("Should be a positive integer").min(0, "Should be a positive integer").max(100, "Maximum 100").nullable(true),
+    aboutTheCompany: Yup.string().max(1000).nullable(true),
+    currentSetup: Yup.string().max(1000).nullable(true),
+    whyWeNeedYou: Yup.string().max(1000).nullable(true),
     outcome: Yup.string().max(1000).nullable(true),
+    profileType: Yup.string().max(1000).nullable(true),
     country: Yup.string().required('Country is required').nullable(true),
     startDate: Yup.string().required('Start Date is required').nullable(true),
     endDate: Yup.string().nullable(true),
@@ -385,19 +395,33 @@ const UpsertMission = ({ missionId }) => {
                         )}
                       </Stack>
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12}
+                      sx={{
+                        '& .quill': {
+                          borderRadius: '4px',
+                          '& .ql-toolbar': {
+                            bgcolor: theme.palette.mode === 'dark' ? 'dark.light' : 'grey.100',
+                            borderColor: theme.palette.divider,
+                            borderTopLeftRadius: '4px',
+                            borderTopRightRadius: '4px'
+                          },
+                          '& .ql-container': {
+                            borderColor: `${theme.palette.divider} !important`,
+                            borderBottomLeftRadius: '4px',
+                            borderBottomRightRadius: '4px',
+                            '& .ql-editor': {
+                              minHeight: 135
+                            }
+                          }
+                        }
+                      }}
+                    >
                       <Stack spacing={1.25}>
                         <InputLabel htmlFor="mission-description">Description</InputLabel>
-                        <TextField
-                          multiline
-                          rows="5"
-                          fullWidth
+                        <ReactQuill
                           id="mission-description"
-                          placeholder="Enter Mission Description"
                           value={normalizeInputValue(values.description)}
-                          name="description"
-                          onBlur={handleBlur}
-                          onChange={handleChange}
+                          onChange={(e) => setFieldValue('description', e)}
                         />
                         {touched.description && errors.description && (
                           <FormHelperText error id="mission-description-helper">
@@ -639,20 +663,138 @@ const UpsertMission = ({ missionId }) => {
                         )}
                       </Stack>
                     </Grid>
-
-                    <Grid item xs={12}>
+                    <Grid item xs={12}
+                      sx={{
+                        '& .quill': {
+                          borderRadius: '4px',
+                          '& .ql-toolbar': {
+                            bgcolor: theme.palette.mode === 'dark' ? 'dark.light' : 'grey.100',
+                            borderColor: theme.palette.divider,
+                            borderTopLeftRadius: '4px',
+                            borderTopRightRadius: '4px'
+                          },
+                          '& .ql-container': {
+                            borderColor: `${theme.palette.divider} !important`,
+                            borderBottomLeftRadius: '4px',
+                            borderBottomRightRadius: '4px',
+                            '& .ql-editor': {
+                              minHeight: 135
+                            }
+                          }
+                        }
+                      }}
+                    >
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="mission-about-the-company">About the Company</InputLabel>
+                        <ReactQuill
+                          id="mission-about-the-company"
+                          value={normalizeInputValue(values.aboutTheCompany)}
+                          onChange={(e) => setFieldValue('aboutTheCompany', e)}
+                        />
+                        {touched.aboutTheCompany && errors.aboutTheCompany && (
+                          <FormHelperText error id="mission-about-the-company-helper">
+                            {errors.aboutTheCompany}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
+                    <Grid item xs={12}
+                      sx={{
+                        '& .quill': {
+                          borderRadius: '4px',
+                          '& .ql-toolbar': {
+                            bgcolor: theme.palette.mode === 'dark' ? 'dark.light' : 'grey.100',
+                            borderColor: theme.palette.divider,
+                            borderTopLeftRadius: '4px',
+                            borderTopRightRadius: '4px'
+                          },
+                          '& .ql-container': {
+                            borderColor: `${theme.palette.divider} !important`,
+                            borderBottomLeftRadius: '4px',
+                            borderBottomRightRadius: '4px',
+                            '& .ql-editor': {
+                              minHeight: 135
+                            }
+                          }
+                        }
+                      }}
+                    >
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="mission-current-setup">Current Setup</InputLabel>
+                        <ReactQuill
+                          id="mission-current-setup"
+                          value={normalizeInputValue(values.currentSetup)}
+                          onChange={(e) => setFieldValue('currentSetup', e)}
+                        />
+                        {touched.currentSetup && errors.currentSetup && (
+                          <FormHelperText error id="mission-current-setup-helper">
+                            {errors.currentSetup}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
+                    <Grid item xs={12}
+                      sx={{
+                        '& .quill': {
+                          borderRadius: '4px',
+                          '& .ql-toolbar': {
+                            bgcolor: theme.palette.mode === 'dark' ? 'dark.light' : 'grey.100',
+                            borderColor: theme.palette.divider,
+                            borderTopLeftRadius: '4px',
+                            borderTopRightRadius: '4px'
+                          },
+                          '& .ql-container': {
+                            borderColor: `${theme.palette.divider} !important`,
+                            borderBottomLeftRadius: '4px',
+                            borderBottomRightRadius: '4px',
+                            '& .ql-editor': {
+                              minHeight: 135
+                            }
+                          }
+                        }
+                      }}
+                    >
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="mission-why-we-need-you">Why We Need You</InputLabel>
+                        <ReactQuill
+                          id="mission-why-we-need-you"
+                          value={normalizeInputValue(values.whyWeNeedYou)}
+                          onChange={(e) => setFieldValue('whyWeNeedYou', e)}
+                        />
+                        {touched.whyWeNeedYou && errors.whyWeNeedYou && (
+                          <FormHelperText error id="mission-why-we-need-you-helper">
+                            {errors.whyWeNeedYou}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
+                    <Grid item xs={12}
+                      sx={{
+                        '& .quill': {
+                          borderRadius: '4px',
+                          '& .ql-toolbar': {
+                            bgcolor: theme.palette.mode === 'dark' ? 'dark.light' : 'grey.100',
+                            borderColor: theme.palette.divider,
+                            borderTopLeftRadius: '4px',
+                            borderTopRightRadius: '4px'
+                          },
+                          '& .ql-container': {
+                            borderColor: `${theme.palette.divider} !important`,
+                            borderBottomLeftRadius: '4px',
+                            borderBottomRightRadius: '4px',
+                            '& .ql-editor': {
+                              minHeight: 135
+                            }
+                          }
+                        }
+                      }}
+                    >
                       <Stack spacing={1.25}>
                         <InputLabel htmlFor="mission-outcome">Outcome</InputLabel>
-                        <TextField
-                          multiline
-                          rows="5"
-                          fullWidth
+                        <ReactQuill
                           id="mission-outcome"
-                          placeholder="Enter Mission Outcome"
                           value={normalizeInputValue(values.outcome)}
-                          name="outcome"
-                          onBlur={handleBlur}
-                          onChange={handleChange}
+                          onChange={(e) => setFieldValue('outcome', e)}
                         />
                         {touched.outcome && errors.outcome && (
                           <FormHelperText error id="mission-outcome-helper">
@@ -661,51 +803,37 @@ const UpsertMission = ({ missionId }) => {
                         )}
                       </Stack>
                     </Grid>
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12}
+                      sx={{
+                        '& .quill': {
+                          borderRadius: '4px',
+                          '& .ql-toolbar': {
+                            bgcolor: theme.palette.mode === 'dark' ? 'dark.light' : 'grey.100',
+                            borderColor: theme.palette.divider,
+                            borderTopLeftRadius: '4px',
+                            borderTopRightRadius: '4px'
+                          },
+                          '& .ql-container': {
+                            borderColor: `${theme.palette.divider} !important`,
+                            borderBottomLeftRadius: '4px',
+                            borderBottomRightRadius: '4px',
+                            '& .ql-editor': {
+                              minHeight: 135
+                            }
+                          }
+                        }
+                      }}
+                    >
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="mission-country">Country</InputLabel>
-                        <Autocomplete
-                          id="mission-country"
-                          fullWidth
-                          value={values?.country ? countries.filter((item) => item.code === values?.country)[0] : null}
-                          onBlur={handleBlur}
-                          onChange={(event, newValue) => {
-                            setFieldValue('country', newValue === null ? '' : newValue.code);
-                          }}
-                          options={countries}
-                          autoHighlight
-                          isOptionEqualToValue={(option, value) => option.code === value?.code}
-                          getOptionLabel={(option) => option.label}
-                          renderOption={(props, option) => (
-                            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-                              {option.code && (
-                                <img
-                                  loading="lazy"
-                                  width="20"
-                                  src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
-                                  srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
-                                  alt=""
-                                />
-                              )}
-                              {option.label}
-                              {option.code && ` (${option.code})`}
-                            </Box>
-                          )}
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              placeholder="Choose a country"
-                              name="country"
-                              inputProps={{
-                                ...params.inputProps,
-                                autoComplete: 'new-password' // disable autocomplete and autofill
-                              }}
-                            />
-                          )}
+                        <InputLabel htmlFor="mission-profile-type">Type of Profile We Look For</InputLabel>
+                        <ReactQuill
+                          id="mission-profile-type"
+                          value={normalizeInputValue(values.profileType)}
+                          onChange={(e) => setFieldValue('profileType', e)}
                         />
-                        {touched.country && errors.country && (
-                          <FormHelperText error id="mission-country-helper">
-                            {errors.country}
+                        {touched.profileType && errors.profileType && (
+                          <FormHelperText error id="mission-profile-type-helper">
+                            {errors.profileType}
                           </FormHelperText>
                         )}
                       </Stack>
@@ -757,6 +885,56 @@ const UpsertMission = ({ missionId }) => {
                             </>
                           }
                         />
+                      </Stack>
+                    </Grid>
+
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="mission-country">Country</InputLabel>
+                        <Autocomplete
+                          id="mission-country"
+                          fullWidth
+                          value={values?.country ? countries.filter((item) => item.code === values?.country)[0] : null}
+                          onBlur={handleBlur}
+                          onChange={(event, newValue) => {
+                            setFieldValue('country', newValue === null ? '' : newValue.code);
+                          }}
+                          options={countries}
+                          autoHighlight
+                          isOptionEqualToValue={(option, value) => option.code === value?.code}
+                          getOptionLabel={(option) => option.label}
+                          renderOption={(props, option) => (
+                            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                              {option.code && (
+                                <img
+                                  loading="lazy"
+                                  width="20"
+                                  src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
+                                  srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
+                                  alt=""
+                                />
+                              )}
+                              {option.label}
+                              {option.code && ` (${option.code})`}
+                            </Box>
+                          )}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              placeholder="Choose a country"
+                              name="country"
+                              inputProps={{
+                                ...params.inputProps,
+                                autoComplete: 'new-password' // disable autocomplete and autofill
+                              }}
+                            />
+                          )}
+                        />
+                        {touched.country && errors.country && (
+                          <FormHelperText error id="mission-country-helper">
+                            {errors.country}
+                          </FormHelperText>
+                        )}
                       </Stack>
                     </Grid>
                     <Grid item xs={12} md={6}>
