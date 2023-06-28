@@ -663,6 +663,126 @@ const UpsertMission = ({ missionId }) => {
                         )}
                       </Stack>
                     </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="mission-start-date">Start Date</InputLabel>
+                        <DesktopDatePicker
+                          value={normalizeNullableInputValue(values.startDate)}
+                          inputFormat="yyyy-MM-dd"
+                          onChange={(date) => {
+                            setFieldValue('startDate', date);
+                          }}
+                          renderInput={(props) =>
+                            <>
+                              <TextField
+                                fullWidth
+                                {...props}
+                                placeholder="Start Date"
+                                name="startDate"
+                              />
+                              {touched.startDate && errors.startDate && (
+                                <FormHelperText error id="mission-start-date-helper">
+                                  {errors.startDate}
+                                </FormHelperText>
+                              )}
+                            </>
+                          }
+                        />
+                      </Stack>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="mission-end-date">End Date</InputLabel>
+                        <DesktopDatePicker
+                          value={normalizeNullableInputValue(values.endDate)}
+                          inputFormat="yyyy-MM-dd"
+                          onChange={(date) => {
+                            setFieldValue('endDate', date);
+                          }}
+                          renderInput={(props) =>
+                            <>
+                              <TextField fullWidth {...props} placeholder="End Date" name="endDate" />
+                              {touched.endDate && errors.endDate && (
+                                <FormHelperText error id="mission-end-date-helper">
+                                  {errors.endDate}
+                                </FormHelperText>
+                              )}
+                            </>
+                          }
+                        />
+                      </Stack>
+                    </Grid>
+
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="mission-country">Country</InputLabel>
+                        <Autocomplete
+                          id="mission-country"
+                          fullWidth
+                          value={values?.country ? countries.filter((item) => item.code === values?.country)[0] : null}
+                          onBlur={handleBlur}
+                          onChange={(event, newValue) => {
+                            setFieldValue('country', newValue === null ? '' : newValue.code);
+                          }}
+                          options={countries}
+                          autoHighlight
+                          isOptionEqualToValue={(option, value) => option.code === value?.code}
+                          getOptionLabel={(option) => option.label}
+                          renderOption={(props, option) => (
+                            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                              {option.code && (
+                                <img
+                                  loading="lazy"
+                                  width="20"
+                                  src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
+                                  srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
+                                  alt=""
+                                />
+                              )}
+                              {option.label}
+                              {option.code && ` (${option.code})`}
+                            </Box>
+                          )}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              placeholder="Choose a country"
+                              name="country"
+                              inputProps={{
+                                ...params.inputProps,
+                                autoComplete: 'new-password' // disable autocomplete and autofill
+                              }}
+                            />
+                          )}
+                        />
+                        {touched.country && errors.country && (
+                          <FormHelperText error id="mission-country-helper">
+                            {errors.country}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="mission-effort-hours">Effort Hours</InputLabel>
+                        <TextField
+                          fullWidth
+                          id="mission-effort-hours"
+                          type="number"
+                          inputProps={{ min: 0, max: 1000000 }}
+                          placeholder="Enter Mission Effort Hours"
+                          value={normalizeInputValue(values.effortHours)}
+                          name="effortHours"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                        />
+                        {touched.effortHours && errors.effortHours && (
+                          <FormHelperText error id="mission-effort-hours-helper">
+                            {errors.effortHours}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
                     <Grid item xs={12}
                       sx={{
                         '& .quill': {
@@ -838,127 +958,7 @@ const UpsertMission = ({ missionId }) => {
                         )}
                       </Stack>
                     </Grid>
-                    <Grid item xs={12} md={6}>
-                      <Stack spacing={1.25}>
-                        <InputLabel htmlFor="mission-start-date">Start Date</InputLabel>
-                        <DesktopDatePicker
-                          value={normalizeNullableInputValue(values.startDate)}
-                          inputFormat="yyyy-MM-dd"
-                          onChange={(date) => {
-                            setFieldValue('startDate', date);
-                          }}
-                          renderInput={(props) =>
-                            <>
-                              <TextField
-                                fullWidth
-                                {...props}
-                                placeholder="Start Date"
-                                name="startDate"
-                              />
-                              {touched.startDate && errors.startDate && (
-                                <FormHelperText error id="mission-start-date-helper">
-                                  {errors.startDate}
-                                </FormHelperText>
-                              )}
-                            </>
-                          }
-                        />
-                      </Stack>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                      <Stack spacing={1.25}>
-                        <InputLabel htmlFor="mission-end-date">End Date</InputLabel>
-                        <DesktopDatePicker
-                          value={normalizeNullableInputValue(values.endDate)}
-                          inputFormat="yyyy-MM-dd"
-                          onChange={(date) => {
-                            setFieldValue('endDate', date);
-                          }}
-                          renderInput={(props) =>
-                            <>
-                              <TextField fullWidth {...props} placeholder="End Date" name="endDate" />
-                              {touched.endDate && errors.endDate && (
-                                <FormHelperText error id="mission-end-date-helper">
-                                  {errors.endDate}
-                                </FormHelperText>
-                              )}
-                            </>
-                          }
-                        />
-                      </Stack>
-                    </Grid>
-
-                    <Grid item xs={12} sm={6}>
-                      <Stack spacing={1.25}>
-                        <InputLabel htmlFor="mission-country">Country</InputLabel>
-                        <Autocomplete
-                          id="mission-country"
-                          fullWidth
-                          value={values?.country ? countries.filter((item) => item.code === values?.country)[0] : null}
-                          onBlur={handleBlur}
-                          onChange={(event, newValue) => {
-                            setFieldValue('country', newValue === null ? '' : newValue.code);
-                          }}
-                          options={countries}
-                          autoHighlight
-                          isOptionEqualToValue={(option, value) => option.code === value?.code}
-                          getOptionLabel={(option) => option.label}
-                          renderOption={(props, option) => (
-                            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-                              {option.code && (
-                                <img
-                                  loading="lazy"
-                                  width="20"
-                                  src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
-                                  srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
-                                  alt=""
-                                />
-                              )}
-                              {option.label}
-                              {option.code && ` (${option.code})`}
-                            </Box>
-                          )}
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              placeholder="Choose a country"
-                              name="country"
-                              inputProps={{
-                                ...params.inputProps,
-                                autoComplete: 'new-password' // disable autocomplete and autofill
-                              }}
-                            />
-                          )}
-                        />
-                        {touched.country && errors.country && (
-                          <FormHelperText error id="mission-country-helper">
-                            {errors.country}
-                          </FormHelperText>
-                        )}
-                      </Stack>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                      <Stack spacing={1.25}>
-                        <InputLabel htmlFor="mission-effort-hours">Effort Hours</InputLabel>
-                        <TextField
-                          fullWidth
-                          id="mission-effort-hours"
-                          type="number"
-                          inputProps={{min: 0, max: 1000000}}
-                          placeholder="Enter Mission Effort Hours"
-                          value={normalizeInputValue(values.effortHours)}
-                          name="effortHours"
-                          onBlur={handleBlur}
-                          onChange={handleChange}
-                        />
-                        {touched.effortHours && errors.effortHours && (
-                          <FormHelperText error id="mission-effort-hours-helper">
-                            {errors.effortHours}
-                          </FormHelperText>
-                        )}
-                      </Stack>
-                    </Grid>
-
+                    
                   </Grid>
                 </Grid>
               </Grid>
