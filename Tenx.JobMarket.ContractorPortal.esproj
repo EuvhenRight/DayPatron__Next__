@@ -7,7 +7,7 @@
     <JavaScriptTestRoot>src\</JavaScriptTestRoot>
     <JavaScriptTestFramework>Jest</JavaScriptTestFramework>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerComposeProjectPath>..\..\10x-alldocker-compose.dcproj</DockerComposeProjectPath>
+    <DockerComposeProjectPath>..\..\10x-all\docker-compose.dcproj</DockerComposeProjectPath>
     <DockerfileContext>..\</DockerfileContext>
   </PropertyGroup>
   <ItemGroup>
