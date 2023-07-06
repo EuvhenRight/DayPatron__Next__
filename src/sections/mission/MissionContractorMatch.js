@@ -30,21 +30,28 @@ import Avatar from 'components/@extended/Avatar';
 import { getEllipsis } from 'utils/stringUtils';
 import countries from 'data/countries';
 import { PopupTransition } from 'components/@extended/Transitions';
+import { useNavigate, useParams } from 'react-router-dom';
+import MissionContractorMatchEmployerDetails from 'sections/mission/MissionContractorMatchEmployerDetails';
+import MissionContractorMatchAdminDetails from 'sections/mission/MissionContractorMatchAdminDetails';
 
 const avatarImage = require.context('assets/images/users', true);
 
 // ==============================|| MISSION CONTRACTOR MATCH ||============================== //
 
 const MissionContractorMatch = ({ missionId, contractorId }) => {
-  const peraResponseResultTabGroup = 'peraResponseResultTabGroup';
-  const peraQuestionsAndAnswersTabGroup = 'peraQuestionsAndAnswersTabGroup';
+  const peraResponseResultTabGroup = 'ai-results';
+  const peraQuestionsAndAnswersTabGroup = 'ai-qa';
+  const employerDetailsTabGroup = 'employer-details';
+  const adminDetailsTabGroup = 'admin-details';
+  
   const { keycloak } = useKeycloak();
   const [missionContractorMatch, setMissionContractorMatch] = useState({});
   const [selectedTraitResult, setSelectedTraitResult] = useState(null);
+  const navigate = useNavigate();
+  let { tabGroupId, tabGroupItemIndex } = useParams();
+  tabGroupItemIndex = parseInt(tabGroupItemIndex);
 
   const theme = useTheme();
-  const [tabGroup, setTabGroup] = useState(peraResponseResultTabGroup);
-  const [selectedPeraResponseResultIndex, setSelectedPeraResponseResultIndex] = useState(0);
   const [traitDetailsTabsValue, setTraitDetailsTabsValue] = useState(0);
 
   const handleChangeTraitDetailsTabs = (event, newValue) => {
@@ -52,8 +59,14 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
   };
 
   const handleTabClick = (group, index) => {
-    setTabGroup(group);
-    setSelectedPeraResponseResultIndex(index ?? null);
+    var indexSuffix = '';
+    if (index === 0) {
+      indexSuffix = '/0';
+    } else if (index) {
+      indexSuffix = '/' + index;
+    }
+
+    navigate('/missions/' + missionId + '/matches/' + contractorId + '/' + group + indexSuffix);
   };
 
   const bindMissionContractorMatch = async () => {
@@ -121,9 +134,18 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
     }
   };
 
+  if (!tabGroupId) {
+    if (missionContractorMatch?.contractorPeraSurveyResponse) {
+      tabGroupId = peraResponseResultTabGroup;
+      tabGroupItemIndex = 0;
+    } else {
+      tabGroupId = employerDetailsTabGroup;
+    }
+  }
+
   let selectedPeraAssessment = null;
-  if (tabGroup === peraResponseResultTabGroup)
-    selectedPeraAssessment = missionContractorMatch?.contractorPeraSurveyResponse?.responseResultsTree[selectedPeraResponseResultIndex];
+  if (tabGroupId === peraResponseResultTabGroup)
+    selectedPeraAssessment = missionContractorMatch?.contractorPeraSurveyResponse?.responseResultsTree[tabGroupItemIndex];
 
   return (
     <Grid container spacing={3}>
@@ -216,26 +238,68 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                 </Grid>
 
                 <Grid item xs={12}>
-                  <List component="nav" sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32, color: theme.palette.grey[500] } }}>
-                    {missionContractorMatch?.contractorPeraSurveyResponse?.responseResultsTree?.map((item, index) => {
-                      return (
-                        <ListItemButton key={index} selected={selectedPeraResponseResultIndex === index} onClick={() => handleTabClick(peraResponseResultTabGroup, index)}>
-                          <ListItemText primary={item?.linkedAssessment?.assessment?.name} />
+                  {missionContractorMatch?.contractorPeraSurveyResponse &&
+                    <List
+                      component="nav"
+                      sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32, color: theme.palette.grey[500] } }}
+                      subheader={
+                        <Typography variant="subtitle1" color="text.primary" sx={{ pl: 2, mb: 1, mt: 2 }}>
+                          AI Screening
+                        </Typography>
+                      }>
+                      {missionContractorMatch?.contractorPeraSurveyResponse?.responseResultsTree?.map((item, index) => {
+                        return (
+                          <ListItemButton key={index} selected={tabGroupItemIndex === index} onClick={() => handleTabClick(peraResponseResultTabGroup, index)}>
+                            <ListItemText primary={item?.linkedAssessment?.assessment?.name} />
+                            <ListItemIcon>
+                              <RightOutlined />
+                            </ListItemIcon>
+                          </ListItemButton>
+                        );
+                      })}
+                      {missionContractorMatch?.contractorPeraSurveyResponse &&
+                        <ListItemButton selected={tabGroupId === peraQuestionsAndAnswersTabGroup} onClick={() => handleTabClick(peraQuestionsAndAnswersTabGroup)}>
+                          <ListItemText primary="Questions & Answers" />
                           <ListItemIcon>
                             <RightOutlined />
                           </ListItemIcon>
                         </ListItemButton>
-                      );
-                    })}
-                    {missionContractorMatch?.contractorPeraSurveyResponse &&
-                      <ListItemButton selected={tabGroup === peraQuestionsAndAnswersTabGroup} onClick={() => handleTabClick(peraQuestionsAndAnswersTabGroup)}>
-                        <ListItemText primary="Questions & Answers" />
+                      }
+                    </List>
+                  }
+
+                  <List
+                    component="nav"
+                    sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32, color: theme.palette.grey[500] } }}
+                    subheader={
+                      <Typography variant="subtitle1" color="text.primary" sx={{ pl: 2, mb: 1, mt: 2 }}>
+                        Employer Details
+                      </Typography>
+                    }>
+                      <ListItemButton selected={tabGroupId === employerDetailsTabGroup} onClick={() => handleTabClick(employerDetailsTabGroup)}>
+                      <ListItemText primary="Employer Details" />
                         <ListItemIcon>
                           <RightOutlined />
                         </ListItemIcon>
                       </ListItemButton>
-                    }
                   </List>
+
+                  <List
+                    component="nav"
+                    sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32, color: theme.palette.grey[500] } }}
+                    subheader={
+                      <Typography variant="subtitle1" color="text.primary" sx={{ pl: 2, mb: 1, mt: 2 }}>
+                        Admin Details
+                      </Typography>
+                    }>
+                    <ListItemButton selected={tabGroupId === adminDetailsTabGroup} onClick={() => handleTabClick(adminDetailsTabGroup)}>
+                      <ListItemText primary="Admin Details" />
+                      <ListItemIcon>
+                        <RightOutlined />
+                      </ListItemIcon>
+                    </ListItemButton>
+                  </List>
+
                 </Grid>
 
               </Grid>
@@ -248,7 +312,7 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
       <Grid item xs={12} sm={7} md={8} xl={9}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            {tabGroup === peraResponseResultTabGroup && selectedPeraAssessment &&
+            {tabGroupId === peraResponseResultTabGroup && selectedPeraAssessment &&
               <MainCard>
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
@@ -332,7 +396,7 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                 </Grid>
               </MainCard>
             }
-            {tabGroup === peraQuestionsAndAnswersTabGroup &&
+            {tabGroupId === peraQuestionsAndAnswersTabGroup &&
               <MainCard>
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
@@ -371,6 +435,16 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                     );
                   })}
                 </Grid>
+              </MainCard>
+            }
+            {tabGroupId === employerDetailsTabGroup &&
+              <MainCard>
+                <MissionContractorMatchEmployerDetails missionId={missionId} contractorId={contractorId}></MissionContractorMatchEmployerDetails>
+              </MainCard>
+            }
+            {tabGroupId === adminDetailsTabGroup &&
+              <MainCard>
+                <MissionContractorMatchAdminDetails missionId={missionId} contractorId={contractorId}></MissionContractorMatchAdminDetails>
               </MainCard>
             }
           </Grid>

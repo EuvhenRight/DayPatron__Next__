@@ -87,7 +87,19 @@ const MainRoutes = {
                   children: [
                     {
                       path: ':contractorId',
-                      element: <></>
+                      element: <></>,
+                      children: [
+                        {
+                          path: ':tabGroupId',
+                          element: <></>,
+                          children: [
+                            {
+                              path: ':tabGroupItemIndex',
+                              element: <></>
+                            }
+                          ]
+                        }
+                      ]
                     }
                   ]
                 }

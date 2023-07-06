@@ -6,6 +6,10 @@ function normalizeNullableInputValue(value) {
   return value ? value : null;
 }
 
+function normalizeBooleanInputValue(value) {
+  return value ? value : false;
+}
+
 function prepareApiBody(obj) {
   return JSON.stringify(removeEmptyOrNull(obj));
 }
@@ -34,4 +38,4 @@ function compareSortValues(a, b) {
   return result;
 }
 
-export { normalizeInputValue, normalizeNullableInputValue, prepareApiBody, removeEmptyOrNull, getEllipsis, compareSortValues };
+export { normalizeInputValue, normalizeNullableInputValue, normalizeBooleanInputValue, prepareApiBody, removeEmptyOrNull, getEllipsis, compareSortValues };

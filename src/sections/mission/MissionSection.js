@@ -11,20 +11,14 @@ import MainCard from 'components/MainCard';
 import { FileTextOutlined, BlockOutlined } from '@ant-design/icons';
 
 const MissionSection = () => {
-  let { missionId, contractorId } = useParams();
+  let { missionId } = useParams();
   const { pathname } = useLocation();
 
   let selectedTab = 0;
-  switch (pathname) {
-    case '/missions/' + missionId + '/matches/' + contractorId:
-    case '/missions/' + missionId + '/matches':
-      selectedTab = 1;
-      break;
-    case '/missions/' + missionId + '/overview':
-    default:
-      selectedTab = 0;
+  if (pathname.startsWith('/missions/' + missionId + '/matches')) {
+    selectedTab = 1;
   }
-
+  
   const [value, setValue] = useState(selectedTab);
 
   const handleChange = (event, newValue) => {
