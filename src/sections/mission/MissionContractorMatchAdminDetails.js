@@ -12,9 +12,6 @@ import {
   Grid,
   InputLabel,
   Stack,
-  List,
-  ListItem,
-  ListItemText,
   Switch
 } from '@mui/material';
 
@@ -33,8 +30,10 @@ const getInitialValues = (adminDetails) => {
   const newAdminDetails = {
     contractorNotes: null,
     showContractorNotesToEmployer: null,
+    showContractorNotesToContractor: null,
     missionNotes: null,
-    showMissionNotesToContractor: null
+    showMissionNotesToContractor: null,
+    showMissionNotesToEmployer: null
   };
 
   if (adminDetails) {
@@ -53,7 +52,6 @@ const MissionContractorMatchAdminDetails = ({ missionId, contractorId }) => {
   const [adminDetails, setAdminDetails] = useState(null);
 
   const bindData = async () => {
-    console.log(keycloak.tokenParsed);
     try {
       let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/' + encodeURIComponent(missionId) + '/contractors/' + encodeURIComponent(contractorId) + '/admin-details',
         {
@@ -81,8 +79,10 @@ const MissionContractorMatchAdminDetails = ({ missionId, contractorId }) => {
   const AdminDetailsSchema = Yup.object().shape({
     contractorNotes: Yup.string().max(1000).nullable(true),
     showContractorNotesToEmployer: Yup.boolean().nullable(true),
+    showContractorNotesToContractor: Yup.boolean().nullable(true),
     missionNotes: Yup.string().max(1000).nullable(true),
-    showMissionNotesToContractor: Yup.boolean().nullable(true)
+    showMissionNotesToContractor: Yup.boolean().nullable(true),
+    showMissionNotesToEmployer: Yup.boolean().nullable(true)
   });
 
   const formik = useFormik({
@@ -133,6 +133,9 @@ const MissionContractorMatchAdminDetails = ({ missionId, contractorId }) => {
         );
 
         setSubmitting(false);
+        let json = await response.json();
+        setAdminDetails(json);
+
       } catch (error) {
         console.error(error);
       }
@@ -188,11 +191,9 @@ const MissionContractorMatchAdminDetails = ({ missionId, contractorId }) => {
             </Grid>
 
             <Grid item xs={6}>
-              <List sx={{ p: 0 }}>
-                <ListItem divider>
-                  <ListItemText
-                    primary="Show Contractor Notes to Employer"
-                  />
+              <Stack spacing={1.25}>
+                <InputLabel>Show Contractor Notes to Employer</InputLabel>
+                <Stack direction="row" alignItems="center">
                   <Switch
                     id="show-contractor-notes-to-employer"
                     edge="end"
@@ -200,15 +201,37 @@ const MissionContractorMatchAdminDetails = ({ missionId, contractorId }) => {
                     onChange={(event, checked) => {
                       setFieldValue("showContractorNotesToEmployer", checked);
                     }}
-                    inputProps={{'aria-labelledby': 'switch-list-label-sb'}}
+                    inputProps={{ 'aria-labelledby': 'switch-list-label-sb' }}
                   />
                   {touched.showContractorNotesToEmployer && errors.showContractorNotesToEmployer && (
                     <FormHelperText error id="show-contractor-notes-to-employer-helper">
                       {errors.showContractorNotesToEmployer}
                     </FormHelperText>
                   )}
-                </ListItem>
-              </List>
+                </Stack>
+              </Stack>
+            </Grid>
+
+            <Grid item xs={6}>
+              <Stack spacing={1.25}>
+                <InputLabel>Show Contractor Notes to Contractor</InputLabel>
+                <Stack direction="row" alignItems="center">
+                  <Switch
+                    id="show-contractor-notes-to-contractor"
+                    edge="end"
+                    checked={normalizeBooleanInputValue(values?.showContractorNotesToContractor)}
+                    onChange={(event, checked) => {
+                      setFieldValue("showContractorNotesToContractor", checked);
+                    }}
+                    inputProps={{ 'aria-labelledby': 'switch-list-label-sb' }}
+                  />
+                  {touched.showContractorNotesToContractor && errors.showContractorNotesToContractor && (
+                    <FormHelperText error id="show-contractor-notes-to-contractor-helper">
+                      {errors.showContractorNotesToContractor}
+                    </FormHelperText>
+                  )}
+                </Stack>
+              </Stack>
             </Grid>
 
             <Grid item xs={12}
@@ -248,11 +271,9 @@ const MissionContractorMatchAdminDetails = ({ missionId, contractorId }) => {
             </Grid>
 
             <Grid item xs={6}>
-              <List sx={{ p: 0 }}>
-                <ListItem divider>
-                  <ListItemText
-                    primary="Show Mission Notes to Contractor"
-                  />
+              <Stack spacing={1.25}>
+                <InputLabel>Show Mission Notes to Contractor</InputLabel>
+                <Stack direction="row" alignItems="center">
                   <Switch
                     id="show-mission-notes-to-contractor"
                     edge="end"
@@ -267,8 +288,30 @@ const MissionContractorMatchAdminDetails = ({ missionId, contractorId }) => {
                       {errors.showMissionNotesToContractor}
                     </FormHelperText>
                   )}
-                </ListItem>
-              </List>
+                </Stack>
+              </Stack>
+            </Grid>
+
+            <Grid item xs={6}>
+              <Stack spacing={1.25}>
+                <InputLabel>Show Mission Notes to Employer</InputLabel>
+                <Stack direction="row" alignItems="center">
+                  <Switch
+                    id="show-mission-notes-to-employer"
+                    edge="end"
+                    checked={normalizeBooleanInputValue(values?.showMissionNotesToEmployer)}
+                    onChange={(event, checked) => {
+                      setFieldValue("showMissionNotesToEmployer", checked);
+                    }}
+                    inputProps={{ 'aria-labelledby': 'switch-list-label-sb' }}
+                  />
+                  {touched.showMissionNotesToEmployer && errors.showMissionNotesToEmployer && (
+                    <FormHelperText error id="show-mission-notes-to-employer-helper">
+                      {errors.showMissionNotesToEmployer}
+                    </FormHelperText>
+                  )}
+                </Stack>
+              </Stack>
             </Grid>
 
           </Grid>

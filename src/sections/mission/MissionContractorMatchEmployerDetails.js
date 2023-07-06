@@ -122,6 +122,9 @@ const MissionContractorMatchEmployerDetails = ({ missionId, contractorId }) => {
         );
 
         setSubmitting(false);
+        let json = await response.json();
+        setAdminDetails(json);
+
       } catch (error) {
         console.error(error);
       }

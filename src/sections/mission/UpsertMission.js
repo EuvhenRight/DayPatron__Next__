@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import {  useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
@@ -73,7 +73,7 @@ const getInitialValues = (mission) => {
     endDate: null,
     effortHours: null
   };
-  
+
   if (mission) {
     var result = _.merge({}, newMission, mission);
 
@@ -106,6 +106,7 @@ const UpsertMission = ({ missionId }) => {
 
   const [avatar, setAvatar] = useState(mission?.mainImageUrl ? mission.mainImageUrl : avatarImage('./default.png'));
   const theme = useTheme();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (selectedImage) {
@@ -159,8 +160,6 @@ const UpsertMission = ({ missionId }) => {
       }
     })();
   }, []);
-
-  const dispatch = useDispatch();
 
   const MissionSchema = Yup.object().shape({
     employerId: Yup.string().required('Employer is required').nullable(true),
@@ -296,13 +295,13 @@ const UpsertMission = ({ missionId }) => {
       <FormikProvider value={formik}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-            {!mission && 
+            {!mission &&
               <>
                 <DialogTitle>Create Mission</DialogTitle>
                 <Divider />
-              </>  
+              </>
             }
-            
+
             <DialogContent sx={{ p: 2.5 }}>
               <Grid container spacing={3}>
                 <Grid item xs={12} md={1}>
@@ -958,7 +957,7 @@ const UpsertMission = ({ missionId }) => {
                         )}
                       </Stack>
                     </Grid>
-                    
+
                   </Grid>
                 </Grid>
               </Grid>
