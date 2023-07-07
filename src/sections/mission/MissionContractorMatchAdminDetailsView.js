@@ -10,7 +10,7 @@ const MissionContractorMatchAdminDetailsView = ({ adminDetails }) => {
   console.log(adminDetails);
   return (
     <>
-      <DialogTitle>Admin Details</DialogTitle>
+      <DialogTitle>Admin Settings</DialogTitle>
       <Divider />
 
       <DialogContent sx={{ p: 2.5 }}>

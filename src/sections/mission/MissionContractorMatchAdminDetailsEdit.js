@@ -37,7 +37,6 @@ const getInitialValues = (adminDetails) => {
 
   if (adminDetails) {
     var result = _.merge({}, newAdminDetails, adminDetails);
-    console.log(result);
     return result;
   }
 
@@ -121,7 +120,7 @@ const MissionContractorMatchAdminDetails = ({ missionId, contractorId, adminDeta
 
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-        <DialogTitle>Admin Details</DialogTitle>
+        <DialogTitle>Admin Settings</DialogTitle>
         <Divider />
 
         <DialogContent sx={{ p: 2.5 }}>

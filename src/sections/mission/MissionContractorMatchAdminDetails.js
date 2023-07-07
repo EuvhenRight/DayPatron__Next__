@@ -9,7 +9,7 @@ const MissionContractorMatchAdminDetails = ({ missionId, contractorId }) => {
 
   const bindData = async () => {
     try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/' + encodeURIComponent(missionId) + '/contractors/' + encodeURIComponent(contractorId) + '/admin-details',
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/' + encodeURIComponent(missionId) + '/contractors/' + encodeURIComponent(contractorId),
         {
           method: 'GET',
           headers: {
@@ -20,7 +20,7 @@ const MissionContractorMatchAdminDetails = ({ missionId, contractorId }) => {
 
       let json = await response.json();
 
-      setAdminDetails(json);
+      setAdminDetails(json.adminDetails);
     } catch (error) {
       console.log(error);
     }

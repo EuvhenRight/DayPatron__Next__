@@ -127,7 +127,7 @@ const UpsertMission = ({ missionId }) => {
 
       let json = await response.json();
 
-      setMission(json.mission);
+      setMission(json);
     } catch (error) {
       console.log(error);
     }
@@ -944,7 +944,7 @@ const UpsertMission = ({ missionId }) => {
                       }}
                     >
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="mission-profile-type">Type of Profile We Look For</InputLabel>
+                        <InputLabel htmlFor="mission-profile-type">Profile We Are Looking For</InputLabel>
                         <ReactQuill
                           id="mission-profile-type"
                           value={normalizeInputValue(values.profileType)}

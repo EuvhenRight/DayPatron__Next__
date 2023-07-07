@@ -273,31 +273,22 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                     sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32, color: theme.palette.grey[500] } }}
                     subheader={
                       <Typography variant="subtitle1" color="text.primary" sx={{ pl: 2, mb: 1, mt: 2 }}>
-                        Employer Details
+                        Settings
                       </Typography>
                     }>
                       <ListItemButton selected={tabGroupId === employerDetailsTabGroup} onClick={() => handleTabClick(employerDetailsTabGroup)}>
-                      <ListItemText primary="Employer Details" />
+                        <ListItemText primary="Employer Settings" />
+                          <ListItemIcon>
+                            <RightOutlined />
+                          </ListItemIcon>
+                      </ListItemButton>
+
+                      <ListItemButton selected={tabGroupId === adminDetailsTabGroup} onClick={() => handleTabClick(adminDetailsTabGroup)}>
+                      <ListItemText primary="Admin Settings" />
                         <ListItemIcon>
                           <RightOutlined />
                         </ListItemIcon>
                       </ListItemButton>
-                  </List>
-
-                  <List
-                    component="nav"
-                    sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32, color: theme.palette.grey[500] } }}
-                    subheader={
-                      <Typography variant="subtitle1" color="text.primary" sx={{ pl: 2, mb: 1, mt: 2 }}>
-                        Admin Details
-                      </Typography>
-                    }>
-                    <ListItemButton selected={tabGroupId === adminDetailsTabGroup} onClick={() => handleTabClick(adminDetailsTabGroup)}>
-                      <ListItemText primary="Admin Details" />
-                      <ListItemIcon>
-                        <RightOutlined />
-                      </ListItemIcon>
-                    </ListItemButton>
                   </List>
 
                 </Grid>

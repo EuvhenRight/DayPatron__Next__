@@ -47,7 +47,7 @@ const MissionContractorMatchEmployerDetails = ({ missionId, contractorId }) => {
 
   const bindData = async () => {
     try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/' + encodeURIComponent(missionId) + '/contractors/' + encodeURIComponent(contractorId) + '/employer-details',
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/' + encodeURIComponent(missionId) + '/contractors/' + encodeURIComponent(contractorId),
         {
           method: 'GET',
           headers: {
@@ -58,7 +58,7 @@ const MissionContractorMatchEmployerDetails = ({ missionId, contractorId }) => {
 
       let json = await response.json();
 
-      setEmployerDetails(json);
+      setEmployerDetails(json.employerDetails);
     } catch (error) {
       console.log(error);
     }
@@ -137,7 +137,7 @@ const MissionContractorMatchEmployerDetails = ({ missionId, contractorId }) => {
 
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-        <DialogTitle>Employer Details</DialogTitle>
+        <DialogTitle>Employer Settings</DialogTitle>
         <Divider />
 
         <DialogContent sx={{ p: 2.5 }}>
