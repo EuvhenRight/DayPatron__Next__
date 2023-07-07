@@ -1,0 +1,36 @@
+.card-button-right{ 
+    margin-left: auto;
+}
+.clickable {
+    cursor:pointer;
+}
+.left {
+    float: left;
+}
+.no-text-decoration {
+    text-decoration: none;
+}
+.list-card-title {
+    cursor: pointer;
+    margin-right:50px;
+}
+.card-description-text {
+    min-height: 50px;
+}
+div.small-chip {
+    height: 15px;
+    font-size: 0.6125rem;
+}
+div.small-chip span {
+    padding: 0px 5px 0px 5px;
+}
+.button-h5-chip {
+    position: absolute;
+    margin: 0;
+    left: 0;
+    top: -13px;
+}
+.card-description-container {
+    height:80px;
+    overflow:hidden;
+}

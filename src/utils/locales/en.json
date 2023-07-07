@@ -4,10 +4,7 @@
   "profile-expertise": "Expertise",
   "profile-preferences": "Preferences",
   "profile-availability": "Availability",
-  "mission": "Missions",
-  "mission-search": "Search",
-  "mission-pending": "Pending",
-  "mission-history": "History",
+  "missions": "Missions",
   "documentation": "Documentation",
   "roadmap": "Roadmap"
 }

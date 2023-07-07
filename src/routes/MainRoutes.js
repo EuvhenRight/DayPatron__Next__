@@ -17,9 +17,8 @@ const ProfileExpertisePage = Loadable(lazy(() => import('pages/profile-expertise
 const ProfilePreferencesPage = Loadable(lazy(() => import('pages/profile-preferences-page')));
 const ProfileAvailabilityPage = Loadable(lazy(() => import('pages/profile-availability-page')));
 
-const MissionSearchPage = Loadable(lazy(() => import('pages/mission-search-page')));
-const MissionPendingPage = Loadable(lazy(() => import('pages/mission-pending-page')));
-const MissionHistoryPage = Loadable(lazy(() => import('pages/mission-history-page')));
+const MissionPage = Loadable(lazy(() => import('pages/mission-page')));
+const MissionsPage = Loadable(lazy(() => import('pages/missions-page')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -56,21 +55,12 @@ const MainRoutes = {
           ]
         },
         {
-          path: 'mission',
-          children: [
-            {
-              path: 'search',
-              element: <MissionSearchPage />
-            },
-            {
-              path: 'pending',
-              element: <MissionPendingPage />
-            },
-            {
-              path: 'history',
-              element: <MissionHistoryPage />
-            }
-          ]
+          path: 'missions/:missionId',
+          element: <MissionPage />
+        },
+        {
+          path: 'missions',
+          element: <MissionsPage />
         }
       ]
     },

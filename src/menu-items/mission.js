@@ -3,45 +3,27 @@ import { FormattedMessage } from 'react-intl';
 
 // assets
 import {
-  SearchOutlined,
-  Loading3QuartersOutlined,
-  HistoryOutlined
+  SearchOutlined
 } from '@ant-design/icons';
 
 // icons
 const icons = {
-  SearchOutlined,
-  Loading3QuartersOutlined,
-  HistoryOutlined
+  SearchOutlined
 };
 
 // ==============================|| MENU ITEMS - MISSION ||============================== //
 
 const mission = {
-  id: 'mission',
-  title: <FormattedMessage id="mission" />,
+  id: 'missions',
+  title: <FormattedMessage id="missions" />,
   type: 'group',
   children: [
     {
-      id: 'mission-search',
-      title: <FormattedMessage id="mission-search" />,
+      id: 'missions',
+      title: <FormattedMessage id="missions" />,
       type: 'item',
-      url: '/mission/search',
+      url: '/missions',
       icon: icons.SearchOutlined
-    },
-    {
-      id: 'mission-pending',
-      title: <FormattedMessage id="mission-pending" />,
-      type: 'item',
-      url: '/mission/pending',
-      icon: icons.Loading3QuartersOutlined
-    },
-    {
-      id: 'mission-history',
-      title: <FormattedMessage id="mission-history" />,
-      type: 'item',
-      url: '/mission/history',
-      icon: icons.HistoryOutlined
     }
   ]
 };

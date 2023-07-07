@@ -33,4 +33,10 @@ function dateTimeToTimeString(dateTimeString) {
   return result;
 }
 
-export { normalizeInputValue, normalizeNullableInputValue, normalizeBooleanInputValue, prepareApiBody, dateTimeToTimeString };
+function compareSortValues(a, b) {
+  var result = (a ?? '')?.localeCompare(b ?? '');
+
+  return result;
+}
+
+export { normalizeInputValue, normalizeNullableInputValue, normalizeBooleanInputValue, prepareApiBody, dateTimeToTimeString, compareSortValues };
