@@ -41,8 +41,7 @@ const avatarImage = require.context('assets/images/users', true);
 const MissionContractorMatch = ({ missionId, contractorId }) => {
   const peraResponseResultTabGroup = 'ai-results';
   const peraQuestionsAndAnswersTabGroup = 'ai-qa';
-  const employerDetailsTabGroup = 'employer-details';
-  const adminDetailsTabGroup = 'admin-details';
+  const notesTabGroup = 'notes';
   
   const { keycloak } = useKeycloak();
   const [missionContractorMatch, setMissionContractorMatch] = useState({});
@@ -139,7 +138,7 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
       tabGroupId = peraResponseResultTabGroup;
       tabGroupItemIndex = 0;
     } else {
-      tabGroupId = employerDetailsTabGroup;
+      tabGroupId = notesTabGroup;
     }
   }
 
@@ -273,21 +272,14 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                     sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32, color: theme.palette.grey[500] } }}
                     subheader={
                       <Typography variant="subtitle1" color="text.primary" sx={{ pl: 2, mb: 1, mt: 2 }}>
-                        Settings
+                        Feedback
                       </Typography>
                     }>
-                      <ListItemButton selected={tabGroupId === employerDetailsTabGroup} onClick={() => handleTabClick(employerDetailsTabGroup)}>
-                        <ListItemText primary="Employer Settings" />
+                      <ListItemButton selected={tabGroupId === notesTabGroup} onClick={() => handleTabClick(notesTabGroup)}>
+                        <ListItemText primary="Notes" />
                           <ListItemIcon>
                             <RightOutlined />
                           </ListItemIcon>
-                      </ListItemButton>
-
-                      <ListItemButton selected={tabGroupId === adminDetailsTabGroup} onClick={() => handleTabClick(adminDetailsTabGroup)}>
-                      <ListItemText primary="Admin Settings" />
-                        <ListItemIcon>
-                          <RightOutlined />
-                        </ListItemIcon>
                       </ListItemButton>
                   </List>
 
@@ -428,15 +420,19 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                 </Grid>
               </MainCard>
             }
-            {tabGroupId === employerDetailsTabGroup &&
-              <MainCard>
-                <MissionContractorMatchEmployerDetails missionId={missionId} contractorId={contractorId}></MissionContractorMatchEmployerDetails>
-              </MainCard>
-            }
-            {tabGroupId === adminDetailsTabGroup &&
-              <MainCard>
-                <MissionContractorMatchAdminDetails missionId={missionId} contractorId={contractorId}></MissionContractorMatchAdminDetails>
-              </MainCard>
+            {tabGroupId === notesTabGroup &&
+              <Grid container spacing={3}>
+                <Grid item xs={12}>
+                  <MainCard>
+                    <MissionContractorMatchEmployerDetails missionId={missionId} contractorId={contractorId}></MissionContractorMatchEmployerDetails>
+                  </MainCard>
+                </Grid>
+                <Grid item xs={12}>
+                  <MainCard>
+                    <MissionContractorMatchAdminDetails missionId={missionId} contractorId={contractorId}></MissionContractorMatchAdminDetails>
+                  </MainCard>
+                </Grid>
+              </Grid>
             }
           </Grid>
         </Grid>

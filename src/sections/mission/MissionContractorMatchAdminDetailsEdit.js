@@ -4,14 +4,11 @@ import { useTheme } from '@mui/material/styles';
 import {
   FormHelperText,
   Button,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Divider,
   Grid,
   InputLabel,
   Stack,
-  Switch
+  Switch,
+  Typography
 } from '@mui/material';
 
 import _ from 'lodash';
@@ -120,181 +117,181 @@ const MissionContractorMatchAdminDetails = ({ missionId, contractorId, adminDeta
 
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-        <DialogTitle>Admin Settings</DialogTitle>
-        <Divider />
 
-        <DialogContent sx={{ p: 2.5 }}>
-          <Grid container spacing={3}>
-
-            <Grid item xs={12}
-              sx={{
-                '& .quill': {
-                  borderRadius: '4px',
-                  '& .ql-toolbar': {
-                    bgcolor: theme.palette.mode === 'dark' ? 'dark.light' : 'grey.100',
-                    borderColor: theme.palette.divider,
-                    borderTopLeftRadius: '4px',
-                    borderTopRightRadius: '4px'
-                  },
-                  '& .ql-container': {
-                    borderColor: `${theme.palette.divider} !important`,
-                    borderBottomLeftRadius: '4px',
-                    borderBottomRightRadius: '4px',
-                    '& .ql-editor': {
-                      minHeight: 135
-                    }
-                  }
-                }
-              }}
-            >
-              <Stack spacing={1.25}>
-                <InputLabel htmlFor="match-admin-contractor-notes">Notes About the Contractor</InputLabel>
-                <ReactQuill
-                  id="match-admin-contractor-notes"
-                  value={normalizeInputValue(values.contractorNotes)}
-                  onChange={(e) => setFieldValue('contractorNotes', e)}
-                />
-                {touched.contractorNotes && errors.contractorNotes && (
-                  <FormHelperText error id="match-admin-contractor-notes-helper">
-                    {errors.contractorNotes}
-                  </FormHelperText>
-                )}
-              </Stack>
-            </Grid>
-
-            <Grid item xs={6}>
-              <Stack spacing={1.25}>
-                <InputLabel>Show Contractor Notes to Employer</InputLabel>
-                <Stack direction="row" alignItems="center">
-                  <Switch
-                    id="show-contractor-notes-to-employer"
-                    edge="end"
-                    checked={normalizeBooleanInputValue(values?.showContractorNotesToEmployer)}
-                    onChange={(event, checked) => {
-                      setFieldValue("showContractorNotesToEmployer", checked);
-                    }}
-                    inputProps={{ 'aria-labelledby': 'switch-list-label-sb' }}
-                  />
-                  {touched.showContractorNotesToEmployer && errors.showContractorNotesToEmployer && (
-                    <FormHelperText error id="show-contractor-notes-to-employer-helper">
-                      {errors.showContractorNotesToEmployer}
-                    </FormHelperText>
-                  )}
-                </Stack>
-              </Stack>
-            </Grid>
-
-            <Grid item xs={6}>
-              <Stack spacing={1.25}>
-                <InputLabel>Show Contractor Notes to Contractor</InputLabel>
-                <Stack direction="row" alignItems="center">
-                  <Switch
-                    id="show-contractor-notes-to-contractor"
-                    edge="end"
-                    checked={normalizeBooleanInputValue(values?.showContractorNotesToContractor)}
-                    onChange={(event, checked) => {
-                      setFieldValue("showContractorNotesToContractor", checked);
-                    }}
-                    inputProps={{ 'aria-labelledby': 'switch-list-label-sb' }}
-                  />
-                  {touched.showContractorNotesToContractor && errors.showContractorNotesToContractor && (
-                    <FormHelperText error id="show-contractor-notes-to-contractor-helper">
-                      {errors.showContractorNotesToContractor}
-                    </FormHelperText>
-                  )}
-                </Stack>
-              </Stack>
-            </Grid>
-
-            <Grid item xs={12}
-              sx={{
-                '& .quill': {
-                  borderRadius: '4px',
-                  '& .ql-toolbar': {
-                    bgcolor: theme.palette.mode === 'dark' ? 'dark.light' : 'grey.100',
-                    borderColor: theme.palette.divider,
-                    borderTopLeftRadius: '4px',
-                    borderTopRightRadius: '4px'
-                  },
-                  '& .ql-container': {
-                    borderColor: `${theme.palette.divider} !important`,
-                    borderBottomLeftRadius: '4px',
-                    borderBottomRightRadius: '4px',
-                    '& .ql-editor': {
-                      minHeight: 135
-                    }
-                  }
-                }
-              }}
-            >
-              <Stack spacing={1.25}>
-                <InputLabel htmlFor="match-admin-mission-notes">Notes About the Mission</InputLabel>
-                <ReactQuill
-                  id="match-admin-mission-notes"
-                  value={normalizeInputValue(values.missionNotes)}
-                  onChange={(e) => setFieldValue('missionNotes', e)}
-                />
-                {touched.missionNotes && errors.missionNotes && (
-                  <FormHelperText error id="match-admin-mission-notes-helper">
-                    {errors.missionNotes}
-                  </FormHelperText>
-                )}
-              </Stack>
-            </Grid>
-
-            <Grid item xs={6}>
-              <Stack spacing={1.25}>
-                <InputLabel>Show Mission Notes to Employer</InputLabel>
-                <Stack direction="row" alignItems="center">
-                  <Switch
-                    id="show-mission-notes-to-employer"
-                    edge="end"
-                    checked={normalizeBooleanInputValue(values?.showMissionNotesToEmployer)}
-                    onChange={(event, checked) => {
-                      setFieldValue("showMissionNotesToEmployer", checked);
-                    }}
-                    inputProps={{ 'aria-labelledby': 'switch-list-label-sb' }}
-                  />
-                  {touched.showMissionNotesToEmployer && errors.showMissionNotesToEmployer && (
-                    <FormHelperText error id="show-mission-notes-to-employer-helper">
-                      {errors.showMissionNotesToEmployer}
-                    </FormHelperText>
-                  )}
-                </Stack>
-              </Stack>
-            </Grid>
-
-            <Grid item xs={6}>
-              <Stack spacing={1.25}>
-                <InputLabel>Show Mission Notes to Contractor</InputLabel>
-                <Stack direction="row" alignItems="center">
-                  <Switch
-                    id="show-mission-notes-to-contractor"
-                    edge="end"
-                    checked={normalizeBooleanInputValue(values?.showMissionNotesToContractor)}
-                    onChange={(event, checked) => {
-                      setFieldValue("showMissionNotesToContractor", checked);
-                    }}
-                    inputProps={{ 'aria-labelledby': 'switch-list-label-sb' }}
-                  />
-                  {touched.showMissionNotesToContractor && errors.showMissionNotesToContractor && (
-                    <FormHelperText error id="show-mission-notes-to-contractor-helper">
-                      {errors.showMissionNotesToContractor}
-                    </FormHelperText>
-                  )}
-                </Stack>
-              </Stack>
-            </Grid>
-
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Typography variant="h3">Admin Notes</Typography>
           </Grid>
-        </DialogContent>
-        <DialogActions sx={{ p: 2.5 }}>
-          <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 2.5 }}>
-            <Button type="submit" variant="contained" disabled={isSubmitting}>
-              Save
-            </Button>
-          </Stack>
-        </DialogActions>
+          <Grid item xs={12}
+            sx={{
+              '& .quill': {
+                borderRadius: '4px',
+                '& .ql-toolbar': {
+                  bgcolor: theme.palette.mode === 'dark' ? 'dark.light' : 'grey.100',
+                  borderColor: theme.palette.divider,
+                  borderTopLeftRadius: '4px',
+                  borderTopRightRadius: '4px'
+                },
+                '& .ql-container': {
+                  borderColor: `${theme.palette.divider} !important`,
+                  borderBottomLeftRadius: '4px',
+                  borderBottomRightRadius: '4px',
+                  '& .ql-editor': {
+                    minHeight: 135
+                  }
+                }
+              }
+            }}
+          >
+            <Stack spacing={1.25}>
+              <InputLabel htmlFor="match-admin-contractor-notes">Notes About the Contractor</InputLabel>
+              <ReactQuill
+                id="match-admin-contractor-notes"
+                value={normalizeInputValue(values.contractorNotes)}
+                onChange={(e) => setFieldValue('contractorNotes', e)}
+              />
+              {touched.contractorNotes && errors.contractorNotes && (
+                <FormHelperText error id="match-admin-contractor-notes-helper">
+                  {errors.contractorNotes}
+                </FormHelperText>
+              )}
+            </Stack>
+          </Grid>
+
+          <Grid item xs={6}>
+            <Stack spacing={1.25}>
+              <InputLabel>Show Contractor Notes to Employer</InputLabel>
+              <Stack direction="row" alignItems="center">
+                <Switch
+                  id="show-contractor-notes-to-employer"
+                  edge="end"
+                  checked={normalizeBooleanInputValue(values?.showContractorNotesToEmployer)}
+                  onChange={(event, checked) => {
+                    setFieldValue("showContractorNotesToEmployer", checked);
+                  }}
+                  inputProps={{ 'aria-labelledby': 'switch-list-label-sb' }}
+                />
+                {touched.showContractorNotesToEmployer && errors.showContractorNotesToEmployer && (
+                  <FormHelperText error id="show-contractor-notes-to-employer-helper">
+                    {errors.showContractorNotesToEmployer}
+                  </FormHelperText>
+                )}
+              </Stack>
+            </Stack>
+          </Grid>
+
+          <Grid item xs={6}>
+            <Stack spacing={1.25}>
+              <InputLabel>Show Contractor Notes to Contractor</InputLabel>
+              <Stack direction="row" alignItems="center">
+                <Switch
+                  id="show-contractor-notes-to-contractor"
+                  edge="end"
+                  checked={normalizeBooleanInputValue(values?.showContractorNotesToContractor)}
+                  onChange={(event, checked) => {
+                    setFieldValue("showContractorNotesToContractor", checked);
+                  }}
+                  inputProps={{ 'aria-labelledby': 'switch-list-label-sb' }}
+                />
+                {touched.showContractorNotesToContractor && errors.showContractorNotesToContractor && (
+                  <FormHelperText error id="show-contractor-notes-to-contractor-helper">
+                    {errors.showContractorNotesToContractor}
+                  </FormHelperText>
+                )}
+              </Stack>
+            </Stack>
+          </Grid>
+
+          <Grid item xs={12}
+            sx={{
+              '& .quill': {
+                borderRadius: '4px',
+                '& .ql-toolbar': {
+                  bgcolor: theme.palette.mode === 'dark' ? 'dark.light' : 'grey.100',
+                  borderColor: theme.palette.divider,
+                  borderTopLeftRadius: '4px',
+                  borderTopRightRadius: '4px'
+                },
+                '& .ql-container': {
+                  borderColor: `${theme.palette.divider} !important`,
+                  borderBottomLeftRadius: '4px',
+                  borderBottomRightRadius: '4px',
+                  '& .ql-editor': {
+                    minHeight: 135
+                  }
+                }
+              }
+            }}
+          >
+            <Stack spacing={1.25}>
+              <InputLabel htmlFor="match-admin-mission-notes">Notes About the Mission</InputLabel>
+              <ReactQuill
+                id="match-admin-mission-notes"
+                value={normalizeInputValue(values.missionNotes)}
+                onChange={(e) => setFieldValue('missionNotes', e)}
+              />
+              {touched.missionNotes && errors.missionNotes && (
+                <FormHelperText error id="match-admin-mission-notes-helper">
+                  {errors.missionNotes}
+                </FormHelperText>
+              )}
+            </Stack>
+          </Grid>
+
+          <Grid item xs={6}>
+            <Stack spacing={1.25}>
+              <InputLabel>Show Mission Notes to Employer</InputLabel>
+              <Stack direction="row" alignItems="center">
+                <Switch
+                  id="show-mission-notes-to-employer"
+                  edge="end"
+                  checked={normalizeBooleanInputValue(values?.showMissionNotesToEmployer)}
+                  onChange={(event, checked) => {
+                    setFieldValue("showMissionNotesToEmployer", checked);
+                  }}
+                  inputProps={{ 'aria-labelledby': 'switch-list-label-sb' }}
+                />
+                {touched.showMissionNotesToEmployer && errors.showMissionNotesToEmployer && (
+                  <FormHelperText error id="show-mission-notes-to-employer-helper">
+                    {errors.showMissionNotesToEmployer}
+                  </FormHelperText>
+                )}
+              </Stack>
+            </Stack>
+          </Grid>
+
+          <Grid item xs={6}>
+            <Stack spacing={1.25}>
+              <InputLabel>Show Mission Notes to Contractor</InputLabel>
+              <Stack direction="row" alignItems="center">
+                <Switch
+                  id="show-mission-notes-to-contractor"
+                  edge="end"
+                  checked={normalizeBooleanInputValue(values?.showMissionNotesToContractor)}
+                  onChange={(event, checked) => {
+                    setFieldValue("showMissionNotesToContractor", checked);
+                  }}
+                  inputProps={{ 'aria-labelledby': 'switch-list-label-sb' }}
+                />
+                {touched.showMissionNotesToContractor && errors.showMissionNotesToContractor && (
+                  <FormHelperText error id="show-mission-notes-to-contractor-helper">
+                    {errors.showMissionNotesToContractor}
+                  </FormHelperText>
+                )}
+              </Stack>
+            </Stack>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 2.5 }}>
+              <Button type="submit" variant="contained" disabled={isSubmitting}>
+                Save
+              </Button>
+            </Stack>
+          </Grid>
+
+        </Grid>
+
       </Form>
     </FormikProvider>
   );
