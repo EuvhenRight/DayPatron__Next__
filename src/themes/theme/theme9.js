@@ -21,7 +21,7 @@ const Theme9 = (colors, mode) => {
     A700: grey[14],
     A800: grey[16]
   };
-  const contrastText = '#fffff';
+  const contrastText = '#fff';
 
   let primaryColors = ['#ececf9', '#edf4ff', '#bed3f7', '#8faeeb', '#6488de', '#3c64d0', '#2947ab', '#192f85', '#0d1b5e', '#070e38'];
   let errorColors = ['#FDE8E7', '#F25E52', '#F04134', '#EE3B2F', '#E92A21'];
