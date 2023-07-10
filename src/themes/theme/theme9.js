@@ -1,4 +1,4 @@
-// ==============================|| PRESET THEME - Theme9 Blue ||============================== //
+cef9// ==============================|| PRESET THEME - Theme9 Blue ||============================== //
 
 const Theme9 = (colors, mode) => {
   const { grey } = colors;
@@ -23,7 +23,7 @@ const Theme9 = (colors, mode) => {
   };
   const contrastText = '#fff';
 
-  let primaryColors = ['#f0f6ff', '#edf4ff', '#bed3f7', '#8faeeb', '#6488de', '#3c64d0', '#2947ab', '#192f85', '#0d1b5e', '#070e38'];
+  let primaryColors = ['#ececf9', '#edf4ff', '#bed3f7', '#8faeeb', '#6488de', '#3c64d0', '#2947ab', '#192f85', '#0d1b5e', '#070e38'];
   let errorColors = ['#FDE8E7', '#F25E52', '#F04134', '#EE3B2F', '#E92A21'];
   let warningColors = ['#FFF7E0', '#FFC926', '#FFBF00', '#FFB900', '#FFA900'];
   let infoColors = ['#E0F4F5', '#26B0BA', '#00A2AE', '#009AA7', '#008694'];
