@@ -48,7 +48,7 @@ const MissionPage = () => {
 
   const bindData = async () => {
     try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/' + encodeURIComponent(missionId),
+      let missionResponse = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/' + encodeURIComponent(missionId),
         {
           method: 'GET',
           headers: {
@@ -57,15 +57,11 @@ const MissionPage = () => {
         }
       );
 
-      let json = await response.json();
+      let missionJson = await missionResponse.json();
 
-      setMission(json);
-    } catch (error) {
-      console.log(error);
-    }
+      setMission(missionJson);
 
-    try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/' + encodeURIComponent(missionId) + '/contractors/' + encodeURIComponent(personalInformation.id),
+      let missionContractorResponse = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/' + encodeURIComponent(missionId) + '/contractors/' + encodeURIComponent(personalInformation.id),
         {
           method: 'GET',
           headers: {
@@ -74,9 +70,9 @@ const MissionPage = () => {
         }
       );
 
-      let json = await response.json();
+      let missionContractorJson = await missionContractorResponse.json();
 
-      setMissionContractor(json);
+      setMissionContractor(missionContractorJson);
     } catch (error) {
       console.log(error);
     }
@@ -217,13 +213,13 @@ const MissionPage = () => {
         </Grid>
 
         <Grid item xs={12}>
-          <MainCard title="Admin Settings">
+          <MainCard title="Notes">
             <List sx={{ py: 0 }}>
               <ListItem>
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
                     <Stack spacing={0.5}>
-                      <Typography color="secondary">Notes About Me</Typography>
+                      <Typography color="secondary">Admin Notes About Me</Typography>
                       <SanitizedHTML html={
                         missionContractor?.adminDetails?.showContractorNotesToContractor &&
                         missionContractor?.adminDetails?.contractorNotes ?
@@ -238,7 +234,7 @@ const MissionPage = () => {
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
                     <Stack spacing={0.5}>
-                      <Typography color="secondary">Notes About the Mission</Typography>
+                      <Typography color="secondary">Admin Notes About the Mission</Typography>
                       <SanitizedHTML html={
                         missionContractor?.adminDetails?.showMissionNotesToContractor &&
                           missionContractor?.adminDetails?.missionNotes ?
@@ -248,13 +244,7 @@ const MissionPage = () => {
                   </Grid>
                 </Grid>
               </ListItem>
-            </List>
-          </MainCard>
-        </Grid>
 
-        <Grid item xs={12}>
-          <MainCard title="My Settings">
-            <List sx={{ py: 0 }}>
               <ListItem>
                 <Grid container spacing={3}>
                   <Grid item xs={12}
@@ -281,17 +271,17 @@ const MissionPage = () => {
                     <FormikProvider value={formik}>
                       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
                         <Stack spacing={0.5}>
-                          <Typography color="secondary">Notes About the Mission</Typography>
-                            <ReactQuill
-                              id="contractor-mission-notes"
-                              value={normalizeInputValue(values.missionNotes)}
-                              onChange={(e) => setFieldValue('missionNotes', e)}
-                            />
-                            {touched.missionNotes && errors.missionNotes && (
-                              <FormHelperText error id="contractor-mission-notes-helper">
-                                {errors.missionNotes}
-                              </FormHelperText>
-                            )}
+                          <Typography color="secondary">My Notes About the Mission</Typography>
+                          <ReactQuill
+                            id="contractor-mission-notes"
+                            value={normalizeInputValue(values.missionNotes)}
+                            onChange={(e) => setFieldValue('missionNotes', e)}
+                          />
+                          {touched.missionNotes && errors.missionNotes && (
+                            <FormHelperText error id="contractor-mission-notes-helper">
+                              {errors.missionNotes}
+                            </FormHelperText>
+                          )}
                         </Stack>
                         <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 2.5 }}>
                           <Button type="submit" variant="contained" disabled={isSubmitting}>
@@ -303,6 +293,7 @@ const MissionPage = () => {
                   </Grid>
                 </Grid>
               </ListItem>
+
             </List>
           </MainCard>
         </Grid>
