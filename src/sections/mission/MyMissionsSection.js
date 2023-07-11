@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 // material-ui
 import {
@@ -48,6 +49,7 @@ const allColumns = [
 
 const MyMissionsSection = () => {
   const { keycloak } = useKeycloak();
+  const personalInformation = useSelector(state => state.personalInformation);
   const navigate = useNavigate();
   const matchDownSM = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
@@ -61,7 +63,7 @@ const MyMissionsSection = () => {
 
   const bindMissions = async () => {
     try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions?userName=' + encodeURIComponent(keycloak.idTokenParsed.preferred_username),
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers/users/' + encodeURIComponent(personalInformation.id) + '/missions',
         {
           method: 'GET',
           headers: {

@@ -31,8 +31,8 @@ import { getEllipsis } from 'utils/stringUtils';
 import countries from 'data/countries';
 import { PopupTransition } from 'components/@extended/Transitions';
 import { useNavigate, useParams } from 'react-router-dom';
-import MissionContractorMatchEmployerDetails from 'sections/mission/MissionContractorMatchEmployerDetails';
-import MissionContractorMatchAdminDetails from 'sections/mission/MissionContractorMatchAdminDetails';
+import MissionContractorMatchEmployerNotes from 'sections/mission/MissionContractorMatchEmployerNotes';
+import MissionContractorMatchAdminNotes from 'sections/mission/MissionContractorMatchAdminNotes';
 
 const avatarImage = require.context('assets/images/users', true);
 
@@ -424,12 +424,12 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
               <Grid container spacing={3}>
                 <Grid item xs={12}>
                   <MainCard>
-                    <MissionContractorMatchEmployerDetails missionId={missionId} contractorId={contractorId}></MissionContractorMatchEmployerDetails>
+                    <MissionContractorMatchEmployerNotes missionId={missionId} contractorId={contractorId}></MissionContractorMatchEmployerNotes>
                   </MainCard>
                 </Grid>
                 <Grid item xs={12}>
                   <MainCard>
-                    <MissionContractorMatchAdminDetails missionId={missionId} contractorId={contractorId}></MissionContractorMatchAdminDetails>
+                    <MissionContractorMatchAdminNotes missionId={missionId} contractorId={contractorId}></MissionContractorMatchAdminNotes>
                   </MainCard>
                 </Grid>
               </Grid>

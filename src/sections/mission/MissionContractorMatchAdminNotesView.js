@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import SanitizedHTML from 'react-sanitized-html';
 
-const MissionContractorMatchAdminDetailsView = ({ adminDetails }) => {
+const MissionContractorMatchAdminNotesView = ({ adminNotes }) => {
   return (
 
     <Grid container spacing={3}>
@@ -15,10 +15,10 @@ const MissionContractorMatchAdminDetailsView = ({ adminDetails }) => {
       <Grid item xs={12}>
         <Stack spacing={0.5}>
           <Typography color="secondary">Contractor Notes</Typography>
-          {adminDetails?.showContractorNotesToEmployer &&
-            <SanitizedHTML html={adminDetails?.contractorNotes} />
+          {adminNotes?.showContractorNotesToEmployer &&
+            <SanitizedHTML html={adminNotes?.contractorNotes} />
           }
-          {!adminDetails?.showMissionNotesToEmployer &&
+          {!adminNotes?.showMissionNotesToEmployer &&
             <Typography>No data available.</Typography>
           }
         </Stack>
@@ -26,10 +26,10 @@ const MissionContractorMatchAdminDetailsView = ({ adminDetails }) => {
       <Grid item xs={12}>
         <Stack spacing={0.5}>
           <Typography color="secondary">Mission Notes</Typography>
-          {adminDetails?.showMissionNotesToEmployer &&
-            <SanitizedHTML html={adminDetails?.missionNotes} />
+          {adminNotes?.showMissionNotesToEmployer &&
+            <SanitizedHTML html={adminNotes?.missionNotes} />
           }
-          {!adminDetails?.showMissionNotesToEmployer &&
+          {!adminNotes?.showMissionNotesToEmployer &&
             <Typography>No data available.</Typography>
           }
         </Stack>
@@ -38,4 +38,4 @@ const MissionContractorMatchAdminDetailsView = ({ adminDetails }) => {
   );
 };
 
-export default MissionContractorMatchAdminDetailsView;
+export default MissionContractorMatchAdminNotesView;

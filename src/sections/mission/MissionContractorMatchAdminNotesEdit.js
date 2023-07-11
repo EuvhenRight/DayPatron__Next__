@@ -20,10 +20,10 @@ import 'react-quill/dist/quill.snow.css';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { normalizeInputValue, normalizeBooleanInputValue, prepareApiBody } from 'utils/stringUtils';
 
-// ==============================|| MISSION CONTRACTOR MATCH ADMIN DETAILS||============================== //
+// ==============================|| MISSION CONTRACTOR MATCH ADMIN NOTES||============================== //
 
-const getInitialValues = (adminDetails) => {
-  const newAdminDetails = {
+const getInitialValues = (adminNotes) => {
+  const newAdminNotes = {
     contractorNotes: null,
     showContractorNotesToEmployer: null,
     showContractorNotesToContractor: null,
@@ -32,20 +32,20 @@ const getInitialValues = (adminDetails) => {
     showMissionNotesToEmployer: null
   };
 
-  if (adminDetails) {
-    var result = _.merge({}, newAdminDetails, adminDetails);
+  if (adminNotes) {
+    var result = _.merge({}, newAdminNotes, adminNotes);
     return result;
   }
 
-  return newAdminDetails;
+  return newAdminNotes;
 };
 
-const MissionContractorMatchAdminDetails = ({ missionId, contractorId, adminDetails, setAdminDetails }) => {
+const MissionContractorMatchAdminNotes = ({ missionId, contractorId, adminNotes, setAdminNotes }) => {
   const dispatch = useDispatch();
   const { keycloak } = useKeycloak();
   const theme = useTheme();
 
-  const AdminDetailsSchema = Yup.object().shape({
+  const AdminNotesSchema = Yup.object().shape({
     contractorNotes: Yup.string().max(1000).nullable(true),
     showContractorNotesToEmployer: Yup.boolean().nullable(true),
     showContractorNotesToContractor: Yup.boolean().nullable(true),
@@ -56,13 +56,13 @@ const MissionContractorMatchAdminDetails = ({ missionId, contractorId, adminDeta
 
   const formik = useFormik({
     enableReinitialize: true,
-    initialValues: getInitialValues(adminDetails),
-    validationSchema: AdminDetailsSchema,
+    initialValues: getInitialValues(adminNotes),
+    validationSchema: AdminNotesSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
         var body = { ...values };
 
-        let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/' + encodeURIComponent(missionId) + '/contractors/' + encodeURIComponent(contractorId) + '/admin-details',
+        let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/' + encodeURIComponent(missionId) + '/contractors/' + encodeURIComponent(contractorId) + '/admin-notes',
           {
             method: 'PUT',
             headers: {
@@ -103,7 +103,7 @@ const MissionContractorMatchAdminDetails = ({ missionId, contractorId, adminDeta
 
         setSubmitting(false);
         let json = await response.json();
-        setAdminDetails(json);
+        setAdminNotes(json);
 
       } catch (error) {
         console.error(error);
@@ -297,4 +297,4 @@ const MissionContractorMatchAdminDetails = ({ missionId, contractorId, adminDeta
   );
 };
 
-export default MissionContractorMatchAdminDetails;
+export default MissionContractorMatchAdminNotes;

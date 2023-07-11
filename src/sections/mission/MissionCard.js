@@ -120,7 +120,7 @@ const MissionCard = ({ mission, alertMissionToDelete }) => {
                 </>
               </MenuItem>
               <MenuItem onClick={handleClickDetails}>Details</MenuItem>
-              <MenuItem onClick={handleClickDelete}>Delete</MenuItem>
+              <MenuItem onClick={handleClickDelete}>Archive</MenuItem>
             </Menu>
           </Grid>
           <Grid item xs={12}>
