@@ -36,9 +36,10 @@ const ProfileAvailabilityPage = () => {
     return null;
   });
   const { keycloak } = useKeycloak();
+  const personalInformation = useSelector(state => state.personalInformation);
 
   useEffect(() => {
-    dispatch(getEvents(keycloak));
+    dispatch(getEvents(keycloak, personalInformation.id));
   }, []);
 
   const calendarRef = useRef(null);
@@ -124,7 +125,7 @@ const ProfileAvailabilityPage = () => {
           allDay: event.allDay,
           start: event.start,
           end: event.end
-        })
+        }, keycloak, personalInformation.id)
       );
     } catch (error) {
       console.error(error);

@@ -110,12 +110,12 @@ export default calendar.reducer;
 
 export const { selectEvent, toggleModal, updateCalendarView } = calendar.actions;
 
-export function getEvents(keycloak) {
+export function getEvents(keycloak, contractorId) {
   return async () => {
     dispatch(calendar.actions.loading());
     try {
       const response = await axios.get(
-        process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username) + '/availability',
+        process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(contractorId) + '/availability',
         { headers: { Authorization: 'Bearer ' + keycloak.idToken } }
       );
       dispatch(calendar.actions.setEvents(response.data.periods));
@@ -159,13 +159,13 @@ export function getEvents(keycloak) {
   };
 }
 
-export function createEvent(newEvent, keycloak) {
+export function createEvent(newEvent, keycloak, contractorId) {
   return async () => {
     dispatch(calendar.actions.loading());
     try {
       var newEvents = [...store.getState().calendar.events, newEvent];
       const response = await axios.put(
-        process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username) + '/availability',
+        process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(contractorId) + '/availability',
         { periods: newEvents },
         { headers: { Authorization: 'Bearer ' + keycloak.idToken } }
       );
@@ -176,7 +176,7 @@ export function createEvent(newEvent, keycloak) {
   };
 }
 
-export function updateEvent(eventId, updateEvent, keycloak) {
+export function updateEvent(eventId, updateEvent, keycloak, contractorId) {
   return async () => {
     dispatch(calendar.actions.loading());
     try {
@@ -187,7 +187,7 @@ export function updateEvent(eventId, updateEvent, keycloak) {
         return item;
       });
       const response = await axios.put(
-        process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username) + '/availability',
+        process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(contractorId) + '/availability',
         { periods: newEvents },
         { headers: { Authorization: 'Bearer ' + keycloak.idToken } }
       );
@@ -198,13 +198,13 @@ export function updateEvent(eventId, updateEvent, keycloak) {
   };
 }
 
-export function deleteEvent(eventId, keycloak) {
+export function deleteEvent(eventId, keycloak, contractorId) {
   return async () => {
     dispatch(calendar.actions.loading());
     try {
       const newEvents = store.getState().calendar.events.filter((event) => event.id !== eventId);
       const response = await axios.put(
-        process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username) + '/availability',
+        process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(contractorId) + '/availability',
         { periods: newEvents },
         { headers: { Authorization: 'Bearer ' + keycloak.idToken } }
       );

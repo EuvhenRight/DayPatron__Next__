@@ -9,7 +9,7 @@ import financingStages from 'data/financingStages';
 import { useKeycloak } from '@react-keycloak/web';
 import { normalizeInputValue, prepareApiBody } from 'utils/stringUtils';
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // material-ui
 import {
@@ -35,6 +35,7 @@ import MainCard from 'components/MainCard';
 const ProfileExpertisePage = () => {
   const { keycloak } = useKeycloak();
   const dispatch = useDispatch();
+  const personalInformation = useSelector(state => state.personalInformation);
   const [expertise, setExpertise] = useState(null);
   const [industriesInputText, setIndustriesInputText] = useState('');
   const [jobRolesInputText, setJobRolesInputText] = useState('');
@@ -45,7 +46,7 @@ const ProfileExpertisePage = () => {
   
   const bindExpertise = async () => {
     try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username) + '/expertise',
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(personalInformation.id) + '/expertise',
         {
           method: 'GET',
           headers: {
@@ -101,7 +102,7 @@ const ProfileExpertisePage = () => {
               financingStages: values?.financingStages?.map(x => x.code),
               startYear: values?.startYear
             }
-            let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username) + '/expertise',
+            let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(personalInformation.id) + '/expertise',
               {
                 method: 'PUT',
                 headers: {

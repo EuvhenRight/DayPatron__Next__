@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // material-ui
 import {
@@ -63,6 +63,7 @@ const getInitialValues = (event, range) => {
 
 const UpsertEventFrom = ({ event, range, onCancel }) => {
   const { keycloak } = useKeycloak();
+  const personalInformation = useSelector(state => state.personalInformation);
   const dispatch = useDispatch();
   const isCreating = !event;
 
@@ -82,7 +83,7 @@ const UpsertEventFrom = ({ event, range, onCancel }) => {
   });
 
   const deleteHandler = () => {
-    dispatch(deleteEvent(event?.id, keycloak));
+    dispatch(deleteEvent(event?.id, keycloak, personalInformation.id));
     dispatch(
       openSnackbar({
         open: true,
@@ -130,7 +131,7 @@ const UpsertEventFrom = ({ event, range, onCancel }) => {
             })
           );
         } else {
-          dispatch(createEvent(newEvent, keycloak));
+          dispatch(createEvent(newEvent, keycloak, personalInformation.id));
           dispatch(
             openSnackbar({
               open: true,

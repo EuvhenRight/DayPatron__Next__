@@ -24,17 +24,17 @@ import 'react-quill/dist/quill.snow.css';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { normalizeInputValue, prepareApiBody } from 'utils/stringUtils';
 
-const getInitialValues = (contractorDetails) => {
-  const newContractorDetails = {
+const getInitialValues = (contractorNotes) => {
+  const newContractorNotes = {
     missionNotes: null
   };
 
-  if (contractorDetails) {
-    var result = _.merge({}, newContractorDetails, contractorDetails);
+  if (contractorNotes) {
+    var result = _.merge({}, newContractorNotes, contractorNotes);
     return result;
   }
 
-  return newContractorDetails;
+  return newContractorNotes;
 };
 
 const MissionPage = () => {
@@ -83,19 +83,19 @@ const MissionPage = () => {
       await bindData();
     })();
   }, []);
-  const ContractorDetailsSchema = Yup.object().shape({
+  const ContractorNotesSchema = Yup.object().shape({
     missionNotes: Yup.string().max(1000).nullable(true)
   });
 
   const formik = useFormik({
     enableReinitialize: true,
-    initialValues: getInitialValues(missionContractor?.contractorDetails),
-    validationSchema: ContractorDetailsSchema,
+    initialValues: getInitialValues(missionContractor?.contractorNotes),
+    validationSchema: ContractorNotesSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
         var body = { ...values };
 
-        let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/' + encodeURIComponent(missionId) + '/contractors/' + encodeURIComponent(personalInformation.id) + '/contractor-details',
+        let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/' + encodeURIComponent(missionId) + '/contractors/' + encodeURIComponent(personalInformation.id) + '/contractor-notes',
           {
             method: 'PUT',
             headers: {
@@ -138,7 +138,7 @@ const MissionPage = () => {
         let json = await response.json();
 
         var newMissionContractor = { ...missionContractor };
-        newMissionContractor.contractorDetails = json;
+        newMissionContractor.contractorNotes = json;
 
         setMissionContractor(newMissionContractor);
 
@@ -221,9 +221,9 @@ const MissionPage = () => {
                     <Stack spacing={0.5}>
                       <Typography color="secondary">Admin Notes About Me</Typography>
                       <SanitizedHTML html={
-                        missionContractor?.adminDetails?.showContractorNotesToContractor &&
-                        missionContractor?.adminDetails?.contractorNotes ?
-                        missionContractor?.adminDetails?.contractorNotes : '<i>No data available.</i>'
+                        missionContractor?.adminNotes?.showContractorNotesToContractor &&
+                        missionContractor?.adminNotes?.contractorNotes ?
+                        missionContractor?.adminNotes?.contractorNotes : '<i>No data available.</i>'
                       } />
                     </Stack>
                   </Grid>
@@ -236,9 +236,9 @@ const MissionPage = () => {
                     <Stack spacing={0.5}>
                       <Typography color="secondary">Admin Notes About the Mission</Typography>
                       <SanitizedHTML html={
-                        missionContractor?.adminDetails?.showMissionNotesToContractor &&
-                          missionContractor?.adminDetails?.missionNotes ?
-                          missionContractor?.adminDetails?.missionNotes : '<i>No data available.</i>'
+                        missionContractor?.adminNotes?.showMissionNotesToContractor &&
+                          missionContractor?.adminNotes?.missionNotes ?
+                          missionContractor?.adminNotes?.missionNotes : '<i>No data available.</i>'
                       } />
                     </Stack>
                   </Grid>

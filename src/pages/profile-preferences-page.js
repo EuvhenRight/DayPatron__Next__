@@ -1,6 +1,6 @@
 // project import
 import MainCard from 'components/MainCard';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useKeycloak } from '@react-keycloak/web';
 import { normalizeInputValue, normalizeBooleanInputValue, prepareApiBody } from 'utils/stringUtils';
@@ -31,11 +31,12 @@ import { openSnackbar } from 'store/reducers/snackbar';
 
 const ProfilePreferencesPage = () => {
   const { keycloak } = useKeycloak();
+  const personalInformation = useSelector(state => state.personalInformation);
   const [preferences, setPreferences] = useState(null);
 
   const fetchPreferences = async () => {
     try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username) + '/preferences',
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(personalInformation.id) + '/preferences',
         {
           method: 'GET',
           headers: {
@@ -89,7 +90,7 @@ const ProfilePreferencesPage = () => {
             workplace: values.workplace,
             travel: { radiusKms: values.travelRadiusKms, isInternationalTravelAcceptable: values.isInternationalTravelAcceptable }
           };
-          let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username) + '/preferences',
+          let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(personalInformation.id) + '/preferences',
             {
               method: 'PUT',
               headers: {

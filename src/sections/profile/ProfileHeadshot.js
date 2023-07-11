@@ -91,7 +91,7 @@ const ProfileHeadshot = ({ focusInput }) => {
       const formData = new FormData();
       formData.append("mainImage", newMainImage);
 
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username) + '/main-images',
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(state.id) + '/main-images',
         {
           method: 'PUT',
           headers: {
