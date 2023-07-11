@@ -1,4 +1,4 @@
-// ==============================|| PRESET THEME - Theme4 Blue ||============================== //
+// ==============================|| PRESET THEME - Theme6 Blue ||============================== //
 
 const Theme6 = (colors, mode) => {
   const { grey } = colors;
