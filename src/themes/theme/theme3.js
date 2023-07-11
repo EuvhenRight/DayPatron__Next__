@@ -1,6 +1,6 @@
 // ==============================|| PRESET THEME - Dark Green ||============================== //
 
-const Theme4 = (colors, mode) => {
+const Theme3 = (colors, mode) => {
   const { grey } = colors;
   const greyColors = {
     0: grey[0],
@@ -103,4 +103,4 @@ const Theme4 = (colors, mode) => {
   };
 };
 
-export default Theme4;
+export default Theme3;

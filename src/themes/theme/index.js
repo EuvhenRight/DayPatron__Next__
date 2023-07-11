@@ -10,6 +10,7 @@ import Theme5 from './theme5';
 import Theme6 from './theme6';
 import Theme7 from './theme7';
 import Theme8 from './theme8';
+import Theme9 from './theme9';
 
 // ==============================|| PRESET THEME - THEME SELECTOR ||============================== //
 
@@ -31,6 +32,8 @@ const Theme = (colors, presetColor, mode) => {
       return Theme7(colors, mode);
     case 'theme8':
       return Theme8(colors, mode);
+    case 'theme9':
+      return Theme9(colors, mode);
     default:
       return Default(colors);
   }
