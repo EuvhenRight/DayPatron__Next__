@@ -71,8 +71,8 @@ const MissionsPage = () => {
 
       let json = await response.json();
 
-      setMissions(json.missions);
-      setFilteredMissions(json.missions);
+      setMissions(json.contractorMissions);
+      setFilteredMissions(json.contractorMissions);
     } catch (error) {
       console.log(error);
     }

@@ -81,9 +81,17 @@ const MissionCard = ({ mission }) => {
                 <ListItemText className="list-card-title"
                   primary={<Typography onClick={handleClickDetails} variant="subtitle1">{mission.title}</Typography>}
                   secondary={
-                    <Typography variant="caption" color="secondary">
-                      {jobRoles.find(x => x.code === mission.role)?.label}
-                    </Typography>
+                    <>
+                      <Typography variant="caption" color="secondary">
+                        {jobRoles.find(x => x.code === mission.role)?.label}
+                      </Typography>
+                      <Typography variant="caption" color="secondary">
+                        {mission?.status}
+                      </Typography>
+                      <Typography variant="caption" color="secondary">
+                        {mission?.isMatch?.toString()}
+                      </Typography>
+                    </>
                   }
                 />
               </ListItem>
