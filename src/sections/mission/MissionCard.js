@@ -63,7 +63,7 @@ const MissionCard = ({ mission }) => {
 
   return (
     <>
-      <MainCard sx={{ height: 1, '& .MuiCardContent-root': { height: 1, display: 'flex', flexDirection: 'column' } }}>
+      <MainCard  sx={{ height: 1, '& .MuiCardContent-root': { height: 1, display: 'flex', flexDirection: 'column' } }}>
         <Grid id="print" container spacing={2.25}>
           <Grid item xs={12}>
             <List sx={{ width: 1, p: 0 }}>
@@ -84,12 +84,6 @@ const MissionCard = ({ mission }) => {
                     <>
                       <Typography variant="caption" color="secondary">
                         {jobRoles.find(x => x.code === mission.role)?.label}
-                      </Typography>
-                      <Typography variant="caption" color="secondary">
-                        {mission?.status}
-                      </Typography>
-                      <Typography variant="caption" color="secondary">
-                        {mission?.isMatch?.toString()}
                       </Typography>
                     </>
                   }
@@ -145,19 +139,19 @@ const MissionCard = ({ mission }) => {
                 </ListItem>}
             </List>
           </Grid>
-
-          <Grid item xs={6}>
-            <List sx={{ p: 0, overflow: 'hidden', '& .MuiListItem-root': { px: 0, py: 0.5 } }}>
-              {mission.effortHours &&
-                <ListItem>
-                  <ListItemIcon>
-                    <FieldTimeOutlined />
-                  </ListItemIcon>
-                  <ListItemText primary={<Typography color="secondary">{mission.effortHours} hour(s)</Typography>} />
-                </ListItem>}
-            </List>
-          </Grid>
-
+          {mission.effortHours &&
+            <Grid item xs={6}>
+              <List sx={{ p: 0, overflow: 'hidden', '& .MuiListItem-root': { px: 0, py: 0.5 } }}>
+              
+                  <ListItem>
+                    <ListItemIcon>
+                      <FieldTimeOutlined />
+                    </ListItemIcon>
+                    <ListItemText primary={<Typography color="secondary">{mission.effortHours} hour(s)</Typography>} />
+                  </ListItem>
+              </List>
+            </Grid>
+          }
           <Grid item xs={12}>
             <Box>
               <Box
@@ -170,11 +164,41 @@ const MissionCard = ({ mission }) => {
                 }}
                 component="ul"
               >
-                {mission?.languages?.map((language, index) => (
+                {mission?.requiredLanguages?.map((language, index) => (
                   <ListItem disablePadding key={index} sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
                     <Chip color="secondary" variant="outlined" size="small" label={languages.find(x => x.code === language)?.label} />
                   </ListItem>
                 ))}
+              </Box>
+            </Box>
+          </Grid>
+          <Grid item xs={12}>
+            <Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  listStyle: 'none',
+                  p: 0.5,
+                  m: 0
+                }}
+                component="ul"
+              >
+                {mission?.isMatch &&
+                  <ListItem disablePadding sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
+                    <Chip color="primary" size="small" label="Match" />
+                  </ListItem>
+                }
+                {mission?.invitation &&
+                  <ListItem disablePadding sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
+                    <Chip color="primary" size="small" label="Invited" />
+                  </ListItem>
+                }
+                {mission?.application &&
+                  <ListItem disablePadding sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
+                    <Chip color="primary" size="small" label="Applied" />
+                  </ListItem>
+                }
               </Box>
             </Box>
           </Grid>

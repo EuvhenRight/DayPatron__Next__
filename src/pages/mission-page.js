@@ -11,7 +11,8 @@ import {
   ListItem,
   Stack,
   Typography,
-  Button
+  Button,
+  Chip
 } from '@mui/material';
 import MainCard from 'components/MainCard';
 import SanitizedHTML from 'react-sanitized-html';
@@ -206,6 +207,36 @@ const MissionPage = () => {
                       <SanitizedHTML html={mission?.profileType} />
                     </Stack>
                   </Grid>
+
+                  <Grid item xs={12}>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        listStyle: 'none',
+                        p: 0,
+                        m: 0
+                      }}
+                      component="ul"
+                    >
+                      {missionContractor?.isMatch &&
+                        <ListItem disablePadding sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
+                          <Chip color="primary" size="small" label="Match" />
+                        </ListItem>
+                      }
+                      {missionContractor?.invitation &&
+                        <ListItem disablePadding sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
+                          <Chip color="primary" size="small" label="Invited" />
+                        </ListItem>
+                      }
+                      {missionContractor?.application &&
+                        <ListItem disablePadding sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
+                          <Chip color="primary" size="small" label="Applied" />
+                        </ListItem>
+                      }
+                    </Box>
+                  </Grid>
+
                 </Grid>
               </ListItem>
             </List>
