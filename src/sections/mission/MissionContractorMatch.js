@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useKeycloak } from '@react-keycloak/web';
+import { openSnackbar } from 'store/reducers/snackbar';
 import LinearWithLabel from 'components/@extended/progress/LinearWithLabel';
 import { useTheme } from '@mui/material/styles';
 import {
@@ -19,6 +21,7 @@ import {
   DialogContent,
   DialogTitle,
   ButtonBase,
+  Button,
   Tab,
   Tabs,
   Box,
@@ -44,14 +47,115 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
   const notesTabGroup = 'notes';
   
   const { keycloak } = useKeycloak();
+  const dispatch = useDispatch();
   const [missionContractorMatch, setMissionContractorMatch] = useState({});
   const [selectedTraitResult, setSelectedTraitResult] = useState(null);
+  const [isCreatingInvitation, setIsCreatingInvitation] = useState(false);
+  const [isDeletingInvitation, setIsDeletingInvitation] = useState(false);
+
   const navigate = useNavigate();
   let { tabGroupId, tabGroupItemIndex } = useParams();
   tabGroupItemIndex = parseInt(tabGroupItemIndex);
 
   const theme = useTheme();
   const [traitDetailsTabsValue, setTraitDetailsTabsValue] = useState(0);
+
+  const handleInviteButtonClick = async () => {
+    try {
+      setIsCreatingInvitation(true);
+
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/' + encodeURIComponent(missionId) + '/contractors/' + encodeURIComponent(contractorId) + '/invitations',
+        { method: 'POST', headers: { 'Authorization': 'Bearer ' + keycloak.idToken } }
+      );
+
+      if (!response.ok) {
+        dispatch(
+          openSnackbar({
+            open: true,
+            message: 'Failed applying for mission.',
+            variant: 'alert',
+            alert: {
+              color: 'error'
+            },
+            close: false
+          })
+        );
+        setIsCreatingInvitation(false);
+        return;
+      }
+
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Successfully applied for mission.',
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
+        })
+      );
+
+      setIsCreatingInvitation(false);
+
+      let json = await response.json();
+      var newMissionContractorMatch = { ...missionContractorMatch };
+      newMissionContractorMatch.invitation = json;
+
+      setMissionContractorMatch(newMissionContractorMatch);
+    } catch (error) {
+      setIsCreatingInvitation(false);
+      console.log(error);
+    }
+  }
+
+  const handleUninviteButtonClick = async () => {
+    try {
+      setIsDeletingInvitation(true);
+
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/' + encodeURIComponent(missionId) + '/contractors/' + encodeURIComponent(contractorId) + '/invitations',
+        { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + keycloak.idToken } }
+      );
+
+      if (!response.ok) {
+        dispatch(
+          openSnackbar({
+            open: true,
+            message: 'Failed unapplying from mission.',
+            variant: 'alert',
+            alert: {
+              color: 'error'
+            },
+            close: false
+          })
+        );
+        setIsDeletingInvitation(false);
+        return;
+      }
+
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Successfully unapplied from mission.',
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
+        })
+      );
+
+      setIsDeletingInvitation(false);
+
+      var newMissionContractorMatch = { ...missionContractorMatch };
+      newMissionContractorMatch.invitation = null;
+
+      setMissionContractorMatch(newMissionContractorMatch);
+    } catch (error) {
+      setIsDeletingInvitation(false);
+      console.log(error);
+    }
+  }
 
   const handleChangeTraitDetailsTabs = (event, newValue) => {
     setTraitDetailsTabsValue(newValue);
@@ -163,6 +267,48 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                     <Stack spacing={0.5} alignItems="center">
                       <Typography variant="h5">{missionContractorMatch?.contractor?.firstName + ' ' + missionContractorMatch?.contractor?.lastName}</Typography>
                     </Stack>
+
+                    <Stack spacing={0.5} alignItems="center">
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          flexWrap: 'wrap',
+                          listStyle: 'none',
+                          p: 0.5,
+                          m: 0
+                        }}
+                        component="ul"
+                      >
+                        <ListItem disablePadding sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
+                          <Chip color="primary" size="small" label="Matched" />
+                        </ListItem>
+                        {missionContractorMatch?.invitation &&
+                          <ListItem disablePadding sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
+                            <Chip color="primary" size="small" label="Invited" />
+                          </ListItem>
+                        }
+                        {missionContractorMatch?.application &&
+                          <ListItem disablePadding sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
+                            <Chip color="primary" size="small" label="Applied" />
+                          </ListItem>
+                        }
+                      </Box>
+                    </Stack>
+
+                    {!missionContractorMatch?.invitation &&
+                      <Stack spacing={0.5} alignItems="center">
+                        <Button variant="contained" onClick={handleInviteButtonClick} disabled={isCreatingInvitation}>
+                          Invite
+                        </Button>
+                      </Stack>
+                    }
+                    {missionContractorMatch?.invitation &&
+                      <Stack spacing={0.5} alignItems="center">
+                        <Button variant="outlined" onClick={handleUninviteButtonClick} disabled={isDeletingInvitation}>
+                          Uninvite
+                        </Button>
+                      </Stack>
+                    }
                   </Stack>
                 </Grid>
                 <Grid item xs={12}>
