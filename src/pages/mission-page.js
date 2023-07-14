@@ -45,6 +45,9 @@ const MissionPage = () => {
   const { missionId } = useParams();
   const [mission, setMission] = useState(null);
   const [missionContractor, setMissionContractor] = useState(null);
+  const [isCreatingApplication, setIsCreatingApplication] = useState(false);
+  const [isDeletingApplication, setIsDeletingApplication] = useState(false);
+  
   const personalInformation = useSelector(state => state.personalInformation);
 
   const bindData = async () => {
@@ -75,6 +78,103 @@ const MissionPage = () => {
 
       setMissionContractor(missionContractorJson);
     } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const handleApplyButtonClick = async () => {
+    try {
+      setIsCreatingApplication(true);
+
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/' + encodeURIComponent(missionId) + '/contractors/' + encodeURIComponent(personalInformation.id) + '/applications',
+        { method: 'POST', headers: { 'Authorization': 'Bearer ' + keycloak.idToken } }
+      );
+
+      if (!response.ok) {
+        dispatch(
+          openSnackbar({
+            open: true,
+            message: 'Failed applying for mission.',
+            variant: 'alert',
+            alert: {
+              color: 'error'
+            },
+            close: false
+          })
+        );
+        setIsCreatingApplication(false);
+        return;
+      }
+
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Successfully applied for mission.',
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
+        })
+      );
+
+      setIsCreatingApplication(false);
+
+      let json = await response.json();
+      var newMissionContractor = { ...missionContractor };
+      newMissionContractor.application = json;
+
+      setMissionContractor(newMissionContractor);
+    } catch (error) {
+      setIsCreatingApplication(false);
+      console.log(error);
+    }
+  }
+
+  const handleUnapplyButtonClick = async () => {
+    try {
+      setIsDeletingApplication(true);
+
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/' + encodeURIComponent(missionId) + '/contractors/' + encodeURIComponent(personalInformation.id) + '/applications',
+        { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + keycloak.idToken } }
+      );
+
+      if (!response.ok) {
+        dispatch(
+          openSnackbar({
+            open: true,
+            message: 'Failed unapplying from mission.',
+            variant: 'alert',
+            alert: {
+              color: 'error'
+            },
+            close: false
+          })
+        );
+        setIsDeletingApplication(false);
+        return;
+      }
+
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Successfully unapplied from mission.',
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
+        })
+      );
+
+      setIsDeletingApplication(false);
+
+      var newMissionContractor = { ...missionContractor };
+      newMissionContractor.application = null;
+
+      setMissionContractor(newMissionContractor);
+    } catch (error) {
+      setIsDeletingApplication(false);
       console.log(error);
     }
   }
@@ -144,6 +244,7 @@ const MissionPage = () => {
         setMissionContractor(newMissionContractor);
 
       } catch (error) {
+        setSubmitting(false);
         console.error(error);
       }
     }
@@ -221,7 +322,7 @@ const MissionPage = () => {
                     >
                       {missionContractor?.isMatch &&
                         <ListItem disablePadding sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
-                          <Chip color="primary" size="small" label="Match" />
+                          <Chip color="primary" size="small" label="Matched" />
                         </ListItem>
                       }
                       {missionContractor?.invitation &&
@@ -236,7 +337,20 @@ const MissionPage = () => {
                       }
                     </Box>
                   </Grid>
-
+                  <Grid item xs={12}>
+                    <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 2.5 }}>
+                      {!missionContractor?.application &&
+                        <Button variant="contained" onClick={handleApplyButtonClick} disabled={isCreatingApplication}>
+                          Apply
+                        </Button>  
+                      }
+                      {missionContractor?.application &&
+                        <Button variant="outlined" onClick={handleUnapplyButtonClick} disabled={isDeletingApplication}>
+                          Unapply
+                        </Button>
+                      }
+                    </Stack>
+                  </Grid>
                 </Grid>
               </ListItem>
             </List>

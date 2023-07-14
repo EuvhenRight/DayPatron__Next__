@@ -186,7 +186,7 @@ const MissionCard = ({ mission }) => {
               >
                 {mission?.isMatch &&
                   <ListItem disablePadding sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
-                    <Chip color="primary" size="small" label="Match" />
+                    <Chip color="primary" size="small" label="Matched" />
                   </ListItem>
                 }
                 {mission?.invitation &&
