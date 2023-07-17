@@ -5,14 +5,14 @@ import { useSelector } from 'react-redux';
 import {
   Grid,
   Stack,
-  useMediaQuery,
   FormControl,
   Select,
   MenuItem,
   Box,
   Slide,
   Pagination,
-  Typography
+  Typography,
+  useMediaQuery
 } from '@mui/material';
 
 // project import
@@ -43,10 +43,15 @@ const allColumns = [
   }
 ];
 
+var booleanFilterOptions = [
+  { label: 'All', value: 'all' },
+  { label: 'Yes', value: 'true' },
+  { label: 'No', value: 'false' }
+];
+
 const MissionsPage = () => {
   const { keycloak } = useKeycloak();
   const personalInformation = useSelector(state => state.personalInformation);
-  const matchDownSM = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   const [sortBy, setSortBy] = useState('Id');
   const [globalFilter, setGlobalFilter] = useState('');
@@ -54,9 +59,26 @@ const MissionsPage = () => {
   const [filteredMissions, setFilteredMissions] = useState([]);
   const [page, setPage] = useState(1);
 
+  const [isInvitedFilter, setIsInvitedFilter] = useState('all');
+  const [isAppliedFilter, setIsAppliedFilter] = useState('all');
+  const [isMatchedFilter, setIsMatchedFilter] = useState('all');
+
+  const matchDownSM = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+
   const bindMissions = async () => {
     try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(personalInformation.id) + '/missions',
+      var requestUrl = process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(personalInformation.id) + '/missions?q=1';
+
+      if (isInvitedFilter !== 'all')
+        requestUrl += '&isInvited=' + isInvitedFilter;
+
+      if (isAppliedFilter !== 'all')
+        requestUrl += '&isApplied=' + isAppliedFilter;
+
+      if (isMatchedFilter !== 'all')
+        requestUrl += '&isMatched=' + isMatchedFilter;
+
+      let response = await fetch(requestUrl,
         {
           method: 'GET',
           headers: {
@@ -86,7 +108,7 @@ const MissionsPage = () => {
     (async () => {
       await bindMissions();
     })();
-  }, []);
+  }, [isInvitedFilter, isAppliedFilter, isMatchedFilter]);
 
   useEffect(() => {
     const newMissions = missions.filter((value) => {
@@ -112,39 +134,109 @@ const MissionsPage = () => {
   return (
     <>
       <Box sx={{ position: 'relative', marginBottom: 3 }}>
-        <Stack direction="row" alignItems="center">
-          <Stack
-            direction={matchDownSM ? 'column' : 'row'}
-            sx={{ width: '100%' }}
-            spacing={1}
-            justifyContent="space-between"
-            alignItems="center"
-          >
+        <Stack direction={matchDownSM ? 'column' : 'row'} spacing={1} justifyContent="space-between" alignItems="center" sx={{ pb: 3 }}>
+          <Stack direction={matchDownSM ? 'column' : 'row'} spacing={2}>
             <GlobalFilter preGlobalFilteredRows={filteredMissions} globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
-            <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
-              <FormControl sx={{ m: 1, minWidth: 120 }}>
-                <Select
-                  value={sortBy}
-                  onChange={handleChangeSort}
-                  displayEmpty
-                  inputProps={{ 'aria-label': 'Without label' }}
-                  renderValue={(selected) => {
-                    if (!selected) {
-                      return <Typography variant="subtitle1">Sort By</Typography>;
-                    }
+          </Stack>
+          <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
+            <Stack direction={matchDownSM ? 'column' : 'row'} spacing={1}>
+              <Box>
+                <FormControl sx={{ minWidth: 120 }}>
+                  <Select
+                    value={isInvitedFilter}
+                    onChange={(event) => {
+                      setIsInvitedFilter(event.target.value);
+                    }}
+                    inputProps={{ 'aria-label': 'Without label' }}
+                    renderValue={() => {
+                      return <Typography variant="subtitle2">Filter invited ({booleanFilterOptions.find(x => x.value === isInvitedFilter).label})</Typography>;
+                    }}
+                  >
+                    {booleanFilterOptions.map((option, optionIndex) => {
+                      return (
+                        <MenuItem key={optionIndex} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+              </Box>
+            </Stack>
+            <Stack direction={matchDownSM ? 'column' : 'row'} spacing={1}>
+              <Box>
+                <FormControl sx={{ minWidth: 120 }}>
+                  <Select
+                    value={isAppliedFilter}
+                    onChange={(event) => {
+                      setIsAppliedFilter(event.target.value);
+                    }}
+                    inputProps={{ 'aria-label': 'Without label' }}
+                    renderValue={() => {
+                      return <Typography variant="subtitle2">Filter applied ({booleanFilterOptions.find(x => x.value === isAppliedFilter).label})</Typography>;
+                    }}
+                  >
+                    {booleanFilterOptions.map((option, optionIndex) => {
+                      return (
+                        <MenuItem key={optionIndex} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+              </Box>
+            </Stack>
+            <Stack direction={matchDownSM ? 'column' : 'row'} spacing={1}>
+              <Box>
+                <FormControl sx={{ minWidth: 120 }}>
+                  <Select
+                    value={isMatchedFilter}
+                    onChange={(event) => {
+                      setIsMatchedFilter(event.target.value);
+                    }}
+                    inputProps={{ 'aria-label': 'Without label' }}
+                    renderValue={() => {
+                      return <Typography variant="subtitle2">Filter matched ({booleanFilterOptions.find(x => x.value === isMatchedFilter).label})</Typography>;
+                    }}
+                  >
+                    {booleanFilterOptions.map((option, optionIndex) => {
+                      return (
+                        <MenuItem key={optionIndex} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+              </Box>
+            </Stack>
+            <Stack direction={matchDownSM ? 'column' : 'row'} spacing={1}>
+              <Box>
+                <FormControl sx={{ minWidth: 120 }}>
+                  <Select
+                    value={sortBy}
+                    onChange={handleChangeSort}
+                    displayEmpty
+                    inputProps={{ 'aria-label': 'Without label' }}
+                    renderValue={(selected) => {
+                      if (!selected) {
+                        return <Typography variant="subtitle1">Sort By</Typography>;
+                      }
 
-                    return <Typography variant="subtitle2">Sort by ({sortBy})</Typography>;
-                  }}
-                >
-                  {allColumns.map((column) => {
-                    return (
-                      <MenuItem key={column.id} value={column.header}>
-                        {column.header}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
+                      return <Typography variant="subtitle2">Sort by ({sortBy})</Typography>;
+                    }}
+                  >
+                    {allColumns.map((column) => {
+                      return (
+                        <MenuItem key={column.id} value={column.header}>
+                          {column.header}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+              </Box>
             </Stack>
           </Stack>
         </Stack>
