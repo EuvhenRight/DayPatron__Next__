@@ -4,6 +4,8 @@ import { useKeycloak } from '@react-keycloak/web';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from '@mui/material/styles';
 import {
+  Autocomplete,
+  TextField,
   FormHelperText,
   Box,
   Grid,
@@ -12,7 +14,8 @@ import {
   Stack,
   Typography,
   Button,
-  Chip
+  Chip,
+  createFilterOptions
 } from '@mui/material';
 import MainCard from 'components/MainCard';
 import SanitizedHTML from 'react-sanitized-html';
@@ -47,8 +50,9 @@ const MissionPage = () => {
   const [missionContractor, setMissionContractor] = useState(null);
   const [isCreatingApplication, setIsCreatingApplication] = useState(false);
   const [isDeletingApplication, setIsDeletingApplication] = useState(false);
-  
   const personalInformation = useSelector(state => state.personalInformation);
+
+  const filter = createFilterOptions();
 
   const bindData = async () => {
     try {
@@ -184,8 +188,13 @@ const MissionPage = () => {
       await bindData();
     })();
   }, []);
+
   const ContractorNotesSchema = Yup.object().shape({
     missionNotes: Yup.string().max(1000).nullable(true)
+  });
+
+  const ContractorTagsSchema = Yup.object().shape({
+    tags: Yup.array().of(Yup.string()).nullable(true)
   });
 
   const formik = useFormik({
@@ -240,6 +249,68 @@ const MissionPage = () => {
 
         var newMissionContractor = { ...missionContractor };
         newMissionContractor.contractorNotes = json;
+
+        setMissionContractor(newMissionContractor);
+
+      } catch (error) {
+        setSubmitting(false);
+        console.error(error);
+      }
+    }
+  });
+
+  const formikTags = useFormik({
+    enableReinitialize: true,
+    initialValues: getInitialValues(missionContractor?.tags ?? []),
+    validationSchema: ContractorTagsSchema,
+    onSubmit: async (values, { setSubmitting }) => {
+      try {
+        var body = { ...values };
+
+        let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/' + encodeURIComponent(missionId) + '/contractors/' + encodeURIComponent(personalInformation.id) + '/tags',
+          {
+            method: 'PUT',
+            headers: {
+              'Authorization': 'Bearer ' + keycloak.idToken,
+              'Content-Type': 'application/json'
+            },
+            body: prepareApiBody(body)
+          }
+        );
+
+        if (!response.ok) {
+          dispatch(
+            openSnackbar({
+              open: true,
+              message: 'Update failed.',
+              variant: 'alert',
+              alert: {
+                color: 'error'
+              },
+              close: false
+            })
+          );
+          setSubmitting(false);
+          return;
+        }
+
+        dispatch(
+          openSnackbar({
+            open: true,
+            message: 'Data updated.',
+            variant: 'alert',
+            alert: {
+              color: 'success'
+            },
+            close: false
+          })
+        );
+
+        setSubmitting(false);
+        let json = await response.json();
+
+        var newMissionContractor = { ...missionContractor };
+        newMissionContractor.tags = json;
 
         setMissionContractor(newMissionContractor);
 
@@ -353,6 +424,67 @@ const MissionPage = () => {
                   </Grid>
                 </Grid>
               </ListItem>
+            </List>
+          </MainCard>
+        </Grid>
+
+        <Grid item xs={12}>
+          <MainCard title="Tags">
+            <List sx={{ py: 0 }}>
+
+              <ListItem>
+                <Grid container spacing={3}>
+                  <Grid item xs={12}>
+
+                    <FormikProvider value={formikTags}>
+                      <Form autoComplete="off" noValidate onSubmit={formikTags.handleSubmit}>
+                        <Stack spacing={0.5}>
+                          <Autocomplete
+                            multiple
+                            fullWidth
+                            options={personalInformation?.tags ?? []}
+                            value={formikTags.values?.tags ?? []}
+                            onBlur={formikTags.handleBlur}
+                            onChange={(event, newValue) => {
+                              formikTags.setFieldValue('tags', newValue);
+                            }}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                placeholder="Select tags"
+                                name="tags"
+                                inputProps={{
+                                  ...params.inputProps,
+                                  autoComplete: 'new-password'
+                                }}
+                              />
+                            )}
+                            filterOptions={(options, params) => {
+                              const filtered = filter(options, params);
+
+                              if (params.inputValue !== "") {
+                                filtered.push(params.inputValue);
+                              }
+                              return filtered;
+                            }}
+                          />
+                          {formikTags.touched.tags && formikTags.errors.tags && (
+                            <FormHelperText error id="contractor-mission-tags-helper">
+                              {formikTags.errors.tags}
+                            </FormHelperText>
+                          )}
+                        </Stack>
+                        <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 2.5 }}>
+                          <Button type="submit" variant="contained" disabled={formikTags.isSubmitting}>
+                            Save
+                          </Button>
+                        </Stack>
+                      </Form>
+                    </FormikProvider>
+                  </Grid>
+                </Grid>
+              </ListItem>
+
             </List>
           </MainCard>
         </Grid>
