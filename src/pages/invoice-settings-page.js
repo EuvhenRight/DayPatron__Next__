@@ -1,6 +1,6 @@
-// material-ui
+import { useEffect, useState } from 'react';
 import countries from 'data/countries';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { useKeycloak } from '@react-keycloak/web';
 import { normalizeInputValue, prepareApiBody } from 'utils/stringUtils';
@@ -35,6 +35,8 @@ const InvoiceSettingsPage = () => {
 
   const [state, setState] = useState(null);
 
+  const personalInformation = useSelector(state => state.personalInformation);
+
   const bindData = async () => {
     try {
       let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(personalInformation.id) + '/invoice-settings',
@@ -62,16 +64,16 @@ const InvoiceSettingsPage = () => {
       <Formik
         enableReinitialize={true}
         initialValues={{
-          name: state.name,
-          address: state.address,
-          postCode: state.postCode,
-          city: state.city,
-          country: state.country,
-          vatNumber: state.vatNumber,
-          bankAccountName: state.bankAccountName,
-          bankName: state.bankName,
-          iban: state.iban,
-          email: state.email,
+          name: state?.name,
+          address: state?.address,
+          postCode: state?.postCode,
+          city: state?.city,
+          country: state?.country,
+          vatNumber: state?.vatNumber,
+          bankAccountName: state?.bankAccountName,
+          bankName: state?.bankName,
+          iban: state?.iban,
+          email: state?.email,
           submit: null
         }}
         validationSchema={Yup.object().shape({
@@ -88,7 +90,7 @@ const InvoiceSettingsPage = () => {
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(state.id) + '/invoice-settings',
+            let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(personalInformation.id) + '/invoice-settings',
               {
                 method: 'PUT',
                 headers: {
