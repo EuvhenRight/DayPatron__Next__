@@ -1903,6 +1903,16 @@
   resolved "https://registry.yarnpkg.com/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz#b2ac626d6cb9c8718ab459166d4bb405b8ffa78b"
   integrity sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==
 
+"@loomhq/loom-embed@^1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@loomhq/loom-embed/-/loom-embed-1.5.0.tgz#1f5a72a3bef30958c05b37a94ec86af78c3626c9"
+  integrity sha512-1Rilv+Ta39Rk2mEb8wzfLSpPhl6ax7kfLNnfYTAGK4mCJIxwQ1o/BY46QRbIpQT/SdfsFCvvNWa57hlEEaduGA==
+
+"@loomhq/record-sdk@^2.36.18":
+  version "2.36.18"
+  resolved "https://registry.yarnpkg.com/@loomhq/record-sdk/-/record-sdk-2.36.18.tgz#86b18563aa8d4b57e7fb14f6dda85c61aa42e25c"
+  integrity sha512-/AVF6/APrIzEzWG5mbvhJH35SCOvPUDwv+aMejn/hUthvs8WCZ/Oudbcec9cfZPQjcfRa+/dot8rxelOnlhTfg==
+
 "@motionone/animation@^10.15.1":
   version "10.15.1"
   resolved "https://registry.yarnpkg.com/@motionone/animation/-/animation-10.15.1.tgz#4a85596c31cbc5100ae8eb8b34c459fb0ccf6807"

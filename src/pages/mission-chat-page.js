@@ -31,7 +31,6 @@ import SimpleBar from 'components/third-party/SimpleBar';
 import { PopupTransition } from 'components/@extended/Transitions';
 
 import { dispatch, useSelector } from 'store';
-import { openDrawer } from 'store/reducers/menu';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { getUser, getUserChats, insertChat } from 'store/reducers/chat';
 
@@ -174,8 +173,6 @@ const MissionChatPage = () => {
   }, [chatState.chats]);
 
   useEffect(() => {
-    // hide left drawer when email app opens
-    dispatch(openDrawer(false));
     dispatch(getUser(1));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
