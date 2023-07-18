@@ -1,15 +1,397 @@
 // material-ui
-import { Typography } from '@mui/material';
+import countries from 'data/countries';
+import { useDispatch } from 'react-redux';
+
+import { useKeycloak } from '@react-keycloak/web';
+import { normalizeInputValue, prepareApiBody } from 'utils/stringUtils';
+
+// material-ui
+import {
+  Autocomplete,
+  Box,
+  Button,
+  Divider,
+  FormHelperText,
+  Grid,
+  InputLabel,
+  Stack,
+  TextField
+} from '@mui/material';
+
+// third party
+import * as Yup from 'yup';
+import { Formik } from 'formik';
 
 // project import
+import { openSnackbar } from 'store/reducers/snackbar';
 import MainCard from 'components/MainCard';
 
+// ==============================|| PERSONAL ||============================== //
+
 const InvoiceSettingsPage = () => {
+  const { keycloak } = useKeycloak();
+
+  const dispatch = useDispatch();
+
+  const [state, setState] = useState(null);
+
+  const bindData = async () => {
+    try {
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(personalInformation.id) + '/invoice-settings',
+        {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + keycloak.idToken
+          }
+        }
+      );
+      let json = await response.json();
+      setState(json);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  useEffect(() => {
+    (async () => {
+      await bindData();
+    })();
+  }, []);
+
   return (
-    <MainCard>
-      <Typography variant="body2">
-        Coming soon
-      </Typography>
+    <MainCard content={false} sx={{ '& .MuiInputLabel-root': { fontSize: '0.875rem' } }}>
+      <Formik
+        enableReinitialize={true}
+        initialValues={{
+          name: state.name,
+          address: state.address,
+          postCode: state.postCode,
+          city: state.city,
+          country: state.country,
+          vatNumber: state.vatNumber,
+          bankAccountName: state.bankAccountName,
+          bankName: state.bankName,
+          iban: state.iban,
+          email: state.email,
+          submit: null
+        }}
+        validationSchema={Yup.object().shape({
+          name: Yup.string().max(255).nullable(true).required('Name is required.'),
+          address: Yup.string().max(255).nullable(true).required('Address is required.'),
+          postCode: Yup.string().max(255).nullable(true).required('Post code is required.'),
+          city: Yup.string().max(255).nullable(true).required('City is required.'),
+          country: Yup.string().nullable(true).required('Country is required.'),
+          vatNumber: Yup.string().max(255).nullable(true),
+          bankAccountName: Yup.string().max(255).nullable(true).required('Bank Account Name is required.'),
+          bankName: Yup.string().max(255).nullable(true).required('Bank Name is required.'),
+          iban: Yup.string().max(255).nullable(true).required('Iban is required.'),
+          email: Yup.string().email('Invalid email address.').max(255).required('Email is required.')
+        })}
+        onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
+          try {
+            let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(state.id) + '/invoice-settings',
+              {
+                method: 'PUT',
+                headers: {
+                  'Authorization': 'Bearer ' + keycloak.idToken,
+                  'Content-Type': 'application/json'
+                },
+                body: prepareApiBody(values)
+              }
+            );
+
+            if (!response.ok) {
+              dispatch(
+                openSnackbar({
+                  open: true,
+                  message: 'Update failed.',
+                  variant: 'alert',
+                  alert: {
+                    color: 'error'
+                  },
+                  close: false
+                })
+              );
+
+              setStatus({ success: false });
+              setSubmitting(false);
+
+              return;
+            }
+
+            let json = await response.json();
+
+            setState(json);
+
+            dispatch(
+              openSnackbar({
+                open: true,
+                message: 'Data updated.',
+                variant: 'alert',
+                alert: {
+                  color: 'success'
+                },
+                close: false
+              })
+            );
+
+            setStatus({ success: true });
+            setSubmitting(false);
+            setErrors({});
+          } catch (err) {
+            setErrors({ submit: err.message });
+            setStatus({ success: false });
+            setSubmitting(false);
+          }
+        }}
+      >
+        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, setFieldValue, touched, values }) => (
+          <form noValidate onSubmit={handleSubmit}>
+            <Box sx={{ p: 2.5 }}>
+              <Grid container spacing={3}>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <InputLabel htmlFor="invoice-settings-name">Name</InputLabel>
+                    <TextField
+                      fullWidth
+                      id="invoice-settings-first-name"
+                      value={normalizeInputValue(values.name)}
+                      name="name"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      placeholder="First Name"
+                      autoFocus
+                    />
+                    {touched.name && errors.name && (
+                      <FormHelperText error id="invoice-settings-name-helper">
+                        {errors.name}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <InputLabel htmlFor="invoice-settings-address">Address</InputLabel>
+                    <TextField
+                      fullWidth
+                      id="invoice-settings-address"
+                      value={normalizeInputValue(values.address)}
+                      name="address"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      placeholder="Last Name"
+                    />
+                    {touched.address && errors.address && (
+                      <FormHelperText error id="invoice-settings-address-helper">
+                        {errors.address}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <InputLabel htmlFor="invoice-settings-post-code">Post Code</InputLabel>
+                    <TextField
+                      fullWidth
+                      id="invoice-settings-post-code"
+                      value={normalizeInputValue(values.postCode)}
+                      name="postCode"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      placeholder="Post Code"
+                      autoFocus
+                    />
+                    {touched.postCode && errors.postCode && (
+                      <FormHelperText error id="invoice-settings-post-code-helper">
+                        {errors.postCode}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <InputLabel htmlFor="invoice-settings-city">City</InputLabel>
+                    <TextField
+                      fullWidth
+                      id="invoice-settings-city"
+                      value={normalizeInputValue(values.city)}
+                      name="city"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      placeholder="City"
+                      autoFocus
+                    />
+                    {touched.city && errors.city && (
+                      <FormHelperText error id="invoice-settings-city-helper">
+                        {errors.city}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <InputLabel htmlFor="invoice-settings-country">Country</InputLabel>
+                    <Autocomplete
+                      id="invoice-settings-country"
+                      fullWidth
+                      value={values?.country ? countries.filter((item) => item.code === values?.country)[0] : null}
+                      onBlur={handleBlur}
+                      onChange={(event, newValue) => {
+                        setFieldValue('country', newValue === null ? '' : newValue.code);
+                      }}
+                      options={countries}
+                      autoHighlight
+                      isOptionEqualToValue={(option, value) => option.code === value?.code}
+                      getOptionLabel={(option) => option.label}
+                      renderOption={(props, option) => (
+                        <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                          {option.code && (
+                            <img
+                              loading="lazy"
+                              width="20"
+                              src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
+                              srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
+                              alt=""
+                            />
+                          )}
+                          {option.label}
+                          {option.code && ` (${option.code})`}
+                        </Box>
+                      )}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          placeholder="Choose a country"
+                          name="country"
+                          inputProps={{
+                            ...params.inputProps,
+                            autoComplete: 'new-password' // disable autocomplete and autofill
+                          }}
+                        />
+                      )}
+                    />
+                    {touched.country && errors.country && (
+                      <FormHelperText error id="invoice-settings-country-helper">
+                        {errors.country}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <InputLabel htmlFor="invoice-settings-vat-number">Vat Number</InputLabel>
+                    <TextField
+                      fullWidth
+                      id="invoice-settings-vat-number"
+                      value={normalizeInputValue(values.vatNumber)}
+                      name="vatNumber"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      placeholder="Vat Number"
+                      autoFocus
+                    />
+                    {touched.vatNumber && errors.vatNumber && (
+                      <FormHelperText error id="invoice-settings-vat-number-helper">
+                        {errors.vatNumber}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <InputLabel htmlFor="invoice-settings-bank-account-name">Bank Account Name</InputLabel>
+                    <TextField
+                      fullWidth
+                      id="invoice-settings-bank-account-name"
+                      value={normalizeInputValue(values.bankAccountName)}
+                      name="bankAccountName"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      placeholder="Bank Account Name"
+                      autoFocus
+                    />
+                    {touched.bankAccountName && errors.bankAccountName && (
+                      <FormHelperText error id="invoice-settings-bank-account-name-helper">
+                        {errors.bankAccountName}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <InputLabel htmlFor="invoice-settings-bank-name">Bank Name</InputLabel>
+                    <TextField
+                      fullWidth
+                      id="invoice-settings-bank-name"
+                      value={normalizeInputValue(values.bankName)}
+                      name="bankName"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      placeholder="Bank Name"
+                      autoFocus
+                    />
+                    {touched.bankAName && errors.bankName && (
+                      <FormHelperText error id="invoice-settings-bank-name-helper">
+                        {errors.bankName}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <InputLabel htmlFor="invoice-settings-iban">Iban</InputLabel>
+                    <TextField
+                      fullWidth
+                      id="invoice-settings-iban"
+                      value={normalizeInputValue(values.iban)}
+                      name="iban"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      placeholder="Iban"
+                      autoFocus
+                    />
+                    {touched.iban && errors.iban && (
+                      <FormHelperText error id="invoice-settings-iban-helper">
+                        {errors.iban}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <InputLabel htmlFor="invoice-settings-email">Email Address</InputLabel>
+                    <TextField
+                      type="email"
+                      fullWidth
+                      value={normalizeInputValue(values.email)}
+                      name="email"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      id="invoice-settings-email"
+                      placeholder="Email Address"
+                    />
+                    {touched.email && errors.email && (
+                      <FormHelperText error id="invoice-settings-email-helper">
+                        {errors.email}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                </Grid>
+              </Grid>
+            </Box>
+            <Divider />
+            <Box sx={{ p: 2.5 }}>
+              <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 2.5 }}>
+                <Button disabled={isSubmitting || Object.keys(errors).length !== 0} type="submit" variant="contained">
+                  Save
+                </Button>
+              </Stack>
+            </Box>
+          </form>
+        )}
+      </Formik>
     </MainCard>
   );
 };
