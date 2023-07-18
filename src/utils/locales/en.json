@@ -8,6 +8,9 @@
   "profile-availability": "Availability",
   "missions": "Missions",
   "mission-chat": "Chat",
+  "invoicing": "Invoicing",
+  "invoices": "Invoices",
+  "invoice-settings": "Invoice Settings",
   "documentation": "Documentation",
   "roadmap": "Roadmap"
 }

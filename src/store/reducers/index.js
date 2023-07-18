@@ -6,6 +6,7 @@ import chat from './chat';
 import menu from './menu';
 import snackbar from './snackbar';
 import calendar from './calendar';
+import invoice from './invoice';
 import personalInformation from './personalInformation';
 // ==============================|| COMBINE REDUCERS ||============================== //
 
@@ -14,6 +15,7 @@ const reducers = combineReducers({
   menu,
   snackbar,
   calendar,
+  invoice,
   personalInformation
 });
 
