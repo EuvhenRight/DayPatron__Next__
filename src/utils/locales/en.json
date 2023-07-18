@@ -1,10 +1,13 @@
 {
+  "dashboard": "Dashboard",
+  "dashboard-group": "Dashboard",
   "profile": "Profile",
   "profile-personal": "Personal Information",
   "profile-expertise": "Expertise",
   "profile-preferences": "Preferences",
   "profile-availability": "Availability",
   "missions": "Missions",
+  "mission-chat": "Chat",
   "documentation": "Documentation",
   "roadmap": "Roadmap"
 }

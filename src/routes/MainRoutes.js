@@ -12,6 +12,7 @@ const MaintenanceError500 = Loadable(lazy(() => import('pages/maintenance/500'))
 const MaintenanceUnderConstruction = Loadable(lazy(() => import('pages/maintenance/under-construction')));
 const MaintenanceComingSoon = Loadable(lazy(() => import('pages/maintenance/coming-soon')));
 
+const DashboardPage = Loadable(lazy(() => import('pages/dashboard-page')));
 const ProfilePersonalPage = Loadable(lazy(() => import('pages/profile-personal-page')));
 const ProfileExpertisePage = Loadable(lazy(() => import('pages/profile-expertise-page')));
 const ProfilePreferencesPage = Loadable(lazy(() => import('pages/profile-preferences-page')));
@@ -19,6 +20,7 @@ const ProfileAvailabilityPage = Loadable(lazy(() => import('pages/profile-availa
 
 const MissionPage = Loadable(lazy(() => import('pages/mission-page')));
 const MissionsPage = Loadable(lazy(() => import('pages/missions-page')));
+const MissionChatPage = Loadable(lazy(() => import('pages/mission-chat-page')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -33,6 +35,10 @@ const MainRoutes = {
         </AuthGuard>
       ),
       children: [
+        {
+          path: 'dashboard',
+          element: <DashboardPage />
+        },
         {
           path: 'profile',
           children: [
@@ -57,6 +63,10 @@ const MainRoutes = {
         {
           path: 'missions/:missionId',
           element: <MissionPage />
+        },
+        {
+          path: 'missions/chat',
+          element: <MissionChatPage />
         },
         {
           path: 'missions',
