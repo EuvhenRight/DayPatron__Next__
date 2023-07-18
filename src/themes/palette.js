@@ -14,16 +14,16 @@ const Palette = (mode, presetColor) => {
 
   let greyPrimary = [
     '#ffffff',
-    '#fafafa',
-    '#f5f5f5',
-    '#f0f0f0',
-    '#d9d9d9',
-    '#bfbfbf',
-    '#8c8c8c',
-    '#595959',
-    '#262626',
-    '#141414',
-    '#000000'
+    '#e7e8eb',
+    '#cfd0d7',
+    '#b7b9c2',
+    '#9fa1ae',
+    '#888a9a',
+    '#707386',
+    '#585b72',
+    '#40445d',
+    '#282c49',
+    '#101535'
   ];
   let greyAscent = ['#fafafa', '#bfbfbf', '#434343', '#1f1f1f'];
   let greyConstant = ['#fafafb', '#e6ebf1'];
