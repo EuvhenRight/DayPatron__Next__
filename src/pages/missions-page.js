@@ -25,6 +25,7 @@ import usePagination from 'hooks/usePagination';
 // assets
 import { useKeycloak } from '@react-keycloak/web';
 import { compareSortValues } from 'utils/stringUtils';
+import MainCard from '../components/MainCard';
 
 // ==============================|| MISSIONS - PAGE ||============================== //
 
@@ -133,133 +134,154 @@ const MissionsPage = () => {
 
   return (
     <>
-      <Box sx={{ position: 'relative', marginBottom: 3 }}>
-        <Stack direction={matchDownSM ? 'column' : 'row'} spacing={1} justifyContent="space-between" alignItems="center" sx={{ pb: 3 }}>
-          <Stack direction={matchDownSM ? 'column' : 'row'} spacing={2}>
-            <GlobalFilter preGlobalFilteredRows={filteredMissions} globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
-          </Stack>
-          <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
-            <Stack direction={matchDownSM ? 'column' : 'row'} spacing={1}>
-              <Box>
-                <FormControl sx={{ minWidth: 120 }}>
-                  <Select
-                    value={isInvitedFilter}
-                    onChange={(event) => {
-                      setIsInvitedFilter(event.target.value);
-                    }}
-                    inputProps={{ 'aria-label': 'Without label' }}
-                    renderValue={() => {
-                      return <Typography variant="subtitle2">Filter invited ({booleanFilterOptions.find(x => x.value === isInvitedFilter).label})</Typography>;
-                    }}
-                  >
-                    {booleanFilterOptions.map((option, optionIndex) => {
-                      return (
-                        <MenuItem key={optionIndex} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                </FormControl>
-              </Box>
-            </Stack>
-            <Stack direction={matchDownSM ? 'column' : 'row'} spacing={1}>
-              <Box>
-                <FormControl sx={{ minWidth: 120 }}>
-                  <Select
-                    value={isAppliedFilter}
-                    onChange={(event) => {
-                      setIsAppliedFilter(event.target.value);
-                    }}
-                    inputProps={{ 'aria-label': 'Without label' }}
-                    renderValue={() => {
-                      return <Typography variant="subtitle2">Filter applied ({booleanFilterOptions.find(x => x.value === isAppliedFilter).label})</Typography>;
-                    }}
-                  >
-                    {booleanFilterOptions.map((option, optionIndex) => {
-                      return (
-                        <MenuItem key={optionIndex} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                </FormControl>
-              </Box>
-            </Stack>
-            <Stack direction={matchDownSM ? 'column' : 'row'} spacing={1}>
-              <Box>
-                <FormControl sx={{ minWidth: 120 }}>
-                  <Select
-                    value={isMatchedFilter}
-                    onChange={(event) => {
-                      setIsMatchedFilter(event.target.value);
-                    }}
-                    inputProps={{ 'aria-label': 'Without label' }}
-                    renderValue={() => {
-                      return <Typography variant="subtitle2">Filter matched ({booleanFilterOptions.find(x => x.value === isMatchedFilter).label})</Typography>;
-                    }}
-                  >
-                    {booleanFilterOptions.map((option, optionIndex) => {
-                      return (
-                        <MenuItem key={optionIndex} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                </FormControl>
-              </Box>
-            </Stack>
-            <Stack direction={matchDownSM ? 'column' : 'row'} spacing={1}>
-              <Box>
-                <FormControl sx={{ minWidth: 120 }}>
-                  <Select
-                    value={sortBy}
-                    onChange={handleChangeSort}
-                    displayEmpty
-                    inputProps={{ 'aria-label': 'Without label' }}
-                    renderValue={(selected) => {
-                      if (!selected) {
-                        return <Typography variant="subtitle1">Sort By</Typography>;
-                      }
-
-                      return <Typography variant="subtitle2">Sort by ({sortBy})</Typography>;
-                    }}
-                  >
-                    {allColumns.map((column) => {
-                      return (
-                        <MenuItem key={column.id} value={column.header}>
-                          {column.header}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                </FormControl>
-              </Box>
-            </Stack>
-          </Stack>
-        </Stack>
-      </Box>
       <Grid container spacing={3}>
-        {filteredMissions?.length > 0 ? (
-          _DATA
-            .currentData()
-            .sort(function (a, b) {
-              if (sortBy === 'Title') return compareSortValues(a?.title, b?.title);
-              if (sortBy === 'Description') return compareSortValues(a?.description, b?.description);
-              return a;
-            })
-            .map((mission, index) => (
-              <Slide key={index} direction="up" in={true} timeout={50}>
-                <Grid item xs={12} sm={6} lg={4}>
-                  <MissionCard mission={mission} />
+        <Grid item xs={12} md={3}>
+          <MainCard title="Filter">
+            <Stack spacing={0.5}>
+
+              <Grid container direction="column" rowSpacing={3}>
+                <Grid item>
+                  <Stack>
+                    <Box>
+                      <FormControl sx={{ minWidth: 120 }} fullWidth>
+                        <Select
+                          value={isInvitedFilter}
+                          onChange={(event) => {
+                            setIsInvitedFilter(event.target.value);
+                          }}
+                          inputProps={{ 'aria-label': 'Without label' }}
+                          renderValue={() => {
+                            return <Typography variant="subtitle2">Invited ({booleanFilterOptions.find(x => x.value === isInvitedFilter).label})</Typography>;
+                          }}
+                        >
+                          {booleanFilterOptions.map((option, optionIndex) => {
+                            return (
+                              <MenuItem key={optionIndex} value={option.value}>
+                                {option.label}
+                              </MenuItem>
+                            );
+                          })}
+                        </Select>
+                      </FormControl>
+                    </Box>
+                  </Stack>
                 </Grid>
-              </Slide>
-            ))
-        ) : (
-          <EmptyCardList title={'No missions.'} />
-        )}
+                <Grid item>
+                  <Stack>
+                    <Box>
+                      <FormControl sx={{ minWidth: 120 }} fullWidth>
+                        <Select
+                          value={isAppliedFilter}
+                          onChange={(event) => {
+                            setIsAppliedFilter(event.target.value);
+                          }}
+                          inputProps={{ 'aria-label': 'Without label' }}
+                          renderValue={() => {
+                            return <Typography variant="subtitle2">Applied ({booleanFilterOptions.find(x => x.value === isAppliedFilter).label})</Typography>;
+                          }}
+                        >
+                          {booleanFilterOptions.map((option, optionIndex) => {
+                            return (
+                              <MenuItem key={optionIndex} value={option.value}>
+                                {option.label}
+                              </MenuItem>
+                            );
+                          })}
+                        </Select>
+                      </FormControl>
+                    </Box>
+                  </Stack>
+                </Grid>
+                <Grid item>
+                  <Stack>
+                    <Box>
+                      <FormControl sx={{ minWidth: 120 }} fullWidth>
+                        <Select
+                          value={isMatchedFilter}
+                          onChange={(event) => {
+                            setIsMatchedFilter(event.target.value);
+                          }}
+                          inputProps={{ 'aria-label': 'Without label' }}
+                          renderValue={() => {
+                            return <Typography variant="subtitle2">Matched ({booleanFilterOptions.find(x => x.value === isMatchedFilter).label})</Typography>;
+                          }}
+                        >
+                          {booleanFilterOptions.map((option, optionIndex) => {
+                            return (
+                              <MenuItem key={optionIndex} value={option.value}>
+                                {option.label}
+                              </MenuItem>
+                            );
+                          })}
+                        </Select>
+                      </FormControl>
+                    </Box>
+                  </Stack>
+                </Grid>
+              </Grid>
+            </Stack>
+          </MainCard>
+        </Grid>
+        <Grid item xs={12} md={9}>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <MainCard>
+                <Stack direction={matchDownSM ? 'column' : 'row'} spacing={1} justifyContent="space-between" alignItems="center">
+                  <Stack direction={matchDownSM ? 'column' : 'row'} spacing={2}>
+                    <GlobalFilter preGlobalFilteredRows={filteredMissions} globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
+                  </Stack>
+                  <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
+                    <Stack direction={matchDownSM ? 'column' : 'row'} spacing={1}>
+                      <Box>
+                        <FormControl sx={{ minWidth: 120 }}>
+                          <Select
+                            value={sortBy}
+                            onChange={handleChangeSort}
+                            displayEmpty
+                            inputProps={{ 'aria-label': 'Without label' }}
+                            renderValue={(selected) => {
+                              if (!selected) {
+                                return <Typography variant="subtitle1">Sort By</Typography>;
+                              }
+
+                              return <Typography variant="subtitle2">Sort by ({sortBy})</Typography>;
+                            }}
+                          >
+                            {allColumns.map((column) => {
+                              return (
+                                <MenuItem key={column.id} value={column.header}>
+                                  {column.header}
+                                </MenuItem>
+                              );
+                            })}
+                          </Select>
+                        </FormControl>
+                      </Box>
+                    </Stack>
+                  </Stack>
+                </Stack>
+              </MainCard>
+            </Grid>
+            {filteredMissions?.length > 0 ? (
+              _DATA
+                .currentData()
+                .sort(function (a, b) {
+                  if (sortBy === 'Title') return compareSortValues(a?.title, b?.title);
+                  if (sortBy === 'Description') return compareSortValues(a?.description, b?.description);
+                  return a;
+                })
+                .map((mission, index) => (
+                  <Slide key={index} direction="up" in={true} timeout={50}>
+                    <Grid item xs={12} sm={6} md={4}>
+                      <MissionCard mission={mission} />
+                    </Grid>
+                  </Slide>
+                ))
+            ) : (
+              <EmptyCardList title={'No missions.'} />
+            )}
+          </Grid>
+        </Grid>
       </Grid>
       <Stack spacing={2} sx={{ p: 2.5 }} alignItems="flex-end">
         <Pagination

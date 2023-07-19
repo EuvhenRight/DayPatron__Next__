@@ -20,26 +20,12 @@ import {
 import MainCard from 'components/MainCard';
 import SanitizedHTML from 'react-sanitized-html';
 
-import _ from 'lodash';
 import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { normalizeInputValue, prepareApiBody } from 'utils/stringUtils';
-
-const getInitialValues = (contractorNotes) => {
-  const newContractorNotes = {
-    missionNotes: null
-  };
-
-  if (contractorNotes) {
-    var result = _.merge({}, newContractorNotes, contractorNotes);
-    return result;
-  }
-
-  return newContractorNotes;
-};
 
 const MissionPage = () => {
   const dispatch = useDispatch();
@@ -199,7 +185,7 @@ const MissionPage = () => {
 
   const formik = useFormik({
     enableReinitialize: true,
-    initialValues: getInitialValues(missionContractor?.contractorNotes),
+    initialValues: missionContractor?.contractorNotes,
     validationSchema: ContractorNotesSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
@@ -261,7 +247,7 @@ const MissionPage = () => {
 
   const formikTags = useFormik({
     enableReinitialize: true,
-    initialValues: getInitialValues(missionContractor?.tags ?? []),
+    initialValues: { tags: missionContractor?.tags },
     validationSchema: ContractorTagsSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
@@ -322,6 +308,20 @@ const MissionPage = () => {
   });
 
   const { errors, touched, handleSubmit, isSubmitting, setFieldValue, values } = formik;
+
+  const getTagOptions = (userOptions, selectedOptions) => {
+    var result = userOptions ? [...userOptions] : [];
+
+    selectedOptions?.map((selectedOption) => {
+      if (!selectedOption)
+        return;
+
+      if (!result.includes(selectedOption))
+        result.push(selectedOption);
+    });
+
+    return result;
+  }
 
   return (
     <Box sx={{ mt: 2.5 }}>
@@ -428,68 +428,7 @@ const MissionPage = () => {
           </MainCard>
         </Grid>
 
-        <Grid item xs={12}>
-          <MainCard title="Tags">
-            <List sx={{ py: 0 }}>
-
-              <ListItem>
-                <Grid container spacing={3}>
-                  <Grid item xs={12}>
-
-                    <FormikProvider value={formikTags}>
-                      <Form autoComplete="off" noValidate onSubmit={formikTags.handleSubmit}>
-                        <Stack spacing={0.5}>
-                          <Autocomplete
-                            multiple
-                            fullWidth
-                            options={personalInformation?.tags ?? []}
-                            value={formikTags.values?.tags ?? []}
-                            onBlur={formikTags.handleBlur}
-                            onChange={(event, newValue) => {
-                              formikTags.setFieldValue('tags', newValue);
-                            }}
-                            renderInput={(params) => (
-                              <TextField
-                                {...params}
-                                placeholder="Select tags"
-                                name="tags"
-                                inputProps={{
-                                  ...params.inputProps,
-                                  autoComplete: 'new-password'
-                                }}
-                              />
-                            )}
-                            filterOptions={(options, params) => {
-                              const filtered = filter(options, params);
-
-                              if (params.inputValue !== "") {
-                                filtered.push(params.inputValue);
-                              }
-                              return filtered;
-                            }}
-                          />
-                          {formikTags.touched.tags && formikTags.errors.tags && (
-                            <FormHelperText error id="contractor-mission-tags-helper">
-                              {formikTags.errors.tags}
-                            </FormHelperText>
-                          )}
-                        </Stack>
-                        <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 2.5 }}>
-                          <Button type="submit" variant="contained" disabled={formikTags.isSubmitting}>
-                            Save
-                          </Button>
-                        </Stack>
-                      </Form>
-                    </FormikProvider>
-                  </Grid>
-                </Grid>
-              </ListItem>
-
-            </List>
-          </MainCard>
-        </Grid>
-
-        <Grid item xs={12}>
+        <Grid item sm={12} md={8}>
           <MainCard title="Notes">
             <List sx={{ py: 0 }}>
               <ListItem>
@@ -551,7 +490,7 @@ const MissionPage = () => {
                           <Typography color="secondary">My Notes About the Mission</Typography>
                           <ReactQuill
                             id="contractor-mission-notes"
-                            value={normalizeInputValue(values.missionNotes)}
+                            value={normalizeInputValue(values?.missionNotes)}
                             onChange={(e) => setFieldValue('missionNotes', e)}
                           />
                           {touched.missionNotes && errors.missionNotes && (
@@ -562,6 +501,67 @@ const MissionPage = () => {
                         </Stack>
                         <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 2.5 }}>
                           <Button type="submit" variant="contained" disabled={isSubmitting}>
+                            Save
+                          </Button>
+                        </Stack>
+                      </Form>
+                    </FormikProvider>
+                  </Grid>
+                </Grid>
+              </ListItem>
+
+            </List>
+          </MainCard>
+        </Grid>
+
+        <Grid item sm={12} md={4}>
+          <MainCard title="Tags">
+            <List sx={{ py: 0 }}>
+
+              <ListItem>
+                <Grid container spacing={3}>
+                  <Grid item xs={12}>
+
+                    <FormikProvider value={formikTags}>
+                      <Form autoComplete="off" noValidate onSubmit={formikTags.handleSubmit}>
+                        <Stack spacing={0.5}>
+                          <Autocomplete
+                            multiple
+                            fullWidth
+                            options={getTagOptions(personalInformation?.tags, formikTags.values?.tags)}
+                            value={formikTags.values?.tags ?? []}
+                            onBlur={formikTags.handleBlur}
+                            onChange={(event, newValue) => {
+                              formikTags.setFieldValue('tags', newValue);
+                            }}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                placeholder="Select tags"
+                                name="tags"
+                                inputProps={{
+                                  ...params.inputProps,
+                                  autoComplete: 'new-password'
+                                }}
+                              />
+                            )}
+                            filterOptions={(options, params) => {
+                              const filtered = filter(options, params);
+
+                              if (params.inputValue !== "") {
+                                filtered.push(params.inputValue);
+                              }
+                              return filtered;
+                            }}
+                          />
+                          {formikTags.touched.tags && formikTags.errors.tags && (
+                            <FormHelperText error id="contractor-mission-tags-helper">
+                              {formikTags.errors.tags}
+                            </FormHelperText>
+                          )}
+                        </Stack>
+                        <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 2.5 }}>
+                          <Button type="submit" variant="contained" disabled={formikTags.isSubmitting}>
                             Save
                           </Button>
                         </Stack>

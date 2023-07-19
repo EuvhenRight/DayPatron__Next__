@@ -21,18 +21,18 @@ const mission = {
   type: 'group',
   children: [
     {
-      id: 'invoices',
-      title: <FormattedMessage id="invoices" />,
-      type: 'item',
-      url: '/invoices',
-      icon: icons.MoneyCollectOutlined
-    },
-    {
       id: 'invoice-settings',
       title: <FormattedMessage id="invoice-settings" />,
       type: 'item',
       url: '/invoices/settings',
       icon: icons.FileTextOutlined
+    },
+    {
+      id: 'invoices',
+      title: <FormattedMessage id="invoices" />,
+      type: 'item',
+      url: '/invoices',
+      icon: icons.MoneyCollectOutlined
     }
   ]
 };
