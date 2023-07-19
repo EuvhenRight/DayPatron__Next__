@@ -203,6 +203,27 @@ const MissionCard = ({ mission }) => {
             </Box>
           </Grid>
 
+          <Grid item xs={12}>
+            <Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  listStyle: 'none',
+                  p: 0.5,
+                  m: 0
+                }}
+                component="ul"
+              >
+                {mission?.tags?.map((tag, tagIndex) => (
+                  <ListItem disablePadding key={tagIndex} sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
+                    <Chip color="primary" variant="outlined" size="small" label={tag} />
+                  </ListItem>
+                ))}
+              </Box>
+            </Box>
+          </Grid>
+
         </Grid>
         <Stack
           direction="row"

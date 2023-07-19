@@ -3,6 +3,8 @@ import { useSelector } from 'react-redux';
 
 // material-ui
 import {
+  Autocomplete,
+  TextField,
   Grid,
   Stack,
   FormControl,
@@ -63,7 +65,8 @@ const MissionsPage = () => {
   const [isInvitedFilter, setIsInvitedFilter] = useState('all');
   const [isAppliedFilter, setIsAppliedFilter] = useState('all');
   const [isMatchedFilter, setIsMatchedFilter] = useState('all');
-
+  const [tagsFilter, setTagsFilter] = useState(null);
+  
   const matchDownSM = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   const bindMissions = async () => {
@@ -78,6 +81,11 @@ const MissionsPage = () => {
 
       if (isMatchedFilter !== 'all')
         requestUrl += '&isMatched=' + isMatchedFilter;
+
+      if (tagsFilter?.length > 0)
+        tagsFilter.map((tag) => {
+          requestUrl += '&tags=' + tag;
+        });
 
       let response = await fetch(requestUrl,
         {
@@ -109,7 +117,7 @@ const MissionsPage = () => {
     (async () => {
       await bindMissions();
     })();
-  }, [isInvitedFilter, isAppliedFilter, isMatchedFilter]);
+  }, [isInvitedFilter, isAppliedFilter, isMatchedFilter, tagsFilter]);
 
   useEffect(() => {
     const newMissions = missions.filter((value) => {
@@ -218,6 +226,36 @@ const MissionsPage = () => {
                     </Box>
                   </Stack>
                 </Grid>
+
+                <Grid item>
+                  <Stack>
+                    <Box>
+                      <FormControl sx={{ minWidth: 120 }} fullWidth>
+                        <Autocomplete
+                          multiple
+                          fullWidth
+                          options={personalInformation?.tags ?? []}
+                          value={tagsFilter ?? []}
+                          onChange={(event, newValue) => {
+                            setTagsFilter(newValue);
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              placeholder="Tags"
+                              name="tags"
+                              inputProps={{
+                                ...params.inputProps,
+                                autoComplete: 'new-password'
+                              }}
+                            />
+                          )}
+                        />
+                      </FormControl>
+                    </Box>
+                  </Stack>
+                </Grid>
+
               </Grid>
             </Stack>
           </MainCard>

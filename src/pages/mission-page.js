@@ -26,6 +26,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { normalizeInputValue, prepareApiBody } from 'utils/stringUtils';
+import { PERSONAL_INFORMATION_UPDATE } from 'store/reducers/actions';
 
 const MissionPage = () => {
   const dispatch = useDispatch();
@@ -296,9 +297,12 @@ const MissionPage = () => {
         let json = await response.json();
 
         var newMissionContractor = { ...missionContractor };
-        newMissionContractor.tags = json;
-
+        newMissionContractor.tags = json.tags;
         setMissionContractor(newMissionContractor);
+
+        var newPersonalInformation = { ...personalInformation };
+        newPersonalInformation.tags = json.contractorTags;
+        dispatch({ type: PERSONAL_INFORMATION_UPDATE, payload: newPersonalInformation });
 
       } catch (error) {
         setSubmitting(false);
