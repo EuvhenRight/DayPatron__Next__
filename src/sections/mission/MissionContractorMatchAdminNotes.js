@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useKeycloak } from '@react-keycloak/web';
-import MissionContractorMatchAdminDetailsEdit from 'sections/mission/MissionContractorMatchAdminDetailsEdit';
-import MissionContractorMatchAdminDetailsView from 'sections/mission/MissionContractorMatchAdminDetailsView';
+import MissionContractorMatchAdminNotesEdit from 'sections/mission/MissionContractorMatchAdminNotesEdit';
+import MissionContractorMatchAdminNotesView from 'sections/mission/MissionContractorMatchAdminNotesView';
 
-const MissionContractorMatchAdminDetails = ({ missionId, contractorId }) => {
+const MissionContractorMatchAdminNotes = ({ missionId, contractorId }) => {
   const { keycloak } = useKeycloak();
-  const [adminDetails, setAdminDetails] = useState(null);
+  const [adminNotes, setAdminNotes] = useState(null);
 
   const bindData = async () => {
     try {
@@ -20,7 +20,7 @@ const MissionContractorMatchAdminDetails = ({ missionId, contractorId }) => {
 
       let json = await response.json();
 
-      setAdminDetails(json.adminDetails);
+      setAdminNotes(json.adminNotes);
     } catch (error) {
       console.log(error);
     }
@@ -34,12 +34,12 @@ const MissionContractorMatchAdminDetails = ({ missionId, contractorId }) => {
 
   if (keycloak.tokenParsed.roles.includes('admin'))
     return (
-      <MissionContractorMatchAdminDetailsEdit missionId={missionId} contractorId={contractorId} adminDetails={adminDetails} setAdminDetails={setAdminDetails} />
+      <MissionContractorMatchAdminNotesEdit missionId={missionId} contractorId={contractorId} adminNotes={adminNotes} setAdminNotes={setAdminNotes} />
     );
 
   return (
-    <MissionContractorMatchAdminDetailsView adminDetails={adminDetails} />
+    <MissionContractorMatchAdminNotesView adminNotes={adminNotes} />
   );
 };
 
-export default MissionContractorMatchAdminDetails;
+export default MissionContractorMatchAdminNotes;

@@ -7,7 +7,7 @@ import { Grid } from '@mui/material';
 import PersonalInformation from 'sections/PersonalInformation';
 import PersonalInformationHeadshot from 'sections/PersonalInformationHeadshot';
 
-// ==============================|| EMPLOYER - DETAILS ||============================== //
+// ==============================|| EMPLOYER USER - DETAILS ||============================== //
 
 const PersonalInformationPage = () => {
   const inputRef = useRef(null);

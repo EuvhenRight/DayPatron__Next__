@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import {  useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 
@@ -66,6 +66,7 @@ const getInitialValues = (employer) => {
 
 const UpsertEmployer = ({ employerId }) => {
   const { keycloak } = useKeycloak();
+  const personalInformation = useSelector(state => state.personalInformation);
   const [employer, setEmployer] = useState(null);
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState(undefined);
@@ -166,7 +167,7 @@ const UpsertEmployer = ({ employerId }) => {
           );
 
         } else {
-          values.userName = keycloak.idTokenParsed.preferred_username;
+          values.employerUserId = personalInformation.id;
           var body = prepareApiBody(values);
           let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers',
             {

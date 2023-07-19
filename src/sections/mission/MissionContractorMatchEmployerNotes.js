@@ -20,27 +20,27 @@ import 'react-quill/dist/quill.snow.css';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { normalizeInputValue, prepareApiBody } from 'utils/stringUtils';
 
-// ==============================|| MISSION CONTRACTOR MATCH EMPLOYER DETAILS||============================== //
+// ==============================|| MISSION CONTRACTOR MATCH EMPLOYER NOTES||============================== //
 
-const getInitialValues = (employerDetails) => {
-  const newEmployerDetails = {
+const getInitialValues = (employerNotes) => {
+  const newEmployerNotes = {
     contractorNotes: null
   };
 
-  if (employerDetails) {
-    var result = _.merge({}, newEmployerDetails, employerDetails);
+  if (employerNotes) {
+    var result = _.merge({}, newEmployerNotes, employerNotes);
 
     return result;
   }
 
-  return newEmployerDetails;
+  return newEmployerNotes;
 };
 
-const MissionContractorMatchEmployerDetails = ({ missionId, contractorId }) => {
+const MissionContractorMatchEmployerNotes = ({ missionId, contractorId }) => {
   const dispatch = useDispatch();
   const { keycloak } = useKeycloak();
   const theme = useTheme();
-  const [employerDetails, setEmployerDetails] = useState(null);
+  const [employerNotes, setEmployerNotes] = useState(null);
 
   const bindData = async () => {
     try {
@@ -55,7 +55,7 @@ const MissionContractorMatchEmployerDetails = ({ missionId, contractorId }) => {
 
       let json = await response.json();
 
-      setEmployerDetails(json.employerDetails);
+      setEmployerNotes(json.employerNotes);
     } catch (error) {
       console.log(error);
     }
@@ -67,19 +67,19 @@ const MissionContractorMatchEmployerDetails = ({ missionId, contractorId }) => {
     })();
   }, []);
 
-  const EmployerDetailsSchema = Yup.object().shape({
+  const EmployerNotesSchema = Yup.object().shape({
     contractorNotes: Yup.string().max(1000).nullable(true)
   });
 
   const formik = useFormik({
     enableReinitialize: true,
-    initialValues: getInitialValues(employerDetails),
-    validationSchema: EmployerDetailsSchema,
+    initialValues: getInitialValues(employerNotes),
+    validationSchema: EmployerNotesSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
         var body = { ...values };
 
-        let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/' + encodeURIComponent(missionId) + '/contractors/' + encodeURIComponent(contractorId) + '/employer-details',
+        let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/' + encodeURIComponent(missionId) + '/contractors/' + encodeURIComponent(contractorId) + '/employer-notes',
           {
             method: 'PUT',
             headers: {
@@ -120,7 +120,7 @@ const MissionContractorMatchEmployerDetails = ({ missionId, contractorId }) => {
 
         setSubmitting(false);
         let json = await response.json();
-        setAdminDetails(json);
+        setAdminNotes(json);
 
       } catch (error) {
         console.error(error);
@@ -186,4 +186,4 @@ const MissionContractorMatchEmployerDetails = ({ missionId, contractorId }) => {
   );
 };
 
-export default MissionContractorMatchEmployerDetails;
+export default MissionContractorMatchEmployerNotes;

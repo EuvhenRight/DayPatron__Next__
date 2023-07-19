@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import ReactQuill from 'react-quill';
@@ -96,6 +96,7 @@ const getInitialValues = (mission) => {
 
 const UpsertMission = ({ missionId }) => {
   const { keycloak } = useKeycloak();
+  const personalInformation = useSelector(state => state.personalInformation);
   const [mission, setMission] = useState(null);
   const [employers, setEmployers] = useState([]);
   const navigate = useNavigate();
@@ -135,7 +136,7 @@ const UpsertMission = ({ missionId }) => {
 
   const bindEmployers = async () => {
     try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers?userName=' + encodeURIComponent(keycloak.idTokenParsed.preferred_username),
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers?employerUserId=' + encodeURIComponent(personalInformation.id),
         {
           method: 'GET',
           headers: {

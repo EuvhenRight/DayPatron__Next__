@@ -34,7 +34,7 @@ function useInputRef() {
 // ==============================|| PERSONAL INFORMATION ||============================== //
 
 const PersonalInformation = () => {
-  const {keycloak} = useKeycloak();
+  const { keycloak } = useKeycloak();
 
   const dispatch = useDispatch();
   const state = useSelector(state => state.personalInformation);
@@ -63,7 +63,7 @@ const PersonalInformation = () => {
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers/users/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username),
+            let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers/users/' + encodeURIComponent(state.id),
               {
                 method: 'PUT',
                 headers: {
