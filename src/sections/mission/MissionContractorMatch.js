@@ -4,6 +4,7 @@ import { useKeycloak } from '@react-keycloak/web';
 import { openSnackbar } from 'store/reducers/snackbar';
 import LinearWithLabel from 'components/@extended/progress/LinearWithLabel';
 import { useTheme } from '@mui/material/styles';
+import { PopupModal } from "react-calendly";
 import {
   Chip,
   Divider,
@@ -52,7 +53,8 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
   const [selectedTraitResult, setSelectedTraitResult] = useState(null);
   const [isCreatingInvitation, setIsCreatingInvitation] = useState(false);
   const [isDeletingInvitation, setIsDeletingInvitation] = useState(false);
-
+  const [isCalendlyOpen, setIsCalendlyOpen] = useState(false);
+  
   const navigate = useNavigate();
   let { tabGroupId, tabGroupItemIndex } = useParams();
   tabGroupItemIndex = parseInt(tabGroupItemIndex);
@@ -307,6 +309,19 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                         <Button variant="outlined" onClick={handleUninviteButtonClick} disabled={isDeletingInvitation}>
                           Uninvite
                         </Button>
+                      </Stack>
+                    }
+                    {missionContractorMatch?.contractor?.calendlyUrl &&
+                      <Stack spacing={0.5} alignItems="center">
+                        <Button variant="text" onClick={() => { setIsCalendlyOpen(true); }}>
+                          Schedule a meeting
+                        </Button>
+                        <PopupModal
+                          url={missionContractorMatch?.contractor?.calendlyUrl}
+                          onModalClose={() => { setIsCalendlyOpen(false); }}
+                          open={isCalendlyOpen}
+                          rootElement={document.getElementById("root")}
+                        />
                       </Stack>
                     }
                   </Stack>
