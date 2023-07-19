@@ -56,6 +56,7 @@ const ProfilePersonal = () => {
           country: state.country,
           linkedInUrl: state.linkedInUrl,
           peraInterviewUrl: state.peraInterviewUrl,
+          calendlyUrl: state.calendlyUrl,
           submit: null
         }}
         validationSchema={Yup.object().shape({
@@ -66,6 +67,7 @@ const ProfilePersonal = () => {
           country: Yup.string().nullable(true),
           linkedInUrl: Yup.string().max(255).nullable(true),
           peraInterviewUrl: Yup.string().max(255).nullable(true),
+          calendlyUrl: Yup.string().max(255).nullable(true)
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
@@ -299,6 +301,27 @@ const ProfilePersonal = () => {
                     {touched.peraInterviewUrl && errors.peraInterviewUrl && (
                       <FormHelperText error id="personal-pera-interview-url-helper">
                         {errors.peraInterviewUrl}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <InputLabel htmlFor="personal-calendly-url">Calendly Url</InputLabel>
+                    <TextField
+                      fullWidth
+                      id="personal-calendly-url"
+                      value={normalizeInputValue(values.calendlyUrl)}
+                      name="calendlyUrl"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      placeholder="Calendly Url"
+                      autoFocus
+                      inputRef={inputRef}
+                    />
+                    {touched.calendlyUrl && errors.calendlyUrl && (
+                      <FormHelperText error id="personal-calendly-url-helper">
+                        {errors.calendlyUrl}
                       </FormHelperText>
                     )}
                   </Stack>
