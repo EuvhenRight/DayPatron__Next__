@@ -65,7 +65,7 @@ const NavCard = () => {
         </AnimateButton>
       </Stack>
     </MainCard>
-  )
-};
+  );
+}
 
 export default NavCard;
