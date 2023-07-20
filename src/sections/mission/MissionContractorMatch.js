@@ -321,6 +321,20 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                           onModalClose={() => { setIsCalendlyOpen(false); }}
                           open={isCalendlyOpen}
                           rootElement={document.getElementById("root")}
+                          prefill={{
+                            email: missionContractorMatch?.contractor?.email,
+                            firstName: missionContractorMatch?.contractor?.firstName,
+                            lastName: missionContractorMatch?.contractor?.lastName,
+                            name: missionContractorMatch?.contractor?.firstName + ' ' + missionContractorMatch?.contractor?.lastName,
+                            date: new Date(Date.now() + 86400000)
+                          }}
+                          pageSettings={{
+                            backgroundColor: theme.palette.common.white,
+                            hideEventTypeDetails: false,
+                            hideLandingPageDetails: false,
+                            primaryColor: theme.palette.primary.main,
+                            textColor: theme.palette.text.primary
+                          }}
                         />
                       </Stack>
                     }

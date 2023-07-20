@@ -34,3 +34,6 @@ div.small-chip span {
     height:80px;
     overflow:hidden;
 }
+.calendly-popup {
+    max-height: 685px !important;
+}
