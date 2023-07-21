@@ -4,13 +4,15 @@ import { FormattedMessage } from 'react-intl';
 // assets
 import {
   SearchOutlined,
-  CommentOutlined
+  CommentOutlined,
+  FieldTimeOutlined
 } from '@ant-design/icons';
 
 // icons
 const icons = {
   SearchOutlined,
-  CommentOutlined
+  CommentOutlined,
+  FieldTimeOutlined
 };
 
 // ==============================|| MENU ITEMS - MISSION ||============================== //
@@ -33,6 +35,13 @@ const mission = {
       type: 'item',
       url: '/missions/chat',
       icon: icons.CommentOutlined
+    },
+    {
+      id: 'mission-hours',
+      title: <FormattedMessage id="mission-hours" />,
+      type: 'item',
+      url: '/missions/hours',
+      icon: icons.FieldTimeOutlined
     }
   ]
 };

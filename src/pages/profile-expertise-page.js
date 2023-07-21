@@ -60,6 +60,7 @@ const ProfileExpertisePage = () => {
       console.log(error);
     }
   }
+
   useEffect(() => {
     (async () => {
       await bindExpertise();

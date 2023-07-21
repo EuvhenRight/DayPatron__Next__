@@ -255,7 +255,7 @@ const AmountCell = ({ value }) => {
 };
 
 AmountCell.propTypes = {
-  value: PropTypes.string
+  value: PropTypes.number
 };
 
 // Action Cell
