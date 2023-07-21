@@ -70,7 +70,7 @@ const MainLayout = () => {
             flexDirection: 'column'
           }}
         >
-          <Breadcrumbs navigation={navigation} title titleBottom card={false} divider={false} />
+          <Breadcrumbs navigation={navigation} title titleBottom card={false} divider={false} icons />
           <Outlet />
           <Footer />
         </Container>
