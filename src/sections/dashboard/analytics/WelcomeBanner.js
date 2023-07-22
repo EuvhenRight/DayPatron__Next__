@@ -1,13 +1,12 @@
 // material-ui
-import { Grid, Typography, Stack, Box } from '@mui/material';
+import { Grid, Typography, Stack } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 // project import
 import MainCard from 'components/MainCard';
 
 //asset
-import WelcomeImage from 'assets/images/10xProposition.png';
-import WelcomeImageArrow from 'assets/images/analytics/welcome-arrow.png';
+import WelcomeImage from 'assets/images/welcome.png';
 
 // ==============================|| ANALYTICS - WELCOME ||============================== //
 
@@ -36,11 +35,8 @@ const WelcomeBanner = () => {
           </Stack>
         </Grid>
         <Grid item sm={6} xs={12} sx={{ display: { xs: 'none', sm: 'initial' } }}>
-          <Stack sx={{ position: 'relative', pr: { sm: 3, md: 8 } }} justifyContent="center" alignItems="flex-end">
-            <img src={WelcomeImage} alt="Welcome" style={{width: '180px'}} />
-            <Box sx={{ position: 'absolute', bottom: 0, right: '10%' }}>
-              <img src={WelcomeImageArrow} alt="Welcome Arrow" />
-            </Box>
+          <Stack justifyContent="center" alignItems="flex-end">
+            <img src={WelcomeImage} alt="Welcome" style={{width: '250px'}} />
           </Stack>
         </Grid>
       </Grid>
