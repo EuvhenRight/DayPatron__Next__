@@ -28,6 +28,18 @@ const MissionTimeTrackingPage = () => {
   const [timeLogs, setTimeLogs] = useState([{ missionId: null }]);
   const [missions, setMissions] = useState(null);
 
+  const getMissionOptions = (missionId) => {
+    if (!missions)
+      return [];
+
+    let result = missions.filter(m => !timeLogs?.some(tl => tl.missionId == m.id));
+    if (missionId && !result.some(x => x.id == missionId)) {
+      result.push(missions.find(x => x.id == missionId));
+    }
+
+    return result;
+  }
+
   const convertApiResponseToTimeLogs = (timeLogsResponse) => {
     let result = timeLogsResponse?.timeLogs?.reduce((groupsSoFar, { missionId, date, minutes }) => {
       let dateObject = new Date(date);
@@ -230,7 +242,7 @@ const MissionTimeTrackingPage = () => {
                           <Autocomplete
                             fullWidth
                             value={missions?.find(x => x.id == timeLog?.missionId) ?? null}
-                            options={missions ?? []}
+                            options={getMissionOptions(timeLog?.missionId)}
                             getOptionLabel={(option) => option?.title}
                             isOptionEqualToValue={(option, value) => option.id === value?.id}
                             onChange={(event, newValue) => {
@@ -238,7 +250,7 @@ const MissionTimeTrackingPage = () => {
                                 if (currentTimeLogIndex === timeLogIndex) {
                                   return {
                                     ...currentTimeLog,
-                                    missionId: newValue.id,
+                                    missionId: newValue?.id,
                                   };
                                 }
 
