@@ -21,7 +21,7 @@ const ProfileAvailabilityPage = Loadable(lazy(() => import('pages/profile-availa
 const MissionPage = Loadable(lazy(() => import('pages/mission-page')));
 const MissionsPage = Loadable(lazy(() => import('pages/missions-page')));
 const MissionChatPage = Loadable(lazy(() => import('pages/mission-chat-page')));
-const MissionHoursPage = Loadable(lazy(() => import('pages/mission-hours-page')));
+const MissionTimeTrackingPage = Loadable(lazy(() => import('pages/mission-time-tracking-page')));
 
 const InvoicesPage = Loadable(lazy(() => import('pages/invoices-page')));
 const InvoiceSettingsPage = Loadable(lazy(() => import('pages/invoice-settings-page')));
@@ -73,8 +73,8 @@ const MainRoutes = {
           element: <MissionChatPage />
         },
         {
-          path: 'missions/hours',
-          element: <MissionHoursPage />
+          path: 'missions/time-tracking',
+          element: <MissionTimeTrackingPage />
         },
         {
           path: 'missions',

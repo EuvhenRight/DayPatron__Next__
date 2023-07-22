@@ -37,10 +37,10 @@ const mission = {
       icon: icons.CommentOutlined
     },
     {
-      id: 'mission-hours',
-      title: <FormattedMessage id="mission-hours" />,
+      id: 'mission-time-tracking',
+      title: <FormattedMessage id="mission-time-tracking" />,
       type: 'item',
-      url: '/missions/hours',
+      url: '/missions/time-tracking',
       icon: icons.FieldTimeOutlined
     }
   ]

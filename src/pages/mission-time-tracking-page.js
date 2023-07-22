@@ -19,7 +19,7 @@ import IconButton from 'components/@extended/IconButton';
 // project import
 import MainCard from 'components/MainCard';
 
-const MissionHoursPage = () => {
+const MissionTimeTrackingPage = () => {
   const { keycloak } = useKeycloak();
   const dispatch = useDispatch();
   const personalInformation = useSelector(state => state.personalInformation);
@@ -322,4 +322,4 @@ const MissionHoursPage = () => {
   );
 };
 
-export default MissionHoursPage;
+export default MissionTimeTrackingPage;

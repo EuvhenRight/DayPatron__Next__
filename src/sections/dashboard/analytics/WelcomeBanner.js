@@ -36,7 +36,7 @@ const WelcomeBanner = () => {
         </Grid>
         <Grid item sm={6} xs={12} sx={{ display: { xs: 'none', sm: 'initial' } }}>
           <Stack justifyContent="center" alignItems="flex-end">
-            <img src={WelcomeImage} alt="Welcome" style={{width: '250px'}} />
+            <img src={WelcomeImage} alt="Welcome" style={{ position: 'absolute', height: '100%', top: '0px', right: '0px'}} />
           </Stack>
         </Grid>
       </Grid>
