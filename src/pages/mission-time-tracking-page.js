@@ -8,6 +8,7 @@ import {
   Button, Stack, Typography, Grid, InputLabel, TextField, Tooltip, Autocomplete } from '@mui/material';
 import { startOfWeek, endOfWeek, subDays, addDays, format } from 'date-fns'
 import { normalizeInputValue, prepareApiBody } from 'utils/stringUtils';
+import { getDatesInRange } from 'utils/dateUtils';
 
 import {
   LeftCircleOutlined,
@@ -25,6 +26,7 @@ const MissionTimeTrackingPage = () => {
   const personalInformation = useSelector(state => state.personalInformation);
   const today = new Date();
   const [week, setWeek] = useState({ start: startOfWeek(today, { weekStartsOn: 1 }), end: endOfWeek(today, { weekStartsOn: 1 }) });
+  const [totalsPerDate, setTotalsPerDate] = useState(null);
   const [timeLogs, setTimeLogs] = useState([{ missionId: null }]);
   const [missions, setMissions] = useState(null);
 
@@ -44,13 +46,15 @@ const MissionTimeTrackingPage = () => {
     let result = timeLogsResponse?.timeLogs?.reduce((groupsSoFar, { missionId, date, minutes }) => {
       let dateObject = new Date(date);
       let existingGroup = groupsSoFar.find(x => x.missionId === missionId);
+
       if (!existingGroup) {
         let newGroup = { missionId, days: [] };
-        for (var weekDate = new Date(week.start); weekDate <= week.end; weekDate.setDate(weekDate.getDate() + 1)) {
-          let newMinutes = weekDate.getTime() === dateObject.getTime() ? minutes : null;
+        let datesInWeek = getDatesInRange(week.start, week.end);
+        datesInWeek.map((dateInWeek) => {
+          let newMinutes = dateInWeek.getTime() === dateObject.getTime() ? minutes : null;
+          newGroup.days.push({ date: new Date(dateInWeek), minutes: newMinutes });
+        });
 
-          newGroup.days.push({ date: new Date(weekDate), minutes: newMinutes });
-        }
         groupsSoFar.push(newGroup);
       } else {
         let existingDay = existingGroup.days.find(x => x.date.getTime() === dateObject.getTime());
@@ -67,15 +71,14 @@ const MissionTimeTrackingPage = () => {
 
     return result;
   }
+
   const createEmptyRow = () => {
     let result = { missionId: null, days: [] };
 
-    let startWeekDate = new Date(week.start);
-    let endWeekDate = new Date(week.end);
-
-    for (var weekDate = startWeekDate; weekDate <= endWeekDate; weekDate.setDate(weekDate.getDate() + 1)) {
-      result.days.push({ date: new Date(weekDate), minutes: null });
-    }
+    let datesInWeek = getDatesInRange(week.start, week.end);
+    datesInWeek.map((dateInWeek) => {
+      result.days.push({ date: new Date(dateInWeek), minutes: null });
+    });
 
     return result;
   }
@@ -123,17 +126,41 @@ const MissionTimeTrackingPage = () => {
   }, [week]);
 
   useEffect(() => {
+    (() => {
+      let newTotalsPerDate = [];
+      timeLogs?.map((timeLog) => {
+        timeLog?.days?.map((timeLogDay) => {
+          let foundDate = newTotalsPerDate.find(x => x.date.getTime() === timeLogDay.date.getTime());
+          if (foundDate) {
+            foundDate.total += timeLogDay.minutes;
+          } else {
+            newTotalsPerDate.push({ date: new Date(timeLogDay.date), total: timeLogDay.minutes });
+          }
+        });
+      })
+
+      setTotalsPerDate(newTotalsPerDate);
+    })();
+  }, [timeLogs]);
+
+  useEffect(() => {
     (async () => {
       await bindMissions();
     })();
   }, []);
 
   const handlePreviousWeekClick = () => {
-    setWeek({ start: subDays(week.start, 7), end: subDays(week.end, 7) });
+    let weekStart = subDays(week.start, 7);
+    let weekEnd = subDays(week.end, 7);
+
+    setWeek({ start: weekStart, end: weekEnd });
   }
 
   const handleNextWeekClick = () => {
-    setWeek({ start: addDays(week.start, 7), end: addDays(week.end, 7) });
+    let weekStart = addDays(week.start, 7);
+    let weekEnd = addDays(week.end, 7);
+
+    setWeek({ start: weekStart, end: weekEnd });
   }
 
   const prepareTimeLogsUpdateRequest = () => {
@@ -229,12 +256,28 @@ const MissionTimeTrackingPage = () => {
       </Grid>
       <Grid item xs={12}>
         <Grid container spacing={1}>
+          <Grid item xs={12}>
+            <MainCard>
+              <Grid container spacing={3}>
+                <Grid item xs={12} lg={5}>
+                  <Typography variant="h3">Total</Typography>
+                </Grid>
+                {totalsPerDate?.map((totalPerDate, totalPerDateIndex) =>
+                  <Grid key={totalPerDateIndex} item xs={4} lg={1}>
+                    <Stack spacing={1.25}>
+                      <InputLabel>{format(totalPerDate?.date, 'PP')}</InputLabel>
+                      <Typography variant="h4">{totalPerDate?.total}</Typography>
+                    </Stack>
+                  </Grid>
+                )}
+              </Grid>
+            </MainCard>
+          </Grid>
           {timeLogs?.map((timeLog, timeLogIndex) => {
             return (
               <Grid key={timeLogIndex} item xs={12}>
                 <MainCard>
                   <Stack spacing={1.25}>
-
                     <Grid container spacing={3}>
                       <Grid item xs={12} lg={5}>
                         <Stack spacing={1.25}>
@@ -286,7 +329,7 @@ const MissionTimeTrackingPage = () => {
                                     "days": {
                                       [timeLogDayIndex]: {
                                         "minutes": {
-                                          $set: event.target.value
+                                          $set: parseFloat(event.target.value)
                                         }
                                       }
                                     }
