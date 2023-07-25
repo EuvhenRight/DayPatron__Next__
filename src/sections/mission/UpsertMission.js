@@ -103,7 +103,6 @@ const UpsertMission = ({ missionId }) => {
   const [selectedImage, setSelectedImage] = useState(undefined);
   const [alternativeRolesInputText, setAlternativeRolesInputText] = useState('');
   const [alternativeIndustriesInputText, setAlternativeIndustriesInputText] = useState('');
-  const [requiredLanguagesInputText, setRequiredLanguagesInputText] = useState('');
 
   const [avatar, setAvatar] = useState(mission?.mainImageUrl ? mission.mainImageUrl : avatarImage('./default.png'));
   const theme = useTheme();
@@ -606,23 +605,8 @@ const UpsertMission = ({ missionId }) => {
                           value={values.requiredLanguages ?? []}
                           onBlur={handleBlur}
                           getOptionLabel={(option) => option?.label}
-                          onChange={(event, newValue, reason) => {
-                            if (reason === 'clear') {
-                              if (requiredLanguagesInputText)
-                                setRequiredLanguagesInputText('');
-                              else
-                                setFieldValue('requiredLanguages', null);
-                            } else {
-                              setFieldValue('requiredLanguages', newValue);
-                            }
-                          }}
-                          inputValue={requiredLanguagesInputText}
-                          onInputChange={(event, value, reason) => {
-                            if (event && event.type === 'blur') {
-                              setRequiredLanguagesInputText('');
-                            } else if (reason !== 'reset') {
-                              setRequiredLanguagesInputText(value);
-                            }
+                          onChange={(event, newValue) => {
+                            setFieldValue('requiredLanguages', newValue);
                           }}
                           renderInput={(params) => (
                             <TextField

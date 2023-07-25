@@ -344,27 +344,6 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                   <Divider />
                 </Grid>
                 <Grid item xs={12}>
-                  <Stack direction="row" justifyContent="space-around" alignItems="center">
-                    <Stack spacing={0.5} alignItems="center">
-                      <Typography variant="h5">86</Typography>
-                      <Typography color="secondary">Post</Typography>
-                    </Stack>
-                    <Divider orientation="vertical" flexItem />
-                    <Stack spacing={0.5} alignItems="center">
-                      <Typography variant="h5">40</Typography>
-                      <Typography color="secondary">Project</Typography>
-                    </Stack>
-                    <Divider orientation="vertical" flexItem />
-                    <Stack spacing={0.5} alignItems="center">
-                      <Typography variant="h5">4.5K</Typography>
-                      <Typography color="secondary">Members</Typography>
-                    </Stack>
-                  </Stack>
-                </Grid>
-                <Grid item xs={12}>
-                  <Divider />
-                </Grid>
-                <Grid item xs={12}>
                   <List component="nav" aria-label="main mailbox folders" sx={{ py: 0, '& .MuiListItem-root': { p: 0, py: 1 } }}>
                     {missionContractorMatch?.contractor?.email && 
                       <ListItem>
@@ -410,7 +389,9 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                     }
                   </List>
                 </Grid>
-
+                <Grid item xs={12}>
+                  <Divider />
+                </Grid>
                 <Grid item xs={12}>
                   {missionContractorMatch?.contractorPeraSurveyResponse &&
                     <List
