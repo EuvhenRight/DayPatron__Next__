@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useKeycloak } from '@react-keycloak/web';
 import update from 'immutability-helper';
+import * as dayjs from 'dayjs'
 import { openSnackbar } from 'store/reducers/snackbar';
 
 import { Button, Stack, Typography, Grid, InputLabel, TextField, Tooltip, Autocomplete } from '@mui/material';
@@ -54,14 +55,16 @@ const MissionTimeTrackingPage = () => {
         let datesInWeek = getDatesInRange(week.start, week.end);
         datesInWeek.map((dateInWeek) => {
           let newMinutes = dateInWeek.getTime() === dateObject.getTime() ? minutes : null;
-          newGroup.days.push({ date: new Date(dateInWeek), minutes: newMinutes, timeString: null });
+          newGroup.days.push({ date: new Date(dateInWeek), minutes: newMinutes, time: getDayjsFromMinutes(newMinutes) });
         });
 
         groupsSoFar.push(newGroup);
       } else {
         let existingDay = existingGroup.days.find(x => x.date.getTime() === dateObject.getTime());
-        if (existingDay)
+        if (existingDay) {
           existingDay.minutes = minutes;
+          existingDay.time = getDayjsFromMinutes(minutes);
+        }
       }
       return groupsSoFar;
     }, []);
@@ -74,12 +77,26 @@ const MissionTimeTrackingPage = () => {
     return result;
   }
 
+  const getDayjsFromMinutes = (minutes) => {
+    var hoursMinutes = getHoursMinutes(minutes);
+    if (!hoursMinutes)
+      return null;
+
+    var date = new Date();
+    date.setHours(hoursMinutes.hours);
+    date.setMinutes(hoursMinutes.minutes);
+
+    var result = dayjs(date);
+
+    return result;
+  }
+
   const createEmptyRow = () => {
     let result = { missionId: null, days: [] };
 
     let datesInWeek = getDatesInRange(week.start, week.end);
     datesInWeek.map((dateInWeek) => {
-      result.days.push({ date: new Date(dateInWeek), minutes: null, timeString: null });
+      result.days.push({ date: new Date(dateInWeek), minutes: null, time: null });
     });
 
     return result;
@@ -134,8 +151,10 @@ const MissionTimeTrackingPage = () => {
         timeLog?.days?.map((timeLogDay) => {
           let foundDate = newTotalsPerDate.find(x => x.date.getTime() === timeLogDay.date.getTime());
           if (foundDate) {
-            foundDate.total += timeLogDay.minutes;
-            foundDate.totalFormattedString = getTimeStringFromMinutes(foundDate.total);
+            if (timeLogDay.minutes && timeLogDay.minutes > 0) {
+              foundDate.total += timeLogDay.minutes;
+              foundDate.totalFormattedString = getTimeStringFromMinutes(foundDate.total);
+            }
           } else {
             newTotalsPerDate.push({ date: new Date(timeLogDay.date), total: timeLogDay.minutes, totalFormattedString: getTimeStringFromMinutes(timeLogDay.minutes) });
           }
@@ -152,7 +171,7 @@ const MissionTimeTrackingPage = () => {
     })();
   }, []);
 
-  const getTimeStringFromMinutes = (minutesInt) => {
+  const getHoursMinutes = (minutesInt) => {
     if (!minutesInt && minutesInt != 0)
       return null;
 
@@ -162,7 +181,16 @@ const MissionTimeTrackingPage = () => {
     let hours = parseInt(minutesInt / 60);
     let minutes = minutesInt - (hours * 60);
 
-    let result = hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0');
+    var result = { hours, minutes };
+    return result;
+  }
+
+  const getTimeStringFromMinutes = (minutesInt) => {
+    let hoursMinutes = getHoursMinutes(minutesInt);
+    if (!hoursMinutes)
+      return null;
+
+    let result = hoursMinutes.hours.toString().padStart(2, '0') + ':' + hoursMinutes.minutes.toString().padStart(2, '0');
 
     return result;
   }
@@ -277,7 +305,7 @@ const MissionTimeTrackingPage = () => {
         <Grid item xs={12}>
           <Grid container spacing={1}>
             <Grid item xs={12}>
-              <MainCard>
+              <MainCard sx={{ background: 'none', border: 'none' }}>
                 <Grid container spacing={3}>
                   <Grid item xs={12} lg={5}>
                     <Typography variant="h3">Total</Typography>
@@ -344,13 +372,13 @@ const MissionTimeTrackingPage = () => {
                                 aria-invalid="false"
                                 format="HH:mm"
                                 ampm={false}
-                                value={timeLogDay?.timeString}
+                                value={timeLogDay?.time}
                                 onChange={(value) => {
                                   var newTimeLogs = update(timeLogs, {
                                     [timeLogIndex]: {
                                       "days": {
                                         [timeLogDayIndex]: {
-                                          "timeString": {
+                                          "time": {
                                             $set: value
                                           },
                                           "minutes": {
