@@ -8,7 +8,7 @@ import { PERSONAL_INFORMATION_UPDATE } from 'store/reducers/actions';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Button, Box, Divider, FormLabel, Grid, TextField, Menu, MenuItem, Stack, Typography, Link as MuiLink, CircularProgress  } from '@mui/material';
+import { Button, Box, FormLabel, Grid, TextField, Menu, MenuItem, Stack, Typography, Link as MuiLink, CircularProgress  } from '@mui/material';
 
 // project import
 import MainCard from 'components/MainCard';
@@ -270,20 +270,6 @@ const ProfileHeadshot = ({ focusInput }) => {
             </Stack>
             <Stack direction="row" spacing={3} sx={{ '& svg': { fontSize: '1.15rem', cursor: 'pointer' } }}>
               <a href={state.linkedInUrl} target="_blank" rel="noreferrer"><LinkedinFilled style={{ color: linkedInColor }} /></a>
-            </Stack>
-          </Stack>
-        </Grid>
-        <Grid item sm={3} sx={{ display: { sm: 'block', md: 'none' } }} />
-        <Grid item xs={12} sm={6} md={12}>
-          <Stack direction="row" justifyContent="space-around" alignItems="center">
-            <Stack spacing={0.5} alignItems="center">
-              <Typography variant="h5">0</Typography>
-              <Typography color="secondary">Pending</Typography>
-            </Stack>
-            <Divider orientation="vertical" flexItem />
-            <Stack spacing={0.5} alignItems="center">
-              <Typography variant="h5">0</Typography>
-              <Typography color="secondary">Completed</Typography>
             </Stack>
           </Stack>
         </Grid>

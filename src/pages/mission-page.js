@@ -432,7 +432,7 @@ const MissionPage = () => {
           </MainCard>
         </Grid>
 
-        <Grid item sm={12} md={8}>
+        <Grid item xs={12} md={8}>
           <MainCard title="Notes">
             <List sx={{ py: 0 }}>
               <ListItem>
@@ -518,7 +518,7 @@ const MissionPage = () => {
           </MainCard>
         </Grid>
 
-        <Grid item sm={12} md={4}>
+        <Grid item xs={12} md={4}>
           <MainCard title="Tags">
             <List sx={{ py: 0 }}>
 

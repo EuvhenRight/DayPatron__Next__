@@ -39,10 +39,6 @@ const ProfileExpertisePage = () => {
   const [expertise, setExpertise] = useState(null);
   const [industriesInputText, setIndustriesInputText] = useState('');
   const [jobRolesInputText, setJobRolesInputText] = useState('');
-  const [languagesInputText, setLanguagesInputText] = useState('');
-  const [countriesInputText, setCountriesInputText] = useState('');
-  const [companyStagesInputText, setCompanyStagesInputText] = useState('');
-  const [financingStagesInputText, setFinancingStagesInputText] = useState('');
   
   const bindExpertise = async () => {
     try {
@@ -291,23 +287,8 @@ const ProfileExpertisePage = () => {
                       value={values.languages ?? []}
                       onBlur={handleBlur}
                       getOptionLabel={(option) => option?.label}
-                      onChange={(event, newValue, reason) => {
-                        if (reason === 'clear') {
-                          if (languagesInputText)
-                            setLanguagesInputText('');
-                          else
-                            setFieldValue('languages', null);
-                        } else {
-                          setFieldValue('languages', newValue);
-                        }
-                      }}
-                      inputValue={languagesInputText}
-                      onInputChange={(event, value, reason) => {
-                        if (event && event.type === 'blur') {
-                          setLanguagesInputText('');
-                        } else if (reason !== 'reset') {
-                          setLanguagesInputText(value);
-                        }
+                      onChange={(event, newValue) => {
+                        setFieldValue('languages', newValue);
                       }}
                       renderInput={(params) => (
                         <TextField
@@ -342,23 +323,8 @@ const ProfileExpertisePage = () => {
                       value={values.countries ?? []}
                       onBlur={handleBlur}
                       getOptionLabel={(option) => option?.label}
-                      onChange={(event, newValue, reason) => {
-                        if (reason === 'clear') {
-                          if (countriesInputText)
-                            setCountriesInputText('');
-                          else
-                            setFieldValue('countries', null);
-                        } else {
-                          setFieldValue('countries', newValue);
-                        }
-                      }}
-                      inputValue={countriesInputText}
-                      onInputChange={(event, value, reason) => {
-                        if (event && event.type === 'blur') {
-                          setCountriesInputText('');
-                        } else if (reason !== 'reset') {
-                          setCountriesInputText(value);
-                        }
+                      onChange={(event, newValue) => {
+                        setFieldValue('countries', newValue);
                       }}
                       renderInput={(params) => (
                         <TextField
@@ -394,23 +360,8 @@ const ProfileExpertisePage = () => {
                       value={values.companyStages ?? []}
                       onBlur={handleBlur}
                       getOptionLabel={(option) => option?.label}
-                      onChange={(event, newValue, reason) => {
-                        if (reason === 'clear') {
-                          if (companyStagesInputText)
-                            setCompanyStagesInputText('');
-                          else
-                            setFieldValue('companyStages', null);
-                        } else {
-                          setFieldValue('companyStages', newValue);
-                        }
-                      }}
-                      inputValue={companyStagesInputText}
-                      onInputChange={(event, value, reason) => {
-                        if (event && event.type === 'blur') {
-                          setCompanyStagesInputText('');
-                        } else if (reason !== 'reset') {
-                          setCompanyStagesInputText(value);
-                        }
+                      onChange={(event, newValue) => {
+                        setFieldValue('companyStages', newValue);
                       }}
                       renderInput={(params) => (
                         <TextField
@@ -445,23 +396,8 @@ const ProfileExpertisePage = () => {
                       value={values.financingStages ?? []}
                       onBlur={handleBlur}
                       getOptionLabel={(option) => option?.label}
-                      onChange={(event, newValue, reason) => {
-                        if (reason === 'clear') {
-                          if (financingStagesInputText)
-                            setFinancingStagesInputText('');
-                          else
-                            setFieldValue('financingStages', null);
-                        } else {
-                          setFieldValue('financingStages', newValue);
-                        }
-                      }}
-                      inputValue={financingStagesInputText}
-                      onInputChange={(event, value, reason) => {
-                        if (event && event.type === 'blur') {
-                          setFinancingStagesInputText('');
-                        } else if (reason !== 'reset') {
-                          setFinancingStagesInputText(value);
-                        }
+                      onChange={(event, newValue) => {
+                        setFieldValue('financingStages', newValue);
                       }}
                       renderInput={(params) => (
                         <TextField
