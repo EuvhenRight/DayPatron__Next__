@@ -298,7 +298,7 @@ const MissionTimeTrackingPage = () => {
         <Grid item xs={12}>
           <Stack direction="row" alignItems="center" spacing={2}>
             <Button onClick={handlePreviousWeekClick} variant="outlined" startIcon={<LeftCircleOutlined />}>Previous</Button>
-            <Typography>{format(week?.start, 'PP')} - {format(week?.end, 'PP')}</Typography>
+            <Typography>{format(week?.start, 'eeeeee, dd MMM y')} - {format(week?.end, 'eeeeee, dd MMM y')}</Typography>
             <Button onClick={handleNextWeekClick} variant="outlined" endIcon={<RightCircleOutlined />}>Next</Button>
           </Stack>
         </Grid>
@@ -313,7 +313,7 @@ const MissionTimeTrackingPage = () => {
                   {totalsPerDate?.map((totalPerDate, totalPerDateIndex) =>
                     <Grid key={totalPerDateIndex} item xs={4} lg={1}>
                       <Stack spacing={1.25}>
-                        <InputLabel>{format(totalPerDate?.date, 'PP')}</InputLabel>
+                        <InputLabel>{format(totalPerDate?.date, 'eeeeee, dd MMM')}</InputLabel>
                         <Typography variant="h4">{totalPerDate?.totalFormattedString}</Typography>
                       </Stack>
                     </Grid>
@@ -366,7 +366,7 @@ const MissionTimeTrackingPage = () => {
                         {timeLog?.days?.map((timeLogDay, timeLogDayIndex) => (
                           <Grid key={timeLogDayIndex} item xs={4} lg={1}>
                             <Stack spacing={1.25}>
-                              <InputLabel>{format(timeLogDay?.date, 'PP')}</InputLabel>
+                              <InputLabel>{format(timeLogDay?.date, 'eeeeee, dd MMM')}</InputLabel>
                               <TimeField
                                 fullWidth
                                 aria-invalid="false"
