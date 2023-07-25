@@ -4,10 +4,12 @@ import { useKeycloak } from '@react-keycloak/web';
 import update from 'immutability-helper';
 import { openSnackbar } from 'store/reducers/snackbar';
 
-import {
-  Button, Stack, Typography, Grid, InputLabel, TextField, Tooltip, Autocomplete } from '@mui/material';
+import { Button, Stack, Typography, Grid, InputLabel, TextField, Tooltip, Autocomplete } from '@mui/material';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { TimeField } from '@mui/x-date-pickers';
 import { startOfWeek, endOfWeek, subDays, addDays, format } from 'date-fns'
-import { normalizeInputValue, prepareApiBody } from 'utils/stringUtils';
+import { prepareApiBody } from 'utils/stringUtils';
 import { getDatesInRange } from 'utils/dateUtils';
 
 import {
@@ -52,7 +54,7 @@ const MissionTimeTrackingPage = () => {
         let datesInWeek = getDatesInRange(week.start, week.end);
         datesInWeek.map((dateInWeek) => {
           let newMinutes = dateInWeek.getTime() === dateObject.getTime() ? minutes : null;
-          newGroup.days.push({ date: new Date(dateInWeek), minutes: newMinutes });
+          newGroup.days.push({ date: new Date(dateInWeek), minutes: newMinutes, timeString: null });
         });
 
         groupsSoFar.push(newGroup);
@@ -77,7 +79,7 @@ const MissionTimeTrackingPage = () => {
 
     let datesInWeek = getDatesInRange(week.start, week.end);
     datesInWeek.map((dateInWeek) => {
-      result.days.push({ date: new Date(dateInWeek), minutes: null });
+      result.days.push({ date: new Date(dateInWeek), minutes: null, timeString: null });
     });
 
     return result;
@@ -133,8 +135,9 @@ const MissionTimeTrackingPage = () => {
           let foundDate = newTotalsPerDate.find(x => x.date.getTime() === timeLogDay.date.getTime());
           if (foundDate) {
             foundDate.total += timeLogDay.minutes;
+            foundDate.totalFormattedString = getTimeStringFromMinutes(foundDate.total);
           } else {
-            newTotalsPerDate.push({ date: new Date(timeLogDay.date), total: timeLogDay.minutes });
+            newTotalsPerDate.push({ date: new Date(timeLogDay.date), total: timeLogDay.minutes, totalFormattedString: getTimeStringFromMinutes(timeLogDay.minutes) });
           }
         });
       })
@@ -148,6 +151,21 @@ const MissionTimeTrackingPage = () => {
       await bindMissions();
     })();
   }, []);
+
+  const getTimeStringFromMinutes = (minutesInt) => {
+    if (!minutesInt && minutesInt != 0)
+      return null;
+
+    if (minutesInt < 0)
+      return 0;
+
+    let hours = parseInt(minutesInt / 60);
+    let minutes = minutesInt - (hours * 60);
+
+    let result = hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0');
+
+    return result;
+  }
 
   const handlePreviousWeekClick = () => {
     let weekStart = subDays(week.start, 7);
@@ -246,134 +264,142 @@ const MissionTimeTrackingPage = () => {
   }
 
   return (
-    <Grid container spacing={3}>
-      <Grid item xs={12}>
-        <Stack direction="row" alignItems="center" spacing={2}>
-          <Button onClick={handlePreviousWeekClick} variant="outlined" startIcon={<LeftCircleOutlined />}>Previous</Button>
-          <Typography>{format(week?.start, 'PP')} - {format(week?.end, 'PP')}</Typography>
-          <Button onClick={handleNextWeekClick} variant="outlined" endIcon={<RightCircleOutlined />}>Next</Button>
-        </Stack>
-      </Grid>
-      <Grid item xs={12}>
-        <Grid container spacing={1}>
-          <Grid item xs={12}>
-            <MainCard>
-              <Grid container spacing={3}>
-                <Grid item xs={12} lg={5}>
-                  <Typography variant="h3">Total</Typography>
-                </Grid>
-                {totalsPerDate?.map((totalPerDate, totalPerDateIndex) =>
-                  <Grid key={totalPerDateIndex} item xs={4} lg={1}>
-                    <Stack spacing={1.25}>
-                      <InputLabel>{format(totalPerDate?.date, 'PP')}</InputLabel>
-                      <Typography variant="h4">{totalPerDate?.total}</Typography>
-                    </Stack>
+
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <Stack direction="row" alignItems="center" spacing={2}>
+            <Button onClick={handlePreviousWeekClick} variant="outlined" startIcon={<LeftCircleOutlined />}>Previous</Button>
+            <Typography>{format(week?.start, 'PP')} - {format(week?.end, 'PP')}</Typography>
+            <Button onClick={handleNextWeekClick} variant="outlined" endIcon={<RightCircleOutlined />}>Next</Button>
+          </Stack>
+        </Grid>
+        <Grid item xs={12}>
+          <Grid container spacing={1}>
+            <Grid item xs={12}>
+              <MainCard>
+                <Grid container spacing={3}>
+                  <Grid item xs={12} lg={5}>
+                    <Typography variant="h3">Total</Typography>
                   </Grid>
-                )}
-              </Grid>
-            </MainCard>
-          </Grid>
-          {timeLogs?.map((timeLog, timeLogIndex) => {
-            return (
-              <Grid key={timeLogIndex} item xs={12}>
-                <MainCard>
-                  <Stack spacing={1.25}>
-                    <Grid container spacing={3}>
-                      <Grid item xs={12} lg={5}>
-                        <Stack spacing={1.25}>
-                          <InputLabel>Mission</InputLabel>
-                          <Autocomplete
-                            fullWidth
-                            value={missions?.find(x => x.id == timeLog?.missionId) ?? null}
-                            options={getMissionOptions(timeLog?.missionId)}
-                            getOptionLabel={(option) => option?.title}
-                            isOptionEqualToValue={(option, value) => option.id === value?.id}
-                            onChange={(event, newValue) => {
-                              var newTimeLogs = timeLogs.map((currentTimeLog, currentTimeLogIndex) => {
-                                if (currentTimeLogIndex === timeLogIndex) {
-                                  return {
-                                    ...currentTimeLog,
-                                    missionId: newValue?.id,
-                                  };
-                                }
-
-                                return currentTimeLog;
-                              });
-
-                              setTimeLogs(newTimeLogs);
-                            }}
-                            renderInput={(params) => (
-                              <TextField
-                                {...params}
-                                placeholder="Choose a mission"
-                                inputProps={{
-                                  ...params.inputProps,
-                                  autoComplete: 'new-password' // disable autocomplete and autofill
-                                }}
-                              />
-                            )}
-                          />
-                        </Stack>
-                      </Grid>
-                      {timeLog?.days?.map((timeLogDay, timeLogDayIndex) => (
-                        <Grid key={timeLogDayIndex} item xs={4} lg={1}>
+                  {totalsPerDate?.map((totalPerDate, totalPerDateIndex) =>
+                    <Grid key={totalPerDateIndex} item xs={4} lg={1}>
+                      <Stack spacing={1.25}>
+                        <InputLabel>{format(totalPerDate?.date, 'PP')}</InputLabel>
+                        <Typography variant="h4">{totalPerDate?.totalFormattedString}</Typography>
+                      </Stack>
+                    </Grid>
+                  )}
+                </Grid>
+              </MainCard>
+            </Grid>
+            {timeLogs?.map((timeLog, timeLogIndex) => {
+              return (
+                <Grid key={timeLogIndex} item xs={12}>
+                  <MainCard>
+                    <Stack spacing={1.25}>
+                      <Grid container spacing={3}>
+                        <Grid item xs={12} lg={5}>
                           <Stack spacing={1.25}>
-                            <InputLabel>{format(timeLogDay?.date, 'PP')}</InputLabel>
-                            <TextField
+                            <InputLabel>Mission</InputLabel>
+                            <Autocomplete
                               fullWidth
-                              type="number"
-                              value={normalizeInputValue(timeLogDay?.minutes)}
-                              onChange={(event) => {
-                                var newTimeLogs = update(timeLogs, {
-                                  [timeLogIndex]: {
-                                    "days": {
-                                      [timeLogDayIndex]: {
-                                        "minutes": {
-                                          $set: parseFloat(event.target.value)
-                                        }
-                                      }
-                                    }
+                              value={missions?.find(x => x.id == timeLog?.missionId) ?? null}
+                              options={getMissionOptions(timeLog?.missionId)}
+                              getOptionLabel={(option) => option?.title}
+                              isOptionEqualToValue={(option, value) => option.id === value?.id}
+                              onChange={(event, newValue) => {
+                                var newTimeLogs = timeLogs.map((currentTimeLog, currentTimeLogIndex) => {
+                                  if (currentTimeLogIndex === timeLogIndex) {
+                                    return {
+                                      ...currentTimeLog,
+                                      missionId: newValue?.id,
+                                    };
                                   }
+
+                                  return currentTimeLog;
                                 });
 
                                 setTimeLogs(newTimeLogs);
                               }}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  placeholder="Choose a mission"
+                                  inputProps={{
+                                    ...params.inputProps,
+                                    autoComplete: 'new-password' // disable autocomplete and autofill
+                                  }}
+                                />
+                              )}
                             />
                           </Stack>
                         </Grid>
-                      ))}
-                    </Grid>
-                    <Stack direction="row" justifyContent="flex-end" alignItems="center">
-                      <Tooltip title="Remove row" placement="top">
-                        <IconButton onClick={() => { handleRemoveRowClick(timeLogIndex); }} size="large" color="error">
-                          <DeleteFilled />
-                        </IconButton>
-                      </Tooltip>
+                        {timeLog?.days?.map((timeLogDay, timeLogDayIndex) => (
+                          <Grid key={timeLogDayIndex} item xs={4} lg={1}>
+                            <Stack spacing={1.25}>
+                              <InputLabel>{format(timeLogDay?.date, 'PP')}</InputLabel>
+                              <TimeField
+                                fullWidth
+                                aria-invalid="false"
+                                format="HH:mm"
+                                ampm={false}
+                                value={timeLogDay?.timeString}
+                                onChange={(value) => {
+                                  var newTimeLogs = update(timeLogs, {
+                                    [timeLogIndex]: {
+                                      "days": {
+                                        [timeLogDayIndex]: {
+                                          "timeString": {
+                                            $set: value
+                                          },
+                                          "minutes": {
+                                            $set: (value.$H ? value.$H : null) * 60 + (value.$m ? value.$m : null)
+                                          }
+                                        }
+                                      }
+                                    }
+                                  });
+
+                                  setTimeLogs(newTimeLogs);
+                                }}
+                              />
+                            </Stack>
+                          </Grid>
+                        ))}
+                      </Grid>
+                      <Stack direction="row" justifyContent="flex-end" alignItems="center">
+                        <Tooltip title="Remove row" placement="top">
+                          <IconButton onClick={() => { handleRemoveRowClick(timeLogIndex); }} size="large" color="error">
+                            <DeleteFilled />
+                          </IconButton>
+                        </Tooltip>
+                      </Stack>
                     </Stack>
-                  </Stack>
 
-                </MainCard>
-              </Grid>
-            )
-          })}
-        </Grid>
-      </Grid>
-      <Grid item xs={12}>
-        <Grid container justifyContent="space-between" alignItems="center">
-          <Grid item>
-            <Button variant="text" onClick={handleAddRowClick}>
-              Add Row
-            </Button>
-          </Grid>
-          <Grid item>
-            <Button variant="contained" onClick={handleSaveClick}>
-              Save
-            </Button>
+                  </MainCard>
+                </Grid>
+              )
+            })}
           </Grid>
         </Grid>
-      </Grid>
+        <Grid item xs={12}>
+          <Grid container justifyContent="space-between" alignItems="center">
+            <Grid item>
+              <Button variant="text" onClick={handleAddRowClick}>
+                Add Row
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button variant="contained" onClick={handleSaveClick}>
+                Save
+              </Button>
+            </Grid>
+          </Grid>
+        </Grid>
 
-    </Grid>
+      </Grid>
+    </LocalizationProvider>
   );
 };
 
