@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useKeycloak } from '@react-keycloak/web';
+import { useState, useEffect } from 'react';
 // material-ui
 import {
   Button,
@@ -41,7 +42,45 @@ import jobRoles from 'data/jobRoles';
 const avatarImage = require.context('assets/images/missions', true);
 
 const MissionCard = ({ mission }) => {
+  const { keycloak } = useKeycloak();
   const navigate = useNavigate();
+  const [avatar, setAvatar] = useState(avatarImage(`./default.png`));
+
+  useEffect(() => {
+    (async () => {
+      var imgSrc = await getImageSrc(mission?.mainImageUrl);
+      setAvatar(imgSrc);
+
+      if (imgSrc)
+        setTimeout(function () {
+          URL.revokeObjectURL(imgSrc);
+        }, 1000);
+
+    })();
+  }, [mission?.mainImageUrl]);
+
+  const getImageSrc = async (imageUrl) => {
+    try {
+      if (!imageUrl) {
+        return avatarImage(`./default.png`);
+      }
+
+      let response = await fetch(imageUrl,
+        {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + keycloak.idToken
+          }
+        }
+      );
+
+      let imageBlob = await response.blob();
+
+      return URL.createObjectURL(imageBlob);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleClickDetails = () => {
     navigate('/missions/' + mission.id);
@@ -76,7 +115,7 @@ const MissionCard = ({ mission }) => {
                 }
               >
                 <ListItemAvatar>
-                  <Avatar onClick={handleClickDetails} className="clickable" alt={mission.title} src={mission?.mainImageUrl ? mission.mainImageUrl : avatarImage('./default.png')} />
+                  <Avatar onClick={handleClickDetails} className="clickable" alt={mission.title} src={avatar} />
                 </ListItemAvatar>
                 <ListItemText className="list-card-title"
                   primary={<Typography onClick={handleClickDetails} variant="subtitle1">{mission.title}</Typography>}
