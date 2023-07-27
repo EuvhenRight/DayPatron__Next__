@@ -8,7 +8,7 @@ import { PERSONAL_INFORMATION_UPDATE } from 'store/reducers/actions';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Button, Box, FormLabel, Grid, TextField, Menu, MenuItem, Stack, Typography, Link as MuiLink, CircularProgress  } from '@mui/material';
+import { Button, Box, FormLabel, Grid, TextField, Menu, MenuItem, Stack, Typography, Link as MuiLink  } from '@mui/material';
 
 // project import
 import MainCard from 'components/MainCard';
@@ -255,9 +255,9 @@ const ProfileHeadshot = ({ focusInput }) => {
 
             {newMainImage && 
               <Stack alignItems="center" spacing={2}>
-                <Button onClick={handleUploadClick} variant="contained">
+                <Button onClick={handleUploadClick} variant="contained" disabled={uploading}>
                   {!uploading && <>Upload</> }
-                  {uploading && <CircularProgress />}
+                  {uploading && <>Uploading...</>}
                 </Button>
               </Stack>
             }
