@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useKeycloak } from '@react-keycloak/web';
 // material-ui
 import {
   Button,
@@ -33,7 +34,47 @@ import countries from 'data/countries';
 const avatarImage = require.context('assets/images/companies', true);
 
 const EmployerCard = ({ employer, alertEmployerToDelete }) => {
+  const { keycloak } = useKeycloak();
   const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const openMenu = Boolean(anchorEl);
+  const [avatar, setAvatar] = useState(avatarImage(`./default.png`));
+
+  useEffect(() => {
+    (async () => {
+      var imgSrc = await getImageSrc(employer?.mainImageUrl);
+      setAvatar(imgSrc);
+
+      if (imgSrc)
+        setTimeout(function () {
+          URL.revokeObjectURL(imgSrc);
+        }, 1000);
+
+    })();
+  }, [employer?.mainImageUrl]);
+
+  const getImageSrc = async (imageUrl) => {
+    try {
+      if (!imageUrl) {
+        return avatarImage(`./default.png`);
+      }
+
+      let response = await fetch(imageUrl,
+        {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + keycloak.idToken
+          }
+        }
+      );
+
+      let imageBlob = await response.blob();
+
+      return URL.createObjectURL(imageBlob);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleClickDetails = () => {
     navigate('/employers/' + employer.id);
@@ -43,9 +84,6 @@ const EmployerCard = ({ employer, alertEmployerToDelete }) => {
     alertEmployerToDelete(employer);
     setAnchorEl(null);
   };
-
-  const [anchorEl, setAnchorEl] = useState(null);
-  const openMenu = Boolean(anchorEl);
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -69,7 +107,7 @@ const EmployerCard = ({ employer, alertEmployerToDelete }) => {
                 }
               >
                 <ListItemAvatar>
-                  <Avatar onClick={handleClickDetails} className="clickable" alt={employer.name} src={employer?.logoImageUrl ? employer.logoImageUrl : avatarImage('./default.png')} />
+                  <Avatar onClick={handleClickDetails} className="clickable" alt={employer.name} src={avatar} />
                 </ListItemAvatar>
                 <ListItemText className="list-card-title"
                   primary={<Typography onClick={handleClickDetails} variant="subtitle1">{employer.name}</Typography>}

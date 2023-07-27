@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 // material-ui
 import {
   Button,
@@ -22,6 +22,7 @@ import {
 // third-party
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import SanitizedHTML from 'react-sanitized-html';
+import { useKeycloak } from '@react-keycloak/web';
 
 // project import
 import MainCard from 'components/MainCard';
@@ -41,7 +42,47 @@ import jobRoles from 'data/jobRoles';
 const avatarImage = require.context('assets/images/missions', true);
 
 const MissionCard = ({ mission, alertMissionToDelete }) => {
+  const { keycloak } = useKeycloak();
   const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const openMenu = Boolean(anchorEl);
+  const [avatar, setAvatar] = useState(avatarImage(`./default.png`));
+
+  useEffect(() => {
+    (async () => {
+      var imgSrc = await getImageSrc(mission?.mainImageUrl);
+      setAvatar(imgSrc);
+
+      if (imgSrc)
+        setTimeout(function () {
+          URL.revokeObjectURL(imgSrc);
+        }, 1000);
+
+    })();
+  }, [mission?.mainImageUrl]);
+
+  const getImageSrc = async (imageUrl) => {
+    try {
+      if (!imageUrl) {
+        return avatarImage(`./default.png`);
+      }
+
+      let response = await fetch(imageUrl,
+        {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + keycloak.idToken
+          }
+        }
+      );
+
+      let imageBlob = await response.blob();
+
+      return URL.createObjectURL(imageBlob);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleClickDetails = () => {
     navigate('/missions/' + mission.id + '/overview');
@@ -56,8 +97,6 @@ const MissionCard = ({ mission, alertMissionToDelete }) => {
     setAnchorEl(null);
   };
 
-  const [anchorEl, setAnchorEl] = useState(null);
-  const openMenu = Boolean(anchorEl);
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -81,7 +120,7 @@ const MissionCard = ({ mission, alertMissionToDelete }) => {
                 }
               >
                 <ListItemAvatar>
-                  <Avatar onClick={handleClickDetails} className="clickable" alt={mission.title} src={mission?.mainImageUrl ? mission.mainImageUrl : avatarImage('./default.png')} />
+                  <Avatar onClick={handleClickDetails} className="clickable" alt={mission.title} src={avatar} />
                 </ListItemAvatar>
                 <ListItemText className="list-card-title"
                   primary={<Typography onClick={handleClickDetails} variant="subtitle1">{mission.title}</Typography>}
