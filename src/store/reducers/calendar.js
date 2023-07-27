@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { addDays, subDays } from 'date-fns';
 
 // project import
-import axios from 'utils/axios';
+import axios from 'axios';
 import { dispatch, store } from 'store';
 import { dateTimeToTimeString } from 'utils/stringUtils';
 
@@ -114,45 +114,13 @@ export function getEvents(keycloak, contractorId) {
   return async () => {
     dispatch(calendar.actions.loading());
     try {
+      console.log(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(contractorId) + '/availability');
       const response = await axios.get(
         process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(contractorId) + '/availability',
         { headers: { Authorization: 'Bearer ' + keycloak.idToken } }
       );
-      dispatch(calendar.actions.setEvents(response.data.periods));
 
-      /*var events = [
-        {
-          id: 'avl1',
-          notes: 'Availability notes 1',
-          hasMonday: true,
-          hasTuesday: true,
-          hasWednesday: true,
-          hasThursday: true,
-          hasFriday: true,
-          hasSaturday: true,
-          hasSunday: false,
-          startTime: '09:00:00',
-          endTime: '18:00:00',
-          startDate: '2023-05-01',
-          endDate: '2023-05-15'
-        },
-        {
-          id: 'avl2',
-          notes: 'Availability notes 2',
-          hasMonday: true,
-          hasTuesday: true,
-          hasWednesday: true,
-          hasThursday: true,
-          hasFriday: true,
-          hasSaturday: true,
-          hasSunday: false,
-          startTime: '09:00:00',
-          endTime: '18:00:00',
-          startDate: '2023-05-16',
-          endDate: '2023-05-22'
-        }
-      ];
-      dispatch(calendar.actions.setEvents(events));*/
+      dispatch(calendar.actions.setEvents(response.data.periods));
     } catch (error) {
       dispatch(calendar.actions.hasError(error));
     }
