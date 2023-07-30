@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
+import * as dayjs from 'dayjs';
 
 // material-ui
 import {
@@ -10,15 +11,14 @@ import {
   DialogTitle,
   Divider,
   Grid,
-  InputAdornment,
   InputLabel,
   Stack,
   Switch,
   TextField,
   Tooltip
 } from '@mui/material';
-import { LocalizationProvider, MobileDatePicker, TimePicker } from '@mui/x-date-pickers';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 // third-party
 import _ from 'lodash';
@@ -31,12 +31,19 @@ import { openSnackbar } from 'store/reducers/snackbar';
 import { createEvent, deleteEvent, updateEvent } from 'store/reducers/calendar';
 
 // assets
-import { CalendarOutlined, DeleteFilled } from '@ant-design/icons';
+import { DeleteFilled } from '@ant-design/icons';
 import { normalizeBooleanInputValue } from 'utils/stringUtils';
 import { useKeycloak } from '@react-keycloak/web';
 
 // constant
 const getInitialValues = (event, range) => {
+  let eventClone = {...event};
+  if (eventClone?.startDate)
+    eventClone.startDate = dayjs(eventClone.startDate);
+
+  if (eventClone?.endDate)
+    eventClone.endDate = dayjs(eventClone.endDate);
+
   const newEvent = {
     notes: 'I am available in this period',
     hasMonday: true,
@@ -46,14 +53,12 @@ const getInitialValues = (event, range) => {
     hasFriday: true,
     hasSaturday: false,
     hasSunday: false,
-    startDate: range ? new Date(range.start) : new Date(),
-    endDate: range ? new Date(range.end) : new Date(),
-    startTime: '09:00',
-    endTime: '17:30'
+    startDate: range ? dayjs(new Date(range.start)) : dayjs(new Date()),
+    endDate: range ? dayjs(new Date(range.end)) : dayjs(new Date())
   };
 
   if (event || range) {
-    return _.merge({}, newEvent, event);
+    return _.merge({}, newEvent, eventClone);
   }
 
   return newEvent;
@@ -77,9 +82,7 @@ const UpsertEventFrom = ({ event, range, onCancel }) => {
     hasSaturday: Yup.boolean().nullable(true),
     hasSunday: Yup.boolean().nullable(true),
     startDate: Yup.date().required('Start Date is required').nullable(true),
-    endDate: Yup.date().required('End Date is required').when('startDate', (start, schema) => start && schema.min(start, 'End date must be later than start date')).nullable(true),
-    startTime: Yup.string().required('Start Time is required').nullable(true),
-    endTime: Yup.string().required('End Time is required').nullable(true),
+    endDate: Yup.date().required('End Date is required').when('startDate', (start, schema) => start && schema.min(start, 'End date must be later than start date')).nullable(true)
   });
 
   const deleteHandler = () => {
@@ -112,13 +115,11 @@ const UpsertEventFrom = ({ event, range, onCancel }) => {
           hasSaturday: values.hasSaturday,
           hasSunday: values.hasSunday,
           startDate: values.startDate,
-          endDate: values.endDate,
-          startTime: values.startTime,
-          endTime: values.endTime
+          endDate: values.endDate
         };
 
         if (event) {
-          dispatch(updateEvent(event.id, newEvent, keycloak));
+          dispatch(updateEvent(event.id, newEvent, keycloak, personalInformation.id));
           dispatch(
             openSnackbar({
               open: true,
@@ -156,28 +157,33 @@ const UpsertEventFrom = ({ event, range, onCancel }) => {
 
   return (
     <FormikProvider value={formik}>
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
           <DialogTitle>{event ? 'Edit Availability' : 'Add Availability'}</DialogTitle>
           <Divider />
           <DialogContent sx={{ p: 2.5 }}>
             <Grid container spacing={3}>
-              <Grid item xs={12}>
+
+              <Grid item xs={12} md={6}>
                 <Stack spacing={1.25}>
-                  <InputLabel htmlFor="notes">Notes</InputLabel>
-                  <TextField
-                    fullWidth
-                    id="notes"
-                    multiline
-                    rows={3}
-                    placeholder="Notes"
-                    {...getFieldProps('notes')}
-                    error={Boolean(touched.notes && errors.notes)}
-                    helperText={touched.notes && errors.notes}
+                  <InputLabel htmlFor="start-date">Start Date</InputLabel>
+                  <DatePicker
+                    value={values.startDate}
+                    inputFormat="yyyy-MM-dd"
+                    onChange={(date) => setFieldValue('startDate', date)}
                   />
                 </Stack>
               </Grid>
-
+              <Grid item xs={12} md={6}>
+                <Stack spacing={1.25}>
+                  <InputLabel htmlFor="end-date">End Date</InputLabel>
+                  <DatePicker
+                    value={values.endDate}
+                    inputFormat="yyyy-MM-dd"
+                    onChange={(date) => setFieldValue('endDate', date)}
+                  />
+                </Stack>
+              </Grid>
               <Grid item xs={12}>
                 <Grid justify="space-between" container spacing={5}>
                   <Grid item>
@@ -323,98 +329,18 @@ const UpsertEventFrom = ({ event, range, onCancel }) => {
                 </Grid>  
               </Grid>
 
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12}>
                 <Stack spacing={1.25}>
-                  <InputLabel htmlFor="start-date">Start Date</InputLabel>
-                  <MobileDatePicker
-                    value={values.startDate}
-                    inputFormat="yyyy-MM-dd"
-                    onChange={(date) => setFieldValue('startDate', date)}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        id="start-date"
-                        placeholder="Start Date"
-                        fullWidth
-                        error={Boolean(touched.startDate && errors.startDate)}
-                        helperText={touched.startDate && errors.startDate}
-                        InputProps={{
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              <CalendarOutlined />
-                            </InputAdornment>
-                          )
-                        }}
-                      />
-                    )}
-                  />
-                </Stack>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Stack spacing={1.25}>
-                  <InputLabel htmlFor="end-date">End Date</InputLabel>
-                  <MobileDatePicker
-                    value={values.endDate}
-                    inputFormat="yyyy-MM-dd"
-                    onChange={(date) => setFieldValue('endDate', date)}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        id="end-date"
-                        placeholder="End Date"
-                        fullWidth
-                        error={Boolean(touched.endDate && errors.endDate)}
-                        helperText={touched.endDate && errors.endDate}
-                        InputProps={{
-                          endAdornment: (
-                            <InputAdornment position="end">
-                              <CalendarOutlined />
-                            </InputAdornment>
-                          )
-                        }}
-                      />
-                    )}
-                  />
-                </Stack>
-              </Grid>
-
-              <Grid item xs={12} md={6}>
-                <Stack spacing={1.25}>
-                  <InputLabel htmlFor="start-time">Start Time</InputLabel>
-                  <TimePicker
-                    value={values.startTime}
-                    onChange={(time) => setFieldValue('startTime', time)}
-                    ampm={false}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        id="start-time"
-                        placeholder="Start Time"
-                        fullWidth
-                        error={Boolean(touched.startTime && errors.startTime)}
-                        helperText={touched.startTime && errors.startTime}
-                      />
-                    )}
-                  />
-                </Stack>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Stack spacing={1.25}>
-                  <InputLabel htmlFor="end-time">End Time</InputLabel>
-                  <TimePicker
-                    value={values.endTime}
-                    onChange={(time) => setFieldValue('endTime', time)}
-                    ampm={false}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        id="end-time"
-                        placeholder="End Time"
-                        fullWidth
-                        error={Boolean(touched.endTime && errors.endTime)}
-                        helperText={touched.endTime && errors.endTime}
-                      />
-                    )}
+                  <InputLabel htmlFor="notes">Notes</InputLabel>
+                  <TextField
+                    fullWidth
+                    id="notes"
+                    multiline
+                    rows={3}
+                    placeholder="Notes"
+                    {...getFieldProps('notes')}
+                    error={Boolean(touched.notes && errors.notes)}
+                    helperText={touched.notes && errors.notes}
                   />
                 </Stack>
               </Grid>

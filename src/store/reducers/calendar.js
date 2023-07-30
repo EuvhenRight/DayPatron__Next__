@@ -43,7 +43,7 @@ const convertAvailabilityToFullCalendarEvents = (events) => {
       startTime: dateTimeToTimeString(event.startTime),
       endTime: dateTimeToTimeString(event.endTime),
       startRecur: event.startDate,
-      endRecur: addDays(new Date(event.endDate), 1),
+      endRecur: addDays(new Date(event.endDate), 1).toISOString(),
       allDay: false
     };
   });

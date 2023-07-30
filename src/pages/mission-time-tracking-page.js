@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useKeycloak } from '@react-keycloak/web';
 import update from 'immutability-helper';
-import * as dayjs from 'dayjs'
+import * as dayjs from 'dayjs';
 import { openSnackbar } from 'store/reducers/snackbar';
 
 import { Button, Stack, Typography, Grid, InputLabel, TextField, Tooltip, Autocomplete } from '@mui/material';
@@ -369,7 +369,6 @@ const MissionTimeTrackingPage = () => {
                               <InputLabel>{format(timeLogDay?.date, 'eeeeee, dd MMM')}</InputLabel>
                               <TimeField
                                 fullWidth
-                                aria-invalid="false"
                                 format="HH:mm"
                                 ampm={false}
                                 value={timeLogDay?.time}
