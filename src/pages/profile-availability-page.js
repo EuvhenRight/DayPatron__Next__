@@ -153,6 +153,7 @@ const ProfileAvailabilityPage = () => {
           editable
           droppable
           selectable
+          eventContent={(eventContent) => { return eventContent.event.title; } }
           events={fcEvents}
           ref={calendarRef}
           rerenderDelay={10}
