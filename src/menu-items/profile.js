@@ -20,7 +20,7 @@ const icons = {
 // ==============================|| MENU ITEMS - PROFILE ||============================== //
 
 const profile = {
-  id: 'contractor',
+  id: 'talent',
   title: <FormattedMessage id="profile" />,
   type: 'group',
   children: [

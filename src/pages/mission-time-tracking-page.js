@@ -188,7 +188,7 @@ const MissionTimeTrackingPage = () => {
   const getTimeStringFromMinutes = (minutesInt) => {
     let hoursMinutes = getHoursMinutes(minutesInt);
     if (!hoursMinutes)
-      return null;
+      return '00:00';
 
     let result = hoursMinutes.hours.toString().padStart(2, '0') + ':' + hoursMinutes.minutes.toString().padStart(2, '0');
 
@@ -308,7 +308,10 @@ const MissionTimeTrackingPage = () => {
               <MainCard sx={{ background: 'none', border: 'none' }}>
                 <Grid container spacing={3}>
                   <Grid item xs={12} lg={5}>
-                    <Typography variant="h3">Total</Typography>
+                    <Stack spacing={1.25}>
+                      <InputLabel>&nbsp;</InputLabel>
+                      <Typography variant="h3">Total</Typography>
+                    </Stack>
                   </Grid>
                   {totalsPerDate?.map((totalPerDate, totalPerDateIndex) =>
                     <Grid key={totalPerDateIndex} item xs={4} lg={1}>
