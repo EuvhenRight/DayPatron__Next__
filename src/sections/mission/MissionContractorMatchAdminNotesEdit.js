@@ -144,7 +144,7 @@ const MissionContractorMatchAdminNotes = ({ missionId, contractorId, adminNotes,
             }}
           >
             <Stack spacing={1.25}>
-              <InputLabel htmlFor="match-admin-contractor-notes">Notes About the Contractor</InputLabel>
+              <InputLabel htmlFor="match-admin-contractor-notes">Notes About the Talent</InputLabel>
               <ReactQuill
                 id="match-admin-contractor-notes"
                 value={normalizeInputValue(values.contractorNotes)}
@@ -160,7 +160,7 @@ const MissionContractorMatchAdminNotes = ({ missionId, contractorId, adminNotes,
 
           <Grid item xs={6}>
             <Stack spacing={1.25}>
-              <InputLabel>Show Contractor Notes to Employer</InputLabel>
+              <InputLabel>Show Talent Notes to Company</InputLabel>
               <Stack direction="row" alignItems="center">
                 <Switch
                   id="show-contractor-notes-to-employer"
@@ -182,7 +182,7 @@ const MissionContractorMatchAdminNotes = ({ missionId, contractorId, adminNotes,
 
           <Grid item xs={6}>
             <Stack spacing={1.25}>
-              <InputLabel>Show Contractor Notes to Contractor</InputLabel>
+              <InputLabel>Show Talent Notes to Talent</InputLabel>
               <Stack direction="row" alignItems="center">
                 <Switch
                   id="show-contractor-notes-to-contractor"
@@ -262,7 +262,7 @@ const MissionContractorMatchAdminNotes = ({ missionId, contractorId, adminNotes,
 
           <Grid item xs={6}>
             <Stack spacing={1.25}>
-              <InputLabel>Show Mission Notes to Contractor</InputLabel>
+              <InputLabel>Show Mission Notes to Talent</InputLabel>
               <Stack direction="row" alignItems="center">
                 <Switch
                   id="show-mission-notes-to-contractor"

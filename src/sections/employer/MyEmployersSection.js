@@ -98,7 +98,7 @@ const MyEmployersSection = () => {
   };
 
   const handleAdd = () => {
-    navigate('/employers/create');
+    navigate('/companies/create');
   };
 
   const handleDeleteAlertClose = () => {
@@ -175,7 +175,7 @@ const MyEmployersSection = () => {
                 </Select>
               </FormControl>
               <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd}>
-                Create Employer
+                Create Company
               </Button>
             </Stack>
           </Stack>

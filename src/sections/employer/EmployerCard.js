@@ -77,7 +77,7 @@ const EmployerCard = ({ employer, alertEmployerToDelete }) => {
   };
 
   const handleClickDetails = () => {
-    navigate('/employers/' + employer.id);
+    navigate('/companies/' + employer.id);
   };
 
   const handleClickDelete = () => {

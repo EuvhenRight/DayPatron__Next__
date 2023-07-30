@@ -275,7 +275,7 @@ const UpsertMission = ({ missionId }) => {
   }, []);
 
   const MissionSchema = Yup.object().shape({
-    employerId: Yup.string().required('Employer is required').nullable(true),
+    employerId: Yup.string().required('Company is required').nullable(true),
     title: Yup.string().max(255).required('Title is required').nullable(true),
     description: Yup.string().max(2000).required('Description is required').nullable(true),
     role: Yup.string().max(255).required('Role is required').nullable(true),
@@ -473,7 +473,7 @@ const UpsertMission = ({ missionId }) => {
                   <Grid container spacing={3}>
                     <Grid item xs={12}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="mission-title">Employer</InputLabel>
+                        <InputLabel htmlFor="mission-title">Company</InputLabel>
 
                         <Select
                           id="employerId"

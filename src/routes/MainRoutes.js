@@ -44,7 +44,7 @@ const MainRoutes = {
           element: <PersonalInformationPage />
         },
         {
-          path: 'employers',
+          path: 'companies',
           element: <EmployersPage />,
           children: [
             {

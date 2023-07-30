@@ -267,7 +267,7 @@ const UpsertEmployer = ({ employerId }) => {
             return;
           }
 
-          navigate('/employers/my');
+          navigate('/companies/my');
 
           dispatch(
             openSnackbar({
@@ -311,7 +311,7 @@ const UpsertEmployer = ({ employerId }) => {
             return;
           }
 
-          navigate('/employers/my');
+          navigate('/companies/my');
 
           dispatch(
             openSnackbar({
@@ -341,7 +341,7 @@ const UpsertEmployer = ({ employerId }) => {
       <FormikProvider value={formik}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-            <DialogTitle>{employer ? 'Update Employer' : 'Create Employer'}</DialogTitle>
+            <DialogTitle>{employer ? 'Update Company' : 'Create Company'}</DialogTitle>
             <Divider />
             <DialogContent sx={{ p: 2.5 }}>
               <Grid container spacing={3}>
@@ -569,7 +569,7 @@ const UpsertEmployer = ({ employerId }) => {
             </DialogContent>
             <DialogActions sx={{ p: 2.5 }}>
               <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 2.5 }}>
-                <Button color="error" onClick={() => { navigate('/employers/my'); }}>
+                <Button color="error" onClick={() => { navigate('/companies/my'); }}>
                   Cancel
                 </Button>
                 <Button type="submit" variant="contained" disabled={isSubmitting}>

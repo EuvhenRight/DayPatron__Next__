@@ -136,7 +136,7 @@ const MissionContractorMatchEmployerNotes = ({ missionId, contractorId }) => {
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <Typography variant="h3">Employer Notes</Typography>
+            <Typography variant="h3">Company Notes</Typography>
           </Grid>
           <Grid item xs={12}
             sx={{
@@ -160,7 +160,7 @@ const MissionContractorMatchEmployerNotes = ({ missionId, contractorId }) => {
             }}
           >
             <Stack spacing={1.25}>
-              <InputLabel htmlFor="match-employer-contractor-notes">Notes About the Contractor</InputLabel>
+              <InputLabel htmlFor="match-employer-contractor-notes">Notes About the Talent</InputLabel>
               <ReactQuill
                 id="match-employer-contractor-notes"
                 value={normalizeInputValue(values.contractorNotes)}

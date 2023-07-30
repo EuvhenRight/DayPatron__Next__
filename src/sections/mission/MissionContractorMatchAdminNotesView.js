@@ -14,7 +14,7 @@ const MissionContractorMatchAdminNotesView = ({ adminNotes }) => {
       </Grid>
       <Grid item xs={12}>
         <Stack spacing={0.5}>
-          <Typography color="secondary">Contractor Notes</Typography>
+          <Typography color="secondary">Talent Notes</Typography>
           {adminNotes?.showContractorNotesToEmployer &&
             <SanitizedHTML html={adminNotes?.contractorNotes} />
           }

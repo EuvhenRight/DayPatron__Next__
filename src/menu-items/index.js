@@ -30,10 +30,10 @@ const menuItems = {
         icon: icons.UserOutlined
       },
       {
-        id: 'employers',
-        title: <FormattedMessage id="employers" />,
+        id: 'companies',
+        title: <FormattedMessage id="companies" />,
         type: 'item',
-        url: '/employers/my',
+        url: '/companies/my',
         icon: icons.BankOutlined
       },
       {
