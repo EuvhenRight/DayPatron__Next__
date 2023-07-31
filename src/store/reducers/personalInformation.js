@@ -1,6 +1,6 @@
 import { PERSONAL_INFORMATION_UPDATE, PERSONAL_INFORMATION_GET } from './actions';
 
-export const initialState = { id: null, firstName: null, lastName: null, email: null, phoneNumber: null, country: null, linkedInUrl: null, peraInterviewUrl: null, calendlyUrl: null, tags: null };
+export const initialState = { id: null, firstName: null, lastName: null, email: null, countryPhoneCode: null, phoneNumber: null, country: null, linkedInUrl: null, peraInterviewUrl: null, calendlyUrl: null, tags: null };
 
 const personalInformation = (state = initialState, action) => {
 
