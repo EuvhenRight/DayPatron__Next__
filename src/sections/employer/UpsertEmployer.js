@@ -32,6 +32,7 @@ import { useFormik, Form, FormikProvider } from 'formik';
 // project imports
 import Avatar from 'components/@extended/Avatar';
 import { openSnackbar } from 'store/reducers/snackbar';
+import GoogleMaps from 'sections/address/GoogleMaps';
 
 // assets
 import { CameraOutlined } from '@ant-design/icons';
@@ -225,11 +226,11 @@ const UpsertEmployer = ({ employerId }) => {
 
   const EmployerSchema = Yup.object().shape({
     name: Yup.string().max(255).required('Name is required').nullable(true),
-    email: Yup.string().max(255).required('Email is required').email('Must be a valid email').nullable(true),
+    email: Yup.string().max(255).email('Must be a valid email').nullable(true),
     country: Yup.string().nullable(true),
     industry: Yup.string().required('Industry is required').nullable(true),
-    chamberOfCommerceIdentifier: Yup.string().max(50).nullable(true),
-    linkedInUrl: Yup.string().max(255).nullable(true)
+    chamberOfCommerceIdentifier: Yup.string().max(50).required('Chamber of Commerce Number is required').nullable(true),
+    linkedInUrl: Yup.string().max(255).required('LinkedIn Page is required').nullable(true)
   });
 
   const formik = useFormik({
@@ -437,13 +438,52 @@ const UpsertEmployer = ({ employerId }) => {
                         )}
                       </Stack>
                     </Grid>
+
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="employer-street">Street</InputLabel>
+
+                        <GoogleMaps
+                          foundCity={(googleCity) => { setFieldValue('city', googleCity.long_name); }}
+                          foundCountry={(googleCountry) => {
+                            setFieldValue('country', googleCountry?.short_name ? googleCountry.short_name : '');
+                          }}
+                        />
+                        {touched.street && errors.street && (
+                          <FormHelperText error id="employer-street-helper">
+                            {errors.street}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
+
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="employer-city">City</InputLabel>
+                        <TextField
+                          fullWidth
+                          id="employer-city"
+                          placeholder="Enter city"
+                          value={normalizeInputValue(values.city)}
+                          name="city"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                        />
+                        {touched.city && errors.city && (
+                          <FormHelperText error id="employer-city-helper">
+                            {errors.city}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
+
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
                         <InputLabel htmlFor="employer-country">Country</InputLabel>
                         <Autocomplete
                           id="employer-country"
                           fullWidth
-                          value={values?.country ? countries.filter((item) => item.code === values?.country)[0] : null}
+                          value={values?.country ? countries.find((item) => item.code === values?.country) : null}
                           onBlur={handleBlur}
                           onChange={(event, newValue) => {
                             setFieldValue('country', newValue === null ? '' : newValue.code);
