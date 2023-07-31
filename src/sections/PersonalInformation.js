@@ -194,7 +194,7 @@ const PersonalInformation = () => {
 
                       <Autocomplete
                         id="personal-country-phone-code"
-                        sx={{ width: 250 }}
+                        sx={{ width: 300 }}
                         value={values?.countryPhoneCode ? countries.find((item) => item.phone === values?.countryPhoneCode) : null}
                         onBlur={handleBlur}
                         onChange={(event, newValue) => {
@@ -264,7 +264,7 @@ const PersonalInformation = () => {
                     <Autocomplete
                       id="personal-country"
                       fullWidth
-                      value={values?.country ? countries.filter((item) => item.code === values?.country)[0] : null}
+                      value={values?.country ? countries.find((item) => item.code === values?.country) : null}
                       onBlur={handleBlur}
                       onChange={(event, newValue) => {
                         setFieldValue('country', newValue === null ? '' : newValue.code);

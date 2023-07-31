@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
+import { useKeycloak } from '@react-keycloak/web';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -16,7 +17,7 @@ import useAuth from 'hooks/useAuth';
 import { useSelector } from 'react-redux';
 
 // assets
-import avatar1 from 'assets/images/users/avatar-1.png';
+const avatarImage = require.context('assets/images/users', true);
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 
 // tab panel wrapper
@@ -44,10 +45,41 @@ function a11yProps(index) {
 // ==============================|| HEADER CONTENT - PROFILE ||============================== //
 
 const Profile = () => {
+  const { keycloak } = useKeycloak();
   const theme = useTheme();
 
   const { logout } = useAuth();
+  const [avatar, setAvatar] = useState(avatarImage(`./default.png`));
   const personalInformation = useSelector(state => state.personalInformation);
+
+  const handleMainImageUrlChange = async (newMainImageUrl) => {
+    try {
+      if (!newMainImageUrl) {
+        setAvatar(avatarImage(`./default.png`));
+        return;
+      }
+
+      let response = await fetch(newMainImageUrl,
+        {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + keycloak.idToken
+          }
+        }
+      );
+
+      let imageBlob = await response.blob();
+      var avatarSrc = URL.createObjectURL(imageBlob);
+
+      setAvatar(avatarSrc);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    handleMainImageUrlChange(personalInformation?.mainImageUrl);
+  }, [personalInformation?.mainImageUrl]);
 
   const handleLogout = async () => {
     try {
@@ -98,7 +130,7 @@ const Profile = () => {
         onClick={handleToggle}
       >
         <Stack direction="row" spacing={2} alignItems="center" sx={{ p: 0.5 }}>
-          <Avatar alt="profile user" src={avatar1} size="xs" />
+          <Avatar alt="profile user" src={avatar} size="xs" />
           <Typography variant="subtitle1">{personalInformation?.firstName} {personalInformation?.lastName}</Typography>
         </Stack>
       </ButtonBase>
@@ -139,7 +171,7 @@ const Profile = () => {
                     <Grid container justifyContent="space-between" alignItems="center">
                       <Grid item>
                         <Stack direction="row" spacing={1.25} alignItems="center">
-                          <Avatar alt="profile user" src={avatar1} sx={{ width: 32, height: 32 }} />
+                          <Avatar alt="profile user" src={avatar} sx={{ width: 32, height: 32 }} />
                           <Stack>
                             <Typography variant="h6">{personalInformation?.firstName} {personalInformation?.lastName}</Typography>
                           </Stack>
