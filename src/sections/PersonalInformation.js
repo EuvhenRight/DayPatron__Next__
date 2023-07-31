@@ -48,6 +48,7 @@ const PersonalInformation = () => {
           firstname: state.firstName,
           lastname: state.lastName,
           email: state.email,
+          countryPhoneCode: state.countryPhoneCode,
           phoneNumber: state.phoneNumber,
           country: state.country,
           linkedInUrl: state.linkedInUrl,
@@ -57,6 +58,7 @@ const PersonalInformation = () => {
           firstname: Yup.string().max(255).required('First Name is required.'),
           lastname: Yup.string().max(255).required('Last Name is required.'),
           email: Yup.string().email('Invalid email address.').max(255).required('Email is required.'),
+          countryPhoneCode: Yup.string().nullable(true),
           phoneNumber: Yup.string().matches(/^[+]*[0-9]{3,}$/g, 'Phone Number is not valid').max(20).nullable(true),
           country: Yup.string().nullable(true),
           linkedInUrl: Yup.string().max(255).nullable(true),
@@ -187,20 +189,70 @@ const PersonalInformation = () => {
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
                     <InputLabel htmlFor="personal-phone-number">Phone Number</InputLabel>
-                    <TextField
-                      fullWidth
-                      id="personal-phone-number"
-                      value={normalizeInputValue(values.phoneNumber)}
-                      name="phoneNumber"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      placeholder="Phone Number"
-                      autoFocus
-                      inputRef={inputRef}
-                    />
+
+                    <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+
+                      <Autocomplete
+                        id="personal-country-phone-code"
+                        sx={{ width: 250 }}
+                        value={values?.countryPhoneCode ? countries.find((item) => item.phone === values?.countryPhoneCode) : null}
+                        onBlur={handleBlur}
+                        onChange={(event, newValue) => {
+                          setFieldValue('countryPhoneCode', newValue === null ? '' : newValue.phone);
+                        }}
+                        options={countries}
+                        autoHighlight
+                        isOptionEqualToValue={(option, value) => option.phone === value?.phone}
+                        getOptionLabel={(option) => option.phone}
+                        renderOption={(props, option) => (
+                          <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                            {option.code && (
+                              <img
+                                loading="lazy"
+                                width="20"
+                                src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
+                                srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
+                                alt=""
+                              />
+                            )}
+                            {option.code && `${option.code} ${option.phone}`}
+                          </Box>
+                        )}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            placeholder="Country code"
+                            name="country-phone-code"
+                            inputProps={{
+                              ...params.inputProps,
+                              autoComplete: 'new-password' // disable autocomplete and autofill
+                            }}
+                          />
+                        )}
+                      />
+
+                      <TextField
+                        fullWidth
+                        id="personal-phone-number"
+                        value={normalizeInputValue(values.phoneNumber)}
+                        name="phoneNumber"
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        placeholder="Phone Number"
+                        autoFocus
+                        inputRef={inputRef}
+                      />
+                    </Stack>
+
                     {touched.phoneNumber && errors.phoneNumber && (
                       <FormHelperText error id="personal-phone-number-helper">
                         {errors.phoneNumber}
+                      </FormHelperText>
+                    )}
+
+                    {touched.countryPhoneCode && errors.countryPhoneCode && (
+                      <FormHelperText error id="personal-country-phone-code-helper">
+                        {errors.countryPhoneCode}
                       </FormHelperText>
                     )}
                   </Stack>

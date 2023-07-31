@@ -32,7 +32,7 @@ export function GlobalFilter({ preGlobalFilteredRows, globalFilter, setGlobalFil
         setValue(e.target.value);
         onChange(e.target.value);
       }}
-      placeholder={`Search ${count} records...`}
+      placeholder={`Search ${count} record(s)...`}
       id="start-adornment-email"
       startAdornment={<SearchOutlined />}
       {...other}

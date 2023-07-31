@@ -272,7 +272,7 @@ const UpsertEmployer = ({ employerId }) => {
           dispatch(
             openSnackbar({
               open: true,
-              message: 'Employer updated.',
+              message: 'Saved.',
               variant: 'alert',
               alert: {
                 color: 'success'
@@ -299,7 +299,7 @@ const UpsertEmployer = ({ employerId }) => {
             dispatch(
               openSnackbar({
                 open: true,
-                message: 'Adding a employer failed.',
+                message: 'Adding a company failed.',
                 variant: 'alert',
                 alert: {
                   color: 'error'
@@ -316,7 +316,7 @@ const UpsertEmployer = ({ employerId }) => {
           dispatch(
             openSnackbar({
               open: true,
-              message: 'Employer created.',
+              message: 'Company created.',
               variant: 'alert',
               alert: {
                 color: 'success'
@@ -401,11 +401,11 @@ const UpsertEmployer = ({ employerId }) => {
                   <Grid container spacing={3}>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="employer-name">Name</InputLabel>
+                        <InputLabel htmlFor="employer-name">Legal Entity Name</InputLabel>
                         <TextField
                           fullWidth
                           id="employer-name"
-                          placeholder="Enter Employer Name"
+                          placeholder="Enter legal entity name"
                           value={normalizeInputValue(values.name)}
                           name="name"
                           onBlur={handleBlur}
@@ -420,11 +420,11 @@ const UpsertEmployer = ({ employerId }) => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="employer-email">Email</InputLabel>
+                        <InputLabel htmlFor="employer-email">General Email Box</InputLabel>
                         <TextField
                           fullWidth
                           id="employer-email"
-                          placeholder="Enter Employer Email"
+                          placeholder="Enter general email box"
                           value={normalizeInputValue(values.email)}
                           name="email"
                           onBlur={handleBlur}
@@ -470,7 +470,7 @@ const UpsertEmployer = ({ employerId }) => {
                           renderInput={(params) => (
                             <TextField
                               {...params}
-                              placeholder="Choose a country"
+                              placeholder="Select a country"
                               name="country"
                               inputProps={{
                                 ...params.inputProps,
@@ -509,7 +509,7 @@ const UpsertEmployer = ({ employerId }) => {
                           renderInput={(params) => (
                             <TextField
                               {...params}
-                              placeholder="Choose an industry"
+                              placeholder="Select an industry"
                               name="industry"
                               inputProps={{
                                 ...params.inputProps,
@@ -527,11 +527,11 @@ const UpsertEmployer = ({ employerId }) => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="employer-coc-identifier">Chamber of Commerce Identifier</InputLabel>
+                        <InputLabel htmlFor="employer-coc-identifier">Chamber of Commerce Number</InputLabel>
                         <TextField
                           fullWidth
                           id="employer-coc-identifier"
-                          placeholder="Enter Chamber of Commerce Identifier"
+                          placeholder="Enter chamber of commerce number"
                           value={normalizeInputValue(values.chamberOfCommerceIdentifier)}
                           name="chamberOfCommerceIdentifier"
                           onBlur={handleBlur}
@@ -546,11 +546,11 @@ const UpsertEmployer = ({ employerId }) => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="employer-linkedin-url">LinkedIn Url</InputLabel>
+                        <InputLabel htmlFor="employer-linkedin-url">Company LinkedIn Page</InputLabel>
                         <TextField
                           fullWidth
                           id="employer-linkedin-url"
-                          placeholder="Enter LinkedIn Url"
+                          placeholder="Enter LinkedIn page"
                           value={normalizeInputValue(values.linkedInUrl)}
                           name="linkedInUrl"
                           onBlur={handleBlur}
@@ -573,7 +573,7 @@ const UpsertEmployer = ({ employerId }) => {
                   Cancel
                 </Button>
                 <Button type="submit" variant="contained" disabled={isSubmitting}>
-                  {employer ? 'Update' : 'Create'}
+                  Save
                 </Button>
               </Stack>
             </DialogActions>
