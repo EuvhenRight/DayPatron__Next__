@@ -23,7 +23,6 @@ import {
   TextField,
   Typography,
   Select,
-  ListItemText,
   MenuItem
 } from '@mui/material';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
@@ -471,7 +470,7 @@ const UpsertMission = ({ missionId }) => {
                 </Grid>
                 <Grid item xs={12} md={11}>
                   <Grid container spacing={3}>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
                         <InputLabel htmlFor="mission-title">Company</InputLabel>
 
@@ -481,11 +480,10 @@ const UpsertMission = ({ missionId }) => {
                           displayEmpty
                           value={normalizeInputValue(values.employerId)}
                           onChange={handleChange}
-                          size="small"
                         >
                           {employers.map((employer) => (
                             <MenuItem key={employer.id} value={employer.id}>
-                              <ListItemText primary={employer.name} />
+                              {employer.name}
                             </MenuItem>
                           ))}
                         </Select>
@@ -497,9 +495,9 @@ const UpsertMission = ({ missionId }) => {
 
                       </Stack>
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="mission-title">Title</InputLabel>
+                        <InputLabel htmlFor="mission-title">Mission Title</InputLabel>
                         <TextField
                           fullWidth
                           id="mission-title"
