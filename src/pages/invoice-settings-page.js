@@ -15,7 +15,8 @@ import {
   Grid,
   InputLabel,
   Stack,
-  TextField
+  TextField,
+  Typography
 } from '@mui/material';
 
 // third party
@@ -65,9 +66,10 @@ const InvoiceSettingsPage = () => {
         enableReinitialize={true}
         initialValues={{
           name: state?.name,
-          address: state?.address,
-          postCode: state?.postCode,
+          street: state?.street,
+          streetNumber: state?.streetNumber,
           city: state?.city,
+          postCode: state?.postCode,
           country: state?.country,
           vatNumber: state?.vatNumber,
           bankAccountName: state?.bankAccountName,
@@ -78,13 +80,14 @@ const InvoiceSettingsPage = () => {
         }}
         validationSchema={Yup.object().shape({
           name: Yup.string().max(255).nullable(true).required('Name is required.'),
-          address: Yup.string().max(255).nullable(true).required('Address is required.'),
-          postCode: Yup.string().max(255).nullable(true).required('Post code is required.'),
+          street: Yup.string().max(255).nullable(true).required('Street is required.'),
+          streetNumber: Yup.string().max(255).nullable(true).required('Street number is required.'),
           city: Yup.string().max(255).nullable(true).required('City is required.'),
+          postCode: Yup.string().max(255).nullable(true).required('Postal code is required.'),
           country: Yup.string().nullable(true).required('Country is required.'),
           vatNumber: Yup.string().max(255).nullable(true),
-          bankAccountName: Yup.string().max(255).nullable(true).required('Bank Account Name is required.'),
-          bankName: Yup.string().max(255).nullable(true).required('Bank Name is required.'),
+          bankAccountName: Yup.string().max(255).nullable(true).required('Bank account name is required.'),
+          bankName: Yup.string().max(255).nullable(true).required('Bank name is required.'),
           iban: Yup.string().max(255).nullable(true).required('Iban is required.'),
           email: Yup.string().email('Invalid email address.').max(255).required('Email is required.')
         })}
@@ -170,117 +173,7 @@ const InvoiceSettingsPage = () => {
                     )}
                   </Stack>
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Stack spacing={1.25}>
-                    <InputLabel htmlFor="invoice-settings-address">Address</InputLabel>
-                    <TextField
-                      fullWidth
-                      id="invoice-settings-address"
-                      value={normalizeInputValue(values.address)}
-                      name="address"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      placeholder="Last Name"
-                    />
-                    {touched.address && errors.address && (
-                      <FormHelperText error id="invoice-settings-address-helper">
-                        {errors.address}
-                      </FormHelperText>
-                    )}
-                  </Stack>
-                </Grid>
 
-                <Grid item xs={12} sm={6}>
-                  <Stack spacing={1.25}>
-                    <InputLabel htmlFor="invoice-settings-post-code">Post Code</InputLabel>
-                    <TextField
-                      fullWidth
-                      id="invoice-settings-post-code"
-                      value={normalizeInputValue(values.postCode)}
-                      name="postCode"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      placeholder="Post Code"
-                      autoFocus
-                    />
-                    {touched.postCode && errors.postCode && (
-                      <FormHelperText error id="invoice-settings-post-code-helper">
-                        {errors.postCode}
-                      </FormHelperText>
-                    )}
-                  </Stack>
-                </Grid>
-
-                <Grid item xs={12} sm={6}>
-                  <Stack spacing={1.25}>
-                    <InputLabel htmlFor="invoice-settings-city">City</InputLabel>
-                    <TextField
-                      fullWidth
-                      id="invoice-settings-city"
-                      value={normalizeInputValue(values.city)}
-                      name="city"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      placeholder="City"
-                      autoFocus
-                    />
-                    {touched.city && errors.city && (
-                      <FormHelperText error id="invoice-settings-city-helper">
-                        {errors.city}
-                      </FormHelperText>
-                    )}
-                  </Stack>
-                </Grid>
-
-                <Grid item xs={12} sm={6}>
-                  <Stack spacing={1.25}>
-                    <InputLabel htmlFor="invoice-settings-country">Country</InputLabel>
-                    <Autocomplete
-                      id="invoice-settings-country"
-                      fullWidth
-                      value={values?.country ? countries.filter((item) => item.code === values?.country)[0] : null}
-                      onBlur={handleBlur}
-                      onChange={(event, newValue) => {
-                        setFieldValue('country', newValue === null ? '' : newValue.code);
-                      }}
-                      options={countries}
-                      autoHighlight
-                      isOptionEqualToValue={(option, value) => option.code === value?.code}
-                      getOptionLabel={(option) => option.label}
-                      renderOption={(props, option) => (
-                        <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-                          {option.code && (
-                            <img
-                              loading="lazy"
-                              width="20"
-                              src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
-                              srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
-                              alt=""
-                            />
-                          )}
-                          {option.label}
-                          {option.code && ` (${option.code})`}
-                        </Box>
-                      )}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          placeholder="Choose a country"
-                          name="country"
-                          inputProps={{
-                            ...params.inputProps,
-                            autoComplete: 'new-password' // disable autocomplete and autofill
-                          }}
-                        />
-                      )}
-                    />
-                    {touched.country && errors.country && (
-                      <FormHelperText error id="invoice-settings-country-helper">
-                        {errors.country}
-                      </FormHelperText>
-                    )}
-                  </Stack>
-                </Grid>
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
                     <InputLabel htmlFor="invoice-settings-vat-number">Vat Number</InputLabel>
@@ -381,6 +274,143 @@ const InvoiceSettingsPage = () => {
                     )}
                   </Stack>
                 </Grid>
+
+                <Grid item xs={12}>
+                  <Typography variant="h5">Address</Typography>
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <InputLabel htmlFor="invoice-settings-street">Street</InputLabel>
+
+                    <TextField
+                      fullWidth
+                      id="invoice-settings-street"
+                      placeholder="Enter Street"
+                      value={normalizeInputValue(values.street)}
+                      name="street"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                    />
+                    {touched.street && errors.street && (
+                      <FormHelperText error id="invoice-settings-street-helper">
+                        {errors.street}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <InputLabel htmlFor="invoice-settings-street-number">Street Number</InputLabel>
+
+                    <TextField
+                      fullWidth
+                      id="invoice-settings-street-number"
+                      placeholder="Enter street number"
+                      value={normalizeInputValue(values.streetNumber)}
+                      name="streetNumber"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                    />
+                    {touched.streetNumber && errors.streetNumber && (
+                      <FormHelperText error id="invoice-settings-streetNumber-helper">
+                        {errors.streetNumber}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <InputLabel htmlFor="invoice-settings-city">City</InputLabel>
+                    <TextField
+                      fullWidth
+                      id="invoice-settings-city"
+                      placeholder="Enter city"
+                      value={normalizeInputValue(values.city)}
+                      name="city"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                    />
+                    {touched.city && errors.city && (
+                      <FormHelperText error id="invoice-settings-city-helper">
+                        {errors.city}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <InputLabel htmlFor="invoice-settings-post-code">Postal Code</InputLabel>
+                    <TextField
+                      fullWidth
+                      id="invoice-settings-post-code"
+                      placeholder="Enter postal code"
+                      value={normalizeInputValue(values.postCode)}
+                      name="postCode"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                    />
+                    {touched.postCode && errors.postCode && (
+                      <FormHelperText error id="invoice-settings-post-code-helper">
+                        {errors.postCode}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <InputLabel htmlFor="invoice-settings-country">Country</InputLabel>
+                    <Autocomplete
+                      id="invoice-settings-country"
+                      fullWidth
+                      value={values?.country ? countries.filter((item) => item.code === values?.country)[0] : null}
+                      onBlur={handleBlur}
+                      onChange={(event, newValue) => {
+                        setFieldValue('country', newValue === null ? '' : newValue.code);
+                      }}
+                      options={countries}
+                      autoHighlight
+                      isOptionEqualToValue={(option, value) => option.code === value?.code}
+                      getOptionLabel={(option) => option.label}
+                      renderOption={(props, option) => (
+                        <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                          {option.code && (
+                            <img
+                              loading="lazy"
+                              width="20"
+                              src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
+                              srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
+                              alt=""
+                            />
+                          )}
+                          {option.label}
+                          {option.code && ` (${option.code})`}
+                        </Box>
+                      )}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          placeholder="Choose a country"
+                          name="country"
+                          inputProps={{
+                            ...params.inputProps,
+                            autoComplete: 'new-password' // disable autocomplete and autofill
+                          }}
+                        />
+                      )}
+                    />
+                    {touched.country && errors.country && (
+                      <FormHelperText error id="invoice-settings-country-helper">
+                        {errors.country}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                </Grid>
+
               </Grid>
             </Box>
             <Divider />

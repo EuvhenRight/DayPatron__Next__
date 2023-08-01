@@ -17,7 +17,8 @@ import {
   Grid,
   InputLabel,
   Stack,
-  TextField
+  TextField,
+  Typography
 } from '@mui/material';
 
 // third party
@@ -54,6 +55,10 @@ const ProfilePersonal = () => {
           email: state.email,
           countryPhoneCode: state.countryPhoneCode,
           phoneNumber: state.phoneNumber,
+          street: state.street,
+          streetNumber: state.streetNumber,
+          city: state.city,
+          postCode: state.postCode,
           country: state.country,
           linkedInUrl: state.linkedInUrl,
           peraInterviewUrl: state.peraInterviewUrl,
@@ -61,11 +66,15 @@ const ProfilePersonal = () => {
           submit: null
         }}
         validationSchema={Yup.object().shape({
-          firstname: Yup.string().max(255).required('First Name is required.'),
-          lastname: Yup.string().max(255).required('Last Name is required.'),
+          firstname: Yup.string().max(255).required('First name is required.'),
+          lastname: Yup.string().max(255).required('Last name is required.'),
           email: Yup.string().email('Invalid email address.').max(255).required('Email is required.'),
           countryPhoneCode: Yup.string().nullable(true),
-          phoneNumber: Yup.string().matches(/^[+]*[0-9]{3,}$/g, 'Phone Number is not valid').max(20).nullable(true),
+          phoneNumber: Yup.string().matches(/^[+]*[0-9]{3,}$/g, 'Phone number is not valid').max(20).nullable(true),
+          street: Yup.string().nullable(true),
+          streetNumber: Yup.string().nullable(true),
+          city: Yup.string().nullable(true),
+          postCode: Yup.string().nullable(true),
           country: Yup.string().nullable(true),
           linkedInUrl: Yup.string().max(255).nullable(true),
           peraInterviewUrl: Yup.string().max(255).nullable(true),
@@ -143,7 +152,7 @@ const ProfilePersonal = () => {
                       name="firstname"
                       onBlur={handleBlur}
                       onChange={handleChange}
-                      placeholder="First Name"
+                      placeholder="First name"
                       autoFocus
                       inputRef={inputRef}
                     />
@@ -164,7 +173,7 @@ const ProfilePersonal = () => {
                       name="lastname"
                       onBlur={handleBlur}
                       onChange={handleChange}
-                      placeholder="Last Name"
+                      placeholder="Last name"
                     />
                     {touched.lastname && errors.lastname && (
                       <FormHelperText error id="personal-last-name-helper">
@@ -184,7 +193,7 @@ const ProfilePersonal = () => {
                       onBlur={handleBlur}
                       onChange={handleChange}
                       id="personal-email"
-                      placeholder="Email Address"
+                      placeholder="Email address"
                     />
                     {touched.email && errors.email && (
                       <FormHelperText error id="personal-email-helper">
@@ -246,7 +255,7 @@ const ProfilePersonal = () => {
                         name="phoneNumber"
                         onBlur={handleBlur}
                         onChange={handleChange}
-                        placeholder="Phone Number"
+                        placeholder="Phone number"
                         autoFocus
                         inputRef={inputRef}
                       />
@@ -261,6 +270,156 @@ const ProfilePersonal = () => {
                     {touched.countryPhoneCode && errors.countryPhoneCode && (
                       <FormHelperText error id="personal-country-phone-code-helper">
                         {errors.countryPhoneCode}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <InputLabel htmlFor="personal-linked-in-url">LinkedIn Page</InputLabel>
+                    <TextField
+                      fullWidth
+                      id="personal-linked-in-url"
+                      value={normalizeInputValue(values.linkedInUrl)}
+                      name="linkedInUrl"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      placeholder="LinkedIn page"
+                      autoFocus
+                      inputRef={inputRef}
+                    />
+                    {touched.linkedInUrl && errors.linkedInUrl && (
+                      <FormHelperText error id="personal-linked-in-url-helper">
+                        {errors.linkedInUrl}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <InputLabel htmlFor="personal-pera-interview-url">Pera Interview Url</InputLabel>
+                    <TextField
+                      fullWidth
+                      id="personal-pera-interview-url"
+                      value={normalizeInputValue(values.peraInterviewUrl)}
+                      name="peraInterviewUrl"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      placeholder="Pera Interview Url"
+                      autoFocus
+                      inputRef={inputRef}
+                    />
+                    {touched.peraInterviewUrl && errors.peraInterviewUrl && (
+                      <FormHelperText error id="personal-pera-interview-url-helper">
+                        {errors.peraInterviewUrl}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <InputLabel htmlFor="personal-calendly-url">Calendly Url</InputLabel>
+                    <TextField
+                      fullWidth
+                      id="personal-calendly-url"
+                      value={normalizeInputValue(values.calendlyUrl)}
+                      name="calendlyUrl"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      placeholder="Calendly Url"
+                      autoFocus
+                      inputRef={inputRef}
+                    />
+                    {touched.calendlyUrl && errors.calendlyUrl && (
+                      <FormHelperText error id="personal-calendly-url-helper">
+                        {errors.calendlyUrl}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                </Grid>
+
+                <Grid item xs={12}>
+                  <Typography variant="h5">Address</Typography>
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <InputLabel htmlFor="personal-street">Street</InputLabel>
+
+                    <TextField
+                      fullWidth
+                      id="personal-street"
+                      placeholder="Enter Street"
+                      value={normalizeInputValue(values.street)}
+                      name="street"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                    />
+                    {touched.street && errors.street && (
+                      <FormHelperText error id="personal-street-helper">
+                        {errors.street}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <InputLabel htmlFor="personal-street-number">Street Number</InputLabel>
+
+                    <TextField
+                      fullWidth
+                      id="personal-street-number"
+                      placeholder="Enter street number"
+                      value={normalizeInputValue(values.streetNumber)}
+                      name="streetNumber"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                    />
+                    {touched.streetNumber && errors.streetNumber && (
+                      <FormHelperText error id="personal-streetNumber-helper">
+                        {errors.streetNumber}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <InputLabel htmlFor="personal-city">City</InputLabel>
+                    <TextField
+                      fullWidth
+                      id="personal-city"
+                      placeholder="Enter city"
+                      value={normalizeInputValue(values.city)}
+                      name="city"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                    />
+                    {touched.city && errors.city && (
+                      <FormHelperText error id="personal-city-helper">
+                        {errors.city}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <InputLabel htmlFor="personal-post-code">Postal Code</InputLabel>
+                    <TextField
+                      fullWidth
+                      id="personal-post-code"
+                      placeholder="Enter postal code"
+                      value={normalizeInputValue(values.postCode)}
+                      name="postCode"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                    />
+                    {touched.postCode && errors.postCode && (
+                      <FormHelperText error id="personal-post-code-helper">
+                        {errors.postCode}
                       </FormHelperText>
                     )}
                   </Stack>
@@ -315,69 +474,7 @@ const ProfilePersonal = () => {
                     )}
                   </Stack>
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Stack spacing={1.25}>
-                    <InputLabel htmlFor="personal-linked-in-url">LinkedIn Url</InputLabel>
-                    <TextField
-                      fullWidth
-                      id="personal-linked-in-url"
-                      value={normalizeInputValue(values.linkedInUrl)}
-                      name="linkedInUrl"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      placeholder="LinkedIn Url"
-                      autoFocus
-                      inputRef={inputRef}
-                    />
-                    {touched.linkedInUrl && errors.linkedInUrl && (
-                      <FormHelperText error id="personal-linked-in-url-helper">
-                        {errors.linkedInUrl}
-                      </FormHelperText>
-                    )}
-                  </Stack>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Stack spacing={1.25}>
-                    <InputLabel htmlFor="personal-pera-interview-url">Pera Interview Url</InputLabel>
-                    <TextField
-                      fullWidth
-                      id="personal-pera-interview-url"
-                      value={normalizeInputValue(values.peraInterviewUrl)}
-                      name="peraInterviewUrl"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      placeholder="Pera Interview Url"
-                      autoFocus
-                      inputRef={inputRef}
-                    />
-                    {touched.peraInterviewUrl && errors.peraInterviewUrl && (
-                      <FormHelperText error id="personal-pera-interview-url-helper">
-                        {errors.peraInterviewUrl}
-                      </FormHelperText>
-                    )}
-                  </Stack>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Stack spacing={1.25}>
-                    <InputLabel htmlFor="personal-calendly-url">Calendly Url</InputLabel>
-                    <TextField
-                      fullWidth
-                      id="personal-calendly-url"
-                      value={normalizeInputValue(values.calendlyUrl)}
-                      name="calendlyUrl"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      placeholder="Calendly Url"
-                      autoFocus
-                      inputRef={inputRef}
-                    />
-                    {touched.calendlyUrl && errors.calendlyUrl && (
-                      <FormHelperText error id="personal-calendly-url-helper">
-                        {errors.calendlyUrl}
-                      </FormHelperText>
-                    )}
-                  </Stack>
-                </Grid>
+
               </Grid>
             </Box>
             <Divider />
