@@ -44,19 +44,24 @@ import { useKeycloak } from '@react-keycloak/web';
 const avatarImage = require.context('assets/images/companies', true);
 
 // constant
-const getInitialValues = (employer) => {
+const getInitialValues = (currentEmployer) => {
   const newEmployer = {
     id: null,
     name: null,
     email: null,
+    fullAddress: null,
+    street: null,
+    streetNumber: null,
+    city: null,
+    postCode: null,
     country: null,
     industry: null,
     chamberOfCommerceIdentifier: null,
     linkedInUrl: null
   };
 
-  if (employer) {
-    var result = _.merge({}, newEmployer, employer);
+  if (currentEmployer) {
+    var result = _.merge({}, newEmployer, currentEmployer);
     return result;
   }
 
@@ -227,6 +232,10 @@ const UpsertEmployer = ({ employerId }) => {
   const EmployerSchema = Yup.object().shape({
     name: Yup.string().max(255).required('Name is required').nullable(true),
     email: Yup.string().max(255).email('Must be a valid email').nullable(true),
+    street: Yup.string().nullable(true),
+    streetNumber: Yup.string().nullable(true),
+    city: Yup.string().nullable(true),
+    postCode: Yup.string().nullable(true),
     country: Yup.string().nullable(true),
     industry: Yup.string().required('Industry is required').nullable(true),
     chamberOfCommerceIdentifier: Yup.string().max(50).required('Chamber of Commerce Number is required').nullable(true),
@@ -441,93 +450,6 @@ const UpsertEmployer = ({ employerId }) => {
 
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="employer-street">Street</InputLabel>
-
-                        <GoogleMaps
-                          foundCity={(googleCity) => { setFieldValue('city', googleCity.long_name); }}
-                          foundCountry={(googleCountry) => {
-                            setFieldValue('country', googleCountry?.short_name ? googleCountry.short_name : '');
-                          }}
-                        />
-                        {touched.street && errors.street && (
-                          <FormHelperText error id="employer-street-helper">
-                            {errors.street}
-                          </FormHelperText>
-                        )}
-                      </Stack>
-                    </Grid>
-
-                    <Grid item xs={12} sm={6}>
-                      <Stack spacing={1.25}>
-                        <InputLabel htmlFor="employer-city">City</InputLabel>
-                        <TextField
-                          fullWidth
-                          id="employer-city"
-                          placeholder="Enter city"
-                          value={normalizeInputValue(values.city)}
-                          name="city"
-                          onBlur={handleBlur}
-                          onChange={handleChange}
-                        />
-                        {touched.city && errors.city && (
-                          <FormHelperText error id="employer-city-helper">
-                            {errors.city}
-                          </FormHelperText>
-                        )}
-                      </Stack>
-                    </Grid>
-
-                    <Grid item xs={12} sm={6}>
-                      <Stack spacing={1.25}>
-                        <InputLabel htmlFor="employer-country">Country</InputLabel>
-                        <Autocomplete
-                          id="employer-country"
-                          fullWidth
-                          value={values?.country ? countries.find((item) => item.code === values?.country) : null}
-                          onBlur={handleBlur}
-                          onChange={(event, newValue) => {
-                            setFieldValue('country', newValue === null ? '' : newValue.code);
-                          }}
-                          options={countries}
-                          autoHighlight
-                          isOptionEqualToValue={(option, value) => option.code === value?.code}
-                          getOptionLabel={(option) => option.label}
-                          renderOption={(props, option) => (
-                            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-                              {option.code && (
-                                <img
-                                  loading="lazy"
-                                  width="20"
-                                  src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
-                                  srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
-                                  alt=""
-                                />
-                              )}
-                              {option.label}
-                              {option.code && ` (${option.code})`}
-                            </Box>
-                          )}
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              placeholder="Select a country"
-                              name="country"
-                              inputProps={{
-                                ...params.inputProps,
-                                autoComplete: 'new-password' // disable autocomplete and autofill
-                              }}
-                            />
-                          )}
-                        />
-                        {touched.country && errors.country && (
-                          <FormHelperText error id="employer-country-helper">
-                            {errors.country}
-                          </FormHelperText>
-                        )}
-                      </Stack>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Stack spacing={1.25}>
                         <InputLabel htmlFor="employer-industry">Industry</InputLabel>
                         <Autocomplete
                           id="employer-industry"
@@ -603,6 +525,162 @@ const UpsertEmployer = ({ employerId }) => {
                         )}
                       </Stack>
                     </Grid>
+
+
+
+
+                    <Grid item xs={12}>
+                      <Typography variant="h5">Address</Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="employer-search-address">Search</InputLabel>
+                        <GoogleMaps
+                          value={values?.fullAddress ?? null}
+                          setValue={(newValue) => { setFieldValue('fullAddress', newValue); }}
+                          foundCity={(googleCity) => { setFieldValue('city', googleCity.long_name); }}
+                          foundCountry={(googleCountry) => {
+                            setFieldValue('country', googleCountry?.short_name ? googleCountry.short_name : '');
+                          }}
+                          foundStreet={(foundStreet) => { setFieldValue('street', foundStreet.long_name); }}
+                          foundStreetNumber={(foundStreetNumber) => { setFieldValue('streetNumber', foundStreetNumber.long_name); }}
+                          foundPostCode={(foundPostCode) => { setFieldValue('postCode', foundPostCode.long_name); }}
+                        /> 
+                      </Stack>
+                    </Grid>
+
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="employer-street">Street</InputLabel>
+
+                        <TextField
+                          fullWidth
+                          id="employer-street"
+                          placeholder="Enter Street"
+                          value={normalizeInputValue(values.street)}
+                          name="street"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                        />
+                        {touched.street && errors.street && (
+                          <FormHelperText error id="employer-street-helper">
+                            {errors.street}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
+
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="employer-street-number">Street Number</InputLabel>
+
+                        <TextField
+                          fullWidth
+                          id="employer-street-number"
+                          placeholder="Enter street number"
+                          value={normalizeInputValue(values.streetNumber)}
+                          name="streetNumber"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                        />
+                        {touched.streetNumber && errors.streetNumber && (
+                          <FormHelperText error id="employer-streetNumber-helper">
+                            {errors.streetNumber}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
+
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="employer-city">City</InputLabel>
+                        <TextField
+                          fullWidth
+                          id="employer-city"
+                          placeholder="Enter city"
+                          value={normalizeInputValue(values.city)}
+                          name="city"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                        />
+                        {touched.city && errors.city && (
+                          <FormHelperText error id="employer-city-helper">
+                            {errors.city}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
+
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="employer-post-code">Postal Code</InputLabel>
+                        <TextField
+                          fullWidth
+                          id="employer-post-code"
+                          placeholder="Enter Postal Code"
+                          value={normalizeInputValue(values.postCode)}
+                          name="postCode"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                        />
+                        {touched.postCode && errors.postCode && (
+                          <FormHelperText error id="employer-post-code-helper">
+                            {errors.postCode}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
+
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="employer-country">Country</InputLabel>
+                        <Autocomplete
+                          id="employer-country"
+                          fullWidth
+                          value={values?.country ? countries.find((item) => item.code === values?.country) : null}
+                          onBlur={handleBlur}
+                          onChange={(event, newValue) => {
+                            setFieldValue('country', newValue === null ? '' : newValue.code);
+                          }}
+                          options={countries}
+                          autoHighlight
+                          isOptionEqualToValue={(option, value) => option.code === value?.code}
+                          getOptionLabel={(option) => option.label}
+                          renderOption={(props, option) => (
+                            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                              {option.code && (
+                                <img
+                                  loading="lazy"
+                                  width="20"
+                                  src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
+                                  srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
+                                  alt=""
+                                />
+                              )}
+                              {option.label}
+                              {option.code && ` (${option.code})`}
+                            </Box>
+                          )}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              placeholder="Select a country"
+                              name="country"
+                              inputProps={{
+                                ...params.inputProps,
+                                autoComplete: 'new-password' // disable autocomplete and autofill
+                              }}
+                            />
+                          )}
+                        />
+                        {touched.country && errors.country && (
+                          <FormHelperText error id="employer-country-helper">
+                            {errors.country}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
+
                   </Grid>
                 </Grid>
               </Grid>

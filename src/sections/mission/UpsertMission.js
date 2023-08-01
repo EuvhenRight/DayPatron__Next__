@@ -558,7 +558,7 @@ const UpsertMission = ({ missionId }) => {
                           id="mission-role"
                           fullWidth
                           options={jobRoles}
-                          value={values?.role ? jobRoles.filter((item) => item.code === values?.role)[0] : null}
+                          value={values?.role ? jobRoles.find((item) => item.code === values?.role) : null}
                           onBlur={handleBlur}
                           getOptionLabel={(option) => option?.label}
                           isOptionEqualToValue={(option, value) => option.code === value?.code}

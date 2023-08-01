@@ -28,9 +28,9 @@ const autocompleteService = { current: null };
 
 // ==============================|| GOOGLE MAP - AUTOCOMPLETE ||============================== //
 
-const GoogleMaps = ({ onChange, foundCity, foundAdministrativeAreaLevel1, foundCountry, foundPostCode, foundAddress1, disabled }) => {
-  const [value, setValue] = React.useState(null);
-  const [inputValue, setInputValue] = React.useState('');
+const GoogleMaps = ({ value, setValue, onChange, foundCity, foundStreet, foundStreetNumber, foundAdministrativeAreaLevel1, foundCountry, foundPostCode, foundAddress1, disabled }) => {
+  
+  const [inputValue, setInputValue] = React.useState(null);
   const [options, setOptions] = React.useState([]);
   const loaded = React.useRef(false);
 
@@ -109,17 +109,21 @@ const GoogleMaps = ({ onChange, foundCity, foundAdministrativeAreaLevel1, foundC
 
         setOptions(newValue ? [newValue, ...options] : options);
         setValue(newValue);
-        console.log(newValue);
         let address1 = '';
         getGeocode({ address: newValue?.description })
           .then((results) => {
             results[0].address_components.filter((locData) => {
+              
               if (locData.types[0] === 'route') {
                 if (locData.long_name !== undefined) address1 = address1 !== '' ? `${locData.long_name} ${address1}` : locData.long_name;
+                if (foundStreet)
+                  foundStreet(locData);
               }
 
               if (locData.types[0] === 'street_number') {
                 if (locData.long_name !== undefined) address1 = address1 !== '' ? `${address1} ${locData.long_name}` : locData.long_name;
+                if (foundStreetNumber)
+                  foundStreetNumber(locData);
               }
 
               if (locData.types[0] === 'locality' || locData.types[0] === 'postal_town') {
@@ -148,7 +152,7 @@ const GoogleMaps = ({ onChange, foundCity, foundAdministrativeAreaLevel1, foundC
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
       }}
-      renderInput={(params) => <TextField {...params} placeholder="Search your company address" fullWidth />}
+      renderInput={(params) => <TextField {...params} placeholder="Search for an address" fullWidth />}
       renderOption={(props, option) => {
         const matches = option.structured_formatting.main_text_matched_substrings;
         const parts = parse(
