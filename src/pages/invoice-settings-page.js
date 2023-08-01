@@ -72,24 +72,24 @@ const InvoiceSettingsPage = () => {
           postCode: state?.postCode,
           country: state?.country,
           vatNumber: state?.vatNumber,
-          bankAccountName: state?.bankAccountName,
           bankName: state?.bankName,
+          bankAccountName: state?.bankAccountName,
           iban: state?.iban,
           email: state?.email,
           submit: null
         }}
         validationSchema={Yup.object().shape({
-          name: Yup.string().max(255).nullable(true).required('Name is required.'),
+          name: Yup.string().max(255).nullable(true).required('Invoicing name is required.'),
           street: Yup.string().max(255).nullable(true).required('Street is required.'),
           streetNumber: Yup.string().max(255).nullable(true).required('Street number is required.'),
           city: Yup.string().max(255).nullable(true).required('City is required.'),
           postCode: Yup.string().max(255).nullable(true).required('Postal code is required.'),
           country: Yup.string().nullable(true).required('Country is required.'),
           vatNumber: Yup.string().max(255).nullable(true),
-          bankAccountName: Yup.string().max(255).nullable(true).required('Bank account name is required.'),
           bankName: Yup.string().max(255).nullable(true).required('Bank name is required.'),
+          bankAccountName: Yup.string().max(255).nullable(true).required('Bank account name is required.'),
           iban: Yup.string().max(255).nullable(true).required('Iban is required.'),
-          email: Yup.string().email('Invalid email address.').max(255).required('Email is required.')
+          email: Yup.string().email('Invalid invoicing email address.').max(255).required('Invoicing email address is required.')
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
@@ -155,15 +155,15 @@ const InvoiceSettingsPage = () => {
               <Grid container spacing={3}>
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
-                    <InputLabel htmlFor="invoice-settings-name">Name</InputLabel>
+                    <InputLabel htmlFor="invoice-settings-name">Invoicing Name</InputLabel>
                     <TextField
                       fullWidth
-                      id="invoice-settings-first-name"
+                      id="invoice-settings-invoicing-name"
                       value={normalizeInputValue(values.name)}
                       name="name"
                       onBlur={handleBlur}
                       onChange={handleChange}
-                      placeholder="First Name"
+                      placeholder="Invoicing name"
                       autoFocus
                     />
                     {touched.name && errors.name && (
@@ -176,7 +176,7 @@ const InvoiceSettingsPage = () => {
 
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
-                    <InputLabel htmlFor="invoice-settings-vat-number">Vat Number</InputLabel>
+                    <InputLabel htmlFor="invoice-settings-vat-number">VAT Number</InputLabel>
                     <TextField
                       fullWidth
                       id="invoice-settings-vat-number"
@@ -184,32 +184,12 @@ const InvoiceSettingsPage = () => {
                       name="vatNumber"
                       onBlur={handleBlur}
                       onChange={handleChange}
-                      placeholder="Vat Number"
+                      placeholder="VAT Number"
                       autoFocus
                     />
                     {touched.vatNumber && errors.vatNumber && (
                       <FormHelperText error id="invoice-settings-vat-number-helper">
                         {errors.vatNumber}
-                      </FormHelperText>
-                    )}
-                  </Stack>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Stack spacing={1.25}>
-                    <InputLabel htmlFor="invoice-settings-bank-account-name">Bank Account Name</InputLabel>
-                    <TextField
-                      fullWidth
-                      id="invoice-settings-bank-account-name"
-                      value={normalizeInputValue(values.bankAccountName)}
-                      name="bankAccountName"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      placeholder="Bank Account Name"
-                      autoFocus
-                    />
-                    {touched.bankAccountName && errors.bankAccountName && (
-                      <FormHelperText error id="invoice-settings-bank-account-name-helper">
-                        {errors.bankAccountName}
                       </FormHelperText>
                     )}
                   </Stack>
@@ -236,6 +216,26 @@ const InvoiceSettingsPage = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
+                    <InputLabel htmlFor="invoice-settings-bank-account-name">Bank Account Name</InputLabel>
+                    <TextField
+                      fullWidth
+                      id="invoice-settings-bank-account-name"
+                      value={normalizeInputValue(values.bankAccountName)}
+                      name="bankAccountName"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      placeholder="Bank Account Name"
+                      autoFocus
+                    />
+                    {touched.bankAccountName && errors.bankAccountName && (
+                      <FormHelperText error id="invoice-settings-bank-account-name-helper">
+                        {errors.bankAccountName}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
                     <InputLabel htmlFor="invoice-settings-iban">Iban</InputLabel>
                     <TextField
                       fullWidth
@@ -256,7 +256,7 @@ const InvoiceSettingsPage = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
-                    <InputLabel htmlFor="invoice-settings-email">Email Address</InputLabel>
+                    <InputLabel htmlFor="invoice-settings-email">Invoicing Email Address</InputLabel>
                     <TextField
                       type="email"
                       fullWidth
@@ -265,7 +265,7 @@ const InvoiceSettingsPage = () => {
                       onBlur={handleBlur}
                       onChange={handleChange}
                       id="invoice-settings-email"
-                      placeholder="Email Address"
+                      placeholder="Invoicing email address"
                     />
                     {touched.email && errors.email && (
                       <FormHelperText error id="invoice-settings-email-helper">
