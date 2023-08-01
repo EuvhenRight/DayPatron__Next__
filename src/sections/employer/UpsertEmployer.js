@@ -32,7 +32,6 @@ import { useFormik, Form, FormikProvider } from 'formik';
 // project imports
 import Avatar from 'components/@extended/Avatar';
 import { openSnackbar } from 'store/reducers/snackbar';
-import GoogleMaps from 'sections/address/GoogleMaps';
 
 // assets
 import { CameraOutlined } from '@ant-design/icons';
@@ -526,27 +525,8 @@ const UpsertEmployer = ({ employerId }) => {
                       </Stack>
                     </Grid>
 
-
-
-
                     <Grid item xs={12}>
                       <Typography variant="h5">Address</Typography>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Stack spacing={1.25}>
-                        <InputLabel htmlFor="employer-search-address">Search</InputLabel>
-                        <GoogleMaps
-                          value={values?.fullAddress ?? null}
-                          setValue={(newValue) => { setFieldValue('fullAddress', newValue); }}
-                          foundCity={(googleCity) => { setFieldValue('city', googleCity.long_name); }}
-                          foundCountry={(googleCountry) => {
-                            setFieldValue('country', googleCountry?.short_name ? googleCountry.short_name : '');
-                          }}
-                          foundStreet={(foundStreet) => { setFieldValue('street', foundStreet.long_name); }}
-                          foundStreetNumber={(foundStreetNumber) => { setFieldValue('streetNumber', foundStreetNumber.long_name); }}
-                          foundPostCode={(foundPostCode) => { setFieldValue('postCode', foundPostCode.long_name); }}
-                        /> 
-                      </Stack>
                     </Grid>
 
                     <Grid item xs={12} sm={6}>
