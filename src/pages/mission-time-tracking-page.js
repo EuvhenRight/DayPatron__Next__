@@ -328,85 +328,87 @@ const MissionTimeTrackingPage = () => {
               return (
                 <Grid key={timeLogIndex} item xs={12}>
                   <MainCard>
-                    <Stack spacing={1.25}>
-                      <Grid container spacing={3}>
-                        <Grid item xs={12} lg={5}>
-                          <Stack spacing={1.25}>
-                            <InputLabel>Mission</InputLabel>
-                            <Autocomplete
-                              fullWidth
-                              value={missions?.find(x => x.id == timeLog?.missionId) ?? null}
-                              options={getMissionOptions(timeLog?.missionId)}
-                              getOptionLabel={(option) => option?.title}
-                              isOptionEqualToValue={(option, value) => option.id === value?.id}
-                              onChange={(event, newValue) => {
-                                var newTimeLogs = timeLogs.map((currentTimeLog, currentTimeLogIndex) => {
-                                  if (currentTimeLogIndex === timeLogIndex) {
-                                    return {
-                                      ...currentTimeLog,
-                                      missionId: newValue?.id,
-                                    };
-                                  }
 
-                                  return currentTimeLog;
+                    <Grid container spacing={3}>
+                      <Grid item xs={12} lg={5}>
+                        <Stack spacing={1.25}>
+                          <InputLabel>Mission</InputLabel>
+                          <Autocomplete
+                            fullWidth
+                            value={missions?.find(x => x.id == timeLog?.missionId) ?? null}
+                            options={getMissionOptions(timeLog?.missionId)}
+                            getOptionLabel={(option) => option?.title}
+                            isOptionEqualToValue={(option, value) => option.id === value?.id}
+                            onChange={(event, newValue) => {
+                              var newTimeLogs = timeLogs.map((currentTimeLog, currentTimeLogIndex) => {
+                                if (currentTimeLogIndex === timeLogIndex) {
+                                  return {
+                                    ...currentTimeLog,
+                                    missionId: newValue?.id,
+                                  };
+                                }
+
+                                return currentTimeLog;
+                              });
+
+                              setTimeLogs(newTimeLogs);
+                            }}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                placeholder="Select a mission"
+                                inputProps={{
+                                  ...params.inputProps,
+                                  autoComplete: 'new-password' // disable autocomplete and autofill
+                                }}
+                              />
+                            )}
+                          />
+                        </Stack>
+                      </Grid>
+                      {timeLog?.days?.map((timeLogDay, timeLogDayIndex) => (
+                        <Grid key={timeLogDayIndex} item xs={4} lg={1}>
+                          <Stack spacing={1.25}>
+                            <InputLabel>{format(timeLogDay?.date, 'iii, dd MMM')}</InputLabel>
+                            <TimeField
+                              fullWidth
+                              format="HH:mm"
+                              ampm={false}
+                              value={timeLogDay?.time}
+                              onChange={(value) => {
+                                var newTimeLogs = update(timeLogs, {
+                                  [timeLogIndex]: {
+                                    "days": {
+                                      [timeLogDayIndex]: {
+                                        "time": {
+                                          $set: value
+                                        },
+                                        "minutes": {
+                                          $set: (value?.$H ? value.$H : null) * 60 + (value?.$m ? value.$m : null)
+                                        }
+                                      }
+                                    }
+                                  }
                                 });
 
                                 setTimeLogs(newTimeLogs);
                               }}
-                              renderInput={(params) => (
-                                <TextField
-                                  {...params}
-                                  placeholder="Select a mission"
-                                  inputProps={{
-                                    ...params.inputProps,
-                                    autoComplete: 'new-password' // disable autocomplete and autofill
-                                  }}
-                                />
-                              )}
                             />
                           </Stack>
                         </Grid>
-                        {timeLog?.days?.map((timeLogDay, timeLogDayIndex) => (
-                          <Grid key={timeLogDayIndex} item xs={4} lg={1}>
-                            <Stack spacing={1.25}>
-                              <InputLabel>{format(timeLogDay?.date, 'iii, dd MMM')}</InputLabel>
-                              <TimeField
-                                fullWidth
-                                format="HH:mm"
-                                ampm={false}
-                                value={timeLogDay?.time}
-                                onChange={(value) => {
-                                  var newTimeLogs = update(timeLogs, {
-                                    [timeLogIndex]: {
-                                      "days": {
-                                        [timeLogDayIndex]: {
-                                          "time": {
-                                            $set: value
-                                          },
-                                          "minutes": {
-                                            $set: (value?.$H ? value.$H : null) * 60 + (value?.$m ? value.$m : null)
-                                          }
-                                        }
-                                      }
-                                    }
-                                  });
+                      ))}
 
-                                  setTimeLogs(newTimeLogs);
-                                }}
-                              />
-                            </Stack>
-                          </Grid>
-                        ))}
+                      <Grid item xs={12}>
+                        <Stack direction="row" justifyContent="flex-end" alignItems="center">
+                          <Tooltip title="Remove row" placement="top">
+                            <IconButton onClick={() => { handleRemoveRowClick(timeLogIndex); }} size="large" color="error">
+                              <DeleteFilled />
+                            </IconButton>
+                          </Tooltip>
+                        </Stack>
                       </Grid>
-                      <Stack direction="row" justifyContent="flex-end" alignItems="center">
-                        <Tooltip title="Remove row" placement="top">
-                          <IconButton onClick={() => { handleRemoveRowClick(timeLogIndex); }} size="large" color="error">
-                            <DeleteFilled />
-                          </IconButton>
-                        </Tooltip>
-                      </Stack>
-                    </Stack>
 
+                    </Grid>
                   </MainCard>
                 </Grid>
               )
