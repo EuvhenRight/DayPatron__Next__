@@ -268,11 +268,16 @@ const UpsertMission = ({ missionId }) => {
   useEffect(() => {
     (async () => {
       bindEmployers();
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
       if (missionId) {
         await bindMission();
       }
     })();
-  }, []);
+  }, [employers]);
 
   const MissionSchema = Yup.object().shape({
     employerId: Yup.string().required('Company is required').nullable(true),
