@@ -46,6 +46,7 @@ import { useKeycloak } from '@react-keycloak/web';
 import countries from 'data/countries';
 import languages from 'data/languages';
 import jobRoles from 'data/jobRoles';
+import jobClusters from 'data/jobClusters';
 import industries from 'data/industries';
 const avatarImage = require.context('assets/images/missions', true);
 
@@ -56,6 +57,7 @@ const getInitialValues = (mission) => {
     employerId: null,
     title: null,
     description: null,
+    cluster: null,
     role: null,
     alternativeRoles: null,
     industry: null,
@@ -83,7 +85,7 @@ const getInitialValues = (mission) => {
 
     if (mission.requiredLanguages)
       result.requiredLanguages = languages.filter(x => mission.requiredLanguages.find(y => x.code === y));
-
+    
     return result;
   }
 
@@ -276,6 +278,7 @@ const UpsertMission = ({ missionId }) => {
     employerId: Yup.string().required('Company is required').nullable(true),
     title: Yup.string().max(255).required('Title is required').nullable(true),
     description: Yup.string().max(2000).required('Description is required').nullable(true),
+    cluster: Yup.string().max(255).required('Cluster is required').nullable(true),
     role: Yup.string().max(255).required('Role is required').nullable(true),
     alternativeRoles: Yup.array().of(Yup.object()).nullable(true),
     industry: Yup.string().max(255).required('Industry is required').nullable(true),
@@ -289,7 +292,7 @@ const UpsertMission = ({ missionId }) => {
     country: Yup.string().required('Country is required').nullable(true),
     startDate: Yup.string().required('Start Date is required').nullable(true),
     endDate: Yup.string().nullable(true),
-    effortHours: Yup.number("Should be a positive integer").integer("Should be a positive integer").min(0, "Should be a positive integer").max(10000000, "Maximum 10000000").nullable(true)
+    effortHours: Yup.number("Should be a positive integer").integer("Should be a positive integer").min(0, "Should be a positive integer").max(168, "Maximum 168").nullable(true)
   });
 
   const formik = useFormik({
@@ -546,6 +549,42 @@ const UpsertMission = ({ missionId }) => {
                           </FormHelperText>
                         )}
                       </Stack>
+                    </Grid>
+
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="mission-cluster">Cluster</InputLabel>
+                        <Autocomplete
+                          id="mission-cluster"
+                          fullWidth
+                          options={jobClusters}
+                          value={values?.cluster ? jobClusters.find((item) => item.code === values?.cluster) : null}
+                          onBlur={handleBlur}
+                          getOptionLabel={(option) => option?.label}
+                          isOptionEqualToValue={(option, value) => option.code === value?.code}
+                          onChange={(event, newValue) => {
+                            setFieldValue('cluster', newValue === null ? '' : newValue.code);
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              placeholder="Select cluster"
+                              name="cluster"
+                              inputProps={{
+                                ...params.inputProps,
+                                autoComplete: 'new-password'
+                              }}
+                            />
+                          )}
+                        />
+                        {touched.cluster && errors.cluster && (
+                          <FormHelperText error id="mission-cluster-helper">
+                            {errors.cluster}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
@@ -866,13 +905,13 @@ const UpsertMission = ({ missionId }) => {
                     </Grid>
                     <Grid item xs={12} md={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="mission-effort-hours">Effort Hours</InputLabel>
+                        <InputLabel htmlFor="mission-effort-hours">Indicative Number of Hours per Week</InputLabel>
                         <TextField
                           fullWidth
                           id="mission-effort-hours"
                           type="number"
                           inputProps={{ min: 0, max: 1000000 }}
-                          placeholder="Enter Mission Effort Hours"
+                          placeholder="Enter indicative number of hours per week"
                           value={normalizeInputValue(values.effortHours)}
                           name="effortHours"
                           onBlur={handleBlur}
