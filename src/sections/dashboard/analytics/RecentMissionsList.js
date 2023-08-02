@@ -23,7 +23,7 @@ const rows = [
   createData(98652366, 'InShared', 'Marketing Project Manager', 50, 'pending', 10239),
   createData(13286564, 'ParkBee', 'Fractional Marketeer', 100, 'pending', 83348),
   createData(86739658, 'Ultimate Gym Group', 'Marketing Manager', 99, 'deferred', 410780),
-  createData(13256498, 'Nxt Museum', 'Fractional CFO', 125, 'approved', 70999)
+  createData(13256498, 'Nxt Museum', 'Fractional CFO', 125, 'canceled', 70999)
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -69,7 +69,7 @@ const headCells = [
     id: 'title',
     align: 'left',
     disablePadding: true,
-    label: 'Title'
+    label: 'Mission Title'
   },
   {
     id: 'hours',
@@ -134,8 +134,12 @@ const MissionStatus = ({ status }) => {
       title = 'Rejected';
       break;
     case 'deferred':
-      color = 'error';
+      color = 'secondary';
       title = 'Deferred';
+      break;
+    case 'canceled':
+      color = 'error';
+      title = 'Canceled';
       break;
     default:
       color = 'primary';
