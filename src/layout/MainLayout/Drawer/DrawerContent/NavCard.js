@@ -11,6 +11,7 @@ import MainCard from 'components/MainCard';
 // assets
 import avatar from 'assets/images/users/avatar-group.png';
 import AnimateButton from 'components/@extended/AnimateButton';
+import InfoWrapper from 'components/InfoWrapper';
 
 // ==============================|| DRAWER CONTENT - NAVIGATION CARD ||============================== //
 
@@ -54,9 +55,11 @@ const NavCard = () => {
         <CardMedia component="img" image={avatar} />
         <Stack alignItems="center">
           <Typography variant="h5">Need help?</Typography>
-          <Typography variant="h6" color="secondary">
-            Record a video now.
-          </Typography>
+          <InfoWrapper tooltipText="Does not work in Safari.">
+            <Typography variant="h6" color="secondary">
+              Record a video now.
+            </Typography>
+          </InfoWrapper>
         </Stack>
         <AnimateButton>
           <Button id={BUTTON_ID} variant="shadow" size="small">

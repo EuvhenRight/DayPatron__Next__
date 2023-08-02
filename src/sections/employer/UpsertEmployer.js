@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 // material-ui
 import {
@@ -56,7 +58,8 @@ const getInitialValues = (currentEmployer) => {
     country: null,
     industry: null,
     chamberOfCommerceIdentifier: null,
-    linkedInUrl: null
+    linkedInUrl: null,
+    description: null
   };
 
   if (currentEmployer) {
@@ -238,7 +241,8 @@ const UpsertEmployer = ({ employerId }) => {
     country: Yup.string().nullable(true),
     industry: Yup.string().required('Industry is required').nullable(true),
     chamberOfCommerceIdentifier: Yup.string().max(50).required('Chamber of Commerce Number is required').nullable(true),
-    linkedInUrl: Yup.string().max(255).required('LinkedIn Page is required').nullable(true)
+    linkedInUrl: Yup.string().max(255).required('LinkedIn Page is required').nullable(true),
+    description: Yup.string().max(1000).nullable(true)
   });
 
   const formik = useFormik({
@@ -520,6 +524,43 @@ const UpsertEmployer = ({ employerId }) => {
                         {touched.linkedInUrl && errors.linkedInUrl && (
                           <FormHelperText error id="employer-linkedin-url-helper">
                             {errors.linkedInUrl}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
+
+
+                    <Grid item xs={12}
+                      sx={{
+                        '& .quill': {
+                          borderRadius: '4px',
+                          '& .ql-toolbar': {
+                            bgcolor: theme.palette.mode === 'dark' ? 'dark.light' : 'grey.100',
+                            borderColor: theme.palette.divider,
+                            borderTopLeftRadius: '4px',
+                            borderTopRightRadius: '4px'
+                          },
+                          '& .ql-container': {
+                            borderColor: `${theme.palette.divider} !important`,
+                            borderBottomLeftRadius: '4px',
+                            borderBottomRightRadius: '4px',
+                            '& .ql-editor': {
+                              minHeight: 135
+                            }
+                          }
+                        }
+                      }}
+                    >
+                      <Stack spacing={1.25}>
+                        <InputLabel htmlFor="employer-description">Description</InputLabel>
+                        <ReactQuill
+                          id="employer-description"
+                          value={normalizeInputValue(values.description)}
+                          onChange={(e) => setFieldValue('description', e)}
+                        />
+                        {touched.description && errors.description && (
+                          <FormHelperText error id="employer-description-helper">
+                            {errors.description}
                           </FormHelperText>
                         )}
                       </Stack>

@@ -62,7 +62,6 @@ const getInitialValues = (mission) => {
     alternativeIndustries: null,
     requiredLanguages: null,
     yearsExperience: null,
-    aboutTheCompany: null,
     currentSetup: null,
     whyWeNeedYou: null,
     outcome: null,
@@ -283,7 +282,6 @@ const UpsertMission = ({ missionId }) => {
     alternativeIndustries: Yup.array().of(Yup.object()).nullable(true),
     requiredLanguages: Yup.array().of(Yup.object()).nullable(true),
     yearsExperience: Yup.number("Should be a positive integer").integer("Should be a positive integer").min(0, "Should be a positive integer").max(100, "Maximum 100").nullable(true),
-    aboutTheCompany: Yup.string().max(1000).nullable(true),
     currentSetup: Yup.string().max(1000).nullable(true),
     whyWeNeedYou: Yup.string().max(1000).nullable(true),
     outcome: Yup.string().max(1000).nullable(true),
@@ -883,41 +881,6 @@ const UpsertMission = ({ missionId }) => {
                         {touched.effortHours && errors.effortHours && (
                           <FormHelperText error id="mission-effort-hours-helper">
                             {errors.effortHours}
-                          </FormHelperText>
-                        )}
-                      </Stack>
-                    </Grid>
-                    <Grid item xs={12}
-                      sx={{
-                        '& .quill': {
-                          borderRadius: '4px',
-                          '& .ql-toolbar': {
-                            bgcolor: theme.palette.mode === 'dark' ? 'dark.light' : 'grey.100',
-                            borderColor: theme.palette.divider,
-                            borderTopLeftRadius: '4px',
-                            borderTopRightRadius: '4px'
-                          },
-                          '& .ql-container': {
-                            borderColor: `${theme.palette.divider} !important`,
-                            borderBottomLeftRadius: '4px',
-                            borderBottomRightRadius: '4px',
-                            '& .ql-editor': {
-                              minHeight: 135
-                            }
-                          }
-                        }
-                      }}
-                    >
-                      <Stack spacing={1.25}>
-                        <InputLabel htmlFor="mission-about-the-company">About the Company</InputLabel>
-                        <ReactQuill
-                          id="mission-about-the-company"
-                          value={normalizeInputValue(values.aboutTheCompany)}
-                          onChange={(e) => setFieldValue('aboutTheCompany', e)}
-                        />
-                        {touched.aboutTheCompany && errors.aboutTheCompany && (
-                          <FormHelperText error id="mission-about-the-company-helper">
-                            {errors.aboutTheCompany}
                           </FormHelperText>
                         )}
                       </Stack>
