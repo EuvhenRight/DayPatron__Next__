@@ -53,7 +53,7 @@ const NavCard = () => {
       <Stack alignItems="center" spacing={2.5}>
         <CardMedia component="img" image={avatar} />
         <Stack alignItems="center">
-          <Typography variant="h5">Help?</Typography>
+          <Typography variant="h5">Need help?</Typography>
           <Typography variant="h6" color="secondary">
             Record a video now.
           </Typography>
