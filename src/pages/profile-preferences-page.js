@@ -70,7 +70,7 @@ const ProfilePreferencesPage = () => {
         rateCurrency: preferences?.rate?.currency,
         rateLowerLimit: preferences?.rate?.lowerLimit,
         rateUpperLimit: preferences?.rate?.upperLimit,
-        workplace: preferences?.workplace,
+        workplaces: preferences?.workplaces,
         travelRadiusKms: preferences?.travel?.radiusKms,
         isInternationalTravelAcceptable: preferences?.travel?.isInternationalTravelAcceptable,
         submit: null
@@ -79,7 +79,7 @@ const ProfilePreferencesPage = () => {
         rateCurrency: Yup.string().required('Currency is required.').nullable(true),
         rateLowerLimit: Yup.number().positive().integer().max(1000000).required('Lower Limit is required.').nullable(true),
         rateUpperLimit: Yup.number().positive().integer().max(1000000).nullable(true),
-        workplace: Yup.string().required('Workplace Preference is required.').nullable(true),
+        workplaces: Yup.array().of(Yup.string()).nullable(true),
         travelRadiusKms: Yup.number().positive().integer().max(50000).nullable(true),
         isInternationalTravelAcceptable: Yup.boolean().nullable(true)
       })}
@@ -87,7 +87,7 @@ const ProfilePreferencesPage = () => {
         try {
           var requestBody = {
             rate: { currency: values.rateCurrency, lowerLimit: values.rateLowerLimit, upperLimit: values.rateUpperLimit },
-            workplace: values.workplace,
+            workplaces: values.workplaces,
             travel: { radiusKms: values.travelRadiusKms, isInternationalTravelAcceptable: values.isInternationalTravelAcceptable }
           };
           let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(personalInformation.id) + '/preferences',
@@ -155,7 +155,7 @@ const ProfilePreferencesPage = () => {
                   <Grid container spacing={3}>
                     <Grid item xs={12}>
                       <Typography color="secondary">
-                        Here you can provide your preferred hourly rate by specifying currency, lower limit and upper limit.
+                        Please let us know your preferred hourly rate by specifying your currency, lower and upper limit.
                       </Typography>
                     </Grid>
                     <Grid item xs={12} sm={4}>
@@ -183,7 +183,7 @@ const ProfilePreferencesPage = () => {
                     </Grid>
                     <Grid item xs={12} sm={4}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="rate-lower-limit">Lower Limit (per hour)</InputLabel>
+                        <InputLabel htmlFor="rate-lower-limit">Lower Limit</InputLabel>
                         <TextField
                           fullWidth
                           id="rate-lower-limit"
@@ -191,7 +191,7 @@ const ProfilePreferencesPage = () => {
                           name="rateLowerLimit"
                           onBlur={handleBlur}
                           onChange={handleChange}
-                          placeholder="Lower Limit (per hour)"
+                          placeholder="Lower Limit"
                           type="number"
                           autoFocus
                         />
@@ -204,7 +204,7 @@ const ProfilePreferencesPage = () => {
                     </Grid>
                     <Grid item xs={12} sm={4}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="rate-upper-limit">Upper Limit (per hour)</InputLabel>
+                        <InputLabel htmlFor="rate-upper-limit">Upper Limit</InputLabel>
                         <TextField
                           fullWidth
                           id="rate-upper-limit"
@@ -212,7 +212,7 @@ const ProfilePreferencesPage = () => {
                           name="rateUpperLimit"
                           onBlur={handleBlur}
                           onChange={handleChange}
-                          placeholder="Upper Limit (per hour)"
+                          placeholder="Upper Limit"
                           type="number"
                           autoFocus
                         />
@@ -231,17 +231,18 @@ const ProfilePreferencesPage = () => {
                   <Grid container spacing={3}>
                     <Grid item xs={12}>
                       <Typography color="secondary">
-                        Here you can provide your preferred workplace type.
+                        Please select your preferred workplace type (multiple options possible).
                       </Typography>
                     </Grid>
                     <Grid item xs={12}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="workplace">Workplace</InputLabel>
+                        <InputLabel htmlFor="workplaces">Workplace</InputLabel>
                         <Select
-                          id="workplace"
-                          name="workplace"
+                          multiple
+                          id="workplaces"
+                          name="workplaces"
                           displayEmpty
-                          value={normalizeInputValue(values.workplace)}
+                          value={values.workplaces ?? []}
                           onChange={handleChange}
                         >
                           {workplaces.map((workplace) => (
@@ -250,9 +251,9 @@ const ProfilePreferencesPage = () => {
                             </MenuItem>
                           ))}
                         </Select>
-                        {touched.workplace && errors.workplace && (
-                          <FormHelperText error id="mission-workplace-helper">
-                            {errors.workplace}
+                        {touched.workplaces && errors.workplaces && (
+                          <FormHelperText error id="mission-workplaces-helper">
+                            {errors.workplaces}
                           </FormHelperText>
                         )}
                       </Stack>
@@ -265,12 +266,12 @@ const ProfilePreferencesPage = () => {
                   <Grid container spacing={3}>
                     <Grid item xs={12}>
                       <Typography color="secondary">
-                        Here you can specify your preferred maximum travel distance (one direction) and whether you can travel internationally.
+                        Please let us know what your preferred one-way maximum travel distance is and if you are willing to travel internationally.
                       </Typography>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="travel-radius-kms">Radius (kms)</InputLabel>
+                        <InputLabel htmlFor="travel-radius-kms">Radius (km)</InputLabel>
                         <TextField
                           fullWidth
                           id="travel-radius-kms"
@@ -278,7 +279,7 @@ const ProfilePreferencesPage = () => {
                           name="travelRadiusKms"
                           onBlur={handleBlur}
                           onChange={handleChange}
-                          placeholder="Radius (kms)"
+                          placeholder="Radius (km)"
                           type="number"
                           autoFocus
                         />

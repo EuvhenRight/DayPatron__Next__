@@ -43,7 +43,6 @@ const ProfileTab = ({ handleLogout }) => {
         </ListItemIcon>
         <ListItemText primary="Availability" />
       </ListItemButton>
-
       <ListItemButton onClick={handleLogout}>
         <ListItemIcon>
           <LogoutOutlined />

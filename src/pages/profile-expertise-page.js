@@ -277,7 +277,7 @@ const ProfileExpertisePage = () => {
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
 
-                    <InputLabel htmlFor="languages">Languages</InputLabel>
+                    <InputLabel htmlFor="languages">Languages (full professional proficiency)</InputLabel>
                     <Autocomplete
                       id="languages"
                       multiple
