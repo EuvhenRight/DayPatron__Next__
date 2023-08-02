@@ -16,75 +16,50 @@ const TotalMissionsAcceptedCardChart = () => {
   const areaChartOptions = {
     chart: {
       id: 'new-stack-chart',
-      sparkline: {
-        enabled: true
-      },
-      height: 100,
+      height: 120,
       type: 'bar',
       toolbar: {
         show: false
-      }
+      },
     },
-    plotOptions: {
-      bar: {
-        borderRadius: 0
+    grid: {
+      show: false,
+      padding: {
+        top: -50,
+        bottom: -10
       }
     },
     dataLabels: {
-      enabled: false,
-      offsetY: -20,
-      style: {
-        fontSize: '12px',
-        colors: ['#304758']
+      enabled: false
+    },
+    plotOptions: {
+      bar: {
+        columnWidth: '80%'
       }
     },
     xaxis: {
-      axisBorder: {
-        show: false
-      },
-      axisTicks: {
-        show: false
+      crosshairs: {
+        width: 1
       },
       labels: {
-        show: false
-      },
-      crosshairs: {
-        fill: {
-          type: 'gradient',
-          gradient: {
-            colorFrom: '#D8E3F0',
-            colorTo: '#BED1E6',
-            stops: [0, 100],
-            opacityFrom: 0.4,
-            opacityTo: 0.5
-          }
+        formatter: function (val) {
+          return val
         }
       }
     },
     yaxis: {
-      axisBorder: {
-        show: false
-      },
-      axisTicks: {
-        show: false
-      },
-      labels: {
-        show: false
-      }
+      show: false
     },
     tooltip: {
-      theme: mode === 'dark' ? 'dark' : 'light',
+      fixed: {
+        enabled: false
+      },
       x: {
         show: false
       },
-      y: {
-        formatter(val) {
-          return `$ ${val}`;
-        }
+      marker: {
+        show: false
       }
-    },
-    grid: {
-      show: false
     }
   };
 
@@ -107,12 +82,59 @@ const TotalMissionsAcceptedCardChart = () => {
     {
       name: 'Missions',
       data: [
-        220, 230, 240, 220, 225, 215, 205, 195, 185, 150, 185, 195, 80, 205, 215, 225, 240, 225, 215, 205, 80, 215, 225, 240, 215, 210, 180
+        {
+          x: 'J',
+          y: 400
+        },
+        {
+          x: 'F',
+          y: 430
+        },
+        {
+          x: 'M',
+          y: 448
+        },
+        {
+          x: 'A',
+          y: 470
+        },
+        {
+          x: 'M',
+          y: 540
+        },
+        {
+          x: 'J',
+          y: 580
+        },
+        {
+          x: 'J',
+          y: 690
+        },
+        {
+          x: 'A',
+          y: 540
+        },
+        {
+          x: 'S',
+          y: 320
+        },
+        {
+          x: 'O',
+          y: 510
+        },
+        {
+          x: 'N',
+          y: 550
+        },
+        {
+          x: 'D',
+          y: 580
+        }
       ]
     }
   ]);
 
-  return <ReactApexChart options={options} series={series} type="bar" height={100} />;
+  return <ReactApexChart options={options} series={series} type="bar" height={120} />;
 };
 
 export default TotalMissionsAcceptedCardChart;

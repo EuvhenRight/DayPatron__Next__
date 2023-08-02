@@ -17,13 +17,17 @@ const TotalMissionsAppliedCardChart = () => {
   const areaChartOptions = {
     chart: {
       id: 'new-stack-chart',
-      sparkline: {
-        enabled: true
-      },
-      height: 100,
+      height: 120,
       type: 'bar',
       toolbar: {
         show: false
+      },
+    },
+    grid: {
+      show: false,
+      padding: {
+        top: -50,
+        bottom: -10
       }
     },
     dataLabels: {
@@ -37,7 +41,15 @@ const TotalMissionsAppliedCardChart = () => {
     xaxis: {
       crosshairs: {
         width: 1
+      },
+      labels: {
+        formatter: function (val) {
+          return val
+        }
       }
+    },
+    yaxis: {
+      show: false
     },
     tooltip: {
       fixed: {
@@ -71,12 +83,59 @@ const TotalMissionsAppliedCardChart = () => {
     {
       name: 'Missions',
       data: [
-        220, 230, 240, 220, 225, 215, 205, 195, 185, 150, 185, 195, 80, 205, 215, 225, 240, 225, 215, 205, 80, 215, 225, 240, 215, 210, 190
+        {
+          x: 'J',
+          y: 400
+        },
+        {
+          x: 'F',
+          y: 430
+        },
+        {
+          x: 'M',
+          y: 448
+        },
+        {
+          x: 'A',
+          y: 470
+        },
+        {
+          x: 'M',
+          y: 540
+        },
+        {
+          x: 'J',
+          y: 580
+        },
+        {
+          x: 'J',
+          y: 690
+        },
+        {
+          x: 'A',
+          y: 540
+        },
+        {
+          x: 'S',
+          y: 320
+        },
+        {
+          x: 'O',
+          y: 510
+        },
+        {
+          x: 'N',
+          y: 550
+        },
+        {
+          x: 'D',
+          y: 580
+        }
       ]
     }
   ]);
 
-  return <ReactApexChart options={options} series={series} type="bar" height={100} />;
+  return <ReactApexChart options={options} series={series} type="bar" height={120} />;
 };
 
 export default TotalMissionsAppliedCardChart;
