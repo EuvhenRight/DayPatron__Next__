@@ -56,7 +56,7 @@ const NavCard = () => {
         <Stack alignItems="center">
 
           <Typography variant="h5">Need help?</Typography>
-          <InfoWrapper tooltipText="Does not work in Safari.">
+          <InfoWrapper tooltipText="main_nav_support_body">
             <Typography variant="h6" color="secondary">
               Record a video now.
             </Typography>

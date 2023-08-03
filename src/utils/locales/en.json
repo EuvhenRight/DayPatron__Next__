@@ -13,5 +13,7 @@
   "invoices": "Invoices",
   "invoice-settings": "Invoice Settings",
   "documentation": "Documentation",
-  "roadmap": "Roadmap"
+  "roadmap": "Roadmap",
+
+  "main_nav_support_body": "Does not work in Safari."
 }
