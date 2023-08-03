@@ -26,6 +26,8 @@ const MissionSection = Loadable(lazy(() => import('sections/mission/MissionSecti
 const MissionOverviewTabContent = Loadable(lazy(() => import('sections/mission/MissionOverviewTabContent')));
 const MissionContractorMatchesTabContent = Loadable(lazy(() => import('sections/mission/MissionContractorMatchesTabContent')));
 
+
+const MissionMatchesPage = Loadable(lazy(() => import('pages/mission-matches-page')));
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -60,6 +62,10 @@ const MainRoutes = {
               element: <EmployerSection />
             }
           ]
+        },
+        {
+          path: 'missions/matches',
+          element: <MissionMatchesPage />
         },
         {
           path: 'missions',
