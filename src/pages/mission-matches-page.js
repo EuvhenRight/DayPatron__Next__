@@ -180,12 +180,12 @@ const MissionMatchesPage = () => {
                           }}
                           inputProps={{ 'aria-label': 'Without label' }}
                           renderValue={() => {
-                            return <Typography variant="subtitle2">Mission ({missions.find(x => x.id === missionFilter)?.title})</Typography>;
+                            return <Typography variant="subtitle2">Mission ({missions?.find(x => x.id === missionFilter)?.title})</Typography>;
                           }}
                         >
-                          {missions.map((option, optionIndex) => {
+                          {missions?.map((option, optionIndex) => {
                             return (
-                              <MenuItem key={optionIndex} value={option.id}>
+                              <MenuItem key={optionIndex} value={option?.id}>
                                 {option?.title}
                               </MenuItem>
                             );

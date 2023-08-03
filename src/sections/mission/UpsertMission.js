@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import InfoWrapper from 'components/InfoWrapper';
 
 // material-ui
 import {
@@ -478,7 +479,9 @@ const UpsertMission = ({ missionId }) => {
                   <Grid container spacing={3}>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="mission-title">Company</InputLabel>
+                        <InfoWrapper tooltipText="mission_company_tooltip">
+                          <InputLabel htmlFor="mission-title">Company</InputLabel>
+                        </InfoWrapper>
 
                         <Select
                           id="employerId"
@@ -503,7 +506,9 @@ const UpsertMission = ({ missionId }) => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="mission-title">Mission Title</InputLabel>
+                        <InfoWrapper tooltipText="mission_title_tooltip">
+                          <InputLabel htmlFor="mission-title">Mission Title</InputLabel>
+                        </InfoWrapper>
                         <TextField
                           fullWidth
                           id="mission-title"
@@ -542,7 +547,9 @@ const UpsertMission = ({ missionId }) => {
                       }}
                     >
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="mission-description">Description</InputLabel>
+                        <InfoWrapper tooltipText="mission_description_tooltip">
+                          <InputLabel htmlFor="mission-description">Description</InputLabel>
+                        </InfoWrapper>
                         <ReactQuill
                           id="mission-description"
                           value={normalizeInputValue(values.description)}
@@ -558,7 +565,9 @@ const UpsertMission = ({ missionId }) => {
 
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="mission-cluster">Cluster</InputLabel>
+                        <InfoWrapper tooltipText="mission_cluster_tooltip">
+                          <InputLabel htmlFor="mission-cluster">Cluster</InputLabel>
+                        </InfoWrapper>
                         <Autocomplete
                           id="mission-cluster"
                           fullWidth
@@ -593,7 +602,9 @@ const UpsertMission = ({ missionId }) => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="mission-role">Role</InputLabel>
+                        <InfoWrapper tooltipText="mission_role_tooltip">
+                          <InputLabel htmlFor="mission-role">Role</InputLabel>
+                        </InfoWrapper>
                         <Autocomplete
                           id="mission-role"
                           fullWidth
@@ -626,7 +637,9 @@ const UpsertMission = ({ missionId }) => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="mission-alternative-roles">Alternative Roles</InputLabel>
+                        <InfoWrapper tooltipText="mission_alternative_roles_tooltip">
+                          <InputLabel htmlFor="mission-alternative-roles">Alternative Roles</InputLabel>
+                        </InfoWrapper>
                         <Autocomplete
                           id="mission-alternative-roles"
                           multiple
@@ -675,7 +688,9 @@ const UpsertMission = ({ missionId }) => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="mission-industry">Industry</InputLabel>
+                        <InfoWrapper tooltipText="mission_industry_tooltip">
+                          <InputLabel htmlFor="mission-industry">Industry</InputLabel>
+                        </InfoWrapper>
                         <Autocomplete
                           id="mission-industry"
                           fullWidth
@@ -708,7 +723,9 @@ const UpsertMission = ({ missionId }) => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="mission-alternative-industries">Alternative Industries</InputLabel>
+                        <InfoWrapper tooltipText="mission_alternative_industries_tooltip">
+                          <InputLabel htmlFor="mission-alternative-industries">Alternative Industries</InputLabel>
+                        </InfoWrapper>
                         <Autocomplete
                           id="mission-alternative-industries"
                           multiple
@@ -757,7 +774,9 @@ const UpsertMission = ({ missionId }) => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="mission-required-languages">Required Languages</InputLabel>
+                        <InfoWrapper tooltipText="mission_required_languages_tooltip">
+                          <InputLabel htmlFor="mission-required-languages">Required Languages</InputLabel>
+                        </InfoWrapper>
                         <Autocomplete
                           id="mission-required-languages"
                           multiple
@@ -791,7 +810,9 @@ const UpsertMission = ({ missionId }) => {
                     </Grid>
                     <Grid item xs={12} md={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="mission-years-experience">Years Experience</InputLabel>
+                        <InfoWrapper tooltipText="mission_years_experience_tooltip">
+                          <InputLabel htmlFor="mission-years-experience">Years Experience</InputLabel>
+                        </InfoWrapper>
                         <TextField
                           fullWidth
                           id="mission-years-experience"
@@ -811,7 +832,9 @@ const UpsertMission = ({ missionId }) => {
                     </Grid>
                     <Grid item xs={12} md={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="mission-start-date">Start Date</InputLabel>
+                        <InfoWrapper tooltipText="mission_start_date_tooltip">
+                          <InputLabel htmlFor="mission-start-date">Start Date</InputLabel>
+                        </InfoWrapper>
                         <DesktopDatePicker
                           value={normalizeNullableInputValue(values.startDate)}
                           inputFormat="yyyy-MM-dd"
@@ -838,7 +861,9 @@ const UpsertMission = ({ missionId }) => {
                     </Grid>
                     <Grid item xs={12} md={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="mission-end-date">End Date</InputLabel>
+                        <InfoWrapper tooltipText="mission_end_date_tooltip">
+                          <InputLabel htmlFor="mission-end-date">End Date</InputLabel>
+                        </InfoWrapper>
                         <DesktopDatePicker
                           value={normalizeNullableInputValue(values.endDate)}
                           inputFormat="yyyy-MM-dd"
@@ -861,7 +886,9 @@ const UpsertMission = ({ missionId }) => {
 
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="mission-country">Country</InputLabel>
+                        <InfoWrapper tooltipText="mission_country_tooltip">
+                          <InputLabel htmlFor="mission-country">Country</InputLabel>
+                        </InfoWrapper>
                         <Autocomplete
                           id="mission-country"
                           fullWidth
@@ -910,7 +937,9 @@ const UpsertMission = ({ missionId }) => {
                     </Grid>
                     <Grid item xs={12} md={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="mission-effort-hours">Indicative Number of Hours per Week</InputLabel>
+                        <InfoWrapper tooltipText="mission_hours_per_week_tooltip">
+                          <InputLabel htmlFor="mission-effort-hours">Indicative Number of Hours per Week</InputLabel>
+                        </InfoWrapper>
                         <TextField
                           fullWidth
                           id="mission-effort-hours"
@@ -951,7 +980,9 @@ const UpsertMission = ({ missionId }) => {
                       }}
                     >
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="mission-current-setup">Current Setup</InputLabel>
+                        <InfoWrapper tooltipText="mission_current_setup_tooltip">
+                          <InputLabel htmlFor="mission-current-setup">Current Setup</InputLabel>
+                        </InfoWrapper>
                         <ReactQuill
                           id="mission-current-setup"
                           value={normalizeInputValue(values.currentSetup)}
@@ -986,7 +1017,9 @@ const UpsertMission = ({ missionId }) => {
                       }}
                     >
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="mission-why-we-need-you">Why We Need You</InputLabel>
+                        <InfoWrapper tooltipText="mission_why_we_need_you_tooltip">
+                          <InputLabel htmlFor="mission-why-we-need-you">Why We Need You</InputLabel>
+                        </InfoWrapper>
                         <ReactQuill
                           id="mission-why-we-need-you"
                           value={normalizeInputValue(values.whyWeNeedYou)}
@@ -1021,7 +1054,9 @@ const UpsertMission = ({ missionId }) => {
                       }}
                     >
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="mission-outcome">Outcome</InputLabel>
+                        <InfoWrapper tooltipText="mission_outcome_tooltip">
+                          <InputLabel htmlFor="mission-outcome">Outcome</InputLabel>
+                        </InfoWrapper>
                         <ReactQuill
                           id="mission-outcome"
                           value={normalizeInputValue(values.outcome)}
@@ -1056,7 +1091,9 @@ const UpsertMission = ({ missionId }) => {
                       }}
                     >
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="mission-profile-type">Profile We Are Looking For</InputLabel>
+                        <InfoWrapper tooltipText="mission_profile_we_are_looking_for_tooltip">
+                          <InputLabel htmlFor="mission-profile-type">Profile We Are Looking For</InputLabel>
+                        </InfoWrapper>
                         <ReactQuill
                           id="mission-profile-type"
                           value={normalizeInputValue(values.profileType)}

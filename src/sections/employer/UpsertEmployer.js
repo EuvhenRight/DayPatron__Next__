@@ -25,6 +25,7 @@ import {
 } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import InfoWrapper from 'components/InfoWrapper';
 
 // third-party
 import _ from 'lodash';
@@ -414,7 +415,9 @@ const UpsertEmployer = ({ employerId }) => {
                   <Grid container spacing={3}>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="employer-name">Legal Entity Name</InputLabel>
+                        <InfoWrapper tooltipText="company_legal_entity_name_tooltip">
+                          <InputLabel htmlFor="employer-name">Legal Entity Name</InputLabel>
+                        </InfoWrapper>
                         <TextField
                           fullWidth
                           id="employer-name"
@@ -433,7 +436,9 @@ const UpsertEmployer = ({ employerId }) => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="employer-email">General Email Box</InputLabel>
+                        <InfoWrapper tooltipText="company_general_email_box_tooltip">
+                          <InputLabel htmlFor="employer-email">General Email Box</InputLabel>
+                        </InfoWrapper>
                         <TextField
                           fullWidth
                           id="employer-email"
@@ -453,7 +458,9 @@ const UpsertEmployer = ({ employerId }) => {
 
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="employer-industry">Industry</InputLabel>
+                        <InfoWrapper tooltipText="company_industry_tooltip">
+                          <InputLabel htmlFor="employer-industry">Industry</InputLabel>
+                        </InfoWrapper>
                         <Autocomplete
                           id="employer-industry"
                           fullWidth
@@ -492,7 +499,9 @@ const UpsertEmployer = ({ employerId }) => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="employer-coc-identifier">Chamber of Commerce Number</InputLabel>
+                        <InfoWrapper tooltipText="company_chamber_of_commercer_number_tooltip">
+                          <InputLabel htmlFor="employer-coc-identifier">Chamber of Commerce Number</InputLabel>
+                        </InfoWrapper>
                         <TextField
                           fullWidth
                           id="employer-coc-identifier"
@@ -511,7 +520,9 @@ const UpsertEmployer = ({ employerId }) => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="employer-linkedin-url">Company LinkedIn Page</InputLabel>
+                        <InfoWrapper tooltipText="company_linked_in_url_tooltip">
+                          <InputLabel htmlFor="employer-linkedin-url">Company LinkedIn Page</InputLabel>
+                        </InfoWrapper>
                         <TextField
                           fullWidth
                           id="employer-linkedin-url"
@@ -552,7 +563,9 @@ const UpsertEmployer = ({ employerId }) => {
                       }}
                     >
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="employer-description">Description</InputLabel>
+                        <InfoWrapper tooltipText="company_description_tooltip">
+                          <InputLabel htmlFor="employer-description">Description</InputLabel>
+                        </InfoWrapper>
                         <ReactQuill
                           id="employer-description"
                           value={normalizeInputValue(values.description)}
@@ -572,7 +585,9 @@ const UpsertEmployer = ({ employerId }) => {
 
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="employer-street">Street</InputLabel>
+                        <InfoWrapper tooltipText="company_address_street_tooltip">
+                          <InputLabel htmlFor="employer-street">Street</InputLabel>
+                        </InfoWrapper>
 
                         <TextField
                           fullWidth
@@ -593,7 +608,9 @@ const UpsertEmployer = ({ employerId }) => {
 
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="employer-street-number">Street Number</InputLabel>
+                        <InfoWrapper tooltipText="company_address_street_number_tooltip">
+                          <InputLabel htmlFor="employer-street-number">Street Number</InputLabel>
+                        </InfoWrapper>
 
                         <TextField
                           fullWidth
@@ -614,7 +631,9 @@ const UpsertEmployer = ({ employerId }) => {
 
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="employer-city">City</InputLabel>
+                        <InfoWrapper tooltipText="company_address_city_tooltip">
+                          <InputLabel htmlFor="employer-city">City</InputLabel>
+                        </InfoWrapper>
                         <TextField
                           fullWidth
                           id="employer-city"
@@ -634,7 +653,9 @@ const UpsertEmployer = ({ employerId }) => {
 
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="employer-post-code">Postal Code</InputLabel>
+                        <InfoWrapper tooltipText="company_address_postal_code_tooltip">
+                          <InputLabel htmlFor="employer-post-code">Postal Code</InputLabel>
+                        </InfoWrapper>
                         <TextField
                           fullWidth
                           id="employer-post-code"
@@ -654,7 +675,9 @@ const UpsertEmployer = ({ employerId }) => {
 
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="employer-country">Country</InputLabel>
+                        <InfoWrapper tooltipText="company_address_country_tooltip">
+                          <InputLabel htmlFor="employer-country">Country</InputLabel>
+                        </InfoWrapper>
                         <Autocomplete
                           id="employer-country"
                           fullWidth
