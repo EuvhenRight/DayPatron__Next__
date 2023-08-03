@@ -201,7 +201,7 @@ const MyEmployersSection = () => {
               </Slide>
             ))
         ) : (
-          <EmptyCardList title={'No employers.'} />
+          <EmptyCardList title={'No companies.'} />
         )}
       </Grid>
       <Stack spacing={2} sx={{ p: 2.5 }} alignItems="flex-end">

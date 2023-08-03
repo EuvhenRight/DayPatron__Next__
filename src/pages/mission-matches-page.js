@@ -54,12 +54,39 @@ const MissionMatchesPage = () => {
   const [globalFilter, setGlobalFilter] = useState('');
   const [missionMatches, setMissionMatches] = useState([]);
   const [filteredMissionMatches, setFilteredMissionMatches] = useState([]);
+  const [missions, setMissions] = useState([]);
   const [page, setPage] = useState(1);
 
   const [isInvitedFilter, setIsInvitedFilter] = useState('all');
   const [isAppliedFilter, setIsAppliedFilter] = useState('all');
+  const [missionFilter, setMissionFilter] = useState('all');
 
   const matchDownSM = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+
+  const bindMissions = async () => {
+    try {
+      var requestUrl = process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers/users/' + encodeURIComponent(personalInformation.id) + '/missions';
+
+      let response = await fetch(requestUrl,
+        {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + keycloak.idToken
+          }
+        }
+      );
+
+      if (!response.ok) {
+        return;
+      }
+
+      let json = await response.json();
+
+      setMissions([{id: 'all', title: 'All'}, ...json.missions]);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const bindMissionMatches = async () => {
     try {
@@ -70,6 +97,9 @@ const MissionMatchesPage = () => {
 
       if (isAppliedFilter !== 'all')
         requestUrl += '&isApplied=' + isAppliedFilter;
+
+      if (missionFilter !== 'all')
+        requestUrl += '&missionId=' + missionFilter;
 
       let response = await fetch(requestUrl,
         {
@@ -99,9 +129,15 @@ const MissionMatchesPage = () => {
 
   useEffect(() => {
     (async () => {
+        await bindMissions();
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
       await bindMissionMatches();
     })();
-  }, [isInvitedFilter, isAppliedFilter]);
+  }, [missionFilter, isInvitedFilter, isAppliedFilter]);
 
   useEffect(() => {
     const newMissionMatches = missionMatches.filter((value) => {
@@ -133,6 +169,33 @@ const MissionMatchesPage = () => {
             <Stack spacing={0.5}>
 
               <Grid container direction="column" rowSpacing={3}>
+                <Grid item>
+                  <Stack>
+                    <Box>
+                      <FormControl sx={{ minWidth: 120 }} fullWidth>
+                        <Select
+                          value={missionFilter}
+                          onChange={(event) => {
+                            setMissionFilter(event.target.value);
+                          }}
+                          inputProps={{ 'aria-label': 'Without label' }}
+                          renderValue={() => {
+                            return <Typography variant="subtitle2">Mission ({missions.find(x => x.id === missionFilter)?.title})</Typography>;
+                          }}
+                        >
+                          {missions.map((option, optionIndex) => {
+                            return (
+                              <MenuItem key={optionIndex} value={option.id}>
+                                {option?.title}
+                              </MenuItem>
+                            );
+                          })}
+                        </Select>
+                      </FormControl>
+                    </Box>
+                  </Stack>
+                </Grid>
+
                 <Grid item>
                   <Stack>
                     <Box>

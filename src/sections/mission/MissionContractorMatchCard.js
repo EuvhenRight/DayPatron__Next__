@@ -111,6 +111,12 @@ const MissionContractorMatchCard = ({ missionContractorMatch, missionId }) => {
                 </ListItemAvatar>
                 <ListItemText className="list-card-title"
                   primary={<Typography onClick={handleClickDetails} variant="subtitle1">{missionContractorMatch?.contractor?.firstName + ' ' + missionContractorMatch?.contractor?.lastName}</Typography>}
+                  secondary={
+                    missionContractorMatch?.mission &&
+                    <Typography variant="caption" color="secondary">
+                      Mission &quot;{missionContractorMatch?.mission?.title}&quot;
+                    </Typography>
+                  }
                 />
               </ListItem>
             </List>
