@@ -58,7 +58,6 @@ const MissionMatchesPage = () => {
 
   const [isInvitedFilter, setIsInvitedFilter] = useState('all');
   const [isAppliedFilter, setIsAppliedFilter] = useState('all');
-  const [isMatchedFilter, setIsMatchedFilter] = useState('all');
 
   const matchDownSM = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
@@ -71,9 +70,6 @@ const MissionMatchesPage = () => {
 
       if (isAppliedFilter !== 'all')
         requestUrl += '&isApplied=' + isAppliedFilter;
-
-      if (isMatchedFilter !== 'all')
-        requestUrl += '&isMatched=' + isMatchedFilter;
 
       let response = await fetch(requestUrl,
         {
@@ -105,12 +101,13 @@ const MissionMatchesPage = () => {
     (async () => {
       await bindMissionMatches();
     })();
-  }, [isInvitedFilter, isAppliedFilter, isMatchedFilter]);
+  }, [isInvitedFilter, isAppliedFilter]);
 
   useEffect(() => {
     const newMissionMatches = missionMatches.filter((value) => {
       if (globalFilter) {
-        return value.title.toLowerCase().includes(globalFilter.toLowerCase());
+        let searchText = value?.contractor?.firstName + value?.contractor?.lastName;
+        return searchText?.toLowerCase()?.includes(globalFilter.toLowerCase());
       } else {
         return value;
       }
@@ -188,33 +185,6 @@ const MissionMatchesPage = () => {
                     </Box>
                   </Stack>
                 </Grid>
-                <Grid item>
-                  <Stack>
-                    <Box>
-                      <FormControl sx={{ minWidth: 120 }} fullWidth>
-                        <Select
-                          value={isMatchedFilter}
-                          onChange={(event) => {
-                            setIsMatchedFilter(event.target.value);
-                          }}
-                          inputProps={{ 'aria-label': 'Without label' }}
-                          renderValue={() => {
-                            return <Typography variant="subtitle2">Matched ({booleanFilterOptions.find(x => x.value === isMatchedFilter).label})</Typography>;
-                          }}
-                        >
-                          {booleanFilterOptions.map((option, optionIndex) => {
-                            return (
-                              <MenuItem key={optionIndex} value={option.value}>
-                                {option.label}
-                              </MenuItem>
-                            );
-                          })}
-                        </Select>
-                      </FormControl>
-                    </Box>
-                  </Stack>
-                </Grid>
-
               </Grid>
             </Stack>
           </MainCard>
