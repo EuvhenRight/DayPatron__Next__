@@ -45,10 +45,10 @@
   "preferences_travel_radius_tooltip": "Tell us how far you'll spread your wings without charging extra. This is the distance that you include in your hourly rate.",
   "preferences_travel_international_tooltip": "Are you ready to jet-set internationally for thrilling opportunities?",
 
-  "mission_admin_notes_about_me_tooltip": null,
-  "mission_admin_notes_about_the_mission_tooltip": null,
-  "mission_my_notes_about_the_mission_tooltip": null,
-  "mission_tags_tooltip": null,
+  "mission_admin_notes_about_me_tooltip": "If our community manager has feedback or input for you, you will see notes appear here.",
+  "mission_admin_notes_about_the_mission_tooltip": "Shh! Insider Intel from 10x's Community Manager!These notes are for your success, talent! They're filled in by the Community Manager to boost your mission mojo!",
+  "mission_my_notes_about_the_mission_tooltip": "Take the stage and add your personal notes for this mission. Jot down your thoughts, ideas, and anything that inspires you! Use this space to keep track of important details and conversations.Edit and update your notes when you connect with a company or a 10x community manager.Your notes are private and for your eyes only. They won't be shared with anyone else.Let your creativity flow and make these notes your secret weapon to shine in every mission!",
+  "mission_tags_tooltip": "It's our mission to make you more effective. Add your own tags to personalize and categorize missions.Create tags like 'Favorite,' 'Like,' 'Yes,' 'No,' or anything that resonates with you. Later, use these tags to filter and find missions that match your vibe! Make your mission journey uniquely yours with these custom tags!Go ahead, make it tag-tastic!",
 
   "invoice_settings_invoicing_name_tooltip": "The name under which you'd like to receive your invoices. This can be your business name or your personal name. Remember that a registration in a chamber of commerce is required in most countries to work fractional. Make it official!",
   "invoice_settings_vat_number_tooltip": "Your Value Added Tax (VAT) identification number, if applicable.",
