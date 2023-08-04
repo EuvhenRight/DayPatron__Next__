@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
+import { useIntl } from 'react-intl';
 // material-ui
 import { List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 
@@ -16,6 +17,7 @@ import {
 
 const ProfileTab = ({ handleLogout }) => {
   const navigate = useNavigate();
+  const intl = useIntl();
 
   return (
     <List component="nav" sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32 } }}>
@@ -23,25 +25,25 @@ const ProfileTab = ({ handleLogout }) => {
         <ListItemIcon>
           <UserOutlined />
         </ListItemIcon>
-        <ListItemText primary="Personal Information" />
+        <ListItemText primary={intl.formatMessage({ id: 'profile-personal' })} />
       </ListItemButton>
       <ListItemButton onClick={() => { navigate('/profile/expertise'); }}>
         <ListItemIcon>
           <BulbOutlined />
         </ListItemIcon>
-        <ListItemText primary="Expertise" />
+        <ListItemText primary={intl.formatMessage({ id: 'profile-expertise' })} />
       </ListItemButton>
       <ListItemButton onClick={() => { navigate('/profile/preferences'); }}>
         <ListItemIcon>
           <SettingOutlined />
         </ListItemIcon>
-        <ListItemText primary="Preferences" />
+        <ListItemText primary={intl.formatMessage({ id: 'profile-preferences' })} />
       </ListItemButton>
       <ListItemButton onClick={() => { navigate('/profile/availability'); }}>
         <ListItemIcon>
           <CalendarOutlined />
         </ListItemIcon>
-        <ListItemText primary="Availability" />
+        <ListItemText primary={intl.formatMessage({ id: 'profile-availability' })} />
       </ListItemButton>
       <ListItemButton onClick={handleLogout}>
         <ListItemIcon>
