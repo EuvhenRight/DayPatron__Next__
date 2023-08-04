@@ -16,7 +16,7 @@
   "personal_information_country_tooltip": null,
   "personal_information_linked_in_url_tooltip": null,
 
-  "company_legal_entity_name_tooltip": null,
+  "company_legal_entity_name_tooltip": "You can create several legal entities for your business. Please fill in the legal entity name for which you want to find talent for"
   "company_general_email_box_tooltip": null,
   "company_industry_tooltip": null,
   "company_chamber_of_commercer_number_tooltip": null,
