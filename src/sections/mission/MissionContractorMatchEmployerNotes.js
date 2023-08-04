@@ -10,6 +10,7 @@ import {
   Stack,
   Typography
 } from '@mui/material';
+import InfoWrapper from 'components/InfoWrapper';
 
 import _ from 'lodash';
 import * as Yup from 'yup';
@@ -160,7 +161,9 @@ const MissionContractorMatchEmployerNotes = ({ missionId, contractorId }) => {
             }}
           >
             <Stack spacing={1.25}>
-              <InputLabel htmlFor="match-employer-contractor-notes">Notes About the Talent</InputLabel>
+              <InfoWrapper tooltipText="match_company_notes_about_the_talent_tooltip">
+                <InputLabel htmlFor="match-employer-contractor-notes">Notes About the Talent</InputLabel>
+              </InfoWrapper>
               <ReactQuill
                 id="match-employer-contractor-notes"
                 value={normalizeInputValue(values.contractorNotes)}
