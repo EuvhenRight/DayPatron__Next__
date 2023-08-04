@@ -5,12 +5,14 @@ import { combineReducers } from 'redux';
 import menu from './menu';
 import snackbar from './snackbar';
 import personalInformation from './personalInformation';
+import invoice from './invoice';
 // ==============================|| COMBINE REDUCERS ||============================== //
 
 const reducers = combineReducers({
   menu,
   snackbar,
-  personalInformation
+  personalInformation,
+  invoice
 });
 
 export default reducers;

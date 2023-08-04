@@ -4,6 +4,9 @@
   "missions": "Missions",
   "my-missions": "My Missions",
   "matches": "Matches",
+  "invoicing": "Invoicing",
+  "invoices": "Invoices",
+  "invoice-settings": "Invoice Settings",
   "documentation": "Documentation",
   "roadmap": "Roadmap",
 
@@ -46,6 +49,19 @@
   "mission_why_we_need_you_tooltip": "Tell us the secret sauze of the talent and why they are needed!",
   "mission_outcome_tooltip": "Paint a picture of what this mission will achieve - you're the artist! Our 10x-ers are focussed on delivering output and results. They have been on this journey before and the more specific you describe this, the better.",
   "mission_profile_we_are_looking_for_tooltip": "Are there any specifics you would like to list? What is the kind of superhero we're scouting for this ambitious mission!",
-  
-  "match_company_notes_about_the_talent_tooltip":  null
+
+  "match_company_notes_about_the_talent_tooltip": null,
+
+  "invoice_settings_company": null,
+  "invoice_settings_invoicing_name_tooltip": "The name under which you'd like to receive your invoices. This can be your business name or your personal name. Remember that a registration in a chamber of commerce is required in most countries to work fractional. Make it official!",
+  "invoice_settings_vat_number_tooltip": "Your Value Added Tax (VAT) identification number, if applicable.",
+  "invoice_settings_bank_name_tooltip": "The name of your bank where payments will find their way to you.",
+  "invoice_settings_bank_account_name_tooltip": "The name on your bank account.",
+  "invoice_settings_iban_tooltip": "Your International Bank Account Number. It's all about those digits!",
+  "invoice_settings_invoicing_email_address_tooltip": "The email address where we'll send those money-making reversed invoices!",
+  "invoice_settings_address_street_tooltip": "Your invoicing street address. We need to find you on the map!",
+  "invoice_settings_address_street_number_tooltip": "The street number of your invoicing address. Let's pinpoint your spot!",
+  "invoice_settings_address_city_tooltip": "The vibrant city where your invoicing address resides.",
+  "invoice_settings_address_postal_code_tooltip": "The postal code that adds zest to your invoicing address.",
+  "invoice_settings_address_country_tooltip": "The country where your invoicing address calls home ;-) ."
 }
