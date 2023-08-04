@@ -7,7 +7,7 @@
   "documentation": "Documentation",
   "roadmap": "Roadmap",
 
-  "main_nav_support_body": "Does not work in Safari.",
+  "main_nav_support_body": "This option works best in Chrome and unfortunatly does not work in Safari yet.",
 
   "personal_information_first_name_tooltip": null,
   "personal_information_last_name_tooltip": null,
