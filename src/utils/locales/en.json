@@ -15,5 +15,33 @@
   "documentation": "Documentation",
   "roadmap": "Roadmap",
 
-  "main_nav_support_body": "Does not work in Safari."
+  "main_nav_support_body": "Does not work in Safari.",
+
+  "personal_information_first_name_tooltip": null,
+  "personal_information_last_name_tooltip": null,
+  "personal_information_email_name_tooltip": null,
+  "personal_information_phone_number_tooltip": null,
+  "personal_information_linked_in_url_tooltip": null,
+  "personal_information_pera_interview_url_tooltip": null,
+  "personal_information_calendly_url_tooltip": null,
+  "personal_information_address_street_tooltip": null,
+  "personal_information_address_street_number_tooltip": null,
+  "personal_information_address_city_tooltip": null,
+  "personal_information_address_postal_code_tooltip": null,
+  "personal_information_address_country_tooltip": null,
+
+  "expertise_industries_tooltip": null,
+  "expertise_job_roles_tooltip": null,
+  "expertise_languages_tooltip": null,
+  "expertise_countries_tooltip": null,
+  "expertise_company_stages_tooltip": null,
+  "expertise_financing_stages_tooltip": null,
+  "expertise_start_year_tooltip": null,
+
+  "preferences_rate_currency_tooltip": null,
+  "preferences_rate_lower_limit_tooltip": null,
+  "preferences_rate_upper_limit_tooltip": null,
+  "preferences_workplace_tooltip": null,
+  "preferences_travel_radius_tooltip": null,
+  "preferences_travel_international_tooltip": null
 }

@@ -6,6 +6,7 @@ import { useKeycloak } from '@react-keycloak/web';
 import { normalizeInputValue, normalizeBooleanInputValue, prepareApiBody } from 'utils/stringUtils';
 import currencies from 'data/currencies';
 import workplaces from 'data/workplaces';
+import InfoWrapper from 'components/InfoWrapper';
 
 // material-ui
 import {
@@ -160,7 +161,9 @@ const ProfilePreferencesPage = () => {
                     </Grid>
                     <Grid item xs={12} sm={4}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="rate-currency">Currency</InputLabel>
+                        <InfoWrapper tooltipText="preferences_rate_currency_tooltip">
+                          <InputLabel htmlFor="rate-currency">Currency</InputLabel>
+                        </InfoWrapper>
                         <Select
                           id="rateCurrency"
                           name="rateCurrency"
@@ -183,7 +186,9 @@ const ProfilePreferencesPage = () => {
                     </Grid>
                     <Grid item xs={12} sm={4}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="rate-lower-limit">Lower Limit</InputLabel>
+                        <InfoWrapper tooltipText="preferences_rate_lower_limit_tooltip">
+                          <InputLabel htmlFor="rate-lower-limit">Lower Limit</InputLabel>
+                        </InfoWrapper>
                         <TextField
                           fullWidth
                           id="rate-lower-limit"
@@ -204,7 +209,9 @@ const ProfilePreferencesPage = () => {
                     </Grid>
                     <Grid item xs={12} sm={4}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="rate-upper-limit">Upper Limit</InputLabel>
+                        <InfoWrapper tooltipText="preferences_rate_upper_limit_tooltip">
+                          <InputLabel htmlFor="rate-upper-limit">Upper Limit</InputLabel>
+                        </InfoWrapper>
                         <TextField
                           fullWidth
                           id="rate-upper-limit"
@@ -236,7 +243,9 @@ const ProfilePreferencesPage = () => {
                     </Grid>
                     <Grid item xs={12}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="workplaces">Workplace</InputLabel>
+                        <InfoWrapper tooltipText="preferences_workplace_tooltip">
+                          <InputLabel htmlFor="workplaces">Workplace</InputLabel>
+                        </InfoWrapper>
                         <Select
                           multiple
                           id="workplaces"
@@ -271,7 +280,9 @@ const ProfilePreferencesPage = () => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="travel-radius-kms">Radius (km)</InputLabel>
+                        <InfoWrapper tooltipText="preferences_travel_radius_tooltip">
+                          <InputLabel htmlFor="travel-radius-kms">Radius (km)</InputLabel>
+                        </InfoWrapper>
                         <TextField
                           fullWidth
                           id="travel-radius-kms"
@@ -292,7 +303,9 @@ const ProfilePreferencesPage = () => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel htmlFor="travel-international-acceptable">International?</InputLabel>
+                        <InfoWrapper tooltipText="preferences_travel_international_tooltip">
+                          <InputLabel htmlFor="travel-international-acceptable">International?</InputLabel>
+                        </InfoWrapper>
                         <Stack direction="row" alignItems="center">
                           <Switch
                             id="travel-international-acceptable"

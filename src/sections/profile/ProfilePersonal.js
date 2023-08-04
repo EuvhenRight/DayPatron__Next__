@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useKeycloak } from '@react-keycloak/web';
 import { PERSONAL_INFORMATION_UPDATE } from 'store/reducers/actions';
 import { normalizeInputValue, prepareApiBody } from 'utils/stringUtils';
+import InfoWrapper from 'components/InfoWrapper';
 
 // material-ui
 import {
@@ -144,7 +145,9 @@ const ProfilePersonal = () => {
               <Grid container spacing={3}>
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
-                    <InputLabel htmlFor="personal-first-name">First Name</InputLabel>
+                    <InfoWrapper tooltipText="personal_information_first_name_tooltip">
+                      <InputLabel htmlFor="personal-first-name">First Name</InputLabel>
+                    </InfoWrapper>
                     <TextField
                       fullWidth
                       id="personal-first-name"
@@ -165,7 +168,9 @@ const ProfilePersonal = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
-                    <InputLabel htmlFor="personal-last-name">Last Name</InputLabel>
+                    <InfoWrapper tooltipText="personal_information_last_name_tooltip">
+                      <InputLabel htmlFor="personal-last-name">Last Name</InputLabel>
+                    </InfoWrapper>
                     <TextField
                       fullWidth
                       id="personal-last-name"
@@ -184,7 +189,9 @@ const ProfilePersonal = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
-                    <InputLabel htmlFor="personal-email">Email Address</InputLabel>
+                    <InfoWrapper tooltipText="personal_information_email_name_tooltip">
+                      <InputLabel htmlFor="personal-email">Email Address</InputLabel>
+                    </InfoWrapper>
                     <TextField
                       type="email"
                       fullWidth
@@ -205,7 +212,9 @@ const ProfilePersonal = () => {
 
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
-                    <InputLabel htmlFor="personal-phone-number">Phone Number</InputLabel>
+                    <InfoWrapper tooltipText="personal_information_phone_number_tooltip">
+                      <InputLabel htmlFor="personal-phone-number">Phone Number</InputLabel>
+                    </InfoWrapper>
 
                     <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
 
@@ -277,7 +286,9 @@ const ProfilePersonal = () => {
 
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
-                    <InputLabel htmlFor="personal-linked-in-url">LinkedIn Page</InputLabel>
+                    <InfoWrapper tooltipText="personal_information_linked_in_url_tooltip">
+                      <InputLabel htmlFor="personal-linked-in-url">LinkedIn Page</InputLabel>
+                    </InfoWrapper>
                     <TextField
                       fullWidth
                       id="personal-linked-in-url"
@@ -298,7 +309,9 @@ const ProfilePersonal = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
-                    <InputLabel htmlFor="personal-pera-interview-url">Pera Interview Url</InputLabel>
+                    <InfoWrapper tooltipText="personal_information_pera_interview_url_tooltip">
+                      <InputLabel htmlFor="personal-pera-interview-url">Pera Interview Url</InputLabel>
+                    </InfoWrapper>
                     <TextField
                       fullWidth
                       id="personal-pera-interview-url"
@@ -319,7 +332,9 @@ const ProfilePersonal = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
-                    <InputLabel htmlFor="personal-calendly-url">Calendly Url</InputLabel>
+                    <InfoWrapper tooltipText="personal_information_calendly_url_tooltip">
+                      <InputLabel htmlFor="personal-calendly-url">Calendly Url</InputLabel>
+                    </InfoWrapper>
                     <TextField
                       fullWidth
                       id="personal-calendly-url"
@@ -345,7 +360,9 @@ const ProfilePersonal = () => {
 
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
-                    <InputLabel htmlFor="personal-street">Street</InputLabel>
+                    <InfoWrapper tooltipText="personal_information_address_street_tooltip">
+                      <InputLabel htmlFor="personal-street">Street</InputLabel>
+                    </InfoWrapper>
 
                     <TextField
                       fullWidth
@@ -366,7 +383,9 @@ const ProfilePersonal = () => {
 
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
-                    <InputLabel htmlFor="personal-street-number">Street Number</InputLabel>
+                    <InfoWrapper tooltipText="personal_information_address_street_number_tooltip">
+                      <InputLabel htmlFor="personal-street-number">Street Number</InputLabel>
+                    </InfoWrapper>
 
                     <TextField
                       fullWidth
@@ -387,7 +406,9 @@ const ProfilePersonal = () => {
 
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
-                    <InputLabel htmlFor="personal-city">City</InputLabel>
+                    <InfoWrapper tooltipText="personal_information_address_city_tooltip">
+                      <InputLabel htmlFor="personal-city">City</InputLabel>
+                    </InfoWrapper>
                     <TextField
                       fullWidth
                       id="personal-city"
@@ -407,7 +428,9 @@ const ProfilePersonal = () => {
 
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
-                    <InputLabel htmlFor="personal-post-code">Postal Code</InputLabel>
+                    <InfoWrapper tooltipText="personal_information_address_postal_code_tooltip">
+                      <InputLabel htmlFor="personal-post-code">Postal Code</InputLabel>
+                    </InfoWrapper>
                     <TextField
                       fullWidth
                       id="personal-post-code"
@@ -427,7 +450,9 @@ const ProfilePersonal = () => {
 
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
-                    <InputLabel htmlFor="personal-country">Country</InputLabel>
+                    <InfoWrapper tooltipText="personal_information_address_country_tooltip">
+                      <InputLabel htmlFor="personal-country">Country</InputLabel>
+                    </InfoWrapper>
                     <Autocomplete
                       id="personal-country"
                       fullWidth

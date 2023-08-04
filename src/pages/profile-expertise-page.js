@@ -10,6 +10,7 @@ import { useKeycloak } from '@react-keycloak/web';
 import { normalizeInputValue, prepareApiBody } from 'utils/stringUtils';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import InfoWrapper from 'components/InfoWrapper';
 
 // material-ui
 import {
@@ -173,8 +174,10 @@ const ProfileExpertisePage = () => {
               <Grid container spacing={3}>
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
+                    <InfoWrapper tooltipText="expertise_industries_tooltip">
+                      <InputLabel htmlFor="industries">Industries</InputLabel>
+                    </InfoWrapper>
 
-                    <InputLabel htmlFor="industries">Industries</InputLabel>
                     <Autocomplete
                       id="industries"
                       multiple
@@ -224,8 +227,10 @@ const ProfileExpertisePage = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
+                    <InfoWrapper tooltipText="expertise_job_roles_tooltip">
+                      <InputLabel htmlFor="job-roles">Job Roles</InputLabel>
+                    </InfoWrapper>
 
-                    <InputLabel htmlFor="job-roles">Job Roles</InputLabel>
                     <Autocomplete
                       id="job-roles"
                       multiple
@@ -276,8 +281,10 @@ const ProfileExpertisePage = () => {
 
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
+                    <InfoWrapper tooltipText="expertise_languages_tooltip">
+                      <InputLabel htmlFor="languages">Languages (full professional proficiency)</InputLabel>
+                    </InfoWrapper>
 
-                    <InputLabel htmlFor="languages">Languages (full professional proficiency)</InputLabel>
                     <Autocomplete
                       id="languages"
                       multiple
@@ -312,8 +319,10 @@ const ProfileExpertisePage = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
+                    <InfoWrapper tooltipText="expertise_countries_tooltip">
+                      <InputLabel htmlFor="countries">Countries</InputLabel>
+                    </InfoWrapper>
 
-                    <InputLabel htmlFor="countries">Countries</InputLabel>
                     <Autocomplete
                       id="countries"
                       multiple
@@ -349,8 +358,10 @@ const ProfileExpertisePage = () => {
 
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
+                    <InfoWrapper tooltipText="expertise_company_stages_tooltip">
+                      <InputLabel htmlFor="company-stages">Company Stages</InputLabel>
+                    </InfoWrapper>
 
-                    <InputLabel htmlFor="company-stages">Company Stages</InputLabel>
                     <Autocomplete
                       id="company-stages"
                       multiple
@@ -385,8 +396,10 @@ const ProfileExpertisePage = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
+                    <InfoWrapper tooltipText="expertise_financing_stages_tooltip">
+                      <InputLabel htmlFor="financing-stages">Financing Stages</InputLabel>
+                    </InfoWrapper>
 
-                    <InputLabel htmlFor="financing-stages">Financing Stages</InputLabel>
                     <Autocomplete
                       id="financing-stages"
                       multiple
@@ -421,7 +434,9 @@ const ProfileExpertisePage = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
-                    <InputLabel htmlFor="start-year">Start Year</InputLabel>
+                    <InfoWrapper tooltipText="expertise_start_year_tooltip">
+                      <InputLabel htmlFor="start-year">Start Year</InputLabel>
+                    </InfoWrapper>
 
                     <TextField
                       fullWidth
