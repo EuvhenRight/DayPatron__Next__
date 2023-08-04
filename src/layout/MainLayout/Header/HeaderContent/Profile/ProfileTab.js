@@ -5,11 +5,14 @@ import { List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
 
 // assets
 import { EditOutlined, LogoutOutlined } from '@ant-design/icons';
+import { useIntl } from 'react-intl';
 
 // ==============================|| HEADER PROFILE - PROFILE TAB ||============================== //
 
 const ProfileTab = ({ handleLogout }) => {
   const navigate = useNavigate();
+  const intl = useIntl();
+
   
   return (
     <List component="nav" sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32 } }}>
@@ -17,7 +20,7 @@ const ProfileTab = ({ handleLogout }) => {
         <ListItemIcon>
           <EditOutlined />
         </ListItemIcon>
-        <ListItemText primary="Personal Information" />
+        <ListItemText primary={intl.formatMessage({ id: 'personal-information'})} />
       </ListItemButton>
       
       <ListItemButton onClick={handleLogout}>
