@@ -43,5 +43,22 @@
   "preferences_rate_upper_limit_tooltip": null,
   "preferences_workplace_tooltip": null,
   "preferences_travel_radius_tooltip": null,
-  "preferences_travel_international_tooltip": null
+  "preferences_travel_international_tooltip": null,
+
+  "mission_admin_notes_about_me_tooltip": null,
+  "mission_admin_notes_about_the_mission_tooltip": null,
+  "mission_my_notes_about_the_mission_tooltip": null,
+  "mission_tags_tooltip": null,
+
+  "invoice_settings_invoicing_name_tooltip": null,
+  "invoice_settings_vat_number_tooltip": null,
+  "invoice_settings_bank_name_tooltip": null,
+  "invoice_settings_bank_account_name_tooltip": null,
+  "invoice_settings_iban_tooltip": null,
+  "invoice_settings_invoicing_email_address_tooltip": null,
+  "invoice_settings_address_street_tooltip": null,
+  "invoice_settings_address_street_number_tooltip": null,
+  "invoice_settings_address_city_tooltip": null,
+  "invoice_settings_address_postal_code_tooltip": null,
+  "invoice_settings_address_country_tooltip": null
 }

@@ -26,6 +26,7 @@ import { Formik } from 'formik';
 // project import
 import { openSnackbar } from 'store/reducers/snackbar';
 import MainCard from 'components/MainCard';
+import InfoWrapper from 'components/InfoWrapper';
 
 // ==============================|| PERSONAL ||============================== //
 
@@ -155,7 +156,9 @@ const InvoiceSettingsPage = () => {
               <Grid container spacing={3}>
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
-                    <InputLabel htmlFor="invoice-settings-name">Invoicing Name</InputLabel>
+                    <InfoWrapper tooltipText="invoice_settings_invoicing_name_tooltip">
+                      <InputLabel htmlFor="invoice-settings-name">Invoicing Name</InputLabel>
+                    </InfoWrapper>
                     <TextField
                       fullWidth
                       id="invoice-settings-invoicing-name"
@@ -176,7 +179,9 @@ const InvoiceSettingsPage = () => {
 
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
-                    <InputLabel htmlFor="invoice-settings-vat-number">VAT Number</InputLabel>
+                    <InfoWrapper tooltipText="invoice_settings_vat_number_tooltip">
+                      <InputLabel htmlFor="invoice-settings-vat-number">VAT Number</InputLabel>
+                    </InfoWrapper>
                     <TextField
                       fullWidth
                       id="invoice-settings-vat-number"
@@ -196,7 +201,9 @@ const InvoiceSettingsPage = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
-                    <InputLabel htmlFor="invoice-settings-bank-name">Bank Name</InputLabel>
+                    <InfoWrapper tooltipText="invoice_settings_bank_name_tooltip">
+                      <InputLabel htmlFor="invoice-settings-bank-name">Bank Name</InputLabel>
+                    </InfoWrapper>
                     <TextField
                       fullWidth
                       id="invoice-settings-bank-name"
@@ -216,7 +223,9 @@ const InvoiceSettingsPage = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
-                    <InputLabel htmlFor="invoice-settings-bank-account-name">Bank Account Name</InputLabel>
+                    <InfoWrapper tooltipText="invoice_settings_bank_account_name_tooltip">
+                      <InputLabel htmlFor="invoice-settings-bank-account-name">Bank Account Name</InputLabel>
+                    </InfoWrapper>
                     <TextField
                       fullWidth
                       id="invoice-settings-bank-account-name"
@@ -236,7 +245,9 @@ const InvoiceSettingsPage = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
-                    <InputLabel htmlFor="invoice-settings-iban">Iban</InputLabel>
+                    <InfoWrapper tooltipText="invoice_settings_iban_tooltip">
+                      <InputLabel htmlFor="invoice-settings-iban">Iban</InputLabel>
+                    </InfoWrapper>
                     <TextField
                       fullWidth
                       id="invoice-settings-iban"
@@ -256,7 +267,9 @@ const InvoiceSettingsPage = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
-                    <InputLabel htmlFor="invoice-settings-email">Invoicing Email Address</InputLabel>
+                    <InfoWrapper tooltipText="invoice_settings_invoicing_email_address_tooltip">
+                      <InputLabel htmlFor="invoice-settings-email">Invoicing Email Address</InputLabel>
+                    </InfoWrapper>
                     <TextField
                       type="email"
                       fullWidth
@@ -281,7 +294,9 @@ const InvoiceSettingsPage = () => {
 
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
-                    <InputLabel htmlFor="invoice-settings-street">Street</InputLabel>
+                    <InfoWrapper tooltipText="invoice_settings_address_street_tooltip">
+                      <InputLabel htmlFor="invoice-settings-street">Street</InputLabel>
+                    </InfoWrapper>
 
                     <TextField
                       fullWidth
@@ -302,7 +317,9 @@ const InvoiceSettingsPage = () => {
 
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
-                    <InputLabel htmlFor="invoice-settings-street-number">Street Number</InputLabel>
+                    <InfoWrapper tooltipText="invoice_settings_address_street_number_tooltip">
+                      <InputLabel htmlFor="invoice-settings-street-number">Street Number</InputLabel>
+                    </InfoWrapper>
 
                     <TextField
                       fullWidth
@@ -323,7 +340,9 @@ const InvoiceSettingsPage = () => {
 
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
-                    <InputLabel htmlFor="invoice-settings-city">City</InputLabel>
+                    <InfoWrapper tooltipText="invoice_settings_address_city_tooltip">
+                      <InputLabel htmlFor="invoice-settings-city">City</InputLabel>
+                    </InfoWrapper>
                     <TextField
                       fullWidth
                       id="invoice-settings-city"
@@ -343,7 +362,9 @@ const InvoiceSettingsPage = () => {
 
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
-                    <InputLabel htmlFor="invoice-settings-post-code">Postal Code</InputLabel>
+                    <InfoWrapper tooltipText="invoice_settings_address_postal_code_tooltip">
+                      <InputLabel htmlFor="invoice-settings-post-code">Postal Code</InputLabel>
+                    </InfoWrapper>
                     <TextField
                       fullWidth
                       id="invoice-settings-post-code"
@@ -363,7 +384,9 @@ const InvoiceSettingsPage = () => {
 
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
-                    <InputLabel htmlFor="invoice-settings-country">Country</InputLabel>
+                    <InfoWrapper tooltipText="invoice_settings_address_country_tooltip">
+                      <InputLabel htmlFor="invoice-settings-country">Country</InputLabel>
+                    </InfoWrapper>
                     <Autocomplete
                       id="invoice-settings-country"
                       fullWidth

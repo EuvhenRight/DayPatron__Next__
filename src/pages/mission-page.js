@@ -19,6 +19,7 @@ import {
 } from '@mui/material';
 import MainCard from 'components/MainCard';
 import SanitizedHTML from 'react-sanitized-html';
+import InfoWrapper from 'components/InfoWrapper';
 
 import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
@@ -439,7 +440,9 @@ const MissionPage = () => {
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
                     <Stack spacing={0.5}>
-                      <Typography color="secondary">Admin Notes About Me</Typography>
+                      <InfoWrapper tooltipText="mission_admin_notes_about_me_tooltip">
+                        <Typography color="secondary">Admin Notes About Me</Typography>
+                      </InfoWrapper>
                       <SanitizedHTML html={
                         missionContractor?.adminNotes?.showContractorNotesToContractor &&
                         missionContractor?.adminNotes?.contractorNotes ?
@@ -454,7 +457,9 @@ const MissionPage = () => {
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
                     <Stack spacing={0.5}>
-                      <Typography color="secondary">Admin Notes About the Mission</Typography>
+                      <InfoWrapper tooltipText="mission_admin_notes_about_the_mission_tooltip">
+                        <Typography color="secondary">Admin Notes About the Mission</Typography>
+                      </InfoWrapper>
                       <SanitizedHTML html={
                         missionContractor?.adminNotes?.showMissionNotesToContractor &&
                           missionContractor?.adminNotes?.missionNotes ?
@@ -491,7 +496,9 @@ const MissionPage = () => {
                     <FormikProvider value={formik}>
                       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
                         <Stack spacing={0.5}>
-                          <Typography color="secondary">My Notes About the Mission</Typography>
+                          <InfoWrapper tooltipText="mission_my_notes_about_the_mission_tooltip">
+                            <Typography color="secondary">My Notes About the Mission</Typography>
+                          </InfoWrapper>
                           <ReactQuill
                             id="contractor-mission-notes"
                             value={normalizeInputValue(values?.missionNotes)}
@@ -519,7 +526,11 @@ const MissionPage = () => {
         </Grid>
 
         <Grid item xs={12} md={4}>
-          <MainCard title="Tags">
+          <MainCard title={
+            <InfoWrapper tooltipText="mission_tags_tooltip">
+              <span>Tags</span>
+            </InfoWrapper>
+          }>
             <List sx={{ py: 0 }}>
 
               <ListItem>
