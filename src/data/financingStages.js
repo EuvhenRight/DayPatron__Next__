@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 
 const financingStages = [
+  { code: 'Bootstrapped', label: 'Bootstrapped' },
   { code: 'PreSeed', label: 'Pre Seed' },
   { code: 'Seed', label: 'Seed' },
   { code: 'SeriesA', label: 'Series A' },

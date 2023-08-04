@@ -30,7 +30,10 @@
   "personal_information_address_postal_code_tooltip": "Please enter your zip-code, postcode, postal code or whatever your locall annotation.",
   "personal_information_address_country_tooltip": "Where are you based? In this world of digital nomands, please let us know the country you are officially registered in.",
 
+  "expertise_title": "My Expertise",
+  "expertise_description": "We'd like to match you with the best companies and missions. Let's get to know you a bit more. Tell us about your expertise fields.",
   "expertise_industries_tooltip": "Select the industries you're a rockstar in. Show us where you shine!",
+  "expertise_job_clusters_tooltip": "We know you rule, but in which clusters?",
   "expertise_job_roles_tooltip": "Choose the roles you excel at. We want to see you in action! These roles are used in the matching process",
   "expertise_languages_tooltip": "Tell us the languages you're fluent in. Let's break those language barriers!",
   "expertise_countries_tooltip": "Share the countries where you've sprinkled your talent and in which of them you can really help companies be active in or expand to. Go global!",

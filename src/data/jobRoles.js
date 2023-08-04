@@ -17,6 +17,7 @@ const jobRoles = [
   { code: 'ChiefRevenueOfficer', label: 'Chief Revenue Officer (CRO)' },
   { code: 'ChiefExperienceOfficer', label: 'Chief Experience Officer (CXO)' },
   { code: 'ChiefCustomerOfficer', label: 'Chief Customer Officer (CCO)' },
+  { code: 'ChiefCommercialOfficer', label: 'Chief Commercial Officer (CCO)' },
   { code: 'ChiefLegalOfficer', label: 'Chief Legal Officer (CLO)' },
   { code: 'Advisor', label: 'Advisor' },
   { code: 'Consultant', label: 'Consultant' },
