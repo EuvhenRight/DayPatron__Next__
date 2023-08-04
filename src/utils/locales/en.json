@@ -11,7 +11,7 @@
 
   "personal_information_first_name_tooltip": "Hey there! Your first name goes here. Let us know what to call you!",
   "personal_information_last_name_tooltip": "We'd love to know you last name! Share it with us, won't you?",
-  "personal_information_email_name_tooltip": "Can you leave your email address? This is also your log-in username.",
+  "personal_information_email_tooltip": "Can you leave your email address? This is also your log-in username.",
   "personal_information_phone_number_tooltip": "Ring, ring! Give us your digits so we can reach out if really needed.",
   "personal_information_country_tooltip": "Where are you based? In this world of digital nomands, please let us know the country you are officially registered in.",
   "personal_information_linked_in_url_tooltip": "Show off your professional side! Share your LinkedIn profile here.",
