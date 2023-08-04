@@ -85,6 +85,12 @@ const InvoiceSettingsPage = () => {
   }
 
   useEffect(() => {
+    if (employers && employers.length > 0) {
+      setEmployerId(employers[0].id);
+    }
+  }, [employers]);
+
+  useEffect(() => {
     (async () => {
       await bindData();
     })();
@@ -93,25 +99,30 @@ const InvoiceSettingsPage = () => {
   return (
     <Grid container spacing={3}>
       <Grid item xs={6}>
-        <Stack spacing={1.25}>
-          <InfoWrapper tooltipText="invoice_settings_company">
-            <InputLabel htmlFor="mission-title">Company</InputLabel>
-          </InfoWrapper>
-          <Select
-            fullWidth
-            id="employerId"
-            name="employerId"
-            displayEmpty
-            value={normalizeInputValue(employerId)}
-            onChange={(event) => { setEmployerId(event.target.value); }}
-          >
-            {employers?.map((employer) => (
-              <MenuItem key={employer?.id} value={employer?.id}>
-                {employer?.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </Stack>
+        {employers?.length > 0 ? 
+          (<Stack spacing={1.25}>
+            <InfoWrapper tooltipText="invoice_settings_company">
+              <InputLabel htmlFor="mission-title">Company</InputLabel>
+            </InfoWrapper>
+            <Select
+              fullWidth
+              sx={{ width: '300px' }}
+              id="employerId"
+              name="employerId"
+              displayEmpty
+              value={normalizeInputValue(employerId)}
+              onChange={(event) => { setEmployerId(event.target.value); }}
+            >
+              {employers?.map((employer) => (
+                <MenuItem key={employer?.id} value={employer?.id}>
+                  {employer?.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </Stack>)
+          :
+          (<Typography>No companies found.</Typography>)
+        }
       </Grid>
       {employerId &&
         <Grid item xs={12}>
