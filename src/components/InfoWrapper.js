@@ -27,7 +27,7 @@ const InfoWrapper = ({ children, tooltipText }) => {
             title={intl.formatMessage({ id: tooltipText })}
             placement="top"
           >
-            <InfoCircleTwoTone twoToneColor={theme.palette.primary.main} onClick={() => { setOpen(true); }} />
+            <InfoCircleTwoTone twoToneColor={theme.palette.primary[400]} onClick={() => { setOpen(true); }} />
           </Tooltip>
         </ClickAwayListener>
 
