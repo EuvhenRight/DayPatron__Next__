@@ -354,6 +354,11 @@ const InvoicesPage = () => {
         disableFilters: true
       },
       {
+        Header: 'Due Date',
+        accessor: 'due_date',
+        disableFilters: true
+      },
+      {
         Header: 'Total Amount',
         accessor: 'total_amount',
         disableFilters: true,
