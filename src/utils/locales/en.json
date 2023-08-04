@@ -22,11 +22,11 @@
   "company_chamber_of_commercer_number_tooltip": "Please leave the official Chamber of Commerce registration number in this field.",
   "company_linked_in_url_tooltip": "Got a company LinkedIn page? Share the link with us and let the talent find you faster.",
   "company_description_tooltip": "Tell us about your ambitious company! Briefly describe what you do and what you are about. This is your first introduction which Talent will see, if you're company is not set to confidential.",
-  "company_address_street_tooltip": Where is the office located of this legal entity? Share the street name here please.",
+  "company_address_street_tooltip": "Where is the office located of this legal entity? Share the street name here please.",
   "company_address_street_number_tooltip": "The street number of your company's official address can be added here.",
   "company_address_city_tooltip": "Your company's base city. Let us know where you call home.",
   "company_address_postal_code_tooltip": "The postal code of your company's location goes here.",
-  "company_address_country_tooltip": What is the country where your company is officially registered?",
+  "company_address_country_tooltip": "What is the country where your company is officially registered?",
 
   "mission_company_tooltip": null,
   "mission_title_tooltip": null,
