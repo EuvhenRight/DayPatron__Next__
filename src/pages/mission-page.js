@@ -223,7 +223,7 @@ const MissionPage = () => {
         dispatch(
           openSnackbar({
             open: true,
-            message: 'Data updated.',
+            message: 'Saved.',
             variant: 'alert',
             alert: {
               color: 'success'
@@ -285,7 +285,7 @@ const MissionPage = () => {
         dispatch(
           openSnackbar({
             open: true,
-            message: 'Data updated.',
+            message: 'Saved.',
             variant: 'alert',
             alert: {
               color: 'success'
