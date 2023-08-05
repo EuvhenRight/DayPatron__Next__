@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useKeycloak } from '@react-keycloak/web';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from '@mui/material/styles';
+import industries from 'data/industries';
 import {
   Autocomplete,
   TextField,
@@ -17,6 +18,13 @@ import {
   Chip,
   createFilterOptions
 } from '@mui/material';
+
+import {
+  BankOutlined,
+  EnvironmentOutlined,
+  ShopOutlined
+} from '@ant-design/icons';
+
 import MainCard from 'components/MainCard';
 import SanitizedHTML from 'react-sanitized-html';
 import InfoWrapper from 'components/InfoWrapper';
@@ -331,6 +339,37 @@ const MissionPage = () => {
   return (
     <Box sx={{ mt: 2.5 }}>
       <Grid container spacing={3}>
+
+        <Grid item xs={12}>
+          <Grid container spacing={5}>
+            <Grid item xs={12} md={3}>
+              <Stack direction="row" alignItems="center" spacing={1.2}>
+                <EnvironmentOutlined style={{ fontSize: '36px' }} />
+                <Typography variant="h3">{mission?.title}</Typography>
+              </Stack>
+            </Grid>
+
+            <Grid item xs={12} md={3}>
+              <Stack direction="row" alignItems="center" spacing={1.2}>
+                <BankOutlined style={{ fontSize: '36px' }} />
+                <Typography variant="h3">{mission?.employerName}</Typography>
+              </Stack>
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <Stack direction="row" alignItems="center" spacing={1.2}>
+                <EnvironmentOutlined style={{ fontSize: '36px' }} />
+                <Typography variant="h3">{mission?.employerCity}</Typography>
+              </Stack>
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <Stack direction="row" alignItems="center" spacing={1.2}>
+                <ShopOutlined style={{ fontSize: '36px' }} />
+                <Typography variant="h3">{industries.find(x => x.code === mission?.employerIndustry)?.label}</Typography>
+              </Stack>
+            </Grid>
+          </Grid>
+        </Grid>
+
         <Grid item xs={12}>
           <MainCard title="Mission">
             <List sx={{ py: 0 }}>
@@ -344,7 +383,7 @@ const MissionPage = () => {
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Stack spacing={0.5}>
-                      <Typography color="secondary">Employer</Typography>
+                      <Typography color="secondary">Company</Typography>
                       <Typography>{mission?.employerName}</Typography>
                     </Stack>
                   </Grid>
