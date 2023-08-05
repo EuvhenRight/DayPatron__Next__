@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { useKeycloak } from '@react-keycloak/web';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from '@mui/material/styles';
-import industries from 'data/industries';
 import {
   Autocomplete,
   TextField,
@@ -20,12 +19,11 @@ import {
 } from '@mui/material';
 
 import {
-  BankOutlined,
-  EnvironmentOutlined,
-  ShopOutlined
+  EnvironmentOutlined
 } from '@ant-design/icons';
 
 import MainCard from 'components/MainCard';
+import Avatar from 'components/@extended/Avatar';
 import SanitizedHTML from 'react-sanitized-html';
 import InfoWrapper from 'components/InfoWrapper';
 
@@ -37,6 +35,8 @@ import { openSnackbar } from 'store/reducers/snackbar';
 import { normalizeInputValue, prepareApiBody } from 'utils/stringUtils';
 import { PERSONAL_INFORMATION_UPDATE } from 'store/reducers/actions';
 
+const avatarImage = require.context('assets/images/missions', true);
+
 const MissionPage = () => {
   const dispatch = useDispatch();
   const theme = useTheme();
@@ -47,8 +47,59 @@ const MissionPage = () => {
   const [isCreatingApplication, setIsCreatingApplication] = useState(false);
   const [isDeletingApplication, setIsDeletingApplication] = useState(false);
   const personalInformation = useSelector(state => state.personalInformation);
+  const [avatar, setAvatar] = useState(avatarImage(`./default.png`));
+  const [employerAvatar, setEmployerAvatar] = useState(avatarImage(`./default.png`));
 
   const filter = createFilterOptions();
+
+  useEffect(() => {
+    (async () => {
+      var imgSrc = await getImageSrc(mission?.mainImageUrl);
+      setAvatar(imgSrc);
+
+      if (imgSrc)
+        setTimeout(function () {
+          URL.revokeObjectURL(imgSrc);
+        }, 1000);
+
+    })();
+  }, [mission?.mainImageUrl]);
+
+  useEffect(() => {
+    (async () => {
+      var imgSrc = await getImageSrc(mission?.employerMainImageUrl);
+      setEmployerAvatar(imgSrc);
+
+      if (imgSrc)
+        setTimeout(function () {
+          URL.revokeObjectURL(imgSrc);
+        }, 1000);
+
+    })();
+  }, [mission?.employerMainImageUrl]);
+
+  const getImageSrc = async (imageUrl) => {
+    try {
+      if (!imageUrl) {
+        return avatarImage(`./default.png`);
+      }
+
+      let response = await fetch(imageUrl,
+        {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + keycloak.idToken
+          }
+        }
+      );
+
+      let imageBlob = await response.blob();
+
+      return URL.createObjectURL(imageBlob);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const bindData = async () => {
     try {
@@ -340,31 +391,27 @@ const MissionPage = () => {
     <Box sx={{ mt: 2.5 }}>
       <Grid container spacing={3}>
 
-        <Grid item xs={12}>
+        <Grid item xs={12} sx={{mb: '30px'}}>
           <Grid container spacing={5}>
-            <Grid item xs={12} md={3}>
+            <Grid item xs={12} md={4}>
               <Stack direction="row" alignItems="center" spacing={1.2}>
-                <EnvironmentOutlined style={{ fontSize: '36px' }} />
+
+                <Avatar alt={mission?.title} src={avatar} />
+
                 <Typography variant="h3">{mission?.title}</Typography>
               </Stack>
             </Grid>
 
-            <Grid item xs={12} md={3}>
+            <Grid item xs={12} md={4}>
               <Stack direction="row" alignItems="center" spacing={1.2}>
-                <BankOutlined style={{ fontSize: '36px' }} />
+                <Avatar alt={mission?.employerName} src={employerAvatar} />
                 <Typography variant="h3">{mission?.employerName}</Typography>
               </Stack>
             </Grid>
-            <Grid item xs={12} md={3}>
+            <Grid item xs={12} md={4}>
               <Stack direction="row" alignItems="center" spacing={1.2}>
                 <EnvironmentOutlined style={{ fontSize: '36px' }} />
                 <Typography variant="h3">{mission?.employerCity}</Typography>
-              </Stack>
-            </Grid>
-            <Grid item xs={12} md={3}>
-              <Stack direction="row" alignItems="center" spacing={1.2}>
-                <ShopOutlined style={{ fontSize: '36px' }} />
-                <Typography variant="h3">{industries.find(x => x.code === mission?.employerIndustry)?.label}</Typography>
               </Stack>
             </Grid>
           </Grid>
