@@ -434,14 +434,18 @@ const MissionPage = () => {
         </Grid>
 
         <Grid item xs={12} md={8}>
-          <MainCard title="Notes">
+          <MainCard title={
+            <InfoWrapper tooltipText="mission_notes_tooltip">
+              <span>Notes</span>
+            </InfoWrapper>
+          } >
             <List sx={{ py: 0 }}>
               <ListItem>
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
                     <Stack spacing={0.5}>
                       <InfoWrapper tooltipText="mission_admin_notes_about_me_tooltip">
-                        <Typography color="secondary">Admin Notes About Me</Typography>
+                        <Typography color="secondary">Community Manager About Me</Typography>
                       </InfoWrapper>
                       <SanitizedHTML html={
                         missionContractor?.adminNotes?.showContractorNotesToContractor &&
@@ -458,7 +462,7 @@ const MissionPage = () => {
                   <Grid item xs={12}>
                     <Stack spacing={0.5}>
                       <InfoWrapper tooltipText="mission_admin_notes_about_the_mission_tooltip">
-                        <Typography color="secondary">Admin Notes About the Mission</Typography>
+                        <Typography color="secondary">Community Manager About the Mission</Typography>
                       </InfoWrapper>
                       <SanitizedHTML html={
                         missionContractor?.adminNotes?.showMissionNotesToContractor &&
