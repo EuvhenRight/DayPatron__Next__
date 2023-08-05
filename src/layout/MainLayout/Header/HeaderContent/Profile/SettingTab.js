@@ -18,7 +18,7 @@ const SettingTab = () => {
         <ListItemIcon>
           <SearchOutlined />
         </ListItemIcon>
-        <ListItemText primary={intl.formatMessage({ id: 'missions' })} />
+        <ListItemText primary={intl.formatMessage({ id: 'find-mission' })} />
       </ListItemButton>
       <ListItemButton onClick={() => { navigate('/invoices/settings'); }}>
         <ListItemIcon>

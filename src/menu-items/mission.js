@@ -23,8 +23,8 @@ const mission = {
   type: 'group',
   children: [
     {
-      id: 'missions',
-      title: <FormattedMessage id="missions" />,
+      id: 'find-mission',
+      title: <FormattedMessage id="find-mission" />,
       type: 'item',
       url: '/missions',
       icon: icons.SearchOutlined

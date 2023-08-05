@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import jobClusters from 'data/jobClusters';
 
 // material-ui
 import {
@@ -65,6 +66,7 @@ const MissionsPage = () => {
   const [isInvitedFilter, setIsInvitedFilter] = useState('all');
   const [isAppliedFilter, setIsAppliedFilter] = useState('all');
   const [isMatchedFilter, setIsMatchedFilter] = useState('all');
+  const [jobClustersFilter, setJobClustersFilter] = useState(null);
   const [tagsFilter, setTagsFilter] = useState(null);
   
   const matchDownSM = useMediaQuery((theme) => theme.breakpoints.down('sm'));
@@ -81,6 +83,12 @@ const MissionsPage = () => {
 
       if (isMatchedFilter !== 'all')
         requestUrl += '&isMatched=' + isMatchedFilter;
+
+      if (jobClustersFilter?.length > 0) {
+        jobClustersFilter.map((jobCluster) => {
+          requestUrl += '&jobClusters=' + jobCluster.code;
+        });
+      }
 
       if (tagsFilter?.length > 0)
         tagsFilter.map((tag) => {
@@ -117,7 +125,7 @@ const MissionsPage = () => {
     (async () => {
       await bindMissions();
     })();
-  }, [isInvitedFilter, isAppliedFilter, isMatchedFilter, tagsFilter]);
+  }, [isInvitedFilter, isAppliedFilter, isMatchedFilter, jobClustersFilter, tagsFilter]);
 
   useEffect(() => {
     const newMissions = missions.filter((value) => {
@@ -222,6 +230,35 @@ const MissionsPage = () => {
                             );
                           })}
                         </Select>
+                      </FormControl>
+                    </Box>
+                  </Stack>
+                </Grid>
+
+                <Grid item>
+                  <Stack>
+                    <Box>
+                      <FormControl sx={{ minWidth: 120 }} fullWidth>
+                        <Autocomplete
+                          multiple
+                          fullWidth
+                          options={jobClusters ?? []}
+                          value={jobClustersFilter ?? []}
+                          onChange={(event, newValue) => {
+                            setJobClustersFilter(newValue);
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              placeholder="Job Clusters"
+                              name="jobClusters"
+                              inputProps={{
+                                ...params.inputProps,
+                                autoComplete: 'new-password'
+                              }}
+                            />
+                          )}
+                        />
                       </FormControl>
                     </Box>
                   </Stack>
