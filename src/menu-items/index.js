@@ -8,7 +8,8 @@ import {
   ProjectOutlined,
   BlockOutlined,
   MoneyCollectOutlined,
-  FileTextOutlined
+  FileTextOutlined,
+  SearchOutlined
 } from '@ant-design/icons';
 
 // icons
@@ -18,7 +19,8 @@ const icons = {
   ProjectOutlined,
   BlockOutlined,
   MoneyCollectOutlined,
-  FileTextOutlined
+  FileTextOutlined,
+  SearchOutlined
 };
 
 // ==============================|| MENU ITEMS ||============================== //
@@ -63,6 +65,20 @@ const menuItems = {
           type: 'item',
           url: '/missions/matches',
           icon: icons.BlockOutlined
+        }
+      ]
+    },
+    {
+      id: 'solutions',
+      title: <FormattedMessage id="solutions" />,
+      type: 'group',
+      children: [
+        {
+          id: 'find-products',
+          title: <FormattedMessage id="find-products" />,
+          type: 'item',
+          url: '/products',
+          icon: icons.SearchOutlined
         }
       ]
     },

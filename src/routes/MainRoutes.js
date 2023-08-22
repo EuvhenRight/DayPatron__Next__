@@ -26,9 +26,10 @@ const MissionSection = Loadable(lazy(() => import('sections/mission/MissionSecti
 const MissionOverviewTabContent = Loadable(lazy(() => import('sections/mission/MissionOverviewTabContent')));
 const MissionContractorMatchesTabContent = Loadable(lazy(() => import('sections/mission/MissionContractorMatchesTabContent')));
 
+const ProductsPage = Loadable(lazy(() => import('pages/products-page')));
+
 const InvoicesPage = Loadable(lazy(() => import('pages/invoices-page')));
 const InvoiceSettingsPage = Loadable(lazy(() => import('pages/invoice-settings-page')));
-
 
 const MissionMatchesPage = Loadable(lazy(() => import('pages/mission-matches-page')));
 // ==============================|| MAIN ROUTING ||============================== //
@@ -115,6 +116,10 @@ const MainRoutes = {
               ]
             }
           ]
+        },
+        {
+          path: 'products',
+          element: <ProductsPage />
         },
         {
           path: 'invoices/settings',
