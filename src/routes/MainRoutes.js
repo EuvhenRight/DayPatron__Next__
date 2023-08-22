@@ -23,6 +23,8 @@ const MissionsPage = Loadable(lazy(() => import('pages/missions-page')));
 const MissionChatPage = Loadable(lazy(() => import('pages/mission-chat-page')));
 const MissionTimeTrackingPage = Loadable(lazy(() => import('pages/mission-time-tracking-page')));
 
+const MyProductsPage = Loadable(lazy(() => import('pages/my-products-page')));
+
 const InvoicesPage = Loadable(lazy(() => import('pages/invoices-page')));
 const InvoiceSettingsPage = Loadable(lazy(() => import('pages/invoice-settings-page')));
 
@@ -79,6 +81,10 @@ const MainRoutes = {
         {
           path: 'missions',
           element: <MissionsPage />
+        },
+        {
+          path: 'products/my',
+          element: <MyProductsPage />
         },
         {
           path: 'invoices/settings',
