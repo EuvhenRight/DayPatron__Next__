@@ -62,7 +62,7 @@ const ProductsPage = () => {
   const bindProducts = async () => {
     try {
       var requestUrl = process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/products?q=1';
-
+      
       if (jobClusterFilter) {
         requestUrl += '&jobCluster=' + jobClusterFilter.code;
       }
@@ -143,7 +143,7 @@ const ProductsPage = () => {
                           renderInput={(params) => (
                             <TextField
                               {...params}
-                              placeholder="Job Cluster"
+                              placeholder="Category"
                               name="jobCluster"
                               inputProps={{
                                 ...params.inputProps,
