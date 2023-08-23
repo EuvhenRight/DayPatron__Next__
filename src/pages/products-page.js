@@ -211,7 +211,7 @@ const ProductsPage = () => {
                 })
                 .map((product, index) => (
                   <Slide key={index} direction="up" in={true} timeout={50}>
-                    <Grid item xs={12} sm={6} md={4}>
+                    <Grid item xs={12} sm={6}>
                       <ProductCard product={product} />
                     </Grid>
                   </Slide>

@@ -1,46 +1,41 @@
 import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useKeycloak } from '@react-keycloak/web';
-import { useState, useEffect } from 'react';
+import jobClusters from 'data/jobClusters';
 // material-ui
 import {
+  Box,
   Button,
+  CardContent,
+  CardMedia,
   Divider,
-  Fade,
   Grid,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Menu,
-  MenuItem,
   Stack,
   Typography,
+  List,
+  ListItem,
+  ListItemText,
   ListItemIcon
 } from '@mui/material';
 
-// third-party
-import { PDFDownloadLink } from '@react-pdf/renderer';
-import SanitizedHTML from 'react-sanitized-html';
-
 // project import
 import MainCard from 'components/MainCard';
-import Avatar from 'components/@extended/Avatar';
-import IconButton from 'components/@extended/IconButton';
-import ProductPdfCard from 'sections/product/ProductPdfCard';
-
-// assets
-import { MoreOutlined, FieldTimeOutlined, EuroOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
-import jobClusters from 'data/jobClusters';
-
-// ==============================|| PRODUCT - CARD ||============================== //
+import SkeletonProductPlaceholder from 'components/cards/skeleton/ProductPlaceholder';
+import { FieldTimeOutlined } from '@ant-design/icons';
 
 const avatarImage = require.context('assets/images/products', true);
 
+// ==============================|| PRODUCT CARD ||============================== //
+
 const ProductCard = ({ product }) => {
-  const { keycloak } = useKeycloak();
-  const navigate = useNavigate();
   const [avatar, setAvatar] = useState(avatarImage(`./default.png`));
+  const [isLoading, setLoading] = useState(true);
+  const { keycloak } = useKeycloak();
+
+  useEffect(() => {
+    setLoading(false);
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -78,129 +73,84 @@ const ProductCard = ({ product }) => {
     }
   };
 
-  const handleClickDetails = () => {
-    navigate('/products/' + product.id);
-  };
-
-  const handleClickExportPdf = () => {
-    setAnchorEl(null);
-  };
-
-  const [anchorEl, setAnchorEl] = useState(null);
-  const openMenu = Boolean(anchorEl);
-  const handleMenuClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
+  const onBuyClick = () => {
+    
   };
 
   return (
     <>
-      <MainCard  sx={{ height: 1, '& .MuiCardContent-root': { height: 1, display: 'flex', flexDirection: 'column' } }}>
-        <Grid id="print" container spacing={2.25}>
-          <Grid item xs={12}>
-            <List sx={{ width: 1, p: 0 }}>
-              <ListItem
-                disablePadding
-                secondaryAction={
-                  <IconButton edge="end" aria-label="comments" color="secondary" onClick={handleMenuClick}>
-                    <MoreOutlined style={{ fontSize: '1.15rem' }} />
-                  </IconButton>
-                }
-              >
-                <ListItemAvatar>
-                  <Avatar onClick={handleClickDetails} className="clickable" alt={product.title} src={avatar} />
-                </ListItemAvatar>
-                <ListItemText className="list-card-title"
-                  primary={<Typography onClick={handleClickDetails} variant="subtitle1">{product.title}</Typography>}
-                  secondary={
-                    <>
-                      <Typography variant="caption" color="secondary">
-                        {jobClusters.find(x => x.code === product.jobCluster)?.label}
-                      </Typography>
-                    </>
-                  }
-                />
-              </ListItem>
-            </List>
-            <Menu
-              id="fade-menu"
-              MenuListProps={{
-                'aria-labelledby': 'fade-button'
-              }}
-              anchorEl={anchorEl}
-              open={openMenu}
-              onClose={handleMenuClose}
-              TransitionComponent={Fade}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right'
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right'
-              }}
-            >
-              <MenuItem sx={{ a: { textDecoration: 'none', color: 'inherit' } }}>
-                <>
-                  {' '}
-                  <PDFDownloadLink onClick={handleClickExportPdf} document={<ProductPdfCard product={product} />} fileName={`product-${product.title}.pdf`}>
-                    Export PDF
-                  </PDFDownloadLink>
-                </>
-              </MenuItem>
-              <MenuItem onClick={handleClickDetails}>Details</MenuItem>
-            </Menu>
-          </Grid>
-          <Grid item xs={12}>
-            <Divider />
-          </Grid>
-          <Grid item xs={12}>
-            <div className="card-description-container">
-              <SanitizedHTML html={product?.description} />
-            </div>
-          </Grid>
-
-          <Grid item xs={6}>
-            <List sx={{ p: 0, overflow: 'hidden', '& .MuiListItem-root': { px: 0, py: 0.5 } }}>
-              {product.estimatedImplementationHours &&
-                <ListItem>
-                  <ListItemIcon>
-                    <FieldTimeOutlined />
-                  </ListItemIcon>
-                  <ListItemText primary={<Typography color="secondary">{product.estimatedImplementationHours} hour(s)</Typography>} />
-                </ListItem>}
-            </List>
-          </Grid>
-
-          <Grid item xs={6}>
-            <List sx={{ p: 0, overflow: 'hidden', '& .MuiListItem-root': { px: 0, py: 0.5 } }}>
-              {product.price &&
-                <ListItem>
-                  <ListItemIcon>
-                    <EuroOutlined />
-                  </ListItemIcon>
-                  <ListItemText primary={<Typography color="secondary">{product.price}</Typography>} />
-                </ListItem>}
-            </List>
-          </Grid>
-
-        </Grid>
-        <Stack
-          direction="row"
-          className="hideforPDf"
-          alignItems="center"
-          spacing={1}
-          justifyContent="space-between"
-          sx={{ mt: 'auto', mb: 0, pt: 2.25 }}
+      {isLoading ? (
+        <SkeletonProductPlaceholder />
+      ) : (
+        <MainCard
+          content={false}
+          boxShadow
+          sx={{
+            '&:hover': {
+              transform: 'scale3d(1.02, 1.02, 1)',
+              transition: 'all .4s ease-in-out'
+            }
+          }}
         >
-          <Button variant="outlined" size="small" onClick={handleClickDetails} className="card-button-right">
-            Details
-          </Button>
-        </Stack>
-      </MainCard>
+          <Box sx={{ width: 250, m: 'auto', mt: '25px', mb: '25px' }}>
+            <CardMedia
+              sx={{ height: 250, textDecoration: 'none', opacity: 1 }}
+              image={avatar}
+              component={Link}
+              to={`/products/${product?.id}`}
+            />
+          </Box>
+          <Divider />
+          <CardContent sx={{ p: 2 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <Stack>
+                  <Typography
+                    component={Link}
+                    to={`/products/${product?.id}`}
+                    color="textPrimary"
+                    variant="h5"
+                    sx={{
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                      display: 'block',
+                      textDecoration: 'none'
+                    }}
+                  >
+                    {product?.title}
+                  </Typography>
+                  <Typography variant="h6" color="textSecondary">
+                      {jobClusters.find(x => x.code === product.cluster)?.label}
+                  </Typography>
+                </Stack>
+              </Grid>
+
+              <Grid item xs={6}>
+                <List sx={{ p: 0, overflow: 'hidden', '& .MuiListItem-root': { px: 0, py: 0.5 } }}>
+                  {product?.estimatedImplementationHours &&
+                    <ListItem>
+                      <ListItemIcon>
+                        <FieldTimeOutlined />
+                      </ListItemIcon>
+                      <ListItemText primary={<Typography color="secondary">{product.estimatedImplementationHours} hour(s)</Typography>} />
+                    </ListItem>}
+                </List>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Stack direction="row" justifyContent="space-between" alignItems="center">
+                  <Typography variant="h5">&euro;{product?.price}</Typography>
+
+                  <Button variant="contained" onClick={onBuyClick}>
+                    Buy
+                  </Button>
+                </Stack>
+              </Grid>
+            </Grid>
+          </CardContent>
+        </MainCard>
+      )}
     </>
   );
 };
