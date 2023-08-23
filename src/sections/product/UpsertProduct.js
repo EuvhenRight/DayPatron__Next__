@@ -22,7 +22,8 @@ import {
   InputLabel,
   Stack,
   TextField,
-  Typography
+  Typography,
+  CardMedia
 } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -34,7 +35,6 @@ import { useFormik, Form, FormikProvider } from 'formik';
 
 // project imports
 import { openSnackbar } from 'store/reducers/snackbar';
-import Avatar from 'components/@extended/Avatar';
 
 // assets
 import { CameraOutlined } from '@ant-design/icons';
@@ -350,19 +350,22 @@ const UpsertProduct = ({ productId }) => {
 
             <DialogContent sx={{ p: 2.5 }}>
               <Grid container spacing={3}>
-                <Grid item xs={12} md={1}>
+                <Grid item xs={12} md={4}>
                   <Stack spacing={2.5} alignItems="center">
                     <FormLabel
                       htmlFor="change-avatar"
                       sx={{
                         position: 'relative',
-                        borderRadius: '50%',
                         overflow: 'hidden',
                         '&:hover .MuiBox-root': { opacity: 1 },
                         cursor: 'pointer'
                       }}
                     >
-                      <Avatar alt="Avatar 1" src={avatar} sx={{ width: 72, height: 72, border: '1px dashed' }} />
+                      <CardMedia
+                        image={avatar}
+                        component="img"
+                        sx={{ borderRadius: '4px', border: '1px dashed' }}
+                      />
                       <Box
                         sx={{
                           position: 'absolute',
@@ -402,7 +405,7 @@ const UpsertProduct = ({ productId }) => {
                     }
                   </Stack>
                 </Grid>
-                <Grid item xs={12} md={11}>
+                <Grid item xs={12} md={8}>
                   <Grid container spacing={3}>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
