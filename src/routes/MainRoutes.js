@@ -27,6 +27,7 @@ const MissionOverviewTabContent = Loadable(lazy(() => import('sections/mission/M
 const MissionContractorMatchesTabContent = Loadable(lazy(() => import('sections/mission/MissionContractorMatchesTabContent')));
 
 const ProductsPage = Loadable(lazy(() => import('pages/products-page')));
+const ProductPage = Loadable(lazy(() => import('pages/product-page')));
 
 const InvoicesPage = Loadable(lazy(() => import('pages/invoices-page')));
 const InvoiceSettingsPage = Loadable(lazy(() => import('pages/invoice-settings-page')));
@@ -116,6 +117,10 @@ const MainRoutes = {
               ]
             }
           ]
+        },
+        {
+          path: 'products/:productId',
+          element: <ProductPage />
         },
         {
           path: 'products',

@@ -14,6 +14,7 @@ import {
   Slide,
   Pagination,
   Typography,
+  Slider,
   useMediaQuery
 } from '@mui/material';
 
@@ -54,6 +55,8 @@ const ProductsPage = () => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [page, setPage] = useState(1);
+  const [priceRangeFilter, setPriceRangeFilter] = useState([0, 100000]);
+  const [priceRangeFilterIndicator, setPriceRangeFilterIndicator] = useState([0, 100000]);
 
   const [jobClusterFilter, setJobClusterFilter] = useState(null);
 
@@ -65,6 +68,14 @@ const ProductsPage = () => {
       
       if (jobClusterFilter) {
         requestUrl += '&jobCluster=' + jobClusterFilter.code;
+      }
+
+      if (priceRangeFilter && priceRangeFilter[0] >= 0) {
+        requestUrl += '&minimumPrice=' + priceRangeFilter[0];
+      }
+
+      if (priceRangeFilter && priceRangeFilter[1] >= 0) {
+        requestUrl += '&maximumPrice=' + priceRangeFilter[1];
       }
 
       let response = await fetch(requestUrl,
@@ -97,7 +108,7 @@ const ProductsPage = () => {
     (async () => {
       await bindProducts();
     })();
-  }, [jobClusterFilter]);
+  }, [jobClusterFilter, priceRangeFilter]);
 
   useEffect(() => {
     const newProducts = products.filter((value) => {
@@ -120,45 +131,81 @@ const ProductsPage = () => {
     _DATA.jump(p);
   };
 
+  const handlePriceRangeFilterSlider = (event, newValue) => {
+    setPriceRangeFilter(newValue);
+  };
+
+  const handlePriceRangeFilterSliderIndicator = (event, newValue) => {
+    setPriceRangeFilterIndicator(newValue);
+  };
+
   return (
     <>
       <Grid container spacing={3}>
         <Grid item xs={12} md={3}>
           <MainCard title="Filter">
-            <Stack spacing={0.5}>
 
-              <Grid container direction="column" rowSpacing={3}>
-                
-                <Grid item>
-                  <Stack>
-                    <Box>
-                      <FormControl sx={{ minWidth: 120 }} fullWidth>
-                        <Autocomplete
-                          fullWidth
-                          options={jobClusters ?? []}
-                          value={jobClusterFilter}
-                          onChange={(event, newValue) => {
-                            setJobClusterFilter(newValue);
-                          }}
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              placeholder="Category"
-                              name="jobCluster"
-                              inputProps={{
-                                ...params.inputProps,
-                                autoComplete: 'new-password'
-                              }}
-                            />
-                          )}
-                        />
-                      </FormControl>
-                    </Box>
-                  </Stack>
-                </Grid>
+            <Grid container direction="column" rowSpacing={3}>
 
+              <Grid item>
+                <Stack spacing={1}>
+                  <Typography variant="h5">Category</Typography>
+                  <Box>
+                    <FormControl sx={{ minWidth: 120 }} fullWidth>
+                      <Autocomplete
+                        fullWidth
+                        options={jobClusters ?? []}
+                        value={jobClusterFilter}
+                        onChange={(event, newValue) => {
+                          setJobClusterFilter(newValue);
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            placeholder="Category"
+                            name="jobCluster"
+                            inputProps={{
+                              ...params.inputProps,
+                              autoComplete: 'new-password'
+                            }}
+                          />
+                        )}
+                      />
+                    </FormControl>
+                  </Box>
+                </Stack>
               </Grid>
-            </Stack>
+
+              <Grid item>
+                <Stack spacing={1}>
+                  <Typography variant="h5">Price</Typography>
+                  <Stack direction="row" spacing={2}>
+                    <Stack spacing={0.5}>
+                      <Typography color="textSecondary">Min</Typography>
+                      <TextField
+                        value={priceRangeFilterIndicator[0]}
+                        InputProps={{
+                          readOnly: true
+                        }}
+                      />
+                    </Stack>
+                    <Stack spacing={0.5}>
+                      <Typography color="textSecondary">Max</Typography>
+                      <TextField
+                        value={priceRangeFilterIndicator[1]}
+                        InputProps={{
+                          readOnly: true
+                        }}
+                      />
+                    </Stack>
+                  </Stack>
+                  <Box sx={{ px: 0.75 }}>
+                    <Slider min={0} max={100000} value={priceRangeFilterIndicator} onChange={handlePriceRangeFilterSliderIndicator} onChangeCommitted={handlePriceRangeFilterSlider} valueLabelDisplay="auto" />
+                  </Box>
+                </Stack>
+              </Grid>
+
+            </Grid>
           </MainCard>
         </Grid>
         <Grid item xs={12} md={9}>

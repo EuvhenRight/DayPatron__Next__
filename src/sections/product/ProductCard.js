@@ -73,7 +73,7 @@ const ProductCard = ({ product }) => {
     }
   };
 
-  const onBuyClick = () => {
+  const handleBuyClick = () => {
     
   };
 
@@ -142,7 +142,7 @@ const ProductCard = ({ product }) => {
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
                   <Typography variant="h5">&euro;{product?.price}</Typography>
 
-                  <Button variant="contained" onClick={onBuyClick}>
+                  <Button variant="contained" onClick={handleBuyClick}>
                     Buy
                   </Button>
                 </Stack>
