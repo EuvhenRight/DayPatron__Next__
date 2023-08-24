@@ -202,7 +202,7 @@ const MyProductsPage = () => {
         />
       </Stack>
 
-      <AlertProductDelete product={productToDelete} open={openDeleteAlert} handleClose={handleDeleteAlertClose} bindProducts={bindProducts} />
+      <AlertProductDelete product={productToDelete} open={openDeleteAlert} handleClose={handleDeleteAlertClose} onArchive={bindProducts} />
     </>
   );
 };
