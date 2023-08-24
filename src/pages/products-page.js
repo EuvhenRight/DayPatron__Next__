@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import jobClusters from 'data/jobClusters';
+import { useDispatch, useSelector } from 'react-redux';
 
 // material-ui
 import {
@@ -15,8 +16,18 @@ import {
   Pagination,
   Typography,
   Slider,
+  Dialog,
+  DialogContent,
+  InputLabel,
+  Button,
   useMediaQuery
 } from '@mui/material';
+
+import InfoWrapper from 'components/InfoWrapper';
+import { PopupTransition } from 'components/@extended/Transitions';
+import Avatar from 'components/@extended/Avatar';
+import { ShoppingCartOutlined } from '@ant-design/icons';
+import { openSnackbar } from 'store/reducers/snackbar';
 
 // project import
 import EmptyCardList from 'components/cards/skeleton/EmptyCardList';
@@ -27,7 +38,7 @@ import usePagination from 'hooks/usePagination';
 
 // assets
 import { useKeycloak } from '@react-keycloak/web';
-import { compareSortValues } from 'utils/stringUtils';
+import { normalizeInputValue, prepareApiBody, compareSortValues } from 'utils/stringUtils';
 import MainCard from '../components/MainCard';
 
 // ==============================|| PRODUCTS - PAGE ||============================== //
@@ -49,6 +60,8 @@ const allColumns = [
 
 const ProductsPage = () => {
   const { keycloak } = useKeycloak();
+  const personalInformation = useSelector(state => state.personalInformation);
+  const dispatch = useDispatch();
 
   const [sortBy, setSortBy] = useState('Id');
   const [globalFilter, setGlobalFilter] = useState('');
@@ -61,6 +74,43 @@ const ProductsPage = () => {
   const [jobClusterFilter, setJobClusterFilter] = useState(null);
 
   const matchDownSM = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+
+  const [openBuyDialog, setOpenBuyDialog] = useState(false);
+  const [employers, setEmployers] = useState(null);
+  const [employerId, setEmployerId] = useState(null);
+  const [productToBuy, setProductToBuy] = useState(null);
+
+  const bindEmployers = async () => {
+    try {
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers?employerUserId=' + encodeURIComponent(personalInformation.id),
+        {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + keycloak.idToken
+          }
+        }
+      );
+
+      let json = await response.json();
+
+      setEmployers(json.employers);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    (async () => {
+      if (openBuyDialog && !employers)
+        await bindEmployers();
+    })();
+  }, [openBuyDialog]);
+
+  useEffect(() => {
+    if (employers && employers.length > 0) {
+      setEmployerId(employers[0].id);
+    }
+  }, [employers]);
 
   const bindProducts = async () => {
     try {
@@ -137,6 +187,57 @@ const ProductsPage = () => {
 
   const handlePriceRangeFilterSliderIndicator = (event, newValue) => {
     setPriceRangeFilterIndicator(newValue);
+  };
+
+  const handleBuyClick = (product) => {
+    setProductToBuy(product);
+    setOpenBuyDialog(true);
+  }
+
+  const handleConfirmBuyClick = async () => {
+    let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/products/' + productToBuy.id + '/orders',
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + keycloak.idToken,
+          'Content-Type': 'application/json'
+        },
+        body: prepareApiBody({ employerId })
+      }
+    );
+
+    if (!response.ok) {
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Failed placing an order.',
+          variant: 'alert',
+          alert: {
+            color: 'error'
+          },
+          close: false
+        })
+      );
+
+      setOpenBuyDialog(false);
+      return;
+    }
+
+    setOpenBuyDialog(false);
+
+    let json = await response.json();
+
+    dispatch(
+      openSnackbar({
+        open: true,
+        message: "Placed order with id '" + json.id + "'",
+        variant: 'alert',
+        alert: {
+          color: 'success'
+        },
+        close: false
+      })
+    );
   };
 
   return (
@@ -259,7 +360,7 @@ const ProductsPage = () => {
                 .map((product, index) => (
                   <Slide key={index} direction="up" in={true} timeout={50}>
                     <Grid item xs={12} sm={6}>
-                      <ProductCard product={product} />
+                      <ProductCard product={product} onBuyClick={() => handleBuyClick(product)} />
                     </Grid>
                   </Slide>
                 ))
@@ -281,6 +382,63 @@ const ProductsPage = () => {
           onChange={handleChangePage}
         />
       </Stack>
+
+      <Dialog
+        open={openBuyDialog}
+        onClose={() => { setOpenBuyDialog(false); }}
+        keepMounted
+        TransitionComponent={PopupTransition}
+        maxWidth="xs"
+        aria-labelledby="column-delete-title"
+        aria-describedby="column-delete-description"
+      >
+        <DialogContent sx={{ mt: 2, my: 1 }}>
+          <Stack alignItems="center" spacing={3.5}>
+            <Avatar color="primary" sx={{ width: 72, height: 72, fontSize: '1.75rem' }}>
+              <ShoppingCartOutlined />
+            </Avatar>
+            <Stack spacing={2}>
+              <Typography variant="h4" align="center">
+                You are about to buy product &apos;{productToBuy?.title}&apos;. Select the company for which you want to place the order:
+              </Typography>
+
+              {employers?.length > 0 ?
+                (<Stack spacing={1.25}>
+                  <InfoWrapper tooltipText="product_buy_company">
+                    <InputLabel htmlFor="company-name">Company</InputLabel>
+                  </InfoWrapper>
+                  <Select
+                    fullWidth
+                    id="employerId"
+                    name="employerId"
+                    displayEmpty
+                    value={normalizeInputValue(employerId)}
+                    onChange={(event) => { setEmployerId(event.target.value); }}
+                  >
+                    {employers?.map((employer) => (
+                      <MenuItem key={employer?.id} value={employer?.id}>
+                        {employer?.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </Stack>)
+                :
+                (<Typography>No companies found.</Typography>)
+              }
+
+            </Stack>
+
+            <Stack direction="row" spacing={2} sx={{ width: 1 }}>
+              <Button disabled={!employerId} fullWidth color="primary" variant="contained" onClick={() => handleConfirmBuyClick()} autoFocus>
+                Buy
+              </Button>
+              <Button fullWidth onClick={() => { setOpenBuyDialog(false); }} color="secondary" variant="outlined">
+                Cancel
+              </Button>
+            </Stack>
+          </Stack>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };

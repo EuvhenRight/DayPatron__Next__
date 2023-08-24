@@ -59,7 +59,7 @@ const MissionMatchesPage = () => {
 
   const [isInvitedFilter, setIsInvitedFilter] = useState('all');
   const [isAppliedFilter, setIsAppliedFilter] = useState('all');
-  const [missionFilter, setMissionFilter] = useState('all');
+  const [missionFilter, setMissionFilter] = useState('');
 
   const matchDownSM = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
@@ -132,6 +132,11 @@ const MissionMatchesPage = () => {
         await bindMissions();
     })();
   }, []);
+
+  useEffect(() => {
+    if (missions && missions.length > 0)
+      setMissionFilter('all');
+  }, [missions]);
 
   useEffect(() => {
     (async () => {

@@ -28,7 +28,7 @@ const avatarImage = require.context('assets/images/products', true);
 
 // ==============================|| PRODUCT CARD ||============================== //
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, onBuyClick }) => {
   const [avatar, setAvatar] = useState(avatarImage(`./default.png`));
   const [isLoading, setLoading] = useState(true);
   const { keycloak } = useKeycloak();
@@ -71,10 +71,6 @@ const ProductCard = ({ product }) => {
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const handleBuyClick = () => {
-    
   };
 
   return (
@@ -142,7 +138,7 @@ const ProductCard = ({ product }) => {
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
                   <Typography variant="h5">&euro;{product?.price}</Typography>
 
-                  <Button variant="contained" onClick={handleBuyClick}>
+                  <Button variant="contained" onClick={onBuyClick}>
                     Buy
                   </Button>
                 </Stack>
