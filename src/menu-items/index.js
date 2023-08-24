@@ -83,6 +83,20 @@ const menuItems = {
       ]
     },
     {
+      id: 'orders',
+      title: <FormattedMessage id="orders" />,
+      type: 'group',
+      children: [
+        {
+          id: 'find-products',
+          title: <FormattedMessage id="my-orders" />,
+          type: 'item',
+          url: '/orders/my',
+          icon: icons.SearchOutlined
+        }
+      ]
+    },
+    {
       id: 'invoicing',
       title: <FormattedMessage id="invoicing" />,
       type: 'group',
