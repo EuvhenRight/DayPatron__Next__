@@ -1,8 +1,8 @@
 {
   "personal-information": "User Information",
   "companies": "Company Information",
-  "missions": "Missions",
-  "my-missions": "My Missions",
+  "missions": "Mission Hub",
+  "my-missions": "Place Missions",
   "matches": "Matches",
   "solutions": "Solution Suite",
   "find-products": "Find Products",
@@ -56,8 +56,8 @@
 
   "match_company_notes_about_the_talent_tooltip": null,
 
-  "invoice_settings_company": null,
-  "invoice_settings_invoicing_name_tooltip": "The name under which you'd like to receive your invoices. This can be your business name or your personal name. Remember that a registration in a chamber of commerce is required in most countries to work fractional. Make it official!",
+  "invoice_settings_company": "Please select the Company Legal Entity you would like to add the invoicing information for.",
+  "invoice_settings_invoicing_name_tooltip": "To whom should we address the invoice?",
   "invoice_settings_vat_number_tooltip": "Your Value Added Tax (VAT) identification number, if applicable.",
   "invoice_settings_bank_name_tooltip": "The name of your bank where payments will find their way to you.",
   "invoice_settings_bank_account_name_tooltip": "The name on your bank account.",
