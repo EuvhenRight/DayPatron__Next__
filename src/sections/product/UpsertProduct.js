@@ -225,7 +225,7 @@ const UpsertProduct = ({ productId }) => {
 
   const ProductSchema = Yup.object().shape({
     title: Yup.string().max(255).required('Title is required').nullable(true),
-    description: Yup.string().max(2000).required('Description is required').nullable(true),
+    description: Yup.string().max(5000).required('Description is required').nullable(true),
     cluster: Yup.string().max(255).required('Cluster is required').nullable(true),
     estimatedImplementationHours: Yup.number("Should be a positive integer").integer("Should be a positive integer").min(0, "Should be a positive integer").max(9999999, "Maximum 9999999").nullable(true),
     price: Yup.number("Should be a positive integer").integer("Should be a positive integer").min(0, "Should be a positive integer").max(9999999, "Maximum 9999999").nullable(true)
