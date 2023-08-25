@@ -88,7 +88,7 @@ const menuItems = {
       type: 'group',
       children: [
         {
-          id: 'find-products',
+          id: 'my-orders',
           title: <FormattedMessage id="my-orders" />,
           type: 'item',
           url: '/orders/my',

@@ -56,7 +56,7 @@ const OrdersPage = () => {
 
   const bindOrders = async () => {
     try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/products/orders?employerUserId' + encodeURIComponent(personalInformation.id),
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/products/orders?employerUserId=' + encodeURIComponent(personalInformation.id),
         {
           method: 'GET',
           headers: {
