@@ -107,7 +107,8 @@ const OrdersPage = () => {
 
   return (
     <>
-      <Box sx={{ position: 'relative', marginBottom: 3 }}>
+      <Typography variant="h3">Product Orders</Typography>
+      <Box sx={{ position: 'relative', marginTop: 3, marginBottom: 3 }}>
         <Stack direction="row" alignItems="center">
           <Stack
             direction={matchDownSM ? 'column' : 'row'}
@@ -177,6 +178,9 @@ const OrdersPage = () => {
           onChange={handleChangePage}
         />
       </Stack>
+
+
+      <Typography variant="h3">Mission Orders</Typography>
     </>
   );
 };

@@ -8,24 +8,21 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
+  ListItemSecondaryAction,
   Stack,
   Typography
 } from '@mui/material';
 
 import MainCard from 'components/MainCard';
-import Avatar from 'components/@extended/Avatar';
-
-import { useNavigate } from 'react-router-dom';
+import { ShoppingCartOutlined } from '@ant-design/icons';
+import { useTheme } from '@mui/material/styles';
+import { useKeycloak } from '@react-keycloak/web';
 
 // ==============================|| ORDER - CARD ||============================== //
 
 const OrderCard = ({ order }) => {
-  const navigate = useNavigate();
-  const avatarImage = require.context('assets/images/orders', true);
-
-  const handleClickDetails = () => {
-    navigate('/orders/' + order.id);
-  };
+  const { keycloak } = useKeycloak();
+  const theme = useTheme();
 
   return (
     <>
@@ -35,13 +32,13 @@ const OrderCard = ({ order }) => {
             <List sx={{ width: 1, p: 0 }}>
               <ListItem disablePadding>
                 <ListItemAvatar>
-                  <Avatar onClick={handleClickDetails} className="clickable" alt={order?.productTitle} src={avatarImage(`./default.png`)} />
+                  <ShoppingCartOutlined style={{ color: theme.palette.primary.main, fontSize: '2.5rem' }} />
                 </ListItemAvatar>
-                <ListItemText className="list-card-title"
-                  primary={<Typography onClick={handleClickDetails} variant="subtitle1">{order?.productTitle}</Typography>}
+                <ListItemText
+                  primary={<Typography variant="subtitle1">Buy &apos;{order?.productTitle}&apos;</Typography>}
                   secondary={
                     <Typography variant="caption" color="secondary">
-                      {order?.contractorName}
+                      Solution by &apos;{order?.contractorName}&apos;
                     </Typography>
                   }
                 />
@@ -52,19 +49,83 @@ const OrderCard = ({ order }) => {
             <Divider />
           </Grid>
           <Grid item xs={12}>
+            <Stack direction="column" spacing={2}>
+              <Stack direction="column" spacing={1}>
+                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                  Company Service Order
+                </Typography>
+                <Divider />
+
+                <List component="nav" aria-label="main mailbox folders" sx={{ py: 0, '& .MuiListItem-root': { p: 0, py: 0 } }}>
+                  <ListItem>
+                    <ListItemText>
+                      Admin Status
+                    </ListItemText>
+                    <ListItemSecondaryAction>
+                      {keycloak.tokenParsed.roles.includes('admin') ?
+                        (<Button variant="contained" align="right">Approve</Button>):
+                        (<Typography align="right">{order?.employerServiceOrder?.adminStatus}</Typography>)
+                      }
+                    </ListItemSecondaryAction>
+                  </ListItem>
+
+                  <ListItem>
+                    <ListItemText>
+                      Company Status
+                    </ListItemText>
+                    <ListItemSecondaryAction>
+                      <Typography align="right">{order?.employerServiceOrder?.employerStatus}</Typography>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+
+                  <ListItem>
+                    <ListItemText>
+                      Price
+                    </ListItemText>
+                    <ListItemSecondaryAction>
+                      <Typography align="right">&euro;{order?.employerServiceOrder?.rateAmount}</Typography>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+
+                  <ListItem>
+                    <ListItemText>
+                      Implementation Hours
+                    </ListItemText>
+                    <ListItemSecondaryAction>
+                      <Typography align="right">{order?.employerServiceOrder?.durationHours}</Typography>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                </List>
+              </Stack>
+
+              <Stack direction="column" spacing={1}>
+                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                  Talent Service Order
+                </Typography>
+                <Divider />
+                <List component="nav" aria-label="main mailbox folders" sx={{ py: 0, '& .MuiListItem-root': { p: 0, py: 0 } }}>
+                  <ListItem>
+                    <ListItemText>
+                      Admin Status
+                    </ListItemText>
+                    <ListItemSecondaryAction>
+                      <Typography align="right">{order?.contractorServiceOrder?.adminStatus}</Typography>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+
+                  <ListItem>
+                    <ListItemText>
+                      Employer Status
+                    </ListItemText>
+                    <ListItemSecondaryAction>
+                      <Typography align="right">{order?.contractorServiceOrder?.contractorStatus}</Typography>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                </List>
+              </Stack>
+            </Stack>
           </Grid>
         </Grid>
-        <Stack
-          direction="row"
-          alignItems="center"
-          spacing={1}
-          justifyContent="space-between"
-          sx={{ mt: 'auto', mb: 0, pt: 2.25 }}
-        >
-          <Button variant="outlined" size="small" onClick={handleClickDetails} className="card-button-right">
-            Details
-          </Button>
-        </Stack>
       </MainCard>
     </>
   );
