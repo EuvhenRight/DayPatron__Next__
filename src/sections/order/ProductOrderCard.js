@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 import {
-  Button,
+  Link,
   Divider,
   Grid,
   List,
@@ -20,9 +20,22 @@ import { useKeycloak } from '@react-keycloak/web';
 
 // ==============================|| ORDER - CARD ||============================== //
 
-const OrderCard = ({ order }) => {
+const ProductOrderCard = ({ order }) => {
   const { keycloak } = useKeycloak();
   const theme = useTheme();
+
+  const getStatusComponent = (requiredStatus, requiredRole) => {
+    if (requiredStatus === 'Pending' && keycloak.tokenParsed.roles.includes(requiredRole)) {
+      return <Stack direction="row" spacing={0.5}>
+        <Typography>{requiredStatus}</Typography>
+        <Stack direction="row">
+          (<Link href="#">Approve</Link>)
+        </Stack>
+      </Stack>;
+    }
+
+    return <Typography>{requiredStatus}</Typography>;
+  }
 
   return (
     <>
@@ -62,10 +75,7 @@ const OrderCard = ({ order }) => {
                       Admin Status
                     </ListItemText>
                     <ListItemSecondaryAction>
-                      {keycloak.tokenParsed.roles.includes('admin') ?
-                        (<Button variant="contained" align="right">Approve</Button>):
-                        (<Typography align="right">{order?.employerServiceOrder?.adminStatus}</Typography>)
-                      }
+                      {getStatusComponent(order?.employerServiceOrder?.adminStatus, 'admin')}
                     </ListItemSecondaryAction>
                   </ListItem>
 
@@ -74,7 +84,7 @@ const OrderCard = ({ order }) => {
                       Company Status
                     </ListItemText>
                     <ListItemSecondaryAction>
-                      <Typography align="right">{order?.employerServiceOrder?.employerStatus}</Typography>
+                      {getStatusComponent(order?.employerServiceOrder?.employerStatus, 'employer')}
                     </ListItemSecondaryAction>
                   </ListItem>
 
@@ -83,7 +93,7 @@ const OrderCard = ({ order }) => {
                       Price
                     </ListItemText>
                     <ListItemSecondaryAction>
-                      <Typography align="right">&euro;{order?.employerServiceOrder?.rateAmount}</Typography>
+                      <Typography>&euro;{order?.employerServiceOrder?.rateAmount}</Typography>
                     </ListItemSecondaryAction>
                   </ListItem>
 
@@ -92,7 +102,7 @@ const OrderCard = ({ order }) => {
                       Implementation Hours
                     </ListItemText>
                     <ListItemSecondaryAction>
-                      <Typography align="right">{order?.employerServiceOrder?.durationHours}</Typography>
+                      <Typography>{order?.employerServiceOrder?.durationHours}</Typography>
                     </ListItemSecondaryAction>
                   </ListItem>
                 </List>
@@ -109,18 +119,40 @@ const OrderCard = ({ order }) => {
                       Admin Status
                     </ListItemText>
                     <ListItemSecondaryAction>
-                      <Typography align="right">{order?.contractorServiceOrder?.adminStatus}</Typography>
+                      {getStatusComponent(order?.contractorServiceOrder?.adminStatus, 'admin')}
                     </ListItemSecondaryAction>
                   </ListItem>
 
                   <ListItem>
                     <ListItemText>
-                      Employer Status
+                      Talent Status
                     </ListItemText>
                     <ListItemSecondaryAction>
-                      <Typography align="right">{order?.contractorServiceOrder?.contractorStatus}</Typography>
+                      <Typography>{order?.contractorServiceOrder?.contractorStatus}</Typography>
                     </ListItemSecondaryAction>
                   </ListItem>
+
+                  {keycloak.tokenParsed.roles.includes('admin') &&
+                    <>
+                      <ListItem>
+                        <ListItemText>
+                          Price
+                        </ListItemText>
+                        <ListItemSecondaryAction>
+                          <Typography>&euro;{order?.contractorServiceOrder?.rateAmount}</Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+
+                      <ListItem>
+                        <ListItemText>
+                          Implementation Hours
+                        </ListItemText>
+                        <ListItemSecondaryAction>
+                          <Typography>{order?.contractorServiceOrder?.durationHours}</Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                    </>
+                  }
                 </List>
               </Stack>
             </Stack>
@@ -131,8 +163,8 @@ const OrderCard = ({ order }) => {
   );
 };
 
-OrderCard.propTypes = {
+ProductOrderCard.propTypes = {
   order: PropTypes.object
 };
 
-export default OrderCard;
+export default ProductOrderCard;
