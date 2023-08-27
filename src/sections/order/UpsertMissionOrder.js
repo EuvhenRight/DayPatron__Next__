@@ -25,7 +25,6 @@ import {
 } from '@mui/material';
 
 // third-party
-import _ from 'lodash';
 import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
 
@@ -39,32 +38,26 @@ import rateTypes from 'data/rateTypes';
 
 // constant
 const getInitialValues = (missionOrder) => {
-  const newMissionOrder = {
-    id: null,
-    contractorId: null,
-    employerId: null,
-    missionId: null,
+  const result = {
+    id: missionOrder?.id,
+    contractorId: missionOrder?.contractorId,
+    employerId: missionOrder?.employerId,
+    missionId: missionOrder?.missionId,
 
-    contractorServiceOrderDescription: null,
-    contractorServiceOrderDurationHours: null,
-    contractorServiceOrderRateType: null,
-    contractorServiceOrderRateAmount: null,
+    contractorServiceOrderDescription: missionOrder?.contractorServiceOrder?.description,
+    contractorServiceOrderDurationHours: missionOrder?.contractorServiceOrder?.durationHours,
+    contractorServiceOrderRateType: missionOrder?.contractorServiceOrder?.rateType,
+    contractorServiceOrderRateAmount: missionOrder?.contractorServiceOrder?.rateAmount,
 
-    employerServiceOrderDescription: null,
-    employerServiceOrderDurationHours: null,
-    employerServiceOrderRateType: null,
-    employerServiceOrderRateAmount: null,
+    employerServiceOrderDescription: missionOrder?.employerServiceOrder?.description,
+    employerServiceOrderDurationHours: missionOrder?.employerServiceOrder?.durationHours,
+    employerServiceOrderRateType: missionOrder?.employerServiceOrder?.rateType,
+    employerServiceOrderRateAmount: missionOrder?.employerServiceOrder?.rateAmount,
 
-    projectOrderDescription: null
+    projectOrderDescription: missionOrder?.projectOrder?.description
   };
 
-  if (missionOrder) {
-    var result = _.merge({}, newMissionOrder, missionOrder);
-    
-    return result;
-  }
-
-  return newMissionOrder;
+  return result;
 };
 
 // ==============================|| MISSION ORDER ADD / EDIT / DELETE ||============================== //
@@ -83,7 +76,7 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
 
-  const bindMissionOrder = async () => {
+  const getMissionOrder = async () => {
     try {
       let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/orders/' + missionOrderId,
         {
@@ -96,10 +89,16 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
 
       let json = await response.json();
 
-      setMissionOrder(json);
+      return json;
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const bindMissionOrder = async () => {
+    let missionOrderResponse = getMissionOrder();
+
+    setMissionOrder(missionOrderResponse);
   };
 
   const bindContractors = async () => {
@@ -172,7 +171,13 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
         await bindMissionOrder();
       }
     })();
-  }, [missions]);
+  }, [missionOrderId]);
+
+  useEffect(() => {
+    (async () => {
+      await bindMissions(missionOrder?.employerId);
+    })();
+  }, [missionOrder?.employerId]);
 
   const MissionSchema = Yup.object().shape({
     contractorId: Yup.string().required('Talent is required').nullable(true),
@@ -342,7 +347,7 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
                     id="contractorId"
                     name="contractorId"
                     displayEmpty
-                    value={normalizeInputValue(values.contractorId)}
+                    value={contractors?.length > 0 ? normalizeInputValue(values.contractorId) : ''}
                     onChange={handleChange}
                   >
                     {contractors?.map((contractor) => (
@@ -369,7 +374,7 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
                     id="employerId"
                     name="employerId"
                     displayEmpty
-                    value={normalizeInputValue(values.employerId)}
+                    value={employers?.length > 0 ? normalizeInputValue(values.employerId) : ''}
                     onChange={(event) => { handleChange(event); setFieldValue('missionId', null); bindMissions(event.target.value); }}
                   >
                     {employers?.map((employer) => (
@@ -396,7 +401,7 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
                     id="missionId"
                     name="missionId"
                     displayEmpty
-                    value={normalizeInputValue(values.missionId)}
+                    value={missions?.length > 0 ? normalizeInputValue(values.missionId) : ''}
                     onChange={handleChange}
                   >
                     {missions?.map((mission) => (

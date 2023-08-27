@@ -9,7 +9,8 @@ import {
   BlockOutlined,
   MoneyCollectOutlined,
   FileTextOutlined,
-  SearchOutlined
+  SearchOutlined,
+  ShoppingCartOutlined
 } from '@ant-design/icons';
 
 // icons
@@ -20,7 +21,8 @@ const icons = {
   BlockOutlined,
   MoneyCollectOutlined,
   FileTextOutlined,
-  SearchOutlined
+  SearchOutlined,
+  ShoppingCartOutlined
 };
 
 // ==============================|| MENU ITEMS ||============================== //
@@ -92,7 +94,7 @@ const menuItems = {
           title: <FormattedMessage id="my-orders" />,
           type: 'item',
           url: '/orders/my',
-          icon: icons.SearchOutlined
+          icon: icons.ShoppingCartOutlined
         }
       ]
     },
