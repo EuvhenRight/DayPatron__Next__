@@ -20,21 +20,21 @@ import { useKeycloak } from '@react-keycloak/web';
 
 // ==============================|| ORDER - CARD ||============================== //
 
-const ProductOrderCard = ({ order }) => {
+const ProductOrderCard = ({ order, handleApproveClick }) => {
   const { keycloak } = useKeycloak();
   const theme = useTheme();
 
-  const getStatusComponent = (requiredStatus, requiredRole) => {
-    if (requiredStatus === 'Pending' && keycloak.tokenParsed.roles.includes(requiredRole)) {
+  const getStatusComponent = (approvalStatus, requiredRole, orderType) => {
+    if (approvalStatus === 'Pending' && keycloak.tokenParsed.roles.includes(requiredRole)) {
       return <Stack direction="row" spacing={0.5}>
-        <Typography>{requiredStatus}</Typography>
+        <Typography>{approvalStatus}</Typography>
         <Stack direction="row">
-          (<Link href="#">Approve</Link>)
+          (<Link onClick={() => handleApproveClick(order, orderType)}>Approve</Link>)
         </Stack>
       </Stack>;
     }
 
-    return <Typography>{requiredStatus}</Typography>;
+    return <Typography>{approvalStatus}</Typography>;
   }
 
   return (
@@ -76,7 +76,7 @@ const ProductOrderCard = ({ order }) => {
                         Admin Approval Status
                       </ListItemText>
                       <ListItemSecondaryAction>
-                        {getStatusComponent(order?.employerServiceOrder?.adminStatus, 'admin')}
+                        {getStatusComponent(order?.employerServiceOrder?.adminStatus, 'admin', 'employer-service-order')}
                       </ListItemSecondaryAction>
                     </ListItem>
                   }
@@ -85,7 +85,7 @@ const ProductOrderCard = ({ order }) => {
                       Company Approval Status
                     </ListItemText>
                     <ListItemSecondaryAction>
-                      {getStatusComponent(order?.employerServiceOrder?.employerStatus, 'employer')}
+                      <Typography>{order?.employerServiceOrder?.employerStatus}</Typography>
                     </ListItemSecondaryAction>
                   </ListItem>
 
@@ -112,7 +112,7 @@ const ProductOrderCard = ({ order }) => {
                         Admin Approval Status
                       </ListItemText>
                       <ListItemSecondaryAction>
-                        {getStatusComponent(order?.contractorServiceOrder?.adminStatus, 'admin')}
+                        {getStatusComponent(order?.contractorServiceOrder?.adminStatus, 'admin', 'contractor-service-order')}
                       </ListItemSecondaryAction>
                     </ListItem>
                   }
@@ -150,7 +150,7 @@ const ProductOrderCard = ({ order }) => {
                       Company Approval Status
                     </ListItemText>
                     <ListItemSecondaryAction>
-                      <Typography>{getStatusComponent(order?.employerContractorProjectOrder?.employerStatus, 'employer')}</Typography>
+                      <Typography>{getStatusComponent(order?.employerContractorProjectOrder?.employerStatus, 'employer', 'project-order')}</Typography>
                     </ListItemSecondaryAction>
                   </ListItem>
                   <ListItem>
@@ -174,7 +174,8 @@ const ProductOrderCard = ({ order }) => {
 };
 
 ProductOrderCard.propTypes = {
-  order: PropTypes.object
+  order: PropTypes.object,
+  handleApproveClick: PropTypes.func
 };
 
 export default ProductOrderCard;

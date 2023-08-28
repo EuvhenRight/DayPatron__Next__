@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 // material-ui
 import {
@@ -18,9 +18,9 @@ import {
   DialogContent
 } from '@mui/material';
 
-// project import
+import { openSnackbar } from 'store/reducers/snackbar';
 import EmptyCardList from 'components/cards/skeleton/EmptyCardList';
-import OrderCard from 'sections/order/ProductOrderCard';
+import ProductOrderCard from 'sections/order/ProductOrderCard';
 import { PopupTransition } from 'components/@extended/Transitions';
 
 import { GlobalFilter } from 'utils/react-table';
@@ -49,6 +49,7 @@ const allColumns = [
 
 const ProductOrders = () => {
   const { keycloak } = useKeycloak();
+  const dispatch = useDispatch();
   const personalInformation = useSelector(state => state.personalInformation);
   const matchDownSM = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
@@ -59,7 +60,8 @@ const ProductOrders = () => {
   const [page, setPage] = useState(1);
 
   const [openEmployerServiceOrderDialog, setOpenEmployerServiceOrderDialog] = useState(false);
-  //const [orderToApprove, setOrderToApprove] = useState(null);
+  const [orderToView, setOrderToView] = useState(null);
+  const [orderTypeToView, setOrderTypeToView] = useState(null);
 
   const bindOrders = async () => {
     try {
@@ -112,8 +114,59 @@ const ProductOrders = () => {
     _DATA.jump(p);
   };
 
-  const handleApproveClick = () => {
-    
+  const handleApproveConfirmClick = async () => {
+    let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/products/orders/' + orderToView.id + '/' + orderTypeToView + 's/admin-approvals',
+      {
+        method: 'PUT',
+        headers: {
+          'Authorization': 'Bearer ' + keycloak.idToken,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    if (!response.ok) {
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Failed approving.',
+          variant: 'alert',
+          alert: {
+            color: 'error'
+          },
+          close: false
+        })
+      );
+
+      setOpenEmployerServiceOrderDialog(false);
+      setOrderToView(null);
+      setOrderTypeToView(null);
+      return;
+    }
+
+    setOpenEmployerServiceOrderDialog(false);
+    setOrderToView(null);
+    setOrderTypeToView(null);
+
+    bindOrders();
+
+    dispatch(
+      openSnackbar({
+        open: true,
+        message: "Approved.",
+        variant: 'alert',
+        alert: {
+          color: 'success'
+        },
+        close: false
+      })
+    );
+  };
+
+  const handleApproveClick = (orderToView, orderType) => {
+    setOpenEmployerServiceOrderDialog(true);
+    setOrderToView(orderToView);
+    setOrderTypeToView(orderType);
   };
   
   return (
@@ -168,7 +221,7 @@ const ProductOrders = () => {
             .map((order, index) => (
               <Slide key={index} direction="up" in={true} timeout={50}>
                 <Grid item xs={12} sm={6} lg={4}>
-                  <OrderCard order={order} />
+                  <ProductOrderCard order={order} handleApproveClick={handleApproveClick} />
                 </Grid>
               </Slide>
             ))
@@ -191,7 +244,11 @@ const ProductOrders = () => {
 
       <Dialog
         open={openEmployerServiceOrderDialog}
-        onClose={() => { setOpenEmployerServiceOrderDialog(false); }}
+        onClose={() => {
+          setOpenEmployerServiceOrderDialog(false);
+          setOrderToView(null);
+          setOrderTypeToView(null);
+        }}
         keepMounted
         TransitionComponent={PopupTransition}
         aria-labelledby="column-delete-title"
@@ -200,10 +257,16 @@ const ProductOrders = () => {
         <DialogContent sx={{ mt: 2, my: 1 }}>
             
           <Stack direction="row" spacing={2} sx={{ width: 1 }}>
-            <Button fullWidth onClick={() => { setOpenEmployerServiceOrderDialog(false); }} color="secondary" variant="outlined">
+            <Button fullWidth onClick={() => {
+                setOpenEmployerServiceOrderDialog(false);
+                setOrderToView(null);
+                setOrderTypeToView(null);
+              }}
+              color="secondary"
+              variant="outlined">
               Cancel
             </Button>
-            <Button fullWidth color="primary" variant="contained" onClick={() => handleApproveClick()} autoFocus>
+            <Button fullWidth color="primary" variant="contained" onClick={handleApproveConfirmClick} autoFocus>
               Approve
             </Button>
           </Stack>
