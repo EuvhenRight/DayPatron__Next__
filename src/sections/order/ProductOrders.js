@@ -12,12 +12,16 @@ import {
   Box,
   Slide,
   Pagination,
-  Typography
+  Typography,
+  Button,
+  Dialog,
+  DialogContent
 } from '@mui/material';
 
 // project import
 import EmptyCardList from 'components/cards/skeleton/EmptyCardList';
 import OrderCard from 'sections/order/ProductOrderCard';
+import { PopupTransition } from 'components/@extended/Transitions';
 
 import { GlobalFilter } from 'utils/react-table';
 import usePagination from 'hooks/usePagination';
@@ -53,6 +57,9 @@ const ProductOrders = () => {
   const [orders, setOrders] = useState([]);
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [page, setPage] = useState(1);
+
+  const [openEmployerServiceOrderDialog, setOpenEmployerServiceOrderDialog] = useState(false);
+  //const [orderToApprove, setOrderToApprove] = useState(null);
 
   const bindOrders = async () => {
     try {
@@ -105,6 +112,10 @@ const ProductOrders = () => {
     _DATA.jump(p);
   };
 
+  const handleApproveClick = () => {
+    
+  };
+  
   return (
     <>
       <Box sx={{ position: 'relative', marginTop: 3, marginBottom: 3 }}>
@@ -177,6 +188,27 @@ const ProductOrders = () => {
           onChange={handleChangePage}
         />
       </Stack>
+
+      <Dialog
+        open={openEmployerServiceOrderDialog}
+        onClose={() => { setOpenEmployerServiceOrderDialog(false); }}
+        keepMounted
+        TransitionComponent={PopupTransition}
+        aria-labelledby="column-delete-title"
+        aria-describedby="column-delete-description"
+      >
+        <DialogContent sx={{ mt: 2, my: 1 }}>
+            
+          <Stack direction="row" spacing={2} sx={{ width: 1 }}>
+            <Button fullWidth onClick={() => { setOpenEmployerServiceOrderDialog(false); }} color="secondary" variant="outlined">
+              Cancel
+            </Button>
+            <Button fullWidth color="primary" variant="contained" onClick={() => handleApproveClick()} autoFocus>
+              Approve
+            </Button>
+          </Stack>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
