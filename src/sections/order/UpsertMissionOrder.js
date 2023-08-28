@@ -185,16 +185,16 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
     missionId: Yup.string().required('Mission is required').nullable(true),
 
     contractorServiceOrderDescription: Yup.string().max(5000).required('Required').nullable(true),
-    contractorServiceOrderDurationHours: Yup.number("Should be a positive integer").integer("Should be a positive integer").required("Required").min(0, "Should be a positive integer").max(999999, "Maximum 999999").nullable(true),
+    contractorServiceOrderDurationHours: Yup.number("Should be a positive integer").integer("Should be a positive integer").min(0, "Should be a positive integer").max(999999, "Maximum 999999").nullable(true),
     contractorServiceOrderRateType: Yup.string().max(255).required('Required').nullable(true),
     contractorServiceOrderRateAmount: Yup.number("Should be a positive integer").integer("Should be a positive integer").required("Required").min(0, "Should be a positive integer").max(9999999, "Maximum 9999999").nullable(true),
 
     employerServiceOrderDescription: Yup.string().max(5000).required('Required').nullable(true),
-    employerServiceOrderDurationHours: Yup.number("Should be a positive integer").integer("Should be a positive integer").required("Required").min(0, "Should be a positive integer").max(999999, "Maximum 999999").nullable(true),
+    employerServiceOrderDurationHours: Yup.number("Should be a positive integer").integer("Should be a positive integer").min(0, "Should be a positive integer").max(999999, "Maximum 999999").nullable(true),
     employerServiceOrderRateType: Yup.string().max(255).required('Required').nullable(true),
     employerServiceOrderRateAmount: Yup.number("Should be a positive integer").integer("Should be a positive integer").required("Required").min(0, "Should be a positive integer").max(9999999, "Maximum 9999999").nullable(true),
 
-    projectOrderDescription: Yup.string().max(5000).required('Required').nullable(true)
+    projectOrderDescription: Yup.string().max(5000).nullable(true)
   });
 
   const formik = useFormik({
@@ -319,6 +319,37 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
     }
   });
 
+  const getContractorServiceOrderDescription = (description) => {
+    if (description)
+      return description;
+
+    return `<p>Start: week commencing 2 October 2023 for 6 months.
+<ul>
+  <li>All Fees are in Euro and are excluding VAT.</li>
+  <li>Payments are due as soon as the payment from the customer is received.</li>
+  <li>This proposal is valid until 7 days after the proposal date.</li>
+  <li>Invoice schedule: monthly afterwards.</li>
+</ul>
+<br/>
+This proposal is subject to the 10x Client Terms of Service attached hereto as Annex 2 and the Client Project Contract Terms & Conditions as shared as Annex 3.</p>`;
+  }
+
+  const getEmployerServiceOrderDescription = (description) => {
+
+    if (description)
+      return description;
+
+    return `<p>Start: week commencing 2 October 2023 for 6 months.
+<ul>
+  <li>All Fees are in Euro and are excluding VAT.</li>
+  <li>Payments are due within 14 days after the date of the invoice.</li>
+  <li>This proposal is valid until 7 days after the proposal date.</li>
+  <li>Invoice schedule: monthly afterwards.</li>
+</ul>
+<br/>
+This proposal is subject to the 10x Client Terms of Service attached hereto as Annex 2 and the Client Project Contract Terms & Conditions as shared as Annex 3.</p>`;
+  }
+
   const { errors, handleBlur, handleChange, touched, handleSubmit, isSubmitting, setFieldValue, values } = formik;
 
   if (!keycloak.tokenParsed.roles.includes('admin'))
@@ -418,122 +449,6 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
 
                 </Stack>
               </Grid>
-              <Grid item xs={12}>
-                <Typography variant="h5">Talent Service Order</Typography>
-              </Grid>
-              <Grid item xs={12}
-                sx={{
-                  '& .quill': {
-                    borderRadius: '4px',
-                    '& .ql-toolbar': {
-                      bgcolor: theme.palette.mode === 'dark' ? 'dark.light' : 'grey.100',
-                      borderColor: theme.palette.divider,
-                      borderTopLeftRadius: '4px',
-                      borderTopRightRadius: '4px'
-                    },
-                    '& .ql-container': {
-                      borderColor: `${theme.palette.divider} !important`,
-                      borderBottomLeftRadius: '4px',
-                      borderBottomRightRadius: '4px',
-                      '& .ql-editor': {
-                        minHeight: 135
-                      }
-                    }
-                  }
-                }}
-              >
-                <Stack spacing={1.25}>
-                  <InfoWrapper tooltipText="mission_order_contractor_service_order_description_tooltip">
-                    <InputLabel htmlFor="mission-order-contractor-service-order-description">Description</InputLabel>
-                  </InfoWrapper>
-                  <ReactQuill
-                    id="mission-order-contractor-service-order-description"
-                    value={normalizeInputValue(values.contractorServiceOrderDescription)}
-                    onChange={(e) => setFieldValue('contractorServiceOrderDescription', e)}
-                  />
-                  {touched.contractorServiceOrderDescription && errors.contractorServiceOrderDescription && (
-                    <FormHelperText error id="mission-order-contractor-service-order-description-helper">
-                      {errors.contractorServiceOrderDescription}
-                    </FormHelperText>
-                  )}
-                </Stack>
-              </Grid>
-
-              <Grid item xs={12} sm={6}>
-                <Stack spacing={1.25}>
-                  <InfoWrapper tooltipText="mission_order_contractor_service_order_rate_type_tooltip">
-                    <InputLabel htmlFor="contractor-service-order-rate-type">Rate Type</InputLabel>
-                  </InfoWrapper>
-
-                  <Select
-                    id="contractorServiceOrderRateType"
-                    name="contractorServiceOrderRateType"
-                    displayEmpty
-                    value={normalizeInputValue(values.contractorServiceOrderRateType)}
-                    onChange={handleChange}
-                  >
-                    {rateTypes.map((rateType) => (
-                      <MenuItem key={rateType.code} value={rateType.code}>
-                        {rateType.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                  {touched.contractorServiceOrderRateType && errors.contractorServiceOrderRateType && (
-                    <FormHelperText error id="contractor-service-order-rate-type-helper">
-                      {errors.contractorServiceOrderRateType}
-                    </FormHelperText>
-                  )}
-
-                </Stack>
-              </Grid>
-
-              <Grid item xs={12} md={6}>
-                <Stack spacing={1.25}>
-                  <InfoWrapper tooltipText="mission_order_contractor_service_order_rate_amount_tooltip">
-                    <InputLabel htmlFor="contractor-service-order-rate-amount">Rate Amount</InputLabel>
-                  </InfoWrapper>
-                  <TextField
-                    fullWidth
-                    id="contractor-service-order-rate-amount"
-                    type="number"
-                    inputProps={{ min: 0, max: 999999 }}
-                    placeholder="Enter rate amount"
-                    value={normalizeInputValue(values.contractorServiceOrderRateAmount)}
-                    name="contractorServiceOrderRateAmount"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                  />
-                  {touched.contractorServiceOrderRateAmount && errors.contractorServiceOrderRateAmount && (
-                    <FormHelperText error id="contractor-service-order-rate-amount-helper">
-                      {errors.contractorServiceOrderRateAmount}
-                    </FormHelperText>
-                  )}
-                </Stack>
-              </Grid>
-
-              <Grid item xs={12} md={6}>
-                <Stack spacing={1.25}>
-                  <InfoWrapper tooltipText="mission_order_contractor_service_order_duration_hours_tooltip">
-                    <InputLabel htmlFor="contractor-service-order-duration-hours">Duration Hours</InputLabel>
-                  </InfoWrapper>
-                  <TextField
-                    fullWidth
-                    id="contractor-service-order-duration-hours"
-                    type="number"
-                    inputProps={{ min: 0, max: 999999 }}
-                    placeholder="Enter duration hours"
-                    value={normalizeInputValue(values.contractorServiceOrderDurationHours)}
-                    name="contractorServiceOrderDurationHours"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                  />
-                  {touched.contractorServiceOrderDurationHours && errors.contractorServiceOrderDurationHours && (
-                    <FormHelperText error id="contractor-service-order-duration-hours-helper">
-                      {errors.contractorServiceOrderDurationHours}
-                    </FormHelperText>
-                  )}
-                </Stack>
-              </Grid>
 
               <Grid item xs={12}>
                 <Typography variant="h5">Company Service Order</Typography>
@@ -561,11 +476,11 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
               >
                 <Stack spacing={1.25}>
                   <InfoWrapper tooltipText="mission_order_employer_service_order_description_tooltip">
-                    <InputLabel htmlFor="mission-order-employer-service-order-description">Description</InputLabel>
+                    <InputLabel htmlFor="mission-order-employer-service-order-description">Purchase Terms</InputLabel>
                   </InfoWrapper>
                   <ReactQuill
                     id="mission-order-employer-service-order-description"
-                    value={normalizeInputValue(values.employerServiceOrderDescription)}
+                    value={getEmployerServiceOrderDescription(values.employerServiceOrderDescription)}
                     onChange={(e) => setFieldValue('employerServiceOrderDescription', e)}
                   />
                   {touched.employerServiceOrderDescription && errors.employerServiceOrderDescription && (
@@ -607,7 +522,7 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
               <Grid item xs={12} md={6}>
                 <Stack spacing={1.25}>
                   <InfoWrapper tooltipText="mission_order_employer_service_order_rate_amount_tooltip">
-                    <InputLabel htmlFor="employer-service-order-rate-amount">Rate Amount</InputLabel>
+                    <InputLabel htmlFor="employer-service-order-rate-amount">Rate</InputLabel>
                   </InfoWrapper>
                   <TextField
                     fullWidth
@@ -631,7 +546,7 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
               <Grid item xs={12} md={6}>
                 <Stack spacing={1.25}>
                   <InfoWrapper tooltipText="mission_order_employer_service_order_duration_hours_tooltip">
-                    <InputLabel htmlFor="employer-service-order-duration-hours">Duration Hours</InputLabel>
+                    <InputLabel htmlFor="employer-service-order-duration-hours">Effort</InputLabel>
                   </InfoWrapper>
                   <TextField
                     fullWidth
@@ -647,6 +562,123 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
                   {touched.employerServiceOrderDurationHours && errors.employerServiceOrderDurationHours && (
                     <FormHelperText error id="employer-service-order-duration-hours-helper">
                       {errors.employerServiceOrderDurationHours}
+                    </FormHelperText>
+                  )}
+                </Stack>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Typography variant="h5">Talent Service Order</Typography>
+              </Grid>
+              <Grid item xs={12}
+                sx={{
+                  '& .quill': {
+                    borderRadius: '4px',
+                    '& .ql-toolbar': {
+                      bgcolor: theme.palette.mode === 'dark' ? 'dark.light' : 'grey.100',
+                      borderColor: theme.palette.divider,
+                      borderTopLeftRadius: '4px',
+                      borderTopRightRadius: '4px'
+                    },
+                    '& .ql-container': {
+                      borderColor: `${theme.palette.divider} !important`,
+                      borderBottomLeftRadius: '4px',
+                      borderBottomRightRadius: '4px',
+                      '& .ql-editor': {
+                        minHeight: 135
+                      }
+                    }
+                  }
+                }}
+              >
+                <Stack spacing={1.25}>
+                  <InfoWrapper tooltipText="mission_order_contractor_service_order_description_tooltip">
+                    <InputLabel htmlFor="mission-order-contractor-service-order-description">Purchase Terms</InputLabel>
+                  </InfoWrapper>
+                  <ReactQuill
+                    id="mission-order-contractor-service-order-description"
+                    value={getContractorServiceOrderDescription(values.contractorServiceOrderDescription)}
+                    onChange={(e) => setFieldValue('contractorServiceOrderDescription', e)}
+                  />
+                  {touched.contractorServiceOrderDescription && errors.contractorServiceOrderDescription && (
+                    <FormHelperText error id="mission-order-contractor-service-order-description-helper">
+                      {errors.contractorServiceOrderDescription}
+                    </FormHelperText>
+                  )}
+                </Stack>
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <Stack spacing={1.25}>
+                  <InfoWrapper tooltipText="mission_order_contractor_service_order_rate_type_tooltip">
+                    <InputLabel htmlFor="contractor-service-order-rate-type">Rate Type</InputLabel>
+                  </InfoWrapper>
+
+                  <Select
+                    id="contractorServiceOrderRateType"
+                    name="contractorServiceOrderRateType"
+                    displayEmpty
+                    value={normalizeInputValue(values.contractorServiceOrderRateType)}
+                    onChange={handleChange}
+                  >
+                    {rateTypes.map((rateType) => (
+                      <MenuItem key={rateType.code} value={rateType.code}>
+                        {rateType.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  {touched.contractorServiceOrderRateType && errors.contractorServiceOrderRateType && (
+                    <FormHelperText error id="contractor-service-order-rate-type-helper">
+                      {errors.contractorServiceOrderRateType}
+                    </FormHelperText>
+                  )}
+
+                </Stack>
+              </Grid>
+
+              <Grid item xs={12} md={6}>
+                <Stack spacing={1.25}>
+                  <InfoWrapper tooltipText="mission_order_contractor_service_order_rate_amount_tooltip">
+                    <InputLabel htmlFor="contractor-service-order-rate-amount">Rate</InputLabel>
+                  </InfoWrapper>
+                  <TextField
+                    fullWidth
+                    id="contractor-service-order-rate-amount"
+                    type="number"
+                    inputProps={{ min: 0, max: 999999 }}
+                    placeholder="Enter rate amount"
+                    value={normalizeInputValue(values.contractorServiceOrderRateAmount)}
+                    name="contractorServiceOrderRateAmount"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                  />
+                  {touched.contractorServiceOrderRateAmount && errors.contractorServiceOrderRateAmount && (
+                    <FormHelperText error id="contractor-service-order-rate-amount-helper">
+                      {errors.contractorServiceOrderRateAmount}
+                    </FormHelperText>
+                  )}
+                </Stack>
+              </Grid>
+
+              <Grid item xs={12} md={6}>
+                <Stack spacing={1.25}>
+                  <InfoWrapper tooltipText="mission_order_contractor_service_order_duration_hours_tooltip">
+                    <InputLabel htmlFor="contractor-service-order-duration-hours">Effort</InputLabel>
+                  </InfoWrapper>
+                  <TextField
+                    fullWidth
+                    id="contractor-service-order-duration-hours"
+                    type="number"
+                    inputProps={{ min: 0, max: 999999 }}
+                    placeholder="Enter duration hours"
+                    value={normalizeInputValue(values.contractorServiceOrderDurationHours)}
+                    name="contractorServiceOrderDurationHours"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                  />
+                  {touched.contractorServiceOrderDurationHours && errors.contractorServiceOrderDurationHours && (
+                    <FormHelperText error id="contractor-service-order-duration-hours-helper">
+                      {errors.contractorServiceOrderDurationHours}
                     </FormHelperText>
                   )}
                 </Stack>
@@ -678,7 +710,7 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
               >
                 <Stack spacing={1.25}>
                   <InfoWrapper tooltipText="project_order_description_tooltip">
-                    <InputLabel htmlFor="project_order-description">Project Order Description</InputLabel>
+                    <InputLabel htmlFor="project_order-description">Purchase Terms</InputLabel>
                   </InfoWrapper>
                   <ReactQuill
                     id="project-order-description"

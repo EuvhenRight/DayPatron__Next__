@@ -70,18 +70,20 @@ const MissionOrderCard = ({ order }) => {
                 <Divider />
 
                 <List component="nav" aria-label="main mailbox folders" sx={{ py: 0, '& .MuiListItem-root': { p: 0, py: 0 } }}>
-                  <ListItem>
-                    <ListItemText>
-                      Admin Status
-                    </ListItemText>
-                    <ListItemSecondaryAction>
-                      {getStatusComponent(order?.employerServiceOrder?.adminStatus, 'admin')}
-                    </ListItemSecondaryAction>
-                  </ListItem>
+                  {keycloak.tokenParsed.roles.includes('admin') && 
+                    <ListItem>
+                      <ListItemText>
+                        Admin Approval Status
+                      </ListItemText>
+                      <ListItemSecondaryAction>
+                        {getStatusComponent(order?.employerServiceOrder?.adminStatus, 'admin')}
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  }
 
                   <ListItem>
                     <ListItemText>
-                      Company Status
+                      Company Approval Status
                     </ListItemText>
                     <ListItemSecondaryAction>
                       {getStatusComponent(order?.employerServiceOrder?.employerStatus, 'employer')}
@@ -90,19 +92,10 @@ const MissionOrderCard = ({ order }) => {
 
                   <ListItem>
                     <ListItemText>
-                      Hourly Rate
+                      Rate
                     </ListItemText>
                     <ListItemSecondaryAction>
                       <Typography>&euro;{order?.employerServiceOrder?.rateAmount}</Typography>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-
-                  <ListItem>
-                    <ListItemText>
-                      Implementation Hours
-                    </ListItemText>
-                    <ListItemSecondaryAction>
-                      <Typography>{order?.employerServiceOrder?.durationHours}</Typography>
                     </ListItemSecondaryAction>
                   </ListItem>
                 </List>
@@ -114,18 +107,19 @@ const MissionOrderCard = ({ order }) => {
                 </Typography>
                 <Divider />
                 <List component="nav" aria-label="main mailbox folders" sx={{ py: 0, '& .MuiListItem-root': { p: 0, py: 0 } }}>
+                  {keycloak.tokenParsed.roles.includes('admin') &&
+                    <ListItem>
+                      <ListItemText>
+                        Admin Approval Status
+                      </ListItemText>
+                      <ListItemSecondaryAction>
+                        {getStatusComponent(order?.contractorServiceOrder?.adminStatus, 'admin')}
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  }
                   <ListItem>
                     <ListItemText>
-                      Admin Status
-                    </ListItemText>
-                    <ListItemSecondaryAction>
-                      {getStatusComponent(order?.contractorServiceOrder?.adminStatus, 'admin')}
-                    </ListItemSecondaryAction>
-                  </ListItem>
-
-                  <ListItem>
-                    <ListItemText>
-                      Talent Status
+                      Talent Approval Status
                     </ListItemText>
                     <ListItemSecondaryAction>
                       <Typography>{order?.contractorServiceOrder?.contractorStatus}</Typography>
@@ -133,26 +127,42 @@ const MissionOrderCard = ({ order }) => {
                   </ListItem>
 
                   {keycloak.tokenParsed.roles.includes('admin') &&
-                    <>
-                      <ListItem>
-                        <ListItemText>
-                          Hourly Rate
-                        </ListItemText>
-                        <ListItemSecondaryAction>
-                          <Typography>&euro;{order?.contractorServiceOrder?.rateAmount}</Typography>
-                        </ListItemSecondaryAction>
-                      </ListItem>
-
-                      <ListItem>
-                        <ListItemText>
-                          Implementation Hours
-                        </ListItemText>
-                        <ListItemSecondaryAction>
-                          <Typography>{order?.contractorServiceOrder?.durationHours}</Typography>
-                        </ListItemSecondaryAction>
-                      </ListItem>
-                    </>
+                    <ListItem>
+                      <ListItemText>
+                        Rate
+                      </ListItemText>
+                      <ListItemSecondaryAction>
+                        <Typography>&euro;{order?.contractorServiceOrder?.rateAmount}</Typography>
+                      </ListItemSecondaryAction>
+                    </ListItem>
                   }
+                </List>
+              </Stack>
+
+              <Stack direction="column" spacing={1}>
+                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                  Project Order
+                </Typography>
+                <Divider />
+                <List component="nav" aria-label="main mailbox folders" sx={{ py: 0, '& .MuiListItem-root': { p: 0, py: 0 } }}>
+
+                  <ListItem>
+                    <ListItemText>
+                      Company Approval Status
+                    </ListItemText>
+                    <ListItemSecondaryAction>
+                      <Typography>{getStatusComponent(order?.employerContractorProjectOrder?.employerStatus, 'employer')}</Typography>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText>
+                      Talent Approval Status
+                    </ListItemText>
+                    <ListItemSecondaryAction>
+                      <Typography>{order?.employerContractorProjectOrder?.contractorStatus}</Typography>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+
                 </List>
               </Stack>
             </Stack>
