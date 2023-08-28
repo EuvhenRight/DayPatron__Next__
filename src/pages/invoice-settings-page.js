@@ -73,6 +73,7 @@ const InvoiceSettingsPage = () => {
           postCode: state?.postCode,
           country: state?.country,
           vatNumber: state?.vatNumber,
+          chamberOfCommerceIdentifier: state?.chamberOfCommerceIdentifier,
           bankName: state?.bankName,
           bankAccountName: state?.bankAccountName,
           iban: state?.iban,
@@ -87,6 +88,7 @@ const InvoiceSettingsPage = () => {
           postCode: Yup.string().max(255).nullable(true).required('Postal code is required.'),
           country: Yup.string().nullable(true).required('Country is required.'),
           vatNumber: Yup.string().max(255).nullable(true),
+          chamberOfCommerceIdentifier: Yup.string().max(255).nullable(true),
           bankName: Yup.string().max(255).nullable(true).required('Bank name is required.'),
           bankAccountName: Yup.string().max(255).nullable(true).required('Bank account name is required.'),
           iban: Yup.string().max(255).nullable(true).required('Iban is required.'),
@@ -199,6 +201,30 @@ const InvoiceSettingsPage = () => {
                     )}
                   </Stack>
                 </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <InfoWrapper tooltipText="invoice_settings_coc_number_tooltip">
+                      <InputLabel htmlFor="invoice-settings-coc-number">Chamber Of Commerce Number</InputLabel>
+                    </InfoWrapper>
+                    <TextField
+                      fullWidth
+                      id="invoice-settings-coc-number"
+                      value={normalizeInputValue(values.chamberOfCommerceIdentifier)}
+                      name="chamberOfCommerceIdentifier"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      placeholder="Chamber Of Commerce Number"
+                      autoFocus
+                    />
+                    {touched.chamberOfCommerceIdentifier && errors.chamberOfCommerceIdentifier && (
+                      <FormHelperText error id="invoice-settings-coc-number-helper">
+                        {errors.chamberOfCommerceIdentifier}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                </Grid>
+
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
                     <InfoWrapper tooltipText="invoice_settings_bank_name_tooltip">
