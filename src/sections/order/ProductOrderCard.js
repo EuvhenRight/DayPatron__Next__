@@ -24,12 +24,12 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
   const { keycloak } = useKeycloak();
   const theme = useTheme();
 
-  const getStatusComponent = (approvalStatus, requiredRole, orderType) => {
+  const getStatusComponent = (approvalStatus, requiredRole, subOrderType) => {
     if (approvalStatus === 'Pending' && keycloak.tokenParsed.roles.includes(requiredRole)) {
       return <Stack direction="row" spacing={0.5}>
         <Typography>{approvalStatus}</Typography>
         <Stack direction="row">
-          (<Link onClick={() => handleApproveClick(order, orderType)}>Approve</Link>)
+          (<Link className="clickable" onClick={() => handleApproveClick(order, subOrderType)}>Approve</Link>)
         </Stack>
       </Stack>;
     }
@@ -150,7 +150,7 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
                       Company Approval Status
                     </ListItemText>
                     <ListItemSecondaryAction>
-                      <Typography>{getStatusComponent(order?.employerContractorProjectOrder?.employerStatus, 'employer', 'project-order')}</Typography>
+                      <Typography>{order?.employerContractorProjectOrder?.employerStatus}</Typography>
                     </ListItemSecondaryAction>
                   </ListItem>
                   <ListItem>

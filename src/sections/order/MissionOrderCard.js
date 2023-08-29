@@ -151,7 +151,7 @@ const MissionOrderCard = ({ order }) => {
                       Company Approval Status
                     </ListItemText>
                     <ListItemSecondaryAction>
-                      <Typography>{getStatusComponent(order?.employerContractorProjectOrder?.employerStatus, 'employer')}</Typography>
+                      {getStatusComponent(order?.employerContractorProjectOrder?.employerStatus, 'employer')}
                     </ListItemSecondaryAction>
                   </ListItem>
                   <ListItem>

@@ -15,13 +15,19 @@ import {
   Typography,
   Button,
   Dialog,
-  DialogContent
+  DialogTitle,
+  DialogContent,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction
 } from '@mui/material';
 
 import { openSnackbar } from 'store/reducers/snackbar';
 import EmptyCardList from 'components/cards/skeleton/EmptyCardList';
 import ProductOrderCard from 'sections/order/ProductOrderCard';
 import { PopupTransition } from 'components/@extended/Transitions';
+import SanitizedHTML from 'react-sanitized-html';
 
 import { GlobalFilter } from 'utils/react-table';
 import usePagination from 'hooks/usePagination';
@@ -29,6 +35,7 @@ import usePagination from 'hooks/usePagination';
 // assets
 import { useKeycloak } from '@react-keycloak/web';
 import { compareSortValues } from 'utils/stringUtils';
+import MainCard from 'components/MainCard';
 
 // ==============================|| ORDERS - PAGE ||============================== //
 
@@ -59,9 +66,9 @@ const ProductOrders = () => {
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [page, setPage] = useState(1);
 
-  const [openEmployerServiceOrderDialog, setOpenEmployerServiceOrderDialog] = useState(false);
+  const [openServiceOrderDialog, setOpenServiceOrderDialog] = useState(false);
   const [orderToView, setOrderToView] = useState(null);
-  const [orderTypeToView, setOrderTypeToView] = useState(null);
+  const [subOrderTypeToView, setSubOrderTypeToView] = useState(null);
 
   const bindOrders = async () => {
     try {
@@ -115,7 +122,7 @@ const ProductOrders = () => {
   };
 
   const handleApproveConfirmClick = async () => {
-    let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/products/orders/' + orderToView.id + '/' + orderTypeToView + 's/admin-approvals',
+    let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/products/orders/' + orderToView.id + '/' + subOrderTypeToView + 's/admin-approvals',
       {
         method: 'PUT',
         headers: {
@@ -138,15 +145,15 @@ const ProductOrders = () => {
         })
       );
 
-      setOpenEmployerServiceOrderDialog(false);
+      setOpenServiceOrderDialog(false);
       setOrderToView(null);
-      setOrderTypeToView(null);
+      setSubOrderTypeToView(null);
       return;
     }
 
-    setOpenEmployerServiceOrderDialog(false);
+    setOpenServiceOrderDialog(false);
     setOrderToView(null);
-    setOrderTypeToView(null);
+    setSubOrderTypeToView(null);
 
     bindOrders();
 
@@ -163,10 +170,171 @@ const ProductOrders = () => {
     );
   };
 
-  const handleApproveClick = (orderToView, orderType) => {
-    setOpenEmployerServiceOrderDialog(true);
-    setOrderToView(orderToView);
-    setOrderTypeToView(orderType);
+  const handleApproveClick = (order, subOrderType) => {
+    setOpenServiceOrderDialog(true);
+    setOrderToView(order);
+    setSubOrderTypeToView(subOrderType);
+  };
+  
+  const getIsServiceOrderApprovable = (order, subOrderType) => {
+    if (!keycloak.tokenParsed.roles.includes('admin')) {
+      return false;
+    }
+
+    if (subOrderType === 'employer-service-order') {
+      return order?.employerServiceOrder?.adminStatus === 'Pending';
+    } else if (subOrderType === 'contractor-service-order') {
+      return order?.contractorServiceOrder?.adminStatus === 'Pending';
+    }
+
+    return false;
+  };
+
+  const getServiceOrderContent = (order, subOrderType) => {
+    if (!order)
+      return;
+
+    if (subOrderType === 'employer-service-order') {
+      return <>
+        <Grid item xs={12}>
+          <Typography>ID: {order?.employerServiceOrder?.id}</Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <MainCard>
+            <Stack>
+              <Typography>{order?.employerServiceOrder?.adminLegalEntityName}</Typography>
+              <Typography>{order?.employerServiceOrder?.adminLegalEntityRepresentativeName}</Typography>
+              <Typography>{order?.employerServiceOrder?.adminStreet} {order?.employerServiceOrder?.adminStreetNumber}</Typography>
+              <Typography>{order?.employerServiceOrder?.adminPostCode} {order?.employerServiceOrder?.adminCity}</Typography>
+            </Stack>
+          </MainCard>
+        </Grid>
+        <Grid item xs={12}>
+          <MainCard>
+            <List sx={{ py: 0, '& .MuiListItem-root': { p: 0, py: 0 } }}>
+              <ListItem>
+                <ListItemText>
+                  Solution
+                </ListItemText>
+                <ListItemSecondaryAction>
+                  {order?.productTitle}
+                </ListItemSecondaryAction>
+              </ListItem>
+
+              <ListItem>
+                <ListItemText>
+                  Effort (hours)
+                </ListItemText>
+                <ListItemSecondaryAction>
+                  {order?.employerServiceOrder?.durationHours}
+                </ListItemSecondaryAction>
+              </ListItem>
+
+              <ListItem>
+                <ListItemText>
+                  <Typography sx={{ fontWeight: 'bold' }}>Total Amount</Typography>
+                </ListItemText>
+                <ListItemSecondaryAction>
+                  &euro;{order?.employerServiceOrder?.rateAmount}
+                </ListItemSecondaryAction>
+              </ListItem>
+            </List>
+          </MainCard>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography variant="h5">Purchase Terms</Typography>
+          <SanitizedHTML html={order?.employerServiceOrder?.description} />  
+        </Grid>
+      </>
+    } else if (subOrderType === 'contractor-service-order') {
+      return <>
+        
+        <Grid item xs={12}>
+          <Typography>ID: {order?.employerServiceOrder?.id}</Typography>
+        </Grid>
+        <Grid item xs={6}>
+          <MainCard title="Talent">
+            <List sx={{ py: 0, '& .MuiListItem-root': { p: 0, py: 0 } }}>
+              <ListItem>
+                <ListItemText>
+                  <Typography>VAT #</Typography>
+                </ListItemText>
+                <ListItemSecondaryAction>
+                  {order?.contractorServiceOrder?.contractorVatNumber}
+                </ListItemSecondaryAction>
+              </ListItem>
+              <ListItem>
+                <ListItemText>
+                  <Typography>Chamber of Commerce #</Typography>
+                </ListItemText>
+                <ListItemSecondaryAction>
+                  {order?.contractorServiceOrder?.contractorChamberOfCommerceIdentifier}
+                </ListItemSecondaryAction>
+              </ListItem>
+            </List>
+          </MainCard>
+        </Grid>
+        <Grid item xs={6}>
+          <MainCard title="10x.team">
+            <List sx={{ py: 0, '& .MuiListItem-root': { p: 0, py: 0 } }}>
+              <ListItem>
+                <ListItemText>
+                  <Typography>VAT #</Typography>
+                </ListItemText>
+                <ListItemSecondaryAction>
+                  {order?.contractorServiceOrder?.adminVatNumber}
+                </ListItemSecondaryAction>
+              </ListItem>
+              <ListItem>
+                <ListItemText>
+                  <Typography>Chamber of Commerce #</Typography>
+                </ListItemText>
+                <ListItemSecondaryAction>
+                  {order?.contractorServiceOrder?.adminChamberOfCommerceIdentifier}
+                </ListItemSecondaryAction>
+              </ListItem>
+            </List>
+          </MainCard>
+        </Grid>
+        <Grid item xs={12}>
+          <MainCard>
+            <List sx={{ py: 0, '& .MuiListItem-root': { p: 0, py: 0 } }}>
+              <ListItem>
+                <ListItemText>
+                  Solution
+                </ListItemText>
+                <ListItemSecondaryAction>
+                  {order?.productTitle}
+                </ListItemSecondaryAction>
+              </ListItem>
+
+              <ListItem>
+                <ListItemText>
+                  Effort (hours)
+                </ListItemText>
+                <ListItemSecondaryAction>
+                  {order?.employerServiceOrder?.durationHours}
+                </ListItemSecondaryAction>
+              </ListItem>
+
+              <ListItem>
+                <ListItemText>
+                  <Typography sx={{ fontWeight: 'bold' }}>Total Amount</Typography>
+                </ListItemText>
+                <ListItemSecondaryAction>
+                  &euro;{order?.employerServiceOrder?.rateAmount}
+                </ListItemSecondaryAction>
+              </ListItem>
+            </List>
+          </MainCard>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Typography variant="h5">Purchase Terms</Typography>
+          <SanitizedHTML html={order?.employerServiceOrder?.description} />
+        </Grid>
+      </>;
+    }
   };
   
   return (
@@ -243,33 +411,41 @@ const ProductOrders = () => {
       </Stack>
 
       <Dialog
-        open={openEmployerServiceOrderDialog}
+        open={openServiceOrderDialog}
         onClose={() => {
-          setOpenEmployerServiceOrderDialog(false);
+          setOpenServiceOrderDialog(false);
           setOrderToView(null);
-          setOrderTypeToView(null);
+          setSubOrderTypeToView(null);
         }}
         keepMounted
         TransitionComponent={PopupTransition}
         aria-labelledby="column-delete-title"
         aria-describedby="column-delete-description"
       >
+        <DialogTitle>Service Order</DialogTitle>
         <DialogContent sx={{ mt: 2, my: 1 }}>
-            
-          <Stack direction="row" spacing={2} sx={{ width: 1 }}>
-            <Button fullWidth onClick={() => {
-                setOpenEmployerServiceOrderDialog(false);
-                setOrderToView(null);
-                setOrderTypeToView(null);
-              }}
-              color="secondary"
-              variant="outlined">
-              Cancel
-            </Button>
-            <Button fullWidth color="primary" variant="contained" onClick={handleApproveConfirmClick} autoFocus>
-              Approve
-            </Button>
-          </Stack>
+
+          <Grid container spacing={2}>
+            {getServiceOrderContent(orderToView, subOrderTypeToView)}
+            <Grid item xs={12}>
+              <Stack direction="row" spacing={2} sx={{ width: 1 }}>
+                <Button fullWidth onClick={() => {
+                  setOpenServiceOrderDialog(false);
+                  setOrderToView(null);
+                  setSubOrderTypeToView(null);
+                }}
+                  color="secondary"
+                  variant="outlined">
+                  Close
+                </Button>
+                {getIsServiceOrderApprovable(orderToView, subOrderTypeToView) && 
+                  <Button fullWidth color="primary" variant="contained" onClick={handleApproveConfirmClick} autoFocus>
+                    Approve
+                  </Button>
+                }
+              </Stack>
+            </Grid>
+          </Grid>
         </DialogContent>
       </Dialog>
     </>
