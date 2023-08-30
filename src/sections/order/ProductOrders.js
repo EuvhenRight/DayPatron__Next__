@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 // material-ui
 import {
+  Checkbox,
+  FormControlLabel,
   Grid,
   Stack,
   useMediaQuery,
@@ -37,6 +39,8 @@ import { useKeycloak } from '@react-keycloak/web';
 import { compareSortValues } from 'utils/stringUtils';
 import MainCard from 'components/MainCard';
 
+import countries from 'data/countries';
+
 // ==============================|| ORDERS - PAGE ||============================== //
 
 const allColumns = [
@@ -69,7 +73,9 @@ const ProductOrders = () => {
   const [openServiceOrderDialog, setOpenServiceOrderDialog] = useState(false);
   const [orderToView, setOrderToView] = useState(null);
   const [subOrderTypeToView, setSubOrderTypeToView] = useState(null);
-
+  const [roleToView, setRoleToView] = useState(null);
+  const [hasAcceptedProjectOrderTerms, setHasAcceptedProjectOrderTerms] = useState(null);
+  
   const bindOrders = async () => {
     try {
       let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/products/orders?employerUserId=' + encodeURIComponent(personalInformation.id),
@@ -122,7 +128,7 @@ const ProductOrders = () => {
   };
 
   const handleApproveConfirmClick = async () => {
-    let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/products/orders/' + orderToView.id + '/' + subOrderTypeToView + 's/admin-approvals',
+    let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/products/orders/' + orderToView.id + '/' + subOrderTypeToView + 's/' + roleToView + '-approvals',
       {
         method: 'PUT',
         headers: {
@@ -170,27 +176,35 @@ const ProductOrders = () => {
     );
   };
 
-  const handleApproveClick = (order, subOrderType) => {
+  const handleApproveClick = (order, subOrderType, role) => {
     setOpenServiceOrderDialog(true);
     setOrderToView(order);
     setSubOrderTypeToView(subOrderType);
+    setRoleToView(role);
+    setHasAcceptedProjectOrderTerms(false);
   };
   
-  const getIsServiceOrderApprovable = (order, subOrderType) => {
-    if (!keycloak.tokenParsed.roles.includes('admin')) {
+  const getIsServiceOrderApprovable = (order, subOrderType, role) => {
+    if (role !== 'admin' && !hasAcceptedProjectOrderTerms) {
       return false;
     }
 
     if (subOrderType === 'employer-service-order') {
-      return order?.employerServiceOrder?.adminStatus === 'Pending';
+      if(role === 'admin')
+        return order?.employerServiceOrder?.adminStatus === 'Pending';
+      else if (role === 'employer')
+        return order?.employerServiceOrder?.employerStatus === 'Pending';
     } else if (subOrderType === 'contractor-service-order') {
-      return order?.contractorServiceOrder?.adminStatus === 'Pending';
+      if (role === 'admin')
+        return order?.contractorServiceOrder?.adminStatus === 'Pending';
+      else if (role === 'employer')
+        return order?.contractorServiceOrder?.employerStatus === 'Pending';
     }
 
     return false;
   };
 
-  const getServiceOrderContent = (order, subOrderType) => {
+  const getServiceOrderContent = (order, subOrderType, role) => {
     if (!order)
       return;
 
@@ -199,13 +213,25 @@ const ProductOrders = () => {
         <Grid item xs={12}>
           <Typography>ID: {order?.employerServiceOrder?.id}</Typography>
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={6}>
+          <MainCard>
+            <Stack>
+              <Typography>{order?.employerServiceOrder?.employerLegalEntityName}</Typography>
+              <Typography>{order?.employerServiceOrder?.employerLegalEntityRepresentativeName}</Typography>
+              <Typography>{order?.employerServiceOrder?.employerStreet} {order?.employerServiceOrder?.employerStreetNumber}</Typography>
+              <Typography>{order?.employerServiceOrder?.employerPostCode} {order?.employerServiceOrder?.employerCity}</Typography>
+              <Typography>{countries.find(x => x.code === order?.employerServiceOrder?.employerCountry)?.label}</Typography>
+            </Stack>
+          </MainCard>
+        </Grid>
+        <Grid item xs={12} sm={6}>
           <MainCard>
             <Stack>
               <Typography>{order?.employerServiceOrder?.adminLegalEntityName}</Typography>
               <Typography>{order?.employerServiceOrder?.adminLegalEntityRepresentativeName}</Typography>
               <Typography>{order?.employerServiceOrder?.adminStreet} {order?.employerServiceOrder?.adminStreetNumber}</Typography>
               <Typography>{order?.employerServiceOrder?.adminPostCode} {order?.employerServiceOrder?.adminCity}</Typography>
+              <Typography>{countries.find(x => x.code === order?.employerServiceOrder?.adminCountry)?.label}</Typography>
             </Stack>
           </MainCard>
         </Grid>
@@ -243,12 +269,19 @@ const ProductOrders = () => {
         </Grid>
         <Grid item xs={12}>
           <Typography variant="h5">Purchase Terms</Typography>
-          <SanitizedHTML html={order?.employerServiceOrder?.description} />  
+          <SanitizedHTML html={order?.employerServiceOrder?.description} />
         </Grid>
+        {keycloak.tokenParsed.roles.includes('employer') && role === 'employer' &&
+          <Grid item xs={12}>
+            <FormControlLabel
+              control={<Checkbox checked={hasAcceptedProjectOrderTerms} onChange={(event) => setHasAcceptedProjectOrderTerms(event.target.checked)} color="primary" />}
+              label="I have read and agree to the Project Contract Terms &amp; Conditions that are applicable to this Service Order."
+            />
+          </Grid>
+        }
       </>
     } else if (subOrderType === 'contractor-service-order') {
       return <>
-        
         <Grid item xs={12}>
           <Typography>ID: {order?.employerServiceOrder?.id}</Typography>
         </Grid>
@@ -313,7 +346,7 @@ const ProductOrders = () => {
                   Effort (hours)
                 </ListItemText>
                 <ListItemSecondaryAction>
-                  {order?.employerServiceOrder?.durationHours}
+                  {order?.contractorServiceOrder?.durationHours}
                 </ListItemSecondaryAction>
               </ListItem>
 
@@ -322,16 +355,15 @@ const ProductOrders = () => {
                   <Typography sx={{ fontWeight: 'bold' }}>Total Amount</Typography>
                 </ListItemText>
                 <ListItemSecondaryAction>
-                  &euro;{order?.employerServiceOrder?.rateAmount}
+                  &euro;{order?.contractorServiceOrder?.rateAmount}
                 </ListItemSecondaryAction>
               </ListItem>
             </List>
           </MainCard>
         </Grid>
-
         <Grid item xs={12}>
           <Typography variant="h5">Purchase Terms</Typography>
-          <SanitizedHTML html={order?.employerServiceOrder?.description} />
+          <SanitizedHTML html={order?.contractorServiceOrder?.description} />
         </Grid>
       </>;
     }
@@ -426,7 +458,7 @@ const ProductOrders = () => {
         <DialogContent sx={{ mt: 2, my: 1 }}>
 
           <Grid container spacing={2}>
-            {getServiceOrderContent(orderToView, subOrderTypeToView)}
+            {getServiceOrderContent(orderToView, subOrderTypeToView, roleToView)}
             <Grid item xs={12}>
               <Stack direction="row" spacing={2} sx={{ width: 1 }}>
                 <Button fullWidth onClick={() => {
@@ -438,11 +470,9 @@ const ProductOrders = () => {
                   variant="outlined">
                   Close
                 </Button>
-                {getIsServiceOrderApprovable(orderToView, subOrderTypeToView) && 
-                  <Button fullWidth color="primary" variant="contained" onClick={handleApproveConfirmClick} autoFocus>
-                    Approve
-                  </Button>
-                }
+                <Button disabled={!getIsServiceOrderApprovable(orderToView, subOrderTypeToView, roleToView)} fullWidth color="primary" variant="contained" onClick={handleApproveConfirmClick} autoFocus>
+                  Approve
+                </Button>
               </Stack>
             </Grid>
           </Grid>

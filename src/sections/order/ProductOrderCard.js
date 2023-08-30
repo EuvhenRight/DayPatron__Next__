@@ -1,8 +1,11 @@
 import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import {
   Link,
   Divider,
+  Fade,
   Grid,
   List,
   ListItem,
@@ -10,11 +13,14 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   Stack,
-  Typography
+  Typography,
+  Menu,
+  MenuItem
 } from '@mui/material';
 
+import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
-import { ShoppingCartOutlined } from '@ant-design/icons';
+import { MoreOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import { useTheme } from '@mui/material/styles';
 import { useKeycloak } from '@react-keycloak/web';
 
@@ -22,14 +28,29 @@ import { useKeycloak } from '@react-keycloak/web';
 
 const ProductOrderCard = ({ order, handleApproveClick }) => {
   const { keycloak } = useKeycloak();
+  const navigate = useNavigate();
   const theme = useTheme();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const openMenu = Boolean(anchorEl);
 
-  const getStatusComponent = (approvalStatus, requiredRole, subOrderType) => {
-    if (approvalStatus === 'Pending' && keycloak.tokenParsed.roles.includes(requiredRole)) {
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleMenuEditClick = () => {
+    navigate('/orders/product/' + order.id);
+  };
+
+  const getStatusComponent = (approvalStatus, role, subOrderType) => {
+    if (approvalStatus === 'Pending' && keycloak.tokenParsed.roles.includes(role)) {
       return <Stack direction="row" spacing={0.5}>
         <Typography>{approvalStatus}</Typography>
         <Stack direction="row">
-          (<Link className="clickable" onClick={() => handleApproveClick(order, subOrderType)}>Approve</Link>)
+          (<Link className="clickable" onClick={() => handleApproveClick(order, subOrderType, role)}>Approve</Link>)
         </Stack>
       </Stack>;
     }
@@ -43,7 +64,14 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
         <Grid id="print" container spacing={2.25}>
           <Grid item xs={12}>
             <List sx={{ width: 1, p: 0 }}>
-              <ListItem disablePadding>
+              <ListItem
+                disablePadding
+                secondaryAction={
+                  keycloak.tokenParsed.roles.includes('admin') &&
+                  <IconButton edge="end" aria-label="comments" color="secondary" onClick={handleMenuClick}>
+                    <MoreOutlined style={{ fontSize: '1.15rem' }} />
+                  </IconButton>
+                }>
                 <ListItemAvatar>
                   <ShoppingCartOutlined style={{ color: theme.palette.primary.main, fontSize: '2.5rem' }} />
                 </ListItemAvatar>
@@ -57,6 +85,28 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
                 />
               </ListItem>
             </List>
+
+            <Menu
+              id="fade-menu"
+              MenuListProps={{
+                'aria-labelledby': 'fade-button'
+              }}
+              anchorEl={anchorEl}
+              open={openMenu}
+              onClose={handleMenuClose}
+              TransitionComponent={Fade}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right'
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right'
+              }}
+            >
+              <MenuItem onClick={handleMenuEditClick}>Edit</MenuItem>
+            </Menu>
+
           </Grid>
           <Grid item xs={12}>
             <Divider />
@@ -85,7 +135,7 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
                       Company Approval Status
                     </ListItemText>
                     <ListItemSecondaryAction>
-                      <Typography>{order?.employerServiceOrder?.employerStatus}</Typography>
+                      {getStatusComponent(order?.employerServiceOrder?.employerStatus, 'employer', 'employer-service-order')}
                     </ListItemSecondaryAction>
                   </ListItem>
 

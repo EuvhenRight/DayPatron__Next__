@@ -52,9 +52,7 @@ const getInitialValues = (missionOrder) => {
     employerServiceOrderDescription: missionOrder?.employerServiceOrder?.description,
     employerServiceOrderDurationHours: missionOrder?.employerServiceOrder?.durationHours,
     employerServiceOrderRateType: missionOrder?.employerServiceOrder?.rateType,
-    employerServiceOrderRateAmount: missionOrder?.employerServiceOrder?.rateAmount,
-
-    projectOrderDescription: missionOrder?.projectOrder?.description
+    employerServiceOrderRateAmount: missionOrder?.employerServiceOrder?.rateAmount
   };
 
   return result;
@@ -96,7 +94,7 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
   };
 
   const bindMissionOrder = async () => {
-    let missionOrderResponse = getMissionOrder();
+    let missionOrderResponse = await getMissionOrder();
 
     setMissionOrder(missionOrderResponse);
   };
@@ -192,9 +190,7 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
     employerServiceOrderDescription: Yup.string().max(5000).required('Required').nullable(true),
     employerServiceOrderDurationHours: Yup.number("Should be a positive integer").integer("Should be a positive integer").min(0, "Should be a positive integer").max(999999, "Maximum 999999").nullable(true),
     employerServiceOrderRateType: Yup.string().max(255).required('Required').nullable(true),
-    employerServiceOrderRateAmount: Yup.number("Should be a positive integer").integer("Should be a positive integer").required("Required").min(0, "Should be a positive integer").max(9999999, "Maximum 9999999").nullable(true),
-
-    projectOrderDescription: Yup.string().max(5000).nullable(true)
+    employerServiceOrderRateAmount: Yup.number("Should be a positive integer").integer("Should be a positive integer").required("Required").min(0, "Should be a positive integer").max(9999999, "Maximum 9999999").nullable(true)
   });
 
   const formik = useFormik({
@@ -220,9 +216,7 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
             durationHours: values.employerServiceOrderDurationHours,
             rateType: values.employerServiceOrderRateType,
             rateAmount: values.employerServiceOrderRateAmount
-          },
-
-          projectOrderDescription: values.projectOrderDescription
+          }
         };
 
         if (missionOrder) {
@@ -323,12 +317,12 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
     if (description)
       return description;
 
-    return `<p>Start: week commencing 2 October 2023 for 6 months.
+    return `<p>Start: week commencing {{startDate}} for {{durationMonths}} months.
 <ul>
   <li>All Fees are in Euro and are excluding VAT.</li>
   <li>Payments are due as soon as the payment from the customer is received.</li>
   <li>This proposal is valid until 7 days after the proposal date.</li>
-  <li>Invoice schedule: monthly afterwards.</li>
+  <li>Invoice schedule: 75% in advance, 25% afterwards.</li>
 </ul>
 <br/>
 This proposal is subject to the 10x Client Terms of Service attached hereto as Annex 2 and the Client Project Contract Terms & Conditions as shared as Annex 3.</p>`;
@@ -339,12 +333,12 @@ This proposal is subject to the 10x Client Terms of Service attached hereto as A
     if (description)
       return description;
 
-    return `<p>Start: week commencing 2 October 2023 for 6 months.
+    return `<p>Start: week commencing {{startDate}} for {{durationMonths}} months.
 <ul>
   <li>All Fees are in Euro and are excluding VAT.</li>
   <li>Payments are due within 14 days after the date of the invoice.</li>
   <li>This proposal is valid until 7 days after the proposal date.</li>
-  <li>Invoice schedule: monthly afterwards.</li>
+  <li>Invoice schedule: 75% in advance, 25% afterwards.</li>
 </ul>
 <br/>
 This proposal is subject to the 10x Client Terms of Service attached hereto as Annex 2 and the Client Project Contract Terms & Conditions as shared as Annex 3.</p>`;
@@ -684,46 +678,6 @@ This proposal is subject to the 10x Client Terms of Service attached hereto as A
                 </Stack>
               </Grid>
 
-              <Grid item xs={12}>
-                <Typography variant="h5">Project Order</Typography>
-              </Grid>
-              <Grid item xs={12}
-                sx={{
-                  '& .quill': {
-                    borderRadius: '4px',
-                    '& .ql-toolbar': {
-                      bgcolor: theme.palette.mode === 'dark' ? 'dark.light' : 'grey.100',
-                      borderColor: theme.palette.divider,
-                      borderTopLeftRadius: '4px',
-                      borderTopRightRadius: '4px'
-                    },
-                    '& .ql-container': {
-                      borderColor: `${theme.palette.divider} !important`,
-                      borderBottomLeftRadius: '4px',
-                      borderBottomRightRadius: '4px',
-                      '& .ql-editor': {
-                        minHeight: 135
-                      }
-                    }
-                  }
-                }}
-              >
-                <Stack spacing={1.25}>
-                  <InfoWrapper tooltipText="project_order_description_tooltip">
-                    <InputLabel htmlFor="project_order-description">Purchase Terms</InputLabel>
-                  </InfoWrapper>
-                  <ReactQuill
-                    id="project-order-description"
-                    value={normalizeInputValue(values.projectOrderDescription)}
-                    onChange={(e) => setFieldValue('projectOrderDescription', e)}
-                  />
-                  {touched.projectOrderDescription && errors.projectOrderDescription && (
-                    <FormHelperText error id="project-order-description-helper">
-                      {errors.projectOrderDescription}
-                    </FormHelperText>
-                  )}
-                </Stack>
-              </Grid>
             </Grid>
           </DialogContent>
           <DialogActions sx={{ p: 2.5 }}>
