@@ -222,8 +222,6 @@ const ProductOrders = () => {
     } else if (subOrderType === 'contractor-service-order') {
       if (role === 'admin')
         return order?.contractorServiceOrder?.adminStatus === 'Pending';
-      else if (role === 'employer')
-        return order?.contractorServiceOrder?.employerStatus === 'Pending';
     }
 
     return false;
@@ -268,7 +266,7 @@ const ProductOrders = () => {
                   Talent
                 </ListItemText>
                 <ListItemSecondaryAction>
-                  {order?.productTitle}
+                  {order?.contractorName}
                 </ListItemSecondaryAction>
               </ListItem>
               <ListItem>
@@ -276,7 +274,7 @@ const ProductOrders = () => {
                   Solution
                 </ListItemText>
                 <ListItemSecondaryAction>
-                  {order?.contractorName}
+                  {order?.productTitle}
                 </ListItemSecondaryAction>
               </ListItem>
 
