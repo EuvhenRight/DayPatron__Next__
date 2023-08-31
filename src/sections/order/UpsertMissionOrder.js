@@ -317,15 +317,12 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
     if (description)
       return description;
 
-    return `<p>Start: week commencing {{startDate}} for {{durationMonths}} months.
-<ul>
+    return `<ul>
+  <li>Start: week commencing {{startDate}} for {{durationMonths}} months.</li>
   <li>All Fees are in Euro and are excluding VAT.</li>
   <li>Payments are due as soon as the payment from the customer is received.</li>
-  <li>This proposal is valid until 7 days after the proposal date.</li>
-  <li>Invoice schedule: 75% in advance, 25% afterwards.</li>
-</ul>
-<br/>
-This proposal is subject to the 10x Client Terms of Service attached hereto as Annex 2 and the Client Project Contract Terms & Conditions as shared as Annex 3.</p>`;
+  <li>This proposal is subject to the <a href=""https://10x.team/10x-talent-terms-of-service/"" target=""_blank"">10x Terms of Service</a> and <a href=""https://10x.team/privacypolicy/"" target=""_blank"">Privacy Statement</a>.</li>
+</ul>`;
   }
 
   const getEmployerServiceOrderDescription = (description) => {
@@ -333,15 +330,14 @@ This proposal is subject to the 10x Client Terms of Service attached hereto as A
     if (description)
       return description;
 
-    return `<p>Start: week commencing {{startDate}} for {{durationMonths}} months.
-<ul>
+    return `<ul>
+  <li>Start: week commencing {{startDate}} for {{durationMonths}} months.</li>
   <li>All Fees are in Euro and are excluding VAT.</li>
   <li>Payments are due within 14 days after the date of the invoice.</li>
   <li>This proposal is valid until 7 days after the proposal date.</li>
   <li>Invoice schedule: 75% in advance, 25% afterwards.</li>
-</ul>
-<br/>
-This proposal is subject to the 10x Client Terms of Service attached hereto as Annex 2 and the Client Project Contract Terms & Conditions as shared as Annex 3.</p>`;
+  <li>This proposal is subject to the <a href="https://10x.team/10x-client-terms-of-service/" target="_blank">10x Terms of Service</a>.</li>
+</ul>`;
   }
 
   const { errors, handleBlur, handleChange, touched, handleSubmit, isSubmitting, setFieldValue, values } = formik;

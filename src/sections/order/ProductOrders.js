@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
 // material-ui
 import {
+  Link,
   Checkbox,
   FormControlLabel,
   Grid,
@@ -75,7 +75,29 @@ const ProductOrders = () => {
   const [subOrderTypeToView, setSubOrderTypeToView] = useState(null);
   const [roleToView, setRoleToView] = useState(null);
   const [hasAcceptedProjectOrderTerms, setHasAcceptedProjectOrderTerms] = useState(null);
-  
+
+  const PER_PAGE = 10;
+
+  const count = Math.ceil(filteredOrders.length / PER_PAGE);
+  const _DATA = usePagination(filteredOrders, PER_PAGE);
+
+  useEffect(() => {
+    (async () => {
+      await bindOrders();
+    })();
+  }, []);
+
+  useEffect(() => {
+    const newOrders = orders.filter((value) => {
+      if (globalFilter) {
+        return value.title.toLowerCase().includes(globalFilter.toLowerCase());
+      } else {
+        return value;
+      }
+    });
+    setFilteredOrders(newOrders);
+  }, [globalFilter]);
+
   const bindOrders = async () => {
     try {
       let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/products/orders?employerUserId=' + encodeURIComponent(personalInformation.id),
@@ -99,28 +121,6 @@ const ProductOrders = () => {
   const handleChangeSort = (event) => {
     setSortBy(event.target.value);
   };
-
-  useEffect(() => {
-    (async () => {
-      await bindOrders();
-    })();
-  }, []);
-
-  useEffect(() => {
-    const newOrders = orders.filter((value) => {
-      if (globalFilter) {
-        return value.title.toLowerCase().includes(globalFilter.toLowerCase());
-      } else {
-        return value;
-      }
-    });
-    setFilteredOrders(newOrders);
-  }, [globalFilter]);
-
-  const PER_PAGE = 10;
-
-  const count = Math.ceil(filteredOrders.length / PER_PAGE);
-  const _DATA = usePagination(filteredOrders, PER_PAGE);
 
   const handleChangePage = (e, p) => {
     setPage(p);
@@ -183,6 +183,31 @@ const ProductOrders = () => {
     setRoleToView(role);
     setHasAcceptedProjectOrderTerms(false);
   };
+
+  const handleProjectOrderTermsClick = async () => {
+    try {
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/products/orders/project-order-terms',
+        {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + keycloak.idToken
+          }
+        }
+      );
+
+      let file = await response.blob();
+      var fileUrl = URL.createObjectURL(file);
+
+      if (fileUrl)
+        setTimeout(function () {
+          URL.revokeObjectURL(fileUrl);
+        }, 1000);
+
+      window.open(fileUrl, '_blank');
+    } catch (error) {
+      console.log(error);
+    }
+  };
   
   const getIsServiceOrderApprovable = (order, subOrderType, role) => {
     if (role !== 'admin' && !hasAcceptedProjectOrderTerms) {
@@ -240,10 +265,18 @@ const ProductOrders = () => {
             <List sx={{ py: 0, '& .MuiListItem-root': { p: 0, py: 0 } }}>
               <ListItem>
                 <ListItemText>
-                  Solution
+                  Talent
                 </ListItemText>
                 <ListItemSecondaryAction>
                   {order?.productTitle}
+                </ListItemSecondaryAction>
+              </ListItem>
+              <ListItem>
+                <ListItemText>
+                  Solution
+                </ListItemText>
+                <ListItemSecondaryAction>
+                  {order?.contractorName}
                 </ListItemSecondaryAction>
               </ListItem>
 
@@ -275,7 +308,7 @@ const ProductOrders = () => {
           <Grid item xs={12}>
             <FormControlLabel
               control={<Checkbox checked={hasAcceptedProjectOrderTerms} onChange={(event) => setHasAcceptedProjectOrderTerms(event.target.checked)} color="primary" />}
-              label="I have read and agree to the Project Contract Terms &amp; Conditions that are applicable to this Service Order."
+              label={<p>I have read and agree to the <Link href="#" onClick={handleProjectOrderTermsClick}>Project Contract Terms &amp; Conditions</Link> that are applicable to this Service Order.</p>}
             />
           </Grid>
         }
@@ -286,52 +319,44 @@ const ProductOrders = () => {
           <Typography>ID: {order?.employerServiceOrder?.id}</Typography>
         </Grid>
         <Grid item xs={6}>
-          <MainCard title="Talent">
-            <List sx={{ py: 0, '& .MuiListItem-root': { p: 0, py: 0 } }}>
-              <ListItem>
-                <ListItemText>
-                  <Typography>VAT #</Typography>
-                </ListItemText>
-                <ListItemSecondaryAction>
-                  {order?.contractorServiceOrder?.contractorVatNumber}
-                </ListItemSecondaryAction>
-              </ListItem>
-              <ListItem>
-                <ListItemText>
-                  <Typography>Chamber of Commerce #</Typography>
-                </ListItemText>
-                <ListItemSecondaryAction>
-                  {order?.contractorServiceOrder?.contractorChamberOfCommerceIdentifier}
-                </ListItemSecondaryAction>
-              </ListItem>
-            </List>
+          <MainCard>
+            <Stack>
+              <Typography>{order?.contractorServiceOrder?.contractorLegalEntityName}</Typography>
+              <Typography>{order?.contractorServiceOrder?.contractorLegalEntityRepresentativeName}</Typography>
+              <Typography>{order?.contractorServiceOrder?.contractorStreet} {order?.contractorServiceOrder?.contractorStreetNumber}</Typography>
+              <Typography>{order?.contractorServiceOrder?.contractorPostCode} {order?.contractorServiceOrder?.contractorCity}</Typography>
+              <Typography>{countries.find(x => x.code === order?.contractorServiceOrder?.contractorCountry)?.label}</Typography>
+              <Typography>&nbsp;</Typography>
+              <Typography>VAT#: {order?.contractorServiceOrder?.contractorVatNumber}</Typography>
+              <Typography>CoC#: {order?.contractorServiceOrder?.contractorChamberOfCommerceIdentifier}</Typography>
+            </Stack>
           </MainCard>
         </Grid>
         <Grid item xs={6}>
-          <MainCard title="10x.team">
-            <List sx={{ py: 0, '& .MuiListItem-root': { p: 0, py: 0 } }}>
-              <ListItem>
-                <ListItemText>
-                  <Typography>VAT #</Typography>
-                </ListItemText>
-                <ListItemSecondaryAction>
-                  {order?.contractorServiceOrder?.adminVatNumber}
-                </ListItemSecondaryAction>
-              </ListItem>
-              <ListItem>
-                <ListItemText>
-                  <Typography>Chamber of Commerce #</Typography>
-                </ListItemText>
-                <ListItemSecondaryAction>
-                  {order?.contractorServiceOrder?.adminChamberOfCommerceIdentifier}
-                </ListItemSecondaryAction>
-              </ListItem>
-            </List>
+          <MainCard>
+            <Stack>
+              <Typography>{order?.contractorServiceOrder?.adminLegalEntityName}</Typography>
+              <Typography>{order?.contractorServiceOrder?.adminLegalEntityRepresentativeName}</Typography>
+              <Typography>{order?.contractorServiceOrder?.adminStreet} {order?.contractorServiceOrder?.adminStreetNumber}</Typography>
+              <Typography>{order?.contractorServiceOrder?.adminPostCode} {order?.contractorServiceOrder?.adminCity}</Typography>
+              <Typography>{countries.find(x => x.code === order?.contractorServiceOrder?.adminCountry)?.label}</Typography>
+              <Typography>&nbsp;</Typography>
+              <Typography>VAT#: {order?.contractorServiceOrder?.adminVatNumber}</Typography>
+              <Typography>CoC#: {order?.contractorServiceOrder?.adminChamberOfCommerceIdentifier}</Typography>
+            </Stack>
           </MainCard>
         </Grid>
         <Grid item xs={12}>
           <MainCard>
             <List sx={{ py: 0, '& .MuiListItem-root': { p: 0, py: 0 } }}>
+              <ListItem>
+                <ListItemText>
+                  Talent
+                </ListItemText>
+                <ListItemSecondaryAction>
+                  {order?.contractorName}
+                </ListItemSecondaryAction>
+              </ListItem>
               <ListItem>
                 <ListItemText>
                   Solution
