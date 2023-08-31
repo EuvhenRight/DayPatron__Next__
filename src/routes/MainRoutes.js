@@ -31,6 +31,7 @@ const ProductPage = Loadable(lazy(() => import('pages/product-page')));
 
 const OrdersPage = Loadable(lazy(() => import('pages/orders-page')));
 const ProductOrderPage = Loadable(lazy(() => import('pages/product-order-page')));
+const MissionOrderPage = Loadable(lazy(() => import('pages/mission-order-page')));
 
 const CreateMissionOrderPage = Loadable(lazy(() => import('pages/create-mission-order-page')));
 
@@ -138,6 +139,10 @@ const MainRoutes = {
         {
           path: 'orders/product/:productOrderId',
           element: <ProductOrderPage />
+        },
+        {
+          path: 'orders/mission/:missionOrderId',
+          element: <MissionOrderPage />
         },
         {
           path: 'orders/my',

@@ -18,9 +18,12 @@ import {
   MenuItem
 } from '@mui/material';
 
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import ProductEmployerServiceOrderPdfCard from 'sections/order/ProductEmployerServiceOrderPdfCard';
+import ProductContractorServiceOrderPdfCard from 'sections/order/ProductContractorServiceOrderPdfCard';
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
-import { MoreOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+import { MoreOutlined, ShoppingCartOutlined, DownloadOutlined } from '@ant-design/icons';
 import { useTheme } from '@mui/material/styles';
 import { useKeycloak } from '@react-keycloak/web';
 
@@ -114,9 +117,20 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
           <Grid item xs={12}>
             <Stack direction="column" spacing={2}>
               <Stack direction="column" spacing={1}>
-                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                  Company Service Order
-                </Typography>
+
+                <Stack direction="row" justifyContent="space-between" alignItems="flex-end">
+                  <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                    Company Service Order
+                  </Typography>
+
+                  <PDFDownloadLink document={<ProductEmployerServiceOrderPdfCard order={order} />} fileName={`product-company-service-order-${order?.id}.pdf`}>
+                    <IconButton sx={{ width: 22, height: 22, mr: 1.5 }}>
+                      <DownloadOutlined />
+                    </IconButton>
+                  </PDFDownloadLink>
+                  
+                </Stack>
+                
                 <Divider />
 
                 <List component="nav" aria-label="main mailbox folders" sx={{ py: 0, '& .MuiListItem-root': { p: 0, py: 0 } }}>
@@ -151,9 +165,18 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
               </Stack>
 
               <Stack direction="column" spacing={1}>
-                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                  Talent Service Order
-                </Typography>
+                <Stack direction="row" justifyContent="space-between" alignItems="flex-end">
+                  <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                    Talent Service Order
+                  </Typography>
+
+                  <PDFDownloadLink document={<ProductContractorServiceOrderPdfCard order={order} />} fileName={`product-talent-service-order-${order?.id}.pdf`}>
+                    <IconButton sx={{ width: 22, height: 22, mr: 1.5 }}>
+                      <DownloadOutlined />
+                    </IconButton>
+                  </PDFDownloadLink>
+
+                </Stack>
                 <Divider />
                 <List component="nav" aria-label="main mailbox folders" sx={{ py: 0, '& .MuiListItem-root': { p: 0, py: 0 } }}>
                   {keycloak.tokenParsed.roles.includes('admin') &&
