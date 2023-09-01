@@ -204,7 +204,7 @@ const MissionOrders = () => {
       if (fileUrl)
         setTimeout(function () {
           URL.revokeObjectURL(fileUrl);
-        }, 1000);
+        }, 300000);
 
       window.open(fileUrl, '_blank');
     } catch (error) {
