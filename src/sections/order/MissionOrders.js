@@ -241,22 +241,22 @@ const MissionOrders = () => {
         <Grid item xs={12} sm={6}>
           <MainCard>
             <Stack>
-              <Typography>{order?.employerServiceOrder?.employerLegalEntityName}</Typography>
-              <Typography>{order?.employerServiceOrder?.employerLegalEntityRepresentativeName}</Typography>
-              <Typography>{order?.employerServiceOrder?.employerStreet} {order?.employerServiceOrder?.employerStreetNumber}</Typography>
-              <Typography>{order?.employerServiceOrder?.employerPostCode} {order?.employerServiceOrder?.employerCity}</Typography>
-              <Typography>{countries.find(x => x.code === order?.employerServiceOrder?.employerCountry)?.label}</Typography>
+              <Typography>{order?.employerLegalEntityName}</Typography>
+              <Typography>{order?.employerLegalEntityRepresentativeName}</Typography>
+              <Typography>{order?.employerStreet} {order?.employerStreetNumber}</Typography>
+              <Typography>{order?.employerPostCode} {order?.employerCity}</Typography>
+              <Typography>{countries.find(x => x.code === order?.employerCountry)?.label}</Typography>
             </Stack>
           </MainCard>
         </Grid>
         <Grid item xs={12} sm={6}>
           <MainCard>
             <Stack>
-              <Typography>{order?.employerServiceOrder?.adminLegalEntityName}</Typography>
-              <Typography>{order?.employerServiceOrder?.adminLegalEntityRepresentativeName}</Typography>
-              <Typography>{order?.employerServiceOrder?.adminStreet} {order?.employerServiceOrder?.adminStreetNumber}</Typography>
-              <Typography>{order?.employerServiceOrder?.adminPostCode} {order?.employerServiceOrder?.adminCity}</Typography>
-              <Typography>{countries.find(x => x.code === order?.employerServiceOrder?.adminCountry)?.label}</Typography>
+              <Typography>{order?.adminLegalEntityName}</Typography>
+              <Typography>{order?.adminLegalEntityRepresentativeName}</Typography>
+              <Typography>{order?.adminStreet} {order?.adminStreetNumber}</Typography>
+              <Typography>{order?.adminPostCode} {order?.adminCity}</Typography>
+              <Typography>{countries.find(x => x.code === order?.adminCountry)?.label}</Typography>
             </Stack>
           </MainCard>
         </Grid>
@@ -265,7 +265,7 @@ const MissionOrders = () => {
             <List sx={{ py: 0, '& .MuiListItem-root': { p: 0, py: 0 } }}>
               <ListItem>
                 <ListItemText>
-                  Talent
+                  10x-er
                 </ListItemText>
                 <ListItemSecondaryAction>
                   {order?.contractorName}

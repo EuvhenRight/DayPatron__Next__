@@ -87,20 +87,20 @@ const ProductEmployerServiceOrderPdfCard = ({ order }) => {
           <View style={styles.row}>
             <View style={styles.half}>
               <View style={styles.card}>
-                <Text style={styles.text}>{order?.employerServiceOrder?.employerLegalEntityName}</Text>
-                <Text style={styles.text}>{order?.employerServiceOrder?.employerLegalEntityRepresentativeName}</Text>
-                <Text style={styles.text}>{order?.employerServiceOrder?.employerStreet} {order?.employerServiceOrder?.employerStreetNumber}</Text>
-                <Text style={styles.text}>{order?.employerServiceOrder?.employerPostCode} {order?.employerServiceOrder?.employerCity}</Text>
-                <Text style={styles.text}>{countries.find(x => x.code === order?.employerServiceOrder?.employerCountry)?.label}</Text>
+                <Text style={styles.text}>{order?.employerLegalEntityName}</Text>
+                <Text style={styles.text}>{order?.employerLegalEntityRepresentativeName}</Text>
+                <Text style={styles.text}>{order?.employerStreet} {order?.employerStreetNumber}</Text>
+                <Text style={styles.text}>{order?.employerPostCode} {order?.employerCity}</Text>
+                <Text style={styles.text}>{countries.find(x => x.code === order?.employerCountry)?.label}</Text>
               </View>
             </View>
             <View style={styles.half}>
               <View style={styles.card}>
-                <Text style={styles.text}>{order?.employerServiceOrder?.adminLegalEntityName}</Text>
-                <Text style={styles.text}>{order?.employerServiceOrder?.adminLegalEntityRepresentativeName}</Text>
-                <Text style={styles.text}>{order?.employerServiceOrder?.adminStreet} {order?.employerServiceOrder?.adminStreetNumber}</Text>
-                <Text style={styles.text}>{order?.employerServiceOrder?.adminPostCode} {order?.employerServiceOrder?.adminCity}</Text>
-                <Text style={styles.text}>{countries.find(x => x.code === order?.employerServiceOrder?.adminCountry)?.label}</Text>
+                <Text style={styles.text}>{order?.adminLegalEntityName}</Text>
+                <Text style={styles.text}>{order?.adminLegalEntityRepresentativeName}</Text>
+                <Text style={styles.text}>{order?.adminStreet} {order?.adminStreetNumber}</Text>
+                <Text style={styles.text}>{order?.adminPostCode} {order?.adminCity}</Text>
+                <Text style={styles.text}>{countries.find(x => x.code === order?.adminCountry)?.label}</Text>
               </View>
             </View>
           </View>

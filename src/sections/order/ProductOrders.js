@@ -239,22 +239,22 @@ const ProductOrders = () => {
         <Grid item xs={12} sm={6}>
           <MainCard>
             <Stack>
-              <Typography>{order?.employerServiceOrder?.employerLegalEntityName}</Typography>
-              <Typography>{order?.employerServiceOrder?.employerLegalEntityRepresentativeName}</Typography>
-              <Typography>{order?.employerServiceOrder?.employerStreet} {order?.employerServiceOrder?.employerStreetNumber}</Typography>
-              <Typography>{order?.employerServiceOrder?.employerPostCode} {order?.employerServiceOrder?.employerCity}</Typography>
-              <Typography>{countries.find(x => x.code === order?.employerServiceOrder?.employerCountry)?.label}</Typography>
+              <Typography>{order?.employerLegalEntityName}</Typography>
+              <Typography>{order?.employerLegalEntityRepresentativeName}</Typography>
+              <Typography>{order?.employerStreet} {order?.employerStreetNumber}</Typography>
+              <Typography>{order?.employerPostCode} {order?.employerCity}</Typography>
+              <Typography>{countries.find(x => x.code === order?.employerCountry)?.label}</Typography>
             </Stack>
           </MainCard>
         </Grid>
         <Grid item xs={12} sm={6}>
           <MainCard>
             <Stack>
-              <Typography>{order?.employerServiceOrder?.adminLegalEntityName}</Typography>
-              <Typography>{order?.employerServiceOrder?.adminLegalEntityRepresentativeName}</Typography>
-              <Typography>{order?.employerServiceOrder?.adminStreet} {order?.employerServiceOrder?.adminStreetNumber}</Typography>
-              <Typography>{order?.employerServiceOrder?.adminPostCode} {order?.employerServiceOrder?.adminCity}</Typography>
-              <Typography>{countries.find(x => x.code === order?.employerServiceOrder?.adminCountry)?.label}</Typography>
+              <Typography>{order?.adminLegalEntityName}</Typography>
+              <Typography>{order?.adminLegalEntityRepresentativeName}</Typography>
+              <Typography>{order?.adminStreet} {order?.adminStreetNumber}</Typography>
+              <Typography>{order?.adminPostCode} {order?.adminCity}</Typography>
+              <Typography>{countries.find(x => x.code === order?.adminCountry)?.label}</Typography>
             </Stack>
           </MainCard>
         </Grid>
@@ -263,7 +263,7 @@ const ProductOrders = () => {
             <List sx={{ py: 0, '& .MuiListItem-root': { p: 0, py: 0 } }}>
               <ListItem>
                 <ListItemText>
-                  Talent
+                  10x-er
                 </ListItemText>
                 <ListItemSecondaryAction>
                   {order?.contractorName}
@@ -310,28 +310,28 @@ const ProductOrders = () => {
         <Grid item xs={6}>
           <MainCard>
             <Stack>
-              <Typography>{order?.contractorServiceOrder?.contractorLegalEntityName}</Typography>
-              <Typography>{order?.contractorServiceOrder?.contractorLegalEntityRepresentativeName}</Typography>
-              <Typography>{order?.contractorServiceOrder?.contractorStreet} {order?.contractorServiceOrder?.contractorStreetNumber}</Typography>
-              <Typography>{order?.contractorServiceOrder?.contractorPostCode} {order?.contractorServiceOrder?.contractorCity}</Typography>
-              <Typography>{countries.find(x => x.code === order?.contractorServiceOrder?.contractorCountry)?.label}</Typography>
+              <Typography>{order?.contractorLegalEntityName}</Typography>
+              <Typography>{order?.contractorLegalEntityRepresentativeName}</Typography>
+              <Typography>{order?.contractorStreet} {order?.contractorStreetNumber}</Typography>
+              <Typography>{order?.contractorPostCode} {order?.contractorCity}</Typography>
+              <Typography>{countries.find(x => x.code === order?.contractorCountry)?.label}</Typography>
               <Typography>&nbsp;</Typography>
-              <Typography>VAT#: {order?.contractorServiceOrder?.contractorVatNumber}</Typography>
-              <Typography>CoC#: {order?.contractorServiceOrder?.contractorChamberOfCommerceIdentifier}</Typography>
+              <Typography>VAT#: {order?.contractorVatNumber}</Typography>
+              <Typography>CoC#: {order?.contractorChamberOfCommerceIdentifier}</Typography>
             </Stack>
           </MainCard>
         </Grid>
         <Grid item xs={6}>
           <MainCard>
             <Stack>
-              <Typography>{order?.contractorServiceOrder?.adminLegalEntityName}</Typography>
-              <Typography>{order?.contractorServiceOrder?.adminLegalEntityRepresentativeName}</Typography>
-              <Typography>{order?.contractorServiceOrder?.adminStreet} {order?.contractorServiceOrder?.adminStreetNumber}</Typography>
-              <Typography>{order?.contractorServiceOrder?.adminPostCode} {order?.contractorServiceOrder?.adminCity}</Typography>
-              <Typography>{countries.find(x => x.code === order?.contractorServiceOrder?.adminCountry)?.label}</Typography>
+              <Typography>{order?.adminLegalEntityName}</Typography>
+              <Typography>{order?.adminLegalEntityRepresentativeName}</Typography>
+              <Typography>{order?.adminStreet} {order?.adminStreetNumber}</Typography>
+              <Typography>{order?.adminPostCode} {order?.adminCity}</Typography>
+              <Typography>{countries.find(x => x.code === order?.adminCountry)?.label}</Typography>
               <Typography>&nbsp;</Typography>
-              <Typography>VAT#: {order?.contractorServiceOrder?.adminVatNumber}</Typography>
-              <Typography>CoC#: {order?.contractorServiceOrder?.adminChamberOfCommerceIdentifier}</Typography>
+              <Typography>VAT#: {order?.adminVatNumber}</Typography>
+              <Typography>CoC#: {order?.adminChamberOfCommerceIdentifier}</Typography>
             </Stack>
           </MainCard>
         </Grid>
@@ -340,7 +340,7 @@ const ProductOrders = () => {
             <List sx={{ py: 0, '& .MuiListItem-root': { p: 0, py: 0 } }}>
               <ListItem>
                 <ListItemText>
-                  Talent
+                  10x-er
                 </ListItemText>
                 <ListItemSecondaryAction>
                   {order?.contractorName}

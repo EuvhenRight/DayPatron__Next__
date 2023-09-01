@@ -170,11 +170,13 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
                     Talent Service Order
                   </Typography>
 
-                  <PDFDownloadLink document={<ProductContractorServiceOrderPdfCard order={order} />} fileName={`product-talent-service-order-${order?.id}.pdf`}>
-                    <IconButton sx={{ width: 22, height: 22, mr: 1.5 }}>
-                      <DownloadOutlined />
-                    </IconButton>
-                  </PDFDownloadLink>
+                  {keycloak.tokenParsed.roles.includes('admin') &&
+                    <PDFDownloadLink document={<ProductContractorServiceOrderPdfCard order={order} />} fileName={`product-talent-service-order-${order?.id}.pdf`}>
+                      <IconButton sx={{ width: 22, height: 22, mr: 1.5 }}>
+                        <DownloadOutlined />
+                      </IconButton>
+                    </PDFDownloadLink>
+                  }
 
                 </Stack>
                 <Divider />

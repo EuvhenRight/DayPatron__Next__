@@ -1,99 +1,67 @@
 import PropTypes from 'prop-types';
+import { Page, View, Document, StyleSheet, Text, Image } from '@react-pdf/renderer';
+import Html from 'react-pdf-html';
+import Logo from 'assets/images/logo.png';
 
-// third-party
-import { Page, View, Document, StyleSheet, Text } from '@react-pdf/renderer';
+import countries from 'data/countries';
 
 const textPrimary = '#262626';
-const textSecondary = '#8c8c8c';
+const textTitle = '#3c3ec5';
 const border = '#f0f0f0';
 
 const styles = StyleSheet.create({
   page: {
     padding: 30
   },
-  container: {
+  card: {
     border: `1px solid ${border}`,
     padding: 18,
     flexDirection: 'column',
-    '@media max-width: 400': {
-      flexDirection: 'column'
-    }
+    width: '100%'
+  },
+  half: {
+    width: '50%'
+  },
+  column: {
+    flexDirection: 'column',
+    gap: 16
   },
   row: {
     flexDirection: 'row',
-    alignItems: 'center',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
     gap: 16
   },
-  image: {
-    width: 40,
-    height: 40,
-    borderRadius: '50%',
-    objectFit: 'cover'
+  end: {
+    alignItems: 'flex-end'
   },
-  CardInfo: {
-    display: 'flex',
-    flexDirection: 'column'
-  },
-  title: {
-    fontSize: 14,
-    lineHeight: 1.57,
+  text: {
+    fontSize: 12,
+    lineHeight: 1.2,
     color: textPrimary
   },
-  role: {
-    fontSize: 10,
-    lineHeight: 1.66,
-    color: textSecondary
+  subTitle: {
+    fontSize: 8,
+    lineHeight: 1,
+    color: textPrimary
+  },
+  h2: {
+    fontSize: 14,
+    lineHeight: 1.2,
+    color: textPrimary
+  },
+  h1: {
+    fontSize: 26,
+    lineHeight: 2,
+    color: textTitle
+  },
+  logo: {
+    width: 75
   },
   hr: {
     borderBottom: `1px solid ${border}`,
-    paddingTop: 18
-    // paddingBottom: 18
-  },
-  about: {
     paddingTop: 18,
-    fontSize: 14,
-    lineHeight: 1.57,
-    fontWeight: 'demibold',
-    color: textPrimary,
     paddingBottom: 18
-  },
-  IconContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-  IconRow: {
-    width: '48%',
-    gap: 10,
-    paddingBottom: 10
-  },
-  icon: {
-    width: 12,
-    height: 10
-  },
-  iconTitle: {
-    fontSize: 10,
-    lineHeight: 1.57,
-    color: textSecondary
-  },
-  chip: {
-    border: `1px solid ${textSecondary}`,
-    alignItems: 'center',
-    borderRadius: '4px',
-    marginLeft: 4,
-    marginRight: 4,
-    marginBottom: 8
-  },
-  chipTitle: {
-    color: textSecondary,
-    fontSize: '10px',
-    paddingLeft: 8,
-    paddingRight: 8,
-    paddingBottom: 4,
-    paddingTop: 4
-  },
-  timer: {
-    marginTop: 25
   }
 });
 
@@ -101,12 +69,111 @@ const MissionEmployerServiceOrderPdfCard = ({ order }) => {
   return (
     <Document title={`${order?.id}`}>
       <Page size="A4" style={styles.page}>
-        <View style={styles.container}>
+        <View style={styles.column}>
+
+
           <View style={styles.row}>
-            <View style={styles.CardInfo}>
-              <Text style={styles.title}>{order?.missionTitle}</Text>
+            <View style={styles.half}>
+              <Image src={Logo} style={styles.logo} />
+            </View>
+            <View style={styles.half}>
+              <View style={styles.end}>
+                <Text style={styles.h1}>Service Order</Text>
+              </View>
             </View>
           </View>
+          <Text style={styles.text}>ID: {order?.employerServiceOrder?.id}</Text>
+
+          <View style={styles.row}>
+            <View style={styles.half}>
+              <View style={styles.card}>
+                <Text style={styles.text}>{order?.employerLegalEntityName}</Text>
+                <Text style={styles.text}>{order?.employerLegalEntityRepresentativeName}</Text>
+                <Text style={styles.text}>{order?.employerStreet} {order?.employerStreetNumber}</Text>
+                <Text style={styles.text}>{order?.employerPostCode} {order?.employerCity}</Text>
+                <Text style={styles.text}>{countries.find(x => x.code === order?.employerCountry)?.label}</Text>
+              </View>
+            </View>
+            <View style={styles.half}>
+              <View style={styles.card}>
+                <Text style={styles.text}>{order?.adminLegalEntityName}</Text>
+                <Text style={styles.text}>{order?.adminLegalEntityRepresentativeName}</Text>
+                <Text style={styles.text}>{order?.adminStreet} {order?.adminStreetNumber}</Text>
+                <Text style={styles.text}>{order?.adminPostCode} {order?.adminCity}</Text>
+                <Text style={styles.text}>{countries.find(x => x.code === order?.adminCountry)?.label}</Text>
+              </View>
+            </View>
+          </View>
+
+          <View style={styles.card}>
+
+            <View style={styles.row}>
+              <View style={styles.half}>
+                <Text style={styles.text}>10x-er:</Text>
+              </View>
+              <View style={styles.half}>
+                <View style={styles.end}>
+                  <Text style={styles.text}>{order?.contractorName}</Text>
+                </View>
+              </View>
+            </View>
+
+            <View style={styles.row}>
+              <View style={styles.half}>
+                <Text style={styles.text}>Mission:</Text>
+              </View>
+              <View style={styles.half}>
+                <View style={styles.end}>
+                  <Text style={styles.text}>{order?.missionTitle}</Text>
+                </View>
+              </View>
+            </View>
+
+            <View style={styles.row}>
+              <View style={styles.half}>
+                <Text style={styles.text}>Effort (hours):</Text>
+              </View>
+              <View style={styles.half}>
+                <View style={styles.end}>
+                  <Text style={styles.text}>{order?.employerServiceOrder?.durationHours}</Text>
+                </View>
+              </View>
+            </View>
+
+            <View style={styles.row}>
+              <View style={styles.half}>
+                <Text style={styles.text}>Rate type:</Text>
+              </View>
+              <View style={styles.half}>
+                <View style={styles.end}>
+                  <Text style={styles.text}>{order?.employerServiceOrder?.rateType}</Text>
+                </View>
+              </View>
+            </View>
+
+            <View style={styles.row}>
+              <View style={styles.half}>
+                <Text style={styles.text}>Rate:</Text>
+              </View>
+              <View style={styles.half}>
+                <View style={styles.end}>
+                  <Text style={styles.text}>&euro;{order?.employerServiceOrder?.rateAmount}</Text>
+                </View>
+              </View>
+            </View>
+
+          </View>
+
+          <Text style={styles.h2}>Purchase Terms</Text>
+          <Html style={styles.text} stylesheet={{ ul: { margin: 0, padding: 0 } }}>{order?.employerServiceOrder?.description}</Html>
+
+          <Text style={styles.h2}> </Text>
+          <Text style={styles.h2}> </Text>
+          <View style={styles.hr}></View>
+          <Text style={styles.h2}>10x Yourself. 10x Your Business.</Text>
+
+          <Text style={styles.subTitle}>www.10x.team | hello@10x.team | NL50 BUNQ 2086 7050 69 | Tr.Reg. 89418344 | VAT NL864976835B01</Text>
+
         </View>
       </Page>
     </Document>

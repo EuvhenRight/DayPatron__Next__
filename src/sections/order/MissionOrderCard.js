@@ -168,13 +168,13 @@ const MissionOrderCard = ({ order, handleApproveClick }) => {
                   <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
                     Talent Service Order
                   </Typography>
-
-                  <PDFDownloadLink document={<MissionContractorServiceOrderPdfCard order={order} />} fileName={`mission-talent-service-order-${order?.id}.pdf`}>
-                    <IconButton sx={{ width: 22, height: 22, mr: 1.5 }}>
-                      <DownloadOutlined />
-                    </IconButton>
-                  </PDFDownloadLink>
-
+                  {keycloak.tokenParsed.roles.includes('admin') &&
+                    <PDFDownloadLink document={<MissionContractorServiceOrderPdfCard order={order} />} fileName={`mission-talent-service-order-${order?.id}.pdf`}>
+                      <IconButton sx={{ width: 22, height: 22, mr: 1.5 }}>
+                        <DownloadOutlined />
+                      </IconButton>
+                    </PDFDownloadLink>
+                  }
                 </Stack>
                 <Divider />
                 <List component="nav" aria-label="main mailbox folders" sx={{ py: 0, '& .MuiListItem-root': { p: 0, py: 0 } }}>

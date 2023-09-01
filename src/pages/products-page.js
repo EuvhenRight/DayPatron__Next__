@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import jobClusters from 'data/jobClusters';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 // material-ui
 import {
@@ -60,6 +61,7 @@ const allColumns = [
 
 const ProductsPage = () => {
   const { keycloak } = useKeycloak();
+  const navigate = useNavigate();
   const personalInformation = useSelector(state => state.personalInformation);
   const dispatch = useDispatch();
 
@@ -238,6 +240,8 @@ const ProductsPage = () => {
         close: false
       })
     );
+
+    navigate('/orders/my');
   };
 
   return (
