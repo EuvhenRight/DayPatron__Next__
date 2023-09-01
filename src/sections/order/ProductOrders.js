@@ -280,15 +280,6 @@ const ProductOrders = () => {
 
               <ListItem>
                 <ListItemText>
-                  Effort (hours)
-                </ListItemText>
-                <ListItemSecondaryAction>
-                  {order?.employerServiceOrder?.durationHours}
-                </ListItemSecondaryAction>
-              </ListItem>
-
-              <ListItem>
-                <ListItemText>
                   <Typography sx={{ fontWeight: 'bold' }}>Total Amount</Typography>
                 </ListItemText>
                 <ListItemSecondaryAction>
@@ -361,15 +352,6 @@ const ProductOrders = () => {
                 </ListItemText>
                 <ListItemSecondaryAction>
                   {order?.productTitle}
-                </ListItemSecondaryAction>
-              </ListItem>
-
-              <ListItem>
-                <ListItemText>
-                  Effort (hours)
-                </ListItemText>
-                <ListItemSecondaryAction>
-                  {order?.contractorServiceOrder?.durationHours}
                 </ListItemSecondaryAction>
               </ListItem>
 
