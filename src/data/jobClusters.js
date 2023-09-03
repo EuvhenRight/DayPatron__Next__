@@ -8,7 +8,6 @@ const jobClusters = [
   { code: 'Marketing_And_Communications', label: 'Marketing & Communications' },
   { code: 'Operations', label: 'Operations' },
   { code: 'Product', label: 'Product' },
-  { code: 'Sales', label: 'Sales' },
   { code: 'Sales_And_Business_Development', label: 'Sales & Business Development' },
   { code: 'Technology', label: 'Technology' },
   { code: 'Transformation_And_Project', label: 'Transformation & Project' }
