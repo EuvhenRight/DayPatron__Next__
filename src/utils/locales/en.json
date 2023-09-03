@@ -68,5 +68,29 @@
   "invoice_settings_address_street_number_tooltip": "The street number of your invoicing address. Let's pinpoint your spot!",
   "invoice_settings_address_city_tooltip": "The vibrant city where your invoicing address resides.",
   "invoice_settings_address_postal_code_tooltip": "The postal code that adds zest to your invoicing address.",
-  "invoice_settings_address_country_tooltip": "The country where your invoicing address calls home ;-) ."
+  "invoice_settings_address_country_tooltip": "The country where your invoicing address calls home ;-) .",
+
+  "mission_order_card_company_service_order_title_tooltip": "",
+  "mission_order_card_company_service_order_admin_approval_status_tooltip": "",
+  "mission_order_card_company_service_order_company_approval_status_tooltip": "",
+  "mission_order_card_company_service_order_amount_tooltip": "",
+  "mission_order_card_talent_service_order_title_tooltip": "",
+  "mission_order_card_talent_service_order_admin_approval_status_tooltip": "",
+  "mission_order_card_talent_service_order_talent_approval_status_tooltip": "",
+  "mission_order_card_talent_service_order_amount_tooltip": "",
+  "mission_order_card_project_order_title_tooltip": "",
+  "mission_order_card_project_order_company_approval_status_tooltip": "",
+  "mission_order_card_project_order_talent_approval_status_tooltip": "",
+
+  "product_order_card_company_service_order_title_tooltip": "",
+  "product_order_card_company_service_order_admin_approval_status_tooltip": "",
+  "product_order_card_company_service_order_company_approval_status_tooltip": "",
+  "product_order_card_company_service_order_amount_tooltip": "",
+  "product_order_card_talent_service_order_title_tooltip": "",
+  "product_order_card_talent_service_order_admin_approval_status_tooltip": "",
+  "product_order_card_talent_service_order_talent_approval_status_tooltip": "",
+  "product_order_card_talent_service_order_amount_tooltip": "",
+  "product_order_card_project_order_title_tooltip": "",
+  "product_order_card_project_order_company_approval_status_tooltip": "",
+  "product_order_card_project_order_talent_approval_status_tooltip": ""
 }

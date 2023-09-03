@@ -23,6 +23,7 @@ import ProductEmployerServiceOrderPdfCard from 'sections/order/ProductEmployerSe
 import ProductContractorServiceOrderPdfCard from 'sections/order/ProductContractorServiceOrderPdfCard';
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
+import InfoWrapper from 'components/InfoWrapper';
 import { MoreOutlined, ShoppingCartOutlined, DownloadOutlined } from '@ant-design/icons';
 import { useTheme } from '@mui/material/styles';
 import { useKeycloak } from '@react-keycloak/web';
@@ -119,9 +120,11 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
               <Stack direction="column" spacing={1}>
 
                 <Stack direction="row" justifyContent="space-between" alignItems="flex-end">
-                  <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                    Company Service Order
-                  </Typography>
+                  <InfoWrapper tooltipText="product_order_card_company_service_order_title_tooltip">
+                    <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                      Company Service Order
+                    </Typography>
+                  </InfoWrapper>
 
                   <PDFDownloadLink document={<ProductEmployerServiceOrderPdfCard order={order} />} fileName={`product-company-service-order-${order?.id}.pdf`}>
                     <IconButton sx={{ width: 22, height: 22, mr: 1.5 }}>
@@ -137,7 +140,11 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
                   {keycloak.tokenParsed.roles.includes('admin') &&
                     <ListItem>
                       <ListItemText>
-                        Admin Approval Status
+                        <InfoWrapper tooltipText="product_order_card_company_service_order_admin_approval_status_tooltip">
+                          <Typography>
+                            Admin Approval Status
+                          </Typography>
+                        </InfoWrapper>
                       </ListItemText>
                       <ListItemSecondaryAction>
                         {getStatusComponent(order?.employerServiceOrder?.adminStatus, 'admin', 'employer-service-order')}
@@ -146,7 +153,11 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
                   }
                   <ListItem>
                     <ListItemText>
-                      Company Approval Status
+                      <InfoWrapper tooltipText="product_order_card_company_service_order_company_approval_status_tooltip">
+                        <Typography>
+                          Company Approval Status
+                        </Typography>
+                      </InfoWrapper>
                     </ListItemText>
                     <ListItemSecondaryAction>
                       {getStatusComponent(order?.employerServiceOrder?.employerStatus, 'employer', 'employer-service-order')}
@@ -155,7 +166,11 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
 
                   <ListItem>
                     <ListItemText>
-                      Amount
+                      <InfoWrapper tooltipText="product_order_card_company_service_order_amount_tooltip">
+                        <Typography>
+                          Amount
+                        </Typography>
+                      </InfoWrapper>
                     </ListItemText>
                     <ListItemSecondaryAction>
                       <Typography>&euro;{order?.employerServiceOrder?.rateAmount}</Typography>
@@ -166,9 +181,11 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
 
               <Stack direction="column" spacing={1}>
                 <Stack direction="row" justifyContent="space-between" alignItems="flex-end">
-                  <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                    Talent Service Order
-                  </Typography>
+                  <InfoWrapper tooltipText="product_order_card_talent_service_order_title_tooltip">
+                    <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                      Talent Service Order
+                    </Typography>
+                  </InfoWrapper>
 
                   {keycloak.tokenParsed.roles.includes('admin') &&
                     <PDFDownloadLink document={<ProductContractorServiceOrderPdfCard order={order} />} fileName={`product-talent-service-order-${order?.id}.pdf`}>
@@ -184,7 +201,11 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
                   {keycloak.tokenParsed.roles.includes('admin') &&
                     <ListItem>
                       <ListItemText>
-                        Admin Approval Status
+                        <InfoWrapper tooltipText="product_order_card_talent_service_order_admin_approval_status_tooltip">
+                          <Typography>
+                            Admin Approval Status
+                          </Typography>
+                        </InfoWrapper>
                       </ListItemText>
                       <ListItemSecondaryAction>
                         {getStatusComponent(order?.contractorServiceOrder?.adminStatus, 'admin', 'contractor-service-order')}
@@ -193,7 +214,11 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
                   }
                   <ListItem>
                     <ListItemText>
-                      Talent Approval Status
+                      <InfoWrapper tooltipText="product_order_card_talent_service_order_talent_approval_status_tooltip">
+                        <Typography>
+                          Talent Approval Status
+                        </Typography>
+                      </InfoWrapper>
                     </ListItemText>
                     <ListItemSecondaryAction>
                       <Typography>{order?.contractorServiceOrder?.contractorStatus}</Typography>
@@ -203,7 +228,11 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
                   {keycloak.tokenParsed.roles.includes('admin') &&
                     <ListItem>
                       <ListItemText>
-                        Amount
+                        <InfoWrapper tooltipText="product_order_card_talent_service_order_amount_tooltip">
+                          <Typography>
+                            Amount
+                          </Typography>
+                        </InfoWrapper>
                       </ListItemText>
                       <ListItemSecondaryAction>
                         <Typography>&euro;{order?.contractorServiceOrder?.rateAmount}</Typography>
@@ -215,14 +244,22 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
 
               <Stack direction="column" spacing={1}>
                 <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                  Project Order
+                  <InfoWrapper tooltipText="product_order_card_project_order_title_tooltip">
+                    <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                      Project Order
+                    </Typography>
+                  </InfoWrapper>
                 </Typography>
                 <Divider />
                 <List component="nav" aria-label="main mailbox folders" sx={{ py: 0, '& .MuiListItem-root': { p: 0, py: 0 } }}>
 
                   <ListItem>
                     <ListItemText>
-                      Company Approval Status
+                      <InfoWrapper tooltipText="product_order_card_project_order_company_approval_status_tooltip">
+                        <Typography>
+                          Company Approval Status
+                        </Typography>
+                      </InfoWrapper>
                     </ListItemText>
                     <ListItemSecondaryAction>
                       <Typography>{order?.employerContractorProjectOrder?.employerStatus}</Typography>
@@ -230,7 +267,11 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
                   </ListItem>
                   <ListItem>
                     <ListItemText>
-                      Talent Approval Status
+                      <InfoWrapper tooltipText="product_order_card_project_order_talent_approval_status_tooltip">
+                        <Typography>
+                          Talent Approval Status
+                        </Typography>
+                      </InfoWrapper>
                     </ListItemText>
                     <ListItemSecondaryAction>
                       <Typography>{order?.employerContractorProjectOrder?.contractorStatus}</Typography>
