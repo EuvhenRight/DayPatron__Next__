@@ -67,5 +67,11 @@
   "invoice_settings_address_street_number_tooltip": "The street number of your invoicing address. Let's pinpoint your spot!",
   "invoice_settings_address_city_tooltip": "The vibrant city where your invoicing address resides.",
   "invoice_settings_address_postal_code_tooltip": "The postal code that adds zest to your invoicing address.",
-  "invoice_settings_address_country_tooltip": "The country where your invoicing address calls home ;-) ."
+  "invoice_settings_address_country_tooltip": "The country where your invoicing address calls home ;-) .",
+
+  "product_title_tooltip": "",
+  "product_price_tooltip": "",
+  "product_description_tooltip": "",
+  "product_cluster_tooltip": "",
+  "product_estimated_implementation_hours_tooltip": ""
 }
