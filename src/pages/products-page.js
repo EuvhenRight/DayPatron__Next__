@@ -40,7 +40,8 @@ import usePagination from 'hooks/usePagination';
 // assets
 import { useKeycloak } from '@react-keycloak/web';
 import { normalizeInputValue, prepareApiBody, compareSortValues } from 'utils/stringUtils';
-import MainCard from '../components/MainCard';
+import MainCard from 'components/MainCard';
+import WelcomeBanner from 'sections/WelcomeBanner';
 
 // ==============================|| PRODUCTS - PAGE ||============================== //
 
@@ -247,6 +248,17 @@ const ProductsPage = () => {
   return (
     <>
       <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <WelcomeBanner title="Discover the Power of the 10x Solution Suite" subTitle="Elevate your vision with curated excellence" />
+        </Grid>
+        <Grid item xs={12}>
+          <MainCard>
+            Welcome to our Solution Suite - the pinnacle of tailored excellence within the 10x Portal for Companies. With precision-crafted solutions, we bring you a curated catalog designed to achieve your company&apos;s unique objectives. Harness the combined mastery of our top-tier talent to transform your goals into tangible reality.
+            <br/>
+            <br/>
+            At 10x, we don&apos;t strive to offer the most options; we focus on offering only the best. Our Solution Suite epitomizes this philosophy, providing you with a curated selection of elite solutions, meticulously chosen to drive your company&apos;s success. Explore our ready catalog of excellence and elevate your vision today with the power of curated brilliance from 10x.
+          </MainCard>
+        </Grid>
         <Grid item xs={12} md={3}>
           <MainCard title="Filter">
 

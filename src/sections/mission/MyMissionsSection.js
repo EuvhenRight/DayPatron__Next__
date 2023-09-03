@@ -29,6 +29,8 @@ import { PlusOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { useKeycloak } from '@react-keycloak/web';
 import { compareSortValues } from 'utils/stringUtils';
+import MainCard from 'components/MainCard';
+import WelcomeBanner from 'sections/WelcomeBanner';
 
 // ==============================|| MISSIONS - PAGE ||============================== //
 
@@ -128,79 +130,94 @@ const MyMissionsSection = () => {
 
   return (
     <>
-      <Box sx={{ position: 'relative', marginBottom: 3 }}>
-        <Stack direction="row" alignItems="center">
-          <Stack
-            direction={matchDownSM ? 'column' : 'row'}
-            sx={{ width: '100%' }}
-            spacing={1}
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <GlobalFilter preGlobalFilteredRows={filteredMissions} globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
-            <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
-              <FormControl sx={{ m: 1, minWidth: 120 }}>
-                <Select
-                  value={sortBy}
-                  onChange={handleChangeSort}
-                  displayEmpty
-                  inputProps={{ 'aria-label': 'Without label' }}
-                  renderValue={(selected) => {
-                    if (!selected) {
-                      return <Typography variant="subtitle1">Sort By</Typography>;
-                    }
-
-                    return <Typography variant="subtitle2">Sort by ({sortBy})</Typography>;
-                  }}
-                >
-                  {allColumns.map((column) => {
-                    return (
-                      <MenuItem key={column.id} value={column.header}>
-                        {column.header}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-              <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd}>
-                Create Mission
-              </Button>
-            </Stack>
-          </Stack>
-        </Stack>
-      </Box>
       <Grid container spacing={3}>
-        {filteredMissions.length > 0 ? (
-          _DATA
-            .currentData()
-            .sort(function (a, b) {
-              if (sortBy === 'Title') return compareSortValues(a?.title, b?.title);
-              if (sortBy === 'Description') return compareSortValues(a?.description, b?.description);
-              return a;
-            })
-            .map((mission, index) => (
-              <Slide key={index} direction="up" in={true} timeout={50}>
-                <Grid item xs={12} sm={6} lg={4}>
-                  <MissionCard mission={mission} alertMissionToDelete={alertMissionToDelete} />
-                </Grid>
-              </Slide>
-            ))
-        ) : (
-          <EmptyCardList title={'No missions.'} />
-        )}
+        <Grid item xs={12}>
+          <WelcomeBanner title="Discover Your Perfect Match in the Mission Hub" subTitle="Navigating the Future of Talent with Precision" />
+        </Grid>
+        <Grid item xs={12}>
+          <MainCard>
+            Welcome to the &apos;Mission Hub&apos;, where talent meets opportunity. Our dedicated platform supports companies to source talent for any role, whether it&apos;s fractional expertise, interim leadership, freelance specialists, or part-time professionals. By curating a dynamic pool of top-tier individuals, we empower companies to harness the exact skills they need, precisely when they&apos;re needed ensuring seamless collaborations and outstanding outcomes.
+            <br/>
+            <br/>
+            Unleash your potential by exploring a spectrum of talent profiles, each meticulously vetted to ensure excellence. Our Mission Hub streamlines the search for experts who align seamlessly with your unique requirements. Whether you&apos;re on the hunt for a short-term project partner or a long-term collaborator, our platform is your compass to discovering the perfect match.
+          </MainCard>
+        </Grid>
+        <Grid item xs={12}>
+          <Box sx={{ position: 'relative', marginBottom: 3 }}>
+            <Stack direction="row" alignItems="center">
+              <Stack
+                direction={matchDownSM ? 'column' : 'row'}
+                sx={{ width: '100%' }}
+                spacing={1}
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <GlobalFilter preGlobalFilteredRows={filteredMissions} globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
+                <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
+                  <FormControl sx={{ m: 1, minWidth: 120 }}>
+                    <Select
+                      value={sortBy}
+                      onChange={handleChangeSort}
+                      displayEmpty
+                      inputProps={{ 'aria-label': 'Without label' }}
+                      renderValue={(selected) => {
+                        if (!selected) {
+                          return <Typography variant="subtitle1">Sort By</Typography>;
+                        }
+
+                        return <Typography variant="subtitle2">Sort by ({sortBy})</Typography>;
+                      }}
+                    >
+                      {allColumns.map((column) => {
+                        return (
+                          <MenuItem key={column.id} value={column.header}>
+                            {column.header}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                  </FormControl>
+                  <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd}>
+                    Create Mission
+                  </Button>
+                </Stack>
+              </Stack>
+            </Stack>
+          </Box>
+          <Grid container spacing={3}>
+            {filteredMissions.length > 0 ? (
+              _DATA
+                .currentData()
+                .sort(function (a, b) {
+                  if (sortBy === 'Title') return compareSortValues(a?.title, b?.title);
+                  if (sortBy === 'Description') return compareSortValues(a?.description, b?.description);
+                  return a;
+                })
+                .map((mission, index) => (
+                  <Slide key={index} direction="up" in={true} timeout={50}>
+                    <Grid item xs={12} sm={6} lg={4}>
+                      <MissionCard mission={mission} alertMissionToDelete={alertMissionToDelete} />
+                    </Grid>
+                  </Slide>
+                ))
+            ) : (
+              <EmptyCardList title={'No missions.'} />
+            )}
+          </Grid>
+          <Stack spacing={2} sx={{ p: 2.5 }} alignItems="flex-end">
+            <Pagination
+              count={count}
+              size="medium"
+              page={page}
+              showFirstButton
+              showLastButton
+              variant="combined"
+              color="primary"
+              onChange={handleChangePage}
+            />
+          </Stack>
+        </Grid>
       </Grid>
-      <Stack spacing={2} sx={{ p: 2.5 }} alignItems="flex-end">
-        <Pagination
-          count={count}
-          size="medium"
-          page={page}
-          showFirstButton
-          showLastButton
-          variant="combined"
-          color="primary"
-          onChange={handleChangePage}
-        />
-      </Stack>
 
       <AlertMissionDelete mission={missionToDelete} open={openDeleteAlert} handleClose={handleDeleteAlertClose} bindMissions={bindMissions} />
     </>
