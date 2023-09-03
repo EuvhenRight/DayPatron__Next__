@@ -58,7 +58,7 @@ const ProfilePreferencesPage = () => {
         setPreferences(res.data);
       }
     })();
-  }, []);
+  }, [personalInformation]);
 
 
   const dispatch = useDispatch();

@@ -64,7 +64,7 @@ const ProfileExpertisePage = () => {
     (async () => {
       await bindExpertise();
     })();
-  }, []);
+  }, [personalInformation]);
 
   let currentYear = new Date().getFullYear();
 
