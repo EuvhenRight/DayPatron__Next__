@@ -305,7 +305,7 @@ const ProductOrders = () => {
     } else if (subOrderType === 'contractor-service-order') {
       return <>
         <Grid item xs={12}>
-          <Typography>ID: {order?.employerServiceOrder?.id}</Typography>
+          <Typography>ID: {order?.contractorServiceOrder?.id}</Typography>
         </Grid>
         <Grid item xs={6}>
           <MainCard>

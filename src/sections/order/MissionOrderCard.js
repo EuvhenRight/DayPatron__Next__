@@ -136,20 +136,18 @@ const MissionOrderCard = ({ order, handleApproveClick }) => {
                 <Divider />
 
                 <List component="nav" aria-label="main mailbox folders" sx={{ py: 0, '& .MuiListItem-root': { p: 0, py: 0 } }}>
-                  {keycloak.tokenParsed.roles.includes('admin') &&
-                    <ListItem>
-                      <ListItemText>
-                        <InfoWrapper tooltipText="mission_order_card_company_service_order_admin_approval_status_tooltip">
-                          <Typography>
-                            Admin Approval Status
-                          </Typography>
-                        </InfoWrapper>
-                      </ListItemText>
-                      <ListItemSecondaryAction>
-                        {order?.employerServiceOrder?.adminStatus}
-                      </ListItemSecondaryAction>
-                    </ListItem>
-                  }
+                  <ListItem>
+                    <ListItemText>
+                      <InfoWrapper tooltipText="mission_order_card_company_service_order_admin_approval_status_tooltip">
+                        <Typography>
+                          10x Team B.V. Approval Status
+                        </Typography>
+                      </InfoWrapper>
+                    </ListItemText>
+                    <ListItemSecondaryAction>
+                      {order?.employerServiceOrder?.adminStatus}
+                    </ListItemSecondaryAction>
+                  </ListItem>
                   <ListItem>
                     <ListItemText>
                       <InfoWrapper tooltipText="mission_order_card_company_service_order_company_approval_status_tooltip">
@@ -198,20 +196,18 @@ const MissionOrderCard = ({ order, handleApproveClick }) => {
                 </Stack>
                 <Divider />
                 <List component="nav" aria-label="main mailbox folders" sx={{ py: 0, '& .MuiListItem-root': { p: 0, py: 0 } }}>
-                  {keycloak.tokenParsed.roles.includes('admin') &&
-                    <ListItem>
-                      <ListItemText>
-                        <InfoWrapper tooltipText="mission_order_card_talent_service_order_admin_approval_status_tooltip">
-                          <Typography>
-                            Admin Approval Status
-                          </Typography>
-                        </InfoWrapper>
-                      </ListItemText>
-                      <ListItemSecondaryAction>
-                        {order?.contractorServiceOrder?.adminStatus}
-                      </ListItemSecondaryAction>
-                    </ListItem>
-                  }
+                  <ListItem>
+                    <ListItemText>
+                      <InfoWrapper tooltipText="mission_order_card_talent_service_order_admin_approval_status_tooltip">
+                        <Typography>
+                          10x Team B.V. Approval Status
+                        </Typography>
+                      </InfoWrapper>
+                    </ListItemText>
+                    <ListItemSecondaryAction>
+                      {order?.contractorServiceOrder?.adminStatus}
+                    </ListItemSecondaryAction>
+                  </ListItem>
                   <ListItem>
                     <ListItemText>
                       <InfoWrapper tooltipText="mission_order_card_talent_service_order_talent_approval_status_tooltip">

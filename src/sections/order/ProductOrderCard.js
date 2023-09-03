@@ -137,20 +137,18 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
                 <Divider />
 
                 <List component="nav" aria-label="main mailbox folders" sx={{ py: 0, '& .MuiListItem-root': { p: 0, py: 0 } }}>
-                  {keycloak.tokenParsed.roles.includes('admin') &&
-                    <ListItem>
-                      <ListItemText>
-                        <InfoWrapper tooltipText="product_order_card_company_service_order_admin_approval_status_tooltip">
-                          <Typography>
-                            Admin Approval Status
-                          </Typography>
-                        </InfoWrapper>
-                      </ListItemText>
-                      <ListItemSecondaryAction>
-                        {getStatusComponent(order?.employerServiceOrder?.adminStatus, 'admin', 'employer-service-order')}
-                      </ListItemSecondaryAction>
-                    </ListItem>
-                  }
+                  <ListItem>
+                    <ListItemText>
+                      <InfoWrapper tooltipText="product_order_card_company_service_order_admin_approval_status_tooltip">
+                        <Typography>
+                          10x Team B.V. Approval Status
+                        </Typography>
+                      </InfoWrapper>
+                    </ListItemText>
+                    <ListItemSecondaryAction>
+                      {getStatusComponent(order?.employerServiceOrder?.adminStatus, 'admin', 'employer-service-order')}
+                    </ListItemSecondaryAction>
+                  </ListItem>
                   <ListItem>
                     <ListItemText>
                       <InfoWrapper tooltipText="product_order_card_company_service_order_company_approval_status_tooltip">
@@ -198,20 +196,18 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
                 </Stack>
                 <Divider />
                 <List component="nav" aria-label="main mailbox folders" sx={{ py: 0, '& .MuiListItem-root': { p: 0, py: 0 } }}>
-                  {keycloak.tokenParsed.roles.includes('admin') &&
-                    <ListItem>
-                      <ListItemText>
-                        <InfoWrapper tooltipText="product_order_card_talent_service_order_admin_approval_status_tooltip">
-                          <Typography>
-                            Admin Approval Status
-                          </Typography>
-                        </InfoWrapper>
-                      </ListItemText>
-                      <ListItemSecondaryAction>
-                        {getStatusComponent(order?.contractorServiceOrder?.adminStatus, 'admin', 'contractor-service-order')}
-                      </ListItemSecondaryAction>
-                    </ListItem>
-                  }
+                  <ListItem>
+                    <ListItemText>
+                      <InfoWrapper tooltipText="product_order_card_talent_service_order_admin_approval_status_tooltip">
+                        <Typography>
+                          10x Team B.V. Approval Status
+                        </Typography>
+                      </InfoWrapper>
+                    </ListItemText>
+                    <ListItemSecondaryAction>
+                      {getStatusComponent(order?.contractorServiceOrder?.adminStatus, 'admin', 'contractor-service-order')}
+                    </ListItemSecondaryAction>
+                  </ListItem>
                   <ListItem>
                     <ListItemText>
                       <InfoWrapper tooltipText="product_order_card_talent_service_order_talent_approval_status_tooltip">
