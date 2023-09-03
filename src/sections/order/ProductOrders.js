@@ -431,7 +431,7 @@ const ProductOrders = () => {
               </Slide>
             ))
         ) : (
-          <EmptyCardList title={'No product orders.'} />
+          <EmptyCardList title={'No solution orders.'} />
         )}
       </Grid>
       <Stack spacing={2} sx={{ p: 2.5 }} alignItems="flex-end">

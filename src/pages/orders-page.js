@@ -20,7 +20,7 @@ const OrdersPage = () => {
         </MainCard>
       </Grid>
       <Grid item xs={12}>
-        <Typography variant="h3">Product Orders</Typography>
+        <Typography variant="h3">Solution Orders</Typography>
         <ProductOrders></ProductOrders>
       </Grid>
       <Grid item xs={12}>
