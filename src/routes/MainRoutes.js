@@ -27,6 +27,8 @@ const MyProductsPage = Loadable(lazy(() => import('pages/my-products-page')));
 const CreateProductPage = Loadable(lazy(() => import('pages/create-product-page')));
 const ProductPage = Loadable(lazy(() => import('pages/product-page')));
 
+const OrdersPage = Loadable(lazy(() => import('pages/orders-page')));
+
 const InvoicesPage = Loadable(lazy(() => import('pages/invoices-page')));
 const InvoiceSettingsPage = Loadable(lazy(() => import('pages/invoice-settings-page')));
 
@@ -95,6 +97,10 @@ const MainRoutes = {
         {
           path: 'solutions/:productId',
           element: <ProductPage />
+        },
+        {
+          path: 'orders/my',
+          element: <OrdersPage />
         },
         {
           path: 'invoices/settings',
