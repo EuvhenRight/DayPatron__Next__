@@ -45,7 +45,7 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
   };
 
   const handleMenuEditClick = () => {
-    navigate('/orders/product/' + order.id);
+    navigate('/orders/solution/' + order.id);
   };
 
   const getStatusComponent = (approvalStatus, role, subOrderType) => {

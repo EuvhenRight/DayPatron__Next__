@@ -321,7 +321,7 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
   <li>Start: week commencing {{startDate}} for {{durationMonths}} months.</li>
   <li>All Fees are in Euro and are excluding VAT.</li>
   <li>Payments are due as soon as the payment from the customer is received.</li>
-  <li>This proposal is subject to the <a href=""https://10x.team/10x-talent-terms-of-service/"" target=""_blank"">10x Terms of Service</a> and <a href=""https://10x.team/privacypolicy/"" target=""_blank"">Privacy Statement</a>.</li>
+  <li>This proposal is subject to the <a href="https://10x.team/10x-talent-terms-of-service/" target="_blank">10x Terms of Service</a> and <a href="https://10x.team/privacypolicy/" target="_blank">Privacy Statement</a>.</li>
 </ul>`;
   }
 

@@ -129,7 +129,7 @@ const UpdateProductOrder = ({ productOrderId }) => {
         dispatch(
           openSnackbar({
             open: true,
-            message: 'Product order updated.',
+            message: 'Order updated.',
             variant: 'alert',
             alert: {
               color: 'success'
@@ -154,7 +154,7 @@ const UpdateProductOrder = ({ productOrderId }) => {
     <>
       <FormikProvider value={formik}>
         <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-          <DialogTitle>Update Product Order</DialogTitle>
+          <DialogTitle>Update Solution Order</DialogTitle>
           <Divider />
 
           <DialogContent sx={{ p: 2.5 }}>
