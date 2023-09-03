@@ -327,7 +327,7 @@ const InvoicesPage = () => {
         disableFilters: true
       },
       {
-        Header: 'Company',
+        Header: 'Talent',
         accessor: 'company_name',
         disableFilters: true,
         Cell: CompanyCell

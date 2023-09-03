@@ -129,15 +129,15 @@ const MainRoutes = {
           ]
         },
         {
-          path: 'products/:productId',
+          path: 'solutions/:productId',
           element: <ProductPage />
         },
         {
-          path: 'products',
+          path: 'solutions',
           element: <ProductsPage />
         },
         {
-          path: 'orders/product/:productOrderId',
+          path: 'orders/solution/:productOrderId',
           element: <ProductOrderPage />
         },
         {

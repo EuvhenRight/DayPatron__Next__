@@ -31,6 +31,7 @@ const menuItems = {
   items: [
     {
       id: '10x',
+      title: <FormattedMessage id="profile" />,
       type: 'group',
       children: [
         {
@@ -79,7 +80,7 @@ const menuItems = {
           id: 'find-products',
           title: <FormattedMessage id="find-products" />,
           type: 'item',
-          url: '/products',
+          url: '/solutions',
           icon: icons.SearchOutlined
         }
       ]

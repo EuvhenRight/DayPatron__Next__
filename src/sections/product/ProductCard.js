@@ -93,7 +93,7 @@ const ProductCard = ({ product, onBuyClick }) => {
               sx={{ height: 250, textDecoration: 'none', opacity: 1 }}
               image={avatar}
               component={Link}
-              to={`/products/${product?.id}`}
+              to={`/solutions/${product?.id}`}
             />
           </Box>
           <Divider />
@@ -103,7 +103,7 @@ const ProductCard = ({ product, onBuyClick }) => {
                 <Stack>
                   <Typography
                     component={Link}
-                    to={`/products/${product?.id}`}
+                    to={`/solutions/${product?.id}`}
                     color="textPrimary"
                     variant="h5"
                     sx={{

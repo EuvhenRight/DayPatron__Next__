@@ -236,7 +236,7 @@ const ProductDetails = () => {
             </Avatar>
             <Stack spacing={2}>
               <Typography variant="h4" align="center">
-                You are about to buy product &apos;{product?.title}&apos;. Select the company for which you want to place the order:
+                You are about to buy solution &apos;{product?.title}&apos;. Select the company for which you want to place the order:
               </Typography>
 
               {employers?.length > 0 ?
