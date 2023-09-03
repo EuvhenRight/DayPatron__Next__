@@ -71,7 +71,7 @@ const EarningsCardChart = () => {
   useEffect(() => {
     setOptions((prevState) => ({
       ...prevState,
-      colors: [theme.palette.warning.main],
+      colors: [theme.palette.primary.main, theme.palette.primary[700]],
       tooltip: {
         theme: mode === 'dark' ? 'dark' : 'light'
       }

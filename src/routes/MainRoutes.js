@@ -85,15 +85,15 @@ const MainRoutes = {
           element: <MissionsPage />
         },
         {
-          path: 'products/my',
+          path: 'solutions/my',
           element: <MyProductsPage />
         },
         {
-          path: 'products/create',
+          path: 'solutions/create',
           element: <CreateProductPage />
         },
         {
-          path: 'products/:productId',
+          path: 'solutions/:productId',
           element: <ProductPage />
         },
         {

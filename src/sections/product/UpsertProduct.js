@@ -268,12 +268,12 @@ const UpsertProduct = ({ productId }) => {
             return;
           }
 
-          navigate('/products/my');
+          navigate('/solutions/my');
 
           dispatch(
             openSnackbar({
               open: true,
-              message: 'Product updated.',
+              message: 'Saved.',
               variant: 'alert',
               alert: {
                 color: 'success'
@@ -311,12 +311,12 @@ const UpsertProduct = ({ productId }) => {
             return;
           }
 
-          navigate('/products/my');
+          navigate('/solutions/my');
 
           dispatch(
             openSnackbar({
               open: true,
-              message: 'Product created.',
+              message: 'Solution created.',
               variant: 'alert',
               alert: {
                 color: 'success'
@@ -343,7 +343,7 @@ const UpsertProduct = ({ productId }) => {
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
             {!product &&
               <>
-                <DialogTitle>Create Product</DialogTitle>
+                <DialogTitle>Create Solution</DialogTitle>
                 <Divider />
               </>
             }
@@ -410,12 +410,12 @@ const UpsertProduct = ({ productId }) => {
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
                         <InfoWrapper tooltipText="product_title_tooltip">
-                          <InputLabel htmlFor="product-title">Product Title</InputLabel>
+                          <InputLabel htmlFor="product-title">Solution Title</InputLabel>
                         </InfoWrapper>
                         <TextField
                           fullWidth
                           id="product-title"
-                          placeholder="Enter Product Title"
+                          placeholder="Enter solution title"
                           value={normalizeInputValue(values.title)}
                           name="title"
                           onBlur={handleBlur}
@@ -436,7 +436,7 @@ const UpsertProduct = ({ productId }) => {
                         <TextField
                           fullWidth
                           id="product-price"
-                          placeholder="Enter Product Price"
+                          placeholder="Enter solution price"
                           value={normalizeInputValue(values.price)}
                           name="price"
                           onBlur={handleBlur}
@@ -552,7 +552,7 @@ const UpsertProduct = ({ productId }) => {
             </DialogContent>
             <DialogActions sx={{ p: 2.5 }}>
               <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 2.5 }}>
-                <Button color="error" onClick={() => { navigate('/products/my'); }}>
+                <Button color="error" onClick={() => { navigate('/solutions/my'); }}>
                   Cancel
                 </Button>
                 <Button type="submit" variant="contained" disabled={isSubmitting}>

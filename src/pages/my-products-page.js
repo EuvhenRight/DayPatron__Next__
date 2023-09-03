@@ -86,7 +86,7 @@ const MyProductsPage = () => {
   };
 
   const handleAdd = () => {
-    navigate('/products/create');
+    navigate('/solutions/create');
   };
 
   const handleDeleteAlertClose = () => {
@@ -163,7 +163,7 @@ const MyProductsPage = () => {
                 </Select>
               </FormControl>
               <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd}>
-                Create Product
+                Create Solution
               </Button>
             </Stack>
           </Stack>

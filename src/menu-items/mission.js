@@ -29,13 +29,13 @@ const mission = {
       url: '/missions',
       icon: icons.SearchOutlined
     },
-    {
-      id: 'mission-chat',
-      title: <FormattedMessage id="mission-chat" />,
-      type: 'item',
-      url: '/missions/chat',
-      icon: icons.CommentOutlined
-    },
+    //{
+    //  id: 'mission-chat',
+    //  title: <FormattedMessage id="mission-chat" />,
+    //  type: 'item',
+    //  url: '/missions/chat',
+    //  icon: icons.CommentOutlined
+    //},
     {
       id: 'mission-time-tracking',
       title: <FormattedMessage id="mission-time-tracking" />,

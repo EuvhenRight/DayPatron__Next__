@@ -22,7 +22,7 @@ const solution = {
       id: 'my-products',
       title: <FormattedMessage id="my-products" />,
       type: 'item',
-      url: '/products/my',
+      url: '/solutions/my',
       icon: icons.SolutionOutlined
     }
   ]

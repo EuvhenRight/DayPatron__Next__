@@ -22,7 +22,7 @@ const DashboardPage = () => {
         </AnalyticsDataCard>
       </Grid>
       <Grid item xs={12} sm={6} md={4} lg={3}>
-        <AnalyticsDataCard title="Total Missions Accepted" count="78,250" percentage={70.5} isLoss color="warning">
+        <AnalyticsDataCard title="Total Missions Accepted" count="78,250" percentage={70.5} isLoss>
           <TotalMissionsAcceptedCardChart />
         </AnalyticsDataCard>
       </Grid>
@@ -32,7 +32,7 @@ const DashboardPage = () => {
         </AnalyticsDataCard>
       </Grid>
       <Grid item xs={12} sm={6} md={4} lg={3}>
-        <AnalyticsDataCard title="Earnings" count="&euro;78,250" percentage={70.5} isLoss color="warning">
+        <AnalyticsDataCard title="Earnings" count="&euro;78,250" percentage={70.5} isLoss>
           <EarningsCardChart />
         </AnalyticsDataCard>
       </Grid>
