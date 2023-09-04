@@ -53,6 +53,15 @@ const HeaderContent = () => {
     }
   }
 
+  const getAdminSelectedEmployerUserLabel = (user) => {
+    let prefix = '';
+    if (user.userName === keycloak.idTokenParsed.preferred_username) {
+      prefix = '<ME> ';
+    }
+    let result = prefix + user?.firstName + ' ' + user?.lastName + ' (' + user?.email + ')';
+    return result;
+  }
+
   useEffect(() => {
     (async () => {
       if (keycloak.tokenParsed.roles.includes('admin')) {
@@ -71,7 +80,7 @@ const HeaderContent = () => {
           fullWidth
           value={adminSelectedContractor}
           onChange={async (event, newValue) => {
-            if (keycloak.tokenParsed.roles.includes('admin')) {
+            if (keycloak.tokenParsed.roles.includes('admin') && newValue?.id) {
               let fetchContractorResponse = await fetchContractor(newValue.id);
               if (fetchContractorResponse.success) {
                 localStorage.setItem('adminSelectedContractorId', fetchContractorResponse.data.id);
@@ -82,7 +91,7 @@ const HeaderContent = () => {
           options={contractors ?? []}
           autoHighlight
           isOptionEqualToValue={(option, value) => option.id === value?.id}
-          getOptionLabel={(option) => option?.firstName + ' ' + option?.lastName + '(' + option?.email + ')'}
+          getOptionLabel={(option) => getAdminSelectedEmployerUserLabel(option)}
           renderInput={(params) => (
             <TextField
               {...params}
