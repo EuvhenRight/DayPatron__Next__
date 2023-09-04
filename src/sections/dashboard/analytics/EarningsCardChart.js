@@ -9,7 +9,7 @@ import useConfig from 'hooks/useConfig';
 // third-party
 import ReactApexChart from 'react-apexcharts';
 
-const EarningsCardChart = () => {
+const EarningsCardChart = ({ months }) => {
   const theme = useTheme();
   const { mode } = useConfig();
 
@@ -84,51 +84,51 @@ const EarningsCardChart = () => {
       data: [
         {
           x: 'J',
-          y: 400
+          y: parseInt(months?.january)
         },
         {
           x: 'F',
-          y: 430
+          y: parseInt(months?.february)
         },
         {
           x: 'M',
-          y: 448
+          y: parseInt(months?.march)
         },
         {
           x: 'A',
-          y: 470
+          y: parseInt(months?.april)
         },
         {
           x: 'M',
-          y: 540
+          y: parseInt(months?.may)
         },
         {
           x: 'J',
-          y: 580
+          y: parseInt(months?.june)
         },
         {
           x: 'J',
-          y: 690
+          y: parseInt(months?.july)
         },
         {
           x: 'A',
-          y: 540
+          y: parseInt(months?.august)
         },
         {
           x: 'S',
-          y: 320
+          y: parseInt(months?.september)
         },
         {
           x: 'O',
-          y: 510
+          y: parseInt(months?.october)
         },
         {
           x: 'N',
-          y: 550
+          y: parseInt(months?.november)
         },
         {
           x: 'D',
-          y: 580
+          y: parseInt(months?.december)
         }
       ]
     }

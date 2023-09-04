@@ -12,20 +12,6 @@ import NumberFormat from 'react-number-format';
 // project import
 import Dot from 'components/@extended/Dot';
 
-function createData(id, company, title, totalHours, status, totalAmount) {
-  return { id, company, title, totalHours, status, totalAmount };
-}
-
-const rows = [
-  createData(84564564, 'OopKop', 'Rebranding OopKop', 80, 'approved', 40570),
-  createData(98764564, 'OopKop', 'Create launchcampaign rebranding', 80, 'approved', 180139),
-  createData(98756325, 'HirePort', 'Lead generation', 355, 'approved', 90989),
-  createData(98652366, 'InShared', 'Marketing Project Manager', 50, 'pending', 10239),
-  createData(13286564, 'ParkBee', 'Fractional Marketeer', 100, 'pending', 83348),
-  createData(86739658, 'Ultimate Gym Group', 'Marketing Manager', 99, 'deferred', 410780),
-  createData(13256498, 'Nxt Museum', 'Fractional CFO', 125, 'canceled', 70999)
-];
-
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -121,23 +107,23 @@ const MissionStatus = ({ status }) => {
   let title;
 
   switch (status) {
-    case 'pending':
+    case 'Pending':
       color = 'warning';
       title = 'Pending';
       break;
-    case 'approved':
+    case 'Approved':
       color = 'success';
       title = 'Approved';
       break;
-    case 'rejected':
+    case 'Rejected':
       color = 'error';
       title = 'Rejected';
       break;
-    case 'deferred':
+    case 'Deferred':
       color = 'secondary';
       title = 'Deferred';
       break;
-    case 'canceled':
+    case 'Canceled':
       color = 'error';
       title = 'Canceled';
       break;
@@ -158,7 +144,7 @@ MissionStatus.propTypes = {
   status: PropTypes.string
 };
 
-export default function RecentMissionsList() {
+export default function RecentMissionsList({recentMissionsData}) {
   const [order] = useState('asc');
   const [orderBy] = useState('tracking_no');
 
@@ -177,7 +163,7 @@ export default function RecentMissionsList() {
         <Table aria-labelledby="tableTitle">
           <MissionTableHead order={order} orderBy={orderBy} />
           <TableBody>
-            {stableSort(rows, getComparator(order, orderBy)).map((row, index) => {
+            {stableSort(recentMissionsData, getComparator(order, orderBy)).map((row, index) => {
               const labelId = `enhanced-table-checkbox-${index}`;
 
               return (
@@ -186,21 +172,21 @@ export default function RecentMissionsList() {
                   role="checkbox"
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   tabIndex={-1}
-                  key={row.id}
+                  key={row?.identifier}
                 >
                   <TableCell component="th" id={labelId} scope="row" align="left">
                     <Link color="secondary" component={RouterLink} to="">
-                      {row.id}
+                      {row?.identifier}
                     </Link>
                   </TableCell>
-                  <TableCell align="left">{row.company}</TableCell>
-                  <TableCell align="left">{row.title}</TableCell>
-                  <TableCell align="right">{row.totalHours}</TableCell>
+                  <TableCell align="left">{row?.company}</TableCell>
+                  <TableCell align="left">{row?.missionTitle}</TableCell>
+                  <TableCell align="right">{row?.totalHours}</TableCell>
                   <TableCell align="left">
-                    <MissionStatus status={row.status} />
+                    <MissionStatus status={row?.status} />
                   </TableCell>
                   <TableCell align="right">
-                    <NumberFormat value={row.totalAmount} displayType="text" prefix="&euro;" />
+                    <NumberFormat value={row?.totalAmount} displayType="text" prefix="&euro;" />
                   </TableCell>
                 </TableRow>
               );
