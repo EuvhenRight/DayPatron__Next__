@@ -5,11 +5,12 @@ import mission from './mission';
 import solution from './solution';
 import order from './order';
 import invoicing from './invoicing';
+import help from './help';
 
 // ==============================|| MENU ITEMS ||============================== //
 
 const menuItems = {
-  items: [dashboard, profile, mission, solution, order, invoicing]
+  items: [dashboard, profile, mission, solution, order, invoicing, help]
 };
 
 export default menuItems;
