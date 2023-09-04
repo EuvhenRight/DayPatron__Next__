@@ -47,7 +47,7 @@ export default function AlertProductDelete({ product, open, handleClose, onArchi
       return;
     }
 
-    onArchive();
+    onArchive;
 
     dispatch(
       openSnackbar({
