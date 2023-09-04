@@ -118,7 +118,8 @@ export function getInvoiceList(keycloak) {
           }
         );
         let json = await response.json();
-        dispatch(invoice.actions.getLists(json?.payouts?.invoices));
+        
+        dispatch(invoice.actions.getLists(json?.staticData?.payouts?.invoices));
       } catch (error) {
         console.log(error);
       }

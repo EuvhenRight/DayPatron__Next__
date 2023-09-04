@@ -238,7 +238,7 @@ const AmountCell = ({ value }) => {
 };
 
 AmountCell.propTypes = {
-  value: PropTypes.number
+  value: PropTypes.string
 };
 
 // Section Cell and Header

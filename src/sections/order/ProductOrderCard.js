@@ -170,13 +170,11 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
               </Stack>
 
               <Stack direction="column" spacing={1}>
-                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                  <InfoWrapper tooltipText="product_order_card_project_order_title_tooltip">
-                    <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                      Project Order
-                    </Typography>
-                  </InfoWrapper>
-                </Typography>
+                <InfoWrapper tooltipText="product_order_card_project_order_title_tooltip">
+                  <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                    Project Order
+                  </Typography>
+                </InfoWrapper>
                 <Divider />
                 <List component="nav" aria-label="main mailbox folders" sx={{ py: 0, '& .MuiListItem-root': { p: 0, py: 0 } }}>
 
