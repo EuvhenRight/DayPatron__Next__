@@ -45,6 +45,8 @@ const actionSX = {
 
 function PayoutHistory() {
   const theme = useTheme();
+  const loomRecordButtonId = "loom-record-sdk-button";
+  const handleNeedHelpClick = () => { document.getElementById(loomRecordButtonId).click(); }
   return (
     <>
       <Grid container alignItems="center" justifyContent="space-between">
@@ -141,11 +143,8 @@ function PayoutHistory() {
           <Grid container justifyContent="space-between" alignItems="center">
             <Grid item>
               <Stack>
-                <Typography variant="h5" noWrap>
-                  Help & Support Chat
-                </Typography>
-                <Typography variant="caption" color="secondary" noWrap>
-                  Typical replay within 5 min
+                <Typography variant="h4" noWrap>
+                  Help & Support
                 </Typography>
               </Stack>
             </Grid>
@@ -158,7 +157,10 @@ function PayoutHistory() {
               </AvatarGroup>
             </Grid>
           </Grid>
-          <Button size="small" variant="contained" sx={{ textTransform: 'capitalize', maxWidth: 'max-content', px: 2.25, py: 0.75 }}>
+          <Typography variant="subtitle">
+            Hit the button and record your video with your question. One of our community managers will get back to you as soon as possible.
+          </Typography>
+          <Button size="small" onClick={handleNeedHelpClick} variant="contained" sx={{ textTransform: 'capitalize', maxWidth: 'max-content', px: 2.25, py: 0.75 }}>
             Need Help?
           </Button>
         </Stack>
