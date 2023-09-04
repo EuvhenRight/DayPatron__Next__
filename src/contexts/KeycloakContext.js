@@ -59,11 +59,11 @@ export const KeycloakProvider = ({ children }) => {
             }
           }
         });
-      }
 
-      let fetchContractorResponse = await fetchContractor();
-      if (fetchContractorResponse.success) {
-        dispatchGlobal({ type: PERSONAL_INFORMATION_GET, payload: fetchContractorResponse.data });
+        let fetchContractorResponse = await fetchContractor();
+        if (fetchContractorResponse.success) {
+          dispatchGlobal({ type: PERSONAL_INFORMATION_GET, payload: fetchContractorResponse.data });
+        }
       }
     })();
   }, [keycloak.authenticated]);
