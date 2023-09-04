@@ -134,8 +134,6 @@ const TotalMissionsAppliedCardChart = ({months}) => {
       ]
     }
   ]);
-  console.log(months?.june);
-  console.log(parseInt(months?.june));
   return <ReactApexChart options={options} series={series} type="bar" height={120} />;
 };
 

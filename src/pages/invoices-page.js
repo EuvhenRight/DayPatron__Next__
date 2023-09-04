@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useMemo, useEffect, Fragment, useState, useRef } from 'react';
-import { useNavigate } from 'react-router';
+import { useKeycloak } from '@react-keycloak/web';
 
 // material-ui
 import {
@@ -9,7 +9,6 @@ import {
   LinearProgress,
   Tabs,
   Tab,
-  Grid,
   Typography,
   Stack,
   Table,
@@ -17,29 +16,21 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  useMediaQuery,
-  Tooltip
+  useMediaQuery
 } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
 
 // third-party
 import { useExpanded, useFilters, useGlobalFilter, usePagination, useRowSelect, useSortBy, useTable } from 'react-table';
-import { EyeTwoTone, FileDoneOutlined, InfoCircleOutlined } from '@ant-design/icons';
 
 // project import
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
-import Avatar from 'components/@extended/Avatar';
-import IconButton from 'components/@extended/IconButton';
-import InvoiceCard from 'components/cards/invoice/InvoiceCard';
-import InvoiceChart from 'components/cards/invoice/InvoiceChart';
 import { CSVExport, HeaderSort, IndeterminateCheckbox, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
 
 import { dispatch, useSelector } from 'store';
 import { getInvoiceList } from 'store/reducers/invoice';
 import { renderFilterTypes, GlobalFilter, DateColumnFilter } from 'utils/react-table';
-
-const avatarImage = require.context('assets/images/users', true);
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -51,7 +42,7 @@ function ReactTable({ columns, data }) {
   const initialState = useMemo(
     () => ({
       filters: [{ id: 'status', value: '' }],
-      hiddenColumns: ['company_avatar', 'company_email'],
+      hiddenColumns: [],
       pageIndex: 0,
       pageSize: 5
     }),
@@ -216,15 +207,7 @@ ReactTable.propTypes = {
 const CompanyCell = ({ row }) => {
   const { values } = row;
   return (
-    <Stack direction="row" spacing={1.5} alignItems="center">
-      <Avatar alt="Avatar" size="sm" src={avatarImage(`./avatar-${!values.company_avatar ? 1 : values.company_avatar}.png`)} />
-      <Stack spacing={0}>
-        <Typography variant="subtitle1">{values.company_name}</Typography>
-        <Typography variant="caption" color="textSecondary">
-          {values.company_email}
-        </Typography>
-      </Stack>
-    </Stack>
+    <Typography variant="subtitle1">{values.company}</Typography>
   );
 };
 
@@ -258,30 +241,6 @@ AmountCell.propTypes = {
   value: PropTypes.number
 };
 
-// Action Cell
-const ActionCell = (row, navigation, theme) => {
-  return (
-    <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
-      <Tooltip title="View">
-        <IconButton
-          color="secondary"
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        >
-          <EyeTwoTone twoToneColor={theme.palette.secondary.main} />
-        </IconButton>
-      </Tooltip>
-    </Stack>
-  );
-};
-
-ActionCell.propTypes = {
-  row: PropTypes.array,
-  navigation: PropTypes.func,
-  theme: PropTypes.object
-};
-
 // Section Cell and Header
 const SelectionCell = ({ row }) => <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />;
 const SelectionHeader = ({ getToggleAllPageRowsSelectedProps }) => (
@@ -297,10 +256,11 @@ SelectionHeader.propTypes = {
 };
 
 const InvoicesPage = () => {
+  const { keycloak } = useKeycloak();
   const { lists } = useSelector((state) => state.invoice);
   useEffect(() => {
-    if (lists.length === 0) {
-      dispatch(getInvoiceList());
+    if (!lists?.length || lists?.length === 0) {
+      dispatch(getInvoiceList(keycloak));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -309,7 +269,6 @@ const InvoicesPage = () => {
   useEffect(() => {
     setList(lists);
   }, [lists]);
-  const navigation = useNavigate();
 
   const columns = useMemo(
     () => [
@@ -323,39 +282,28 @@ const InvoicesPage = () => {
       },
       {
         Header: 'Invoice Id',
-        accessor: 'id',
+        accessor: 'identifier',
         disableFilters: true
       },
       {
         Header: 'Company',
-        accessor: 'company_name',
+        accessor: 'company',
         disableFilters: true,
         Cell: CompanyCell
       },
       {
-        Header: 'Company Avatar',
-        accessor: 'company_avatar',
-        disableSortBy: true,
-        disableFilters: true
-      },
-      {
-        Header: 'Company Email',
-        accessor: 'company_email',
-        disableFilters: true
-      },
-      {
         Header: 'Mission Name',
-        accessor: 'mission_name',
+        accessor: 'missionName',
         disableFilters: true
       },
       {
         Header: 'Invoice Date',
-        accessor: 'invoice_date',
+        accessor: 'invoiceDate',
         disableFilters: true
       },
       {
         Header: 'Total Amount',
-        accessor: 'total_amount',
+        accessor: 'totalAmount',
         disableFilters: true,
         Cell: AmountCell
       },
@@ -365,127 +313,26 @@ const InvoicesPage = () => {
         disableFilters: true,
         filter: 'includes',
         Cell: StatusCell
-      },
-      {
-        Header: 'Actions',
-        disableSortBy: true,
-        Cell: ({ row }) => ActionCell(row, navigation, theme)
       }
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
-  const theme = useTheme();
-  const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
-
-  const widgetsData = [
-    {
-      title: 'Paid',
-      count: '$78,250',
-      percentage: 70.5,
-      isLoss: false,
-      invoice: '20',
-      color: theme.palette.success,
-      chartData: [200, 600, 100, 400, 300, 400, 50]
-    },
-    {
-      title: 'Unpaid',
-      count: '$18,800',
-      percentage: 27.4,
-      isLoss: true,
-      invoice: '12',
-      color: theme.palette.warning,
-      chartData: [100, 550, 300, 350, 200, 100, 300]
-    },
-    {
-      title: 'Overdue',
-      count: '$35,078',
-      percentage: 27.4,
-      isLoss: true,
-      invoice: '10',
-      color: theme.palette.error,
-      chartData: [100, 550, 200, 300, 100, 200, 300]
-    }
-  ];
-
   return (
     <>
-      <Grid container direction={matchDownSM ? 'column' : 'row'} spacing={2} sx={{ pb: 2 }}>
-        <Grid item md={8}>
-          <Grid container direction="row" spacing={2}>
-            {widgetsData.map((widget, index) => (
-              <Grid item sm={4} xs={12} key={index}>
-                <MainCard>
-                  <InvoiceCard
-                    title={widget.title}
-                    count={widget.count}
-                    percentage={widget.percentage}
-                    isLoss={widget.isLoss}
-                    invoice={widget.invoice}
-                    color={widget.color.main}
-                  >
-                    <InvoiceChart color={widget.color} data={widget.chartData} />
-                  </InvoiceCard>
-                </MainCard>
-              </Grid>
-            ))}
-          </Grid>
-        </Grid>
-        <Grid item md={4} sm={12} xs={12}>
-          <Box
-            sx={{
-              background: `linear-gradient(to right, ${theme.palette.primary.dark}, ${theme.palette.primary.main})`,
-              borderRadius: 1,
-              p: 1.75
-            }}
-          >
-            <Stack direction="row" alignItems="flex-end" justifyContent="space-between" spacing={1}>
-              <Stack direction="row" spacing={1} alignItems="center">
-                <Avatar alt="Natacha" variant="rounded" type="filled">
-                  <FileDoneOutlined style={{ fontSize: '20px' }} />
-                </Avatar>
-                <Box>
-                  <Stack direction="row" spacing={1} alignItems="center">
-                    <Typography variant="body1" color="white">
-                      Total Recievables
-                    </Typography>
-                    <InfoCircleOutlined style={{ color: theme.palette.background.paper }} />
-                  </Stack>
-                  <Stack direction="row" spacing={1}>
-                    <Typography variant="body2" color="white">
-                      Current
-                    </Typography>
-                    <Typography variant="body1" color="white">
-                      109.1k
-                    </Typography>
-                  </Stack>
-                </Box>
-              </Stack>
-              <Stack direction="row" spacing={1}>
-                <Typography variant="body2" color="white">
-                  Overdue
-                </Typography>
-                <Typography variant="body1" color="white">
-                  62k
-                </Typography>
-              </Stack>
-            </Stack>
-            <Typography variant="h4" color="white" sx={{ pt: 2, pb: 1, zIndex: 1 }}>
-              $43,078
-            </Typography>
-            <Box sx={{ maxWidth: '100%' }}>
-              <LinearWithLabel value={90} />
-            </Box>
-          </Box>
-        </Grid>
-      </Grid>
-
-      <MainCard content={false}>
-        <ScrollX>
-          <ReactTable columns={columns} data={list} />
-        </ScrollX>
-      </MainCard>
+      {list ? 
+        (<MainCard content={false}>
+          <ScrollX>
+            <ReactTable columns={columns} data={list} />
+          </ScrollX>
+        </MainCard>)
+        :
+        (<MainCard>
+          <Typography>No payouts.</Typography>
+        </MainCard>)
+      }
+      
     </>
   );
 };
