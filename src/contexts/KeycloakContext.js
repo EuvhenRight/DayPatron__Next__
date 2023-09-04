@@ -27,7 +27,12 @@ export const KeycloakProvider = ({ children }) => {
 
   const fetchEmployerUser = async () => {
     try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers/users/' + encodeURIComponent(keycloak.idTokenParsed.preferred_username),
+      let employerUserIdentifier = keycloak.idTokenParsed.preferred_username;
+      if (keycloak.tokenParsed.roles.includes('admin') && localStorage.getItem('adminSelectedEmployerUserId')) {
+        employerUserIdentifier = localStorage.getItem('adminSelectedEmployerUserId');
+      }
+
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers/users/' + encodeURIComponent(employerUserIdentifier),
         {
           method: 'GET',
           headers: {
