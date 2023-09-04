@@ -16,7 +16,7 @@ const OrdersPage = () => {
       </Grid>
       <Grid item xs={12}>
         <MainCard>
-          With each order you place, a symphony of automation comes to life. Every order undergoes scrutiny by our team, guaranteeing it contains what has been discussed. As the i&apos;s are dotted and the t&apos;s are crossed, you&apos;re presented with a Service Order. This Service Order is approved by us and you. Every service order has a partner in the form of a project order. This project order connects your order to a specific 10x-er. It&apos;s here that the final chords are struck and ensuring that regulations are met.
+          With each order a company places, a symphony of automation comes to life. Every order undergoes scrutiny by our team, guaranteeing it contains what has been discussed. As the i&apos;s are dotted and the t&apos;s are crossed, you&apos;re presented with a Service Order. This Service Order is approved by us and you. Every service order has a partner in the form of a project order. This project order connects your order to a specific company. It&apos;s here that the final chords are struck and ensuring that regulations are met.
         </MainCard>
       </Grid>
       <Grid item xs={12}>
