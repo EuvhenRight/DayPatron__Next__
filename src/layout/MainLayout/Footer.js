@@ -7,13 +7,13 @@ const Footer = () => (
   <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ p: '24px 16px 0px', mt: 'auto' }}>
     <Typography variant="caption">&copy; All rights reserved</Typography>
     <Stack spacing={1.5} direction="row" justifyContent="space-between" alignItems="center">
-      <Link component={RouterLink} to="#" target="_blank" variant="caption" color="textPrimary">
+      <Link component={RouterLink} to="https://10x.team/about-us/" target="_blank" variant="caption" color="textPrimary">
         About us
       </Link>
-      <Link component={RouterLink} to="#" target="_blank" variant="caption" color="textPrimary">
+      <Link component={RouterLink} to="https://10x.team/privacypolicy/" target="_blank" variant="caption" color="textPrimary">
         Privacy
       </Link>
-      <Link component={RouterLink} to="#" target="_blank" variant="caption" color="textPrimary">
+      <Link component={RouterLink} to="https://10x.team/10x-talent-terms-of-service/" target="_blank" variant="caption" color="textPrimary">
         Terms
       </Link>
     </Stack>
