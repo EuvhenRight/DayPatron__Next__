@@ -24,7 +24,8 @@ import {
   TextField,
   Typography,
   Select,
-  MenuItem
+  MenuItem,
+  Switch
 } from '@mui/material';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -41,7 +42,7 @@ import Avatar from 'components/@extended/Avatar';
 
 // assets
 import { CameraOutlined } from '@ant-design/icons';
-import { normalizeInputValue, normalizeNullableInputValue, prepareApiBody } from 'utils/stringUtils';
+import { normalizeInputValue, normalizeNullableInputValue, normalizeBooleanInputValue, prepareApiBody } from 'utils/stringUtils';
 import { useKeycloak } from '@react-keycloak/web';
 
 import countries from 'data/countries';
@@ -57,6 +58,7 @@ const getInitialValues = (mission) => {
     id: null,
     employerId: null,
     title: null,
+    hideEmployerName: null,
     description: null,
     cluster: null,
     role: null,
@@ -283,6 +285,7 @@ const UpsertMission = ({ missionId }) => {
   const MissionSchema = Yup.object().shape({
     employerId: Yup.string().required('Company is required').nullable(true),
     title: Yup.string().max(255).required('Title is required').nullable(true),
+    hideEmployerName: Yup.boolean().nullable(true),
     description: Yup.string().max(2000).required('Description is required').nullable(true),
     cluster: Yup.string().max(255).required('Cluster is required').nullable(true),
     role: Yup.string().max(255).required('Role is required').nullable(true),
@@ -521,6 +524,26 @@ const UpsertMission = ({ missionId }) => {
                         {touched.title && errors.title && (
                           <FormHelperText error id="mission-title-helper">
                             {errors.title}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <InfoWrapper tooltipText="mission_hide_company_name_tooltip">
+                          <InputLabel htmlFor="mission-hide-company-name">Mission Title</InputLabel>
+                        </InfoWrapper>
+                        <Switch
+                          id="mission-hide-company-name"
+                          name="hideEmployerName"
+                          checked={normalizeBooleanInputValue(values?.hideEmployerName)}
+                          onChange={(event, checked) => {
+                            setFieldValue("hideEmployerName", checked);
+                          }}
+                        />
+                        {touched.hideEmployerName && errors.hideEmployerName && (
+                          <FormHelperText error id="mission-hide-company-name-helper">
+                            {errors.hideEmployerName}
                           </FormHelperText>
                         )}
                       </Stack>
