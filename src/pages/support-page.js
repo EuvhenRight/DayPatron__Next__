@@ -51,7 +51,7 @@ const SupportPage = () => {
                 <CardMedia
                   sx={{ minHeight: 300 }}
                   component="iframe"
-                  src="https://www.loom.com/share/a7149c81d9b94bf6b774dfdba69e9c23?sid=de63d441-baf7-40e0-bcbb-2bbba5d4bd20"
+                  src="https://www.loom.com/embed/a7149c81d9b94bf6b774dfdba69e9c23?sid=de63d441-baf7-40e0-bcbb-2bbba5d4bd20"
                   allowFullScreen={true} />
               </Stack>
             </MainCard>
@@ -68,7 +68,7 @@ const SupportPage = () => {
                 <CardMedia
                   sx={{ minHeight: 300 }}
                   component="iframe"
-                  src="https://www.loom.com/share/b1d163b872b543e186c1acc5b17ab35a?sid=906a55a3-f917-439d-8630-fa6d416e273c"
+                  src="https://www.loom.com/embed/b1d163b872b543e186c1acc5b17ab35a?sid=906a55a3-f917-439d-8630-fa6d416e273c"
                   allowFullScreen={true} />
               </Stack>
             </MainCard>
@@ -85,7 +85,7 @@ const SupportPage = () => {
                 <CardMedia
                   sx={{ minHeight: 300 }}
                   component="iframe"
-                  src="https://www.loom.com/share/809fe230fcb243b08c77afc8f83dc858?sid=7a5fd349-cc2a-473d-bcaa-b3c636f36f1d"
+                  src="https://www.loom.com/embed/809fe230fcb243b08c77afc8f83dc858?sid=7a5fd349-cc2a-473d-bcaa-b3c636f36f1d"
                   allowFullScreen={true} />
               </Stack>
             </MainCard>
@@ -102,7 +102,7 @@ const SupportPage = () => {
                 <CardMedia
                   sx={{ minHeight: 300 }}
                   component="iframe"
-                  src="https://www.loom.com/share/c8e06d94f9654d978621df15ffc7d3f7?sid=03e25d79-d747-4650-b87a-558e74412e45"
+                  src="https://www.loom.com/embed/c8e06d94f9654d978621df15ffc7d3f7?sid=03e25d79-d747-4650-b87a-558e74412e45"
                   allowFullScreen={true} />
               </Stack>
             </MainCard>
