@@ -18,7 +18,7 @@ const SupportPage = () => {
       </Grid>
       <Grid item xs={12}>
         <MainCard>
-          We&apos;re here to enhance your journey with helpful support videos that cover everything you need to know. From start to finish, we&apos;ve got you covered. And if you ever need a hand and cannot find the information you are looking for, just click the “Support“ button on the bottom left.
+          We&apos;re here to enhance your journey with helpful support videos that cover everything you need to know. From start to finish, we&apos;ve got you covered. And if you ever need a hand and cannot find the information you are looking for, just click the &quot;Support&quot; button on the bottom left.
         </MainCard>
       </Grid>
       <Grid item xs={12}>
