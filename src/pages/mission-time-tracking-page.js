@@ -22,6 +22,7 @@ import IconButton from 'components/@extended/IconButton';
 
 // project import
 import MainCard from 'components/MainCard';
+import WelcomeBanner from 'sections/WelcomeBanner';
 
 const MissionTimeTrackingPage = () => {
   const { keycloak } = useKeycloak();
@@ -210,7 +211,7 @@ const MissionTimeTrackingPage = () => {
   }
 
   const prepareTimeLogsUpdateRequest = () => {
-    var result = {startDate: week.start, endDate: week.end, timeLogs: []};
+    var result = { startDate: week.start, endDate: week.end, timeLogs: [] };
 
     timeLogs.map((timeLog) => {
       if (timeLog.missionId) {
@@ -236,7 +237,7 @@ const MissionTimeTrackingPage = () => {
     var newTimeLogs = update(timeLogs, { $splice: [[index, 1]] });
     setTimeLogs(newTimeLogs);
   }
-  
+
   const handleSaveClick = async () => {
     try {
       var requestBody = prepareTimeLogsUpdateRequest();
@@ -292,8 +293,23 @@ const MissionTimeTrackingPage = () => {
   }
 
   return (
-
     <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <WelcomeBanner title="Efficient Time Tracking" subTitle=" Seamlessly Log Your Work Hours with 10x" />
+        </Grid>
+        <Grid item xs={12}>
+          <MainCard>
+            Welcome to our Time Tracking module designed to streamline your work process and accurately record your hours. With our simple system,
+            you can effortlessly track the time you invest in each mission, add a mission by clicking the ‘Add Timesheet Row’, ensuring transparent and precise records.
+            Boost your productivity by staying organized and maintaining a clear overview of your tasks. Experience the convenience of hassle-free time management
+            that empowers you to focus on what truly matters – delivering exceptional results. Start logging your hours today and elevate your fractional journey with 10x!
+          </MainCard>
+        </Grid>
+      </Grid>
+      <Grid item xs={12} spacing={3}>
+        <Typography variant="h3">Track Time</Typography>
+      </Grid>
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Stack direction="row" alignItems="center" spacing={2}>
