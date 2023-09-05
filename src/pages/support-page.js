@@ -24,7 +24,24 @@ const SupportPage = () => {
       <Grid item xs={12}>
         <Grid container spacing={3}>
 
-          {/* ---------------- START COPY ---------------- */}
+{/* ---------------- START COPY ---------------- */}
+          <Grid item xs={12} md={4}>
+            <MainCard title="How to understand your Dashboard">
+              <Stack spacing={2}>
+                <Typography color="secondary">
+                 What information is shown and not shown on my dashboard?
+                </Typography>
+                <CardMedia
+                  sx={{ minHeight: 300 }}
+                  component="iframe"
+                  src="https://www.loom.com/embed/74cf81b9d6264a9a940fbd0a01cddc97?sid=ea5ab5da-fc55-44be-bb52-1d55825ca194"
+                  allowFullScreen={true} />
+              </Stack>
+            </MainCard>
+          </Grid>
+          {/* ---------------- END COPY ---------------- */}
+  
+{/* ---------------- START COPY ---------------- */}
           <Grid item xs={12} md={4}>
             <MainCard title="How to Change Email Address">
               <Stack spacing={2}>
