@@ -47,7 +47,7 @@ export default function AlertEmployerDelete({ employer, open, handleClose, onArc
       return;
     }
 
-    onArchive;
+    onArchive();
 
     dispatch(
       openSnackbar({
