@@ -104,11 +104,25 @@ export default invoice.reducer;
 
 export const { reviewInvoicePopup, customerPopup, toggleCustomerPopup, selectCountry, getLists, alertPopupToggle } = invoice.actions;
 
-export function getInvoiceList() {
+export function getInvoiceList(keycloak, employerUserId) {
   return async () => {
     try {
-      const response = await axios.get('/api/invoice/list');
-      dispatch(invoice.actions.getLists(response.data.invoice));
+      //const response = await axios.get('/api/invoice/list');
+      try {
+        let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers/users/' + employerUserId + '/static-data',
+          {
+            method: 'GET',
+            headers: {
+              'Authorization': 'Bearer ' + keycloak.idToken
+            }
+          }
+        );
+        let json = await response.json();
+
+        dispatch(invoice.actions.getLists(json?.staticData?.payouts?.invoices));
+      } catch (error) {
+        console.log(error);
+      }
     } catch (error) {
       dispatch(invoice.actions.hasError(error));
     }
