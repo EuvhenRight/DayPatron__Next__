@@ -531,7 +531,7 @@ const UpsertMission = ({ missionId }) => {
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
                         <InfoWrapper tooltipText="mission_hide_company_name_tooltip">
-                          <InputLabel htmlFor="mission-hide-company-name">Mission Title</InputLabel>
+                          <InputLabel htmlFor="mission-hide-company-name">Hide Company Name</InputLabel>
                         </InfoWrapper>
                         <Switch
                           id="mission-hide-company-name"

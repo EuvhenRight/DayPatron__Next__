@@ -94,5 +94,7 @@
   "product_order_card_talent_service_order_amount_tooltip": "",
   "product_order_card_project_order_title_tooltip": "The project order is the agreement between you and the 10x-er. It contains standard terms and conditions and ensures you comply to rules and regulations",
   "product_order_card_project_order_company_approval_status_tooltip": "If you have approved, the pending status is changed to approved",
-  "product_order_card_project_order_talent_approval_status_tooltip": "If you have approved, the pending status is changed to approved"
+  "product_order_card_project_order_talent_approval_status_tooltip": "If you have approved, the pending status is changed to approved",
+
+  "mission_hide_company_name_tooltip": null
 }
