@@ -23,53 +23,24 @@ const SupportPage = () => {
         </MainCard>
       </Grid>
       <Grid item xs={12}>
-        <Stack direction="row" spacing={1}>
-          <MainCard title="How to ...">
-            <Grid container xs={12} spacing={1}>
-              <Grid item>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={4}>
+
+            <MainCard title="How to ...">
+              <Stack spacing={2}>
                 <Typography color="secondary">
                   This is a short description about the video
                 </Typography>
-              </Grid>
-              <Grid item>
                 <CardMedia
+                  sx={{minHeight: 300}}
                   component="iframe"
-                  src="https://www.youtube.com/embed/3176Sw8A0EE?si=mSVuypPS4qGzXhsJ"
+                  src="https://www.loom.com/embed/956f668668f84e179cf3395f77322956?sid=71623775-5405-4f09-970e-b798e1b29617%22"
                   allowFullScreen="true" />
-              </Grid>
-            </Grid>
-          </MainCard>
-          <MainCard title="How to ...">
-            <Grid container xs={12} spacing={1}>
-              <Grid item>
-                <Typography color="secondary">
-                  This is a short description about the video
-                </Typography>
-              </Grid>
-              <Grid item>
-                <CardMedia
-                  component="iframe"
-                  src="https://www.youtube.com/embed/3176Sw8A0EE?si=mSVuypPS4qGzXhsJ"
-                  allowFullScreen="true" />
-              </Grid>
-            </Grid>
-          </MainCard>
-          <MainCard title="How to ...">
-            <Grid container xs={12} spacing={1}>
-              <Grid item>
-                <Typography color="secondary">
-                  This is a short description about the video
-                </Typography>
-              </Grid>
-              <Grid item>
-                <CardMedia
-                  component="iframe"
-                  src="https://www.youtube.com/embed/3176Sw8A0EE?si=mSVuypPS4qGzXhsJ"
-                  allowFullScreen="true" />
-              </Grid>
-            </Grid>
-          </MainCard>
-        </Stack>
+              </Stack>
+            </MainCard>
+
+          </Grid>
+        </Grid>
       </Grid >
     </Grid >
   );
