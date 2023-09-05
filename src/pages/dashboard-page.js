@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useKeycloak } from '@react-keycloak/web';
+import { useSelector } from 'react-redux';
 
 import { Grid, Typography } from '@mui/material';
 import MainCard from 'components/MainCard';
@@ -14,12 +15,13 @@ import PayoutHistory from 'sections/dashboard/analytics/PayoutHistory';
 
 const DashboardPage = () => {
   const { keycloak } = useKeycloak();
+  const personalInformation = useSelector(state => state.personalInformation);
 
   const [state, setState] = useState(null);
 
   const bindData = async () => {
     try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/static-data',
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + personalInformation.id + '/static-data',
         {
           method: 'GET',
           headers: {

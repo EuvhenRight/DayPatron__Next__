@@ -104,12 +104,12 @@ export default invoice.reducer;
 
 export const { reviewInvoicePopup, customerPopup, toggleCustomerPopup, selectCountry, getLists, alertPopupToggle } = invoice.actions;
 
-export function getInvoiceList(keycloak) {
+export function getInvoiceList(keycloak, contractorId) {
   return async () => {
     try {
       //const response = await axios.get('/api/invoice/list');
       try {
-        let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/static-data',
+        let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + contractorId + '/static-data',
           {
             method: 'GET',
             headers: {
