@@ -10,7 +10,8 @@ import {
   MoneyCollectOutlined,
   FileTextOutlined,
   SearchOutlined,
-  ShoppingCartOutlined
+  ShoppingCartOutlined,
+  QuestionCircleOutlined
 } from '@ant-design/icons';
 
 // icons
@@ -22,7 +23,8 @@ const icons = {
   MoneyCollectOutlined,
   FileTextOutlined,
   SearchOutlined,
-  ShoppingCartOutlined
+  ShoppingCartOutlined,
+  QuestionCircleOutlined
 };
 
 // ==============================|| MENU ITEMS ||============================== //
@@ -117,6 +119,20 @@ const menuItems = {
           type: 'item',
           url: '/invoices/settings',
           icon: icons.FileTextOutlined
+        }
+      ]
+    },
+    {
+      id: 'help',
+      title: <FormattedMessage id="help" />,
+      type: 'group',
+      children: [
+        {
+          id: 'support',
+          title: <FormattedMessage id="support" />,
+          type: 'item',
+          url: '/support',
+          icon: icons.QuestionCircleOutlined
         }
       ]
     }

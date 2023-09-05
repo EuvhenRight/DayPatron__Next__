@@ -39,6 +39,9 @@ const InvoicesPage = Loadable(lazy(() => import('pages/invoices-page')));
 const InvoiceSettingsPage = Loadable(lazy(() => import('pages/invoice-settings-page')));
 
 const MissionMatchesPage = Loadable(lazy(() => import('pages/mission-matches-page')));
+
+const SupportPage = Loadable(lazy(() => import('pages/support-page')));
+
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -155,6 +158,10 @@ const MainRoutes = {
         {
           path: 'invoices',
           element: <InvoicesPage />
+        },
+        {
+          path: 'support',
+          element: <SupportPage />
         }
       ]
     },
