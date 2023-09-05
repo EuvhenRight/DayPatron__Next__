@@ -36,6 +36,8 @@ const jobRoles = [
   { code: 'MarketingManager', label: 'Marketing Manager' },
   { code: 'SalesSpecialist', label: 'Sales Specialist' },
   { code: 'SalesManager', label: 'Sales Manager' },
+  { code: 'ProgramManager', label: 'Program Manager' },
+  { code: 'ProjectManager', label: 'Project Manager' },
   { code: 'ProductManager', label: 'Product Manager' },
   { code: 'ProductLead', label: 'Product Lead' },
   { code: 'ProductOwner', label: 'Product Owner' },
