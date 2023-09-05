@@ -97,7 +97,7 @@ const SupportPage = () => {
             <MainCard title="How to Set Availability">
               <Stack spacing={2}>
                 <Typography color="secondary">
-                  How can I set my availability and make adjustments to my availability?
+                  How can I set my availability, allocate specific days to 10x availability or make adjustments to my availability?
                 </Typography>
                 <CardMedia
                   sx={{ minHeight: 300 }}
