@@ -47,7 +47,7 @@ export default function AlertMissionDelete({ mission, open, handleClose, onArchi
       return;
     }
 
-    onArchive();
+    onArchive;
 
     dispatch(
       openSnackbar({
