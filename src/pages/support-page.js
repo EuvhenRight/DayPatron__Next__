@@ -30,6 +30,22 @@ const SupportPage = () => {
             <MainCard title="How to contact us for Support">
               <Stack spacing={2}>
                 <Typography color="secondary">
+                 How do I reach out to 10x if I cannot find what I'm are looking for here in the Support Video Hub? 
+                </Typography>
+                <CardMedia
+                  sx={{ minHeight: 300 }}
+                  component="iframe"
+                  src="https://www.loom.com/embed/c272576ad1ce4c6286d6dcf80ecdbc68?sid=71623775-5405-4f09-970e-b798e1b29617%22"
+                  allowFullScreen={true} />
+              </Stack>
+            </MainCard>
+          </Grid>
+          {/* ---------------- END COPY ---------------- */}
+ {/* ---------------- START COPY ---------------- */}
+          <Grid item xs={12} md={4}>
+            <MainCard title="How to contact us for Support">
+              <Stack spacing={2}>
+                <Typography color="secondary">
                   This is a short description about the video
                 </Typography>
                 <CardMedia
@@ -41,7 +57,6 @@ const SupportPage = () => {
             </MainCard>
           </Grid>
           {/* ---------------- END COPY ---------------- */}
-
         </Grid>
       </Grid >
     </Grid >
