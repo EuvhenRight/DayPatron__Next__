@@ -30,7 +30,7 @@ const SupportPage = () => {
             <MainCard title="How to contact us for Support">
               <Stack spacing={2}>
                 <Typography color="secondary">
-                 How do I reach out to 10x if I cannot find what I'm are looking for here in the Support Video Hub? 
+                 How do I reach out to 10x if I cannot find what I&apos;m are looking for here in the Support Video Hub? 
                 </Typography>
                 <CardMedia
                   sx={{ minHeight: 300 }}
@@ -41,7 +41,8 @@ const SupportPage = () => {
             </MainCard>
           </Grid>
           {/* ---------------- END COPY ---------------- */}
- {/* ---------------- START COPY ---------------- */}
+
+          {/* ---------------- START COPY ---------------- */}
           <Grid item xs={12} md={4}>
             <MainCard title="How to contact us for Support">
               <Stack spacing={2}>
@@ -57,6 +58,7 @@ const SupportPage = () => {
             </MainCard>
           </Grid>
           {/* ---------------- END COPY ---------------- */}
+
         </Grid>
       </Grid >
     </Grid >
