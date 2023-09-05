@@ -63,7 +63,7 @@ const SupportPage = () => {
             <MainCard title="How to set your personal preferences">
               <Stack spacing={2}>
                 <Typography color="secondary">
-                  How can I set my personal preferences like currency, rates, work location and travel distance?
+                  How can I set my prefered currency, rates, work location and travel distance?
                 </Typography>
                 <CardMedia
                   sx={{ minHeight: 300 }}
