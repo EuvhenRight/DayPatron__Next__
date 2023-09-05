@@ -34,7 +34,7 @@ const SupportPage = () => {
                 <CardMedia
                   sx={{ minHeight: 300 }}
                   component="iframe"
-                  src="https://www.loom.com/share/fc369ee251d844d3ba2f55db87c66768?sid=8fe8b6e2-45c1-4478-8109-28d97e9ab07c"
+                  src="https://www.loom.com/embed/fc369ee251d844d3ba2f55db87c66768?sid=88e5c800-2bc1-46fb-b4d3-9c0e3d4a873b"
                   allowFullScreen={true} />
               </Stack>
             </MainCard>
