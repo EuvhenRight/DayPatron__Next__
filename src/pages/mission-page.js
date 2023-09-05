@@ -429,10 +429,12 @@ const MissionPage = () => {
                     </Stack>
                   </Grid>
                   <Grid item xs={12} md={6}>
-                    <Stack spacing={0.5}>
-                      <Typography color="secondary">Company</Typography>
-                      <Typography>{mission?.employerName}</Typography>
-                    </Stack>
+                    {mission?.employerName && 
+                      <Stack spacing={0.5}>
+                        <Typography color="secondary">Company</Typography>
+                        <Typography>{mission?.employerName}</Typography>
+                      </Stack>  
+                    }
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Stack spacing={0.5}>
