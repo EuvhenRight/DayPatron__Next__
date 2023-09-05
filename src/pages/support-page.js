@@ -111,6 +111,23 @@ const SupportPage = () => {
 
 {/* ---------------- START COPY ---------------- */}
           <Grid item xs={12} md={4}>
+            <MainCard title="How to add a Solution">
+              <Stack spacing={2}>
+                <Typography color="secondary">
+                  How can I add a Solution to the Solution Suite of 10x?
+                </Typography>
+                <CardMedia
+                  sx={{ minHeight: 300 }}
+                  component="iframe"
+                  src="https://www.loom.com/embed/1db3e3393a2c45378fb3b2109de126de?sid=ae4d2398-d331-4ad5-b86c-a81842f33837"
+                  allowFullScreen={true} />
+              </Stack>
+            </MainCard>
+          </Grid>
+          {/* ---------------- END COPY ---------------- */}
+
+{/* ---------------- START COPY ---------------- */}
+          <Grid item xs={12} md={4}>
             <MainCard title="How to contact us for Support">
               <Stack spacing={2}>
                 <Typography color="secondary">
