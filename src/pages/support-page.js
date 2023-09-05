@@ -18,8 +18,7 @@ const SupportPage = () => {
       </Grid>
       <Grid item xs={12}>
         <MainCard>
-          We&apos;re here to enhance your journey with helpful support videos that cover everything you need to know. From start to finish, we&apos;ve got you covered.
-          And if you ever need a hand, just click the &ldquo;Need Help&ldquo; button on the bottom left. It&apos;s your direct line to our experts, available in Chrome or with the Loom desktop app. Your journey matters, and we&apos;re here to make it a smooth and successful one.
+          We&apos;re here to enhance your journey with helpful support videos that cover everything you need to know. From start to finish, we&apos;ve got you covered. And if you ever need a hand and cannot find the information you are looking for, just click the “Support“ button on the bottom left.
         </MainCard>
       </Grid>
       <Grid item xs={12}>
