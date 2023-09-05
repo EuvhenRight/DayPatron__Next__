@@ -32,10 +32,10 @@ const SupportPage = () => {
                   This is a short description about the video
                 </Typography>
                 <CardMedia
-                  sx={{minHeight: 300}}
+                  sx={{ minHeight: 300 }}
                   component="iframe"
                   src="https://www.loom.com/embed/956f668668f84e179cf3395f77322956?sid=71623775-5405-4f09-970e-b798e1b29617%22"
-                  allowFullScreen="true" />
+                  allowFullScreen={true} />
               </Stack>
             </MainCard>
 
