@@ -136,7 +136,7 @@ const ProductCard = ({ product, onBuyClick }) => {
 
               <Grid item xs={12}>
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
-                  <Typography variant="h5">&euro;{product?.price}</Typography>
+                  <Typography variant="h5">&euro;{product?.adminPrice}</Typography>
 
                   <Button variant="contained" onClick={onBuyClick}>
                     Buy

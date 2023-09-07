@@ -207,7 +207,7 @@ const ProductDetails = () => {
                   <Stack spacing={2}>
                     <Typography variant="h3">{product?.title}</Typography>
                     <SanitizedHTML html={product?.description} />
-                    <Typography variant="h3">&euro;{product?.price}</Typography>
+                    <Typography variant="h3">&euro;{product?.adminPrice}</Typography>
                     <Button onClick={() => handleBuyClick()} fullWidth color="primary" variant="contained" size="large">
                       Buy Now
                     </Button>
