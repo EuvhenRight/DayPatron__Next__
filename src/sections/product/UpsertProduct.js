@@ -52,7 +52,8 @@ const getInitialValues = (product) => {
     description: null,
     cluster: null,
     estimatedImplementationHours: null,
-    price: null
+    contractorPrice: null,
+    adminPrice: null
   };
 
   if (product) {
@@ -228,7 +229,8 @@ const UpsertProduct = ({ productId }) => {
     description: Yup.string().max(10000).required('Description is required').nullable(true),
     cluster: Yup.string().max(255).required('Cluster is required').nullable(true),
     estimatedImplementationHours: Yup.number("Should be a positive integer").integer("Should be a positive integer").min(0, "Should be a positive integer").max(9999999, "Maximum 9999999").nullable(true),
-    price: Yup.number("Should be a positive integer").integer("Should be a positive integer").min(0, "Should be a positive integer").max(9999999, "Maximum 9999999").nullable(true)
+    contractorPrice: Yup.number("Should be a positive integer").integer("Should be a positive integer").min(0, "Should be a positive integer").max(9999999, "Maximum 9999999").nullable(true),
+    adminPrice: Yup.number("Should be a positive integer").integer("Should be a positive integer").min(0, "Should be a positive integer").max(9999999, "Maximum 9999999").nullable(true)
   });
 
   const formik = useFormik({
@@ -431,20 +433,20 @@ const UpsertProduct = ({ productId }) => {
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
                         <InfoWrapper tooltipText="product_price_tooltip">
-                          <InputLabel htmlFor="product-price">Price</InputLabel>
+                          <InputLabel htmlFor="product-contractor-price">Price</InputLabel>
                         </InfoWrapper>
                         <TextField
                           fullWidth
-                          id="product-price"
+                          id="product-contractor-price"
                           placeholder="Enter solution price"
-                          value={normalizeInputValue(values.price)}
-                          name="price"
+                          value={normalizeInputValue(values.contractorPrice)}
+                          name="contractorPrice"
                           onBlur={handleBlur}
                           onChange={handleChange}
                         />
-                        {touched.price && errors.price && (
-                          <FormHelperText error id="product-price-helper">
-                            {errors.price}
+                        {touched.contractorPrice && errors.contractorPrice && (
+                          <FormHelperText error id="product-contractor-price-helper">
+                            {errors.contractorPrice}
                           </FormHelperText>
                         )}
                       </Stack>
@@ -545,6 +547,34 @@ const UpsertProduct = ({ productId }) => {
                         )}
                       </Stack>
                     </Grid>
+
+                    {keycloak.tokenParsed.roles.includes('admin') &&
+                      <>
+                        <Grid item xs={12}>
+                          <Typography variant="h5">Admin Settings</Typography>
+                        </Grid>
+
+                        <Grid item xs={12} sm={6}>
+                        <Stack spacing={1.25}>
+                          <InputLabel htmlFor="product-admin-price">Admin Price</InputLabel>
+                            <TextField
+                              fullWidth
+                              id="product-admin-price"
+                              placeholder="Enter solution admin price"
+                              value={normalizeInputValue(values.adminPrice)}
+                              name="adminPrice"
+                              onBlur={handleBlur}
+                              onChange={handleChange}
+                            />
+                            {touched.adminPrice && errors.adminPrice && (
+                              <FormHelperText error id="product-admin-price-helper">
+                              {errors.adminPrice}
+                              </FormHelperText>
+                            )}
+                          </Stack>
+                        </Grid>
+                      </>
+                    }
 
                   </Grid>
                 </Grid>

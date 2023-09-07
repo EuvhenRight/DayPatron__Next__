@@ -306,7 +306,7 @@ const MissionTimeTrackingPage = () => {
             that empowers you to focus on what truly matters – delivering exceptional results. Start logging your hours today and elevate your fractional journey with 10x!
           </MainCard>
         </Grid>
-        <Grid item xs={12} spacing={3}>
+        <Grid item xs={12}>
           <Typography variant="h3">Track Time</Typography>
         </Grid>
         <Grid item xs={12}>
