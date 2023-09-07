@@ -18,7 +18,7 @@ import {
   MenuItem
 } from '@mui/material';
 
-import { PDFDownloadLink } from '@react-pdf/renderer';
+import { pdf } from '@react-pdf/renderer';
 import MissionEmployerServiceOrderPdfCard from 'sections/order/MissionEmployerServiceOrderPdfCard';
 import MissionContractorServiceOrderPdfCard from 'sections/order/MissionContractorServiceOrderPdfCard';
 
@@ -61,6 +61,17 @@ const MissionOrderCard = ({ order, handleApproveClick }) => {
     }
 
     return <Typography>{approvalStatus}</Typography>;
+  }
+
+  const handleDownloadPdf = async (pdfDocument) => {
+    const blob = await pdf((pdfDocument)).toBlob();
+    var fileUrl = URL.createObjectURL(blob);
+    window.open(fileUrl, '_blank');
+
+    if (fileUrl)
+      setTimeout(function () {
+        URL.revokeObjectURL(fileUrl);
+      }, 120000);
   }
 
   return (
@@ -126,11 +137,9 @@ const MissionOrderCard = ({ order, handleApproveClick }) => {
                     </Typography>
                   </InfoWrapper>
 
-                  <PDFDownloadLink document={<MissionEmployerServiceOrderPdfCard order={order} />} fileName={`mission-company-service-order-${order?.id}.pdf`}>
-                    <IconButton sx={{ width: 22, height: 22, mr: 1.5 }}>
-                      <DownloadOutlined />
-                    </IconButton>
-                  </PDFDownloadLink>
+                  <IconButton sx={{ width: 22, height: 22, mr: 1.5 }} onClick={() => handleDownloadPdf(<MissionEmployerServiceOrderPdfCard order={order} />)}>
+                    <DownloadOutlined />
+                  </IconButton>
 
                 </Stack>
                 <Divider />
@@ -187,11 +196,9 @@ const MissionOrderCard = ({ order, handleApproveClick }) => {
                   </InfoWrapper>
 
                   {keycloak.tokenParsed.roles.includes('admin') &&
-                    <PDFDownloadLink document={<MissionContractorServiceOrderPdfCard order={order} />} fileName={`mission-talent-service-order-${order?.id}.pdf`}>
-                      <IconButton sx={{ width: 22, height: 22, mr: 1.5 }}>
-                        <DownloadOutlined />
-                      </IconButton>
-                    </PDFDownloadLink>
+                    <IconButton sx={{ width: 22, height: 22, mr: 1.5 }} onClick={() => handleDownloadPdf(<MissionContractorServiceOrderPdfCard order={order} />)}>
+                      <DownloadOutlined />
+                    </IconButton>
                   }
                 </Stack>
                 <Divider />

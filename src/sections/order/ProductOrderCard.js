@@ -18,7 +18,7 @@ import {
   MenuItem
 } from '@mui/material';
 
-import { PDFDownloadLink } from '@react-pdf/renderer';
+import { pdf } from '@react-pdf/renderer';
 import ProductEmployerServiceOrderPdfCard from 'sections/order/ProductEmployerServiceOrderPdfCard';
 import ProductContractorServiceOrderPdfCard from 'sections/order/ProductContractorServiceOrderPdfCard';
 import IconButton from 'components/@extended/IconButton';
@@ -60,6 +60,17 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
     }
 
     return <Typography>{approvalStatus}</Typography>;
+  }
+
+  const handleDownloadPdf = async (pdfDocument) => {
+    const blob = await pdf((pdfDocument)).toBlob();
+    var fileUrl = URL.createObjectURL(blob);
+    window.open(fileUrl, '_blank');
+
+    if (fileUrl)
+      setTimeout(function () {
+        URL.revokeObjectURL(fileUrl);
+      }, 120000);
   }
 
   return (
@@ -126,11 +137,9 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
                     </Typography>
                   </InfoWrapper>
 
-                  <PDFDownloadLink document={<ProductEmployerServiceOrderPdfCard order={order} />} fileName={`product-company-service-order-${order?.id}.pdf`}>
-                    <IconButton sx={{ width: 22, height: 22, mr: 1.5 }}>
-                      <DownloadOutlined />
-                    </IconButton>
-                  </PDFDownloadLink>
+                  <IconButton sx={{ width: 22, height: 22, mr: 1.5 }} onClick={() => handleDownloadPdf(<ProductEmployerServiceOrderPdfCard order={order} />)}>
+                    <DownloadOutlined />
+                  </IconButton>
                   
                 </Stack>
                 
@@ -181,16 +190,14 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
                 <Stack direction="row" justifyContent="space-between" alignItems="flex-end">
                   <InfoWrapper tooltipText="product_order_card_talent_service_order_title_tooltip">
                     <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                      Talent Service Order
+                      Talent Service Order1
                     </Typography>
                   </InfoWrapper>
 
                   {keycloak.tokenParsed.roles.includes('admin') &&
-                    <PDFDownloadLink document={<ProductContractorServiceOrderPdfCard order={order} />} fileName={`product-talent-service-order-${order?.id}.pdf`}>
-                      <IconButton sx={{ width: 22, height: 22, mr: 1.5 }}>
-                        <DownloadOutlined />
-                      </IconButton>
-                    </PDFDownloadLink>
+                    <IconButton sx={{ width: 22, height: 22, mr: 1.5 }} onClick={() => handleDownloadPdf(<ProductContractorServiceOrderPdfCard order={order} />)}>
+                      <DownloadOutlined />
+                    </IconButton>
                   }
 
                 </Stack>
