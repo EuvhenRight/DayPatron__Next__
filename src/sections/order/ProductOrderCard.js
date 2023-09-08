@@ -24,7 +24,7 @@ import ProductContractorServiceOrderPdfCard from 'sections/order/ProductContract
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import InfoWrapper from 'components/InfoWrapper';
-import { MoreOutlined, ShoppingCartOutlined, DownloadOutlined } from '@ant-design/icons';
+import { MoreOutlined, ShoppingCartOutlined, DownloadOutlined, LoadingOutlined } from '@ant-design/icons';
 import { useTheme } from '@mui/material/styles';
 import { useKeycloak } from '@react-keycloak/web';
 
@@ -35,6 +35,8 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
   const navigate = useNavigate();
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState(null);
+  const [downloadingEmployerServiceOrderId, setDownloadingEmployerServiceOrderId] = useState(null);
+  const [downloadingContractorServiceOrderId, setDownloadingContractorServiceOrderId] = useState(null);
   const openMenu = Boolean(anchorEl);
 
   const handleMenuClick = (event) => {
@@ -137,9 +139,24 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
                     </Typography>
                   </InfoWrapper>
 
-                  <IconButton sx={{ width: 22, height: 22, mr: 1.5 }} onClick={() => handleDownloadPdf(<ProductEmployerServiceOrderPdfCard order={order} />)}>
-                    <DownloadOutlined />
-                  </IconButton>
+                  {downloadingEmployerServiceOrderId == order?.id ?
+                    (
+                      <Stack sx={{ mr: 2.2, mb: 0.5 }}>
+                        <LoadingOutlined sx={{ width: 22, height: 22 }} />
+                      </Stack>
+
+                    )
+                    :
+                    (
+                      <IconButton sx={{ width: 22, height: 22, mr: 1.5 }} onClick={async () => {
+                        setDownloadingEmployerServiceOrderId(order?.id);
+                        await handleDownloadPdf(<ProductEmployerServiceOrderPdfCard order={order} />);
+                        setDownloadingEmployerServiceOrderId(null);
+                      }}>
+                        <DownloadOutlined />
+                      </IconButton>
+                    )
+                  }
                   
                 </Stack>
                 
@@ -195,9 +212,24 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
                   </InfoWrapper>
 
                   {keycloak.tokenParsed.roles.includes('admin') &&
-                    <IconButton sx={{ width: 22, height: 22, mr: 1.5 }} onClick={() => handleDownloadPdf(<ProductContractorServiceOrderPdfCard order={order} />)}>
-                      <DownloadOutlined />
-                    </IconButton>
+                    (
+                      downloadingContractorServiceOrderId == order?.id ?
+                        (
+                          <Stack sx={{ mr: 2.2, mb: 0.5 }}>
+                            <LoadingOutlined sx={{ width: 22, height: 22 }} />
+                          </Stack>
+                        )
+                        :
+                        (
+                          <IconButton sx={{ width: 22, height: 22, mr: 1.5 }} onClick={async () => {
+                            setDownloadingContractorServiceOrderId(order?.id);
+                            await handleDownloadPdf(<ProductContractorServiceOrderPdfCard order={order} />);
+                            setDownloadingContractorServiceOrderId(null);
+                          }}>
+                            <DownloadOutlined />
+                          </IconButton>
+                        )
+                    )
                   }
 
                 </Stack>
