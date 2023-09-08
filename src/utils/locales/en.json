@@ -19,8 +19,8 @@
   "invoice-settings": "Billing information",
   "documentation": "Documentation",
   "roadmap": "Roadmap",
-  "support": "Support",
-  "help":  "HELP",
+  "support": "How-To Videos",
+  "help":  "HELP CENTER",
 
   "main_nav_support_body": "This option works best in Chrome and unfortunatly does not work in Safari yet.",
 
@@ -74,7 +74,7 @@
   "invoice_settings_address_country_tooltip": "The country where your invoicing address calls home ;-) .",
 
   "product_title_tooltip": "Enter a consise and informative title for the Solution you are offering.",
-  "product_price_tooltip": "Specify the cost associated with your product. 10x will withdraw between 25% and 50% of the list price depending on the niche product. Please note that 10x can assist you in setting your price before we offer it to our customers.",
+  "product_price_tooltip": "Specify the cost associated with your product. 10x will add between 25% and 50% to your list price depending on the niche product. Please note that 10x can assist you in setting your price before we offer it to our customers.",
   "product_description_tooltip": "Provide a clear description of your solution. Use the following headers to describe it: Solution Snapshot, Outcome Odyssey, Deliverables Delight and Approach Alchemy.",
   "product_cluster_tooltip": "10x Customers can filter Solutions based on cluster. Please select the most appropriate cluster for your solution",
   "product_estimated_implementation_hours_tooltip": "This is an optional field. If you want to list the maximum hours, fill them in here. We recommend you to carefully match the pricing with your effort and scoping. You can always adjust the pricing."
