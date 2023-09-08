@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 
 import {
   Link,
@@ -19,7 +20,7 @@ import MissionContractorServiceOrderPdfCard from 'sections/order/MissionContract
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import InfoWrapper from 'components/InfoWrapper';
-import { ShoppingCartOutlined, DownloadOutlined } from '@ant-design/icons';
+import { ShoppingCartOutlined, DownloadOutlined, LoadingOutlined } from '@ant-design/icons';
 import { useTheme } from '@mui/material/styles';
 import { useKeycloak } from '@react-keycloak/web';
 
@@ -28,6 +29,7 @@ import { useKeycloak } from '@react-keycloak/web';
 const MissionOrderCard = ({ order, handleApproveClick }) => {
   const { keycloak } = useKeycloak();
   const theme = useTheme();
+  const [downloadingContractorServiceOrderId, setDownloadingContractorServiceOrderId] = useState(null);
 
   const getStatusComponent = (approvalStatus, role, subOrderType) => {
     if (approvalStatus === 'Pending' && keycloak.tokenParsed.roles.includes(role)) {
@@ -130,9 +132,23 @@ const MissionOrderCard = ({ order, handleApproveClick }) => {
                     </Typography>
                   </InfoWrapper>
 
-                  <IconButton sx={{ width: 22, height: 22, mr: 1.5 }} onClick={() => handleDownloadPdf(<MissionContractorServiceOrderPdfCard order={order} />)}>
-                    <DownloadOutlined />
-                  </IconButton>
+                  {downloadingContractorServiceOrderId == order?.id ?
+                      (
+                        <Stack sx={{ mr: 2.2, mb: 0.5 }}>
+                          <LoadingOutlined sx={{ width: 22, height: 22 }} />
+                        </Stack>
+                      )
+                      :
+                      (
+                        <IconButton sx={{ width: 22, height: 22, mr: 1.5 }} onClick={async () => {
+                          setDownloadingContractorServiceOrderId(order?.id);
+                          await handleDownloadPdf(<MissionContractorServiceOrderPdfCard order={order} />);
+                          setDownloadingContractorServiceOrderId(null);
+                        }}>
+                          <DownloadOutlined />
+                        </IconButton>
+                      )
+                  }
                 </Stack>
                 <Divider />
                 <List component="nav" aria-label="main mailbox folders" sx={{ py: 0, '& .MuiListItem-root': { p: 0, py: 0 } }}>
