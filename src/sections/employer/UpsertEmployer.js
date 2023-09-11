@@ -243,7 +243,7 @@ const UpsertEmployer = ({ employerId }) => {
     industry: Yup.string().required('Industry is required').nullable(true),
     chamberOfCommerceIdentifier: Yup.string().max(50).required('Chamber of Commerce Number is required').nullable(true),
     linkedInUrl: Yup.string().max(255).required('LinkedIn Page is required').nullable(true),
-    description: Yup.string().max(1000).nullable(true)
+    description: Yup.string().max(5000).nullable(true)
   });
 
   const formik = useFormik({
