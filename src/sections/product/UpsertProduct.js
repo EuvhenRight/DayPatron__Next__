@@ -301,7 +301,7 @@ const UpsertProduct = ({ productId }) => {
             dispatch(
               openSnackbar({
                 open: true,
-                message: 'Adding a product failed.',
+                message: 'Adding a solution failed.',
                 variant: 'alert',
                 alert: {
                   color: 'error'
