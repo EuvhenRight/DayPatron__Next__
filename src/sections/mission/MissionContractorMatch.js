@@ -5,6 +5,7 @@ import { openSnackbar } from 'store/reducers/snackbar';
 import LinearWithLabel from 'components/@extended/progress/LinearWithLabel';
 import { useTheme } from '@mui/material/styles';
 import { PopupModal } from "react-calendly";
+import { useSelector } from 'react-redux';
 import {
   Chip,
   Divider,
@@ -43,6 +44,7 @@ const avatarImage = require.context('assets/images/users', true);
 // ==============================|| MISSION CONTRACTOR MATCH ||============================== //
 
 const MissionContractorMatch = ({ missionId, contractorId }) => {
+  const personalInformation = useSelector(state => state.personalInformation);
   const peraResponseResultTabGroup = 'ai-results';
   const peraQuestionsAndAnswersTabGroup = 'ai-qa';
   const notesTabGroup = 'notes';
@@ -322,10 +324,10 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                           open={isCalendlyOpen}
                           rootElement={document.getElementById("root")}
                           prefill={{
-                            email: missionContractorMatch?.contractor?.email,
-                            firstName: missionContractorMatch?.contractor?.firstName,
-                            lastName: missionContractorMatch?.contractor?.lastName,
-                            name: missionContractorMatch?.contractor?.firstName + ' ' + missionContractorMatch?.contractor?.lastName,
+                            email: personalInformation?.email,
+                            firstName: personalInformation?.firstName,
+                            lastName: personalInformation?.lastName,
+                            name: personalInformation?.firstName + ' ' + personalInformation?.lastName,
                             date: new Date(Date.now() + 86400000)
                           }}
                           pageSettings={{
