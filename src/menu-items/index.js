@@ -119,6 +119,13 @@ const menuItems = {
           type: 'item',
           url: '/invoices/settings',
           icon: icons.FileTextOutlined
+        },
+        {
+          id: 'test',
+          title: <FormattedMessage id="billrun" />,
+          type: 'item',
+          url: '/invoices/billrun',
+          icon: icons.FileTextOutlined
         }
       ]
     },

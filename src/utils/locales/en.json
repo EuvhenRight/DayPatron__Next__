@@ -12,20 +12,18 @@
   "invoicing": "INVOICING",
   "invoices": "Invoices",
   "invoice-settings": "Billing information",
+  "billrun": "Bill run",
   "documentation": "Documentation",
   "roadmap": "Roadmap",
   "support": "How-To Videos",
   "help": "HELP CENTER",
-
   "main_nav_support_body": "This option works best in Chrome and unfortunatly does not work in Safari yet.",
-
   "personal_information_first_name_tooltip": "Hey there! Your first name goes here. Let us know what to call you!",
   "personal_information_last_name_tooltip": "We'd love to know you last name! Share it with us, won't you?",
   "personal_information_email_tooltip": "Can you leave your email address? This is also your log-in username.",
   "personal_information_phone_number_tooltip": "Ring, ring! Give us your digits so we can reach out if really needed.",
   "personal_information_country_tooltip": "Where are you based? In this world of digital nomands, please let us know the country you are officially registered in.",
   "personal_information_linked_in_url_tooltip": "Show off your professional side! Share your LinkedIn profile here.",
-
   "company_legal_entity_name_tooltip": "You can create several legal entities for your business. Please fill in the legal entity name for which you want to find talent for",
   "company_general_email_box_tooltip": "The offocial company email address and general mailbox can be added here. It's not a must.",
   "company_industry_tooltip": "What industry do you operate in? Help us match you with the right talent.",
@@ -37,7 +35,6 @@
   "company_address_city_tooltip": "Your company's base city. Let us know where you call home.",
   "company_address_postal_code_tooltip": "The postal code of your company's location goes here.",
   "company_address_country_tooltip": "What is the country where your company is officially registered?",
-
   "mission_company_tooltip": "Select the company the talent will be teaming up with on this mission.",
   "mission_title_tooltip": "Come up with a killer title for your exciting mission! This is the first thing talent will see. Make it short snappy yet cristal clear.",
   "mission_description_tooltip": "Spill the beans on what this mission is all about, in your own words! Keywords, sentences, thoughts. Feel free to add anything. Most likely you'll be tweaking the description over time.",
@@ -56,9 +53,7 @@
   "mission_why_we_need_you_tooltip": "Tell us the secret sauze of the talent and why they are needed!",
   "mission_outcome_tooltip": "Paint a picture of what this mission will achieve - you're the artist! Our 10x-ers are focussed on delivering output and results. They have been on this journey before and the more specific you describe this, the better.",
   "mission_profile_we_are_looking_for_tooltip": "Are there any specifics you would like to list? What is the kind of superhero we're scouting for this ambitious mission!",
-
   "match_company_notes_about_the_talent_tooltip": null,
-
   "invoice_settings_company": "Please select the Company Legal Entity you would like to add the invoicing information for.",
   "invoice_settings_invoicing_name_tooltip": "To whom should we address the invoice?",
   "invoice_settings_vat_number_tooltip": "Your Value Added Tax (VAT) identification number, if applicable.",
@@ -71,7 +66,6 @@
   "invoice_settings_address_city_tooltip": "The vibrant city where your invoicing address resides.",
   "invoice_settings_address_postal_code_tooltip": "The postal code that adds zest to your invoicing address.",
   "invoice_settings_address_country_tooltip": "The country where your invoicing address calls home ;-) .",
-
   "mission_order_card_company_service_order_title_tooltip": "You can download the mission order here",
   "mission_order_card_company_service_order_admin_approval_status_tooltip": "",
   "mission_order_card_company_service_order_company_approval_status_tooltip": "Click on 'Approve' to view the mission order in the pop-up window to approve",
@@ -83,7 +77,6 @@
   "mission_order_card_project_order_title_tooltip": "The project order is the agreement between you and the 10x-er. It contains standard terms and conditions and ensures you comply to rules and regulations",
   "mission_order_card_project_order_company_approval_status_tooltip": "If you have approved, the pending status is changed to approved",
   "mission_order_card_project_order_talent_approval_status_tooltip": "If the 10x-er has approved, pending status is changed to approved",
-
   "product_order_card_company_service_order_title_tooltip": "You can download the solution order here",
   "product_order_card_company_service_order_admin_approval_status_tooltip": "",
   "product_order_card_company_service_order_company_approval_status_tooltip": "Click on 'Approve' to view the solution order in the pop-up window to approve",
@@ -95,6 +88,5 @@
   "product_order_card_project_order_title_tooltip": "The project order is the agreement between you and the 10x-er. It contains standard terms and conditions and ensures you comply to rules and regulations",
   "product_order_card_project_order_company_approval_status_tooltip": "If you have approved, the pending status is changed to approved",
   "product_order_card_project_order_talent_approval_status_tooltip": "If you have approved, the pending status is changed to approved",
-
   "mission_hide_company_name_tooltip": null
 }
