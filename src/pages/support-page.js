@@ -40,7 +40,24 @@ const SupportPage = () => {
             </MainCard>
           </Grid>
           {/* ---------------- END COPY ---------------- */}
-  
+
+{/* ---------------- START COPY ---------------- */}
+          <Grid item xs={12} md={4}>
+            <MainCard title="How to configure your Calendly account">
+              <Stack spacing={2}>
+                <Typography color="secondary">
+                 You've received a Calendly account free of charge and now you need to configure event types. How can you do this and what are the key settings?
+                </Typography>
+                <CardMedia
+                  sx={{ minHeight: 300, border: 0 }}
+                  component="iframe"
+                  src="https://www.loom.com/embed/f7fb2b6041ac49459e492122d6d9ef34?sid=89e45b2e-4bfd-4f7c-9fb1-b6a1eb7a5983"
+                  allowFullScreen={true} />
+              </Stack>
+            </MainCard>
+          </Grid>
+          {/* ---------------- END COPY ---------------- */}
+
 {/* ---------------- START COPY ---------------- */}
           <Grid item xs={12} md={4}>
             <MainCard title="How to Change Email Address">
