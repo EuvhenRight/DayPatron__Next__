@@ -29,7 +29,7 @@ import usePagination from 'hooks/usePagination';
 
 // project imports
 import EmptyCardList from 'components/cards/skeleton/EmptyCardList';
-import BillingInformationCard from 'sections/billing/BillingInformationCard';
+import BillingInfoCard from 'sections/billing/BillingInfoCard';
 
 import { compareSortValues } from 'utils/stringUtils';
 
@@ -62,8 +62,8 @@ const InvoicesBillRunPage = () => {
   const { keycloak } = useKeycloak();
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const [billingInformation, setBillingInformation] = useState([]);
-  const [filteredBillingInformation, setFilteredBillingInformation] = useState([]);
+  const [billingInfo, setBillingInfo] = useState([]);
+  const [filteredBillingInfo, setFilteredBillingInfo] = useState([]);
   const [globalFilter, setGlobalFilter] = useState('')
   const matchDownSM = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const [sortBy, setSortBy] = useState('Id');
@@ -98,9 +98,9 @@ const InvoicesBillRunPage = () => {
     }
   }
 
-  const bindBillingInformation = async () => {
+  const bindBillingInfo = async () => {
     try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/billing?billingStatus=' + 'pending',
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/billing',
         {
           method: 'GET',
           headers: {
@@ -111,8 +111,8 @@ const InvoicesBillRunPage = () => {
       );
 
       let json = await response.json();
-      setBillingInformation(json.billingInformation);
-      setFilteredBillingInformation(json.billingInformation);
+      setBillingInfo(json.billingInfo);
+      setFilteredBillingInfo(json.billingInfo);
     }
     catch (error) {
       console.log(error)
@@ -125,24 +125,24 @@ const InvoicesBillRunPage = () => {
 
   useEffect(() => {
     (async () => {
-      await bindBillingInformation();
+      await bindBillingInfo();
     })();
   }, []);
 
   useEffect(() => {
-    const newBillingInformation = billingInformation.filter((value) => {
+    const newBillingInfo = billingInfo.filter((value) => {
       if (globalFilter) {
         return value.employerName.toLowerCase().includes(globalFilter.toLowerCase());
       } else {
         return value;
       }
     });
-    setFilteredBillingInformation(newBillingInformation);
+    setFilteredBillingInfo(newBillingInfo);
   }, [globalFilter]);
 
   const PER_PAGE = 10;
-  const count = Math.ceil(filteredBillingInformation.length / PER_PAGE);
-  const _DATA = usePagination(filteredBillingInformation, PER_PAGE);
+  const count = Math.ceil(filteredBillingInfo.length / PER_PAGE);
+  const _DATA = usePagination(filteredBillingInfo, PER_PAGE);
 
   const handleChangePage = (e, p) => {
     setPage(p);
@@ -193,7 +193,7 @@ const InvoicesBillRunPage = () => {
                 justifyContent="space-between"
                 alignItems="center"
               >
-                <GlobalFilter preGlobalFilteredRows={filteredBillingInformation} globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
+                <GlobalFilter preGlobalFilteredRows={filteredBillingInfo} globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
                 <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
                   <FormControl sx={{ m: 1, minWidth: 120 }}>
                     <Select
@@ -223,7 +223,7 @@ const InvoicesBillRunPage = () => {
             </Stack>
           </Box>
           <Grid container spacing={3}>
-            {filteredBillingInformation.length > 0 ? (
+            {filteredBillingInfo.length > 0 ? (
               _DATA
                 .currentData()
                 .sort(function (a, b) {
@@ -233,15 +233,15 @@ const InvoicesBillRunPage = () => {
                   if (sortBy === 'TalentName') return compareSortValues(a?.itemName, b?.itemName);
                   return a;
                 })
-                .map((billingInformation, index) => (
+                .map((billingInfo, index) => (
                   <Slide key={index} direction="up" in={true} timeout={50}>
                     <Grid item xs={12} sm={6} lg={4}>
-                      <BillingInformationCard billingInformation={billingInformation} />
+                      <BillingInfoCard billingInfo={billingInfo} />
                     </Grid>
                   </Slide>
                 ))
             ) : (
-              <EmptyCardList title={'No records in billinginformation.'} />
+              <EmptyCardList title={'No records in billinginfo.'} />
             )}
           </Grid>
           <Stack spacing={2} sx={{ p: 2.5 }} alignItems="flex-end">

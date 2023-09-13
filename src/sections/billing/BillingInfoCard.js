@@ -12,14 +12,14 @@ import {
 
 import MainCard from 'components/MainCard';
 
-// ==============================|| BILLINGINFORMATION - CARD ||============================== //
+// ==============================|| BILLINGINFO - CARD ||============================== //
 
 
 const handleClickDetails = () => {
 
 };
 
-const BillingInformationCard = ({ billingInformation }) => {
+const BillingInfoCard = ({ billingInfo }) => {
 
   return (
 
@@ -27,10 +27,10 @@ const BillingInformationCard = ({ billingInformation }) => {
       <Grid id="print" container spacing={2.25}>
         <Grid item xs={12}>
           <ListItemText className="list-card-title"
-            primary={<Typography onClick={handleClickDetails} variant="subtitle1">{billingInformation.itemName}</Typography>}
+            primary={<Typography onClick={handleClickDetails} variant="subtitle1">{billingInfo.itemName}</Typography>}
             secondary={
               <Typography variant="caption" color="secondary">
-                {billingInformation.id}
+                {billingInfo.id}
               </Typography>
             }
           />
@@ -42,13 +42,13 @@ const BillingInformationCard = ({ billingInformation }) => {
       <Grid item xs={12}>
         <Grid container spacing={1}>
           <List sx={{ p: 0, overflow: 'hidden', '& .MuiListItem-root': { px: 0, py: 0.5 } }}>
-            {billingInformation.itemName &&
+            {billingInfo.itemName &&
               <ListItem>
                 <ListItemText
-                  primary={<Typography color="secondary">{billingInformation.employerName}</Typography>}
+                  primary={<Typography color="secondary">{billingInfo.employerName}</Typography>}
                   secondary={
                     <Typography variant="caption" color="secondary">
-                      {billingInformation.contractorName}
+                      {billingInfo.contractorName}
                     </Typography>
                   }
                 />
@@ -62,8 +62,8 @@ const BillingInformationCard = ({ billingInformation }) => {
   )
 };
 
-BillingInformationCard.propTypes = {
-  billingInformation: PropTypes.object
+BillingInfoCard.propTypes = {
+  billingInfo: PropTypes.object
 };
 
-export default BillingInformationCard;
+export default BillingInfoCard;
