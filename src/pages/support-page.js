@@ -18,7 +18,7 @@ const SupportPage = () => {
       </Grid>
       <Grid item xs={12}>
         <MainCard>
-          We&apos;re here to enhance your journey with helpful support videos that cover everything you need to know. From start to finish, we&apos;ve got you covered. And if you ever need a hand and cannot find the information you are looking for, just click the &quot;Support&quot; button on the bottom left.
+          We are here to enhance your journey with helpful support videos that cover everything you need to know. From start to finish, we&apos;ve got you covered. And if you ever need a hand and cannot find the information you are looking for, just click the &quot;Support&quot; button on the bottom left.
         </MainCard>
       </Grid>
       <Grid item xs={12}>
@@ -46,7 +46,7 @@ const SupportPage = () => {
             <MainCard title="How to configure your Calendly account">
               <Stack spacing={2}>
                 <Typography color="secondary">
-                 You've received a Calendly account free of charge and now you need to configure event types. How can you do this and what are the key settings?
+                 You have received a Calendly account free of charge and now you need to configure event types. How can you do this and what are the key settings?
                 </Typography>
                 <CardMedia
                   sx={{ minHeight: 300, border: 0 }}
