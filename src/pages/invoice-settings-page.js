@@ -89,8 +89,8 @@ const InvoiceSettingsPage = () => {
           country: Yup.string().nullable(true).required('Country is required.'),
           vatNumber: Yup.string().max(255).nullable(true),
           chamberOfCommerceIdentifier: Yup.string().max(255).nullable(true),
-          bankName: Yup.string().max(255).nullable(true).required('Bank name is required.'),
-          bankAccountName: Yup.string().max(255).nullable(true).required('Bank account name is required.'),
+          bankName: Yup.string().max(255).nullable(true),
+          bankAccountName: Yup.string().max(255).nullable(true),
           iban: Yup.string().max(255).nullable(true),
           email: Yup.string().email('Invalid invoicing email address.').max(255).required('Invoicing email address is required.')
         })}
