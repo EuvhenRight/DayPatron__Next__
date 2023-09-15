@@ -315,8 +315,8 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                     }
                     {missionContractorMatch?.contractor?.calendlyUrl &&
                       <Stack spacing={0.5} alignItems="center">
-                        <Button variant="text" onClick={() => { setIsCalendlyOpen(true); }}>
-                          Schedule a meeting
+                        <Button variant="text" onClick={() => { setIsCalendlyOpen(true); }} style={{ textTransform: 'none' }}>
+                          Schedule a Meeting
                         </Button>
                         <PopupModal
                           url={missionContractorMatch?.contractor?.calendlyUrl}
