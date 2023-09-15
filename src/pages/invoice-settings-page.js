@@ -91,7 +91,7 @@ const InvoiceSettingsPage = () => {
           chamberOfCommerceIdentifier: Yup.string().max(255).nullable(true),
           bankName: Yup.string().max(255).nullable(true).required('Bank name is required.'),
           bankAccountName: Yup.string().max(255).nullable(true).required('Bank account name is required.'),
-          iban: Yup.string().max(255).nullable(true).required('Iban is required.'),
+          iban: Yup.string().max(255).nullable(true),
           email: Yup.string().email('Invalid invoicing email address.').max(255).required('Invoicing email address is required.')
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
