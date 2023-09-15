@@ -46,10 +46,10 @@ const MissionContractorMatchAdminNotes = ({ missionId, contractorId, adminNotes,
   const theme = useTheme();
 
   const AdminNotesSchema = Yup.object().shape({
-    contractorNotes: Yup.string().max(1000).nullable(true),
+    contractorNotes: Yup.string().max(5000).nullable(true),
     showContractorNotesToEmployer: Yup.boolean().nullable(true),
     showContractorNotesToContractor: Yup.boolean().nullable(true),
-    missionNotes: Yup.string().max(1000).nullable(true),
+    missionNotes: Yup.string().max(5000).nullable(true),
     showMissionNotesToContractor: Yup.boolean().nullable(true),
     showMissionNotesToEmployer: Yup.boolean().nullable(true)
   });

@@ -69,7 +69,7 @@ const MissionContractorMatchEmployerNotes = ({ missionId, contractorId }) => {
   }, []);
 
   const EmployerNotesSchema = Yup.object().shape({
-    contractorNotes: Yup.string().max(1000).nullable(true)
+    contractorNotes: Yup.string().max(5000).nullable(true)
   });
 
   const formik = useFormik({
