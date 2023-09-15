@@ -237,7 +237,7 @@ const MissionPage = () => {
   }, []);
 
   const ContractorNotesSchema = Yup.object().shape({
-    missionNotes: Yup.string().max(1000).nullable(true)
+    missionNotes: Yup.string().max(5000).nullable(true)
   });
 
   const ContractorTagsSchema = Yup.object().shape({
