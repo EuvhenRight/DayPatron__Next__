@@ -1,8 +1,12 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '@mui/material/styles';
+import { useKeycloak } from '@react-keycloak/web';
+import { useSelector } from 'react-redux';
 
 import {
+  Button,
   Link,
   Divider,
   Fade,
@@ -26,8 +30,7 @@ import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import InfoWrapper from 'components/InfoWrapper';
 import { MoreOutlined, ShoppingCartOutlined, DownloadOutlined, LoadingOutlined } from '@ant-design/icons';
-import { useTheme } from '@mui/material/styles';
-import { useKeycloak } from '@react-keycloak/web';
+import { PopupModal } from "react-calendly";
 
 // ==============================|| ORDER - CARD ||============================== //
 
@@ -35,9 +38,12 @@ const MissionOrderCard = ({ order, handleApproveClick }) => {
   const { keycloak } = useKeycloak();
   const navigate = useNavigate();
   const theme = useTheme();
+  const personalInformation = useSelector(state => state.personalInformation);
   const [anchorEl, setAnchorEl] = useState(null);
   const [downloadingEmployerServiceOrderId, setDownloadingEmployerServiceOrderId] = useState(null);
   const [downloadingContractorServiceOrderId, setDownloadingContractorServiceOrderId] = useState(null);
+  const [scheduleContractor, setScheduleContractor] = useState(null);
+
   const openMenu = Boolean(anchorEl);
 
   const handleMenuClick = (event) => {
@@ -76,8 +82,60 @@ const MissionOrderCard = ({ order, handleApproveClick }) => {
       }, 120000);
   }
 
+  const getContractor = async (contractorId) => {
+    try {
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(contractorId),
+        {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + keycloak.idToken
+          }
+        }
+      );
+
+      let json = await response.json();
+
+      return json;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const handleScheduleMeeting = async (contractorId) => {
+    if (!contractorId) {
+      setScheduleContractor(null);
+      return;
+    }
+
+    var contractor = await getContractor(contractorId);
+    setScheduleContractor(contractor);
+  }
+
   return (
     <>
+      {scheduleContractor?.calendlyUrl &&
+        <PopupModal
+          url={scheduleContractor?.calendlyUrl}
+          onModalClose={() => { handleScheduleMeeting(null); }}
+          open={scheduleContractor}
+          rootElement={document.getElementById("root")}
+          prefill={{
+            email: personalInformation?.email,
+            firstName: personalInformation?.firstName,
+            lastName: personalInformation?.lastName,
+            name: personalInformation?.firstName + ' ' + personalInformation?.lastName,
+            date: new Date(Date.now() + 86400000)
+          }}
+          pageSettings={{
+            backgroundColor: theme.palette.common.white,
+            hideEventTypeDetails: false,
+            hideLandingPageDetails: false,
+            primaryColor: theme.palette.primary.main,
+            textColor: theme.palette.text.primary
+          }}
+        />
+      }
+
       <MainCard sx={{ height: 1, '& .MuiCardContent-root': { height: 1, display: 'flex', flexDirection: 'column' } }}>
         <Grid id="print" container spacing={2.25}>
           <Grid item xs={12}>
@@ -102,6 +160,13 @@ const MissionOrderCard = ({ order, handleApproveClick }) => {
                   }
                 />
               </ListItem>
+
+              <ListItem disablePadding>
+                <Button variant="outlined" onClick={() => { handleScheduleMeeting(order?.contractorId); }} style={{ textTransform: 'none' }}>
+                  Schedule a Meeting
+                </Button>
+              </ListItem>
+
             </List>
 
             <Menu
