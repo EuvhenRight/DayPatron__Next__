@@ -270,7 +270,7 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
                 <Stack direction="row" justifyContent="space-between" alignItems="flex-end">
                   <InfoWrapper tooltipText="product_order_card_talent_service_order_title_tooltip">
                     <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                      Talent Service Order1
+                      Talent Service Order
                     </Typography>
                   </InfoWrapper>
 
