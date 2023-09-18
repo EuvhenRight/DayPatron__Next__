@@ -37,7 +37,8 @@ const CreateMissionOrderPage = Loadable(lazy(() => import('pages/create-mission-
 
 const InvoicesPage = Loadable(lazy(() => import('pages/invoices-page')));
 const InvoiceSettingsPage = Loadable(lazy(() => import('pages/invoice-settings-page')));
-const InvoicesBillRun = Loadable(lazy(() => import('pages/billrun-page')));
+const InvoicesBilling = Loadable(lazy(() => import('pages/billing-page')));
+const BillingInfoSection = Loadable(lazy(() => import('sections/billing/BillingInfoSection')));
 
 const MissionMatchesPage = Loadable(lazy(() => import('pages/mission-matches-page')));
 
@@ -161,8 +162,12 @@ const MainRoutes = {
           element: <InvoicesPage />
         },
         {
-          path: 'invoices/billrun',
-          element: <InvoicesBillRun />
+          path: 'billing',
+          element: <InvoicesBilling />
+        },
+        {
+          path: 'billinginfo/:id',
+          element: <BillingInfoSection />
         },
         {
           path: 'support',

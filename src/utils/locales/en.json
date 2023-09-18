@@ -1,4 +1,5 @@
 {
+  "admin": "ADMIN",
   "profile": "PROFILE",
   "personal-information": "User Information",
   "companies": "Company Information",
@@ -12,7 +13,7 @@
   "invoicing": "INVOICING",
   "invoices": "Invoices",
   "invoice-settings": "Billing information",
-  "billrun": "Bill run",
+  "billing": "Billing",
   "documentation": "Documentation",
   "roadmap": "Roadmap",
   "support": "How-To Videos",

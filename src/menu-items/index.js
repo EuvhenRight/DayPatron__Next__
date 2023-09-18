@@ -119,12 +119,19 @@ const menuItems = {
           type: 'item',
           url: '/invoices/settings',
           icon: icons.FileTextOutlined
-        },
+        }
+      ]
+    },
+    {
+      id: 'admin',
+      title: <FormattedMessage id="admin" />,
+      type: 'group',
+      children: [
         {
-          id: 'test',
-          title: <FormattedMessage id="billrun" />,
+          id: 'billing',
+          title: <FormattedMessage id="billing" />,
           type: 'item',
-          url: '/invoices/billrun',
+          url: '/billing',
           icon: icons.FileTextOutlined
         }
       ]

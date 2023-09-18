@@ -58,7 +58,7 @@ const allColumns = [
   }
 ];
 
-const InvoicesBillRunPage = () => {
+const InvoicesBillingPage = () => {
   const { keycloak } = useKeycloak();
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
@@ -140,7 +140,7 @@ const InvoicesBillRunPage = () => {
     setFilteredBillingInfo(newBillingInfo);
   }, [globalFilter]);
 
-  const PER_PAGE = 10;
+  const PER_PAGE = 12;
   const count = Math.ceil(filteredBillingInfo.length / PER_PAGE);
   const _DATA = usePagination(filteredBillingInfo, PER_PAGE);
 
@@ -152,8 +152,9 @@ const InvoicesBillRunPage = () => {
 
   return (
 
-    <Grid container>
+    <Grid container spacing={10}>
       <Grid item xs={12}>
+        <Typography variant="h3">Bill run</Typography>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <DatePicker
             label="Start date"
@@ -181,7 +182,6 @@ const InvoicesBillRunPage = () => {
           Submit
         </Button>
       </Grid>
-
       <Grid item xs={12}>
         <>
           <Box sx={{ position: 'relative', marginBottom: 3 }}>
@@ -262,4 +262,4 @@ const InvoicesBillRunPage = () => {
   );
 };
 
-export default InvoicesBillRunPage;
+export default InvoicesBillingPage;
