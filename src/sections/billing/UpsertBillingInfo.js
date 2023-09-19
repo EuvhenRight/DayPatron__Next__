@@ -26,8 +26,7 @@ import InvoicePdfCard from 'sections/billing/InvoicePdfCard';
 
 // third-party
 import { useFormik, Form, FormikProvider } from 'formik';
-import { PDFDownloadLink } from '@react-pdf/renderer';
-
+import { pdf } from '@react-pdf/renderer';
 
 const getInitialValues = (currentInvoice) => {
 
@@ -130,6 +129,17 @@ const UpsertBillingInfo = ({ billingInfoId }) => {
       }
     }
   });
+
+  const handleDownloadPdf = async (pdfDocument) => {
+    const blob = await pdf((pdfDocument)).toBlob();
+    var fileUrl = URL.createObjectURL(blob);
+    window.open(fileUrl, '_blank');
+
+    if (fileUrl)
+      setTimeout(function () {
+        URL.revokeObjectURL(fileUrl);
+      }, 120000);
+  }
 
   const { handleSubmit, isSubmitting, setFieldValue, values } = formik;
   // const { errors, handleBlur, handleChange, touched, handleSubmit, isSubmitting, setFieldValue, values } = formik;
@@ -254,16 +264,6 @@ const UpsertBillingInfo = ({ billingInfoId }) => {
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
                         <InputLabel>Status</InputLabel>
-                        {/* <TextField
-                      fullWidth
-                      id="invoice-status"
-                      placeholder="Enter legal entity name"
-                      value={normalizeInputValue(invoice.status)}
-                      name="status"
-                    // onBlur={handleBlur}
-                    // onChange={handleChange}
-                    /> */}
-
                         <Autocomplete
                           // disablePortal
                           id="invoice-status"
@@ -331,13 +331,13 @@ const UpsertBillingInfo = ({ billingInfoId }) => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <Typography variant="subtitle1">Service Order Id (Talent)</Typography>
+                        <Typography variant="subtitle1">Talent Service Order Id</Typography>
                         <Typography variant="subtitle2">{invoice.serviceOrderIdContractor}</Typography>
                       </Stack>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <Typography variant="subtitle1">Service Order Id (Company)</Typography>
+                        <Typography variant="subtitle1">Company Service Order Id</Typography>
                         <Typography variant="subtitle2">{invoice.serviceOrderIdEmployer}</Typography>
                       </Stack>
                     </Grid>
@@ -355,12 +355,20 @@ const UpsertBillingInfo = ({ billingInfoId }) => {
                     </Grid>
                     <Grid item xs={12}>
                       <Stack direction="row" justifyContent="flex-end" spacing={2}>
-                        <PDFDownloadLink
-                          document={<InvoicePdfCard invoice={invoice} />}
-                          fileName={`Invoice-${invoice.invoiceNumber}.pdf`}>
-                          Export PDF
-                        </PDFDownloadLink>
-                        <Button type="submit" disabled={isSubmitting} onClick={() => handleUpdateInvoice()} color="secondary" variant="outlined">
+                        <Button
+                          color="primary"
+                          variant="outlined"
+                          onClick={async () => {
+                            await handleDownloadPdf(<InvoicePdfCard invoice={invoice} />);
+                          }}>
+                          Download Invoice
+                        </Button>
+                        <Button
+                          type="submit"
+                          disabled={isSubmitting}
+                          onClick={() => handleUpdateInvoice()}
+                          color="primary"
+                          variant="contained">
                           Save
                         </Button>
                       </Stack>

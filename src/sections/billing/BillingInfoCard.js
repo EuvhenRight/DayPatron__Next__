@@ -1,14 +1,11 @@
 import PropTypes from 'prop-types';
 
-// import { format } from 'date-fns'
+import { format } from 'date-fns'
 
 // material-ui
 import {
   Divider,
   Grid,
-  List,
-  ListItem,
-  ListItemText,
   Typography,
 } from '@mui/material';
 
@@ -29,54 +26,78 @@ const BillingInfoCard = ({ billingInfo }) => {
   };
 
   return (
-
     <MainCard sx={{ height: 1, '& .MuiCardContent-root': { height: 1, display: 'flex', flexDirection: 'column' } }}>
       <Grid id="print" container spacing={2.25}>
-
         <Grid item xs={12}>
-          <ListItemText className="list-card-title"
-            primary={
-              <Typography onClick={handleClickDetails} variant="h5">
-                {billingInfo.itemName}
-              </Typography>
-            }
-            secondary={
-              <Typography variant="subtitle2" color="secondary">
-                {billingInfo.startDate} - {billingInfo.endDate}
-              </Typography>
-            }
-          />
+          <Typography onClick={handleClickDetails} className="clickable" variant="h5">
+            {billingInfo.itemName}
+          </Typography>
         </Grid>
-      </Grid>
-
-      <Grid item xs={12}>
-        <Divider />
-      </Grid>
-
-      <Grid item xs={12}>
-        <Grid container spacing={1}>
-          <List sx={{ p: 0, overflow: 'hidden', '& .MuiListItem-root': { px: 1, py: 1 } }}>
-            {billingInfo.itemName &&
-              <ListItem>
-                <ListItemText
-                  primary={
-                    <Typography color="secondary">
-                      Talent: {billingInfo.contractorName}
-                    </Typography>
-                  }
-                  secondary={
-                    <Typography color="secondary">
-                      Company: {billingInfo.employerName}
-                    </Typography>
-                  }
-                />
-              </ListItem>
-            }
-          </List>
+        <Grid item xs={12}>
+          <Divider />
+        </Grid>
+        <Grid item xs={4}>
+          <Typography color="secondary">
+            Talent
+          </Typography>
+        </Grid>
+        <Grid item xs={8}>
+          <Typography variant="body1" color="secondary">
+            {billingInfo.contractorName}
+          </Typography>
+        </Grid>
+        <Grid item xs={4}>
+          <Typography variant="body1" color="secondary">
+            Company
+          </Typography>
+        </Grid>
+        <Grid item xs={8}>
+          <Typography variant="body1" color="secondary">
+            {billingInfo.employerName}
+          </Typography>
+        </Grid>
+        <Grid item xs={4}>
+          <Typography variant="body1" color="secondary">
+            Start Date
+          </Typography>
+        </Grid>
+        <Grid item xs={8}>
+          <Typography variant="body1" color="secondary">
+            {format(new Date(billingInfo.startDate), "yyyy-MM-dd")}
+          </Typography>
+        </Grid>
+        <Grid item xs={4}>
+          <Typography variant="body1" color="secondary">
+            End Date
+          </Typography>
+        </Grid>
+        <Grid item xs={8}>
+          <Typography variant="body1" color="secondary">
+            {format(new Date(billingInfo.startDate), "yyyy-MM-dd")}
+          </Typography>
+        </Grid>
+        <Grid item xs={4}>
+          <Typography variant="body1" color="secondary">
+            Status
+          </Typography>
+        </Grid>
+        <Grid item xs={8}>
+          <Typography variant="body1" color="secondary">
+            {billingInfo.billingStatus}
+          </Typography>
+        </Grid>
+        <Grid item xs={4}>
+          <Typography variant="body1" color="secondary">
+            Creation Date
+          </Typography>
+        </Grid>
+        <Grid item xs={8}>
+          <Typography variant="body1" color="secondary">
+            {format(new Date(billingInfo.createdAtUtc), "yyyy-MM-dd")}
+          </Typography>
         </Grid>
       </Grid>
     </MainCard>
-
   )
 };
 

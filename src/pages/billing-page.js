@@ -23,14 +23,13 @@ import {
 } from '@mui/material';
 
 import { openSnackbar } from 'store/reducers/snackbar';
-
 import { GlobalFilter } from 'utils/react-table';
 import usePagination from 'hooks/usePagination';
 
 // project imports
 import EmptyCardList from 'components/cards/skeleton/EmptyCardList';
 import BillingInfoCard from 'sections/billing/BillingInfoCard';
-
+import MainCard from 'components/MainCard';
 import { compareSortValues } from 'utils/stringUtils';
 
 // ==============================|| BILLRUN - PAGE ||============================== //
@@ -42,19 +41,11 @@ const allColumns = [
   },
   {
     id: 2,
-    header: 'Creation DateTime'
+    header: 'Creation Date'
   },
   {
     id: 3,
     header: 'Item Name'
-  },
-  {
-    id: 4,
-    header: 'Company Name'
-  },
-  {
-    id: 5,
-    header: 'Talent name'
   }
 ];
 
@@ -132,7 +123,7 @@ const InvoicesBillingPage = () => {
   useEffect(() => {
     const newBillingInfo = billingInfo.filter((value) => {
       if (globalFilter) {
-        return value.employerName.toLowerCase().includes(globalFilter.toLowerCase());
+        return value.itemName.toLowerCase().includes(globalFilter.toLowerCase());
       } else {
         return value;
       }
@@ -151,39 +142,41 @@ const InvoicesBillingPage = () => {
 
 
   return (
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <MainCard
+            title={<Typography variant="h5">Bill run generation</Typography>}
+            sx={{ height: 150, ' & .MuiCardContent-root': { height: 1, display: 'flex', flexDirection: 'column' } }}>
+            <Grid item xs={12}>
+              <Stack direction="row" spacing={2}>
+                <DatePicker
+                  label="Start date"
+                  value={startDate}
+                  onChange={(startDateValue) => {
+                    setStartDate(startDateValue);
+                  }}
+                  renderInput={(params) => <TextField {...params} />} />
+                <DatePicker
+                  label="End date"
+                  value={endDate}
+                  onChange={(endDateValue) => {
+                    setEndDate(endDateValue);
+                  }}
+                  renderInput={(params) => <TextField {...params} />} />
+                <Button
+                  onClick={() => {
+                    handleSubmitBillRun()
+                  }}
+                  variant="contained">
+                  Submit
+                </Button>
+              </Stack>
+            </Grid>
+          </MainCard>
+        </Grid>
 
-    <Grid container spacing={10}>
-      <Grid item xs={12}>
-        <Typography variant="h3">Bill run</Typography>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <DatePicker
-            label="Start date"
-            value={startDate}
-            onChange={(startDateValue) => {
-              setStartDate(startDateValue);
-            }}
-            renderInput={(params) => <TextField {...params} />}
-          />
-          <DatePicker
-            label="End date"
-            value={endDate}
-            onChange={(endDateValue) => {
-              setEndDate(endDateValue);
-            }}
-            renderInput={(params) => <TextField {...params} />}
-          />
-        </LocalizationProvider>
-        <Button
-          onClick={() => {
-            handleSubmitBillRun()
-          }}
-          variant="contained"
-        >
-          Submit
-        </Button>
-      </Grid>
-      <Grid item xs={12}>
-        <>
+        <Grid item xs={12}>
           <Box sx={{ position: 'relative', marginBottom: 3 }}>
             <Stack direction="row" alignItems="center">
               <Stack
@@ -191,8 +184,7 @@ const InvoicesBillingPage = () => {
                 sx={{ width: '100%' }}
                 spacing={1}
                 justifyContent="space-between"
-                alignItems="center"
-              >
+                alignItems="center">
                 <GlobalFilter preGlobalFilteredRows={filteredBillingInfo} globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
                 <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
                   <FormControl sx={{ m: 1, minWidth: 120 }}>
@@ -205,10 +197,8 @@ const InvoicesBillingPage = () => {
                         if (!selected) {
                           return <Typography variant="subtitle1">Sort By</Typography>;
                         }
-
                         return <Typography variant="subtitle2">Sort by ({sortBy})</Typography>;
-                      }}
-                    >
+                      }}>
                       {allColumns.map((column) => {
                         return (
                           <MenuItem key={column.id} value={column.header}>
@@ -227,10 +217,8 @@ const InvoicesBillingPage = () => {
               _DATA
                 .currentData()
                 .sort(function (a, b) {
-                  if (sortBy === 'CreatedAtUtc') return compareSortValues(a?.createdAtUtc, b?.createdAtUtc);
-                  if (sortBy === 'ItemName') return compareSortValues(a?.itemName, b?.itemName);
-                  if (sortBy === 'CompanyName') return compareSortValues(a?.itemName, b?.itemName);
-                  if (sortBy === 'TalentName') return compareSortValues(a?.itemName, b?.itemName);
+                  if (sortBy === 'Creation Date') return compareSortValues(a?.createdAtUtc, b?.createdAtUtc);
+                  if (sortBy === 'Item Name') return compareSortValues(a?.itemName, b?.itemName);
                   return a;
                 })
                 .map((billingInfo, index) => (
@@ -256,9 +244,9 @@ const InvoicesBillingPage = () => {
               onChange={handleChangePage}
             />
           </Stack>
-        </>
+        </Grid>
       </Grid>
-    </Grid>
+    </LocalizationProvider>
   );
 };
 
