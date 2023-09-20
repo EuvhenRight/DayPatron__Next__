@@ -9,7 +9,8 @@ import {
   Button,
   InputLabel,
   TextField,
-  Autocomplete
+  Autocomplete,
+  FormHelperText
 } from '@mui/material'
 
 // assets
@@ -27,6 +28,9 @@ import InvoicePdfCard from 'sections/billing/InvoicePdfCard';
 // third-party
 import { useFormik, Form, FormikProvider } from 'formik';
 import { pdf } from '@react-pdf/renderer';
+import * as Yup from 'yup';
+import { format } from 'date-fns';
+
 
 const getInitialValues = (currentInvoice) => {
 
@@ -74,12 +78,19 @@ const UpsertBillingInfo = ({ billingInfoId }) => {
     })();
   }, []);
 
+  const InvoiceSchema = Yup.object().shape({
+    status: Yup.string().max(255).required('Invoice status is required').nullable(true)
+  });
+
+
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: getInitialValues(billingInfo.invoice),
-    // validationSchema:
+    validationSchema: InvoiceSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
+        var body = { ...values };
+
         if (billingInfo.invoice[0]) { //todo
           let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/invoices/' + billingInfo.invoice[0].id,
             {
@@ -88,7 +99,7 @@ const UpsertBillingInfo = ({ billingInfoId }) => {
                 'Authorization': 'Bearer ' + keycloak.idToken,
                 'Content-Type': 'application/json'
               },
-              body: prepareApiBody(values)
+              body: prepareApiBody(body)
             }
           );
 
@@ -141,7 +152,7 @@ const UpsertBillingInfo = ({ billingInfoId }) => {
       }, 120000);
   }
 
-  const { handleSubmit, isSubmitting, setFieldValue, values } = formik;
+  const { errors, handleBlur, touched, handleSubmit, isSubmitting, setFieldValue, values } = formik;
   // const { errors, handleBlur, handleChange, touched, handleSubmit, isSubmitting, setFieldValue, values } = formik;
 
   return (
@@ -163,13 +174,13 @@ const UpsertBillingInfo = ({ billingInfoId }) => {
                 <Grid item xs={12} sm={4}>
                   <Stack spacing={1.25}>
                     <Typography variant="subtitle1">Start Date</Typography>
-                    <Typography variant="subtitle2">{billingInfo.startDate}</Typography>
+                    <Typography variant="subtitle2">{format(new Date(billingInfo.startDate), "yyyy-MM-dd")}</Typography>
                   </Stack>
                 </Grid>
                 <Grid item xs={12} sm={4}>
                   <Stack spacing={1.25}>
                     <Typography variant="subtitle1">End Date</Typography>
-                    <Typography variant="subtitle2">{billingInfo.endDate}</Typography>
+                    <Typography variant="subtitle2">{format(new Date(billingInfo.endDate), "yyyy-MM-dd")}</Typography>
                   </Stack>
                 </Grid>
                 <Grid item xs={12} sm={4}>
@@ -187,7 +198,7 @@ const UpsertBillingInfo = ({ billingInfoId }) => {
                 <Grid item xs={12} sm={4}>
                   <Stack spacing={1.25}>
                     <Typography variant="subtitle1">Creation Date</Typography>
-                    <Typography variant="subtitle2">{billingInfo.createdAtUtc}</Typography>
+                    <Typography variant="subtitle2">{format(new Date(billingInfo.createdAtUtc), "yyyy-MM-dd")}</Typography>
                   </Stack>
                 </Grid>
                 <Grid item xs={12} sm={4}>
@@ -258,51 +269,38 @@ const UpsertBillingInfo = ({ billingInfoId }) => {
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
                         <Typography variant="subtitle1">Invoice Date</Typography>
-                        <Typography variant="subtitle2">{invoice.invoiceDate}</Typography>
+                        <Typography variant="subtitle2">{format(new Date(invoice.invoiceDate), "yyyy-MM-dd")}</Typography>
                       </Stack>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <InputLabel>Status</InputLabel>
-                        <Autocomplete
-                          // disablePortal
-                          id="invoice-status"
-                          options={invoiceStatus}
-                          value={values?.status ? invoiceStatus.find((item) => item.code === values?.status)[0] : null}
-                          // value={values?.invoiceStatus ? invoiceStatus.find((item) => item.code === values?.invoiceStatus) : null}
-                          // onBlur={handleBlur}
-                          getOptionDisabled={(option) => option?.label}
-                          isOptionEqualToValue={(option, value) => option.code === value?.code}
-                          onChange={(event, newValue) => {
-                            setFieldValue('status', newValue === null ? '' : newValue.code);
-                          }}
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              placeholder="Select invoice status"
-                              name="status"
-                              inputProps={{
-                                ...params.inputProps,
-                                autoComplete: 'new-password'
-                              }}
-                            />
-                          )}
-                        />
-
-                        {/* <Typography variant="subtitle1">Status</Typography>
-                    <Typography variant="subtitle2">{invoice.status}</Typography> */}
+                        <Typography variant="subtitle1">Invoice Type</Typography>
+                        <Typography variant="subtitle2">{invoice.invoiceType}</Typography>
                       </Stack>
                     </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <Typography variant="subtitle1">Reference Date</Typography>
+                        <Typography variant="subtitle2">{format(new Date(invoice.referenceDate), "yyyy-MM-dd")}</Typography>
+                      </Stack>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <Typography variant="subtitle1">Due Date</Typography>
+                        <Typography variant="subtitle2">{format(new Date(invoice.dueDate), "yyyy-MM-dd")}</Typography>
+                      </Stack>
+                    </Grid>
+
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
                         <Typography variant="subtitle1">Start Date</Typography>
-                        <Typography variant="subtitle2">{invoice.startDate}</Typography>
+                        <Typography variant="subtitle2">{format(new Date(invoice.startDate), "yyyy-MM-dd")}</Typography>
                       </Stack>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
                         <Typography variant="subtitle1">End Date</Typography>
-                        <Typography variant="subtitle2">{invoice.endDate}</Typography>
+                        <Typography variant="subtitle2">{format(new Date(invoice.endDate), "yyyy-MM-dd")}</Typography>
                       </Stack>
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -313,20 +311,20 @@ const UpsertBillingInfo = ({ billingInfoId }) => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <Typography variant="subtitle1">Total Amount Including VAT</Typography>
-                        <Typography variant="subtitle2">{invoice.totalAmountIncludingVat}</Typography>
-                      </Stack>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Stack spacing={1.25}>
                         <Typography variant="subtitle1">Vat Amount</Typography>
                         <Typography variant="subtitle2">{invoice.vatAmount}</Typography>
                       </Stack>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <Typography variant="subtitle1">Due Date</Typography>
-                        <Typography variant="subtitle2">{invoice.dueDate}</Typography>
+                        <Typography variant="subtitle1">Total Amount Including VAT</Typography>
+                        <Typography variant="subtitle2">{invoice.totalAmountIncludingVat}</Typography>
+                      </Stack>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <Typography variant="subtitle1">Project Order Id</Typography>
+                        <Typography variant="subtitle2">{invoice.projectOrderId}</Typography>
                       </Stack>
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -343,16 +341,41 @@ const UpsertBillingInfo = ({ billingInfoId }) => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Stack spacing={1.25}>
-                        <Typography variant="subtitle1">Project Order Id</Typography>
-                        <Typography variant="subtitle2">{invoice.projectOrderId}</Typography>
+                        <InputLabel>Status</InputLabel>
+                        <Autocomplete
+                          // disablePortal
+                          id="invoice-status"
+                          options={invoiceStatus}
+                          value={values?.status ? invoiceStatus.find((item) => item.code === values?.status)[0] : null}
+                          // value={values?.invoiceStatus ? invoiceStatus.find((item) => item.code === values?.invoiceStatus) : null}
+                          onBlur={handleBlur}
+                          getOptionLabel={(option) => option?.label}
+                          isOptionEqualToValue={(option, value) => option.code === value?.code}
+                          onChange={(event, newValue) => {
+                            setFieldValue('status', newValue === null ? '' : newValue.code);
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              placeholder="Select invoice status"
+                              name="status"
+                              inputProps={{
+                                ...params.inputProps,
+                                autoComplete: 'new-password'
+                              }}
+                            />
+                          )}
+                        />
+                        {touched.status && errors.status && (
+                          <FormHelperText error id="invoice-status-helper">
+                            {errors.status}
+                          </FormHelperText>
+                        )}
+                        {/* <Typography variant="subtitle1">Status</Typography>
+                    <Typography variant="subtitle2">{invoice.status}</Typography> */}
                       </Stack>
                     </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Stack spacing={1.25}>
-                        <Typography variant="subtitle1">Invoice Type</Typography>
-                        <Typography variant="subtitle2">{invoice.invoiceType}</Typography>
-                      </Stack>
-                    </Grid>
+
                     <Grid item xs={12}>
                       <Stack direction="row" justifyContent="flex-end" spacing={2}>
                         <Button
@@ -386,7 +409,7 @@ const UpsertBillingInfo = ({ billingInfoId }) => {
 
 UpsertBillingInfo.propTypes = {
   billingInfoId: PropTypes.string,
-  invoice: PropTypes.object
+  // invoice: PropTypes.object
 };
 
 export default UpsertBillingInfo;
