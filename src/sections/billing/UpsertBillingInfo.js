@@ -5,44 +5,19 @@ import PropTypes from 'prop-types';
 import {
   Typography,
   Grid,
-  Stack,
-  Button,
-  InputLabel,
-  TextField,
-  Autocomplete,
-  FormHelperText
+  Stack
 } from '@mui/material'
 
 // assets
 import { useKeycloak } from '@react-keycloak/web';
-import { prepareApiBody } from 'utils/stringUtils';
-
-// import { normalizeInputValue } from 'utils/stringUtils';
 
 // project import
 import MainCard from 'components/MainCard';
-import { openSnackbar } from 'store/reducers/snackbar';
-import invoiceStatus from 'data/invoiceStatus';
-import InvoicePdfCard from 'sections/billing/InvoicePdfCard';
+import InvoiceDetails from 'sections/billing/InvoiceDetails';
 
 // third-party
-import { useFormik, Form, FormikProvider } from 'formik';
-import { pdf } from '@react-pdf/renderer';
-import * as Yup from 'yup';
 import { format } from 'date-fns';
 
-
-const getInitialValues = (currentInvoice) => {
-
-  const updatedInvoice = {
-    status: null
-  };
-
-  if (currentInvoice) {
-    var result = _.merge({}, updatedInvoice, currentInvoice);
-    return result;
-  }
-};
 
 // ==============================|| BILLINGINFO VIEW / EDIT ||============================== //
 
@@ -52,7 +27,7 @@ const UpsertBillingInfo = ({ billingInfoId }) => {
 
   const bindBillingInfo = async () => {
     try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/billing/' + billingInfoId,
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/billing/' + encodeURIComponent(billingInfoId),
         {
           method: 'GET',
           headers: {
@@ -78,338 +53,108 @@ const UpsertBillingInfo = ({ billingInfoId }) => {
     })();
   }, []);
 
-  const InvoiceSchema = Yup.object().shape({
-    status: Yup.string().max(255).required('Invoice status is required').nullable(true)
-  });
-
-
-  const formik = useFormik({
-    enableReinitialize: true,
-    initialValues: getInitialValues(billingInfo.invoice),
-    validationSchema: InvoiceSchema,
-    onSubmit: async (values, { setSubmitting }) => {
-      try {
-        var body = { ...values };
-
-        if (billingInfo.invoice[0]) { //todo
-          let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/invoices/' + billingInfo.invoice[0].id,
-            {
-              method: 'PUT',
-              headers: {
-                'Authorization': 'Bearer ' + keycloak.idToken,
-                'Content-Type': 'application/json'
-              },
-              body: prepareApiBody(body)
-            }
-          );
-
-          if (!response.ok) {
-            dispatch(
-              openSnackbar({
-                open: true,
-                message: 'update failed.',
-                variant: 'alert',
-                alert: {
-                  color: 'error'
-                },
-                close: false
-              })
-            );
-
-            setSubmitting(false);
-            return;
-          }
-
-          Navigate('/billinginfo/{billingInfo.id}');
-
-          dispatch(
-            openSnackbar({
-              open: true,
-              message: 'Saved.',
-              variant: 'alert',
-              alert: {
-                color: 'success'
-              },
-              close: false
-            })
-          );
-
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  });
-
-  const handleDownloadPdf = async (pdfDocument) => {
-    const blob = await pdf((pdfDocument)).toBlob();
-    var fileUrl = URL.createObjectURL(blob);
-    window.open(fileUrl, '_blank');
-
-    if (fileUrl)
-      setTimeout(function () {
-        URL.revokeObjectURL(fileUrl);
-      }, 120000);
-  }
-
-  const { errors, handleBlur, touched, handleSubmit, isSubmitting, setFieldValue, values } = formik;
-  // const { errors, handleBlur, handleChange, touched, handleSubmit, isSubmitting, setFieldValue, values } = formik;
-
   return (
-    <FormikProvider value={formik}>
-      <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <MainCard>
-              <Grid container spacing={3}>
-                <Grid item xs={12}>
-                  <Typography variant="h3">Billing Info</Typography>
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                  <Stack spacing={1.25}>
-                    <Typography variant="subtitle1">Id</Typography>
-                    <Typography variant="subtitle2">{billingInfo.id}</Typography>
-                  </Stack>
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                  <Stack spacing={1.25}>
-                    <Typography variant="subtitle1">Start Date</Typography>
-                    <Typography variant="subtitle2">{format(new Date(billingInfo.startDate), "yyyy-MM-dd")}</Typography>
-                  </Stack>
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                  <Stack spacing={1.25}>
-                    <Typography variant="subtitle1">End Date</Typography>
-                    <Typography variant="subtitle2">{format(new Date(billingInfo.endDate), "yyyy-MM-dd")}</Typography>
-                  </Stack>
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                  <Stack spacing={1.25}>
-                    <Typography variant="subtitle1">Name</Typography>
-                    <Typography variant="subtitle2">{billingInfo.itemName}</Typography>
-                  </Stack>
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                  <Stack spacing={1.25}>
-                    <Typography variant="subtitle1">Status</Typography>
-                    <Typography variant="subtitle2">{billingInfo.billingStatus}</Typography>
-                  </Stack>
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                  <Stack spacing={1.25}>
-                    <Typography variant="subtitle1">Creation Date</Typography>
-                    <Typography variant="subtitle2">{format(new Date(billingInfo.createdAtUtc), "yyyy-MM-dd")}</Typography>
-                  </Stack>
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                  <Stack spacing={1.25}>
-                    <Typography variant="subtitle1">Mission Order Id</Typography>
-                    <Typography variant="subtitle2">{billingInfo.missionOrderId}</Typography>
-                  </Stack>
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                  <Stack spacing={1.25}>
-                    <Typography variant="subtitle1">Employer Name</Typography>
-                    <Typography variant="subtitle2">{billingInfo.employerName}</Typography>
-                  </Stack>
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                  <Stack spacing={1.25}>
-                    <Typography variant="subtitle1">Contractor Name</Typography>
-                    <Typography variant="subtitle2">{billingInfo.contractorName}</Typography>
-                  </Stack>
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                  <Stack spacing={1.25}>
-                    <Typography variant="subtitle1">Product Order Id</Typography>
-                    <Typography variant="subtitle2">{billingInfo.productOrderId}</Typography>
-                  </Stack>
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                  <Stack spacing={1.25}>
-                    <Typography variant="subtitle1">Total Amount Employer</Typography>
-                    <Typography variant="subtitle2">{billingInfo.totalAmountEmployer}</Typography>
-                  </Stack>
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                  <Stack spacing={1.25}>
-                    <Typography variant="subtitle1">Total Amount Talent</Typography>
-                    <Typography variant="subtitle2">{billingInfo.totalAmountContractor}</Typography>
-                  </Stack>
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                  <Stack spacing={1.25}>
-                    <Typography variant="subtitle1">Gross Margin 10x</Typography>
-                    <Typography variant="subtitle2">{billingInfo.grossMargin10x}</Typography>
-                  </Stack>
-                </Grid>
-              </Grid>
-            </MainCard>
+    <Grid container spacing={3}>
+      <Grid item xs={12}>
+        <MainCard>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <Typography variant="h3">Billing Info</Typography>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <Stack spacing={1.25}>
+                <Typography variant="subtitle1">Id</Typography>
+                <Typography variant="subtitle2">{billingInfo.id}</Typography>
+              </Stack>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <Stack spacing={1.25}>
+                <Typography variant="subtitle1">Start Date</Typography>
+                <Typography variant="subtitle2">{billingInfo.startDate && format(new Date(billingInfo.startDate), "yyyy-MM-dd")}</Typography>
+
+              </Stack>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <Stack spacing={1.25}>
+                <Typography variant="subtitle1">End Date</Typography>
+                <Typography variant="subtitle2">{billingInfo.endDate && format(new Date(billingInfo.endDate), "yyyy-MM-dd")}</Typography>
+              </Stack>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <Stack spacing={1.25}>
+                <Typography variant="subtitle1">Name</Typography>
+                <Typography variant="subtitle2">{billingInfo.itemName}</Typography>
+              </Stack>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <Stack spacing={1.25}>
+                <Typography variant="subtitle1">Status</Typography>
+                <Typography variant="subtitle2">{billingInfo.billingStatus}</Typography>
+              </Stack>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <Stack spacing={1.25}>
+                <Typography variant="subtitle1">Creation Date</Typography>
+                <Typography variant="subtitle2">{billingInfo.createdAtUtc && format(new Date(billingInfo.createdAtUtc), "yyyy-MM-dd")}</Typography>
+              </Stack>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <Stack spacing={1.25}>
+                <Typography variant="subtitle1">Mission Order Id</Typography>
+                <Typography variant="subtitle2">{billingInfo.missionOrderId}</Typography>
+              </Stack>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <Stack spacing={1.25}>
+                <Typography variant="subtitle1">Employer Name</Typography>
+                <Typography variant="subtitle2">{billingInfo.employerName}</Typography>
+              </Stack>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <Stack spacing={1.25}>
+                <Typography variant="subtitle1">Contractor Name</Typography>
+                <Typography variant="subtitle2">{billingInfo.contractorName}</Typography>
+              </Stack>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <Stack spacing={1.25}>
+                <Typography variant="subtitle1">Product Order Id</Typography>
+                <Typography variant="subtitle2">{billingInfo.productOrderId}</Typography>
+              </Stack>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <Stack spacing={1.25}>
+                <Typography variant="subtitle1">Total Amount Employer</Typography>
+                <Typography variant="subtitle2">{billingInfo.totalAmountEmployer}</Typography>
+              </Stack>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <Stack spacing={1.25}>
+                <Typography variant="subtitle1">Total Amount Talent</Typography>
+                <Typography variant="subtitle2">{billingInfo.totalAmountContractor}</Typography>
+              </Stack>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <Stack spacing={1.25}>
+                <Typography variant="subtitle1">Gross Margin 10x</Typography>
+                <Typography variant="subtitle2">{billingInfo.grossMargin10x}</Typography>
+              </Stack>
+            </Grid>
           </Grid>
-          {billingInfo.invoices?.map((invoice, index) => {
-            return (
-              <Grid key={index} item xs={12} md={6}>
-                <MainCard>
-                  <Grid container spacing={3}>
-                    <Grid item xs={12}>
-                      <Typography variant="h3">Invoice</Typography>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Stack spacing={1.25}>
-                        <Typography variant="subtitle1">Invoice Id</Typography>
-                        <Typography variant="subtitle2">{invoice.id}</Typography>
-                      </Stack>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Stack spacing={1.25}>
-                        <Typography variant="subtitle1">Invoice Number</Typography>
-                        <Typography variant="subtitle2">{invoice.invoiceNumber}</Typography>
-                      </Stack>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Stack spacing={1.25}>
-                        <Typography variant="subtitle1">Invoice Date</Typography>
-                        <Typography variant="subtitle2">{format(new Date(invoice.invoiceDate), "yyyy-MM-dd")}</Typography>
-                      </Stack>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Stack spacing={1.25}>
-                        <Typography variant="subtitle1">Invoice Type</Typography>
-                        <Typography variant="subtitle2">{invoice.invoiceType}</Typography>
-                      </Stack>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Stack spacing={1.25}>
-                        <Typography variant="subtitle1">Reference Date</Typography>
-                        <Typography variant="subtitle2">{format(new Date(invoice.referenceDate), "yyyy-MM-dd")}</Typography>
-                      </Stack>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Stack spacing={1.25}>
-                        <Typography variant="subtitle1">Due Date</Typography>
-                        <Typography variant="subtitle2">{format(new Date(invoice.dueDate), "yyyy-MM-dd")}</Typography>
-                      </Stack>
-                    </Grid>
+        </MainCard>
+      </Grid>
 
-                    <Grid item xs={12} sm={6}>
-                      <Stack spacing={1.25}>
-                        <Typography variant="subtitle1">Start Date</Typography>
-                        <Typography variant="subtitle2">{format(new Date(invoice.startDate), "yyyy-MM-dd")}</Typography>
-                      </Stack>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Stack spacing={1.25}>
-                        <Typography variant="subtitle1">End Date</Typography>
-                        <Typography variant="subtitle2">{format(new Date(invoice.endDate), "yyyy-MM-dd")}</Typography>
-                      </Stack>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Stack spacing={1.25}>
-                        <Typography variant="subtitle1">Total Amount Excluding VAT</Typography>
-                        <Typography variant="subtitle2">{invoice.totalAmountExcludingVat}</Typography>
-                      </Stack>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Stack spacing={1.25}>
-                        <Typography variant="subtitle1">Vat Amount</Typography>
-                        <Typography variant="subtitle2">{invoice.vatAmount}</Typography>
-                      </Stack>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Stack spacing={1.25}>
-                        <Typography variant="subtitle1">Total Amount Including VAT</Typography>
-                        <Typography variant="subtitle2">{invoice.totalAmountIncludingVat}</Typography>
-                      </Stack>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Stack spacing={1.25}>
-                        <Typography variant="subtitle1">Project Order Id</Typography>
-                        <Typography variant="subtitle2">{invoice.projectOrderId}</Typography>
-                      </Stack>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Stack spacing={1.25}>
-                        <Typography variant="subtitle1">Talent Service Order Id</Typography>
-                        <Typography variant="subtitle2">{invoice.serviceOrderIdContractor}</Typography>
-                      </Stack>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Stack spacing={1.25}>
-                        <Typography variant="subtitle1">Company Service Order Id</Typography>
-                        <Typography variant="subtitle2">{invoice.serviceOrderIdEmployer}</Typography>
-                      </Stack>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Stack spacing={1.25}>
-                        <InputLabel>Status</InputLabel>
-                        <Autocomplete
-                          // disablePortal
-                          id="invoice-status"
-                          options={invoiceStatus}
-                          value={values?.status ? invoiceStatus.find((item) => item.code === values?.status)[0] : null}
-                          // value={values?.invoiceStatus ? invoiceStatus.find((item) => item.code === values?.invoiceStatus) : null}
-                          onBlur={handleBlur}
-                          getOptionLabel={(option) => option?.label}
-                          isOptionEqualToValue={(option, value) => option.code === value?.code}
-                          onChange={(event, newValue) => {
-                            setFieldValue('status', newValue === null ? '' : newValue.code);
-                          }}
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              placeholder="Select invoice status"
-                              name="status"
-                              inputProps={{
-                                ...params.inputProps,
-                                autoComplete: 'new-password'
-                              }}
-                            />
-                          )}
-                        />
-                        {touched.status && errors.status && (
-                          <FormHelperText error id="invoice-status-helper">
-                            {errors.status}
-                          </FormHelperText>
-                        )}
-                        {/* <Typography variant="subtitle1">Status</Typography>
-                    <Typography variant="subtitle2">{invoice.status}</Typography> */}
-                      </Stack>
-                    </Grid>
-
-                    <Grid item xs={12}>
-                      <Stack direction="row" justifyContent="flex-end" spacing={2}>
-                        <Button
-                          color="primary"
-                          variant="outlined"
-                          onClick={async () => {
-                            await handleDownloadPdf(<InvoicePdfCard invoice={invoice} />);
-                          }}>
-                          Download Invoice
-                        </Button>
-                        <Button
-                          type="submit"
-                          disabled={isSubmitting}
-                          onClick={() => handleUpdateInvoice()}
-                          color="primary"
-                          variant="contained">
-                          Save
-                        </Button>
-                      </Stack>
-                    </Grid>
-                  </Grid>
-                </MainCard>
-              </Grid>
-            );
-          })}
-        </Grid >
-      </Form >
-    </FormikProvider >
+      {billingInfo.invoices?.map((invoice, index) => (
+        <Grid key={index} item xs={12} md={6}>
+          <InvoiceDetails invoice={invoice} />
+        </Grid>
+      ))}
+    </Grid>
   );
 };
 
 UpsertBillingInfo.propTypes = {
-  billingInfoId: PropTypes.string,
-  // invoice: PropTypes.object
+  billingInfoId: PropTypes.string
 };
 
 export default UpsertBillingInfo;
