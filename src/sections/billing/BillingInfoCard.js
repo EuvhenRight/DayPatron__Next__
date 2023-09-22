@@ -12,17 +12,21 @@ import MainCard from 'components/MainCard';
 
 // assets
 import { useNavigate } from 'react-router-dom';
+import { useKeycloak } from '@react-keycloak/web';
 
 
 // ==============================|| BILLINGINFO - CARD ||============================== //
 
 const BillingInfoCard = ({ billingInfo }) => {
-
+  const { keycloak } = useKeycloak();
   const navigate = useNavigate();
 
   const handleClickDetails = () => {
     navigate('/billinginfo/' + billingInfo.id);
   };
+
+  if (!keycloak.tokenParsed.roles.includes('admin'))
+    return <Typography>Unauthorized</Typography>
 
   return (
     <MainCard sx={{ height: 1, '& .MuiCardContent-root': { height: 1, display: 'flex', flexDirection: 'column' } }}>

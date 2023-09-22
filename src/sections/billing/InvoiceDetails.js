@@ -16,7 +16,7 @@ import { format } from 'date-fns';
 
 // assets
 import { useKeycloak } from '@react-keycloak/web';
-import { prepareApiBody } from 'utils/stringUtils';
+import { normalizeInputValue, prepareApiBody } from 'utils/stringUtils';
 
 // material-ui
 import {
@@ -24,17 +24,20 @@ import {
   Grid,
   Stack,
   Button,
-  InputLabel,
   TextField,
   Autocomplete,
-  FormHelperText
+  FormHelperText,
+  Divider
 } from '@mui/material'
 
 const getInitialValues = (invoice) => {
 
   const result = {
     id: invoice?.id,
-    status: invoice?.status
+    status: invoice?.status,
+    description: invoice?.invoiceItem.description,
+    quantity: invoice?.invoiceItem.quantity,
+    totalAmount: invoice?.invoiceItem.totalPrice
   };
 
   return result;
@@ -58,7 +61,10 @@ const InvoiceDetails = ({ invoice }) => {
   };
 
   const InvoiceSchema = Yup.object().shape({
-    status: Yup.string().max(255).required('Invoice status is required').nullable(true)
+    status: Yup.string().max(255).required('Invoice status is required').nullable(true),
+    description: Yup.string().max(255).required('Invoice item description is required').nullable(true),
+    totalAmount: Yup.number('Invoice item total amount is required'),
+    quantity: Yup.string().max(255).required('Invoice item effort/quantity is required').nullable(true),
   });
 
   const formik = useFormik({
@@ -119,9 +125,9 @@ const InvoiceDetails = ({ invoice }) => {
         console.error(error);
       }
     }
-  })
+  });
 
-  const { errors, handleBlur, touched, handleSubmit, isSubmitting, setFieldValue, values } = formik;
+  const { errors, handleBlur, handleChange, touched, handleSubmit, isSubmitting, setFieldValue, values } = formik;
 
   return (
     <FormikProvider value={formik}>
@@ -218,7 +224,7 @@ const InvoiceDetails = ({ invoice }) => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <Stack spacing={1.25}>
-                <InputLabel>Status</InputLabel>
+                <Typography variant="subtitle1">Status</Typography>
                 <Autocomplete
                   id="invoice-status"
                   options={invoiceStatus}
@@ -237,13 +243,83 @@ const InvoiceDetails = ({ invoice }) => {
                       inputProps={{
                         ...params.inputProps,
                         autoComplete: 'new-password'
-                      }}
-                    />
-                  )}
-                />
+                      }} />
+                  )} />
                 {touched.status && errors.status && (
                   <FormHelperText error id="invoice-status-helper">
                     {errors.status}
+                  </FormHelperText>
+                )}
+              </Stack>
+            </Grid>
+            <Grid item xs={12}>
+              <Divider />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="h4"> Invoice item</Typography>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Stack spacing={1.25}>
+                <Typography variant="subtitle1">Invoice item effort</Typography>
+                <TextField
+                  fullWidth
+                  id="invoice-item-quantity"
+                  placeholder="Enter effort/quantity for invoice item"
+                  value={normalizeInputValue(values.quantity)}
+                  name="quantity"
+                  onBlur={handleBlur}
+                  onChange={handleChange} />
+                {touched.quantity && errors.quantity && (
+                  <FormHelperText error id="invoice-item-quantity-helper">
+                    {errors.quantity}
+                  </FormHelperText>
+                )}
+              </Stack>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Stack spacing={1.25}>
+                <Typography variant="subtitle1">Invoice item rate type</Typography>
+                <Typography variant="subtitle2">{invoice.invoiceItem.rateType}</Typography>
+              </Stack>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Stack spacing={1.25}>
+                <Typography variant="subtitle1">Invoice item unit price</Typography>
+                <Typography variant="subtitle2">{invoice.invoiceItem.unitPrice}</Typography>
+              </Stack>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Stack spacing={1.25}>
+                <Typography variant="subtitle1">Invoice item total amount</Typography>
+                <TextField
+                  fullWidth
+                  id="invoice-item-totalAmount"
+                  placeholder="Enter total amount for invoice item"
+                  value={normalizeInputValue(values.totalAmount)}
+                  name="totalAmount"
+                  onBlur={handleBlur}
+                  onChange={handleChange} />
+                {touched.totalAmount && errors.totalAmount && (
+                  <FormHelperText error id="invoice-item-total-amount-helper">
+                    {errors.totalAmount}
+                  </FormHelperText>
+                )}
+              </Stack>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Stack spacing={1.25}>
+                <Typography variant="subtitle1">Invoice item description</Typography>
+                <TextField
+                  fullWidth
+                  id="invoice-item-description"
+                  placeholder="Enter description for invoice item"
+                  value={normalizeInputValue(values.description)}
+                  name="description"
+                  onBlur={handleBlur}
+                  onChange={handleChange} />
+                {touched.description && errors.description && (
+                  <FormHelperText error id="invoice-item-description-helper">
+                    {errors.description}
                   </FormHelperText>
                 )}
               </Stack>

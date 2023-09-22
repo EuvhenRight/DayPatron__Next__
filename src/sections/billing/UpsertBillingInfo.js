@@ -71,7 +71,6 @@ const UpsertBillingInfo = ({ billingInfoId }) => {
               <Stack spacing={1.25}>
                 <Typography variant="subtitle1">Start Date</Typography>
                 <Typography variant="subtitle2">{billingInfo.startDate && format(new Date(billingInfo.startDate), "yyyy-MM-dd")}</Typography>
-
               </Stack>
             </Grid>
             <Grid item xs={12} sm={4}>
