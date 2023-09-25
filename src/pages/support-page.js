@@ -145,7 +145,7 @@ const SupportPage = () => {
 
           {/* ---------------- START COPY ---------------- */}
           <Grid item xs={12} md={4}>
-            <MainCard title="How to view AI profile of 10x-er?">
+            <MainCard title="How to view AI profile of 10x-er">
               <Stack spacing={2}>
                 <Typography color="secondary">
                   At 10x we screen candidates and one of our methods is to use a dynamic digital AI model which is completely bias free.
