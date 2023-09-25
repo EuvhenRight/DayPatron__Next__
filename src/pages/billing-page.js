@@ -140,6 +140,8 @@ const InvoicesBillingPage = () => {
     _DATA.jump(p);
   };
 
+  if (!keycloak.tokenParsed.roles.includes('admin'))
+    return <Typography>Unauthorized</Typography>
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>

@@ -7,6 +7,7 @@ import { Box, Typography, useMediaQuery } from '@mui/material';
 import { useSelector } from 'store';
 import useConfig from 'hooks/useConfig';
 import { HORIZONTAL_MAX_ITEM, LAYOUT_CONST } from 'config';
+import { useKeycloak } from '@react-keycloak/web';
 
 // project import
 import NavGroup from './NavGroup';
@@ -15,6 +16,7 @@ import menuItem from 'menu-items';
 // ==============================|| DRAWER CONTENT - NAVIGATION ||============================== //
 
 const Navigation = () => {
+  const { keycloak } = useKeycloak();
   const theme = useTheme();
 
   const downLG = useMediaQuery(theme.breakpoints.down('lg'));
@@ -42,6 +44,11 @@ const Navigation = () => {
   }
 
   const navGroups = menuItem.items.slice(0, lastItemIndex + 1).map((item) => {
+    if (item?.roles?.length > 0) {
+      if (!item.roles.every(x => keycloak.tokenParsed.roles.includes(x)))
+        return;
+    }
+
     switch (item.type) {
       case 'group':
         return (

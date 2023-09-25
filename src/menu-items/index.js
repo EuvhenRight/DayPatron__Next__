@@ -126,6 +126,7 @@ const menuItems = {
       id: 'admin',
       title: <FormattedMessage id="admin" />,
       type: 'group',
+      roles: ['admin'],
       children: [
         {
           id: 'billing',
