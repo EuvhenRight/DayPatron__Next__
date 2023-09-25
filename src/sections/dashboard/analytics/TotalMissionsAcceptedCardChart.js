@@ -8,6 +8,7 @@ import useConfig from 'hooks/useConfig';
 
 // third-party
 import ReactApexChart from 'react-apexcharts';
+import { format } from 'date-fns'
 
 const TotalMissionsAcceptedCardChart = ({months}) => {
   const theme = useTheme();
@@ -81,56 +82,12 @@ const TotalMissionsAcceptedCardChart = ({months}) => {
   const [series] = useState([
     {
       name: 'Missions',
-      data: [
-        {
-          x: 'J',
-          y: parseInt(months?.january)
-        },
-        {
-          x: 'F',
-          y: parseInt(months?.february)
-        },
-        {
-          x: 'M',
-          y: parseInt(months?.march)
-        },
-        {
-          x: 'A',
-          y: parseInt(months?.april)
-        },
-        {
-          x: 'M',
-          y: parseInt(months?.may)
-        },
-        {
-          x: 'J',
-          y: parseInt(months?.june)
-        },
-        {
-          x: 'J',
-          y: parseInt(months?.july)
-        },
-        {
-          x: 'A',
-          y: parseInt(months?.august)
-        },
-        {
-          x: 'S',
-          y: parseInt(months?.september)
-        },
-        {
-          x: 'O',
-          y: parseInt(months?.october)
-        },
-        {
-          x: 'N',
-          y: parseInt(months?.november)
-        },
-        {
-          x: 'D',
-          y: parseInt(months?.december)
-        }
-      ]
+      data: months?.map((month) => {
+        return {
+          x: format(new Date(month.month + '-01'), 'MMMMM'),
+          y: month.count
+        };
+      })
     }
   ]);
 

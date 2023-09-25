@@ -208,7 +208,7 @@ ReactTable.propTypes = {
 const CompanyCell = ({ row }) => {
   const { values } = row;
   return (
-    <Typography variant="subtitle1">{values.company}</Typography>
+    <Typography variant="subtitle1">{values.debtorName}</Typography>
   );
 };
 
@@ -219,13 +219,13 @@ CompanyCell.propTypes = {
 // Status
 const StatusCell = ({ value }) => {
   switch (value) {
-    case 'Cancelled':
-      return <Chip color="error" label="Cancelled" size="small" variant="light" />;
+    case 'SentToAccountant':
+      return <Chip color="info" label="Sent" size="small" variant="light" />;
     case 'Paid':
       return <Chip color="success" label="Paid" size="small" variant="light" />;
-    case 'Unpaid':
+    case 'Pending':
     default:
-      return <Chip color="info" label="Unpaid" size="small" variant="light" />;
+      return <Chip color="info" label="Pending" size="small" variant="light" />;
   }
 };
 
@@ -289,13 +289,13 @@ const InvoicesPage = () => {
       },
       {
         Header: 'Company',
-        accessor: 'company',
+        accessor: 'debtorName',
         disableFilters: true,
         Cell: CompanyCell
       },
       {
         Header: 'Mission Name',
-        accessor: 'missionName',
+        accessor: 'itemName',
         disableFilters: true
       },
       {

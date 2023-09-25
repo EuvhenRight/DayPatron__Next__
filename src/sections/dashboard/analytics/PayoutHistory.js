@@ -78,11 +78,11 @@ function PayoutHistory({payoutHistoryData}) {
                     <CheckOutlined />
                   </Avatar>
                 </ListItemAvatar>
-                <ListItemText primary={<Typography variant="subtitle1">{row?.paymentFrom}</Typography>} secondary={row?.dateTime} />
+                <ListItemText primary={<Typography variant="subtitle1">{row?.debtorName}</Typography>} secondary={row?.invoiceDate} />
                 <ListItemSecondaryAction>
                   <Stack alignItems="flex-end">
                     <Typography variant="subtitle1" noWrap>
-                      {row?.amount}
+                      {row?.totalAmount}
                     </Typography>
                   </Stack>
                 </ListItemSecondaryAction>
