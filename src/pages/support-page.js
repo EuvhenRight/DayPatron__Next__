@@ -143,6 +143,23 @@ const SupportPage = () => {
           </Grid>
           {/* ---------------- END COPY ---------------- */}
 
+          {/* ---------------- START COPY ---------------- */}
+          <Grid item xs={12} md={4}>
+            <MainCard title="How to view AI profile of 10x-er?">
+              <Stack spacing={2}>
+                <Typography color="secondary">
+                  At 10x we screen candidates and one of our methods is to use a dynamic digital AI model which is completely bias free.
+                </Typography>
+                <CardMedia
+                  sx={{ minHeight: 300, border: 0 }}
+                  component="iframe"
+                  src="https://www.loom.com/embed/50fc7c8c52e547c88b17c1054d069bf6?sid=40d214a2-b91e-4c96-b65f-1d3245c63bf3"
+                  allowFullScreen={true} />
+              </Stack>
+            </MainCard>
+          </Grid>
+          {/* ---------------- END COPY ---------------- */}
+
         </Grid>
       </Grid >
     </Grid >
