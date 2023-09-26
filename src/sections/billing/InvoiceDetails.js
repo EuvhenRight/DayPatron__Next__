@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 // project import
 import { openSnackbar } from 'store/reducers/snackbar';
 import MainCard from 'components/MainCard';
-import InvoicePdfCard from 'sections/billing/InvoicePdfCard';
+import InvoicePdf from 'sections/billing/InvoicePdf';
 import invoiceStatus from 'data/invoiceStatus';
 
 // third-party
@@ -330,7 +330,7 @@ const InvoiceDetails = ({ invoice }) => {
                   color="primary"
                   variant="outlined"
                   onClick={async () => {
-                    await handleDownloadPdf(<InvoicePdfCard invoice={invoice} />);
+                    await handleDownloadPdf(<InvoicePdf invoice={invoice} />);
                   }}>
                   Download Invoice
                 </Button>

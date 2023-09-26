@@ -369,8 +369,7 @@ const UpsertEmployer = ({ employerId }) => {
                         overflow: 'hidden',
                         '&:hover .MuiBox-root': { opacity: 1 },
                         cursor: 'pointer'
-                      }}
-                    >
+                      }}>
                       <Avatar src={avatar} sx={{ width: 72, height: 72, border: '1px dashed' }} />
                       <Box
                         sx={{
@@ -384,8 +383,7 @@ const UpsertEmployer = ({ employerId }) => {
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center'
-                        }}
-                      >
+                        }}>
                         <Stack spacing={0.5} alignItems="center">
                           <CameraOutlined style={{ color: theme.palette.secondary.lighter, fontSize: '2rem' }} />
                           <Typography sx={{ color: 'secondary.lighter' }}>Upload</Typography>
@@ -398,8 +396,7 @@ const UpsertEmployer = ({ employerId }) => {
                       placeholder="Outlined"
                       variant="outlined"
                       sx={{ display: 'none' }}
-                      onChange={handleChangeMainImage}
-                    />
+                      onChange={handleChangeMainImage} />
 
                     {newMainImage &&
                       <Stack alignItems="center" spacing={2}>
@@ -425,8 +422,7 @@ const UpsertEmployer = ({ employerId }) => {
                           value={normalizeInputValue(values.name)}
                           name="name"
                           onBlur={handleBlur}
-                          onChange={handleChange}
-                        />
+                          onChange={handleChange} />
                         {touched.name && errors.name && (
                           <FormHelperText error id="employer-name-helper">
                             {errors.name}
@@ -446,8 +442,7 @@ const UpsertEmployer = ({ employerId }) => {
                           value={normalizeInputValue(values.email)}
                           name="email"
                           onBlur={handleBlur}
-                          onChange={handleChange}
-                        />
+                          onChange={handleChange} />
                         {touched.email && errors.email && (
                           <FormHelperText error id="employer-email-helper">
                             {errors.email}
@@ -486,10 +481,8 @@ const UpsertEmployer = ({ employerId }) => {
                               inputProps={{
                                 ...params.inputProps,
                                 autoComplete: 'new-password' // disable autocomplete and autofill
-                              }}
-                            />
-                          )}
-                        />
+                              }} />
+                          )} />
                         {touched.industry && errors.industry && (
                           <FormHelperText error id="employer-industry-helper" sx={{ pl: 1.75 }}>
                             {errors.orderStatus}
@@ -509,8 +502,7 @@ const UpsertEmployer = ({ employerId }) => {
                           value={normalizeInputValue(values.chamberOfCommerceIdentifier)}
                           name="chamberOfCommerceIdentifier"
                           onBlur={handleBlur}
-                          onChange={handleChange}
-                        />
+                          onChange={handleChange} />
                         {touched.chamberOfCommerceIdentifier && errors.chamberOfCommerceIdentifier && (
                           <FormHelperText error id="employer-coc-identifier-helper">
                             {errors.chamberOfCommerceIdentifier}
@@ -530,8 +522,7 @@ const UpsertEmployer = ({ employerId }) => {
                           value={normalizeInputValue(values.linkedInUrl)}
                           name="linkedInUrl"
                           onBlur={handleBlur}
-                          onChange={handleChange}
-                        />
+                          onChange={handleChange} />
                         {touched.linkedInUrl && errors.linkedInUrl && (
                           <FormHelperText error id="employer-linkedin-url-helper">
                             {errors.linkedInUrl}
@@ -569,8 +560,7 @@ const UpsertEmployer = ({ employerId }) => {
                         <ReactQuill
                           id="employer-description"
                           value={normalizeInputValue(values.description)}
-                          onChange={(e) => setFieldValue('description', e)}
-                        />
+                          onChange={(e) => setFieldValue('description', e)} />
                         {touched.description && errors.description && (
                           <FormHelperText error id="employer-description-helper">
                             {errors.description}
@@ -596,8 +586,7 @@ const UpsertEmployer = ({ employerId }) => {
                           value={normalizeInputValue(values.street)}
                           name="street"
                           onBlur={handleBlur}
-                          onChange={handleChange}
-                        />
+                          onChange={handleChange} />
                         {touched.street && errors.street && (
                           <FormHelperText error id="employer-street-helper">
                             {errors.street}
@@ -619,8 +608,7 @@ const UpsertEmployer = ({ employerId }) => {
                           value={normalizeInputValue(values.streetNumber)}
                           name="streetNumber"
                           onBlur={handleBlur}
-                          onChange={handleChange}
-                        />
+                          onChange={handleChange} />
                         {touched.streetNumber && errors.streetNumber && (
                           <FormHelperText error id="employer-streetNumber-helper">
                             {errors.streetNumber}
@@ -641,8 +629,7 @@ const UpsertEmployer = ({ employerId }) => {
                           value={normalizeInputValue(values.city)}
                           name="city"
                           onBlur={handleBlur}
-                          onChange={handleChange}
-                        />
+                          onChange={handleChange} />
                         {touched.city && errors.city && (
                           <FormHelperText error id="employer-city-helper">
                             {errors.city}
@@ -663,8 +650,7 @@ const UpsertEmployer = ({ employerId }) => {
                           value={normalizeInputValue(values.postCode)}
                           name="postCode"
                           onBlur={handleBlur}
-                          onChange={handleChange}
-                        />
+                          onChange={handleChange} />
                         {touched.postCode && errors.postCode && (
                           <FormHelperText error id="employer-post-code-helper">
                             {errors.postCode}
@@ -698,8 +684,7 @@ const UpsertEmployer = ({ employerId }) => {
                                   width="20"
                                   src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
                                   srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
-                                  alt=""
-                                />
+                                  alt="" />
                               )}
                               {option.label}
                               {option.code && ` (${option.code})`}
@@ -713,10 +698,8 @@ const UpsertEmployer = ({ employerId }) => {
                               inputProps={{
                                 ...params.inputProps,
                                 autoComplete: 'new-password' // disable autocomplete and autofill
-                              }}
-                            />
-                          )}
-                        />
+                              }} />
+                          )} />
                         {touched.country && errors.country && (
                           <FormHelperText error id="employer-country-helper">
                             {errors.country}
