@@ -64,86 +64,86 @@ const UpsertBillingInfo = ({ billingInfoId }) => {
             <Grid item xs={12} sm={4}>
               <Stack spacing={1.25}>
                 <Typography variant="subtitle1">Id</Typography>
-                <Typography variant="subtitle2">{billingInfo.id}</Typography>
+                <Typography variant="subtitle2">{billingInfo?.id}</Typography>
               </Stack>
             </Grid>
             <Grid item xs={12} sm={4}>
               <Stack spacing={1.25}>
                 <Typography variant="subtitle1">Start Date</Typography>
-                <Typography variant="subtitle2">{billingInfo.startDate && format(new Date(billingInfo.startDate), "yyyy-MM-dd")}</Typography>
+                <Typography variant="subtitle2">{billingInfo?.startDate && format(new Date(billingInfo?.startDate), "yyyy-MM-dd")}</Typography>
               </Stack>
             </Grid>
             <Grid item xs={12} sm={4}>
               <Stack spacing={1.25}>
                 <Typography variant="subtitle1">End Date</Typography>
-                <Typography variant="subtitle2">{billingInfo.endDate && format(new Date(billingInfo.endDate), "yyyy-MM-dd")}</Typography>
+                <Typography variant="subtitle2">{billingInfo?.endDate && format(new Date(billingInfo?.endDate), "yyyy-MM-dd")}</Typography>
               </Stack>
             </Grid>
             <Grid item xs={12} sm={4}>
               <Stack spacing={1.25}>
                 <Typography variant="subtitle1">Name</Typography>
-                <Typography variant="subtitle2">{billingInfo.itemName}</Typography>
+                <Typography variant="subtitle2">{billingInfo?.itemName}</Typography>
               </Stack>
             </Grid>
             <Grid item xs={12} sm={4}>
               <Stack spacing={1.25}>
                 <Typography variant="subtitle1">Status</Typography>
-                <Typography variant="subtitle2">{billingInfo.billingStatus}</Typography>
+                <Typography variant="subtitle2">{billingInfo?.billingStatus}</Typography>
               </Stack>
             </Grid>
             <Grid item xs={12} sm={4}>
               <Stack spacing={1.25}>
                 <Typography variant="subtitle1">Creation Date</Typography>
-                <Typography variant="subtitle2">{billingInfo.createdAtUtc && format(new Date(billingInfo.createdAtUtc), "yyyy-MM-dd")}</Typography>
+                <Typography variant="subtitle2">{billingInfo?.createdAtUtc && format(new Date(billingInfo?.createdAtUtc), "yyyy-MM-dd")}</Typography>
               </Stack>
             </Grid>
             <Grid item xs={12} sm={4}>
               <Stack spacing={1.25}>
                 <Typography variant="subtitle1">Mission Order Id</Typography>
-                <Typography variant="subtitle2">{billingInfo.missionOrderId}</Typography>
+                <Typography variant="subtitle2">{billingInfo?.missionOrderId}</Typography>
               </Stack>
             </Grid>
             <Grid item xs={12} sm={4}>
               <Stack spacing={1.25}>
                 <Typography variant="subtitle1">Employer Name</Typography>
-                <Typography variant="subtitle2">{billingInfo.employerName}</Typography>
+                <Typography variant="subtitle2">{billingInfo?.employerName}</Typography>
               </Stack>
             </Grid>
             <Grid item xs={12} sm={4}>
               <Stack spacing={1.25}>
                 <Typography variant="subtitle1">Contractor Name</Typography>
-                <Typography variant="subtitle2">{billingInfo.contractorName}</Typography>
+                <Typography variant="subtitle2">{billingInfo?.contractorName}</Typography>
               </Stack>
             </Grid>
             <Grid item xs={12} sm={4}>
               <Stack spacing={1.25}>
                 <Typography variant="subtitle1">Product Order Id</Typography>
-                <Typography variant="subtitle2">{billingInfo.productOrderId}</Typography>
+                <Typography variant="subtitle2">{billingInfo?.productOrderId}</Typography>
               </Stack>
             </Grid>
             <Grid item xs={12} sm={4}>
               <Stack spacing={1.25}>
                 <Typography variant="subtitle1">Total Amount Employer</Typography>
-                <Typography variant="subtitle2">{billingInfo.totalAmountEmployer}</Typography>
+                <Typography variant="subtitle2">{billingInfo?.totalAmountEmployer}</Typography>
               </Stack>
             </Grid>
             <Grid item xs={12} sm={4}>
               <Stack spacing={1.25}>
                 <Typography variant="subtitle1">Total Amount Talent</Typography>
-                <Typography variant="subtitle2">{billingInfo.totalAmountContractor}</Typography>
+                <Typography variant="subtitle2">{billingInfo?.totalAmountContractor}</Typography>
               </Stack>
             </Grid>
             <Grid item xs={12} sm={4}>
               <Stack spacing={1.25}>
                 <Typography variant="subtitle1">Gross Margin 10x</Typography>
-                <Typography variant="subtitle2">{billingInfo.grossMargin10x}</Typography>
+                <Typography variant="subtitle2">{billingInfo?.grossMargin10x}</Typography>
               </Stack>
             </Grid>
           </Grid>
         </MainCard>
       </Grid>
 
-      {billingInfo.invoices?.map((invoice, index) => (
+      {billingInfo?.invoices?.map((invoice, index) => (
         <Grid key={index} item xs={12} md={6}>
           <InvoiceDetails invoice={invoice} />
         </Grid>
