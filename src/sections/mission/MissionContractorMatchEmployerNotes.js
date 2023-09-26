@@ -8,7 +8,8 @@ import {
   Grid,
   InputLabel,
   Stack,
-  Typography
+  Typography,
+  Switch
 } from '@mui/material';
 import InfoWrapper from 'components/InfoWrapper';
 
@@ -19,13 +20,14 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
 import { openSnackbar } from 'store/reducers/snackbar';
-import { normalizeInputValue, prepareApiBody } from 'utils/stringUtils';
+import { normalizeInputValue, prepareApiBody, normalizeBooleanInputValue } from 'utils/stringUtils';
 
 // ==============================|| MISSION CONTRACTOR MATCH EMPLOYER NOTES||============================== //
 
 const getInitialValues = (employerNotes) => {
   const newEmployerNotes = {
-    contractorNotes: null
+    contractorNotes: null,
+    showEmployerNotesToContractor: null
   };
 
   if (employerNotes) {
@@ -69,7 +71,8 @@ const MissionContractorMatchEmployerNotes = ({ missionId, contractorId }) => {
   }, []);
 
   const EmployerNotesSchema = Yup.object().shape({
-    contractorNotes: Yup.string().max(5000).nullable(true)
+    contractorNotes: Yup.string().max(5000).nullable(true),
+    showEmployerNotesToContractor: Yup.boolean().nullable(true)
   });
 
   const formik = useFormik({
@@ -121,7 +124,7 @@ const MissionContractorMatchEmployerNotes = ({ missionId, contractorId }) => {
 
         setSubmitting(false);
         let json = await response.json();
-        setAdminNotes(json);
+        setEmployerNotes(json);
 
       } catch (error) {
         console.error(error);
@@ -176,6 +179,29 @@ const MissionContractorMatchEmployerNotes = ({ missionId, contractorId }) => {
               )}
             </Stack>
           </Grid>
+
+          <Grid item xs={6}>
+            <Stack spacing={1.25}>
+              <InputLabel>Show Company Notes to Talent</InputLabel>
+              <Stack direction="row" alignItems="center">
+                <Switch
+                  id="show-employer-notes-to-contractor"
+                  edge="end"
+                  checked={normalizeBooleanInputValue(values?.showEmployerNotesToContractor)}
+                  onChange={(event, checked) => {
+                    setFieldValue("showEmployerNotesToContractor", checked);
+                  }}
+                  inputProps={{ 'aria-labelledby': 'switch-list-label-sb' }}
+                />
+                {touched.showEmployerNotesToContractor && errors.showEmployerNotesToContractor && (
+                  <FormHelperText error id="show-employer-notes-to-contractor-helper">
+                    {errors.showEmployerNotesToContractor}
+                  </FormHelperText>
+                )}
+              </Stack>
+            </Stack>
+          </Grid>
+
           <Grid item xs={12}>
             <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 2.5 }}>
               <Button type="submit" variant="contained" disabled={isSubmitting}>
