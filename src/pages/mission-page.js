@@ -15,6 +15,8 @@ import {
   Typography,
   Button,
   Chip,
+  Switch,
+  InputLabel,
   createFilterOptions
 } from '@mui/material';
 
@@ -32,7 +34,7 @@ import { useFormik, Form, FormikProvider } from 'formik';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { openSnackbar } from 'store/reducers/snackbar';
-import { normalizeInputValue, prepareApiBody } from 'utils/stringUtils';
+import { normalizeInputValue, normalizeBooleanInputValue, prepareApiBody } from 'utils/stringUtils';
 import { PERSONAL_INFORMATION_UPDATE } from 'store/reducers/actions';
 
 const avatarImage = require.context('assets/images/missions', true);
@@ -237,7 +239,8 @@ const MissionPage = () => {
   }, []);
 
   const ContractorNotesSchema = Yup.object().shape({
-    missionNotes: Yup.string().max(5000).nullable(true)
+    missionNotes: Yup.string().max(5000).nullable(true),
+    showContractorNotesToEmployer: Yup.boolean().nullable(true)
   });
 
   const ContractorTagsSchema = Yup.object().shape({
@@ -535,7 +538,7 @@ const MissionPage = () => {
                     <Grid item xs={12}>
                       <Stack spacing={0.5}>
                         <InfoWrapper tooltipText="employer_notes_about_me_tooltip">
-                          <Typography color="secondary">Company About Me</Typography>
+                          <Typography color="secondary">Company Notes About Me</Typography>
                         </InfoWrapper>
                         <SanitizedHTML html={missionContractor?.employerNotes?.contractorNotes} />
                       </Stack>
@@ -613,6 +616,22 @@ const MissionPage = () => {
                               {errors.missionNotes}
                             </FormHelperText>
                           )}
+                          <InputLabel>Show My Notes to the Company</InputLabel>
+                          <Switch
+                            id="show-contractor-notes-to-employer"
+                            edge="end"
+                            checked={normalizeBooleanInputValue(values?.showContractorNotesToEmployer)}
+                            onChange={(event, checked) => {
+                              setFieldValue("showContractorNotesToEmployer", checked);
+                            }}
+                            inputProps={{ 'aria-labelledby': 'switch-list-label-sb' }}
+                          />
+                          {touched.showContractorNotesToEmployer && errors.showContractorNotesToEmployer && (
+                            <FormHelperText error id="show-contractor-notes-to-employer-helper">
+                              {errors.showContractorNotesToEmployer}
+                            </FormHelperText>
+                          )}
+
                         </Stack>
                         <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 2.5 }}>
                           <Button type="submit" variant="contained" disabled={isSubmitting}>
