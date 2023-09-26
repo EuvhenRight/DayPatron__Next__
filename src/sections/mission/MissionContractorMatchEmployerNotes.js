@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useKeycloak } from '@react-keycloak/web';
 import { useTheme } from '@mui/material/styles';
@@ -39,36 +38,10 @@ const getInitialValues = (employerNotes) => {
   return newEmployerNotes;
 };
 
-const MissionContractorMatchEmployerNotes = ({ missionId, contractorId }) => {
+const MissionContractorMatchEmployerNotes = ({ missionId, contractorId, employerNotes, setEmployerNotes }) => {
   const dispatch = useDispatch();
   const { keycloak } = useKeycloak();
   const theme = useTheme();
-  const [employerNotes, setEmployerNotes] = useState(null);
-
-  const bindData = async () => {
-    try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/' + encodeURIComponent(missionId) + '/contractors/' + encodeURIComponent(contractorId),
-        {
-          method: 'GET',
-          headers: {
-            'Authorization': 'Bearer ' + keycloak.idToken
-          }
-        }
-      );
-
-      let json = await response.json();
-
-      setEmployerNotes(json.employerNotes);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  useEffect(() => {
-    (async () => {
-      await bindData();
-    })();
-  }, []);
 
   const EmployerNotesSchema = Yup.object().shape({
     contractorNotes: Yup.string().max(5000).nullable(true),

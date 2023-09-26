@@ -29,6 +29,7 @@ import {
   Box,
   IconButton
 } from '@mui/material';
+import SanitizedHTML from 'react-sanitized-html';
 import { LinkedinOutlined, EnvironmentOutlined, MailOutlined, PhoneOutlined, RightOutlined, RiseOutlined, QuestionOutlined, CloseOutlined, FileTextOutlined } from '@ant-design/icons';
 import MainCard from 'components/MainCard';
 import Avatar from 'components/@extended/Avatar';
@@ -63,6 +64,38 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
 
   const theme = useTheme();
   const [traitDetailsTabsValue, setTraitDetailsTabsValue] = useState(0);
+  const [missionContractor, setMissionContractor] = useState(null);
+
+  const bindMissionContractor = async () => {
+    try {
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/' + encodeURIComponent(missionId) + '/contractors/' + encodeURIComponent(contractorId),
+        {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + keycloak.idToken
+          }
+        }
+      );
+
+      let json = await response.json();
+
+      setMissionContractor(json);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const setEmployerNotes = (employerNotesParameter) => {
+    var newMissionContractor = { ...missionContractor };
+    newMissionContractor.employerNotes = employerNotesParameter;
+    setMissionContractor(newMissionContractor);
+  }
+
+  const setAdminNotes = (adminNotesParameter) => {
+    var newMissionContractor = { ...missionContractor };
+    newMissionContractor.adminNotes = adminNotesParameter;
+    setMissionContractor(newMissionContractor);
+  }
 
   const handleInviteButtonClick = async () => {
     try {
@@ -215,6 +248,7 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
   useEffect(() => {
     (async () => {
       await bindMissionContractorMatch();
+      await bindMissionContractor();
     })();
   }, []);
 
@@ -580,14 +614,44 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
             }
             {tabGroupId === notesTabGroup &&
               <Grid container spacing={3}>
+                
                 <Grid item xs={12}>
                   <MainCard>
-                    <MissionContractorMatchEmployerNotes missionId={missionId} contractorId={contractorId}></MissionContractorMatchEmployerNotes>
+                    <MissionContractorMatchEmployerNotes
+                      missionId={missionId}
+                      contractorId={contractorId}
+                      employerNotes={missionContractor?.employerNotes}
+                      setEmployerNotes={setEmployerNotes}>
+                    </MissionContractorMatchEmployerNotes>
                   </MainCard>
                 </Grid>
+
+                {missionContractor?.contractorNotes?.showContractorNotesToEmployer &&
+                  <Grid item xs={12}>
+                    <MainCard>
+                      <Grid container spacing={3}>
+                        <Grid item xs={12}>
+                          <Typography variant="h3">Talent Notes</Typography>
+                        </Grid>
+                        <Grid item xs={12}>
+                          <Stack spacing={0.5}>
+                            <Typography color="secondary">Talent Notes About the Mission</Typography>
+                            <SanitizedHTML html={missionContractor?.contractorNotes?.missionNotes} />
+                          </Stack>
+                        </Grid>
+                      </Grid>
+                    </MainCard>
+                  </Grid>
+                }
+
                 <Grid item xs={12}>
                   <MainCard>
-                    <MissionContractorMatchAdminNotes missionId={missionId} contractorId={contractorId}></MissionContractorMatchAdminNotes>
+                    <MissionContractorMatchAdminNotes
+                      missionId={missionId}
+                      contractorId={contractorId}
+                      adminNotes={missionContractor?.adminNotes}
+                      setAdminNotes={setAdminNotes}>
+                    </MissionContractorMatchAdminNotes>
                   </MainCard>
                 </Grid>
               </Grid>
