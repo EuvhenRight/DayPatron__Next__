@@ -123,6 +123,21 @@ const menuItems = {
       ]
     },
     {
+      id: 'admin',
+      title: <FormattedMessage id="admin" />,
+      type: 'group',
+      roles: ['admin'],
+      children: [
+        {
+          id: 'billing',
+          title: <FormattedMessage id="billing" />,
+          type: 'item',
+          url: '/billing',
+          icon: icons.FileTextOutlined
+        }
+      ]
+    },
+    {
       id: 'help',
       title: <FormattedMessage id="help" />,
       type: 'group',
