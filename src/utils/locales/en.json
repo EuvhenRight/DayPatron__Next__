@@ -20,7 +20,7 @@
   "documentation": "Documentation",
   "roadmap": "Roadmap",
   "support": "How-To Videos",
-  "help":  "HELP CENTER",
+  "help": "HELP CENTER",
 
   "main_nav_support_body": "This option works best in Chrome and unfortunatly does not work in Safari yet.",
 
@@ -56,6 +56,7 @@
   "preferences_travel_international_tooltip": "Are you ready to jet-set internationally for thrilling opportunities?",
 
   "mission_notes_tooltip": "You can add all your notes to this section. If the community manager from 10x has relevant notes for you about the mission, they will be shown here as well.",
+  "employer_notes_about_me_tooltip": "If the company has feedback or input for you, you will see notes appear here.",
   "mission_admin_notes_about_me_tooltip": "If our community manager has feedback or input for you, you will see notes appear here.",
   "mission_admin_notes_about_the_mission_tooltip": "Shh! Insider Intel from 10x's Community Manager! These notes are for your success, talent! They're filled in by the Community Manager to boost your mission mojo!",
   "mission_my_notes_about_the_mission_tooltip": "Take the stage and add your personal notes for this mission. Jot down your thoughts, ideas, and anything that inspires you! Use this space to keep track of important details and conversations.Edit and update your notes when you connect with a company or a 10x community manager. Your notes are private and for your eyes only. They won't be shared with anyone else. Let your creativity flow and make these notes your secret weapon to shine in every mission!",

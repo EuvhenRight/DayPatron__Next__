@@ -528,39 +528,51 @@ const MissionPage = () => {
             </InfoWrapper>
           } >
             <List sx={{ py: 0 }}>
-              <ListItem>
-                <Grid container spacing={3}>
-                  <Grid item xs={12}>
-                    <Stack spacing={0.5}>
-                      <InfoWrapper tooltipText="mission_admin_notes_about_me_tooltip">
-                        <Typography color="secondary">Community Manager About Me</Typography>
-                      </InfoWrapper>
-                      <SanitizedHTML html={
-                        missionContractor?.adminNotes?.showContractorNotesToContractor &&
-                        missionContractor?.adminNotes?.contractorNotes ?
-                        missionContractor?.adminNotes?.contractorNotes : '<i>No data available.</i>'
-                      } />
-                    </Stack>
-                  </Grid>
-                </Grid>
-              </ListItem>
 
-              <ListItem>
-                <Grid container spacing={3}>
-                  <Grid item xs={12}>
-                    <Stack spacing={0.5}>
-                      <InfoWrapper tooltipText="mission_admin_notes_about_the_mission_tooltip">
-                        <Typography color="secondary">Community Manager About the Mission</Typography>
-                      </InfoWrapper>
-                      <SanitizedHTML html={
-                        missionContractor?.adminNotes?.showMissionNotesToContractor &&
-                          missionContractor?.adminNotes?.missionNotes ?
-                          missionContractor?.adminNotes?.missionNotes : '<i>No data available.</i>'
-                      } />
-                    </Stack>
+              {missionContractor?.employerNotes?.showEmployerNotesToContractor &&
+                <ListItem>
+                  <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                      <Stack spacing={0.5}>
+                        <InfoWrapper tooltipText="employer_notes_about_me_tooltip">
+                          <Typography color="secondary">Company About Me</Typography>
+                        </InfoWrapper>
+                        <SanitizedHTML html={missionContractor?.employerNotes?.contractorNotes} />
+                      </Stack>
+                    </Grid>
                   </Grid>
-                </Grid>
-              </ListItem>
+                </ListItem>
+              }
+
+              {missionContractor?.adminNotes?.showContractorNotesToContractor &&
+                <ListItem>
+                  <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                      <Stack spacing={0.5}>
+                        <InfoWrapper tooltipText="mission_admin_notes_about_me_tooltip">
+                          <Typography color="secondary">Community Manager About Me</Typography>
+                        </InfoWrapper>
+                        <SanitizedHTML html={missionContractor?.adminNotes?.contractorNotes} />
+                      </Stack>
+                    </Grid>
+                  </Grid>
+                </ListItem>
+              }
+              
+              {missionContractor?.adminNotes?.showMissionNotesToContractor &&
+                <ListItem>
+                  <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                      <Stack spacing={0.5}>
+                        <InfoWrapper tooltipText="mission_admin_notes_about_the_mission_tooltip">
+                          <Typography color="secondary">Community Manager About the Mission</Typography>
+                        </InfoWrapper>
+                        <SanitizedHTML html={missionContractor?.adminNotes?.missionNotes} />
+                      </Stack>
+                    </Grid>
+                  </Grid>
+                </ListItem>
+              }
 
               <ListItem>
                 <Grid container spacing={3}>
