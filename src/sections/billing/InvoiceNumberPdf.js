@@ -32,16 +32,12 @@ const styles = StyleSheet.create({
   }
 })
 
-const InvoiceNumberPdf = ({ invoice }) => {
+const InvoiceNumberPdf = ({ invoice, invoiceTypeMessage }) => {
 
   return (
     <>
+      <Text style={styles.h1}>{invoiceTypeMessage}</Text>
       <View style={styles.table}>
-        <View style={styles.row}>
-          <Text style={[styles.column1, styles.h1]}>Invoice</Text>
-          <Text style={[styles.column2, styles.text]}> </Text>
-        </View>
-
         <View style={styles.row}>
           <Text style={[styles.column1, styles.text]}>Invoice Number:</Text>
           <Text style={[styles.column2, styles.text]}>{invoice?.invoiceNumber}</Text>
@@ -50,7 +46,6 @@ const InvoiceNumberPdf = ({ invoice }) => {
           <Text style={[styles.column1, styles.text]}>Invoice Date:</Text>
           <Text style={[styles.column2, styles.text]}>{invoice?.invoiceDate && format(new Date(invoice?.invoiceDate), "dd-MM-yyyy")}</Text>
         </View>
-
         <View style={styles.row}>
           <Text style={[styles.column1, styles.text]}>Due Date:</Text>
           <Text style={[styles.column2, styles.text]}>{invoice?.dueDate && format(new Date(invoice?.dueDate), "dd-MM-yyyy")}</Text>
@@ -61,7 +56,8 @@ const InvoiceNumberPdf = ({ invoice }) => {
 }
 
 InvoiceNumberPdf.propTypes = {
-  invoice: PropTypes.object
+  invoice: PropTypes.object,
+  invoiceTypeMessage: PropTypes.string
 }
 
 export default InvoiceNumberPdf

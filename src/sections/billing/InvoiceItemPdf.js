@@ -44,31 +44,30 @@ const styles = StyleSheet.create({
   }
 })
 
-const ReportTable = ({ invoiceItem }) => {
+const InvoiceItemPdf = ({ invoice }) => {
 
   return (
     <>
       <View style={styles.table}>
         <View style={[styles.row, styles.bold, styles.header]}>
-          <Text style={styles.column1}>Description</Text>
-          <Text style={styles.column2}>Quantity</Text>
-          <Text style={styles.column3}>Price</Text>
-          <Text style={styles.column4}>Amount excl. VAT</Text>
+          <Text style={[styles.column1, styles.text]}>Description</Text>
+          <Text style={[styles.column2, styles.text]}>Quantity</Text>
+          <Text style={[styles.column3, styles.text]}>Price</Text>
+          <Text style={[styles.column4, styles.text]}>Amount excl. VAT</Text>
         </View>
-
         <View style={styles.row} wrap={false}>
-          <Text style={styles.column1}>{invoiceItem?.invoiceItem?.description}</Text>
-          <Text style={styles.column2}>{invoiceItem?.invoiceItem?.quantity}</Text>
-          <Text style={styles.column3}>€ {invoiceItem?.invoiceItem?.unitPrice}</Text>
-          <Text style={styles.column4}>€ {invoiceItem?.invoiceItem?.totalPrice}</Text>
+          <Text style={[styles.column1, styles.text]}>{invoice?.invoiceItem?.description}</Text>
+          <Text style={[styles.column2, styles.text]}>{invoice?.invoiceItem?.quantity}</Text>
+          <Text style={[styles.column3, styles.text]}>€ {invoice?.invoiceItem?.unitPrice}</Text>
+          <Text style={[styles.column4, styles.text]}>€ {invoice?.invoiceItem?.totalPrice}</Text>
         </View>
       </View>
     </>
   )
 }
 
-ReportTable.propTypes = {
-  invoiceItem: PropTypes.object
+InvoiceItemPdf.propTypes = {
+  invoice: PropTypes.object
 }
 
-export default ReportTable
+export default InvoiceItemPdf

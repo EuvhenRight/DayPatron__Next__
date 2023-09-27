@@ -2,9 +2,7 @@ import { StyleSheet, Text, View } from '@react-pdf/renderer'
 import PropTypes from 'prop-types'
 import countries from 'data/countries';
 
-
 const textPrimary = '#262626';
-
 
 const styles = StyleSheet.create({
   column: {
@@ -27,18 +25,18 @@ const styles = StyleSheet.create({
   },
 })
 
-const InvoiceCreditorPdf = ({ invoice }) => {
+const InvoiceCounterPartyPdf = ({ counterParty }) => {
 
   return (
     <>
       <View style={styles.column}>
         <View style={styles.row}>
           <View style={styles.start}>
-            <Text style={styles.text}>{invoice?.creditor?.legalEntityName}</Text>
-            <Text style={styles.text}>{invoice?.creditor?.firstName}</Text>
-            <Text style={styles.text}>{invoice?.creditor?.address?.street} {invoice?.creditor?.address?.streetNumber}</Text>
-            <Text style={styles.text}>{invoice?.creditor?.address?.postCode} {invoice?.creditor?.address?.city}</Text>
-            <Text style={styles.text}>{countries.find(x => x.code === invoice?.creditor?.address?.country)?.label}</Text>
+            <Text style={styles.text}>{counterParty?.legalEntityName}</Text>
+            <Text style={styles.text}>{counterParty?.firstName}</Text>
+            <Text style={styles.text}>{counterParty?.address?.street} {counterParty?.address?.streetNumber}</Text>
+            <Text style={styles.text}>{counterParty?.address?.postCode} {counterParty?.address?.city}</Text>
+            <Text style={styles.text}>{countries.find(x => x.code === counterParty?.address?.country)?.label}</Text>
           </View>
         </View>
       </View>
@@ -46,8 +44,8 @@ const InvoiceCreditorPdf = ({ invoice }) => {
   )
 }
 
-InvoiceCreditorPdf.propTypes = {
-  invoice: PropTypes.object
+InvoiceCounterPartyPdf.propTypes = {
+  counterParty: PropTypes.object
 }
 
-export default InvoiceCreditorPdf
+export default InvoiceCounterPartyPdf

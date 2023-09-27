@@ -56,7 +56,6 @@ const InvoiceTotalPdf = ({ invoice }) => {
           <Text style={[styles.row4, styles.text]}>€ {invoice?.totalAmountExcludingVat}</Text>
         </View>
       </View>
-
       <View style={styles.table}>
         <View style={styles.row}>
           <Text style={styles.row1}> </Text>
@@ -65,7 +64,6 @@ const InvoiceTotalPdf = ({ invoice }) => {
           <Text style={[styles.row4, styles.text]}>€ {invoice?.vatAmount}</Text>
         </View>
       </View>
-
       <View style={styles.table}>
         <View style={styles.row}>
           <Text style={styles.row1}> </Text>

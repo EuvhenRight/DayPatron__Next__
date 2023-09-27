@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import Logo from 'assets/images/logo.png';
 import countries from 'data/countries';
 
+import InvoiceEmptyRowsPdf from 'sections/billing/InvoiceEmptyRowsPdf';
+
 const textPrimary = '#262626';
 
 const styles = StyleSheet.create({
@@ -63,7 +65,7 @@ const styles = StyleSheet.create({
   }
 })
 
-const InvoiceHeaderPdf = ({ invoice }) => {
+const InvoiceHeaderPdf = ({ counterParty }) => {
 
   return (
     <>
@@ -73,50 +75,42 @@ const InvoiceHeaderPdf = ({ invoice }) => {
             <Image src={Logo} style={styles.logo} />
           </View>
           <View style={styles.columnTest}>
-            <Text style={styles.text}>{invoice?.creditor?.legalEntityName}</Text>
-            <Text style={styles.text}>{invoice?.creditor?.address?.street} {invoice?.creditor?.address?.streetNumber}</Text>
-            <Text style={styles.text}>{invoice?.creditor?.address?.postCode} {invoice?.creditor?.address?.city}</Text>
-            <Text style={styles.text}>{countries.find(x => x.code === invoice?.creditor?.address?.country)?.label}</Text>
+            <Text style={styles.text}>{counterParty?.legalEntityName}</Text>
+            <Text style={styles.text}>{counterParty?.address?.street} {counterParty?.address?.streetNumber}</Text>
+            <Text style={styles.text}>{counterParty?.address?.postCode} {counterParty?.address?.city}</Text>
+            <Text style={styles.text}>{countries.find(x => x.code === counterParty?.address?.country)?.label}</Text>
           </View>
         </View>
       </View>
-
-      <Text style={styles.text}> </Text>
-      <Text style={styles.text}> </Text>
-
+      <InvoiceEmptyRowsPdf rows={1} />
       <View style={styles.table}>
         <View style={styles.row}>
           <Text style={styles.column1}> </Text>
           <Text style={[styles.column2, styles.textBody1]}>IBAN:</Text>
-          <Text style={[styles.column3, styles.textBody1]}>{invoice?.creditor?.bankAccountNumber}</Text>
+          <Text style={[styles.column3, styles.textBody1]}>{counterParty?.bankAccountNumber}</Text>
         </View>
-
         <View style={styles.row}>
           <Text style={styles.column1}> </Text>
           <Text style={[styles.column2, styles.textBody1]}>Swift Code:</Text>
           <Text style={[styles.column3, styles.textBody1]}>BUNQNL2A</Text>
         </View>
-
         <View style={styles.row}>
           <Text style={styles.column1}> </Text>
           <Text style={[styles.column2, styles.textBody1]}>CoC:</Text>
-          <Text style={[styles.column3, styles.textBody1]}>{invoice?.creditor?.chamberOfCommerceIdentifier}</Text>
+          <Text style={[styles.column3, styles.textBody1]}>{counterParty?.chamberOfCommerceIdentifier}</Text>
         </View>
-
         <View style={styles.row}>
           <Text style={styles.column1}> </Text>
           <Text style={[styles.column2, styles.textBody1]}>VAT Number:</Text>
-          <Text style={[styles.column3, styles.textBody1]}>{invoice?.creditor?.vatNumber}</Text>
+          <Text style={[styles.column3, styles.textBody1]}>{counterParty?.vatNumber}</Text>
         </View>
       </View>
-
-
     </>
   )
 }
 
 InvoiceHeaderPdf.propTypes = {
-  invoiceItem: PropTypes.object
+  counterParty: PropTypes.object
 }
 
 export default InvoiceHeaderPdf
