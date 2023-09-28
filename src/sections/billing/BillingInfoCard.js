@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { format } from 'date-fns'
+import { format } from 'date-fns';
 
 // material-ui
 import {

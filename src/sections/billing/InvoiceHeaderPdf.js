@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View, Image } from '@react-pdf/renderer'
-import PropTypes from 'prop-types'
+import { StyleSheet, Text, View, Image } from '@react-pdf/renderer';
+import PropTypes from 'prop-types';
 import Logo from 'assets/images/logo.png';
 import countries from 'data/countries';
 

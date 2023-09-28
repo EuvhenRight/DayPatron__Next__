@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View } from '@react-pdf/renderer'
-import PropTypes from 'prop-types'
+import { StyleSheet, Text, View } from '@react-pdf/renderer';
+import PropTypes from 'prop-types';
 import { format } from 'date-fns';
 
 const textPrimary = '#262626';

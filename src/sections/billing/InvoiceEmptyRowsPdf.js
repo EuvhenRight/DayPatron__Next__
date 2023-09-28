@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Text } from '@react-pdf/renderer'
+import { Text } from '@react-pdf/renderer';
 
 const InvoiceEmptyRowsPdf = ({ rows }) => {
 

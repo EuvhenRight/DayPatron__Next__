@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from '@react-pdf/renderer'
+import { StyleSheet, Text, View } from '@react-pdf/renderer';
 
 const textPrimary = '#262626';
 const border = '#f0f0f0';

@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View } from '@react-pdf/renderer'
-import PropTypes from 'prop-types'
+import { StyleSheet, Text, View } from '@react-pdf/renderer';
+import PropTypes from 'prop-types';
 import countries from 'data/countries';
 
 const textPrimary = '#262626';
@@ -33,7 +33,10 @@ const InvoiceCounterPartyPdf = ({ counterParty }) => {
         <View style={styles.row}>
           <View style={styles.start}>
             <Text style={styles.text}>{counterParty?.legalEntityName}</Text>
-            <Text style={styles.text}>{counterParty?.firstName}</Text>
+            {
+              (counterParty?.firstName != null || counterParty?.lastName != null) &&
+              <Text style={styles.text}>{counterParty?.firstName} {counterParty?.lastName}</Text>
+            }
             <Text style={styles.text}>{counterParty?.address?.street} {counterParty?.address?.streetNumber}</Text>
             <Text style={styles.text}>{counterParty?.address?.postCode} {counterParty?.address?.city}</Text>
             <Text style={styles.text}>{countries.find(x => x.code === counterParty?.address?.country)?.label}</Text>

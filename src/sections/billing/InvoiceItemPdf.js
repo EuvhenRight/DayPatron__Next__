@@ -1,5 +1,6 @@
-import { StyleSheet, Text, View } from '@react-pdf/renderer'
-import PropTypes from 'prop-types'
+import { StyleSheet, Text, View } from '@react-pdf/renderer';
+import PropTypes from 'prop-types';
+import { format } from 'date-fns';
 
 const textPrimary = '#262626';
 
@@ -22,13 +23,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   column1: {
-    width: '40%',
+    width: '50%',
   },
   column2: {
-    width: '20%',
+    width: '15%',
   },
   column3: {
-    width: '20%',
+    width: '15%',
   },
   column4: {
     width: '20%',
@@ -56,8 +57,13 @@ const InvoiceItemPdf = ({ invoice }) => {
           <Text style={[styles.column4, styles.text]}>Amount excl. VAT</Text>
         </View>
         <View style={styles.row} wrap={false}>
-          <Text style={[styles.column1, styles.text]}>{invoice?.invoiceItem?.description}</Text>
-          <Text style={[styles.column2, styles.text]}>{invoice?.invoiceItem?.quantity}</Text>
+          <Text style={[styles.column1, styles.text]}>{
+            invoice?.invoiceItem?.description}. Period: {invoice?.startDate && format(new Date(invoice?.startDate), "dd-MM-yyyy")}-{invoice?.endDate && format(new Date(invoice?.endDate), "dd-MM-yyyy")}
+          </Text>
+          <Text style={[styles.column2, styles.text]}>{
+            invoice?.invoiceItem?.rateType === "Hourly" ?
+              invoice?.invoiceItem?.quantity.toFixed(2) + " hours" :
+              invoice?.invoiceItem?.quantity}</Text>
           <Text style={[styles.column3, styles.text]}>€ {invoice?.invoiceItem?.unitPrice.toFixed(2).replace(".", ",")}</Text>
           <Text style={[styles.column4, styles.text]}>€ {invoice?.invoiceItem?.totalPrice.toFixed(2).replace(".", ",")}</Text>
         </View>

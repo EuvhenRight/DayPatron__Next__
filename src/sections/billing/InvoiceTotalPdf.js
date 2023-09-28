@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View } from '@react-pdf/renderer'
-import PropTypes from 'prop-types'
+import { StyleSheet, Text, View } from '@react-pdf/renderer';
+import PropTypes from 'prop-types';
 
 const textPrimary = '#262626';
 
