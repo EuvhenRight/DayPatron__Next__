@@ -18,24 +18,18 @@ const styles = StyleSheet.create({
   header: {
     borderTop: 'none'
   },
-  bold: {
-    fontWeight: 'bold'
-  },
-  row1: {
+  column1: {
     width: '40%'
   },
-  row2: {
+  column2: {
     width: '20%'
   },
-  row3: {
+  column3: {
     width: '20%'
   },
-  row4: {
+  column4: {
     width: '20%',
     textAlign: 'right'
-  },
-  fontSize: {
-    fontSize: 10
   },
   text: {
     fontSize: 11,
@@ -50,26 +44,26 @@ const InvoiceTotalPdf = ({ invoice, vatPercentage }) => {
     <>
       <View style={styles.table}>
         <View style={styles.row}>
-          <Text style={styles.row1}> </Text>
-          <Text style={[styles.row2, styles.text]}>Total excluding VAT</Text>
-          <Text style={styles.row3}> </Text>
-          <Text style={[styles.row4, styles.text]}>€ {invoice?.totalAmountExcludingVat.toFixed(2).replace(".", ",")}</Text>
+          <Text style={styles.column1}> </Text>
+          <Text style={[styles.column2, styles.text]}>Total excluding VAT</Text>
+          <Text style={styles.column3}> </Text>
+          <Text style={[styles.column4, styles.text]}>€ {invoice?.totalAmountExcludingVat.toFixed(2).replace(".", ",")}</Text>
         </View>
       </View>
       <View style={styles.table}>
         <View style={styles.row}>
-          <Text style={styles.row1}> </Text>
-          <Text style={[styles.row2, styles.text]}>VAT {vatPercentage}%</Text>
-          <Text style={styles.row3}></Text>
-          <Text style={[styles.row4, styles.text]}>€ {invoice?.vatAmount.toFixed(2).replace(".", ",")}</Text>
+          <Text style={styles.column1}> </Text>
+          <Text style={[styles.column2, styles.text]}>VAT {vatPercentage}%</Text>
+          <Text style={styles.column3}></Text>
+          <Text style={[styles.column4, styles.text]}>€ {invoice?.vatAmount.toFixed(2).replace(".", ",")}</Text>
         </View>
       </View>
       <View style={styles.table}>
         <View style={styles.row}>
-          <Text style={styles.row1}> </Text>
-          <Text style={[styles.row2, styles.text]}>Total including VAT</Text>
-          <Text style={styles.row3}> </Text>
-          <Text style={[styles.row4, styles.text]}>€ {invoice?.totalAmountIncludingVat.toFixed(2).replace(".", ",")}</Text>
+          <Text style={styles.column1}> </Text>
+          <Text style={[styles.column2, styles.text]}>Total including VAT</Text>
+          <Text style={styles.column3}> </Text>
+          <Text style={[styles.column4, styles.text]}>€ {invoice?.totalAmountIncludingVat.toFixed(2).replace(".", ",")}</Text>
         </View>
       </View>
     </>
@@ -81,4 +75,4 @@ InvoiceTotalPdf.propTypes = {
   vatPercentage: PropTypes.number
 }
 
-export default InvoiceTotalPdf
+export default InvoiceTotalPdf;

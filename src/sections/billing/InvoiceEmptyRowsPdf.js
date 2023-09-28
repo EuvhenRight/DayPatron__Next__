@@ -20,4 +20,4 @@ InvoiceEmptyRowsPdf.propTypes = {
   row: PropTypes.number
 }
 
-export default InvoiceEmptyRowsPdf
+export default InvoiceEmptyRowsPdf;

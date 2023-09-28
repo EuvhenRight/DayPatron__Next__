@@ -17,19 +17,16 @@ const styles = StyleSheet.create({
     fontSize: 10
   },
   header: {
-    borderTop: 'none',
-  },
-  bold: {
-    fontWeight: 'bold',
+    borderTop: 'none'
   },
   column1: {
-    width: '50%',
+    width: '50%'
   },
   column2: {
-    width: '15%',
+    width: '15%'
   },
   column3: {
-    width: '15%',
+    width: '15%'
   },
   column4: {
     width: '20%',
@@ -50,7 +47,7 @@ const InvoiceItemPdf = ({ invoice }) => {
   return (
     <>
       <View style={styles.table}>
-        <View style={[styles.row, styles.bold, styles.header]}>
+        <View style={[styles.row, styles.header]}>
           <Text style={[styles.column1, styles.text]}>Description</Text>
           <Text style={[styles.column2, styles.text]}>Quantity</Text>
           <Text style={[styles.column3, styles.text]}>Price</Text>
@@ -76,4 +73,4 @@ InvoiceItemPdf.propTypes = {
   invoice: PropTypes.object
 }
 
-export default InvoiceItemPdf
+export default InvoiceItemPdf;

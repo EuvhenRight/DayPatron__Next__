@@ -51,4 +51,4 @@ InvoiceCounterPartyPdf.propTypes = {
   counterParty: PropTypes.object
 }
 
-export default InvoiceCounterPartyPdf
+export default InvoiceCounterPartyPdf;

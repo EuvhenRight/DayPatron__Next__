@@ -6,8 +6,7 @@ const textTitle = '#3c3ec5';
 const styles = StyleSheet.create({
   text: {
     fontSize: 12,
-    color: textTitle,
-    fontWeight: 'bold'
+    color: textTitle
   }
 })
 
@@ -22,4 +21,4 @@ InvoiceMessagePdf.propType = {
   message: PropTypes.string
 }
 
-export default InvoiceMessagePdf
+export default InvoiceMessagePdf;

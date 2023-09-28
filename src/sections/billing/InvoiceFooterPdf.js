@@ -27,4 +27,4 @@ const InvoiceFooterPdf = () => {
   )
 }
 
-export default InvoiceFooterPdf
+export default InvoiceFooterPdf;

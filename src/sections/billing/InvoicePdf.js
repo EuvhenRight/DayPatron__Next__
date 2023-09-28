@@ -20,4 +20,4 @@ InvoicePdf.propTypes = {
   invoice: PropTypes.object
 };
 
-export default InvoicePdf
+export default InvoicePdf;

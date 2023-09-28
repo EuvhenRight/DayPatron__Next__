@@ -16,12 +16,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     fontSize: 10
   },
-  header: {
-    borderTop: 'none'
-  },
-  bold: {
-    fontWeight: 'bold'
-  },
   column1: {
     width: '68%'
   },
@@ -30,9 +24,6 @@ const styles = StyleSheet.create({
   },
   column3: {
     width: '18%'
-  },
-  fontSize: {
-    fontSize: 10
   },
   text: {
     fontSize: 11,
@@ -60,7 +51,7 @@ const styles = StyleSheet.create({
   logo: {
     width: 75
   },
-  columnTest: {
+  column: {
     flexDirection: 'column'
   }
 })
@@ -74,7 +65,7 @@ const InvoiceHeaderPdf = ({ counterParty }) => {
           <View style={styles.half}>
             <Image src={Logo} style={styles.logo} />
           </View>
-          <View style={styles.columnTest}>
+          <View style={styles.column}>
             <Text style={styles.text}>{counterParty?.legalEntityName}</Text>
             <Text style={styles.text}>{counterParty?.address?.street} {counterParty?.address?.streetNumber}</Text>
             <Text style={styles.text}>{counterParty?.address?.postCode} {counterParty?.address?.city}</Text>
@@ -113,4 +104,4 @@ InvoiceHeaderPdf.propTypes = {
   counterParty: PropTypes.object
 }
 
-export default InvoiceHeaderPdf
+export default InvoiceHeaderPdf;
