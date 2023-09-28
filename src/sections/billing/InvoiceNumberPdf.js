@@ -46,10 +46,14 @@ const InvoiceNumberPdf = ({ invoice, invoiceTypeMessage }) => {
           <Text style={[styles.column1, styles.text]}>Invoice Date:</Text>
           <Text style={[styles.column2, styles.text]}>{invoice?.invoiceDate && format(new Date(invoice?.invoiceDate), "dd-MM-yyyy")}</Text>
         </View>
-        <View style={styles.row}>
-          <Text style={[styles.column1, styles.text]}>Due Date:</Text>
-          <Text style={[styles.column2, styles.text]}>{invoice?.dueDate && format(new Date(invoice?.dueDate), "dd-MM-yyyy")}</Text>
-        </View>
+        {
+          invoice?.dueDate && (
+            <View style={styles.row}>
+              <Text style={[styles.column1, styles.text]}>Due Date:</Text>
+              <Text style={[styles.column2, styles.text]}>{invoice?.dueDate && format(new Date(invoice?.dueDate), "dd-MM-yyyy")}</Text>
+            </View>
+          )
+        }
       </View>
     </>
   )

@@ -27,9 +27,9 @@ const RegularInvoicePdf = ({ invoice }) => {
         <InvoiceEmptyRowsPdf rows={1} />
         <InvoiceNumberPdf invoice={invoice} invoiceTypeMessage="Reversed Invoice" />
         <InvoiceEmptyRowsPdf rows={2} />
-        <InvoiceItemPdf invoiceItem={invoice} />
+        <InvoiceItemPdf invoice={invoice} />
         <InvoiceEmptyRowsPdf rows={8} />
-        <InvoiceTotalPdf invoice={invoice} />
+        <InvoiceTotalPdf invoice={invoice} vatPercentage={invoice.creditor.vatPercentage} />
         <InvoiceEmptyRowsPdf rows={2} />
         <InvoiceMessagePdf message="THANK YOU FOR YOUR BUSINESS!" />
         <InvoiceFooterPdf />

@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   }
 })
 
-const InvoiceTotalPdf = ({ invoice }) => {
+const InvoiceTotalPdf = ({ invoice, vatPercentage }) => {
 
   return (
     <>
@@ -59,7 +59,7 @@ const InvoiceTotalPdf = ({ invoice }) => {
       <View style={styles.table}>
         <View style={styles.row}>
           <Text style={styles.row1}> </Text>
-          <Text style={[styles.row2, styles.text]}>VAT</Text>
+          <Text style={[styles.row2, styles.text]}>VAT {vatPercentage}%</Text>
           <Text style={styles.row3}></Text>
           <Text style={[styles.row4, styles.text]}>€ {invoice?.vatAmount.toFixed(2).replace(".", ",")}</Text>
         </View>
@@ -77,7 +77,8 @@ const InvoiceTotalPdf = ({ invoice }) => {
 }
 
 InvoiceTotalPdf.propTypes = {
-  invoice: PropTypes.object
+  invoice: PropTypes.object,
+  vatPercentage: PropTypes.number
 }
 
 export default InvoiceTotalPdf
