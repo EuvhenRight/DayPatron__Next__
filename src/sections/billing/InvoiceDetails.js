@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -30,6 +31,8 @@ import {
   Divider
 } from '@mui/material'
 
+import CircularProgress from '@mui/material/CircularProgress';
+
 const getInitialValues = (invoice) => {
 
   const result = {
@@ -48,8 +51,10 @@ const InvoiceDetails = ({ invoice }) => {
   const { keycloak } = useKeycloak();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const handleDownloadPdf = async (pdfDocument) => {
+    setIsDownloading(true);
     const blob = await pdf((pdfDocument)).toBlob();
     var fileUrl = URL.createObjectURL(blob);
     window.open(fileUrl, '_blank');
@@ -58,6 +63,7 @@ const InvoiceDetails = ({ invoice }) => {
       setTimeout(function () {
         URL.revokeObjectURL(fileUrl);
       }, 120000);
+    setIsDownloading(false);
   };
 
   const InvoiceSchema = Yup.object().shape({
@@ -333,6 +339,7 @@ const InvoiceDetails = ({ invoice }) => {
                     await handleDownloadPdf(<InvoicePdf invoice={invoice} />);
                   }}>
                   Download Invoice
+                  {isDownloading && <CircularProgress size={20} />}
                 </Button>
                 <Button type="submit" disabled={isSubmitting} color="primary" variant="contained">
                   Update

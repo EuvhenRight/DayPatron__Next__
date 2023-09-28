@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker } from '@mui/x-date-pickers';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { useKeycloak } from '@react-keycloak/web';
 import { prepareApiBody } from 'utils/stringUtils';
+import CircularProgress from '@mui/material/CircularProgress';
 
 // material-ui
 import {
@@ -51,6 +53,7 @@ const allColumns = [
 
 const InvoicesBillingPage = () => {
   const { keycloak } = useKeycloak();
+  const dispatch = useDispatch();
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [billingInfo, setBillingInfo] = useState([]);
@@ -59,8 +62,12 @@ const InvoicesBillingPage = () => {
   const matchDownSM = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const [sortBy, setSortBy] = useState('Id');
   const [page, setPage] = useState(1);
+  const [isRunningBillRun, setIsRunningBillRun] = useState(false);
 
   const handleSubmitBillRun = async () => {
+
+    setIsRunningBillRun(true);
+
     let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/billing/generate',
       {
         method: 'POST',
@@ -71,6 +78,54 @@ const InvoicesBillingPage = () => {
         body: prepareApiBody({ startDate, endDate })
       }
     );
+
+    if (response.status === 204) {
+      dispatch(
+        openSnackbar(
+          {
+            open: true,
+            message: 'Nothing to process.',
+            variant: 'alert',
+            alert: {
+              color: 'info'
+            },
+            close: false
+          }
+        )
+      )
+    }
+
+    if (response.status === 200) {
+
+      let json = await response.json();
+
+      if (json.totalFailedItems > 0) {
+        dispatch(
+          openSnackbar({
+            open: true,
+            message: 'Bill run partially failed ' + json.totalFailedItems + ' failed from ' + json.totalItems + ' items.',
+            variant: 'alert',
+            alert: {
+              color: 'error'
+            },
+            close: false
+          })
+        )
+      }
+      else {
+        dispatch(
+          openSnackbar({
+            open: true,
+            message: 'Bill run executed. Generated invoices for ' + json.totalItems + ' items.',
+            variant: 'alert',
+            alert: {
+              color: 'success'
+            },
+            close: false
+          })
+        )
+      }
+    }
 
     if (!response.ok) {
       dispatch(
@@ -87,6 +142,10 @@ const InvoicesBillingPage = () => {
         )
       )
     }
+
+
+    bindBillingInfo();
+    setIsRunningBillRun(false);
   }
 
   const bindBillingInfo = async () => {
@@ -172,6 +231,7 @@ const InvoicesBillingPage = () => {
                   }}
                   variant="contained">
                   Submit
+                  {isRunningBillRun && <CircularProgress size={20} />}
                 </Button>
               </Stack>
             </Grid>

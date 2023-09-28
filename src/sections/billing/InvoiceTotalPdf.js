@@ -53,7 +53,7 @@ const InvoiceTotalPdf = ({ invoice }) => {
           <Text style={styles.row1}> </Text>
           <Text style={[styles.row2, styles.text]}>Total excluding VAT</Text>
           <Text style={styles.row3}> </Text>
-          <Text style={[styles.row4, styles.text]}>€ {invoice?.totalAmountExcludingVat}</Text>
+          <Text style={[styles.row4, styles.text]}>€ {invoice?.totalAmountExcludingVat.toFixed(2).replace(".", ",")}</Text>
         </View>
       </View>
       <View style={styles.table}>
@@ -61,7 +61,7 @@ const InvoiceTotalPdf = ({ invoice }) => {
           <Text style={styles.row1}> </Text>
           <Text style={[styles.row2, styles.text]}>VAT</Text>
           <Text style={styles.row3}></Text>
-          <Text style={[styles.row4, styles.text]}>€ {invoice?.vatAmount}</Text>
+          <Text style={[styles.row4, styles.text]}>€ {invoice?.vatAmount.toFixed(2).replace(".", ",")}</Text>
         </View>
       </View>
       <View style={styles.table}>
@@ -69,7 +69,7 @@ const InvoiceTotalPdf = ({ invoice }) => {
           <Text style={styles.row1}> </Text>
           <Text style={[styles.row2, styles.text]}>Total including VAT</Text>
           <Text style={styles.row3}> </Text>
-          <Text style={[styles.row4, styles.text]}>€ {invoice?.totalAmountIncludingVat}</Text>
+          <Text style={[styles.row4, styles.text]}>€ {invoice?.totalAmountIncludingVat.toFixed(2).replace(".", ",")}</Text>
         </View>
       </View>
     </>

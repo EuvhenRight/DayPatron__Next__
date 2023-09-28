@@ -58,8 +58,8 @@ const InvoiceItemPdf = ({ invoice }) => {
         <View style={styles.row} wrap={false}>
           <Text style={[styles.column1, styles.text]}>{invoice?.invoiceItem?.description}</Text>
           <Text style={[styles.column2, styles.text]}>{invoice?.invoiceItem?.quantity}</Text>
-          <Text style={[styles.column3, styles.text]}>€ {invoice?.invoiceItem?.unitPrice}</Text>
-          <Text style={[styles.column4, styles.text]}>€ {invoice?.invoiceItem?.totalPrice}</Text>
+          <Text style={[styles.column3, styles.text]}>€ {invoice?.invoiceItem?.unitPrice.toFixed(2).replace(".", ",")}</Text>
+          <Text style={[styles.column4, styles.text]}>€ {invoice?.invoiceItem?.totalPrice.toFixed(2).replace(".", ",")}</Text>
         </View>
       </View>
     </>
