@@ -77,7 +77,7 @@ const BillingInfoCard = ({ billingInfo }) => {
         </Grid>
         <Grid item xs={8}>
           <Typography variant="body1" color="secondary">
-            {format(new Date(billingInfo.startDate), "yyyy-MM-dd")}
+            {format(new Date(billingInfo.endDate), "yyyy-MM-dd")}
           </Typography>
         </Grid>
         <Grid item xs={4}>
