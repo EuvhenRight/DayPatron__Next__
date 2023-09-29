@@ -275,10 +275,10 @@ const MissionOrders = () => {
 
               <ListItem>
                 <ListItemText>
-                  Effort (hours)
+                  Effort
                 </ListItemText>
                 <ListItemSecondaryAction>
-                  {order?.contractorServiceOrder?.durationHours}
+                  {order?.contractorServiceOrder?.duration}
                 </ListItemSecondaryAction>
               </ListItem>
 
@@ -288,6 +288,15 @@ const MissionOrders = () => {
                 </ListItemText>
                 <ListItemSecondaryAction>
                   {order?.contractorServiceOrder?.rateType}
+                </ListItemSecondaryAction>
+              </ListItem>
+
+              <ListItem>
+                <ListItemText>
+                  <Typography>Total Amount</Typography>
+                </ListItemText>
+                <ListItemSecondaryAction>
+                  {order?.contractorServiceOrder?.totalAmount}
                 </ListItemSecondaryAction>
               </ListItem>
 
