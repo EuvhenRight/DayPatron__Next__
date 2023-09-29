@@ -137,11 +137,11 @@ const MissionContractorServiceOrderPdfCard = ({ order }) => {
 
             <View style={styles.row}>
               <View style={styles.half}>
-                <Text style={styles.text}>Effort (hours):</Text>
+                <Text style={styles.text}>Effort:</Text>
               </View>
               <View style={styles.half}>
                 <View style={styles.end}>
-                  <Text style={styles.text}>{order?.contractorServiceOrder?.durationHours}</Text>
+                  <Text style={styles.text}>{order?.contractorServiceOrder?.duration}</Text>
                 </View>
               </View>
             </View>
@@ -164,6 +164,17 @@ const MissionContractorServiceOrderPdfCard = ({ order }) => {
               <View style={styles.half}>
                 <View style={styles.end}>
                   <Text style={styles.text}>&euro;{order?.contractorServiceOrder?.rateAmount}</Text>
+                </View>
+              </View>
+            </View>
+
+            <View style={styles.row}>
+              <View style={styles.half}>
+                <Text style={styles.text}>Total amount:</Text>
+              </View>
+              <View style={styles.half}>
+                <View style={styles.end}>
+                  <Text style={styles.text}>&euro;{order?.contractorServiceOrder?.totalAmount}</Text>
                 </View>
               </View>
             </View>

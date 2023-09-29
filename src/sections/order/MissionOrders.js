@@ -282,10 +282,10 @@ const MissionOrders = () => {
 
               <ListItem>
                 <ListItemText>
-                  Effort (hours)
+                  Effort
                 </ListItemText>
                 <ListItemSecondaryAction>
-                  {order?.employerServiceOrder?.durationHours}
+                  {order?.employerServiceOrder?.duration}
                 </ListItemSecondaryAction>
               </ListItem>
 
