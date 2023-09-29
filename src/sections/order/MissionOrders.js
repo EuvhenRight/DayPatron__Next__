@@ -306,6 +306,15 @@ const MissionOrders = () => {
                   &euro;{order?.employerServiceOrder?.rateAmount}
                 </ListItemSecondaryAction>
               </ListItem>
+
+              <ListItem>
+                <ListItemText>
+                  <Typography>Total Amount</Typography>
+                </ListItemText>
+                <ListItemSecondaryAction>
+                  {order?.employerServiceOrder?.totalAmount}
+                </ListItemSecondaryAction>
+              </ListItem>
             </List>
           </MainCard>
         </Grid>
