@@ -45,12 +45,12 @@ const getInitialValues = (missionOrder) => {
     missionId: missionOrder?.missionId,
 
     contractorServiceOrderDescription: missionOrder?.contractorServiceOrder?.description,
-    contractorServiceOrderDurationHours: missionOrder?.contractorServiceOrder?.durationHours,
+    contractorServiceOrderDuration: missionOrder?.contractorServiceOrder?.duration,
     contractorServiceOrderRateType: missionOrder?.contractorServiceOrder?.rateType,
     contractorServiceOrderRateAmount: missionOrder?.contractorServiceOrder?.rateAmount,
 
     employerServiceOrderDescription: missionOrder?.employerServiceOrder?.description,
-    employerServiceOrderDurationHours: missionOrder?.employerServiceOrder?.durationHours,
+    employerServiceOrderDuration: missionOrder?.employerServiceOrder?.duration,
     employerServiceOrderRateType: missionOrder?.employerServiceOrder?.rateType,
     employerServiceOrderRateAmount: missionOrder?.employerServiceOrder?.rateAmount
   };
@@ -183,12 +183,12 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
     missionId: Yup.string().required('Mission is required').nullable(true),
 
     contractorServiceOrderDescription: Yup.string().max(5000).required('Required').nullable(true),
-    contractorServiceOrderDurationHours: Yup.number("Should be a positive integer").integer("Should be a positive integer").min(0, "Should be a positive integer").max(999999, "Maximum 999999").nullable(true),
+    contractorServiceOrderDuration: Yup.number("Should be a positive integer").integer("Should be a positive integer").min(0, "Should be a positive integer").max(999999, "Maximum 999999").nullable(true),
     contractorServiceOrderRateType: Yup.string().max(255).required('Required').nullable(true),
     contractorServiceOrderRateAmount: Yup.number("Should be a positive integer").integer("Should be a positive integer").required("Required").min(0, "Should be a positive integer").max(9999999, "Maximum 9999999").nullable(true),
 
     employerServiceOrderDescription: Yup.string().max(5000).required('Required').nullable(true),
-    employerServiceOrderDurationHours: Yup.number("Should be a positive integer").integer("Should be a positive integer").min(0, "Should be a positive integer").max(999999, "Maximum 999999").nullable(true),
+    employerServiceOrderDuration: Yup.number("Should be a positive integer").integer("Should be a positive integer").min(0, "Should be a positive integer").max(999999, "Maximum 999999").nullable(true),
     employerServiceOrderRateType: Yup.string().max(255).required('Required').nullable(true),
     employerServiceOrderRateAmount: Yup.number("Should be a positive integer").integer("Should be a positive integer").required("Required").min(0, "Should be a positive integer").max(9999999, "Maximum 9999999").nullable(true)
   });
@@ -206,14 +206,14 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
 
           contractorServiceOrder: {
             description: values.contractorServiceOrderDescription,
-            durationHours: values.contractorServiceOrderDurationHours,
+            duration: values.contractorServiceOrderDuration,
             rateType: values.contractorServiceOrderRateType,
             rateAmount: values.contractorServiceOrderRateAmount
           },
 
           employerServiceOrder: {
             description: values.employerServiceOrderDescription,
-            durationHours: values.employerServiceOrderDurationHours,
+            duration: values.employerServiceOrderDuration,
             rateType: values.employerServiceOrderRateType,
             rateAmount: values.employerServiceOrderRateAmount
           }
@@ -535,23 +535,23 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
 
               <Grid item xs={12} md={6}>
                 <Stack spacing={1.25}>
-                  <InfoWrapper tooltipText="mission_order_employer_service_order_duration_hours_tooltip">
-                    <InputLabel htmlFor="employer-service-order-duration-hours">Effort</InputLabel>
+                  <InfoWrapper tooltipText="mission_order_employer_service_order_duration_tooltip">
+                    <InputLabel htmlFor="employer-service-order-duration">Effort</InputLabel>
                   </InfoWrapper>
                   <TextField
                     fullWidth
-                    id="employer-service-order-duration-hours"
+                    id="employer-service-order-duration"
                     type="number"
                     inputProps={{ min: 0, max: 999999 }}
-                    placeholder="Enter duration hours"
-                    value={normalizeInputValue(values.employerServiceOrderDurationHours)}
-                    name="employerServiceOrderDurationHours"
+                    placeholder="Enter duration"
+                    value={normalizeInputValue(values.employerServiceOrderDuration)}
+                    name="employerServiceOrderDuration"
                     onBlur={handleBlur}
                     onChange={handleChange}
                   />
-                  {touched.employerServiceOrderDurationHours && errors.employerServiceOrderDurationHours && (
-                    <FormHelperText error id="employer-service-order-duration-hours-helper">
-                      {errors.employerServiceOrderDurationHours}
+                  {touched.employerServiceOrderDuration && errors.employerServiceOrderDuration && (
+                    <FormHelperText error id="employer-service-order-duration-helper">
+                      {errors.employerServiceOrderDuration}
                     </FormHelperText>
                   )}
                 </Stack>
@@ -652,23 +652,23 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
 
               <Grid item xs={12} md={6}>
                 <Stack spacing={1.25}>
-                  <InfoWrapper tooltipText="mission_order_contractor_service_order_duration_hours_tooltip">
-                    <InputLabel htmlFor="contractor-service-order-duration-hours">Effort</InputLabel>
+                  <InfoWrapper tooltipText="mission_order_contractor_service_order_duration_tooltip">
+                    <InputLabel htmlFor="contractor-service-order-duration">Effort</InputLabel>
                   </InfoWrapper>
                   <TextField
                     fullWidth
-                    id="contractor-service-order-duration-hours"
+                    id="contractor-service-order-duration"
                     type="number"
                     inputProps={{ min: 0, max: 999999 }}
-                    placeholder="Enter duration hours"
-                    value={normalizeInputValue(values.contractorServiceOrderDurationHours)}
-                    name="contractorServiceOrderDurationHours"
+                    placeholder="Enter duration"
+                    value={normalizeInputValue(values.contractorServiceOrderDuration)}
+                    name="contractorServiceOrderDuration"
                     onBlur={handleBlur}
                     onChange={handleChange}
                   />
-                  {touched.contractorServiceOrderDurationHours && errors.contractorServiceOrderDurationHours && (
-                    <FormHelperText error id="contractor-service-order-duration-hours-helper">
-                      {errors.contractorServiceOrderDurationHours}
+                  {touched.contractorServiceOrderDuration && errors.contractorServiceOrderDuration && (
+                    <FormHelperText error id="contractor-service-order-duration-helper">
+                      {errors.contractorServiceOrderDuration}
                     </FormHelperText>
                   )}
                 </Stack>
