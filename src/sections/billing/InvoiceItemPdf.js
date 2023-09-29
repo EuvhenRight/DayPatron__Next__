@@ -32,9 +32,6 @@ const styles = StyleSheet.create({
     width: '20%',
     textAlign: 'right'
   },
-  fontSize: {
-    fontSize: 10
-  },
   text: {
     fontSize: 11,
     lineHeight: 1.2,
@@ -60,7 +57,10 @@ const InvoiceItemPdf = ({ invoice }) => {
           <Text style={[styles.column2, styles.text]}>{
             invoice?.invoiceItem?.rateType === "Hourly" ?
               invoice?.invoiceItem?.quantity.toFixed(2) + " hours" :
-              invoice?.invoiceItem?.quantity}</Text>
+              invoice?.invoiceItem?.rateType === "Daily" ?
+                invoice?.invoiceItem?.quantity.toFixed(2) + " days" :
+                invoice?.invoiceItem?.quantity}
+          </Text>
           <Text style={[styles.column3, styles.text]}>€ {invoice?.invoiceItem?.unitPrice.toFixed(2).replace(".", ",")}</Text>
           <Text style={[styles.column4, styles.text]}>€ {invoice?.invoiceItem?.totalPrice.toFixed(2).replace(".", ",")}</Text>
         </View>
