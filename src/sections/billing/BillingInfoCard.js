@@ -6,6 +6,7 @@ import {
   Divider,
   Grid,
   Typography,
+  Button
 } from '@mui/material';
 
 import MainCard from 'components/MainCard';
@@ -98,6 +99,11 @@ const BillingInfoCard = ({ billingInfo }) => {
           <Typography variant="body1" color="secondary">
             {format(new Date(billingInfo.createdAtUtc), "yyyy-MM-dd")}
           </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Button variant="outlined" size="small" onClick={handleClickDetails} className="card-button-right">
+            Details
+          </Button>
         </Grid>
       </Grid>
     </MainCard>

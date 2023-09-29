@@ -266,7 +266,7 @@ const InvoiceDetails = ({ invoice }) => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <Stack spacing={1.25}>
-                <Typography variant="subtitle1">Invoice item effort</Typography>
+                <Typography variant="subtitle1">Effort</Typography>
                 <TextField
                   fullWidth
                   id="invoice-item-quantity"
@@ -284,19 +284,19 @@ const InvoiceDetails = ({ invoice }) => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <Stack spacing={1.25}>
-                <Typography variant="subtitle1">Invoice item rate type</Typography>
+                <Typography variant="subtitle1">Rate type</Typography>
                 <Typography variant="subtitle2">{invoice.invoiceItem.rateType}</Typography>
               </Stack>
             </Grid>
             <Grid item xs={12} sm={6}>
               <Stack spacing={1.25}>
-                <Typography variant="subtitle1">Invoice item unit price</Typography>
+                <Typography variant="subtitle1">Unit price</Typography>
                 <Typography variant="subtitle2">{invoice.invoiceItem.unitPrice}</Typography>
               </Stack>
             </Grid>
             <Grid item xs={12} sm={6}>
               <Stack spacing={1.25}>
-                <Typography variant="subtitle1">Invoice item total amount</Typography>
+                <Typography variant="subtitle1">Total amount</Typography>
                 <TextField
                   fullWidth
                   id="invoice-item-totalAmount"
@@ -314,9 +314,11 @@ const InvoiceDetails = ({ invoice }) => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <Stack spacing={1.25}>
-                <Typography variant="subtitle1">Invoice item description</Typography>
+                <Typography variant="subtitle1">Description</Typography>
                 <TextField
                   fullWidth
+                  multiline
+                  rows={5}
                   id="invoice-item-description"
                   placeholder="Enter description for invoice item"
                   value={normalizeInputValue(values.description)}
