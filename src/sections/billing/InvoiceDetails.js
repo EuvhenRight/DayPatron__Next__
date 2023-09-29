@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -38,9 +38,7 @@ const getInitialValues = (invoice) => {
   const result = {
     id: invoice?.id,
     status: invoice?.status,
-    description: invoice?.invoiceItem.description,
-    quantity: invoice?.invoiceItem.quantity,
-    totalAmount: invoice?.invoiceItem.totalPrice
+    invoiceItems: invoice?.invoiceItems
   };
 
   return result;
@@ -68,9 +66,13 @@ const InvoiceDetails = ({ invoice }) => {
 
   const InvoiceSchema = Yup.object().shape({
     status: Yup.string().max(255).required('Invoice status is required').nullable(true),
-    description: Yup.string().max(255).required('Invoice item description is required').nullable(true),
-    totalAmount: Yup.number('Invoice item total amount is required'),
-    quantity: Yup.string().max(255).required('Invoice item effort/quantity is required').nullable(true),
+    invoiceItems: Yup.array(
+      Yup.object({
+        description: Yup.string().max(255).required('Invoice item description is required').nullable(true),
+        totalAmount: Yup.number('Invoice item total amount is required'),
+        quantity: Yup.string().max(255).required('Invoice item effort/quantity is required').nullable(true)
+      })
+    )
   });
 
   const formik = useFormik({
@@ -133,7 +135,7 @@ const InvoiceDetails = ({ invoice }) => {
     }
   });
 
-  const { errors, handleBlur, handleChange, touched, handleSubmit, isSubmitting, setFieldValue, values } = formik;
+  const { errors, handleChange, handleBlur, touched, handleSubmit, isSubmitting, setFieldValue, values } = formik;
 
   return (
     <FormikProvider value={formik}>
@@ -179,7 +181,6 @@ const InvoiceDetails = ({ invoice }) => {
                 <Typography variant="subtitle2">{invoice.dueDate && format(new Date(invoice.dueDate), "yyyy-MM-dd")}</Typography>
               </Stack>
             </Grid>
-
             <Grid item xs={12} sm={6}>
               <Stack spacing={1.25}>
                 <Typography variant="subtitle1">Start Date</Typography>
@@ -261,77 +262,94 @@ const InvoiceDetails = ({ invoice }) => {
             <Grid item xs={12}>
               <Divider />
             </Grid>
-            <Grid item xs={12}>
-              <Typography variant="h4"> Invoice item</Typography>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Stack spacing={1.25}>
-                <Typography variant="subtitle1">Effort</Typography>
-                <TextField
-                  fullWidth
-                  id="invoice-item-quantity"
-                  placeholder="Enter effort/quantity for invoice item"
-                  value={normalizeInputValue(values.quantity)}
-                  name="quantity"
-                  onBlur={handleBlur}
-                  onChange={handleChange} />
-                {touched.quantity && errors.quantity && (
-                  <FormHelperText error id="invoice-item-quantity-helper">
-                    {errors.quantity}
-                  </FormHelperText>
-                )}
-              </Stack>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Stack spacing={1.25}>
-                <Typography variant="subtitle1">Rate type</Typography>
-                <Typography variant="subtitle2">{invoice.invoiceItem.rateType}</Typography>
-              </Stack>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Stack spacing={1.25}>
-                <Typography variant="subtitle1">Unit price</Typography>
-                <Typography variant="subtitle2">{invoice.invoiceItem.unitPrice}</Typography>
-              </Stack>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Stack spacing={1.25}>
-                <Typography variant="subtitle1">Total amount</Typography>
-                <TextField
-                  fullWidth
-                  id="invoice-item-totalAmount"
-                  placeholder="Enter total amount for invoice item"
-                  value={normalizeInputValue(values.totalAmount)}
-                  name="totalAmount"
-                  onBlur={handleBlur}
-                  onChange={handleChange} />
-                {touched.totalAmount && errors.totalAmount && (
-                  <FormHelperText error id="invoice-item-total-amount-helper">
-                    {errors.totalAmount}
-                  </FormHelperText>
-                )}
-              </Stack>
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Stack spacing={1.25}>
-                <Typography variant="subtitle1">Description</Typography>
-                <TextField
-                  fullWidth
-                  multiline
-                  rows={5}
-                  id="invoice-item-description"
-                  placeholder="Enter description for invoice item"
-                  value={normalizeInputValue(values.description)}
-                  name="description"
-                  onBlur={handleBlur}
-                  onChange={handleChange} />
-                {touched.description && errors.description && (
-                  <FormHelperText error id="invoice-item-description-helper">
-                    {errors.description}
-                  </FormHelperText>
-                )}
-              </Stack>
-            </Grid>
+
+            {invoice.invoiceItems.map((invoiceItem, index) => {
+              return (
+                <Fragment key={index}>
+                  <Grid item xs={12}>
+                    <Typography variant="h4"> Invoice item {index + 1}</Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Stack spacing={1.25}>
+                      <Typography variant="subtitle1">Effort</Typography>
+                      <TextField
+                        fullWidth
+                        id={`invoice-item-quantity${index}`}
+                        placeholder="Enter effort/quantity for invoice item"
+                        value={normalizeInputValue(values.invoiceItems[index].quantity)}
+                        name={`quantity${index}`}
+                        onBlur={handleBlur}
+                        onChange={(e) => {
+                          handleChange(e);
+                          setFieldValue(`invoiceItems.${index}.quantity`, e.target.value)
+                        }} />
+                      {touched.invoiceItems?.[index]?.quantity && errors.invoiceItems?.[index]?.quantity && (
+                        <FormHelperText error id={`invoice-item-quantity-helper${index}`}>
+                          {errors.invoiceItems?.[index]?.quantity}
+                        </FormHelperText>
+                      )}
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Stack spacing={1.25}>
+                      <Typography variant="subtitle1">Rate type</Typography>
+                      <Typography variant="subtitle2">{invoiceItem.rateType}</Typography>
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Stack spacing={1.25}>
+                      <Typography variant="subtitle1">Unit price</Typography>
+                      <Typography variant="subtitle2">{invoiceItem.unitPrice}</Typography>
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Stack spacing={1.25}>
+                      <Typography variant="subtitle1">Total amount</Typography>
+                      <TextField
+                        fullWidth
+                        id={`invoice-item-totalAmount${index}`}
+                        placeholder="Enter total amount for invoice item"
+                        value={normalizeInputValue(values.invoiceItems[index].totalAmount)}
+                        name={`totalAmount${index}`}
+                        onBlur={handleBlur}
+                        onChange={(e) => {
+                          handleChange(e);
+                          setFieldValue(`invoiceItems.${index}.totalAmount`, e.target.value)
+                        }} />
+                      {touched.invoiceItems?.[index]?.totalAmount && errors.invoiceItems?.[index]?.totalAmount && (
+                        <FormHelperText error id={`invoice-item-total-amount-helper${index}`}>
+                          {errors.invoiceItems?.[index]?.totalAmount}
+                        </FormHelperText>
+                      )}
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Stack spacing={1.25}>
+                      <Typography variant="subtitle1">Description</Typography>
+                      <TextField
+                        fullWidth
+                        multiline
+                        rows={3}
+                        id={`invoice-item-description${index}`}
+                        placeholder="Enter description for invoice item"
+                        value={normalizeInputValue(values.invoiceItems[index].description)}
+                        name={`description${index}`}
+                        onBlur={handleBlur}
+                        onChange={(e) => {
+                          handleChange(e);
+                          setFieldValue(`invoiceItems.${index}.description`, e.target.value)
+                        }} />
+                      {touched.invoiceItems?.[index]?.description && errors.invoiceItems?.[index]?.description && (
+                        <FormHelperText error id={`invoice-item-description-helper${index}`}>
+                          {errors.invoiceItems?.[index]?.description}
+                        </FormHelperText>
+                      )}
+                    </Stack>
+                  </Grid>
+                </Fragment>
+              );
+            })}
+
             <Grid item xs={12}>
               <Stack direction="row" justifyContent="flex-end" spacing={2}>
                 <Button
