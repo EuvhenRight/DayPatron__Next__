@@ -293,15 +293,6 @@ const MissionOrders = () => {
 
               <ListItem>
                 <ListItemText>
-                  <Typography>Total Amount</Typography>
-                </ListItemText>
-                <ListItemSecondaryAction>
-                  {order?.contractorServiceOrder?.totalAmount}
-                </ListItemSecondaryAction>
-              </ListItem>
-
-              <ListItem>
-                <ListItemText>
                   <Typography>Rate</Typography>
                 </ListItemText>
                 <ListItemSecondaryAction>
@@ -309,6 +300,15 @@ const MissionOrders = () => {
                 </ListItemSecondaryAction>
               </ListItem>
             </List>
+
+            <ListItem>
+              <ListItemText>
+                <Typography>Total Amount</Typography>
+              </ListItemText>
+              <ListItemSecondaryAction>
+                {order?.contractorServiceOrder?.totalAmount}
+              </ListItemSecondaryAction>
+            </ListItem>
           </MainCard>
         </Grid>
         <Grid item xs={12}>
