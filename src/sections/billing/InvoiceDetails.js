@@ -196,19 +196,19 @@ const InvoiceDetails = ({ invoice, onInvoiceUpdated }) => {
             <Grid item xs={12} sm={6}>
               <Stack spacing={1.25}>
                 <Typography variant="subtitle1">Total Amount Excluding VAT</Typography>
-                <Typography variant="subtitle2">€ {invoice.totalAmountExcludingVat.toFixed(2).replace(".", ",")}</Typography>
+                <Typography variant="subtitle2">€ {invoice?.totalAmountExcludingVat?.toFixed(2).replace(".", ",")}</Typography>
               </Stack>
             </Grid>
             <Grid item xs={12} sm={6}>
               <Stack spacing={1.25}>
                 <Typography variant="subtitle1">Vat Amount</Typography>
-                <Typography variant="subtitle2">€ {invoice.vatAmount.toFixed(2).replace(".", ",")}</Typography>
+                <Typography variant="subtitle2">€ {invoice?.vatAmount?.toFixed(2).replace(".", ",")}</Typography>
               </Stack>
             </Grid>
             <Grid item xs={12} sm={6}>
               <Stack spacing={1.25}>
                 <Typography variant="subtitle1">Total Amount Including VAT</Typography>
-                <Typography variant="subtitle2">€ {invoice.totalAmountIncludingVat.toFixed(2).replace(".", ",")}</Typography>
+                <Typography variant="subtitle2">€ {invoice?.totalAmountIncludingVat?.toFixed(2).replace(".", ",")}</Typography>
               </Stack>
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -319,7 +319,7 @@ const InvoiceDetails = ({ invoice, onInvoiceUpdated }) => {
                   <Grid item xs={12} sm={6}>
                     <Stack spacing={1.25}>
                       <Typography variant="subtitle1">Total amount</Typography>
-                      <Typography variant="subtitle2">{invoiceItem.totalAmount}</Typography>
+                      <Typography variant="subtitle2">€ {invoiceItem?.totalAmount?.toFixed(2).replace(".", ",")}</Typography>
                     </Stack>
                   </Grid>
                   <Grid item xs={12}>
@@ -354,11 +354,11 @@ const InvoiceDetails = ({ invoice, onInvoiceUpdated }) => {
                 <Button
                   color="primary"
                   variant="outlined"
+                  size="medium"
                   onClick={async () => {
                     await handleDownloadPdf(<InvoicePdf invoice={invoice} />);
                   }}>
-                  Download Invoice
-                  {isDownloading && <CircularProgress size={20} />}
+                  {isDownloading === true ? <CircularProgress size={20} /> : "Download Invoice"}
                 </Button>
                 <Button type="submit" disabled={isSubmitting} color="primary" variant="contained">
                   Update
