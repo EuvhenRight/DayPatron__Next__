@@ -25,6 +25,10 @@ const UpsertBillingInfo = ({ billingInfoId }) => {
   const { keycloak } = useKeycloak();
   const [billingInfo, setBillingInfo] = useState([]);
 
+  const onInvoiceUpdated = async () => {
+    bindBillingInfo();
+  }
+
   const bindBillingInfo = async () => {
     try {
       let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/billing/' + encodeURIComponent(billingInfoId),
@@ -145,7 +149,7 @@ const UpsertBillingInfo = ({ billingInfoId }) => {
 
       {billingInfo?.invoices?.map((invoice, index) => (
         <Grid key={index} item xs={12} md={6}>
-          <InvoiceDetails invoice={invoice} />
+          <InvoiceDetails invoice={invoice} onInvoiceUpdated={onInvoiceUpdated} />
         </Grid>
       ))}
     </Grid>

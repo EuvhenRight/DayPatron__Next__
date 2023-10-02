@@ -1,7 +1,6 @@
 import { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 
 // project import
 import { openSnackbar } from 'store/reducers/snackbar';
@@ -44,11 +43,10 @@ const getInitialValues = (invoice) => {
   return result;
 }
 
-const InvoiceDetails = ({ invoice }) => {
+const InvoiceDetails = ({ invoice, onInvoiceUpdated }) => {
 
   const { keycloak } = useKeycloak();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [isDownloading, setIsDownloading] = useState(false);
 
   const handleDownloadPdf = async (pdfDocument) => {
@@ -114,8 +112,6 @@ const InvoiceDetails = ({ invoice }) => {
             return;
           }
 
-          navigate('/billinginfo/' + invoice.billingInfoId);
-
           dispatch(
             openSnackbar({
               open: true,
@@ -127,6 +123,9 @@ const InvoiceDetails = ({ invoice }) => {
               close: false
             })
           );
+
+          onInvoiceUpdated();
+
         }
         setSubmitting(false);
 
@@ -317,25 +316,10 @@ const InvoiceDetails = ({ invoice }) => {
                       )}
                     </Stack>
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={12} sm={6}>
                     <Stack spacing={1.25}>
                       <Typography variant="subtitle1">Total amount</Typography>
-                      <TextField
-                        fullWidth
-                        id={`invoice-item-totalAmount${index}`}
-                        placeholder="Enter total amount for invoice item"
-                        value={normalizeInputValue(values.invoiceItems[index].totalAmount)}
-                        name={`totalAmount${index}`}
-                        onBlur={handleBlur}
-                        onChange={(e) => {
-                          handleChange(e);
-                          setFieldValue(`invoiceItems.${index}.totalAmount`, e.target.value);
-                        }} />
-                      {touched.invoiceItems?.[index]?.totalAmount && errors.invoiceItems?.[index]?.totalAmount && (
-                        <FormHelperText error id={`invoice-item-total-amount-helper${index}`}>
-                          {errors.invoiceItems?.[index]?.totalAmount}
-                        </FormHelperText>
-                      )}
+                      <Typography variant="subtitle2">{invoiceItem.totalAmount}</Typography>
                     </Stack>
                   </Grid>
                   <Grid item xs={12}>
