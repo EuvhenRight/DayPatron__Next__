@@ -64,13 +64,14 @@ const InvoiceDetails = ({ invoice }) => {
     setIsDownloading(false);
   };
 
-  const InvoiceSchema = Yup.object().shape({
+  const InvoiceValidationSchema = Yup.object().shape({
     status: Yup.string().max(255).required('Invoice status is required').nullable(true),
     invoiceItems: Yup.array(
       Yup.object({
-        description: Yup.string().max(255).required('Invoice item description is required').nullable(true),
-        totalAmount: Yup.number('Invoice item total amount is required'),
-        quantity: Yup.string().max(255).required('Invoice item effort/quantity is required').nullable(true)
+        description: Yup.string().max(255).required('Description is required').nullable(true),
+        totalAmount: Yup.number().transform((value) => Number.isNaN(value) ? null : value).required('Total amount is required').nullable(true),
+        quantity: Yup.number().transform((value) => Number.isNaN(value) ? null : value).required('Quantity is required').nullable(true),
+        unitPrice: Yup.number().transform((value) => Number.isNaN(value) ? null : value).required('Unit price is required').nullable(true)
       })
     )
   });
@@ -78,7 +79,7 @@ const InvoiceDetails = ({ invoice }) => {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: getInitialValues(invoice),
-    validationSchema: InvoiceSchema,
+    validationSchema: InvoiceValidationSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
         var body = { ...values };
@@ -196,19 +197,19 @@ const InvoiceDetails = ({ invoice }) => {
             <Grid item xs={12} sm={6}>
               <Stack spacing={1.25}>
                 <Typography variant="subtitle1">Total Amount Excluding VAT</Typography>
-                <Typography variant="subtitle2">{invoice.totalAmountExcludingVat}</Typography>
+                <Typography variant="subtitle2">€ {invoice.totalAmountExcludingVat.toFixed(2).replace(".", ",")}</Typography>
               </Stack>
             </Grid>
             <Grid item xs={12} sm={6}>
               <Stack spacing={1.25}>
                 <Typography variant="subtitle1">Vat Amount</Typography>
-                <Typography variant="subtitle2">{invoice.vatAmount}</Typography>
+                <Typography variant="subtitle2">€ {invoice.vatAmount.toFixed(2).replace(".", ",")}</Typography>
               </Stack>
             </Grid>
             <Grid item xs={12} sm={6}>
               <Stack spacing={1.25}>
                 <Typography variant="subtitle1">Total Amount Including VAT</Typography>
-                <Typography variant="subtitle2">{invoice.totalAmountIncludingVat}</Typography>
+                <Typography variant="subtitle2">€ {invoice.totalAmountIncludingVat.toFixed(2).replace(".", ",")}</Typography>
               </Stack>
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -259,29 +260,34 @@ const InvoiceDetails = ({ invoice }) => {
                 )}
               </Stack>
             </Grid>
-            <Grid item xs={12}>
-              <Divider />
-            </Grid>
-
             {invoice.invoiceItems.map((invoiceItem, index) => {
               return (
                 <Fragment key={index}>
                   <Grid item xs={12}>
+                    <Divider />
+                  </Grid>
+                  <Grid item xs={12}>
                     <Typography variant="h4"> Invoice item {index + 1}</Typography>
                   </Grid>
-                  <Grid item xs={12} sm={6}>
+                  <Grid item xs={12}>
                     <Stack spacing={1.25}>
-                      <Typography variant="subtitle1">Effort</Typography>
+                      <Typography variant="subtitle1">Rate type</Typography>
+                      <Typography variant="subtitle2">{invoiceItem.rateType}</Typography>
+                    </Stack>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Stack spacing={1.25}>
+                      <Typography variant="subtitle1">Quantity</Typography>
                       <TextField
                         fullWidth
                         id={`invoice-item-quantity${index}`}
-                        placeholder="Enter effort/quantity for invoice item"
+                        placeholder="Enter quantity for invoice item"
                         value={normalizeInputValue(values.invoiceItems[index].quantity)}
                         name={`quantity${index}`}
                         onBlur={handleBlur}
                         onChange={(e) => {
                           handleChange(e);
-                          setFieldValue(`invoiceItems.${index}.quantity`, e.target.value)
+                          setFieldValue(`invoiceItems.${index}.quantity`, e.target.value);
                         }} />
                       {touched.invoiceItems?.[index]?.quantity && errors.invoiceItems?.[index]?.quantity && (
                         <FormHelperText error id={`invoice-item-quantity-helper${index}`}>
@@ -290,19 +296,28 @@ const InvoiceDetails = ({ invoice }) => {
                       )}
                     </Stack>
                   </Grid>
-                  <Grid item xs={12} sm={6}>
+                  <Grid item xs={12}>
                     <Stack spacing={1.25}>
-                      <Typography variant="subtitle1">Rate type</Typography>
-                      <Typography variant="subtitle2">{invoiceItem.rateType}</Typography>
+                      <Typography variant="subtitle1">Unit Price</Typography>
+                      <TextField
+                        fullWidth
+                        id={`invoice-item-unitPrice${index}`}
+                        placeholder="Enter unit price for invoice item"
+                        value={normalizeInputValue(values.invoiceItems[index].unitPrice)}
+                        name={`unitPrice${index}`}
+                        onBlur={handleBlur}
+                        onChange={(e) => {
+                          handleChange(e);
+                          setFieldValue(`invoiceItems.${index}.unitPrice`, e.target.value);
+                        }} />
+                      {touched.invoiceItems?.[index]?.unitPrice && errors.invoiceItems?.[index]?.unitPrice && (
+                        <FormHelperText error id={`invoice-item-unit-price-helper${index}`}>
+                          {errors.invoiceItems?.[index]?.unitPrice}
+                        </FormHelperText>
+                      )}
                     </Stack>
                   </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <Stack spacing={1.25}>
-                      <Typography variant="subtitle1">Unit price</Typography>
-                      <Typography variant="subtitle2">{invoiceItem.unitPrice}</Typography>
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
+                  <Grid item xs={12}>
                     <Stack spacing={1.25}>
                       <Typography variant="subtitle1">Total amount</Typography>
                       <TextField
@@ -314,7 +329,7 @@ const InvoiceDetails = ({ invoice }) => {
                         onBlur={handleBlur}
                         onChange={(e) => {
                           handleChange(e);
-                          setFieldValue(`invoiceItems.${index}.totalAmount`, e.target.value)
+                          setFieldValue(`invoiceItems.${index}.totalAmount`, e.target.value);
                         }} />
                       {touched.invoiceItems?.[index]?.totalAmount && errors.invoiceItems?.[index]?.totalAmount && (
                         <FormHelperText error id={`invoice-item-total-amount-helper${index}`}>
@@ -323,7 +338,7 @@ const InvoiceDetails = ({ invoice }) => {
                       )}
                     </Stack>
                   </Grid>
-                  <Grid item xs={12} sm={6}>
+                  <Grid item xs={12}>
                     <Stack spacing={1.25}>
                       <Typography variant="subtitle1">Description</Typography>
                       <TextField
@@ -337,7 +352,7 @@ const InvoiceDetails = ({ invoice }) => {
                         onBlur={handleBlur}
                         onChange={(e) => {
                           handleChange(e);
-                          setFieldValue(`invoiceItems.${index}.description`, e.target.value)
+                          setFieldValue(`invoiceItems.${index}.description`, e.target.value);
                         }} />
                       {touched.invoiceItems?.[index]?.description && errors.invoiceItems?.[index]?.description && (
                         <FormHelperText error id={`invoice-item-description-helper${index}`}>
