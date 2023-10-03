@@ -49,12 +49,19 @@ const InvoiceDetails = ({ invoice, onInvoiceUpdated }) => {
   const dispatch = useDispatch();
   const [isDownloading, setIsDownloading] = useState(false);
 
-  const handleDownloadPdf = async (pdfDocument) => {
+  const handleDownloadPdf = async (pdfDocument, fileName) => {
+    var a = document.createElement("a");
+    document.body.appendChild(a);
+    a.style = "display: none";
+
     setIsDownloading(true);
     const blob = await pdf((pdfDocument)).toBlob();
     var fileUrl = URL.createObjectURL(blob);
     window.open(fileUrl, '_blank');
 
+    a.href = fileUrl;
+    a.download = fileName;
+    a.click();
     if (fileUrl)
       setTimeout(function () {
         URL.revokeObjectURL(fileUrl);
@@ -356,7 +363,7 @@ const InvoiceDetails = ({ invoice, onInvoiceUpdated }) => {
                   variant="outlined"
                   size="medium"
                   onClick={async () => {
-                    await handleDownloadPdf(<InvoicePdf invoice={invoice} />);
+                    await handleDownloadPdf(<InvoicePdf invoice={invoice} />, invoice.invoiceNumber);
                   }}>
                   {isDownloading === true ? <CircularProgress size={20} /> : "Download Invoice"}
                 </Button>
