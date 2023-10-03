@@ -100,8 +100,6 @@ const InvoiceDetails = ({ invoice, onInvoiceUpdated }) => {
       try {
         var body = { ...values };
 
-        body.invoiceStatus = values?.status;
-
         if (invoice) {
           let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/invoices/' + invoice.id,
             {
