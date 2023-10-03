@@ -64,6 +64,7 @@
 
   "invoice_settings_invoicing_name_tooltip": "The name under which you'd like to receive your invoices. This can be your business name or your personal name. Remember that a registration in a chamber of commerce is required in most countries to work fractional. Make it official!",
   "invoice_settings_vat_number_tooltip": "Your Value Added Tax (VAT) identification number, if applicable.",
+  "invoice_settings_vat_percentage_tooltip": "Your default VAT percentage.",
   "invoice_settings_bank_name_tooltip": "The name of your bank where payments will find their way to you.",
   "invoice_settings_bank_account_name_tooltip": "The name on your bank account.",
   "invoice_settings_iban_tooltip": "Your International Bank Account Number. It's all about those digits!",
