@@ -54,6 +54,14 @@ const InvoiceNumberPdf = ({ invoice, invoiceTypeMessage }) => {
             </View>
           )
         }
+        {
+          invoice?.purchaseOrderNumber && (
+            <View style={styles.row}>
+              <Text style={[styles.column1, styles.text]}>PO Number:</Text>
+              <Text style={[styles.column2, styles.text]}>{invoice?.purchaseOrderNumber}</Text>
+            </View>
+          )
+        }
       </View>
     </>
   )
