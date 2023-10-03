@@ -105,7 +105,7 @@ const MissionTimeTrackingPage = () => {
 
   const bindTimeLogs = async () => {
     try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(personalInformation.id) + '/time-logs?startDate=' + format(week.start, 'yyyy-MM-dd') + '&endDate=' + format(week.end, 'yyyy-MM-dd'),
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(personalInformation.id) + '/time-logs?startDate=' + week.start.toISOString() + '&endDate=' + week.end.toISOString(),
         {
           method: 'GET',
           headers: {
