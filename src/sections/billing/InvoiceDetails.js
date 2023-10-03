@@ -100,7 +100,7 @@ const InvoiceDetails = ({ invoice, onInvoiceUpdated }) => {
       try {
         var body = { ...values };
 
-        // body.invoiceStatus = values?.status;
+        body.invoiceStatus = values?.status;
 
         if (invoice) {
           let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/invoices/' + invoice.id,
@@ -196,8 +196,8 @@ const InvoiceDetails = ({ invoice, onInvoiceUpdated }) => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <Stack spacing={1.25}>
+                  <Typography variant="subtitle1">Due Date</Typography>
                   <DatePicker
-                    label="Due Date"
                     name="dueDate"
                     value={values.dueDate}
                     onChange={date => setFieldValue('dueDate', date)}
