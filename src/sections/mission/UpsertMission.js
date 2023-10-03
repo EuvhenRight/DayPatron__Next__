@@ -143,7 +143,7 @@ const UpsertMission = ({ missionId }) => {
 
   useEffect(() => {
     handleMainImageUrlChange(mission?.mainImageUrl);
-  }, [mission?.mainImageUrl]);
+  }, [mission?.mainImageUrl, keycloak?.idToken]);
 
   const handleChangeMainImage = (event) => {
     var newImage = event.target.files?.[0];
@@ -272,7 +272,7 @@ const UpsertMission = ({ missionId }) => {
     (async () => {
       bindEmployers();
     })();
-  }, []);
+  }, [personalInformation?.id, keycloak?.idToken]);
 
   useEffect(() => {
     (async () => {
@@ -280,7 +280,7 @@ const UpsertMission = ({ missionId }) => {
         await bindMission();
       }
     })();
-  }, [employers]);
+  }, [employers, keycloak?.idToken]);
 
   const MissionSchema = Yup.object().shape({
     employerId: Yup.string().required('Company is required').nullable(true),

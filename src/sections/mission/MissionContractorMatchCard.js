@@ -50,7 +50,7 @@ const MissionContractorMatchCard = ({ missionContractorMatch, missionId }) => {
         }, 1000);
 
     })();
-  }, [missionContractorMatch?.contractor?.mainImageUrl]);
+  }, [missionContractorMatch?.contractor?.mainImageUrl, keycloak?.idToken]);
 
   const handleClickDetails = () => {
     navigate('/missions/' + missionId + '/matches/' + missionContractorMatch?.contractor?.id);

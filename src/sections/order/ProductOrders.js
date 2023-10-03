@@ -85,7 +85,7 @@ const ProductOrders = () => {
     (async () => {
       await bindOrders();
     })();
-  }, []);
+  }, [personalInformation?.id, keycloak?.idToken]);
 
   useEffect(() => {
     const newOrders = orders.filter((value) => {
@@ -96,7 +96,7 @@ const ProductOrders = () => {
       }
     });
     setFilteredOrders(newOrders);
-  }, [globalFilter]);
+  }, [globalFilter, orders]);
 
   const bindOrders = async () => {
     try {
@@ -112,7 +112,6 @@ const ProductOrders = () => {
       let json = await response.json();
 
       setOrders(json.orders);
-      setFilteredOrders(json.orders);
     } catch (error) {
       console.log(error);
     }

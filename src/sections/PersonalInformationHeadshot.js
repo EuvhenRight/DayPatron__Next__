@@ -66,7 +66,7 @@ const EmployerHeadshot = ({ focusInput }) => {
 
   useEffect(() => {
     handleMainImageUrlChange(state.mainImageUrl);
-  }, [state.mainImageUrl]);
+  }, [state.mainImageUrl, keycloak?.idToken]);
 
   const handleChangeMainImage = (event) => {
     var newImage = event.target.files?.[0];

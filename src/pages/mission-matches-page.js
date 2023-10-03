@@ -117,7 +117,6 @@ const MissionMatchesPage = () => {
       let json = await response.json();
 
       setMissionMatches(json.matches);
-      setFilteredMissionMatches(json.matches);
     } catch (error) {
       console.log(error);
     }
@@ -131,7 +130,7 @@ const MissionMatchesPage = () => {
     (async () => {
         await bindMissions();
     })();
-  }, []);
+  }, [personalInformation?.id, keycloak?.idToken]);
 
   useEffect(() => {
     if (missions && missions.length > 0)
@@ -142,7 +141,7 @@ const MissionMatchesPage = () => {
     (async () => {
       await bindMissionMatches();
     })();
-  }, [missionFilter, isInvitedFilter, isAppliedFilter]);
+  }, [personalInformation?.id, keycloak?.idToken, missionFilter, isInvitedFilter, isAppliedFilter]);
 
   useEffect(() => {
     const newMissionMatches = missionMatches.filter((value) => {
@@ -154,7 +153,7 @@ const MissionMatchesPage = () => {
       }
     });
     setFilteredMissionMatches(newMissionMatches);
-  }, [globalFilter]);
+  }, [globalFilter, missionMatches]);
 
   const PER_PAGE = 10;
 

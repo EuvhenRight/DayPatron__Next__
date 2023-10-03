@@ -63,7 +63,7 @@ const InvoiceSettingsPage = () => {
     (async () => {
       await bindEmployers();
     })();
-  }, []);
+  }, [personalInformation?.id, keycloak?.idToken]);
 
   const bindData = async () => {
     if (!employerId)
@@ -94,7 +94,7 @@ const InvoiceSettingsPage = () => {
     (async () => {
       await bindData();
     })();
-  }, [employerId]);
+  }, [employerId, keycloak?.idToken]);
 
   return (
     <Grid container spacing={3}>

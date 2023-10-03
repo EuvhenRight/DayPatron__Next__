@@ -77,7 +77,6 @@ const MyMissionsSection = () => {
       let json = await response.json();
 
       setMissions(json.missions);
-      setFilteredMissions(json.missions);
     } catch (error) {
       console.log(error);
     }
@@ -105,7 +104,7 @@ const MyMissionsSection = () => {
     (async () => {
       await bindMissions();
     })();
-  }, []);
+  }, [personalInformation?.id, keycloak?.idToken]);
 
   useEffect(() => {
     const newMissions = missions.filter((value) => {
@@ -116,7 +115,7 @@ const MyMissionsSection = () => {
       }
     });
     setFilteredMissions(newMissions);
-  }, [globalFilter]);
+  }, [globalFilter, missions]);
 
   const PER_PAGE = 10;
 

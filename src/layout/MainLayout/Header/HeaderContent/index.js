@@ -69,7 +69,7 @@ const HeaderContent = () => {
         await bindEmployerUsers();
       }
     })();
-  }, []);
+  }, [keycloak?.tokenParsed?.roles, keycloak?.idToken]);
 
   return (
     <>

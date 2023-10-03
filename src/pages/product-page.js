@@ -65,7 +65,7 @@ const ProductDetails = () => {
       if (openBuyDialog && !employers)
         await bindEmployers();
     })();
-  }, [openBuyDialog]);
+  }, [openBuyDialog, employers, personalInformation?.id, keycloak?.idToken]);
 
   useEffect(() => {
     if (employers && employers.length > 0) {
@@ -98,7 +98,7 @@ const ProductDetails = () => {
         await bindProduct();
       }
     })();
-  }, [productId]);
+  }, [productId, keycloak?.idToken]);
 
   useEffect(() => {
     (async () => {
@@ -111,7 +111,7 @@ const ProductDetails = () => {
         }, 1000);
 
     })();
-  }, [product?.mainImageUrl]);
+  }, [product?.mainImageUrl, keycloak?.idToken]);
 
   const getImageSrc = async (imageUrl) => {
     try {

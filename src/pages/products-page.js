@@ -107,7 +107,7 @@ const ProductsPage = () => {
       if (openBuyDialog && !employers)
         await bindEmployers();
     })();
-  }, [openBuyDialog]);
+  }, [openBuyDialog, employers, personalInformation?.id, keycloak?.idToken]);
 
   useEffect(() => {
     if (employers && employers.length > 0) {
@@ -147,7 +147,6 @@ const ProductsPage = () => {
       let json = await response.json();
 
       setProducts(json.products);
-      setFilteredProducts(json.products);
     } catch (error) {
       console.log(error);
     }
@@ -161,7 +160,7 @@ const ProductsPage = () => {
     (async () => {
       await bindProducts();
     })();
-  }, [jobClusterFilter, priceRangeFilter]);
+  }, [keycloak?.idToken, jobClusterFilter, priceRangeFilter]);
 
   useEffect(() => {
     const newProducts = products.filter((value) => {
@@ -172,7 +171,7 @@ const ProductsPage = () => {
       }
     });
     setFilteredProducts(newProducts);
-  }, [globalFilter]);
+  }, [globalFilter, products]);
 
   const PER_PAGE = 10;
 

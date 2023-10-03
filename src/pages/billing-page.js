@@ -162,7 +162,6 @@ const InvoicesBillingPage = () => {
 
       let json = await response.json();
       setBillingInfo(json.billingInfo);
-      setFilteredBillingInfo(json.billingInfo);
     }
     catch (error) {
       console.log(error)
@@ -177,7 +176,7 @@ const InvoicesBillingPage = () => {
     (async () => {
       await bindBillingInfo();
     })();
-  }, []);
+  }, [keycloak.idToken]);
 
   useEffect(() => {
     const newBillingInfo = billingInfo.filter((value) => {
@@ -188,7 +187,7 @@ const InvoicesBillingPage = () => {
       }
     });
     setFilteredBillingInfo(newBillingInfo);
-  }, [globalFilter]);
+  }, [globalFilter, billingInfo]);
 
   const PER_PAGE = 12;
   const count = Math.ceil(filteredBillingInfo.length / PER_PAGE);

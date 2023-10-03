@@ -79,7 +79,7 @@ const Profile = () => {
 
   useEffect(() => {
     handleMainImageUrlChange(personalInformation?.mainImageUrl);
-  }, [personalInformation?.mainImageUrl]);
+  }, [personalInformation?.mainImageUrl, keycloak?.idToken]);
 
   const handleLogout = async () => {
     try {
