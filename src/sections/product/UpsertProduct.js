@@ -110,7 +110,7 @@ const UpsertProduct = ({ productId }) => {
 
   useEffect(() => {
     handleMainImageUrlChange(product?.mainImageUrl);
-  }, [product?.mainImageUrl]);
+  }, [product?.mainImageUrl, keycloak?.idToken]);
 
   const handleChangeMainImage = (event) => {
     var newImage = event.target.files?.[0];
@@ -222,7 +222,7 @@ const UpsertProduct = ({ productId }) => {
         await bindProduct();
       }
     })();
-  }, [productId]);
+  }, [productId, keycloak?.idToken]);
 
   const ProductSchema = Yup.object().shape({
     title: Yup.string().max(255).required('Title is required').nullable(true),

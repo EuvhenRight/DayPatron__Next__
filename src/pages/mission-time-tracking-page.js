@@ -143,7 +143,7 @@ const MissionTimeTrackingPage = () => {
     (async () => {
       await bindTimeLogs();
     })();
-  }, [week]);
+  }, [week?.start, week?.end, personalInformation?.id, keycloak?.idToken]);
 
   useEffect(() => {
     (() => {
@@ -170,7 +170,7 @@ const MissionTimeTrackingPage = () => {
     (async () => {
       await bindMissions();
     })();
-  }, []);
+  }, [personalInformation?.id, keycloak?.idToken]);
 
   const getHoursMinutes = (minutesInt) => {
     if (!minutesInt && minutesInt != 0)

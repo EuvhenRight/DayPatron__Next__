@@ -64,7 +64,7 @@ const ProfileExpertisePage = () => {
     (async () => {
       await bindExpertise();
     })();
-  }, [personalInformation]);
+  }, [personalInformation?.id, keycloak?.idToken]);
 
   let currentYear = new Date().getFullYear();
 

@@ -111,7 +111,6 @@ const MissionsPage = () => {
       let json = await response.json();
 
       setMissions(json.contractorMissions);
-      setFilteredMissions(json.contractorMissions);
     } catch (error) {
       console.log(error);
     }
@@ -125,7 +124,7 @@ const MissionsPage = () => {
     (async () => {
       await bindMissions();
     })();
-  }, [isInvitedFilter, isAppliedFilter, isMatchedFilter, jobClustersFilter, tagsFilter]);
+  }, [personalInformation?.id, keycloak?.idToken, isInvitedFilter, isAppliedFilter, isMatchedFilter, jobClustersFilter, tagsFilter]);
 
   useEffect(() => {
     const newMissions = missions.filter((value) => {
@@ -136,7 +135,7 @@ const MissionsPage = () => {
       }
     });
     setFilteredMissions(newMissions);
-  }, [globalFilter]);
+  }, [globalFilter, missions]);
 
   const PER_PAGE = 10;
 

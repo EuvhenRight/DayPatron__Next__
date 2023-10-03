@@ -85,7 +85,7 @@ const MissionOrders = () => {
     (async () => {
       await bindOrders();
     })();
-  }, []);
+  }, [personalInformation?.id, keycloak?.idToken]);
 
   useEffect(() => {
     const newOrders = orders.filter((value) => {
@@ -96,7 +96,7 @@ const MissionOrders = () => {
       }
     });
     setFilteredOrders(newOrders);
-  }, [globalFilter]);
+  }, [globalFilter, orders]);
 
   const bindOrders = async () => {
     try {
@@ -112,7 +112,6 @@ const MissionOrders = () => {
       let json = await response.json();
 
       setOrders(json.orders);
-      setFilteredOrders(json.orders);
     } catch (error) {
       console.log(error);
     }

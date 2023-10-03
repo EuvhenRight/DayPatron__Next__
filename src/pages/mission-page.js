@@ -65,7 +65,7 @@ const MissionPage = () => {
         }, 1000);
 
     })();
-  }, [mission?.mainImageUrl]);
+  }, [mission?.mainImageUrl, keycloak?.idToken]);
 
   useEffect(() => {
     (async () => {
@@ -78,7 +78,7 @@ const MissionPage = () => {
         }, 1000);
 
     })();
-  }, [mission?.employerMainImageUrl]);
+  }, [mission?.employerMainImageUrl, keycloak?.idToken]);
 
   const getImageSrc = async (imageUrl) => {
     try {
@@ -236,7 +236,7 @@ const MissionPage = () => {
     (async () => {
       await bindData();
     })();
-  }, []);
+  }, [personalInformation?.id, keycloak?.idToken, missionId]);
 
   const ContractorNotesSchema = Yup.object().shape({
     missionNotes: Yup.string().max(5000).nullable(true),

@@ -59,7 +59,7 @@ const InvoiceSettingsPage = () => {
     (async () => {
       await bindData();
     })();
-  }, []);
+  }, [personalInformation?.id, keycloak?.idToken]);
 
   return (
     <MainCard content={false} sx={{ '& .MuiInputLabel-root': { fontSize: '0.875rem' } }}>

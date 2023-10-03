@@ -57,7 +57,7 @@ const MissionCard = ({ mission }) => {
         }, 1000);
 
     })();
-  }, [mission?.mainImageUrl]);
+  }, [mission?.mainImageUrl, keycloak?.idToken]);
 
   const getImageSrc = async (imageUrl) => {
     try {

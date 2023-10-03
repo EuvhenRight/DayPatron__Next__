@@ -40,7 +40,7 @@ const ProfileAvailabilityPage = () => {
 
   useEffect(() => {
     dispatch(getEvents(keycloak, personalInformation.id));
-  }, []);
+  }, [personalInformation?.id, keycloak?.idToken]);
 
   const calendarRef = useRef(null);
 
