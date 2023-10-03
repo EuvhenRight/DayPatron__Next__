@@ -154,7 +154,7 @@ const InvoiceSettingsPage = () => {
                 postCode: Yup.string().max(255).nullable(true).required('Postal code is required.'),
                 country: Yup.string().nullable(true).required('Country is required.'),
                 vatNumber: Yup.string().max(255).nullable(true),
-                vatPercentage: Yup.number().test('is-decimal', 'invalid decimal', value => (value + "").match(/^\d*\.{1}\d*$/)).max(1000).nullable(true),
+                vatPercentage: Yup.number().test('is-decimal', 'invalid decimal', value => (value + "").match(/^\d*\.?\d*$/)).max(1000).nullable(true),
                 paymentTermDays: Yup.number().integer().positive().max(1000).nullable(true),
                 bankName: Yup.string().max(255).nullable(true),
                 bankAccountName: Yup.string().max(255).nullable(true),
