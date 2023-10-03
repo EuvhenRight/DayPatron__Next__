@@ -116,7 +116,7 @@ const UpsertEmployer = ({ employerId }) => {
 
   useEffect(() => {
     handleMainImageUrlChange(employer?.mainImageUrl);
-  }, [employer?.mainImageUrl]);
+  }, [employer?.mainImageUrl, keycloak?.idToken]);
 
   const handleChangeMainImage = (event) => {
     var newImage = event.target.files?.[0];
@@ -228,7 +228,7 @@ const UpsertEmployer = ({ employerId }) => {
         await bindEmployer();
       }
     })();
-  }, []);
+  }, [employerId, keycloak?.idToken]);
 
   const dispatch = useDispatch();
 

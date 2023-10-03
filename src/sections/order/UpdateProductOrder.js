@@ -82,7 +82,7 @@ const UpdateProductOrder = ({ productOrderId }) => {
         await bindProductOrder();
       }
     })();
-  }, [productOrderId]);
+  }, [productOrderId, keycloak?.idToken]);
 
   const ProductSchema = Yup.object().shape({
     contractorServiceOrderDescription: Yup.string().max(5000).required('Required').nullable(true),

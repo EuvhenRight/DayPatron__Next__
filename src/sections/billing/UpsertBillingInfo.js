@@ -55,7 +55,7 @@ const UpsertBillingInfo = ({ billingInfoId }) => {
         await bindBillingInfo();
       }
     })();
-  }, []);
+  }, [billingInfoId, keycloak?.idToken]);
 
   return (
     <Grid container spacing={3}>

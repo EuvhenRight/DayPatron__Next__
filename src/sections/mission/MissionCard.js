@@ -59,7 +59,7 @@ const MissionCard = ({ mission, alertMissionToDelete }) => {
         }, 1000);
 
     })();
-  }, [mission?.mainImageUrl]);
+  }, [mission?.mainImageUrl, keycloak?.idToken]);
 
   const getImageSrc = async (imageUrl) => {
     try {

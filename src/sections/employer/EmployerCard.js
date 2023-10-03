@@ -51,7 +51,7 @@ const EmployerCard = ({ employer, alertEmployerToDelete }) => {
         }, 1000);
 
     })();
-  }, [employer?.mainImageUrl]);
+  }, [employer?.mainImageUrl, keycloak?.idToken]);
 
   const getImageSrc = async (imageUrl) => {
     try {

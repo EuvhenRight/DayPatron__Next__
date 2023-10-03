@@ -250,7 +250,7 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
       await bindMissionContractorMatch();
       await bindMissionContractor();
     })();
-  }, []);
+  }, [keycloak?.idToken, contractorId, missionId]);
 
   const getImageSrc = async (imageUrl) => {
     try {

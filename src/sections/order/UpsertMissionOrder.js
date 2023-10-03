@@ -161,7 +161,7 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
       bindContractors();
       bindEmployers();
     })();
-  }, []);
+  }, [keycloak?.idToken]);
 
   useEffect(() => {
     (async () => {
@@ -169,13 +169,13 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
         await bindMissionOrder();
       }
     })();
-  }, [missionOrderId]);
+  }, [missionOrderId, keycloak?.idToken]);
 
   useEffect(() => {
     (async () => {
       await bindMissions(missionOrder?.employerId);
     })();
-  }, [missionOrder?.employerId]);
+  }, [missionOrder?.employerId, keycloak?.idToken]);
 
   const MissionSchema = Yup.object().shape({
     contractorId: Yup.string().required('Talent is required').nullable(true),

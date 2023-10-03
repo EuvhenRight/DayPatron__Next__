@@ -261,11 +261,8 @@ const InvoicesPage = () => {
   const personalInformation = reduxUseSelector(state => state.personalInformation);
   const { lists } = useSelector((state) => state.invoice);
   useEffect(() => {
-    if (!lists?.length || lists?.length === 0) {
-      dispatch(getInvoiceList(keycloak, personalInformation?.id));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    dispatch(getInvoiceList(keycloak, personalInformation?.id));
+  }, [personalInformation?.id, keycloak?.idToken]);
 
   const [list, setList] = useState([]);
   useEffect(() => {

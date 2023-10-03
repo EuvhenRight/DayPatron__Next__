@@ -66,7 +66,17 @@ export const KeycloakProvider = ({ children }) => {
         }
       }
     })();
-  }, [keycloak.authenticated]);
+  },
+    [
+      keycloak?.authenticated,
+      keycloak?.tokenParsed?.email,
+      keycloak?.tokenParsed?.name,
+      keycloak?.idTokenParsed?.preferred_username,
+      keycloak?.tokenParsed?.roles,
+      keycloak?.idToken,
+      localStorage.getItem('adminSelectedEmployerUserId')
+    ]
+  );
 
   const logout = () => {
     keycloak.logout();

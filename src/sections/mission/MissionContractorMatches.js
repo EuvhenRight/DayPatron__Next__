@@ -74,7 +74,6 @@ const MissionContractorMatches = ({ missionId }) => {
       let json = await response.json();
 
       setMissionContractorMatches(json.missionContractorMatches);
-      setFilteredMissionContractorMatches(json.missionContractorMatches);
     } catch (error) {
       console.log(error);
     }
@@ -88,7 +87,7 @@ const MissionContractorMatches = ({ missionId }) => {
     (async () => {
       await bindMissionContractorMatches();
     })();
-  }, []);
+  }, [keycloak?.idToken, missionId]);
 
   useEffect(() => {
     const newMissionContractorMatches = missionContractorMatches.filter((value) => {
@@ -99,7 +98,7 @@ const MissionContractorMatches = ({ missionId }) => {
       }
     });
     setFilteredMissionContractorMatches(newMissionContractorMatches);
-  }, [globalFilter]);
+  }, [globalFilter, missionContractorMatches]);
 
   const PER_PAGE = 10;
 

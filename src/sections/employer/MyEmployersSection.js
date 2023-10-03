@@ -87,7 +87,6 @@ const MyEmployersSection = () => {
       let json = await response.json();
 
       setEmployers(json.employers);
-      setFilteredEmployers(json.employers);
     } catch (error) {
       console.log(error);
     }
@@ -115,7 +114,7 @@ const MyEmployersSection = () => {
     (async () => {
       await bindEmployers();
     })();
-  }, []);
+  }, [personalInformation?.id, keycloak?.idToken]);
 
   useEffect(() => {
     const newEmployers = employers.filter((value) => {
@@ -126,7 +125,7 @@ const MyEmployersSection = () => {
       }
     });
     setFilteredEmployers(newEmployers);
-  }, [globalFilter]);
+  }, [globalFilter, employers]);
 
   const PER_PAGE = 10;
 
