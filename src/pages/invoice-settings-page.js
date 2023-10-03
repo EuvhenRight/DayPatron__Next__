@@ -138,6 +138,8 @@ const InvoiceSettingsPage = () => {
                 postCode: state?.postCode,
                 country: state?.country,
                 vatNumber: state?.vatNumber,
+                vatPercentage: state?.vatPercentage,
+                paymentTermDays: state?.paymentTermDays,
                 bankName: state?.bankName,
                 bankAccountName: state?.bankAccountName,
                 iban: state?.iban,
@@ -152,6 +154,8 @@ const InvoiceSettingsPage = () => {
                 postCode: Yup.string().max(255).nullable(true).required('Postal code is required.'),
                 country: Yup.string().nullable(true).required('Country is required.'),
                 vatNumber: Yup.string().max(255).nullable(true),
+                vatPercentage: Yup.number().test('is-decimal', 'invalid decimal', value => (value + "").match(/^\d*\.{1}\d*$/)).max(1000).nullable(true),
+                paymentTermDays: Yup.number().integer().positive().max(1000).nullable(true),
                 bankName: Yup.string().max(255).nullable(true),
                 bankAccountName: Yup.string().max(255).nullable(true),
                 iban: Yup.string().max(255).nullable(true),
@@ -264,6 +268,53 @@ const InvoiceSettingsPage = () => {
                           )}
                         </Stack>
                       </Grid>
+
+                      <Grid item xs={12} sm={6}>
+                        <Stack spacing={1.25}>
+                          <InfoWrapper tooltipText="invoice_settings_vat_percentage_tooltip">
+                            <InputLabel htmlFor="invoice-settings-vat-percentage">VAT %</InputLabel>
+                          </InfoWrapper>
+                          <TextField
+                            fullWidth
+                            id="invoice-settings-vat-percentage"
+                            value={normalizeInputValue(values.vatPercentage)}
+                            name="vatPercentage"
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            placeholder="VAT %"
+                            autoFocus
+                          />
+                          {touched.vatPercentage && errors.vatPercentage && (
+                            <FormHelperText error id="invoice-settings-vat-percentage-helper">
+                              {errors.vatPercentage}
+                            </FormHelperText>
+                          )}
+                        </Stack>
+                      </Grid>
+
+                      <Grid item xs={12} sm={6}>
+                        <Stack spacing={1.25}>
+                          <InfoWrapper tooltipText="invoice_settings_payment_term_days_tooltip">
+                            <InputLabel htmlFor="invoice-settings-payment-term-days">Payment Term in Days</InputLabel>
+                          </InfoWrapper>
+                          <TextField
+                            fullWidth
+                            id="invoice-settings-payment-term-days"
+                            value={normalizeInputValue(values.paymentTermDays)}
+                            name="paymentTermDays"
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            placeholder="Payment Term in Days"
+                            autoFocus
+                          />
+                          {touched.paymentTermDays && errors.paymentTermDays && (
+                            <FormHelperText error id="invoice-settings-payment-term-days-helper">
+                              {errors.paymentTermDays}
+                            </FormHelperText>
+                          )}
+                        </Stack>
+                      </Grid>
+
                       <Grid item xs={12} sm={6}>
                         <Stack spacing={1.25}>
                           <InfoWrapper tooltipText="invoice_settings_bank_name_tooltip">
