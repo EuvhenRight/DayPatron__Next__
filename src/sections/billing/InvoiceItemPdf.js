@@ -55,17 +55,17 @@ const InvoiceItemPdf = ({ invoice }) => {
         {invoice.invoiceItems.map((invoiceItem, index) => (
           <View key={index} style={styles.row} wrap={false}>
             <Text style={[styles.column1, styles.text]}>{
-              invoiceItem?.description}. Period: {invoice?.startDate && format(new Date(invoice?.startDate), "dd-MM-yyyy")}-{invoice?.endDate && format(new Date(invoice?.endDate), "dd-MM-yyyy")}
+              invoiceItem?.description}. Period: {invoice?.startDate && format(new Date(invoice?.startDate), "dd-MM-yyyy")} - {invoice?.endDate && format(new Date(invoice?.endDate), "dd-MM-yyyy")}
             </Text>
             <Text style={[styles.column2, styles.text]}>{
               invoiceItem?.rateType === "Hourly" ?
-                invoiceItem?.quantity.toFixed(2) + " hours" :
+                invoiceItem?.quantity?.toFixed(2) + " hours" :
                 invoiceItem?.rateType === "Daily" ?
-                  invoiceItem?.quantity.toFixed(2) + " days" :
+                  invoiceItem?.quantity?.toFixed(2) + " days" :
                   invoiceItem?.quantity}
             </Text>
-            <Text style={[styles.column3, styles.text]}>€ {invoiceItem?.unitPrice.toFixed(2).replace(".", ",")}</Text>
-            <Text style={[styles.column4, styles.text]}>€ {invoiceItem?.totalAmount.toFixed(2).replace(".", ",")}</Text>
+            <Text style={[styles.column3, styles.text]}>€ {invoiceItem?.unitPrice?.toFixed(2).replace(".", ",")}</Text>
+            <Text style={[styles.column4, styles.text]}>€ {invoiceItem?.totalAmount?.toFixed(2).replace(".", ",")}</Text>
           </View>
         )
         )}

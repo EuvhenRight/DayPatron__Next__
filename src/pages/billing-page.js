@@ -230,8 +230,7 @@ const InvoicesBillingPage = () => {
                     handleSubmitBillRun()
                   }}
                   variant="contained">
-                  Submit
-                  {isRunningBillRun && <CircularProgress size={20} />}
+                  {isRunningBillRun === true ? <CircularProgress size={20} /> : "Submit"}
                 </Button>
               </Stack>
             </Grid>

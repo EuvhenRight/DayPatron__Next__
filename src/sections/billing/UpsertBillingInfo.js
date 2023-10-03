@@ -25,6 +25,10 @@ const UpsertBillingInfo = ({ billingInfoId }) => {
   const { keycloak } = useKeycloak();
   const [billingInfo, setBillingInfo] = useState([]);
 
+  const onInvoiceUpdated = async () => {
+    bindBillingInfo();
+  }
+
   const bindBillingInfo = async () => {
     try {
       let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/billing/' + encodeURIComponent(billingInfoId),
@@ -124,19 +128,19 @@ const UpsertBillingInfo = ({ billingInfoId }) => {
             <Grid item xs={12} sm={4}>
               <Stack spacing={1.25}>
                 <Typography variant="subtitle1">Total Amount Employer</Typography>
-                <Typography variant="subtitle2">{billingInfo?.totalAmountEmployer}</Typography>
+                <Typography variant="subtitle2">€ {billingInfo?.totalAmountEmployer?.toFixed(2).replace(".", ",")}</Typography>
               </Stack>
             </Grid>
             <Grid item xs={12} sm={4}>
               <Stack spacing={1.25}>
                 <Typography variant="subtitle1">Total Amount Talent</Typography>
-                <Typography variant="subtitle2">{billingInfo?.totalAmountContractor}</Typography>
+                <Typography variant="subtitle2">€ {billingInfo?.totalAmountContractor?.toFixed(2).replace(".", ",")}</Typography>
               </Stack>
             </Grid>
             <Grid item xs={12} sm={4}>
               <Stack spacing={1.25}>
                 <Typography variant="subtitle1">Gross Margin 10x</Typography>
-                <Typography variant="subtitle2">{billingInfo?.grossMargin10x}</Typography>
+                <Typography variant="subtitle2">€ {billingInfo?.grossMargin10x?.toFixed(2).replace(".", ",")}</Typography>
               </Stack>
             </Grid>
           </Grid>
@@ -145,7 +149,7 @@ const UpsertBillingInfo = ({ billingInfoId }) => {
 
       {billingInfo?.invoices?.map((invoice, index) => (
         <Grid key={index} item xs={12} md={6}>
-          <InvoiceDetails invoice={invoice} />
+          <InvoiceDetails invoice={invoice} onInvoiceUpdated={onInvoiceUpdated} />
         </Grid>
       ))}
     </Grid>
