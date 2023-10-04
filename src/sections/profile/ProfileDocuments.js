@@ -6,7 +6,7 @@ import { PERSONAL_INFORMATION_UPDATE } from 'store/reducers/actions';
 
 import { Grid, TextField, Button, Stack, Typography, Link } from '@mui/material';
 import MainCard from 'components/MainCard';
-import { UploadOutlined } from '@ant-design/icons';
+import { UploadOutlined, LoadingOutlined } from '@ant-design/icons';
 
 const ProfileDocuments = () => {
   const { keycloak } = useKeycloak();
@@ -14,7 +14,8 @@ const ProfileDocuments = () => {
   const personalInformation = useSelector(state => state.personalInformation);
   const [newLiabilityInsurance, setNewLiabilityInsurance] = useState(null);
   const [uploadingLiabilityInsurance, setUploadingLiabilityInsurance] = useState(false);
-
+  const [downloadingLiabilityInsurance, setDownloadingLiabilityInsurance] = useState(false);
+  
   const handleChangeLiabilityInsurance = (event) => {
     var newFile = event.target.files?.[0];
     if (newFile)
@@ -23,6 +24,8 @@ const ProfileDocuments = () => {
 
   const onDownloadLiabilityInsuranceClick = async () => {
     try {
+      setDownloadingLiabilityInsurance(true);
+
       let fileUrl = null;
       let fileName = null;
 
@@ -63,6 +66,8 @@ const ProfileDocuments = () => {
     } catch (error) {
       console.log(error);
     }
+
+    setDownloadingLiabilityInsurance(false);
   };
 
   const handleUploadLiabilityInsurance = async () => {
@@ -143,9 +148,22 @@ const ProfileDocuments = () => {
           <Stack direction="row" spacing={2} alignItems="center">
             <Typography variant="h5">Liability Insurance</Typography>
             {(newLiabilityInsurance?.name || personalInformation?.liabilityInsuranceDocumentName) &&
-              <Link className="clickable" onClick={onDownloadLiabilityInsuranceClick}>
-                {newLiabilityInsurance?.name ? newLiabilityInsurance?.name : personalInformation?.liabilityInsuranceDocumentName}
-              </Link>
+              (downloadingLiabilityInsurance ?
+                (
+                  <>
+                    <Typography>{newLiabilityInsurance?.name ? newLiabilityInsurance?.name : personalInformation?.liabilityInsuranceDocumentName}</Typography>
+                    <Stack sx={{ mr: 2.2, mb: 0.5 }}>
+                      <LoadingOutlined sx={{ width: 22, height: 22 }} />
+                    </Stack>
+                  </>
+                )
+                :
+                (
+                  <Link className="clickable" onClick={onDownloadLiabilityInsuranceClick} disabled={downloadingLiabilityInsurance}>
+                    {newLiabilityInsurance?.name ? newLiabilityInsurance?.name : personalInformation?.liabilityInsuranceDocumentName}
+                  </Link>
+                )
+              )
             }
 
             {newLiabilityInsurance ?
