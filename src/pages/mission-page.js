@@ -15,6 +15,8 @@ import {
   Typography,
   Button,
   Chip,
+  Switch,
+  InputLabel,
   createFilterOptions
 } from '@mui/material';
 
@@ -32,7 +34,7 @@ import { useFormik, Form, FormikProvider } from 'formik';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { openSnackbar } from 'store/reducers/snackbar';
-import { normalizeInputValue, prepareApiBody } from 'utils/stringUtils';
+import { normalizeInputValue, normalizeBooleanInputValue, prepareApiBody } from 'utils/stringUtils';
 import { PERSONAL_INFORMATION_UPDATE } from 'store/reducers/actions';
 
 const avatarImage = require.context('assets/images/missions', true);
@@ -63,7 +65,7 @@ const MissionPage = () => {
         }, 1000);
 
     })();
-  }, [mission?.mainImageUrl]);
+  }, [mission?.mainImageUrl, keycloak?.idToken]);
 
   useEffect(() => {
     (async () => {
@@ -76,7 +78,7 @@ const MissionPage = () => {
         }, 1000);
 
     })();
-  }, [mission?.employerMainImageUrl]);
+  }, [mission?.employerMainImageUrl, keycloak?.idToken]);
 
   const getImageSrc = async (imageUrl) => {
     try {
@@ -234,10 +236,11 @@ const MissionPage = () => {
     (async () => {
       await bindData();
     })();
-  }, []);
+  }, [personalInformation?.id, keycloak?.idToken, missionId]);
 
   const ContractorNotesSchema = Yup.object().shape({
-    missionNotes: Yup.string().max(5000).nullable(true)
+    missionNotes: Yup.string().max(5000).nullable(true),
+    showContractorNotesToEmployer: Yup.boolean().nullable(true)
   });
 
   const ContractorTagsSchema = Yup.object().shape({
@@ -528,39 +531,51 @@ const MissionPage = () => {
             </InfoWrapper>
           } >
             <List sx={{ py: 0 }}>
-              <ListItem>
-                <Grid container spacing={3}>
-                  <Grid item xs={12}>
-                    <Stack spacing={0.5}>
-                      <InfoWrapper tooltipText="mission_admin_notes_about_me_tooltip">
-                        <Typography color="secondary">Community Manager About Me</Typography>
-                      </InfoWrapper>
-                      <SanitizedHTML html={
-                        missionContractor?.adminNotes?.showContractorNotesToContractor &&
-                        missionContractor?.adminNotes?.contractorNotes ?
-                        missionContractor?.adminNotes?.contractorNotes : '<i>No data available.</i>'
-                      } />
-                    </Stack>
-                  </Grid>
-                </Grid>
-              </ListItem>
 
-              <ListItem>
-                <Grid container spacing={3}>
-                  <Grid item xs={12}>
-                    <Stack spacing={0.5}>
-                      <InfoWrapper tooltipText="mission_admin_notes_about_the_mission_tooltip">
-                        <Typography color="secondary">Community Manager About the Mission</Typography>
-                      </InfoWrapper>
-                      <SanitizedHTML html={
-                        missionContractor?.adminNotes?.showMissionNotesToContractor &&
-                          missionContractor?.adminNotes?.missionNotes ?
-                          missionContractor?.adminNotes?.missionNotes : '<i>No data available.</i>'
-                      } />
-                    </Stack>
+              {missionContractor?.employerNotes?.showEmployerNotesToContractor &&
+                <ListItem>
+                  <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                      <Stack spacing={0.5}>
+                        <InfoWrapper tooltipText="employer_notes_about_me_tooltip">
+                          <Typography color="secondary">Company Notes About Me</Typography>
+                        </InfoWrapper>
+                        <SanitizedHTML html={missionContractor?.employerNotes?.contractorNotes} />
+                      </Stack>
+                    </Grid>
                   </Grid>
-                </Grid>
-              </ListItem>
+                </ListItem>
+              }
+
+              {missionContractor?.adminNotes?.showContractorNotesToContractor &&
+                <ListItem>
+                  <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                      <Stack spacing={0.5}>
+                        <InfoWrapper tooltipText="mission_admin_notes_about_me_tooltip">
+                          <Typography color="secondary">Community Manager About Me</Typography>
+                        </InfoWrapper>
+                        <SanitizedHTML html={missionContractor?.adminNotes?.contractorNotes} />
+                      </Stack>
+                    </Grid>
+                  </Grid>
+                </ListItem>
+              }
+              
+              {missionContractor?.adminNotes?.showMissionNotesToContractor &&
+                <ListItem>
+                  <Grid container spacing={3}>
+                    <Grid item xs={12}>
+                      <Stack spacing={0.5}>
+                        <InfoWrapper tooltipText="mission_admin_notes_about_the_mission_tooltip">
+                          <Typography color="secondary">Community Manager About the Mission</Typography>
+                        </InfoWrapper>
+                        <SanitizedHTML html={missionContractor?.adminNotes?.missionNotes} />
+                      </Stack>
+                    </Grid>
+                  </Grid>
+                </ListItem>
+              }
 
               <ListItem>
                 <Grid container spacing={3}>
@@ -601,6 +616,22 @@ const MissionPage = () => {
                               {errors.missionNotes}
                             </FormHelperText>
                           )}
+                          <InputLabel>Show My Notes to the Company</InputLabel>
+                          <Switch
+                            id="show-contractor-notes-to-employer"
+                            edge="end"
+                            checked={normalizeBooleanInputValue(values?.showContractorNotesToEmployer)}
+                            onChange={(event, checked) => {
+                              setFieldValue("showContractorNotesToEmployer", checked);
+                            }}
+                            inputProps={{ 'aria-labelledby': 'switch-list-label-sb' }}
+                          />
+                          {touched.showContractorNotesToEmployer && errors.showContractorNotesToEmployer && (
+                            <FormHelperText error id="show-contractor-notes-to-employer-helper">
+                              {errors.showContractorNotesToEmployer}
+                            </FormHelperText>
+                          )}
+
                         </Stack>
                         <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 2.5 }}>
                           <Button type="submit" variant="contained" disabled={isSubmitting}>

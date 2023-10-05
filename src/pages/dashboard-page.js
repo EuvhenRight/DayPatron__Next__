@@ -42,7 +42,7 @@ const DashboardPage = () => {
         await bindData();
       }
     })();
-  }, []);
+  }, [personalInformation?.id, keycloak?.idToken]);
 
   return (
     <Grid container rowSpacing={4.5} columnSpacing={3}>

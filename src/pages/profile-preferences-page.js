@@ -58,7 +58,7 @@ const ProfilePreferencesPage = () => {
         setPreferences(res.data);
       }
     })();
-  }, [personalInformation]);
+  }, [personalInformation?.id, keycloak?.idToken]);
 
 
   const dispatch = useDispatch();

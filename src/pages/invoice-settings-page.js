@@ -59,7 +59,7 @@ const InvoiceSettingsPage = () => {
     (async () => {
       await bindData();
     })();
-  }, []);
+  }, [personalInformation?.id, keycloak?.idToken]);
 
   return (
     <MainCard content={false} sx={{ '& .MuiInputLabel-root': { fontSize: '0.875rem' } }}>
@@ -73,6 +73,7 @@ const InvoiceSettingsPage = () => {
           postCode: state?.postCode,
           country: state?.country,
           vatNumber: state?.vatNumber,
+          vatPercentage: state?.vatPercentage,
           chamberOfCommerceIdentifier: state?.chamberOfCommerceIdentifier,
           bankName: state?.bankName,
           bankAccountName: state?.bankAccountName,
@@ -88,6 +89,11 @@ const InvoiceSettingsPage = () => {
           postCode: Yup.string().max(255).nullable(true).required('Postal code is required.'),
           country: Yup.string().nullable(true).required('Country is required.'),
           vatNumber: Yup.string().max(255).nullable(true),
+          vatPercentage: Yup.number().test('is-decimal', 'invalid decimal', value => {
+            if (!value)
+              return true;
+            return (value + "").match(/^\d*\.?\d*$/);
+          }).max(1000).nullable(true),
           chamberOfCommerceIdentifier: Yup.string().max(255).nullable(true),
           bankName: Yup.string().max(255).nullable(true),
           bankAccountName: Yup.string().max(255).nullable(true),
@@ -197,6 +203,29 @@ const InvoiceSettingsPage = () => {
                     {touched.vatNumber && errors.vatNumber && (
                       <FormHelperText error id="invoice-settings-vat-number-helper">
                         {errors.vatNumber}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <InfoWrapper tooltipText="invoice_settings_vat_percentage_tooltip">
+                      <InputLabel htmlFor="invoice-settings-vat-percentage">VAT %</InputLabel>
+                    </InfoWrapper>
+                    <TextField
+                      fullWidth
+                      id="invoice-settings-vat-percentage"
+                      value={normalizeInputValue(values.vatPercentage)}
+                      name="vatPercentage"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      placeholder="VAT %"
+                      autoFocus
+                    />
+                    {touched.vatPercentage && errors.vatPercentage && (
+                      <FormHelperText error id="invoice-settings-vat-percentage-helper">
+                        {errors.vatPercentage}
                       </FormHelperText>
                     )}
                   </Stack>

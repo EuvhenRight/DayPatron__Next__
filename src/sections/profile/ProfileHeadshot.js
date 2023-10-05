@@ -1,29 +1,26 @@
-import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { useKeycloak } from '@react-keycloak/web';
 import { PERSONAL_INFORMATION_UPDATE } from 'store/reducers/actions';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Button, Box, FormLabel, Grid, TextField, Menu, MenuItem, Stack, Typography, Link as MuiLink  } from '@mui/material';
+import { Button, Box, FormLabel, Grid, TextField, Stack, Typography, Link as MuiLink  } from '@mui/material';
 
 // project import
 import MainCard from 'components/MainCard';
-import IconButton from 'components/@extended/IconButton';
 import Avatar from 'components/@extended/Avatar';
 import { linkedInColor } from 'config';
 
 // assets
-import { LinkedinFilled, MoreOutlined, CameraOutlined } from '@ant-design/icons';
+import { LinkedinFilled, CameraOutlined } from '@ant-design/icons';
 
 const avatarImage = require.context('assets/images/users', true);
 
 // ==============================|| USER PROFILE - TAB CONTENT ||============================== //
 
-const ProfileHeadshot = ({ focusInput }) => {
+const ProfileHeadshot = () => {
   const { keycloak } = useKeycloak();
   const dispatch = useDispatch();
 
@@ -32,9 +29,6 @@ const ProfileHeadshot = ({ focusInput }) => {
   const [newMainImage, setNewMainImage] = useState(undefined);
   const [avatar, setAvatar] = useState(avatarImage(`./default.png`));
   const state = useSelector(state => state.personalInformation);
-
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
 
   const handleMainImageUrlChange = async (newMainImageUrl) => {
     try {
@@ -67,7 +61,7 @@ const ProfileHeadshot = ({ focusInput }) => {
 
   useEffect(() => {
     handleMainImageUrlChange(state.mainImageUrl);
-  }, [state.mainImageUrl]);
+  }, [state.mainImageUrl, keycloak?.idToken]);
 
   const handleChangeMainImage = (event) => {
     var newImage = event.target.files?.[0];
@@ -153,65 +147,11 @@ const ProfileHeadshot = ({ focusInput }) => {
     setUploading(false);
     setNewMainImage(null);
   };
-
-  const handleClick = (event) => {
-    setAnchorEl(event?.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
   
   return (
     <MainCard>
       <Grid container spacing={6}>
         <Grid item xs={12}>
-          <Stack direction="row" justifyContent="flex-end">
-            <IconButton
-              variant="light"
-              color="secondary"
-              id="basic-button"
-              aria-controls={open ? 'basic-menu' : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? 'true' : undefined}
-              onClick={handleClick}
-            >
-              <MoreOutlined />
-            </IconButton>
-            <Menu
-              id="basic-menu"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              MenuListProps={{
-                'aria-labelledby': 'basic-button'
-              }}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right'
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right'
-              }}
-            >
-              <MenuItem
-                component={Link}
-                to="/profile/personal"
-                onClick={() => {
-                  handleClose();
-                  setTimeout(() => {
-                    focusInput();
-                  });
-                }}
-              >
-                Edit
-              </MenuItem>
-              <MenuItem onClick={handleClose} disabled>
-                Delete
-              </MenuItem>
-            </Menu>
-          </Stack>
           <Stack spacing={2.5} alignItems="center">
             <FormLabel
               htmlFor="change-avtar"
@@ -256,8 +196,7 @@ const ProfileHeadshot = ({ focusInput }) => {
             {newMainImage && 
               <Stack alignItems="center" spacing={2}>
                 <Button onClick={handleUploadClick} variant="contained" disabled={uploading}>
-                  {!uploading && <>Upload</> }
-                  {uploading && <>Uploading...</>}
+                  {uploading ? <>Uploading...</> : <>Upload</>}
                 </Button>
               </Stack>
             }
@@ -276,10 +215,6 @@ const ProfileHeadshot = ({ focusInput }) => {
       </Grid>
     </MainCard>
   );
-};
-
-ProfileHeadshot.propTypes = {
-  focusInput: PropTypes.func
 };
 
 export default ProfileHeadshot;

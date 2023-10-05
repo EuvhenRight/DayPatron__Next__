@@ -68,7 +68,7 @@ const HeaderContent = () => {
         await bindContractors();
       }
     })();
-  }, []);
+  }, [keycloak?.tokenParsed?.roles, keycloak?.idToken]);
 
   return (
     <>

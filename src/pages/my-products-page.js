@@ -77,7 +77,6 @@ const MyProductsPage = () => {
       let json = await response.json();
 
       setProducts(json.products);
-      setFilteredProducts(json.products);
     } catch (error) {
       console.log(error);
     }
@@ -105,7 +104,7 @@ const MyProductsPage = () => {
     (async () => {
       await bindProducts();
     })();
-  }, []);
+  }, [personalInformation?.id, keycloak?.idToken]);
 
   useEffect(() => {
     const newProducts = products.filter((value) => {
@@ -116,7 +115,7 @@ const MyProductsPage = () => {
       }
     });
     setFilteredProducts(newProducts);
-  }, [globalFilter]);
+  }, [globalFilter, products]);
 
   const PER_PAGE = 10;
 

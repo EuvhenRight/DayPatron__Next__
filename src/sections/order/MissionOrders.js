@@ -85,7 +85,7 @@ const MissionOrders = () => {
     (async () => {
       await bindOrders();
     })();
-  }, []);
+  }, [personalInformation?.id, keycloak?.idToken]);
 
   useEffect(() => {
     const newOrders = orders.filter((value) => {
@@ -96,7 +96,7 @@ const MissionOrders = () => {
       }
     });
     setFilteredOrders(newOrders);
-  }, [globalFilter]);
+  }, [globalFilter, orders]);
 
   const bindOrders = async () => {
     try {
@@ -112,7 +112,6 @@ const MissionOrders = () => {
       let json = await response.json();
 
       setOrders(json.orders);
-      setFilteredOrders(json.orders);
     } catch (error) {
       console.log(error);
     }
@@ -275,10 +274,10 @@ const MissionOrders = () => {
 
               <ListItem>
                 <ListItemText>
-                  Effort (hours)
+                  Effort
                 </ListItemText>
                 <ListItemSecondaryAction>
-                  {order?.contractorServiceOrder?.durationHours}
+                  {order?.contractorServiceOrder?.duration}
                 </ListItemSecondaryAction>
               </ListItem>
 
@@ -300,6 +299,15 @@ const MissionOrders = () => {
                 </ListItemSecondaryAction>
               </ListItem>
             </List>
+
+            <ListItem>
+              <ListItemText>
+                <Typography>Total Amount</Typography>
+              </ListItemText>
+              <ListItemSecondaryAction>
+                {order?.contractorServiceOrder?.totalAmount}
+              </ListItemSecondaryAction>
+            </ListItem>
           </MainCard>
         </Grid>
         <Grid item xs={12}>

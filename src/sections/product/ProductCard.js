@@ -48,7 +48,7 @@ const ProductCard = ({ product, alertProductToDelete }) => {
         }, 1000);
 
     })();
-  }, [product?.mainImageUrl]);
+  }, [product?.mainImageUrl, keycloak?.idToken]);
 
   const getImageSrc = async (imageUrl) => {
     try {
