@@ -107,9 +107,8 @@ export const { reviewInvoicePopup, customerPopup, toggleCustomerPopup, selectCou
 export function getInvoiceList(keycloak, employerUserId) {
   return async () => {
     try {
-      //const response = await axios.get('/api/invoice/list');
       try {
-        let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers/users/' + employerUserId + '/static-data',
+        let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers/users/' + employerUserId + '/invoices',
           {
             method: 'GET',
             headers: {
@@ -119,7 +118,7 @@ export function getInvoiceList(keycloak, employerUserId) {
         );
         let json = await response.json();
 
-        dispatch(invoice.actions.getLists(json?.staticData?.payouts?.invoices));
+        dispatch(invoice.actions.getLists(json.invoices));
       } catch (error) {
         console.log(error);
       }
