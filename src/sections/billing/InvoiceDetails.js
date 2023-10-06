@@ -192,44 +192,11 @@ const InvoiceDetails = ({ invoice, onInvoiceUpdated }) => {
                   <Typography variant="subtitle2">{format(new Date(invoice?.referenceDate), "yyyy-MM-dd")}</Typography>
                 </Stack>
               </Grid>
+
               <Grid item xs={12} sm={6}>
                 <Stack spacing={1.25}>
-                  <Typography variant="subtitle1">Due Date</Typography>
-                  <DatePicker
-                    name="dueDate"
-                    value={values.dueDate}
-                    onChange={date => setFieldValue('dueDate', date)}
-                    renderInput={(params) => <TextField {...params} />} />
-                </Stack>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Stack spacing={1.25}>
-                  <Typography variant="subtitle1">Start Date</Typography>
-                  <Typography variant="subtitle2">{format(new Date(invoice?.startDate), "yyyy-MM-dd")}</Typography>
-                </Stack>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Stack spacing={1.25}>
-                  <Typography variant="subtitle1">End Date</Typography>
-                  <Typography variant="subtitle2">{format(new Date(invoice?.endDate), "yyyy-MM-dd")}</Typography>
-                </Stack>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Stack spacing={1.25}>
-                  <Typography variant="subtitle1">Total Amount Excluding VAT</Typography>
-                  <Typography variant="subtitle2">€ {invoice?.totalAmountExcludingVat?.toFixed(2).replace(".", ",")}</Typography>
-                </Stack>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Stack spacing={1.25}>
-                  <Typography variant="subtitle1">Vat Amount</Typography>
-                  <Typography variant="subtitle2">€ {invoice?.vatAmount?.toFixed(2).replace(".", ",")}</Typography>
-                </Stack>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Stack spacing={1.25}>
-                  <Typography variant="subtitle1">Total Amount Including VAT</Typography>
-                  <Typography variant="subtitle2">€ {invoice?.totalAmountIncludingVat?.toFixed(2).replace(".", ",")}</Typography>
+                  <Typography variant="subtitle1">Period</Typography>
+                  <Typography variant="subtitle2">{format(new Date(invoice?.startDate), "yyyy-MM-dd")} - {format(new Date(invoice?.endDate), "yyyy-MM-dd")}</Typography>
                 </Stack>
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -240,14 +207,42 @@ const InvoiceDetails = ({ invoice, onInvoiceUpdated }) => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <Stack spacing={1.25}>
+                  <Typography variant="subtitle1">Total Amount (excl VAT)</Typography>
+                  <Typography variant="subtitle2">€ {invoice?.totalAmountExcludingVat?.toFixed(2).replace(".", ",")}</Typography>
+                </Stack>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Stack spacing={1.25}>
                   <Typography variant="subtitle1">Talent Service Order Id</Typography>
                   <Typography variant="subtitle2">{invoice?.serviceOrderIdContractor}</Typography>
                 </Stack>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <Stack spacing={1.25}>
+                  <Typography variant="subtitle1">Vat Amount</Typography>
+                  <Typography variant="subtitle2">€ {invoice?.vatAmount?.toFixed(2).replace(".", ",")}</Typography>
+                </Stack>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Stack spacing={1.25}>
                   <Typography variant="subtitle1">Company Service Order Id</Typography>
                   <Typography variant="subtitle2">{invoice?.serviceOrderIdEmployer}</Typography>
+                </Stack>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Stack spacing={1.25}>
+                  <Typography variant="subtitle1">Total Amount (incl VAT)</Typography>
+                  <Typography variant="subtitle2">€ {invoice?.totalAmountIncludingVat?.toFixed(2).replace(".", ",")}</Typography>
+                </Stack>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Stack spacing={1.25}>
+                  <Typography variant="subtitle1">Due Date</Typography>
+                  <DatePicker
+                    name="dueDate"
+                    value={values.dueDate}
+                    onChange={date => setFieldValue('dueDate', date)}
+                    renderInput={(params) => <TextField {...params} />} />
                 </Stack>
               </Grid>
               {invoice?.invoiceType === "Regular" ? (
@@ -456,7 +451,6 @@ const InvoiceDetails = ({ invoice, onInvoiceUpdated }) => {
         </Form>
       </FormikProvider>
     </LocalizationProvider>
-
   );
 };
 

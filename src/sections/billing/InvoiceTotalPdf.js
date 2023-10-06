@@ -45,7 +45,7 @@ const InvoiceTotalPdf = ({ invoice, vatPercentage }) => {
       <View style={styles.table}>
         <View style={styles.row}>
           <Text style={styles.column1}> </Text>
-          <Text style={[styles.column2, styles.text]}>Total excluding VAT</Text>
+          <Text style={[styles.column2, styles.text]}>Subtotal</Text>
           <Text style={styles.column3}> </Text>
           <Text style={[styles.column4, styles.text]}>€ {invoice?.totalAmountExcludingVat.toFixed(2).replace(".", ",")}</Text>
         </View>
@@ -54,14 +54,14 @@ const InvoiceTotalPdf = ({ invoice, vatPercentage }) => {
         <View style={styles.row}>
           <Text style={styles.column1}> </Text>
           <Text style={[styles.column2, styles.text]}>VAT {vatPercentage}%</Text>
-          <Text style={styles.column3}></Text>
+          <Text style={styles.column3}> </Text>
           <Text style={[styles.column4, styles.text]}>€ {invoice?.vatAmount?.toFixed(2).replace(".", ",")}</Text>
         </View>
       </View>
       <View style={styles.table}>
         <View style={styles.row}>
           <Text style={styles.column1}> </Text>
-          <Text style={[styles.column2, styles.text]}>Total including VAT</Text>
+          <Text style={[styles.column2, styles.text]}>Total</Text>
           <Text style={styles.column3}> </Text>
           <Text style={[styles.column4, styles.text]}>€ {invoice?.totalAmountIncludingVat?.toFixed(2).replace(".", ",")}</Text>
         </View>

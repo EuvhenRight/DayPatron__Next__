@@ -73,14 +73,8 @@ const UpsertBillingInfo = ({ billingInfoId }) => {
             </Grid>
             <Grid item xs={12} sm={4}>
               <Stack spacing={1.25}>
-                <Typography variant="subtitle1">Start Date</Typography>
-                <Typography variant="subtitle2">{billingInfo?.startDate && format(new Date(billingInfo?.startDate), "yyyy-MM-dd")}</Typography>
-              </Stack>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <Stack spacing={1.25}>
-                <Typography variant="subtitle1">End Date</Typography>
-                <Typography variant="subtitle2">{billingInfo?.endDate && format(new Date(billingInfo?.endDate), "yyyy-MM-dd")}</Typography>
+                <Typography variant="subtitle1">Billing Period</Typography>
+                <Typography variant="subtitle2">{billingInfo?.startDate && format(new Date(billingInfo?.startDate), "yyyy-MM-dd")} - {billingInfo?.endDate && format(new Date(billingInfo?.endDate), "yyyy-MM-dd")}</Typography>
               </Stack>
             </Grid>
             <Grid item xs={12} sm={4}>
@@ -98,7 +92,7 @@ const UpsertBillingInfo = ({ billingInfoId }) => {
             <Grid item xs={12} sm={4}>
               <Stack spacing={1.25}>
                 <Typography variant="subtitle1">Creation Date</Typography>
-                <Typography variant="subtitle2">{billingInfo?.createdAtUtc && format(new Date(billingInfo?.createdAtUtc), "yyyy-MM-dd")}</Typography>
+                <Typography variant="subtitle2">{billingInfo?.createdAtUtc && format(new Date(billingInfo?.createdAtUtc), "yyyy-MM-dd HH:mm:ss")}</Typography>
               </Stack>
             </Grid>
             <Grid item xs={12} sm={4}>
