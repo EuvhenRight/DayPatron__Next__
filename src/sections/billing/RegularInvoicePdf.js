@@ -31,7 +31,7 @@ const RegularInvoicePdf = ({ invoice }) => {
         <InvoiceEmptyRowsPdf rows={8 - invoice.invoiceItems.length} />
         <InvoiceTotalPdf invoice={invoice} vatPercentage={invoice.debtor.vatPercentage} />
         <InvoiceEmptyRowsPdf rows={2} />
-        <InvoiceMessagePdf message="THANK YOU FOR YOUR BUSINESS!" />
+        <InvoiceMessagePdf message="THANK YOU FOR YOUR BUSINESS!" textColor="#3c3ec5" />
         <InvoiceFooterPdf />
       </Page >
     </Document >

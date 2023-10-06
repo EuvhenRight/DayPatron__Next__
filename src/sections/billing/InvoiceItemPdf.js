@@ -59,9 +59,9 @@ const InvoiceItemPdf = ({ invoice }) => {
             </Text>
             <Text style={[styles.column2, styles.text]}>{
               invoiceItem?.rateType === "Hourly" ?
-                invoiceItem?.quantity?.toFixed(2) + " hours" :
+                invoiceItem?.quantity?.toFixed(2).replace(".", ",") + " hours" :
                 invoiceItem?.rateType === "Daily" ?
-                  invoiceItem?.quantity?.toFixed(2) + " days" :
+                  invoiceItem?.quantity?.toFixed(2).replace(".", ",") + " days" :
                   invoiceItem?.quantity}
             </Text>
             <Text style={[styles.column3, styles.text]}>€ {invoiceItem?.unitPrice?.toFixed(2).replace(".", ",")}</Text>

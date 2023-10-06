@@ -95,6 +95,11 @@ const InvoiceHeaderPdf = ({ counterParty }) => {
           <Text style={[styles.column2, styles.textBody1]}>VAT Number:</Text>
           <Text style={[styles.column3, styles.textBody1]}>{counterParty?.vatNumber}</Text>
         </View>
+        <View style={styles.row}>
+          <Text style={styles.column1}> </Text>
+          <Text style={[styles.column2, styles.textBody1]}>E-mail address:</Text>
+          <Text style={[styles.column3, styles.textBody1]}>invoices@10x.team</Text>
+        </View>
       </View>
     </>
   )
