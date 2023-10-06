@@ -185,12 +185,19 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
     contractorServiceOrderDescription: Yup.string().max(5000).required('Required').nullable(true),
     contractorServiceOrderDuration: Yup.number("Should be a positive integer").integer("Should be a positive integer").min(0, "Should be a positive integer").max(999999, "Maximum 999999").nullable(true),
     contractorServiceOrderRateType: Yup.string().max(255).required('Required').nullable(true),
-    contractorServiceOrderRateAmount: Yup.number("Should be a positive integer").integer("Should be a positive integer").required("Required").min(0, "Should be a positive integer").max(9999999, "Maximum 9999999").nullable(true),
-
+    contractorServiceOrderRateAmount: Yup.number().required("Required").test('is-decimal', 'Invalid rate', value => {
+      if (!value)
+        return true;
+      return (value + "").match(/^\d*\.?\d*$/);
+    }).max(0).max(9999999).nullable(true),
     employerServiceOrderDescription: Yup.string().max(5000).required('Required').nullable(true),
     employerServiceOrderDuration: Yup.number("Should be a positive integer").integer("Should be a positive integer").min(0, "Should be a positive integer").max(999999, "Maximum 999999").nullable(true),
     employerServiceOrderRateType: Yup.string().max(255).required('Required').nullable(true),
-    employerServiceOrderRateAmount: Yup.number("Should be a positive integer").integer("Should be a positive integer").required("Required").min(0, "Should be a positive integer").max(9999999, "Maximum 9999999").nullable(true)
+    employerServiceOrderRateAmount: Yup.number().required("Required").test('is-decimal', 'Invalid rate', value => {
+      if (!value)
+        return true;
+      return (value + "").match(/^\d*\.?\d*$/);
+    }).max(0).max(9999999).nullable(true)
   });
 
   const formik = useFormik({
@@ -517,8 +524,6 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
                   <TextField
                     fullWidth
                     id="employer-service-order-rate-amount"
-                    type="number"
-                    inputProps={{ min: 0, max: 999999 }}
                     placeholder="Enter rate amount"
                     value={normalizeInputValue(values.employerServiceOrderRateAmount)}
                     name="employerServiceOrderRateAmount"
@@ -634,8 +639,6 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
                   <TextField
                     fullWidth
                     id="contractor-service-order-rate-amount"
-                    type="number"
-                    inputProps={{ min: 0, max: 999999 }}
                     placeholder="Enter rate amount"
                     value={normalizeInputValue(values.contractorServiceOrderRateAmount)}
                     name="contractorServiceOrderRateAmount"
