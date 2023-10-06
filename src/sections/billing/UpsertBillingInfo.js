@@ -79,6 +79,12 @@ const UpsertBillingInfo = ({ billingInfoId }) => {
             </Grid>
             <Grid item xs={12} sm={4}>
               <Stack spacing={1.25}>
+                <Typography variant="subtitle1">Creation Date</Typography>
+                <Typography variant="subtitle2">{billingInfo?.createdAtUtc && format(new Date(billingInfo?.createdAtUtc), "yyyy-MM-dd HH:mm:ss")}</Typography>
+              </Stack>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <Stack spacing={1.25}>
                 <Typography variant="subtitle1">Name</Typography>
                 <Typography variant="subtitle2">{billingInfo?.itemName}</Typography>
               </Stack>
@@ -91,26 +97,8 @@ const UpsertBillingInfo = ({ billingInfoId }) => {
             </Grid>
             <Grid item xs={12} sm={4}>
               <Stack spacing={1.25}>
-                <Typography variant="subtitle1">Creation Date</Typography>
-                <Typography variant="subtitle2">{billingInfo?.createdAtUtc && format(new Date(billingInfo?.createdAtUtc), "yyyy-MM-dd HH:mm:ss")}</Typography>
-              </Stack>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <Stack spacing={1.25}>
                 <Typography variant="subtitle1">Mission Order Id</Typography>
                 <Typography variant="subtitle2">{billingInfo?.missionOrderId}</Typography>
-              </Stack>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <Stack spacing={1.25}>
-                <Typography variant="subtitle1">Employer Name</Typography>
-                <Typography variant="subtitle2">{billingInfo?.employerName}</Typography>
-              </Stack>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <Stack spacing={1.25}>
-                <Typography variant="subtitle1">Contractor Name</Typography>
-                <Typography variant="subtitle2">{billingInfo?.contractorName}</Typography>
               </Stack>
             </Grid>
             <Grid item xs={12} sm={4}>
@@ -119,6 +107,31 @@ const UpsertBillingInfo = ({ billingInfoId }) => {
                 <Typography variant="subtitle2">{billingInfo?.productOrderId}</Typography>
               </Stack>
             </Grid>
+            <Grid item xs={12} sm={4}>
+              <Stack spacing={1.25}>
+                <Typography variant="subtitle1">Company Name</Typography>
+                <Typography variant="subtitle2">{billingInfo?.employerFullName}</Typography>
+              </Stack>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <Stack spacing={1.25}>
+                <Typography variant="subtitle1">Company Legal Entity Name</Typography>
+                <Typography variant="subtitle2">{billingInfo?.employerLegalEntityName}</Typography>
+              </Stack>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <Stack spacing={1.25}>
+                <Typography variant="subtitle1">Talent Legal Entity Name</Typography>
+                <Typography variant="subtitle2">{billingInfo?.contractorLegalEntityName}</Typography>
+              </Stack>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <Stack spacing={1.25}>
+                <Typography variant="subtitle1">Talent Name</Typography>
+                <Typography variant="subtitle2">{billingInfo?.contractorFullName}</Typography>
+              </Stack>
+            </Grid>
+
             <Grid item xs={12} sm={4}>
               <Stack spacing={1.25}>
                 <Typography variant="subtitle1">Total Amount Employer</Typography>
