@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View } from '@react-pdf/renderer';
 import PropTypes from 'prop-types';
-import { format } from 'date-fns';
 
 const textPrimary = '#262626';
 
@@ -50,12 +49,12 @@ const InvoiceItemPdf = ({ invoice }) => {
           <Text style={[styles.column1, styles.text]}>Description</Text>
           <Text style={[styles.column2, styles.text]}>Quantity</Text>
           <Text style={[styles.column3, styles.text]}>Price</Text>
-          <Text style={[styles.column4, styles.text]}>Amount excl. VAT</Text>
+          <Text style={[styles.column4, styles.text]}>Amount</Text>
         </View>
         {invoice.invoiceItems.map((invoiceItem, index) => (
           <View key={index} style={styles.row} wrap={false}>
             <Text style={[styles.column1, styles.text]}>{
-              invoiceItem?.description}. Period: {invoice?.startDate && format(new Date(invoice?.startDate), "dd-MM-yyyy")} - {invoice?.endDate && format(new Date(invoice?.endDate), "dd-MM-yyyy")}
+              invoiceItem?.description}
             </Text>
             <Text style={[styles.column2, styles.text]}>{
               invoiceItem?.rateType === "Hourly" ?
