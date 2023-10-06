@@ -56,12 +56,16 @@ const InvoiceDetails = ({ invoice, onInvoiceUpdated }) => {
   const dispatch = useDispatch();
   const [isDownloading, setIsDownloading] = useState(false);
 
-  const handleDownloadPdf = async (pdfDocument, fileName) => {
+  const handleDownloadPdf = async (pdfDocument, invoiceNumber) => {
+
+    setIsDownloading(true);
+
+    const fileName = `10xTeamBV_${invoiceNumber}`;
+
     var a = document.createElement("a");
     document.body.appendChild(a);
     a.style = "display: none";
 
-    setIsDownloading(true);
     const blob = await pdf((pdfDocument)).toBlob();
     var fileUrl = URL.createObjectURL(blob);
     window.open(fileUrl, '_blank');
