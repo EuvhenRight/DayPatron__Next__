@@ -311,7 +311,7 @@ const MissionOrders = () => {
                   <Typography>Total Amount</Typography>
                 </ListItemText>
                 <ListItemSecondaryAction>
-                  {order?.employerServiceOrder?.totalAmount}
+                  &euro;{order?.employerServiceOrder?.totalAmount}
                 </ListItemSecondaryAction>
               </ListItem>
             </List>
