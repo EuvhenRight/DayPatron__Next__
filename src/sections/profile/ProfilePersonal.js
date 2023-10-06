@@ -18,8 +18,7 @@ import {
   Grid,
   InputLabel,
   Stack,
-  TextField,
-  Typography
+  TextField
 } from '@mui/material';
 
 // third party
@@ -56,11 +55,6 @@ const ProfilePersonal = () => {
           email: state.email,
           countryPhoneCode: state.countryPhoneCode,
           phoneNumber: state.phoneNumber,
-          street: state.street,
-          streetNumber: state.streetNumber,
-          city: state.city,
-          postCode: state.postCode,
-          country: state.country,
           linkedInUrl: state.linkedInUrl,
           peraInterviewUrl: state.peraInterviewUrl,
           calendlyUrl: state.calendlyUrl,
@@ -72,11 +66,6 @@ const ProfilePersonal = () => {
           email: Yup.string().email('Invalid email address.').max(255).required('Email is required.'),
           countryPhoneCode: Yup.string().nullable(true),
           phoneNumber: Yup.string().matches(/^[+]*[0-9]{3,}$/g, 'Phone number is not valid').max(20).nullable(true),
-          street: Yup.string().nullable(true),
-          streetNumber: Yup.string().nullable(true),
-          city: Yup.string().nullable(true),
-          postCode: Yup.string().nullable(true),
-          country: Yup.string().nullable(true),
           linkedInUrl: Yup.string().max(255).nullable(true),
           peraInterviewUrl: Yup.string().max(255).nullable(true),
           calendlyUrl: Yup.string().max(255).nullable(true)
@@ -349,152 +338,6 @@ const ProfilePersonal = () => {
                     {touched.calendlyUrl && errors.calendlyUrl && (
                       <FormHelperText error id="personal-calendly-url-helper">
                         {errors.calendlyUrl}
-                      </FormHelperText>
-                    )}
-                  </Stack>
-                </Grid>
-
-                <Grid item xs={12}>
-                  <Typography variant="h5">Address</Typography>
-                </Grid>
-
-                <Grid item xs={12} sm={6}>
-                  <Stack spacing={1.25}>
-                    <InfoWrapper tooltipText="personal_information_address_street_tooltip">
-                      <InputLabel htmlFor="personal-street">Street</InputLabel>
-                    </InfoWrapper>
-
-                    <TextField
-                      fullWidth
-                      id="personal-street"
-                      placeholder="Enter Street"
-                      value={normalizeInputValue(values.street)}
-                      name="street"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                    />
-                    {touched.street && errors.street && (
-                      <FormHelperText error id="personal-street-helper">
-                        {errors.street}
-                      </FormHelperText>
-                    )}
-                  </Stack>
-                </Grid>
-
-                <Grid item xs={12} sm={6}>
-                  <Stack spacing={1.25}>
-                    <InfoWrapper tooltipText="personal_information_address_street_number_tooltip">
-                      <InputLabel htmlFor="personal-street-number">Street Number</InputLabel>
-                    </InfoWrapper>
-
-                    <TextField
-                      fullWidth
-                      id="personal-street-number"
-                      placeholder="Enter street number"
-                      value={normalizeInputValue(values.streetNumber)}
-                      name="streetNumber"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                    />
-                    {touched.streetNumber && errors.streetNumber && (
-                      <FormHelperText error id="personal-streetNumber-helper">
-                        {errors.streetNumber}
-                      </FormHelperText>
-                    )}
-                  </Stack>
-                </Grid>
-
-                <Grid item xs={12} sm={6}>
-                  <Stack spacing={1.25}>
-                    <InfoWrapper tooltipText="personal_information_address_city_tooltip">
-                      <InputLabel htmlFor="personal-city">City</InputLabel>
-                    </InfoWrapper>
-                    <TextField
-                      fullWidth
-                      id="personal-city"
-                      placeholder="Enter city"
-                      value={normalizeInputValue(values.city)}
-                      name="city"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                    />
-                    {touched.city && errors.city && (
-                      <FormHelperText error id="personal-city-helper">
-                        {errors.city}
-                      </FormHelperText>
-                    )}
-                  </Stack>
-                </Grid>
-
-                <Grid item xs={12} sm={6}>
-                  <Stack spacing={1.25}>
-                    <InfoWrapper tooltipText="personal_information_address_postal_code_tooltip">
-                      <InputLabel htmlFor="personal-post-code">Postal Code</InputLabel>
-                    </InfoWrapper>
-                    <TextField
-                      fullWidth
-                      id="personal-post-code"
-                      placeholder="Enter postal code"
-                      value={normalizeInputValue(values.postCode)}
-                      name="postCode"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                    />
-                    {touched.postCode && errors.postCode && (
-                      <FormHelperText error id="personal-post-code-helper">
-                        {errors.postCode}
-                      </FormHelperText>
-                    )}
-                  </Stack>
-                </Grid>
-
-                <Grid item xs={12} sm={6}>
-                  <Stack spacing={1.25}>
-                    <InfoWrapper tooltipText="personal_information_address_country_tooltip">
-                      <InputLabel htmlFor="personal-country">Country</InputLabel>
-                    </InfoWrapper>
-                    <Autocomplete
-                      id="personal-country"
-                      fullWidth
-                      value={values?.country ? countries.find((item) => item.code === values?.country) : null}
-                      onBlur={handleBlur}
-                      onChange={(event, newValue) => {
-                        setFieldValue('country', newValue === null ? '' : newValue.code);
-                      }}
-                      options={countries}
-                      autoHighlight
-                      isOptionEqualToValue={(option, value) => option.code === value?.code}
-                      getOptionLabel={(option) => option.label}
-                      renderOption={(props, option) => (
-                        <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-                          {option.code && (
-                            <img
-                              loading="lazy"
-                              width="20"
-                              src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
-                              srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
-                              alt=""
-                            />
-                          )}
-                          {option.label}
-                          {option.code && ` (${option.code})`}
-                        </Box>
-                      )}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          placeholder="Choose a country"
-                          name="country"
-                          inputProps={{
-                            ...params.inputProps,
-                            autoComplete: 'new-password' // disable autocomplete and autofill
-                          }}
-                        />
-                      )}
-                    />
-                    {touched.country && errors.country && (
-                      <FormHelperText error id="personal-country-helper">
-                        {errors.country}
                       </FormHelperText>
                     )}
                   </Stack>
