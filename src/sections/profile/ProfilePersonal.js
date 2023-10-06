@@ -36,7 +36,7 @@ function useInputRef() {
 // ==============================|| PERSONAL ||============================== //
 
 const ProfilePersonal = () => {
-  const {keycloak} = useKeycloak();
+  const { keycloak } = useKeycloak();
 
   const maxDate = new Date();
   maxDate.setFullYear(maxDate.getFullYear() - 18);
@@ -120,7 +120,7 @@ const ProfilePersonal = () => {
 
             setStatus({ success: true });
             setSubmitting(false);
-            setErrors({ });
+            setErrors({});
           } catch (err) {
             setErrors({ submit: err.message });
             setStatus({ success: false });
