@@ -22,7 +22,7 @@ const InvoiceFooterPdf = () => {
     <>
       <View style={styles.hr}></View>
       <Text style={styles.text}>10x Yourself. 10x Your Business.</Text>
-      <Text style={styles.text}>www.10x.team | hello@10x.team | NL50 BUNQ 2086 7050 69 | Tr.Reg. 89418344 | VAT NL864976835B01</Text>
+      <Text style={styles.text}>www.10x.team</Text>
     </>
   )
 }

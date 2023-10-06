@@ -28,10 +28,12 @@ const RegularInvoicePdf = ({ invoice }) => {
         <InvoiceNumberPdf invoice={invoice} invoiceTypeMessage="Reversed Invoice" />
         <InvoiceEmptyRowsPdf rows={2} />
         <InvoiceItemPdf invoice={invoice} />
-        <InvoiceEmptyRowsPdf rows={8 - invoice.invoiceItems.length} />
+        <InvoiceEmptyRowsPdf rows={7 - invoice.invoiceItems.length} />
         <InvoiceTotalPdf invoice={invoice} vatPercentage={invoice.creditor.vatPercentage} />
-        <InvoiceEmptyRowsPdf rows={2} />
-        <InvoiceMessagePdf message="THANK YOU FOR YOUR BUSINESS!" />
+        <InvoiceEmptyRowsPdf rows={1} />
+        <InvoiceMessagePdf message="This invoice is due as soon as the payment from the customer has been received." fontSize="10" textColor="#262626" />
+        <InvoiceEmptyRowsPdf rows={1} />
+        <InvoiceMessagePdf message="THANK YOU FOR YOUR BUSINESS!" fontSize="11" textColor="#3c3ec5" />
         <InvoiceFooterPdf />
       </Page >
     </Document >

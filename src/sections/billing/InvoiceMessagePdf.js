@@ -1,19 +1,17 @@
 import PropTypes from 'prop-types';
 import { StyleSheet, Text } from '@react-pdf/renderer';
 
-const textTitle = '#3c3ec5';
+const InvoiceMessagePdf = ({ message, fontSize, textColor }) => {
 
-const styles = StyleSheet.create({
-  text: {
-    fontSize: 12,
-    color: textTitle
-  }
-})
-
-const InvoiceMessagePdf = ({ message }) => {
+  const styles = StyleSheet.create({
+    text: {
+      fontSize: fontSize,
+      color: textColor
+    }
+  })
 
   return (
-    <Text style={styles.text}>{message}</Text>
+    <Text style={[styles.text]}>{message}</Text>
   )
 }
 

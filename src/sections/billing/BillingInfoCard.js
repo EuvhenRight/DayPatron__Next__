@@ -47,7 +47,7 @@ const BillingInfoCard = ({ billingInfo }) => {
         </Grid>
         <Grid item xs={8}>
           <Typography variant="body1" color="secondary">
-            {billingInfo.contractorName}
+            {billingInfo.contractorLegalEntityName} ({billingInfo.contractorFullName})
           </Typography>
         </Grid>
         <Grid item xs={4}>
@@ -57,7 +57,7 @@ const BillingInfoCard = ({ billingInfo }) => {
         </Grid>
         <Grid item xs={8}>
           <Typography variant="body1" color="secondary">
-            {billingInfo.employerName}
+            {billingInfo.employerLegalEntityName}
           </Typography>
         </Grid>
         <Grid item xs={4}>
@@ -97,7 +97,7 @@ const BillingInfoCard = ({ billingInfo }) => {
         </Grid>
         <Grid item xs={8}>
           <Typography variant="body1" color="secondary">
-            {format(new Date(billingInfo.createdAtUtc), "yyyy-MM-dd")}
+            {format(new Date(billingInfo.createdAtUtc), "yyyy-MM-dd HH:mm:ss")}
           </Typography>
         </Grid>
         <Grid item xs={12}>

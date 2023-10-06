@@ -43,6 +43,10 @@ const InvoiceNumberPdf = ({ invoice, invoiceTypeMessage }) => {
           <Text style={[styles.column2, styles.text]}>{invoice?.invoiceNumber}</Text>
         </View>
         <View style={styles.row}>
+          <Text style={[styles.column1, styles.text]}>Service Order Id:</Text>
+          <Text style={[styles.column2, styles.text]}>{invoice?.serviceOrderId}</Text>
+        </View>
+        <View style={styles.row}>
           <Text style={[styles.column1, styles.text]}>Invoice Date:</Text>
           <Text style={[styles.column2, styles.text]}>{invoice?.invoiceDate && format(new Date(invoice?.invoiceDate), "dd-MM-yyyy")}</Text>
         </View>

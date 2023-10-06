@@ -33,10 +33,7 @@ const InvoiceCounterPartyPdf = ({ counterParty }) => {
         <View style={styles.row}>
           <View style={styles.start}>
             <Text style={styles.text}>{counterParty?.legalEntityName}</Text>
-            {
-              (counterParty?.firstName != null || counterParty?.lastName != null) &&
-              <Text style={styles.text}>{counterParty?.firstName} {counterParty?.lastName}</Text>
-            }
+            <Text style={styles.text}>{counterParty?.fullName}</Text>
             <Text style={styles.text}>{counterParty?.address?.street} {counterParty?.address?.streetNumber}</Text>
             <Text style={styles.text}>{counterParty?.address?.postCode} {counterParty?.address?.city}</Text>
             <Text style={styles.text}>{countries.find(x => x.code === counterParty?.address?.country)?.label}</Text>
