@@ -29,7 +29,7 @@ const SupportPage = () => {
             <MainCard title="How to contact us for Support">
               <Stack spacing={2}>
                 <Typography color="secondary">
-                  This is how you can contat us for support.
+                  This is how you can contact us for support.
                 </Typography>
                 <CardMedia
                   sx={{ minHeight: 300, border: 0 }}
@@ -51,7 +51,7 @@ const SupportPage = () => {
                 <CardMedia
                   sx={{ minHeight: 300, border: 0 }}
                   component="iframe"
-                  src="https://www.loom.com/embed/93011dbedbfd4dca9cf9cb89df05f762?sid=5f14065a-d64c-4d74-99cb-8c7e2eccda33"
+                  src="https://www.loom.com/embed/537580c852334db1b6e205412610e532?sid=6352dd69-a5e4-4046-a397-801dc1119328"
                   allowFullScreen={true} />
               </Stack>
             </MainCard>
