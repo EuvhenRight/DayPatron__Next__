@@ -165,7 +165,7 @@ const InvoiceSettingsPage = () => {
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
                     <InfoWrapper tooltipText="invoice_settings_invoicing_name_tooltip">
-                      <InputLabel htmlFor="invoice-settings-name">Invoicing Name</InputLabel>
+                      <InputLabel htmlFor="invoice-settings-name">Invoicing Legal Name</InputLabel>
                     </InfoWrapper>
                     <TextField
                       fullWidth
