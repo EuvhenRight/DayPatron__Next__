@@ -56,7 +56,7 @@
   "mission_profile_we_are_looking_for_tooltip": "Are there any specifics you would like to list? What is the kind of superhero we're scouting for this ambitious mission!",
   "match_company_notes_about_the_talent_tooltip": null,
   "invoice_settings_company": "Please select the Company Legal Entity you would like to add the invoicing information for.",
-  "invoice_settings_invoicing_name_tooltip": "To whom should we address the invoice?",
+  "invoice_settings_invoicing_name_tooltip": "To whom should we address the invoice? This is the company representative's name which would appear on the invoices.",
   "invoice_settings_vat_number_tooltip": "Your Value Added Tax (VAT) identification number, if applicable.",
   "invoice_settings_vat_percentage_tooltip": "Your default VAT percentage.",
   "invoice_settings_payment_term_days_tooltip": "Your default invoice payment term in days.",

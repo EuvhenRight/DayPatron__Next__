@@ -88,7 +88,9 @@ const MissionContractorServiceOrderPdfCard = ({ order }) => {
             <View style={styles.half}>
               <View style={styles.card}>
                 <Text style={styles.text}>{order?.contractorLegalEntityName}</Text>
-                <Text style={styles.text}>{order?.contractorLegalEntityRepresentativeName}</Text>
+                {order?.contractorLegalEntityName !== order?.contractorLegalEntityRepresentativeName &&
+                  <Text style={styles.text}>{order?.contractorLegalEntityRepresentativeName}</Text>
+                }
                 <Text style={styles.text}>{order?.contractorStreet} {order?.contractorStreetNumber}</Text>
                 <Text style={styles.text}>{order?.contractorPostCode} {order?.contractorCity}</Text>
                 <Text style={styles.text}>{countries.find(x => x.code === order?.contractorCountry)?.label}</Text>
