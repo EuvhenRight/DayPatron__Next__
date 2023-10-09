@@ -208,7 +208,7 @@ ReactTable.propTypes = {
 const TalentCell = ({ row }) => {
   const { values } = row;
   return (
-    <Typography variant="subtitle1">{values.talent}</Typography>
+    <Typography variant="subtitle1">{values.creditorName}</Typography>
   );
 };
 
@@ -219,15 +219,16 @@ TalentCell.propTypes = {
 // Status
 const StatusCell = ({ value }) => {
   switch (value) {
-    case 'Cancelled':
-      return <Chip color="error" label="Cancelled" size="small" variant="light" />;
+    case 'SentToAccountant':
+      return <Chip color="info" label="Sent" size="small" variant="light" />;
     case 'Paid':
       return <Chip color="success" label="Paid" size="small" variant="light" />;
-    case 'Unpaid':
+    case 'Pending':
     default:
-      return <Chip color="info" label="Unpaid" size="small" variant="light" />;
+      return <Chip color="info" label="Pending" size="small" variant="light" />;
   }
 };
+
 
 StatusCell.propTypes = {
   value: PropTypes.string
@@ -262,7 +263,7 @@ const InvoicesPage = () => {
   const { lists } = useSelector((state) => state.invoice);
   useEffect(() => {
     dispatch(getInvoiceList(keycloak, personalInformation?.id));
-  }, [personalInformation?.id, keycloak?.idToken]);
+  }, [keycloak?.idToken, personalInformation?.id]);
 
   const [list, setList] = useState([]);
   useEffect(() => {
@@ -286,13 +287,13 @@ const InvoicesPage = () => {
       },
       {
         Header: 'Talent',
-        accessor: 'talent',
+        accessor: 'creditorName',
         disableFilters: true,
         Cell: TalentCell
       },
       {
         Header: 'Mission Name',
-        accessor: 'missionName',
+        accessor: 'itemName',
         disableFilters: true
       },
       {
