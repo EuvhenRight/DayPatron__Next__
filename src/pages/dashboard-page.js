@@ -21,7 +21,7 @@ const DashboardPage = () => {
 
   const bindData = async () => {
     try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + personalInformation.id + '/static-data',
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + personalInformation.id + '/missions/statistics',
         {
           method: 'GET',
           headers: {
@@ -30,14 +30,17 @@ const DashboardPage = () => {
         }
       );
       let json = await response.json();
-      setState(json?.staticData?.dashboard);
+      setState(json);
     } catch (error) {
       console.log(error);
     }
   }
+
   useEffect(() => {
     (async () => {
-      await bindData();
+      if (personalInformation.id) {
+        await bindData();
+      }
     })();
   }, [personalInformation?.id, keycloak?.idToken]);
 
@@ -48,23 +51,23 @@ const DashboardPage = () => {
       </Grid>
       {state && <>
         <Grid item xs={12} sm={6} md={4} lg={3}>
-          <AnalyticsDataCard title="Total Missions Applied" count={state?.missionsApplied?.totalAmount}>
-            <TotalMissionsAppliedCardChart months={state?.missionsApplied?.months} />
+          <AnalyticsDataCard title="Total Missions Applied" count={state?.totalMissionsApplied}>
+            <TotalMissionsAppliedCardChart months={state?.applicationsPerMonth} />
           </AnalyticsDataCard>
         </Grid>
         <Grid item xs={12} sm={6} md={4} lg={3}>
-          <AnalyticsDataCard title="Total Missions Accepted" count={state?.missionsAccepted?.totalAmount}>
-            <TotalMissionsAcceptedCardChart months={state?.missionsAccepted?.months} />
+          <AnalyticsDataCard title="Total Missions Accepted" count={state?.totalMissionsApproved}>
+            <TotalMissionsAcceptedCardChart months={state?.approvalsPerMonth} />
           </AnalyticsDataCard>
         </Grid>
         <Grid item xs={12} sm={6} md={4} lg={3}>
-          <AnalyticsDataCard title="Number of Hours" count={state?.numberOfHours?.totalAmount}>
-            <TotalHoursCardChart months={state?.numberOfHours?.months} />
+          <AnalyticsDataCard title="Number of Hours" count={state?.totalNumberOfHours}>
+            <TotalHoursCardChart months={state?.hoursPerMonth} />
           </AnalyticsDataCard>
         </Grid>
         <Grid item xs={12} sm={6} md={4} lg={3}>
-          <AnalyticsDataCard title="Earnings" count={`\u20AC${state?.earnings?.totalAmount}`}>
-            <EarningsCardChart months={state?.earnings?.months} />
+          <AnalyticsDataCard title="Earnings" count={`\u20AC${state?.totalEarnings}`}>
+            <EarningsCardChart months={state?.earningsPerMonth} />
           </AnalyticsDataCard>
         </Grid>
         {state?.recentMissions?.length > 0 &&
@@ -76,12 +79,12 @@ const DashboardPage = () => {
               <Grid item />
             </Grid>
             <MainCard sx={{ mt: 2 }} content={false}>
-                <RecentMissionsList recentMissionsData={state?.recentMissions} />  
+              <RecentMissionsList recentMissionsData={state?.recentMissions} />
             </MainCard>
           </Grid>
         }
         <Grid item xs={12} md={5} lg={4}>
-          <PayoutHistory payoutHistoryData={state?.payoutHistory} />
+          <PayoutHistory payoutHistoryData={state?.recentInvoices} />
         </Grid>
       </>}
 
