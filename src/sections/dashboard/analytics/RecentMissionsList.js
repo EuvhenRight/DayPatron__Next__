@@ -172,15 +172,15 @@ export default function RecentMissionsList({recentMissionsData}) {
                   role="checkbox"
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   tabIndex={-1}
-                  key={row?.identifier}
+                  key={row?.id}
                 >
                   <TableCell component="th" id={labelId} scope="row" align="left">
                     <Link color="secondary" component={RouterLink} to="">
-                      {row?.identifier}
+                      {row?.id}
                     </Link>
                   </TableCell>
                   <TableCell align="left">{row?.company}</TableCell>
-                  <TableCell align="left">{row?.missionTitle}</TableCell>
+                  <TableCell align="left">{row?.title}</TableCell>
                   <TableCell align="right">{row?.totalHours}</TableCell>
                   <TableCell align="left">
                     <MissionStatus status={row?.status} />
