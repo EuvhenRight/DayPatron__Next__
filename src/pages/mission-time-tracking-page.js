@@ -342,36 +342,34 @@ const MissionTimeTrackingPage = () => {
           <Typography variant="h3">Track Time</Typography>
         </Grid>
         <Grid item xs={12}>
+          <Stack direction="row" alignItems="center" spacing={0.25}>
+            <Typography>Week</Typography>
+            <Radio
+              checked={selectedPeriodType === 'week'}
+              onChange={handleChangePerdiodType}
+              value="week"
+              name="radio-period-type"
+              inputProps={{ 'aria-label': 'Week' }}
+              label="Week"
+            />
+
+            <Typography>Month</Typography>
+            <Radio
+              checked={selectedPeriodType === 'month'}
+              onChange={handleChangePerdiodType}
+              value="month"
+              name="radio-period-type"
+              inputProps={{ 'aria-label': 'Month' }}
+              label="Month"
+            />
+          </Stack>
+        </Grid>
+        <Grid item xs={12}>
           <Stack direction="row" alignItems="center" spacing={2}>
             <Button onClick={handlePreviousWeekClick} variant="outlined" startIcon={<LeftCircleOutlined />}>Previous</Button>
             <Typography>{format(week?.start, 'iii, dd MMM y')} - {format(week?.end, 'iii, dd MMM y')}</Typography>
             <Button onClick={handleNextWeekClick} variant="outlined" endIcon={<RightCircleOutlined />}>Next</Button>
-
-            <Stack direction="row" alignItems="center" spacing={0.25}>
-              <Typography>Week</Typography>
-              <Radio
-                checked={selectedPeriodType === 'week'}
-                onChange={handleChangePerdiodType}
-                value="week"
-                name="radio-period-type"
-                inputProps={{ 'aria-label': 'Week' }}
-                label="Week"
-              />
-
-              <Typography>Month</Typography>
-              <Radio
-                checked={selectedPeriodType === 'month'}
-                onChange={handleChangePerdiodType}
-                value="month"
-                name="radio-period-type"
-                inputProps={{ 'aria-label': 'Month' }}
-                label="Month"
-              />
-            </Stack>
-            
           </Stack>
-        </Grid>
-        <Grid item xs={12}>
         </Grid>
         <Grid item xs={12}>
           <Grid container spacing={1}>
