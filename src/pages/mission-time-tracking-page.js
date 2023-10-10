@@ -5,11 +5,11 @@ import update from 'immutability-helper';
 import * as dayjs from 'dayjs';
 import { openSnackbar } from 'store/reducers/snackbar';
 
-import { Button, Stack, Typography, Grid, InputLabel, TextField, Tooltip, Autocomplete } from '@mui/material';
+import { Button, Stack, Typography, Grid, InputLabel, TextField, Tooltip, Autocomplete, Radio } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimeField } from '@mui/x-date-pickers';
-import { startOfWeek, endOfWeek, subDays, addDays, format } from 'date-fns'
+import { startOfWeek, endOfWeek, startOfMonth, endOfMonth, subDays, addDays, subMonths, addMonths, lastDayOfMonth, format } from 'date-fns'
 import { prepareApiBody } from 'utils/stringUtils';
 import { getDatesInRange } from 'utils/dateUtils';
 
@@ -29,10 +29,32 @@ const MissionTimeTrackingPage = () => {
   const dispatch = useDispatch();
   const personalInformation = useSelector(state => state.personalInformation);
   const today = new Date();
+  const [selectedPeriodType, setSelectedPeriodType] = useState('week');
   const [week, setWeek] = useState({ start: startOfWeek(today, { weekStartsOn: 1 }), end: endOfWeek(today, { weekStartsOn: 1 }) });
   const [totalsPerDate, setTotalsPerDate] = useState(null);
   const [timeLogs, setTimeLogs] = useState([{ missionId: null }]);
   const [missions, setMissions] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      if (selectedPeriodType === 'week') {
+        setWeek({ start: startOfWeek(today, { weekStartsOn: 1 }), end: endOfWeek(today, { weekStartsOn: 1 }) });
+      }
+      else if (selectedPeriodType === 'month') {
+        setWeek({ start: startOfMonth(today), end: endOfMonth(today) });
+      }
+    })();
+  }, [selectedPeriodType]);
+
+  useEffect(() => {
+    (async () => {
+      await bindTimeLogs();
+    })();
+  }, [week?.start, week?.end, personalInformation?.id, keycloak?.idToken]);
+
+  const handleChangePerdiodType = (event) => {
+    setSelectedPeriodType(event.target.value);
+  };
 
   const getMissionOptions = (missionId) => {
     if (!missions)
@@ -44,7 +66,7 @@ const MissionTimeTrackingPage = () => {
     }
 
     return result;
-  }
+  };
 
   const convertApiResponseToTimeLogs = (timeLogsResponse) => {
     let result = timeLogsResponse?.timeLogs?.reduce((groupsSoFar, { missionId, date, minutes }) => {
@@ -140,12 +162,6 @@ const MissionTimeTrackingPage = () => {
   }
 
   useEffect(() => {
-    (async () => {
-      await bindTimeLogs();
-    })();
-  }, [week?.start, week?.end, personalInformation?.id, keycloak?.idToken]);
-
-  useEffect(() => {
     (() => {
       let newTotalsPerDate = [];
       timeLogs?.map((timeLog) => {
@@ -197,17 +213,33 @@ const MissionTimeTrackingPage = () => {
   }
 
   const handlePreviousWeekClick = () => {
-    let weekStart = subDays(week.start, 7);
-    let weekEnd = subDays(week.end, 7);
+    if (selectedPeriodType === 'month') {
+      let weekStart = subMonths(week.start, 1);
+      let weekEnd = lastDayOfMonth(weekStart);
 
-    setWeek({ start: weekStart, end: weekEnd });
+      setWeek({ start: weekStart, end: weekEnd });
+    }
+    else if (selectedPeriodType === 'week') {
+      let weekStart = subDays(week.start, 7);
+      let weekEnd = subDays(week.end, 7);
+
+      setWeek({ start: weekStart, end: weekEnd });
+    }
   }
 
   const handleNextWeekClick = () => {
-    let weekStart = addDays(week.start, 7);
-    let weekEnd = addDays(week.end, 7);
+    if (selectedPeriodType === 'month') {
+      let weekStart = addMonths(week.start, 1);
+      let weekEnd = lastDayOfMonth(weekStart);
 
-    setWeek({ start: weekStart, end: weekEnd });
+      setWeek({ start: weekStart, end: weekEnd });
+    }
+    else if (selectedPeriodType === 'week') {
+      let weekStart = addDays(week.start, 7);
+      let weekEnd = addDays(week.end, 7);
+
+      setWeek({ start: weekStart, end: weekEnd });
+    }
   }
 
   const prepareTimeLogsUpdateRequest = () => {
@@ -314,7 +346,32 @@ const MissionTimeTrackingPage = () => {
             <Button onClick={handlePreviousWeekClick} variant="outlined" startIcon={<LeftCircleOutlined />}>Previous</Button>
             <Typography>{format(week?.start, 'iii, dd MMM y')} - {format(week?.end, 'iii, dd MMM y')}</Typography>
             <Button onClick={handleNextWeekClick} variant="outlined" endIcon={<RightCircleOutlined />}>Next</Button>
+
+            <Stack direction="row" alignItems="center" spacing={0.25}>
+              <Typography>Week</Typography>
+              <Radio
+                checked={selectedPeriodType === 'week'}
+                onChange={handleChangePerdiodType}
+                value="week"
+                name="radio-period-type"
+                inputProps={{ 'aria-label': 'Week' }}
+                label="Week"
+              />
+
+              <Typography>Month</Typography>
+              <Radio
+                checked={selectedPeriodType === 'month'}
+                onChange={handleChangePerdiodType}
+                value="month"
+                name="radio-period-type"
+                inputProps={{ 'aria-label': 'Month' }}
+                label="Month"
+              />
+            </Stack>
+            
           </Stack>
+        </Grid>
+        <Grid item xs={12}>
         </Grid>
         <Grid item xs={12}>
           <Grid container spacing={1}>
@@ -324,7 +381,7 @@ const MissionTimeTrackingPage = () => {
                   <Grid item xs={12} lg={5}>
                     <Stack spacing={1.25}>
                       <InputLabel>&nbsp;</InputLabel>
-                      <Typography variant="h3">Total</Typography>
+                      <Typography variant="h3">Total ({getTimeStringFromMinutes(totalsPerDate?.reduce((partialSum, item) => partialSum + item.total, 0))})</Typography>
                     </Stack>
                   </Grid>
                   {totalsPerDate?.map((totalPerDate, totalPerDateIndex) =>
