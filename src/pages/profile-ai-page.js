@@ -31,19 +31,38 @@ import { useNavigate, useParams } from 'react-router-dom';
 // ==============================|| MISSION CONTRACTOR MATCH ||============================== //
 
 const ProfileAiPage = () => {
-  const personalInformation = useSelector(state => state.personalInformation);
-  const peraResponseResultTabGroup = 'ai-results';
-  const peraQuestionsAndAnswersTabGroup = 'ai-qa';
+  const peraResponseResultTabGroup = 'results';
+  const peraQuestionsAndAnswersTabGroup = 'qa';
 
+  const theme = useTheme();
   const { keycloak } = useKeycloak();
+  const personalInformation = useSelector(state => state.personalInformation);
   const [selectedTraitResult, setSelectedTraitResult] = useState(null);
+  const [traitDetailsTabsValue, setTraitDetailsTabsValue] = useState(0);
+  const [contractorPeraSurveyResponse, setContractorPeraSurveyResponse] = useState(null);
 
   const navigate = useNavigate();
   let { tabGroupId, tabGroupItemIndex } = useParams();
   tabGroupItemIndex = parseInt(tabGroupItemIndex);
 
-  const theme = useTheme();
-  const [traitDetailsTabsValue, setTraitDetailsTabsValue] = useState(0);
+  const bindData = async () => {
+    try {
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(personalInformation.id) + '/pera-results',
+        {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + keycloak.idToken
+          }
+        }
+      );
+
+      let json = await response.json();
+
+      setContractorPeraSurveyResponse(json?.contractorPeraSurveyResponse);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const handleChangeTraitDetailsTabs = (event, newValue) => {
     setTraitDetailsTabsValue(newValue);
@@ -57,7 +76,7 @@ const ProfileAiPage = () => {
       indexSuffix = '/' + index;
     }
 
-    navigate('/missions/' + missionId + '/matches/' + contractorId + '/' + group + indexSuffix);
+    navigate('/profile/ai/' + group + indexSuffix);
   };
 
   const handleOpenTraitDetails = async (traitResult) => {
@@ -70,23 +89,29 @@ const ProfileAiPage = () => {
 
   useEffect(() => {
     (async () => {
-      await bindMissionContractorMatch();
-      await bindMissionContractor();
+      await bindData();
     })();
-  }, [keycloak?.idToken, contractorId, missionId]);
+  }, [keycloak?.idToken, personalInformation?.id]);
 
   if (!tabGroupId) {
-    if (missionContractorMatch?.contractorPeraSurveyResponse) {
+    if (contractorPeraSurveyResponse) {
       tabGroupId = peraResponseResultTabGroup;
       tabGroupItemIndex = 0;
-    } else {
-      tabGroupId = notesTabGroup;
     }
   }
 
   let selectedPeraAssessment = null;
   if (tabGroupId === peraResponseResultTabGroup)
-    selectedPeraAssessment = missionContractorMatch?.contractorPeraSurveyResponse?.responseResultsTree[tabGroupItemIndex];
+    selectedPeraAssessment = contractorPeraSurveyResponse?.responseResultsTree?.[tabGroupItemIndex];
+
+  if (!contractorPeraSurveyResponse)
+    return (
+      <MainCard>
+        <Typography>
+          No data.
+        </Typography>
+      </MainCard>
+    );
 
   return (
     <Grid container spacing={3}>
@@ -97,16 +122,11 @@ const ProfileAiPage = () => {
             <MainCard>
               <Grid container spacing={3}>
                 <Grid item xs={12}>
-                  {missionContractorMatch?.contractorPeraSurveyResponse &&
+                  {contractorPeraSurveyResponse &&
                     <List
                       component="nav"
-                      sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32, color: theme.palette.grey[500] } }}
-                      subheader={
-                        <Typography variant="subtitle1" color="text.primary" sx={{ pl: 2, mb: 1, mt: 2 }}>
-                          AI Screening
-                        </Typography>
-                      }>
-                      {missionContractorMatch?.contractorPeraSurveyResponse?.responseResultsTree?.map((item, index) => {
+                      sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32, color: theme.palette.grey[500] } }}>
+                      {contractorPeraSurveyResponse?.responseResultsTree?.map((item, index) => {
                         return (
                           <ListItemButton key={index} selected={tabGroupItemIndex === index} onClick={() => handleTabClick(peraResponseResultTabGroup, index)}>
                             <ListItemText primary={item?.linkedAssessment?.assessment?.name} />
@@ -116,7 +136,7 @@ const ProfileAiPage = () => {
                           </ListItemButton>
                         );
                       })}
-                      {missionContractorMatch?.contractorPeraSurveyResponse &&
+                      {contractorPeraSurveyResponse &&
                         <ListItemButton selected={tabGroupId === peraQuestionsAndAnswersTabGroup} onClick={() => handleTabClick(peraQuestionsAndAnswersTabGroup)}>
                           <ListItemText primary="Questions & Answers" />
                           <ListItemIcon>
@@ -146,7 +166,7 @@ const ProfileAiPage = () => {
                     <Typography variant="h3">{selectedPeraAssessment?.linkedAssessment?.assessment?.name}</Typography>
                   </Grid>
                   <Grid item xs={12}>
-                    <Typography variant="h4">{selectedPeraAssessment?.linkedAssessment?.assessment?.hrPage?.subtitle?.replace('{candidateName}', missionContractorMatch?.contractor?.firstName + ' ' + missionContractorMatch?.contractor?.lastName)}</Typography>
+                    <Typography variant="h4">{selectedPeraAssessment?.linkedAssessment?.assessment?.hrPage?.subtitle?.replace('{candidateName}', personalInformation?.firstName + ' ' + personalInformation?.lastName)}</Typography>
                   </Grid>
                   <Grid item xs={12}>
                     <Sectioned value={selectedPeraAssessment?.percentile * 100} />
@@ -229,7 +249,7 @@ const ProfileAiPage = () => {
                   <Grid item xs={12}>
                     <Typography variant="h3">Questions & Answers</Typography>
                   </Grid>
-                  {missionContractorMatch?.contractorPeraSurveyResponse?.surveyAnswers.map((surveyAnswer, surveyAnswerIndex) => {
+                  {contractorPeraSurveyResponse?.surveyAnswers.map((surveyAnswer, surveyAnswerIndex) => {
                     return (
                       <Grid key={surveyAnswerIndex} item xs={12}>
                         <Grid container spacing={3} alignItems="center">

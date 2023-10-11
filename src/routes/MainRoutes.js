@@ -73,7 +73,19 @@ const MainRoutes = {
             },
             {
               path: 'ai',
-              element: <ProfileAiPage />
+              element: <ProfileAiPage />,
+              children: [
+                {
+                  path: ':tabGroupId',
+                  element: <></>,
+                  children: [
+                    {
+                      path: ':tabGroupItemIndex',
+                      element: <></>
+                    }
+                  ]
+                }
+              ]
             }
           ]
         },
