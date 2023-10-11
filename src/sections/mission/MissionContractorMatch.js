@@ -56,6 +56,8 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
   const [selectedTraitResult, setSelectedTraitResult] = useState(null);
   const [isCreatingInvitation, setIsCreatingInvitation] = useState(false);
   const [isDeletingInvitation, setIsDeletingInvitation] = useState(false);
+  const [isCreatingApproval, setIsCreatingApproval] = useState(false);
+  const [isDeletingApproval, setIsDeletingApproval] = useState(false);
   const [isCalendlyOpen, setIsCalendlyOpen] = useState(false);
   
   const navigate = useNavigate();
@@ -109,7 +111,7 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
         dispatch(
           openSnackbar({
             open: true,
-            message: 'Failed applying for mission.',
+            message: 'Failed inviting match.',
             variant: 'alert',
             alert: {
               color: 'error'
@@ -124,7 +126,7 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
       dispatch(
         openSnackbar({
           open: true,
-          message: 'Successfully applied for mission.',
+          message: 'Successfully invited match.',
           variant: 'alert',
           alert: {
             color: 'success'
@@ -158,7 +160,7 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
         dispatch(
           openSnackbar({
             open: true,
-            message: 'Failed unapplying from mission.',
+            message: 'Failed uninviting match.',
             variant: 'alert',
             alert: {
               color: 'error'
@@ -173,7 +175,7 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
       dispatch(
         openSnackbar({
           open: true,
-          message: 'Successfully unapplied from mission.',
+          message: 'Successfully uninvited match.',
           variant: 'alert',
           alert: {
             color: 'success'
@@ -190,6 +192,103 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
       setMissionContractorMatch(newMissionContractorMatch);
     } catch (error) {
       setIsDeletingInvitation(false);
+      console.log(error);
+    }
+  }
+
+  const handleApproveButtonClick = async () => {
+    try {
+      setIsCreatingApproval(true);
+
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/' + encodeURIComponent(missionId) + '/contractors/' + encodeURIComponent(contractorId) + '/approvals',
+        { method: 'POST', headers: { 'Authorization': 'Bearer ' + keycloak.idToken } }
+      );
+
+      if (!response.ok) {
+        dispatch(
+          openSnackbar({
+            open: true,
+            message: 'Failed approving match.',
+            variant: 'alert',
+            alert: {
+              color: 'error'
+            },
+            close: false
+          })
+        );
+        setIsCreatingApproval(false);
+        return;
+      }
+
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Successfully approved match.',
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
+        })
+      );
+
+      setIsCreatingApproval(false);
+
+      let json = await response.json();
+      var newMissionContractorMatch = { ...missionContractorMatch };
+      newMissionContractorMatch.approval = json;
+
+      setMissionContractorMatch(newMissionContractorMatch);
+    } catch (error) {
+      setIsCreatingApproval(false);
+      console.log(error);
+    }
+  }
+
+  const handleUnapproveButtonClick = async () => {
+    try {
+      setIsDeletingApproval(true);
+
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/' + encodeURIComponent(missionId) + '/contractors/' + encodeURIComponent(contractorId) + '/approvals',
+        { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + keycloak.idToken } }
+      );
+
+      if (!response.ok) {
+        dispatch(
+          openSnackbar({
+            open: true,
+            message: 'Failed unapproving match.',
+            variant: 'alert',
+            alert: {
+              color: 'error'
+            },
+            close: false
+          })
+        );
+        setIsDeletingApproval(false);
+        return;
+      }
+
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Successfully unapproved match.',
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
+        })
+      );
+
+      setIsDeletingApproval(false);
+
+      var newMissionContractorMatch = { ...missionContractorMatch };
+      newMissionContractorMatch.approval = null;
+
+      setMissionContractorMatch(newMissionContractorMatch);
+    } catch (error) {
+      setIsDeletingApproval(false);
       console.log(error);
     }
   }
@@ -330,23 +429,42 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                             <Chip color="primary" size="small" label="Applied" />
                           </ListItem>
                         }
+                        {missionContractorMatch?.approval &&
+                          <ListItem disablePadding sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
+                            <Chip color="success" size="small" label="Approved" />
+                          </ListItem>
+                        }
                       </Box>
                     </Stack>
 
-                    {!missionContractorMatch?.invitation &&
-                      <Stack spacing={0.5} alignItems="center">
-                        <Button variant="contained" onClick={handleInviteButtonClick} disabled={isCreatingInvitation}>
-                          Invite
-                        </Button>
-                      </Stack>
-                    }
-                    {missionContractorMatch?.invitation &&
-                      <Stack spacing={0.5} alignItems="center">
+                    {missionContractorMatch?.invitation ?
+                      (<Stack spacing={0.5} alignItems="center">
                         <Button variant="outlined" onClick={handleUninviteButtonClick} disabled={isDeletingInvitation}>
                           Uninvite
                         </Button>
-                      </Stack>
+                      </Stack>)
+                      :
+                      (<Stack spacing={0.5} alignItems="center">
+                        <Button variant="contained" onClick={handleInviteButtonClick} disabled={isCreatingInvitation}>
+                          Invite
+                        </Button>
+                      </Stack>)
                     }
+
+                    {missionContractorMatch?.approval ?
+                      (<Stack spacing={0.5} alignItems="center">
+                        <Button color="success" variant="outlined" onClick={handleUnapproveButtonClick} disabled={isDeletingApproval}>
+                          Unapprove
+                        </Button>
+                      </Stack>)
+                      :
+                      (<Stack spacing={0.5} alignItems="center">
+                        <Button color="success" variant="contained" onClick={handleApproveButtonClick} disabled={isCreatingApproval}>
+                          Approve
+                        </Button>
+                      </Stack>)
+                    }
+
                     {missionContractorMatch?.contractor?.calendlyUrl &&
                       <Stack spacing={0.5} alignItems="center">
                         <Button variant="text" onClick={() => { setIsCalendlyOpen(true); }} style={{ textTransform: 'none' }}>
