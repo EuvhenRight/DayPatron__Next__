@@ -17,6 +17,7 @@ const ProfilePersonalPage = Loadable(lazy(() => import('pages/profile-personal-p
 const ProfileExpertisePage = Loadable(lazy(() => import('pages/profile-expertise-page')));
 const ProfilePreferencesPage = Loadable(lazy(() => import('pages/profile-preferences-page')));
 const ProfileAvailabilityPage = Loadable(lazy(() => import('pages/profile-availability-page')));
+const ProfileAiPage = Loadable(lazy(() => import('pages/profile-ai-page')));
 
 const MissionPage = Loadable(lazy(() => import('pages/mission-page')));
 const MissionsPage = Loadable(lazy(() => import('pages/missions-page')));
@@ -69,6 +70,10 @@ const MainRoutes = {
             {
               path: 'availability',
               element: <ProfileAvailabilityPage />
+            },
+            {
+              path: 'ai',
+              element: <ProfileAiPage />
             }
           ]
         },

@@ -6,7 +6,8 @@ import {
   UserOutlined,
   BulbOutlined,
   SettingOutlined,
-  CalendarOutlined
+  CalendarOutlined,
+  RobotOutlined
 } from '@ant-design/icons';
 
 // icons
@@ -14,7 +15,8 @@ const icons = {
   UserOutlined,
   BulbOutlined,
   SettingOutlined,
-  CalendarOutlined
+  CalendarOutlined,
+  RobotOutlined
 };
 
 // ==============================|| MENU ITEMS - PROFILE ||============================== //
@@ -51,6 +53,13 @@ const profile = {
       type: 'item',
       url: '/profile/availability',
       icon: icons.CalendarOutlined
+    },
+    {
+      id: 'profile-ai',
+      title: <FormattedMessage id="profile-ai" />,
+      type: 'item',
+      url: '/profile/ai',
+      icon: icons.RobotOutlined
     }
   ]
 };
