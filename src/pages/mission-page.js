@@ -502,6 +502,11 @@ const MissionPage = () => {
                           <Chip color="primary" size="small" label="Applied" />
                         </ListItem>
                       }
+                      {missionContractor?.approval &&
+                        <ListItem disablePadding sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
+                          <Chip color="success" size="small" label="Approved" />
+                        </ListItem>
+                      }
                     </Box>
                   </Grid>
                   <Grid item xs={12}>
