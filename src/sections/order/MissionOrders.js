@@ -255,6 +255,7 @@ const MissionOrders = () => {
         <Grid item xs={12}>
           <MainCard>
             <List sx={{ py: 0, '& .MuiListItem-root': { p: 0, py: 0 } }}>
+
               <ListItem>
                 <ListItemText>
                   10x-er
@@ -307,6 +308,7 @@ const MissionOrders = () => {
                   {order?.contractorServiceOrder?.totalAmount}
                 </ListItemSecondaryAction>
               </ListItem>
+
             </List>
           </MainCard>
         </Grid>
