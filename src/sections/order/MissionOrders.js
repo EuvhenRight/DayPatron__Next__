@@ -298,16 +298,16 @@ const MissionOrders = () => {
                   &euro;{order?.contractorServiceOrder?.rateAmount}
                 </ListItemSecondaryAction>
               </ListItem>
-            </List>
 
-            <ListItem>
-              <ListItemText>
-                <Typography>Total Amount</Typography>
-              </ListItemText>
-              <ListItemSecondaryAction>
-                {order?.contractorServiceOrder?.totalAmount}
-              </ListItemSecondaryAction>
-            </ListItem>
+              <ListItem>
+                <ListItemText>
+                  <Typography>Total Amount</Typography>
+                </ListItemText>
+                <ListItemSecondaryAction>
+                  {order?.contractorServiceOrder?.totalAmount}
+                </ListItemSecondaryAction>
+              </ListItem>
+            </List>
           </MainCard>
         </Grid>
         <Grid item xs={12}>
