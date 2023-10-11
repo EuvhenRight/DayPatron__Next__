@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useKeycloak } from '@react-keycloak/web';
 import { openSnackbar } from 'store/reducers/snackbar';
-import LinearWithLabel from 'components/@extended/progress/LinearWithLabel';
+import Sectioned from 'components/@extended/progress/Sectioned';
 import { useTheme } from '@mui/material/styles';
 import { PopupModal } from "react-calendly";
 import { useSelector } from 'react-redux';
@@ -497,7 +497,7 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                     <Typography variant="h4">{selectedPeraAssessment?.linkedAssessment?.assessment?.hrPage?.subtitle?.replace('{candidateName}', missionContractorMatch?.contractor?.firstName + ' ' + missionContractorMatch?.contractor?.lastName)}</Typography>
                   </Grid>
                   <Grid item xs={12}>
-                    <LinearWithLabel value={selectedPeraAssessment?.percentile * 100} />
+                    <Sectioned value={selectedPeraAssessment?.percentile * 100} />
                   </Grid>
                   <Grid item xs={12}>
                     <Grid container spacing={2}>
@@ -559,7 +559,7 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                                 </ButtonBase>
                               </Grid>
                               <Grid item xs={12} lg={8} md={7}>
-                                <LinearWithLabel value={item?.percentile * 100} />
+                                <Sectioned value={item?.percentile * 100} />
                               </Grid>
                             </Grid>
                           </Grid>
