@@ -806,10 +806,10 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
               <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%' }}>
                 <Tabs value={traitDetailsTabsValue} onChange={handleChangeTraitDetailsTabs} variant="scrollable" scrollButtons="auto" aria-label="trait details tabs">
                   {selectedTraitResult?.trait?.tips?.length > 0 &&
-                    <Tab value={0} label="Growth tip" icon={<RiseOutlined />} iconPosition="start" />
+                    <Tab value={0} label="Growth Tip" icon={<RiseOutlined />} iconPosition="start" />
                   }
                   {selectedTraitResult?.trait?.hrQuestions?.length > 0 &&
-                    <Tab value={1} label="Follow-up questions" icon={<QuestionOutlined />} iconPosition="start" />
+                    <Tab value={1} label="Follow-up Questions" icon={<QuestionOutlined />} iconPosition="start" />
                   }
                 </Tabs>
               </Box>
