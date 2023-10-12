@@ -27,6 +27,7 @@ import { RightOutlined, RiseOutlined, CloseOutlined, FileTextOutlined } from '@a
 import MainCard from 'components/MainCard';
 import { PopupTransition } from 'components/@extended/Transitions';
 import { useNavigate, useParams } from 'react-router-dom';
+import WelcomeBanner from 'sections/WelcomeBanner';
 
 // ==============================|| MISSION CONTRACTOR MATCH ||============================== //
 
@@ -115,6 +116,31 @@ const ProfileAiPage = () => {
 
   return (
     <Grid container spacing={3}>
+
+      <Grid item xs={12}>
+        <WelcomeBanner title="Unleash Your Potential with AI-Powered Insights" subTitle="Discover Your Hidden Competencies, Free from Bias" />
+      </Grid>
+
+      <Grid item xs={12}>
+        <MainCard>
+          Unlock a deeper understanding of your abilities through our innovative dynamic AI-driven Natural Language Processing (NLP) analysis (Powered by Pera). Our dynamic AI model goes beyond traditional assessments and tests, offering a fresh and unbiased perspective on your unique strengths.
+          <br />
+          <br />
+          In this groundbreaking approach:
+
+          <ul>
+            <li>
+              <b>All competencies:</b> We reveal results across all competencies - not just the ones linked to your current role or expertise, fostering unexpected matches.
+            </li>
+            <li>
+              <b>Highest threshold:</b> Our high thresholds ensure that only top-tier talent gains access. Keep this in mind when you see growth opportunities. You are already part of the best.
+            </li>
+          </ul>
+
+          Experience the power of a dynamic AI model that&apos;s revolutionizing competency analysis and is used by many private equity firms, executive search firms and world-class HR and People departments.
+        </MainCard>
+      </Grid>
+
       <Grid item xs={12} sm={5} md={4} xl={3}>
 
         <Grid container spacing={3}>

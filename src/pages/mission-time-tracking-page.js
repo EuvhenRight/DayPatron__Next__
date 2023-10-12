@@ -328,7 +328,7 @@ const MissionTimeTrackingPage = () => {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <WelcomeBanner title="Efficient Time Tracking" subTitle=" Seamlessly Log Your Work Hours with 10x" />
+          <WelcomeBanner title="Efficient Time Tracking" subTitle="Seamlessly Log Your Work Hours with 10x" />
         </Grid>
         <Grid item xs={12}>
           <MainCard>
