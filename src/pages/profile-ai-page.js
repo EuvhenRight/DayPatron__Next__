@@ -77,7 +77,7 @@ const ProfileAiPage = () => {
       indexSuffix = '/' + index;
     }
 
-    navigate('/profile/ai/' + group + indexSuffix);
+    navigate('/profile/ai/' + group + indexSuffix, { state: { preventScrollToTop: true }});
   };
 
   const handleOpenTraitDetails = async (traitResult) => {
