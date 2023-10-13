@@ -183,7 +183,11 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
     missionId: Yup.string().required('Mission is required').nullable(true),
 
     contractorServiceOrderDescription: Yup.string().max(5000).required('Required').nullable(true),
-    contractorServiceOrderDuration: Yup.number("Should be a positive integer").integer("Should be a positive integer").min(0, "Should be a positive integer").max(999999, "Maximum 999999").nullable(true),
+    contractorServiceOrderDuration: Yup.number().test('is-decimal', 'Invalid duration', value => {
+      if (!value)
+        return true;
+      return (value + "").match(/^\d*\.?\d*$/);
+    }).max(0).max(999999).nullable(true),
     contractorServiceOrderRateType: Yup.string().max(255).required('Required').nullable(true),
     contractorServiceOrderRateAmount: Yup.number().required("Required").test('is-decimal', 'Invalid rate', value => {
       if (!value)
@@ -191,7 +195,11 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
       return (value + "").match(/^\d*\.?\d*$/);
     }).max(0).max(9999999).nullable(true),
     employerServiceOrderDescription: Yup.string().max(5000).required('Required').nullable(true),
-    employerServiceOrderDuration: Yup.number("Should be a positive integer").integer("Should be a positive integer").min(0, "Should be a positive integer").max(999999, "Maximum 999999").nullable(true),
+    employerServiceOrderDuration: Yup.number().test('is-decimal', 'Invalid duration', value => {
+      if (!value)
+        return true;
+      return (value + "").match(/^\d*\.?\d*$/);
+    }).max(0).max(999999).nullable(true),
     employerServiceOrderRateType: Yup.string().max(255).required('Required').nullable(true),
     employerServiceOrderRateAmount: Yup.number().required("Required").test('is-decimal', 'Invalid rate', value => {
       if (!value)
@@ -546,8 +554,6 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
                   <TextField
                     fullWidth
                     id="employer-service-order-duration"
-                    type="number"
-                    inputProps={{ min: 0, max: 999999 }}
                     placeholder="Enter duration"
                     value={normalizeInputValue(values.employerServiceOrderDuration)}
                     name="employerServiceOrderDuration"
@@ -661,8 +667,6 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
                   <TextField
                     fullWidth
                     id="contractor-service-order-duration"
-                    type="number"
-                    inputProps={{ min: 0, max: 999999 }}
                     placeholder="Enter duration"
                     value={normalizeInputValue(values.contractorServiceOrderDuration)}
                     name="contractorServiceOrderDuration"
