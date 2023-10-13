@@ -209,7 +209,7 @@ ReactTable.propTypes = {
 const CompanyCell = ({ row }) => {
   const { values } = row;
   return (
-    <Typography variant="subtitle1">{values.debtorName}</Typography>
+    <Typography variant="subtitle1">{values.counterPartyName}</Typography>
   );
 };
 
@@ -300,7 +300,7 @@ const InvoicesPage = () => {
       },
       {
         Header: 'Company',
-        accessor: 'debtorName',
+        accessor: 'counterPartyName',
         disableFilters: true,
         Cell: CompanyCell
       },
