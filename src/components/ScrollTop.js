@@ -9,6 +9,9 @@ const ScrollTop = ({ children }) => {
   const { pathname } = location;
 
   useEffect(() => {
+    if (location.state?.preventScrollToTop)
+      return;
+
     window.scrollTo({
       top: 0,
       left: 0,

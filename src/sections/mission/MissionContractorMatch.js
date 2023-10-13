@@ -305,7 +305,7 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
       indexSuffix = '/' + index;
     }
 
-    navigate('/missions/' + missionId + '/matches/' + contractorId + '/' + group + indexSuffix);
+    navigate('/missions/' + missionId + '/matches/' + contractorId + '/' + group + indexSuffix, { state: { preventScrollToTop: true } });
   };
 
   const bindMissionContractorMatch = async () => {
