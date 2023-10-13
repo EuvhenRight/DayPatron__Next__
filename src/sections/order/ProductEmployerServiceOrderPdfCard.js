@@ -13,6 +13,9 @@ const styles = StyleSheet.create({
   page: {
     padding: 30
   },
+  pageText: {
+    paddingRight: 30
+  },
   card: {
     border: `1px solid ${border}`,
     padding: 18,
@@ -145,8 +148,9 @@ const ProductEmployerServiceOrderPdfCard = ({ order }) => {
           </View>
 
           <Text style={styles.h2}>Purchase Terms</Text>
-          <Html style={styles.text} stylesheet={{ ul: { margin: 0, padding: 0 }}}>{order?.employerServiceOrder?.description}</Html>
-
+          <View style={styles.pageText}>
+            <Html style={styles.text} stylesheet={{ ul: { margin: 0, padding: 0 }}}>{order?.employerServiceOrder?.description}</Html>
+          </View>
           <Text style={styles.h2}> </Text>
           <Text style={styles.h2}> </Text>
           <View style={styles.hr}></View>
