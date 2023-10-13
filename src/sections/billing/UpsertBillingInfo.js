@@ -134,7 +134,7 @@ const UpsertBillingInfo = ({ billingInfoId }) => {
 
             <Grid item xs={12} sm={4}>
               <Stack spacing={1.25}>
-                <Typography variant="subtitle1">Total Amount Employer</Typography>
+                <Typography variant="subtitle1">Total Amount Company</Typography>
                 <Typography variant="subtitle2">€ {billingInfo?.totalAmountEmployer?.toFixed(2).replace(".", ",")}</Typography>
               </Stack>
             </Grid>
