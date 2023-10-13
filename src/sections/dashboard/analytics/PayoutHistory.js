@@ -23,6 +23,10 @@ import avatar2 from 'assets/images/users/avatar-2.png';
 import avatar3 from 'assets/images/users/avatar-3.png';
 import avatar4 from 'assets/images/users/avatar-4.png';
 
+// third-party
+import { format } from 'date-fns';
+
+
 // avatar style
 const avatarSX = {
   width: 36,
@@ -42,7 +46,7 @@ const actionSX = {
 
 // ==============================|| TRANSACTION HISTORY ||============================== //
 
-function PayoutHistory({payoutHistoryData}) {
+function PayoutHistory({ payoutHistoryData }) {
   const loomRecordButtonId = "loom-record-sdk-button";
   const handleNeedHelpClick = () => { document.getElementById(loomRecordButtonId).click(); }
   return (
@@ -78,11 +82,11 @@ function PayoutHistory({payoutHistoryData}) {
                     <CheckOutlined />
                   </Avatar>
                 </ListItemAvatar>
-                <ListItemText primary={<Typography variant="subtitle1">{row?.debtorName}</Typography>} secondary={row?.invoiceDate} />
+                <ListItemText primary={<Typography variant="subtitle1">{row?.debtorName}</Typography>} secondary={format(new Date(row?.invoiceDate), "dd-MM-yyyy")} />
                 <ListItemSecondaryAction>
                   <Stack alignItems="flex-end">
                     <Typography variant="subtitle1" noWrap>
-                      {row?.totalAmount}
+                      {(row?.totalAmount * -1).toFixed(2).replace('.', ',')}
                     </Typography>
                   </Stack>
                 </ListItemSecondaryAction>
@@ -91,7 +95,7 @@ function PayoutHistory({payoutHistoryData}) {
           </List>
         </MainCard>
       </>}
-      
+
       <MainCard sx={{ mt: 2 }}>
         <Stack spacing={3}>
           <Grid container justifyContent="space-between" alignItems="center">

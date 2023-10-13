@@ -32,6 +32,7 @@ import { dispatch, useSelector } from 'store';
 import { useSelector as reduxUseSelector } from 'react-redux';
 import { getInvoiceList } from 'store/reducers/invoice';
 import { renderFilterTypes, GlobalFilter, DateColumnFilter } from 'utils/react-table';
+import { format } from 'date-fns';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -43,7 +44,7 @@ function ReactTable({ columns, data }) {
   const initialState = useMemo(
     () => ({
       filters: [{ id: 'status', value: '' }],
-      hiddenColumns: [],
+      hiddenColumns: ["id"],
       pageIndex: 0,
       pageSize: 5
     }),
@@ -113,13 +114,13 @@ function ReactTable({ columns, data }) {
                   label={
                     status === 'All'
                       ? data.length
-                      : status === 'Paid'
-                        ? counts.Paid
-                        : status === 'Unpaid'
-                          ? counts.Unpaid
-                          : counts.Cancelled
+                      : status === 'Pending'
+                        ? counts.Pending
+                        : status === 'SentToAccountant'
+                          ? counts.SentToAccountant
+                          : counts.Paid
                   }
-                  color={status === 'All' ? 'primary' : status === 'Paid' ? 'success' : status === 'Unpaid' ? 'warning' : 'error'}
+                  color={status === 'All' ? 'primary' : status === 'Paid' ? 'success' : status === 'SentToAccountant' ? 'warning' : 'error'}
                   variant="light"
                   size="small"
                 />
@@ -212,6 +213,13 @@ const CompanyCell = ({ row }) => {
   );
 };
 
+const InvoiceDateCell = ({ row }) => {
+  const { values } = row;
+  return (
+    <Typography variant="subtitle1">{format(new Date(values.invoiceDate), "dd-MM-yyyy")}</Typography>
+  );
+}
+
 CompanyCell.propTypes = {
   row: PropTypes.object
 };
@@ -220,12 +228,12 @@ CompanyCell.propTypes = {
 const StatusCell = ({ value }) => {
   switch (value) {
     case 'SentToAccountant':
-      return <Chip color="info" label="Sent" size="small" variant="light" />;
+      return <Chip color="warning" label="Sent" size="small" variant="light" />;
     case 'Paid':
       return <Chip color="success" label="Paid" size="small" variant="light" />;
     case 'Pending':
     default:
-      return <Chip color="info" label="Pending" size="small" variant="light" />;
+      return <Chip color="error" label="Pending" size="small" variant="light" />;
   }
 };
 
@@ -235,7 +243,7 @@ StatusCell.propTypes = {
 
 // Amount
 const AmountCell = ({ value }) => {
-  return <>&euro;{value}</>;
+  return <>&euro; {(value * -1).toFixed(2).replace('.', ',')}</>;
 };
 
 AmountCell.propTypes = {
@@ -282,7 +290,12 @@ const InvoicesPage = () => {
       },
       {
         Header: 'Invoice Id',
-        accessor: 'identifier',
+        accessor: 'id',
+        disableFilters: true
+      },
+      {
+        Header: 'Invoice Number',
+        accessor: 'invoiceNumber',
         disableFilters: true
       },
       {
@@ -299,10 +312,11 @@ const InvoicesPage = () => {
       {
         Header: 'Invoice Date',
         accessor: 'invoiceDate',
-        disableFilters: true
+        disableFilters: true,
+        Cell: InvoiceDateCell
       },
       {
-        Header: 'Total Amount',
+        Header: 'Total Amount Incl. VAT',
         accessor: 'totalAmount',
         disableFilters: true,
         Cell: AmountCell
@@ -321,7 +335,7 @@ const InvoicesPage = () => {
 
   return (
     <>
-      {list ? 
+      {list ?
         (<MainCard content={false}>
           <ScrollX>
             <ReactTable columns={columns} data={list} />
@@ -332,7 +346,7 @@ const InvoicesPage = () => {
           <Typography>No payouts.</Typography>
         </MainCard>)
       }
-      
+
     </>
   );
 };
