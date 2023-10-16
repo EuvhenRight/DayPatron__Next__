@@ -129,7 +129,8 @@ const MissionsPage = () => {
   useEffect(() => {
     const newMissions = missions.filter((value) => {
       if (globalFilter) {
-        return value.title.toLowerCase().includes(globalFilter.toLowerCase());
+        return value.title.toLowerCase().includes(globalFilter.toLowerCase()) ||
+          value.employerName.toLowerCase().includes(globalFilter.toLowerCase());
       } else {
         return value;
       }
