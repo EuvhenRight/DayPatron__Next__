@@ -31,6 +31,7 @@ const MainLayout = () => {
   const dispatch = useDispatch();
 
   const menu = useSelector((state) => state.menu);
+  const personalInformation = useSelector((state) => state.personalInformation);
   const { drawerOpen } = menu;
 
   const isHorizontal = menuOrientation === LAYOUT_CONST.HORIZONTAL_LAYOUT && !downLG;
@@ -57,25 +58,28 @@ const MainLayout = () => {
   }, [drawerOpen]);
 
   useEffect(() => {
-    const script = document.createElement('script');
+    if (keycloak?.idTokenParsed?.preferred_username === personalInformation?.userName) {
+      const script = document.createElement('script');
 
-    script.text =
-`window.intercomSettings = {
+      script.text =
+        `window.intercomSettings = {
   api_base: 'https://api-iam.intercom.io',
   app_id: 'nohezlna',
-  name: '` + keycloak?.idTokenParsed?.name + `', // Full name
-  email: '` + keycloak?.idTokenParsed?.email + `' // Email address
+  name: '` + personalInformation?.firstName + ' ' + personalInformation?.lastName + `', // Full name
+  email: '` + personalInformation?.email + `', // Email address
+  created_at: '` + Math.floor(new Date(personalInformation?.createdAtUtc).getTime() / 1000) + `' // Signup date as a Unix timestamp
 };
 
 (function () { var w = window; var ic = w.Intercom; if (typeof ic === "function") { ic('reattach_activator'); ic('update', w.intercomSettings); } else { var d = document; var i = function () { i.c(arguments); }; i.q = []; i.c = function (args) { i.q.push(args); }; w.Intercom = i; var l = function () { var s = d.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = 'https://widget.intercom.io/widget/nohezlna'; var x = d.getElementsByTagName('script')[0]; x.parentNode.insertBefore(s, x); }; if (document.readyState === 'complete') { l(); } else if (w.attachEvent) { w.attachEvent('onload', l); } else { w.addEventListener('load', l, false); } } })();
 `;
 
-    document.body.appendChild(script);
+      document.body.appendChild(script);
 
-    return () => {
-      document.body.removeChild(script);
+      return () => {
+        document.body.removeChild(script);
+      }
     }
-  }, [keycloak?.idTokenParsed]);
+  }, [personalInformation, keycloak?.idTokenParsed]);
 
   return (
     <Box sx={{ display: 'flex', width: '100%' }}>
