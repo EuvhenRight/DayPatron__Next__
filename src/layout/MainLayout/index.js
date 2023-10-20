@@ -63,8 +63,8 @@ const MainLayout = () => {
 
       script.text =
         `window.intercomSettings = {
-  api_base: 'https://api-iam.intercom.io',
-  app_id: 'nnblvc46',
+  api_base: 'https://api-iam.eu.intercom.io',
+  app_id: 'xlh9pdzs',
   name: '` + personalInformation?.firstName + ' ' + personalInformation?.lastName + `', // Full name
   email: '` + personalInformation?.email + `', // Email address
   created_at: '` + Math.floor(new Date(personalInformation?.createdAtUtc).getTime() / 1000) + `' // Signup date as a Unix timestamp
