@@ -21,6 +21,8 @@ import {
   Pagination,
   MenuItem,
   Select,
+  FormControlLabel,
+  Checkbox,
   useMediaQuery
 } from '@mui/material';
 
@@ -63,6 +65,7 @@ const InvoicesBillingPage = () => {
   const [sortBy, setSortBy] = useState('Id');
   const [page, setPage] = useState(1);
   const [isRunningBillRun, setIsRunningBillRun] = useState(false);
+  const [selectedBillingInfoIds, setSelectedBillingInfoIds] = useState([]);
 
   const handleSubmitBillRun = async () => {
 
@@ -187,9 +190,13 @@ const InvoicesBillingPage = () => {
       }
     });
     setFilteredBillingInfo(newBillingInfo);
+
+    let filteredIds = selectedBillingInfoIds.filter(x => newBillingInfo.find(n => n.id === x));
+    setSelectedBillingInfoIds(filteredIds);
+    
   }, [globalFilter, billingInfo]);
 
-  const PER_PAGE = 12;
+  const PER_PAGE = 100;
   const count = Math.ceil(filteredBillingInfo.length / PER_PAGE);
   const _DATA = usePagination(filteredBillingInfo, PER_PAGE);
 
@@ -198,6 +205,35 @@ const InvoicesBillingPage = () => {
     _DATA.jump(p);
   };
 
+  const toggleBillingInfoSelection = (billingInfoId) => {
+    let newItems = [...selectedBillingInfoIds];
+    let foundItemIndex = newItems.indexOf(billingInfoId);
+    
+    if(foundItemIndex >= 0)
+      newItems.splice(foundItemIndex, 1);
+    else
+      newItems.push(billingInfoId);
+
+    setSelectedBillingInfoIds(newItems);
+  };
+
+  const getIsSelected = (billingInfoId) => {
+    return selectedBillingInfoIds?.includes(billingInfoId);
+  };
+
+  const toggleAllBillingInfosSelection = (event) => {
+    if(event.target.checked) {
+      let ids = filteredBillingInfo.map(x => x.id);
+      setSelectedBillingInfoIds(ids);
+    } else {
+      setSelectedBillingInfoIds([]);
+    }
+  };
+
+  const getAreAllBillingInfosSelected = () => {
+    return filteredBillingInfo.every(x => selectedBillingInfoIds.includes(x.id));
+  };
+  
   if (!keycloak.tokenParsed.roles.includes('admin'))
     return <Typography>Unauthorized</Typography>
 
@@ -245,7 +281,15 @@ const InvoicesBillingPage = () => {
                 spacing={1}
                 justifyContent="space-between"
                 alignItems="center">
-                <GlobalFilter preGlobalFilteredRows={filteredBillingInfo} globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
+                  
+                <Stack direction={matchDownSM ? 'column' : 'row'} spacing={1} alignItems="center">
+                  <GlobalFilter preGlobalFilteredRows={filteredBillingInfo} globalFilter={globalFilter} setGlobalFilter={setGlobalFilter} />
+                  <FormControlLabel
+                    control={<Checkbox color="primary" checked={getAreAllBillingInfosSelected()} onChange={toggleAllBillingInfosSelection} />}
+                    label="Select all"
+                  />
+                </Stack>
+                
                 <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
                   <FormControl sx={{ m: 1, minWidth: 120 }}>
                     <Select
@@ -283,8 +327,8 @@ const InvoicesBillingPage = () => {
                 })
                 .map((billingInfo, index) => (
                   <Slide key={index} direction="up" in={true} timeout={50}>
-                    <Grid item xs={12} sm={6} lg={4}>
-                      <BillingInfoCard billingInfo={billingInfo} />
+                    <Grid item xs={12} md={6} lg={4}>
+                      <BillingInfoCard billingInfo={billingInfo} toggleBillingInfoSelection={toggleBillingInfoSelection} isSelected={getIsSelected(billingInfo?.id)}/>
                     </Grid>
                   </Slide>
                 ))
