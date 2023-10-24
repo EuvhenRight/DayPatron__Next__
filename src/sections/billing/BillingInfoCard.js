@@ -5,8 +5,10 @@ import { format } from 'date-fns';
 import {
   Divider,
   Grid,
+  Stack,
   Typography,
-  Button
+  Button,
+  Checkbox
 } from '@mui/material';
 
 import MainCard from 'components/MainCard';
@@ -18,11 +20,12 @@ import { useKeycloak } from '@react-keycloak/web';
 
 // ==============================|| BILLINGINFO - CARD ||============================== //
 
-const BillingInfoCard = ({ billingInfo }) => {
+const BillingInfoCard = ({ billingInfo, toggleBillingInfoSelection, isSelected }) => {
   const { keycloak } = useKeycloak();
   const navigate = useNavigate();
 
-  const handleClickDetails = () => {
+  const handleClickDetails = (event) => {
+    event.stopPropagation();
     navigate('/billinginfo/' + billingInfo.id);
   };
 
@@ -31,11 +34,14 @@ const BillingInfoCard = ({ billingInfo }) => {
 
   return (
     <MainCard sx={{ height: 1, '& .MuiCardContent-root': { height: 1, display: 'flex', flexDirection: 'column' } }}>
-      <Grid id="print" container spacing={2.25}>
-        <Grid item xs={12}>
-          <Typography onClick={handleClickDetails} className="clickable" variant="h5">
-            {billingInfo.itemName}
-          </Typography>
+      <Grid id="print" container spacing={1.25}>
+        <Grid item xs={12} onClick={() => {toggleBillingInfoSelection(billingInfo?.id)}}>
+          <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={0.8}>
+            <Typography onClick={handleClickDetails} className="clickable" variant="h5">
+              {billingInfo.itemName}
+            </Typography>
+            <Checkbox checked={isSelected} />
+          </Stack>
         </Grid>
         <Grid item xs={12}>
           <Divider />
