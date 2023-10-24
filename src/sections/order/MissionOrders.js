@@ -330,7 +330,7 @@ const MissionOrders = () => {
           </Grid>
         }
       </>
-    } 
+    }
 
     return;
   };
@@ -392,7 +392,7 @@ const MissionOrders = () => {
             .map((order, index) => (
               <Slide key={index} direction="up" in={true} timeout={50}>
                 <Grid item xs={12} sm={6} lg={4}>
-                  <MissionOrderCard order={order} handleApproveClick={handleApproveClick} />
+                  <MissionOrderCard order={order} onClose={() => bindOrders()} handleApproveClick={handleApproveClick} />
                 </Grid>
               </Slide>
             ))

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import { useKeycloak } from '@react-keycloak/web';
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import {
   Button,
@@ -31,18 +32,22 @@ import MainCard from 'components/MainCard';
 import InfoWrapper from 'components/InfoWrapper';
 import { MoreOutlined, ShoppingCartOutlined, DownloadOutlined, LoadingOutlined } from '@ant-design/icons';
 import { PopupModal } from "react-calendly";
+import { format } from 'date-fns';
+import { openSnackbar } from 'store/reducers/snackbar';
 
 // ==============================|| ORDER - CARD ||============================== //
 
-const MissionOrderCard = ({ order, handleApproveClick }) => {
+const MissionOrderCard = ({ order, onClose, handleApproveClick }) => {
   const { keycloak } = useKeycloak();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const theme = useTheme();
   const personalInformation = useSelector(state => state.personalInformation);
   const [anchorEl, setAnchorEl] = useState(null);
   const [downloadingEmployerServiceOrderId, setDownloadingEmployerServiceOrderId] = useState(null);
   const [downloadingContractorServiceOrderId, setDownloadingContractorServiceOrderId] = useState(null);
   const [scheduleContractor, setScheduleContractor] = useState(null);
+  const [showCloseMissionOrder, setShowCloseMissionOrder] = useState(order?.closedOnUtc === null);
 
   const openMenu = Boolean(anchorEl);
 
@@ -56,6 +61,41 @@ const MissionOrderCard = ({ order, handleApproveClick }) => {
 
   const handleMenuEditClick = () => {
     navigate('/orders/mission/' + order.id);
+  };
+
+  const handleMenuCloseMissionOrderClick = async () => {
+
+    try {
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/orders/' + encodeURIComponent(order.id) + '/closeMissionOrder',
+        {
+          method: 'PUT',
+          headers: {
+            'Authorization': 'Bearer ' + keycloak.idToken,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+
+      if (response.status === 200) {
+
+        setShowCloseMissionOrder(false);
+        onClose();
+        dispatch(
+          openSnackbar({
+            open: true,
+            message: 'Mission Order Closed',
+            variant: 'alert',
+            alert: {
+              color: 'success'
+            },
+            close: false
+          })
+        );
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const getStatusComponent = (approvalStatus, role, subOrderType) => {
@@ -188,12 +228,41 @@ const MissionOrderCard = ({ order, handleApproveClick }) => {
               }}
             >
               <MenuItem onClick={handleMenuEditClick}>Edit</MenuItem>
+              {
+                showCloseMissionOrder ?
+                  <MenuItem disabled={!showCloseMissionOrder} onClick={handleMenuCloseMissionOrderClick}>Close</MenuItem> :
+                  null
+              }
             </Menu>
+          </Grid>
 
-          </Grid>
           <Grid item xs={12}>
-            <Divider />
+            <Stack direction="column" spacing={2}>
+              <Stack direction="column" spacing={1}>
+                <Stack direction="row" justifyContent="space-between" alignItems="flex-end">
+                  <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                    Overview
+                  </Typography>
+                </Stack>
+                <Divider />
+                <List component="nav" aria-label="main mailbox folders" sx={{ py: 0, '& .MuiListItem-root': { p: 0, py: 0 } }}>
+                  <ListItem>
+                    <ListItemText>
+                      <InfoWrapper tooltipText="mission_order_card_mission_order_closed_date_tooltip">
+                        <Typography>
+                          Closed On
+                        </Typography>
+                      </InfoWrapper>
+                    </ListItemText>
+                    <ListItemSecondaryAction>
+                      <Typography>{order?.closedOnUtc && format(new Date(order?.closedOnUtc), "dd-MM-yyyy")}</Typography>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                </List>
+              </Stack>
+            </Stack>
           </Grid>
+
           <Grid item xs={12}>
             <Stack direction="column" spacing={2}>
               <Stack direction="column" spacing={1}>
@@ -209,7 +278,7 @@ const MissionOrderCard = ({ order, handleApproveClick }) => {
                       <Stack sx={{ mr: 2.2, mb: 0.5 }}>
                         <LoadingOutlined sx={{ width: 22, height: 22 }} />
                       </Stack>
-                      
+
                     )
                     :
                     (
@@ -259,7 +328,7 @@ const MissionOrderCard = ({ order, handleApproveClick }) => {
                           Amount
                         </Typography>
                       </InfoWrapper>
-                      
+
                     </ListItemText>
                     <ListItemSecondaryAction>
                       <Typography>&euro;{order?.employerServiceOrder?.rateAmount}</Typography>
@@ -270,7 +339,7 @@ const MissionOrderCard = ({ order, handleApproveClick }) => {
 
               <Stack direction="column" spacing={1}>
                 <Stack direction="row" justifyContent="space-between" alignItems="flex-end">
-                  
+
                   <InfoWrapper tooltipText="mission_order_card_talent_service_order_title_tooltip">
                     <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
                       Talent Service Order
@@ -280,21 +349,21 @@ const MissionOrderCard = ({ order, handleApproveClick }) => {
                   {keycloak.tokenParsed.roles.includes('admin') &&
                     (
                       downloadingContractorServiceOrderId == order?.id ?
-                      (
-                        <Stack sx={{ mr: 2.2, mb: 0.5 }}>
-                          <LoadingOutlined sx={{ width: 22, height: 22 }} />
-                        </Stack>
-                      )
-                      :
-                      (
-                        <IconButton sx={{ width: 22, height: 22, mr: 1.5 }} onClick={async () => {
-                          setDownloadingContractorServiceOrderId(order?.id);
-                          await handleDownloadPdf(<MissionContractorServiceOrderPdfCard order={order} />);
-                          setDownloadingContractorServiceOrderId(null);
-                        }}>
-                          <DownloadOutlined />
-                        </IconButton>
-                      )
+                        (
+                          <Stack sx={{ mr: 2.2, mb: 0.5 }}>
+                            <LoadingOutlined sx={{ width: 22, height: 22 }} />
+                          </Stack>
+                        )
+                        :
+                        (
+                          <IconButton sx={{ width: 22, height: 22, mr: 1.5 }} onClick={async () => {
+                            setDownloadingContractorServiceOrderId(order?.id);
+                            await handleDownloadPdf(<MissionContractorServiceOrderPdfCard order={order} />);
+                            setDownloadingContractorServiceOrderId(null);
+                          }}>
+                            <DownloadOutlined />
+                          </IconButton>
+                        )
                     )
                   }
                 </Stack>
@@ -343,7 +412,7 @@ const MissionOrderCard = ({ order, handleApproveClick }) => {
               </Stack>
 
               <Stack direction="column" spacing={1}>
-                
+
                 <InfoWrapper tooltipText="mission_order_card_project_order_title_tooltip">
                   <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
                     Project Order
@@ -383,8 +452,8 @@ const MissionOrderCard = ({ order, handleApproveClick }) => {
 
             </Stack>
           </Grid>
-        </Grid>
-      </MainCard>
+        </Grid >
+      </MainCard >
     </>
   );
 };
