@@ -37,3 +37,10 @@ div.small-chip span {
 .calendly-popup {
     max-height: 685px !important;
 }
+.small-field-header {
+    font-weight: bold;
+    color: #262626 ;
+}
+.field-empty {
+    color: red;
+}

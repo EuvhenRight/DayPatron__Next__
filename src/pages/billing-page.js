@@ -146,7 +146,6 @@ const InvoicesBillingPage = () => {
       )
     }
 
-
     bindBillingInfo();
     setIsRunningBillRun(false);
   }
@@ -171,6 +170,48 @@ const InvoicesBillingPage = () => {
     }
   }
 
+  const sendBillingNotifications = async (recipientTypes) => {
+    let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/billing/notifications',
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + keycloak.idToken,
+          'Content-Type': 'application/json'
+        },
+        body: prepareApiBody({ recipientTypes, billingInfoIds: selectedBillingInfoIds })
+      }
+    );
+
+    if (!response.ok) {
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Failed sending notifications.',
+          variant: 'alert',
+          alert: {
+            color: 'error'
+          },
+          close: false
+        })
+      );
+      return;
+    }
+
+    bindBillingInfo();
+
+    dispatch(
+      openSnackbar({
+        open: true,
+        message: "Notifications sent.",
+        variant: 'alert',
+        alert: {
+          color: 'success'
+        },
+        close: false
+      })
+    );
+  };
+
   const handleChangeSort = (event) => {
     setSortBy(event.target.value);
   };
@@ -193,7 +234,7 @@ const InvoicesBillingPage = () => {
 
     let filteredIds = selectedBillingInfoIds.filter(x => newBillingInfo.find(n => n.id === x));
     setSelectedBillingInfoIds(filteredIds);
-    
+
   }, [globalFilter, billingInfo]);
 
   const PER_PAGE = 100;
@@ -291,6 +332,9 @@ const InvoicesBillingPage = () => {
                 </Stack>
                 
                 <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
+                  <Button variant='outlined' onClick={async () => await sendBillingNotifications(['contractor'])}>Send to talent</Button>
+                  <Button variant='outlined' onClick={async () => await sendBillingNotifications(['employer'])}>Send to company</Button>
+                  <Button variant='outlined' onClick={async () => await sendBillingNotifications(['accountant'])}>Send to accountant</Button>
                   <FormControl sx={{ m: 1, minWidth: 120 }}>
                     <Select
                       value={sortBy}
@@ -327,7 +371,7 @@ const InvoicesBillingPage = () => {
                 })
                 .map((billingInfo, index) => (
                   <Slide key={index} direction="up" in={true} timeout={50}>
-                    <Grid item xs={12} md={6} lg={4}>
+                    <Grid item xs={12}>
                       <BillingInfoCard billingInfo={billingInfo} toggleBillingInfoSelection={toggleBillingInfoSelection} isSelected={getIsSelected(billingInfo?.id)}/>
                     </Grid>
                   </Slide>
