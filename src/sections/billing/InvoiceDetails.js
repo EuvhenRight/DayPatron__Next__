@@ -7,6 +7,7 @@ import { openSnackbar } from 'store/reducers/snackbar';
 import MainCard from 'components/MainCard';
 import InvoicePdf from 'sections/billing/InvoicePdf';
 import invoiceStatus from 'data/invoiceStatus';
+import countries from 'data/countries';
 
 // third-party
 import { useFormik, Form, FormikProvider } from 'formik';
@@ -27,7 +28,8 @@ import {
   TextField,
   Autocomplete,
   FormHelperText,
-  Divider
+  Divider,
+  Box
 } from '@mui/material'
 
 import { DatePicker } from '@mui/x-date-pickers';
@@ -44,7 +46,29 @@ const getInitialValues = (invoice) => {
     vatPercentageTalent: invoice?.creditor?.vatPercentage,
     purchaseOrderNumber: invoice?.purchaseOrderNumber,
     dueDate: invoice?.dueDate,
-    invoiceItems: invoice?.invoiceItems
+    invoiceItems: invoice?.invoiceItems,
+    
+    creditorLegalEntityName: invoice?.creditor?.legalEntityName,
+    creditorLegalRepresentativeName: invoice?.creditor?.fullName,
+    creditorStreet: invoice?.creditor?.address?.street,
+    creditorStreetNumber: invoice?.creditor?.address?.streetNumber,
+    creditorCity: invoice?.creditor?.address?.city,
+    creditorPostCode: invoice?.creditor?.address?.postCode,
+    creditorCountry: invoice?.creditor?.address?.country,
+    creditorVatNumber: invoice?.creditor?.vatNumber,
+    creditorChamberOfCommerceIdentifier: invoice?.creditor?.chamberOfCommerceIdentifier,
+    creditorBankAccountNumber: invoice?.creditor?.bankAccountNumber,
+
+    debtorLegalEntityName: invoice?.debtor?.legalEntityName,
+    debtorLegalRepresentativeName: invoice?.debtor?.fullName,
+    debtorStreet: invoice?.debtor?.address?.street,
+    debtorStreetNumber: invoice?.debtor?.address?.streetNumber,
+    debtorCity: invoice?.debtor?.address?.city,
+    debtorPostCode: invoice?.debtor?.address?.postCode,
+    debtorCountry: invoice?.debtor?.address?.country,
+    debtorVatNumber: invoice?.debtor?.vatNumber,
+    debtorChamberOfCommerceIdentifier: invoice?.debtor?.chamberOfCommerceIdentifier,
+    debtorBankAccountNumber: invoice?.debtor?.bankAccountNumber
   };
 
   return result;
@@ -93,7 +117,29 @@ const InvoiceDetails = ({ invoice, onInvoiceUpdated }) => {
         quantity: Yup.number().transform((value) => Number.isNaN(value) ? null : value).required('Quantity is required').nullable(true),
         unitPrice: Yup.number().transform((value) => Number.isNaN(value) ? null : value).required('Unit price is required').nullable(true)
       })
-    )
+    ),
+
+    creditorLegalEntityName: Yup.string().max(255).nullable(true).required('Required.'),
+    creditorLegalRepresentativeName: Yup.string().max(255).nullable(true).required('Required.'),
+    creditorStreet: Yup.string().max(255).nullable(true).required('Required.'),
+    creditorStreetNumber: Yup.string().max(255).nullable(true).required('Required.'),
+    creditorCity: Yup.string().max(255).nullable(true).required('Required.'),
+    creditorPostCode: Yup.string().max(255).nullable(true).required('Required.'),
+    creditorCountry: Yup.string().nullable(true).required('Required.'),
+    creditorVatNumber: Yup.string().max(255).nullable(true),
+    creditorChamberOfCommerceIdentifier: Yup.string().max(255).nullable(true),
+    creditorBankAccountNumber: Yup.string().max(255).nullable(true),
+
+    debtorLegalEntityName: Yup.string().max(255).nullable(true).required('Required.'),
+    debtorLegalRepresentativeName: Yup.string().max(255).nullable(true).required('Required.'),
+    debtorStreet: Yup.string().max(255).nullable(true).required('Required.'),
+    debtorStreetNumber: Yup.string().max(255).nullable(true).required('Required.'),
+    debtorCity: Yup.string().max(255).nullable(true).required('Required.'),
+    debtorPostCode: Yup.string().max(255).nullable(true).required('Required.'),
+    debtorCountry: Yup.string().nullable(true).required('Required.'),
+    debtorVatNumber: Yup.string().max(255).nullable(true),
+    debtorChamberOfCommerceIdentifier: Yup.string().max(255).nullable(true),
+    debtorBankAccountNumber: Yup.string().max(255).nullable(true)
   });
 
   const formik = useFormik({
@@ -351,7 +397,7 @@ const InvoiceDetails = ({ invoice, onInvoiceUpdated }) => {
                       <Divider />
                     </Grid>
                     <Grid item xs={12}>
-                      <Typography variant="h4"> Invoice item {index + 1}</Typography>
+                      <Typography variant="h4"> Invoice Item {index + 1}</Typography>
                     </Grid>
                     <Grid item xs={12}>
                       <Stack spacing={1.25}>
@@ -433,6 +479,488 @@ const InvoiceDetails = ({ invoice, onInvoiceUpdated }) => {
                   </Fragment>
                 );
               })}
+
+              <Fragment>
+                <Grid item xs={12}>
+                  <Divider />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="h4">Creditor Details</Typography>
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <Typography variant="subtitle1">Legal Entity Name</Typography>
+                    <TextField
+                      fullWidth
+                      id="invoice-creditor-legal-entity-name"
+                      placeholder="Enter legal entity name"
+                      value={normalizeInputValue(values?.creditorLegalEntityName)}
+                      name="creditorLegalEntityName"
+                      onBlur={handleBlur}
+                      onChange={handleChange} />
+                    {
+                      touched.creditorLegalEntityName && errors.creditorLegalEntityName && (
+                        <FormHelperText error id="invoice-creditor-legal-entity-name-helper">
+                          {errors.creditorLegalEntityName}
+                        </FormHelperText>
+                      )
+                    }
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <Typography variant="subtitle1">Legal Representative Name</Typography>
+                    <TextField
+                      fullWidth
+                      id="invoice-creditor-legal-representative-name"
+                      placeholder="Enter legal representative name"
+                      value={normalizeInputValue(values?.creditorLegalRepresentativeName)}
+                      name="creditorLegalRepresentativeName"
+                      onBlur={handleBlur}
+                      onChange={handleChange} />
+                    {
+                      touched.creditorLegalRepresentativeName && errors.creditorLegalRepresentativeName && (
+                        <FormHelperText error id="invoice-creditor-legal-representative-name-helper">
+                          {errors.creditorLegalRepresentativeName}
+                        </FormHelperText>
+                      )
+                    }
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <Typography variant="subtitle1">Street</Typography>
+                    <TextField
+                      fullWidth
+                      id="invoice-creditor-street"
+                      placeholder="Enter street"
+                      value={normalizeInputValue(values?.creditorStreet)}
+                      name="creditorStreet"
+                      onBlur={handleBlur}
+                      onChange={handleChange} />
+                    {
+                      touched.creditorStreet && errors.creditorStreet && (
+                        <FormHelperText error id="invoice-creditor-street-helper">
+                          {errors.creditorStreet}
+                        </FormHelperText>
+                      )
+                    }
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <Typography variant="subtitle1">Street Number</Typography>
+                    <TextField
+                      fullWidth
+                      id="invoice-creditor-street-number"
+                      placeholder="Enter street number"
+                      value={normalizeInputValue(values?.creditorStreetNumber)}
+                      name="creditorStreetNumber"
+                      onBlur={handleBlur}
+                      onChange={handleChange} />
+                    {
+                      touched.creditorStreetNumber && errors.creditorStreetNumber && (
+                        <FormHelperText error id="invoice-creditor-street-number-helper">
+                          {errors.creditorStreetNumber}
+                        </FormHelperText>
+                      )
+                    }
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <Typography variant="subtitle1">City</Typography>
+                    <TextField
+                      fullWidth
+                      id="invoice-creditor-city"
+                      placeholder="Enter city"
+                      value={normalizeInputValue(values?.creditorCity)}
+                      name="creditorCity"
+                      onBlur={handleBlur}
+                      onChange={handleChange} />
+                    {
+                      touched.creditorCity && errors.creditorCity && (
+                        <FormHelperText error id="invoice-creditor-city-helper">
+                          {errors.creditorCity}
+                        </FormHelperText>
+                      )
+                    }
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <Typography variant="subtitle1">Post Code</Typography>
+                    <TextField
+                      fullWidth
+                      id="invoice-creditor-post-code"
+                      placeholder="Enter post code"
+                      value={normalizeInputValue(values?.creditorPostCode)}
+                      name="creditorPostCode"
+                      onBlur={handleBlur}
+                      onChange={handleChange} />
+                    {
+                      touched.creditorPostCode && errors.creditorPostCode && (
+                        <FormHelperText error id="invoice-creditor-post-code-helper">
+                          {errors.creditorPostCode}
+                        </FormHelperText>
+                      )
+                    }
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <Typography variant="subtitle1">Country</Typography>
+                    
+                    <Autocomplete
+                      id="invoice-creditor-country"
+                      fullWidth
+                      value={values?.creditorCountry ? countries.find((item) => item.code === values?.creditorCountry) : null}
+                      onBlur={handleBlur}
+                      onChange={(event, newValue) => {
+                        setFieldValue('creditorCountry', newValue === null ? '' : newValue.code);
+                      }}
+                      options={countries}
+                      autoHighlight
+                      isOptionEqualToValue={(option, value) => option.code === value?.code}
+                      getOptionLabel={(option) => option.label}
+                      renderOption={(props, option) => (
+                        <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                          {option.code && (
+                            <img
+                              loading="lazy"
+                              width="20"
+                              src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
+                              srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
+                              alt=""
+                            />
+                          )}
+                          {option.label}
+                          {option.code && ` (${option.code})`}
+                        </Box>
+                      )}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          placeholder="Choose a country"
+                          name="country"
+                          inputProps={{
+                            ...params.inputProps,
+                            autoComplete: 'new-password' // disable autocomplete and autofill
+                          }}
+                        />
+                      )}
+                    />
+                    {touched.creditorCountry && errors.creditorCountry && (
+                      <FormHelperText error id="invoice-creditor-country-helper">
+                        {errors.creditorCountry}
+                      </FormHelperText>
+                    )}
+
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <Typography variant="subtitle1">VAT #</Typography>
+                    <TextField
+                      fullWidth
+                      id="invoice-creditor-vat-number"
+                      placeholder="Enter VAT #"
+                      value={normalizeInputValue(values?.creditorVatNumber)}
+                      name="creditorVatNumber"
+                      onBlur={handleBlur}
+                      onChange={handleChange} />
+                    {
+                      touched.creditorVatNumber && errors.creditorVatNumber && (
+                        <FormHelperText error id="invoice-creditor-vat-number-helper">
+                          {errors.creditorVatNumber}
+                        </FormHelperText>
+                      )
+                    }
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <Typography variant="subtitle1">CoC #</Typography>
+                    <TextField
+                      fullWidth
+                      id="invoice-creditor-coc-number"
+                      placeholder="Enter CoC #"
+                      value={normalizeInputValue(values?.creditorChamberOfCommerceIdentifier)}
+                      name="creditorChamberOfCommerceIdentifier"
+                      onBlur={handleBlur}
+                      onChange={handleChange} />
+                    {
+                      touched.creditorChamberOfCommerceIdentifier && errors.creditorChamberOfCommerceIdentifier && (
+                        <FormHelperText error id="invoice-creditor-coc-number-helper">
+                          {errors.creditorChamberOfCommerceIdentifier}
+                        </FormHelperText>
+                      )
+                    }
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <Typography variant="subtitle1">Bank Account Number</Typography>
+                    <TextField
+                      fullWidth
+                      id="invoice-creditor-bank-account-number"
+                      placeholder="Enter bank account number"
+                      value={normalizeInputValue(values?.creditorBankAccountNumber)}
+                      name="creditorBankAccountNumber"
+                      onBlur={handleBlur}
+                      onChange={handleChange} />
+                    {
+                      touched.creditorBankAccountNumber && errors.creditorBankAccountNumber && (
+                        <FormHelperText error id="invoice-creditor-bank-account-number-helper">
+                          {errors.creditorBankAccountNumber}
+                        </FormHelperText>
+                      )
+                    }
+                  </Stack>
+                </Grid>
+              </Fragment>
+
+              <Fragment>
+                <Grid item xs={12}>
+                  <Divider />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="h4">Debtor Details</Typography>
+                </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <Typography variant="subtitle1">Legal Entity Name</Typography>
+                    <TextField
+                      fullWidth
+                      id="invoice-debtor-legal-entity-name"
+                      placeholder="Enter legal entity name"
+                      value={normalizeInputValue(values?.debtorLegalEntityName)}
+                      name="debtorLegalEntityName"
+                      onBlur={handleBlur}
+                      onChange={handleChange} />
+                    {
+                      touched.debtorLegalEntityName && errors.debtorLegalEntityName && (
+                        <FormHelperText error id="invoice-debtor-legal-entity-name-helper">
+                          {errors.debtorLegalEntityName}
+                        </FormHelperText>
+                      )
+                    }
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <Typography variant="subtitle1">Legal Representative Name</Typography>
+                    <TextField
+                      fullWidth
+                      id="invoice-debtor-legal-representative-name"
+                      placeholder="Enter legal representative name"
+                      value={normalizeInputValue(values?.debtorLegalRepresentativeName)}
+                      name="debtorLegalRepresentativeName"
+                      onBlur={handleBlur}
+                      onChange={handleChange} />
+                    {
+                      touched.debtorLegalRepresentativeName && errors.debtorLegalRepresentativeName && (
+                        <FormHelperText error id="invoice-debtor-legal-representative-name-helper">
+                          {errors.debtorLegalRepresentativeName}
+                        </FormHelperText>
+                      )
+                    }
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <Typography variant="subtitle1">Street</Typography>
+                    <TextField
+                      fullWidth
+                      id="invoice-debtor-street"
+                      placeholder="Enter street"
+                      value={normalizeInputValue(values?.debtorStreet)}
+                      name="debtorStreet"
+                      onBlur={handleBlur}
+                      onChange={handleChange} />
+                    {
+                      touched.debtorStreet && errors.debtorStreet && (
+                        <FormHelperText error id="invoice-debtor-street-helper">
+                          {errors.debtorStreet}
+                        </FormHelperText>
+                      )
+                    }
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <Typography variant="subtitle1">Street Number</Typography>
+                    <TextField
+                      fullWidth
+                      id="invoice-debtor-street-number"
+                      placeholder="Enter street number"
+                      value={normalizeInputValue(values?.debtorStreetNumber)}
+                      name="debtorStreetNumber"
+                      onBlur={handleBlur}
+                      onChange={handleChange} />
+                    {
+                      touched.debtorStreetNumber && errors.debtorStreetNumber && (
+                        <FormHelperText error id="invoice-debtor-street-number-helper">
+                          {errors.debtorStreetNumber}
+                        </FormHelperText>
+                      )
+                    }
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <Typography variant="subtitle1">City</Typography>
+                    <TextField
+                      fullWidth
+                      id="invoice-debtor-city"
+                      placeholder="Enter city"
+                      value={normalizeInputValue(values?.debtorCity)}
+                      name="debtorCity"
+                      onBlur={handleBlur}
+                      onChange={handleChange} />
+                    {
+                      touched.debtorCity && errors.debtorCity && (
+                        <FormHelperText error id="invoice-debtor-city-helper">
+                          {errors.debtorCity}
+                        </FormHelperText>
+                      )
+                    }
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <Typography variant="subtitle1">Post Code</Typography>
+                    <TextField
+                      fullWidth
+                      id="invoice-debtor-post-code"
+                      placeholder="Enter post code"
+                      value={normalizeInputValue(values?.debtorPostCode)}
+                      name="debtorPostCode"
+                      onBlur={handleBlur}
+                      onChange={handleChange} />
+                    {
+                      touched.debtorPostCode && errors.debtorPostCode && (
+                        <FormHelperText error id="invoice-debtor-post-code-helper">
+                          {errors.debtorPostCode}
+                        </FormHelperText>
+                      )
+                    }
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <Typography variant="subtitle1">Country</Typography>
+                    
+                    <Autocomplete
+                      id="invoice-debtor-country"
+                      fullWidth
+                      value={values?.debtorCountry ? countries.find((item) => item.code === values?.debtorCountry) : null}
+                      onBlur={handleBlur}
+                      onChange={(event, newValue) => {
+                        setFieldValue('debtorCountry', newValue === null ? '' : newValue.code);
+                      }}
+                      options={countries}
+                      autoHighlight
+                      isOptionEqualToValue={(option, value) => option.code === value?.code}
+                      getOptionLabel={(option) => option.label}
+                      renderOption={(props, option) => (
+                        <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                          {option.code && (
+                            <img
+                              loading="lazy"
+                              width="20"
+                              src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
+                              srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
+                              alt=""
+                            />
+                          )}
+                          {option.label}
+                          {option.code && ` (${option.code})`}
+                        </Box>
+                      )}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          placeholder="Choose a country"
+                          name="country"
+                          inputProps={{
+                            ...params.inputProps,
+                            autoComplete: 'new-password' // disable autocomplete and autofill
+                          }}
+                        />
+                      )}
+                    />
+                    {touched.debtorCountry && errors.debtorCountry && (
+                      <FormHelperText error id="invoice-debtor-country-helper">
+                        {errors.debtorCountry}
+                      </FormHelperText>
+                    )}
+
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <Typography variant="subtitle1">VAT #</Typography>
+                    <TextField
+                      fullWidth
+                      id="invoice-debtor-vat-number"
+                      placeholder="Enter VAT #"
+                      value={normalizeInputValue(values?.debtorVatNumber)}
+                      name="debtorVatNumber"
+                      onBlur={handleBlur}
+                      onChange={handleChange} />
+                    {
+                      touched.debtorVatNumber && errors.debtorVatNumber && (
+                        <FormHelperText error id="invoice-debtor-vat-number-helper">
+                          {errors.debtorVatNumber}
+                        </FormHelperText>
+                      )
+                    }
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <Typography variant="subtitle1">CoC #</Typography>
+                    <TextField
+                      fullWidth
+                      id="invoice-debtor-coc-number"
+                      placeholder="Enter CoC #"
+                      value={normalizeInputValue(values?.debtorChamberOfCommerceIdentifier)}
+                      name="debtorChamberOfCommerceIdentifier"
+                      onBlur={handleBlur}
+                      onChange={handleChange} />
+                    {
+                      touched.debtorChamberOfCommerceIdentifier && errors.debtorChamberOfCommerceIdentifier && (
+                        <FormHelperText error id="invoice-debtor-coc-number-helper">
+                          {errors.debtorChamberOfCommerceIdentifier}
+                        </FormHelperText>
+                      )
+                    }
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <Typography variant="subtitle1">Bank Account Number</Typography>
+                    <TextField
+                      fullWidth
+                      id="invoice-debtor-bank-account-number"
+                      placeholder="Enter bank account number"
+                      value={normalizeInputValue(values?.debtorBankAccountNumber)}
+                      name="debtorBankAccountNumber"
+                      onBlur={handleBlur}
+                      onChange={handleChange} />
+                    {
+                      touched.debtorBankAccountNumber && errors.debtorBankAccountNumber && (
+                        <FormHelperText error id="invoice-debtor-bank-account-number-helper">
+                          {errors.debtorBankAccountNumber}
+                        </FormHelperText>
+                      )
+                    }
+                  </Stack>
+                </Grid>
+              </Fragment>
 
               <Grid item xs={12}>
                 <Stack direction="row" justifyContent="flex-end" spacing={2}>

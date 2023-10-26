@@ -30,6 +30,22 @@ const BillingInfoCard = ({ billingInfo, toggleBillingInfoSelection, isSelected }
     navigate('/billinginfo/' + billingInfo.id);
   };
 
+  const getCouterPartyLabel = (invoiceType, counterPartyType) => {
+    if(invoiceType === 'Regular') {
+      if(counterPartyType === 'Creditor') 
+        return '10x';
+      else if(counterPartyType === 'Debtor') 
+        return 'Company';
+    } else if(invoiceType === 'Reversed') {
+      if(counterPartyType === 'Creditor') 
+        return 'Talent';
+      else if(counterPartyType === 'Debtor') 
+        return '10x';
+    }
+
+    return counterPartyType;
+  };
+  
   if (!keycloak.tokenParsed.roles.includes('admin'))
     return <Typography>Unauthorized</Typography>
 
@@ -162,7 +178,7 @@ const BillingInfoCard = ({ billingInfo, toggleBillingInfoSelection, isSelected }
                 </Grid>
                 <Grid item xs={2}>
                   <Stack spacing={0.1}>
-                    <Typography color="secondary" variant="caption" className={invoice?.dueDate ? 'small-field-header' : 'small-field-header field-empty'}>
+                    <Typography color="secondary" variant="caption" className={invoice?.dueDate || invoice?.invoiceType === 'Reversed' ? 'small-field-header' : 'small-field-header field-empty'}>
                       Due Date
                     </Typography>
                     <Typography variant="body1" color="secondary">
@@ -261,11 +277,21 @@ const BillingInfoCard = ({ billingInfo, toggleBillingInfoSelection, isSelected }
                     </Typography>
                   </Stack>
                 </Grid>
+                <Grid item xs={2}>
+                  <Stack spacing={0.1}>
+                    <Typography color="secondary" variant="caption" className={invoice?.recipientEmail ? 'small-field-header' : 'small-field-header field-empty'}>
+                      Recipient Email
+                    </Typography>
+                    <Typography variant="body1" color="secondary">
+                      {invoice?.recipientEmail}
+                    </Typography>
+                  </Stack>
+                </Grid>
                 
                 <Grid item xs={2}>
                   <Stack spacing={0.1}>
                     <Typography color="secondary" variant="caption" className={invoice?.creditor?.legalEntityName ? 'small-field-header' : 'small-field-header field-empty'}>
-                      Creditor Legal Name
+                      {getCouterPartyLabel(invoice?.invoiceType, 'Creditor')} Legal Name
                     </Typography>
                     <Typography variant="body1" color="secondary">
                       {invoice?.creditor?.legalEntityName}
@@ -275,7 +301,7 @@ const BillingInfoCard = ({ billingInfo, toggleBillingInfoSelection, isSelected }
                 <Grid item xs={2}>
                   <Stack spacing={0.1}>
                     <Typography color="secondary" variant="caption" className={invoice?.creditor?.fullName ? 'small-field-header' : 'small-field-header field-empty'}>
-                      Creditor Name
+                      {getCouterPartyLabel(invoice?.invoiceType, 'Creditor')} Name
                     </Typography>
                     <Typography variant="body1" color="secondary">
                       {invoice?.creditor?.fullName}
@@ -285,7 +311,7 @@ const BillingInfoCard = ({ billingInfo, toggleBillingInfoSelection, isSelected }
                 <Grid item xs={2}>
                   <Stack spacing={0.1}>
                     <Typography color="secondary" variant="caption" className={invoice?.creditor?.address?.street ? 'small-field-header' : 'small-field-header field-empty'}>
-                      Creditor Street
+                      {getCouterPartyLabel(invoice?.invoiceType, 'Creditor')} Street
                     </Typography>
                     <Typography variant="body1" color="secondary">
                       {invoice?.creditor?.address?.street}
@@ -295,7 +321,7 @@ const BillingInfoCard = ({ billingInfo, toggleBillingInfoSelection, isSelected }
                 <Grid item xs={2}>
                   <Stack spacing={0.1}>
                     <Typography color="secondary" variant="caption" className={invoice?.creditor?.address?.streetNumber ? 'small-field-header' : 'small-field-header field-empty'}>
-                      Creditor Street #
+                      {getCouterPartyLabel(invoice?.invoiceType, 'Creditor')} Street #
                     </Typography>
                     <Typography variant="body1" color="secondary">
                       {invoice?.creditor?.address?.streetNumber}
@@ -305,7 +331,7 @@ const BillingInfoCard = ({ billingInfo, toggleBillingInfoSelection, isSelected }
                 <Grid item xs={2}>
                   <Stack spacing={0.1}>
                     <Typography color="secondary" variant="caption" className={invoice?.creditor?.address?.city ? 'small-field-header' : 'small-field-header field-empty'}>
-                      Creditor City
+                      {getCouterPartyLabel(invoice?.invoiceType, 'Creditor')} City
                     </Typography>
                     <Typography variant="body1" color="secondary">
                       {invoice?.creditor?.address?.city}
@@ -315,7 +341,7 @@ const BillingInfoCard = ({ billingInfo, toggleBillingInfoSelection, isSelected }
                 <Grid item xs={2}>
                   <Stack spacing={0.1}>
                     <Typography color="secondary" variant="caption" className={invoice?.creditor?.address?.postCode ? 'small-field-header' : 'small-field-header field-empty'}>
-                      Creditor Post Code
+                      {getCouterPartyLabel(invoice?.invoiceType, 'Creditor')} Post Code
                     </Typography>
                     <Typography variant="body1" color="secondary">
                       {invoice?.creditor?.address?.postCode}
@@ -325,7 +351,7 @@ const BillingInfoCard = ({ billingInfo, toggleBillingInfoSelection, isSelected }
                 <Grid item xs={2}>
                   <Stack spacing={0.1}>
                     <Typography color="secondary" variant="caption" className={invoice?.creditor?.address?.country ? 'small-field-header' : 'small-field-header field-empty'}>
-                      Creditor Country
+                      {getCouterPartyLabel(invoice?.invoiceType, 'Creditor')} Country
                     </Typography>
                     <Typography variant="body1" color="secondary">
                       {countries.find(item => item.code === invoice?.creditor?.address?.country)?.label}
@@ -335,7 +361,7 @@ const BillingInfoCard = ({ billingInfo, toggleBillingInfoSelection, isSelected }
                 <Grid item xs={2}>
                   <Stack spacing={0.1}>
                     <Typography color="secondary" variant="caption" className={invoice?.creditor?.vatNumber ? 'small-field-header' : 'small-field-header field-empty'}>
-                      Creditor VAT #
+                      {getCouterPartyLabel(invoice?.invoiceType, 'Creditor')} VAT #
                     </Typography>
                     <Typography variant="body1" color="secondary">
                       {invoice?.creditor?.vatNumber}
@@ -345,7 +371,7 @@ const BillingInfoCard = ({ billingInfo, toggleBillingInfoSelection, isSelected }
                 <Grid item xs={2}>
                   <Stack spacing={0.1}>
                     <Typography color="secondary" variant="caption" className={invoice?.creditor?.vatPercentage || invoice?.creditor?.vatPercentage === 0 ? 'small-field-header' : 'small-field-header field-empty'}>
-                      Creditor VAT %
+                      {getCouterPartyLabel(invoice?.invoiceType, 'Creditor')} VAT %
                     </Typography>
                     <Typography variant="body1" color="secondary">
                       {invoice?.creditor?.vatPercentage}
@@ -355,7 +381,7 @@ const BillingInfoCard = ({ billingInfo, toggleBillingInfoSelection, isSelected }
                 <Grid item xs={2}>
                   <Stack spacing={0.1}>
                     <Typography color="secondary" variant="caption" className={invoice?.creditor?.chamberOfCommerceIdentifier ? 'small-field-header' : 'small-field-header field-empty'}>
-                      Creditor CoC #
+                      {getCouterPartyLabel(invoice?.invoiceType, 'Creditor')} CoC #
                     </Typography>
                     <Typography variant="body1" color="secondary">
                       {invoice?.creditor?.chamberOfCommerceIdentifier}
@@ -365,7 +391,7 @@ const BillingInfoCard = ({ billingInfo, toggleBillingInfoSelection, isSelected }
                 <Grid item xs={2}>
                   <Stack spacing={0.1}>
                     <Typography color="secondary" variant="caption" className={invoice?.creditor?.bankAccountNumber ? 'small-field-header' : 'small-field-header field-empty'}>
-                      Creditor Bank Account #
+                      {getCouterPartyLabel(invoice?.invoiceType, 'Creditor')} Bank Account #
                     </Typography>
                     <Typography variant="body1" color="secondary">
                       {invoice?.creditor?.bankAccountNumber}
@@ -376,7 +402,7 @@ const BillingInfoCard = ({ billingInfo, toggleBillingInfoSelection, isSelected }
                 <Grid item xs={2}>
                   <Stack spacing={0.1}>
                     <Typography color="secondary" variant="caption" className={invoice?.debtor?.legalEntityName ? 'small-field-header' : 'small-field-header field-empty'}>
-                      Debtor Legal Name
+                      {getCouterPartyLabel(invoice?.invoiceType, 'Debtor')} Legal Name
                     </Typography>
                     <Typography variant="body1" color="secondary">
                       {invoice?.debtor?.legalEntityName}
@@ -386,7 +412,7 @@ const BillingInfoCard = ({ billingInfo, toggleBillingInfoSelection, isSelected }
                 <Grid item xs={2}>
                   <Stack spacing={0.1}>
                     <Typography color="secondary" variant="caption" className={invoice?.debtor?.fullName ? 'small-field-header' : 'small-field-header field-empty'}>
-                      Debtor Name
+                      {getCouterPartyLabel(invoice?.invoiceType, 'Debtor')} Name
                     </Typography>
                     <Typography variant="body1" color="secondary">
                       {invoice?.debtor?.fullName}
@@ -396,7 +422,7 @@ const BillingInfoCard = ({ billingInfo, toggleBillingInfoSelection, isSelected }
                 <Grid item xs={2}>
                   <Stack spacing={0.1}>
                     <Typography color="secondary" variant="caption" className={invoice?.debtor?.address?.street ? 'small-field-header' : 'small-field-header field-empty'}>
-                      Debtor Street
+                      {getCouterPartyLabel(invoice?.invoiceType, 'Debtor')} Street
                     </Typography>
                     <Typography variant="body1" color="secondary">
                       {invoice?.debtor?.address?.street}
@@ -406,7 +432,7 @@ const BillingInfoCard = ({ billingInfo, toggleBillingInfoSelection, isSelected }
                 <Grid item xs={2}>
                   <Stack spacing={0.1}>
                     <Typography color="secondary" variant="caption" className={invoice?.debtor?.address?.streetNumber ? 'small-field-header' : 'small-field-header field-empty'}>
-                      Debtor Street #
+                      {getCouterPartyLabel(invoice?.invoiceType, 'Debtor')} Street #
                     </Typography>
                     <Typography variant="body1" color="secondary">
                       {invoice?.debtor?.address?.streetNumber}
@@ -416,7 +442,7 @@ const BillingInfoCard = ({ billingInfo, toggleBillingInfoSelection, isSelected }
                 <Grid item xs={2}>
                   <Stack spacing={0.1}>
                     <Typography color="secondary" variant="caption" className={invoice?.debtor?.address?.city ? 'small-field-header' : 'small-field-header field-empty'}>
-                      Debtor City
+                      {getCouterPartyLabel(invoice?.invoiceType, 'Debtor')} City
                     </Typography>
                     <Typography variant="body1" color="secondary">
                       {invoice?.debtor?.address?.city}
@@ -426,7 +452,7 @@ const BillingInfoCard = ({ billingInfo, toggleBillingInfoSelection, isSelected }
                 <Grid item xs={2}>
                   <Stack spacing={0.1}>
                     <Typography color="secondary" variant="caption" className={invoice?.debtor?.address?.postCode ? 'small-field-header' : 'small-field-header field-empty'}>
-                      Debtor Post Code
+                      {getCouterPartyLabel(invoice?.invoiceType, 'Debtor')} Post Code
                     </Typography>
                     <Typography variant="body1" color="secondary">
                       {invoice?.debtor?.address?.postCode}
@@ -436,7 +462,7 @@ const BillingInfoCard = ({ billingInfo, toggleBillingInfoSelection, isSelected }
                 <Grid item xs={2}>
                   <Stack spacing={0.1}>
                     <Typography color="secondary" variant="caption" className={invoice?.debtor?.address?.country ? 'small-field-header' : 'small-field-header field-empty'}>
-                      Debtor Country
+                      {getCouterPartyLabel(invoice?.invoiceType, 'Debtor')} Country
                     </Typography>
                     <Typography variant="body1" color="secondary">
                       {countries.find(item => item.code === invoice?.debtor?.address?.country)?.label}
@@ -446,7 +472,7 @@ const BillingInfoCard = ({ billingInfo, toggleBillingInfoSelection, isSelected }
                 <Grid item xs={2}>
                   <Stack spacing={0.1}>
                     <Typography color="secondary" variant="caption" className={invoice?.debtor?.vatNumber ? 'small-field-header' : 'small-field-header field-empty'}>
-                      Debtor VAT #
+                      {getCouterPartyLabel(invoice?.invoiceType, 'Debtor')} VAT #
                     </Typography>
                     <Typography variant="body1" color="secondary">
                       {invoice?.debtor?.vatNumber}
@@ -456,7 +482,7 @@ const BillingInfoCard = ({ billingInfo, toggleBillingInfoSelection, isSelected }
                 <Grid item xs={2}>
                   <Stack spacing={0.1}>
                     <Typography color="secondary" variant="caption" className={invoice?.debtor?.vatPercentage || invoice?.debtor?.vatPercentage === 0 ? 'small-field-header' : 'small-field-header field-empty'}>
-                      Debtor VAT %
+                      {getCouterPartyLabel(invoice?.invoiceType, 'Debtor')} VAT %
                     </Typography>
                     <Typography variant="body1" color="secondary">
                       {invoice?.debtor?.vatPercentage}
@@ -466,7 +492,7 @@ const BillingInfoCard = ({ billingInfo, toggleBillingInfoSelection, isSelected }
                 <Grid item xs={2}>
                   <Stack spacing={0.1}>
                     <Typography color="secondary" variant="caption" className={invoice?.debtor?.chamberOfCommerceIdentifier ? 'small-field-header' : 'small-field-header field-empty'}>
-                      Debtor CoC #
+                      {getCouterPartyLabel(invoice?.invoiceType, 'Debtor')} CoC #
                     </Typography>
                     <Typography variant="body1" color="secondary">
                       {invoice?.debtor?.chamberOfCommerceIdentifier}
@@ -476,7 +502,7 @@ const BillingInfoCard = ({ billingInfo, toggleBillingInfoSelection, isSelected }
                 <Grid item xs={2}>
                   <Stack spacing={0.1}>
                     <Typography color="secondary" variant="caption" className={invoice?.debtor?.bankAccountNumber ? 'small-field-header' : 'small-field-header field-empty'}>
-                      Debtor Bank Account #
+                      {getCouterPartyLabel(invoice?.invoiceType, 'Debtor')} Bank Account #
                     </Typography>
                     <Typography variant="body1" color="secondary">
                       {invoice?.debtor?.bankAccountNumber}
