@@ -112,7 +112,7 @@ const BillingInfoCard = ({ billingInfo, toggleBillingInfoSelection, isSelected }
             </Grid>
           </Grid>  
         </Grid>
-        {billingInfo?.invoices.map((invoice) => (
+        {billingInfo?.invoices?.map((invoice) => (
           <>
             <Grid item xs={12}>
               <Divider />
