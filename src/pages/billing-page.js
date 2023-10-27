@@ -329,6 +329,7 @@ const InvoicesBillingPage = () => {
                     control={<Checkbox color="primary" checked={getAreAllBillingInfosSelected()} onChange={toggleAllBillingInfosSelection} />}
                     label="Select all"
                   />
+                  <Button variant='outlined' onClick={async () => await sendBillingNotifications(['test'])}>Send test</Button>
                 </Stack>
                 
                 <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>

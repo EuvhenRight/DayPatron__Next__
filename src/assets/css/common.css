@@ -42,5 +42,8 @@ div.small-chip span {
     color: #262626 ;
 }
 .field-empty {
-    color: red;
+    color: #d13c31;
+}
+.field-todo {
+    color: #dda705;
 }

@@ -14,6 +14,7 @@ import { useFormik, Form, FormikProvider } from 'formik';
 import * as Yup from 'yup';
 import { pdf } from '@react-pdf/renderer';
 import { format } from 'date-fns';
+import { getCounterPartyLabel } from 'utils/stringUtils';
 
 // assets
 import { useKeycloak } from '@react-keycloak/web';
@@ -485,7 +486,7 @@ const InvoiceDetails = ({ invoice, onInvoiceUpdated }) => {
                   <Divider />
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="h4">Creditor Details</Typography>
+                  <Typography variant="h4">{getCounterPartyLabel(invoice?.invoiceType, 'Creditor')} Details</Typography>
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
@@ -726,7 +727,7 @@ const InvoiceDetails = ({ invoice, onInvoiceUpdated }) => {
                   <Divider />
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography variant="h4">Debtor Details</Typography>
+                  <Typography variant="h4">{getCounterPartyLabel(invoice?.invoiceType, 'Debtor')} Details</Typography>
                 </Grid>
 
                 <Grid item xs={12} sm={6}>

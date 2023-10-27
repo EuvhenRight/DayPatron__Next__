@@ -21,6 +21,22 @@ function removeEmptyOrNull(obj) {
   );
 
   return obj;
+}  
+
+function getCounterPartyLabel (invoiceType, counterPartyType) {
+  if(invoiceType === 'Regular') {
+    if(counterPartyType === 'Creditor') 
+      return '10x';
+    else if(counterPartyType === 'Debtor') 
+      return 'Company';
+  } else if(invoiceType === 'Reversed') {
+    if(counterPartyType === 'Creditor') 
+      return 'Talent';
+    else if(counterPartyType === 'Debtor') 
+      return '10x';
+  }
+
+  return counterPartyType;
 }
 
 function getEllipsis(str, charactersCount) {
@@ -38,4 +54,4 @@ function compareSortValues(a, b) {
   return result;
 }
 
-export { normalizeInputValue, normalizeNullableInputValue, normalizeBooleanInputValue, prepareApiBody, removeEmptyOrNull, getEllipsis, compareSortValues };
+export { normalizeInputValue, normalizeNullableInputValue, normalizeBooleanInputValue, prepareApiBody, removeEmptyOrNull, getEllipsis, compareSortValues, getCounterPartyLabel };
