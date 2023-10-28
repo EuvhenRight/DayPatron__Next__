@@ -23,9 +23,26 @@ import reportWebVitals from './reportWebVitals';
 
 import { ReactKeycloakProvider } from '@react-keycloak/web';
 import keycloak from './configs/keycloak';
+import { dispatch } from './store/index';
+import { LOADING_DETAILS_UPDATE } from 'store/reducers/actions';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
+
+const { fetch: originalFetch } = window;
+
+window.fetch = async (...args) => {
+  
+  dispatch({ type: LOADING_DETAILS_UPDATE, payload: {isLoading: true} });
+  
+  let [resource, config ] = args;
+
+  const response = await originalFetch(resource, config);
+  
+  dispatch({ type: LOADING_DETAILS_UPDATE, payload: {isLoading: false} });
+  
+  return response;
+};
 
 // const root = ReactDOM.createRoot(document.getElementById('root'));
 

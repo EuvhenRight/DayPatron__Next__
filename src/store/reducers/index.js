@@ -8,6 +8,7 @@ import snackbar from './snackbar';
 import calendar from './calendar';
 import invoice from './invoice';
 import personalInformation from './personalInformation';
+import loadingDetails from './loadingDetails';
 // ==============================|| COMBINE REDUCERS ||============================== //
 
 const reducers = combineReducers({
@@ -16,7 +17,8 @@ const reducers = combineReducers({
   snackbar,
   calendar,
   invoice,
-  personalInformation
+  personalInformation,
+  loadingDetails
 });
 
 export default reducers;
