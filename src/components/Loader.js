@@ -18,7 +18,7 @@ const LoaderWrapper = styled('div')(({ theme }) => ({
 
 const Loader = () => (
   <LoaderWrapper>
-    <LinearProgress color="primary" />
+    <LinearProgress color="primary" sx={{height: 8}} />
   </LoaderWrapper>
 );
 
