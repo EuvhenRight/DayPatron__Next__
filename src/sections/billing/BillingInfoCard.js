@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { format } from 'date-fns';
 
@@ -114,7 +115,7 @@ const BillingInfoCard = ({ billingInfo, toggleBillingInfoSelection, isSelected }
           </Grid>  
         </Grid>
         {billingInfo?.invoices?.map((invoice) => (
-          <>
+          <Fragment key={invoice?.id}>
             <Grid item xs={12}>
               <Divider />
             </Grid>
@@ -526,7 +527,7 @@ const BillingInfoCard = ({ billingInfo, toggleBillingInfoSelection, isSelected }
                 </Grid>
               </Grid>  
             </Grid>
-          </>
+          </Fragment>
         ))}
 
         <Grid item xs={12}>
