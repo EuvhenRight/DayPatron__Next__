@@ -28,7 +28,7 @@ const RegularInvoicePdf = ({ invoice }) => {
         <InvoiceNumberPdf invoice={invoice} invoiceTypeMessage="Reversed Invoice" />
         <InvoiceEmptyRowsPdf rows={2} />
         <InvoiceItemPdf invoice={invoice} />
-        <InvoiceEmptyRowsPdf rows={7 - invoice.invoiceItems.length} />
+        <InvoiceEmptyRowsPdf rows={5 - invoice.invoiceItems.length} />
         <InvoiceTotalPdf invoice={invoice} vatPercentage={invoice.creditor.vatPercentage} />
         <InvoiceEmptyRowsPdf rows={1} />
         <InvoiceMessagePdf message="This invoice is due as soon as the payment from the customer has been received." fontSize="10" textColor="#262626" />
