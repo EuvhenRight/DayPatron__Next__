@@ -8,6 +8,7 @@ import { useKeycloak } from '@react-keycloak/web';
 import { prepareApiBody } from 'utils/stringUtils';
 import CircularProgress from '@mui/material/CircularProgress';
 
+import { PopupTransition } from 'components/@extended/Transitions';
 // material-ui
 import {
   Button,
@@ -23,6 +24,8 @@ import {
   Select,
   FormControlLabel,
   Checkbox,
+  Dialog,
+  DialogContent,
   useMediaQuery
 } from '@mui/material';
 
@@ -66,6 +69,8 @@ const InvoicesBillingPage = () => {
   const [page, setPage] = useState(1);
   const [isRunningBillRun, setIsRunningBillRun] = useState(false);
   const [selectedBillingInfoIds, setSelectedBillingInfoIds] = useState([]);
+  const [notificationRecipientTypes, setNotificationRecipientTypes] = useState(null);
+  const [sendingNotifications, setSendingNotifications] = useState(false);
 
   const handleSubmitBillRun = async () => {
 
@@ -169,8 +174,13 @@ const InvoicesBillingPage = () => {
       console.log(error)
     }
   }
+  
+  const handleConfirmSend = async () => {
+    await sendBillingNotifications(notificationRecipientTypes);
+  }
 
   const sendBillingNotifications = async (recipientTypes) => {
+    setSendingNotifications(true);
     let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/billing/notifications',
       {
         method: 'POST',
@@ -194,6 +204,8 @@ const InvoicesBillingPage = () => {
           close: false
         })
       );
+      setSendingNotifications(false);
+      setNotificationRecipientTypes(null);
       return;
     }
 
@@ -212,6 +224,8 @@ const InvoicesBillingPage = () => {
         close: false
       })
     );
+    setSendingNotifications(false);
+    setNotificationRecipientTypes(null);
   };
 
   const handleChangeSort = (event) => {
@@ -334,13 +348,13 @@ const InvoicesBillingPage = () => {
                     control={<Checkbox color="primary" checked={getAreAllBillingInfosSelected()} onChange={toggleAllBillingInfosSelection} />}
                     label="Select all"
                   />
-                  <Button variant='outlined' onClick={async () => await sendBillingNotifications(['test'])}>Send test</Button>
+                  <Button variant='outlined' onClick={() => setNotificationRecipientTypes(['test'])}>Send test</Button>
                 </Stack>
                 
                 <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
-                  <Button variant='outlined' onClick={async () => await sendBillingNotifications(['contractor'])}>Send to talent</Button>
-                  <Button variant='outlined' onClick={async () => await sendBillingNotifications(['employer'])}>Send to company</Button>
-                  <Button variant='outlined' onClick={async () => await sendBillingNotifications(['accountant'])}>Send to accountant</Button>
+                  <Button variant='outlined' onClick={() => setNotificationRecipientTypes(['contractor'])}>Send to talent</Button>
+                  <Button variant='outlined' onClick={() => setNotificationRecipientTypes(['employer'])}>Send to company</Button>
+                  <Button variant='outlined' onClick={() => setNotificationRecipientTypes(['accountant'])}>Send to accountant</Button>
                   <FormControl sx={{ m: 1, minWidth: 120 }}>
                     <Select
                       value={sortBy}
@@ -400,6 +414,30 @@ const InvoicesBillingPage = () => {
           </Stack>
         </Grid>
       </Grid>
+
+      <Dialog
+        open={notificationRecipientTypes}
+        onClose={() => { setNotificationRecipientTypes(null); }}
+        keepMounted
+        TransitionComponent={PopupTransition}
+        maxWidth="xs"
+      >
+        <DialogContent sx={{ mt: 2, my: 1 }}>
+          <Stack alignItems="center" spacing={3.5}>
+            <Typography variant="h4" align="center">
+              Are you sure you want to send notifications?
+            </Typography>
+            <Stack direction="row" spacing={2} sx={{ width: 1 }}>
+              <Button disabled={sendingNotifications} fullWidth color="primary" variant="contained" onClick={async () => await handleConfirmSend()} autoFocus>
+                Send
+              </Button>
+              <Button fullWidth onClick={() => { setNotificationRecipientTypes(null); }} color="secondary" variant="outlined">
+                Cancel
+              </Button>
+            </Stack>
+          </Stack>
+        </DialogContent>
+      </Dialog>
     </LocalizationProvider>
   );
 };
