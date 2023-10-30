@@ -199,13 +199,15 @@ const InvoicesBillingPage = () => {
 
     bindBillingInfo();
 
+    let json = await response.json();
+
     dispatch(
       openSnackbar({
         open: true,
-        message: "Notifications sent.",
+        message: `${json?.countSuccesses} of ${json?.countAttempts} notifications sent.`,
         variant: 'alert',
         alert: {
-          color: 'success'
+          color: json?.countSuccesses >= json?.countAttempts ? 'success' : 'warning'
         },
         close: false
       })
