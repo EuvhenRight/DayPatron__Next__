@@ -22,7 +22,6 @@ const RegularInvoicePdf = ({ invoice }) => {
     <Document title={invoice?.invoiceNumber}>
       <Page size="A4" style={styles.page}>
         <InvoiceHeaderPdf counterParty={invoice.creditor} />
-        <InvoiceEmptyRowsPdf rows={1} />
         <InvoiceCounterPartyPdf counterParty={invoice.debtor} />
         <InvoiceEmptyRowsPdf rows={1} />
         <InvoiceNumberPdf invoice={invoice} invoiceTypeMessage="Invoice" />
@@ -30,7 +29,9 @@ const RegularInvoicePdf = ({ invoice }) => {
         <InvoiceItemPdf invoice={invoice} />
         <InvoiceEmptyRowsPdf rows={5 - invoice.invoiceItems.length} />
         <InvoiceTotalPdf invoice={invoice} vatPercentage={invoice.debtor.vatPercentage} />
-        <InvoiceEmptyRowsPdf rows={2} />
+        <InvoiceEmptyRowsPdf rows={1} />
+        <InvoiceMessagePdf message="Please ensure that the invoice number is included in the payment description for this invoice." fontSize="10" textColor="#262626" />
+        <InvoiceEmptyRowsPdf rows={1} />
         <InvoiceMessagePdf message="THANK YOU FOR YOUR BUSINESS!" fontSize="11" textColor="#3c3ec5" />
         <InvoiceFooterPdf />
       </Page >

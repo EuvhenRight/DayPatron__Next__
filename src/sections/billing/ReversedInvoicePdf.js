@@ -22,7 +22,6 @@ const RegularInvoicePdf = ({ invoice }) => {
     <Document title={invoice?.invoiceNumber}>
       <Page size="A4" style={styles.page}>
         <InvoiceHeaderPdf counterParty={invoice.debtor} />
-        <InvoiceEmptyRowsPdf rows={1} />
         <InvoiceCounterPartyPdf counterParty={invoice.creditor} />
         <InvoiceEmptyRowsPdf rows={1} />
         <InvoiceNumberPdf invoice={invoice} invoiceTypeMessage="Reversed Invoice" />
