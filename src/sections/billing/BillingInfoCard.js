@@ -387,7 +387,7 @@ const BillingInfoCard = ({ billingInfo, toggleBillingInfoSelection, isSelected }
                 <Grid item xs={2}>
                   <Stack spacing={0.1}>
                     <Typography color="secondary" variant="caption" className={invoice?.debtor?.fullName ? 'small-field-header' : 'small-field-header field-empty'}>
-                      {getCounterPartyLabel(invoice?.invoiceType, 'Debtor')} Name
+                      {getCounterPartyLabel(invoice?.invoiceType, 'Debtor')} Representative Name
                     </Typography>
                     <Typography variant="body1" color="secondary">
                       {invoice?.debtor?.fullName}
