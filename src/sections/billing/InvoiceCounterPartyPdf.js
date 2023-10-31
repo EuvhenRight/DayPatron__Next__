@@ -37,6 +37,8 @@ const InvoiceCounterPartyPdf = ({ counterParty }) => {
             <Text style={styles.text}>{counterParty?.address?.street} {counterParty?.address?.streetNumber}</Text>
             <Text style={styles.text}>{counterParty?.address?.postCode} {counterParty?.address?.city}</Text>
             <Text style={styles.text}>{countries.find(x => x.code === counterParty?.address?.country)?.label}</Text>
+            {counterParty?.chamberOfCommerceIdentifier && <Text style={styles.text}>CoC: {counterParty?.chamberOfCommerceIdentifier}</Text>}
+            {counterParty?.vatNumber && <Text style={styles.text}>VAT Number: {counterParty?.vatNumber}</Text>}
           </View>
         </View>
       </View>
