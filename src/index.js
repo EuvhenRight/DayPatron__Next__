@@ -37,7 +37,13 @@ window.fetch = async (...args) => {
   if(resource?.startsWith(process.env.REACT_APP_JOBMARKET_API_BASE_URL))
     dispatch({ type: LOADING_DETAILS_UPDATE, payload: {isLoading: true} });
 
-  const response = await originalFetch(resource, config);
+  let response = null;
+
+  try {
+    response = await originalFetch(resource, config);
+  } catch (error) {
+    console.log(error);
+  }
   
   if(resource?.startsWith(process.env.REACT_APP_JOBMARKET_API_BASE_URL))
     dispatch({ type: LOADING_DETAILS_UPDATE, payload: {isLoading: false} });
