@@ -3,7 +3,7 @@ import countries from 'data/countries';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { useKeycloak } from '@react-keycloak/web';
-import { normalizeInputValue, prepareApiBody } from 'utils/stringUtils';
+import { normalizeInputValue, normalizeNumberInputValue, prepareApiBody } from 'utils/stringUtils';
 
 // material-ui
 import {
@@ -216,7 +216,7 @@ const InvoiceSettingsPage = () => {
                     <TextField
                       fullWidth
                       id="invoice-settings-vat-percentage"
-                      value={normalizeInputValue(values.vatPercentage)}
+                      value={normalizeNumberInputValue(values.vatPercentage)}
                       name="vatPercentage"
                       onBlur={handleBlur}
                       onChange={handleChange}
