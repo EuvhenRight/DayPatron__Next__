@@ -2,6 +2,10 @@ function normalizeInputValue(value) {
   return value ? value : '';
 }
 
+function normalizeNumberInputValue(value) {
+  return value || value === 0 ? value : '';
+}
+
 function normalizeNullableInputValue(value) {
   return value ? value : null;
 }
@@ -54,4 +58,4 @@ function compareSortValues(a, b) {
   return result;
 }
 
-export { normalizeInputValue, normalizeNullableInputValue, normalizeBooleanInputValue, prepareApiBody, removeEmptyOrNull, getEllipsis, compareSortValues, getCounterPartyLabel };
+export { normalizeInputValue, normalizeNumberInputValue, normalizeNullableInputValue, normalizeBooleanInputValue, prepareApiBody, removeEmptyOrNull, getEllipsis, compareSortValues, getCounterPartyLabel };
