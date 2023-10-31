@@ -31,15 +31,16 @@ const root = createRoot(container);
 
 const { fetch: originalFetch } = window;
 
-window.fetch = async (...args) => {
-  
-  dispatch({ type: LOADING_DETAILS_UPDATE, payload: {isLoading: true} });
-  
+window.fetch = async (...args) => {  
   let [resource, config ] = args;
+
+  if(resource?.startsWith(process.env.REACT_APP_JOBMARKET_API_BASE_URL))
+    dispatch({ type: LOADING_DETAILS_UPDATE, payload: {isLoading: true} });
 
   const response = await originalFetch(resource, config);
   
-  dispatch({ type: LOADING_DETAILS_UPDATE, payload: {isLoading: false} });
+  if(resource?.startsWith(process.env.REACT_APP_JOBMARKET_API_BASE_URL))
+    dispatch({ type: LOADING_DETAILS_UPDATE, payload: {isLoading: false} });
   
   return response;
 };
