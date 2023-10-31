@@ -173,7 +173,8 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
 
   useEffect(() => {
     (async () => {
-      await bindMissions(missionOrder?.employerId);
+      if(missionOrder?.employerId)
+        await bindMissions(missionOrder?.employerId);
     })();
   }, [missionOrder?.employerId, keycloak?.idToken]);
 
