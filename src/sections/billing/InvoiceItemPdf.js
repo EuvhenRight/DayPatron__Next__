@@ -21,13 +21,16 @@ const styles = StyleSheet.create({
     borderTop: 'none'
   },
   column1: {
-    width: '50%'
+    width: '50%',
+    paddingRight: 5
   },
   column2: {
-    width: '15%'
+    width: '15%',
+    paddingRight: 5
   },
   column3: {
-    width: '15%'
+    width: '15%',
+    paddingRight: 5
   },
   column4: {
     width: '20%',

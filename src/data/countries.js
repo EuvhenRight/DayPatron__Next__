@@ -239,7 +239,7 @@ const countries = [
   { code: 'NE', label: 'Niger', phone: '+227' },
   { code: 'NG', label: 'Nigeria', phone: '+234' },
   { code: 'NI', label: 'Nicaragua', phone: '+505' },
-  { code: 'NL', label: 'Netherlands', phone: '+31' },
+  { code: 'NL', label: 'The Netherlands', phone: '+31' },
   { code: 'NO', label: 'Norway', phone: '+47' },
   { code: 'NP', label: 'Nepal', phone: '+977' },
   { code: 'NR', label: 'Nauru', phone: '+674' },
