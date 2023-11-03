@@ -113,7 +113,7 @@ const InvoiceDetails = ({ invoice, onInvoiceUpdated }) => {
     dueDate: Yup.date().nullable(true),
     invoiceItems: Yup.array(
       Yup.object({
-        description: Yup.string().max(255).required('Description is required').nullable(true),
+        description: Yup.string().max(5000).required('Description is required').nullable(true),
         totalAmount: Yup.number().transform((value) => Number.isNaN(value) ? null : value).required('Total amount is required').nullable(true),
         quantity: Yup.number().transform((value) => Number.isNaN(value) ? null : value).required('Quantity is required').nullable(true),
         unitPrice: Yup.number().transform((value) => Number.isNaN(value) ? null : value).required('Unit price is required').nullable(true)
