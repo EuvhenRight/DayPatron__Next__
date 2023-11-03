@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   },
   column1: {
     width: '50%',
-    paddingRight: 5
+    paddingRight: 40
   },
   column2: {
     width: '15%',

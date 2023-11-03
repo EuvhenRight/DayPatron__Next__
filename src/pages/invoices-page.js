@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { useMemo, useEffect, Fragment, useState, useRef } from 'react';
 import { useKeycloak } from '@react-keycloak/web';
+import { useDispatch } from 'react-redux';
 
 // material-ui
 import {
@@ -16,9 +17,10 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  useMediaQuery
+  useMediaQuery,
+  Button
 } from '@mui/material';
-import { alpha, useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 
 // third-party
 import { useExpanded, useFilters, useGlobalFilter, usePagination, useRowSelect, useSortBy, useTable } from 'react-table';
@@ -26,13 +28,14 @@ import { useExpanded, useFilters, useGlobalFilter, usePagination, useRowSelect, 
 // project import
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
-import { CSVExport, HeaderSort, IndeterminateCheckbox, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
+import { HeaderSort, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
 
 import { dispatch, useSelector } from 'store';
 import { useSelector as reduxUseSelector } from 'react-redux';
 import { getInvoiceList } from 'store/reducers/invoice';
 import { renderFilterTypes, GlobalFilter, DateColumnFilter } from 'utils/react-table';
 import { format } from 'date-fns';
+import { openSnackbar } from 'store/reducers/snackbar';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -56,9 +59,9 @@ function ReactTable({ columns, data }) {
     headerGroups,
     prepareRow,
     rows,
+    setPageSize,
     page,
     gotoPage,
-    setPageSize,
     state: { globalFilter, selectedRowIds, pageIndex, pageSize },
     preGlobalFilteredRows,
     setGlobalFilter,
@@ -150,7 +153,6 @@ function ReactTable({ columns, data }) {
               ))}
             </Stack>
           ))}
-          <CSVExport data={data} filename={'invoice-list.csv'} />
         </Stack>
       </Stack>
       <Box ref={componentRef}>
@@ -171,13 +173,7 @@ function ReactTable({ columns, data }) {
               prepareRow(row);
               return (
                 <Fragment key={i}>
-                  <TableRow
-                    {...row.getRowProps()}
-                    onClick={() => {
-                      row.toggleRowSelected();
-                    }}
-                    sx={{ cursor: 'pointer', bgcolor: row.isSelected ? alpha(theme.palette.primary.lighter, 0.35) : 'inherit' }}
-                  >
+                  <TableRow>
                     {row.cells.map((cell, i) => (
                       <TableCell key={i} {...cell.getCellProps([{ className: cell.column.className }])}>
                         {cell.render('Cell')}
@@ -244,7 +240,6 @@ const StatusCell = ({ value }) => {
   }
 };
 
-
 StatusCell.propTypes = {
   value: PropTypes.string
 };
@@ -255,22 +250,73 @@ const AmountCell = ({ value }) => {
 };
 
 AmountCell.propTypes = {
+  value: PropTypes.number
+};
+
+const DownloadInvoiceCell = ({ row }) => {
+
+  const { keycloak } = useKeycloak();
+  const dispatch = useDispatch();
+
+  const DownloadInvoice = async (invoiceId, invoiceNumber) => {
+
+    try {
+      var requestUrl = process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/invoices/' + encodeURIComponent(invoiceId) + '/download';
+
+      let response = await fetch(requestUrl,
+        {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + keycloak.idToken
+          }
+        }
+      );
+
+      if (!response.ok) {
+        dispatch(
+          openSnackbar({
+            open: true,
+            message: 'Failed to download invoice',
+            variant: 'alert',
+            alert: {
+              color: 'error'
+            },
+            close: false
+          })
+        );
+        return;
+      }
+      const fileName = `10xTeamBV_${invoiceNumber}.pdf`;
+
+      var a = document.createElement("a");
+      document.body.appendChild(a);
+      a.style = "display: none";
+
+      let blob = await response.blob();
+      var fileUrl = URL.createObjectURL(blob);
+
+      a.href = fileUrl;
+      a.download = fileName;
+      a.click();
+      if (fileUrl)
+        setTimeout(function () {
+          URL.revokeObjectURL(fileUrl);
+        }, 2000);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <Button onClick={() => DownloadInvoice(row.values.id, row.values.invoiceNumber)} color="primary" variant="outlined">Download</Button>
+  )
+};
+
+DownloadInvoiceCell.propTypes = {
   value: PropTypes.string
 };
 
-// Section Cell and Header
-const SelectionCell = ({ row }) => <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />;
-const SelectionHeader = ({ getToggleAllPageRowsSelectedProps }) => (
-  <IndeterminateCheckbox indeterminate {...getToggleAllPageRowsSelectedProps()} />
-);
 
-SelectionCell.propTypes = {
-  row: PropTypes.object
-};
-
-SelectionHeader.propTypes = {
-  getToggleAllPageRowsSelectedProps: PropTypes.func
-};
 
 const InvoicesPage = () => {
   const { keycloak } = useKeycloak();
@@ -287,14 +333,6 @@ const InvoicesPage = () => {
 
   const columns = useMemo(
     () => [
-      {
-        title: 'Row Selection',
-        Header: SelectionHeader,
-        accessor: 'selection',
-        Cell: SelectionCell,
-        disableSortBy: true,
-        disableFilters: true
-      },
       {
         Header: 'Invoice Id',
         accessor: 'id',
@@ -340,6 +378,11 @@ const InvoicesPage = () => {
         disableFilters: true,
         filter: 'includes',
         Cell: StatusCell
+      },
+      {
+        Header: 'Download',
+        disableFilters: true,
+        Cell: DownloadInvoiceCell
       }
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
