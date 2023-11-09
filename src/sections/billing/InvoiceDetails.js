@@ -7,6 +7,7 @@ import { openSnackbar } from 'store/reducers/snackbar';
 import MainCard from 'components/MainCard';
 import InvoicePdf from 'sections/billing/InvoicePdf';
 import invoiceStatus from 'data/invoiceStatus';
+import rateTypes from 'data/rateTypes';
 import countries from 'data/countries';
 
 // third-party
@@ -48,7 +49,7 @@ const getInitialValues = (invoice) => {
     purchaseOrderNumber: invoice?.purchaseOrderNumber,
     dueDate: invoice?.dueDate,
     invoiceItems: invoice?.invoiceItems,
-    
+
     creditorLegalEntityName: invoice?.creditor?.legalEntityName,
     creditorLegalRepresentativeName: invoice?.creditor?.fullName,
     creditorStreet: invoice?.creditor?.address?.street,
@@ -116,7 +117,8 @@ const InvoiceDetails = ({ invoice, onInvoiceUpdated }) => {
         description: Yup.string().max(255).required('Description is required').nullable(true),
         totalAmount: Yup.number().transform((value) => Number.isNaN(value) ? null : value).required('Total amount is required').nullable(true),
         quantity: Yup.number().transform((value) => Number.isNaN(value) ? null : value).required('Quantity is required').nullable(true),
-        unitPrice: Yup.number().transform((value) => Number.isNaN(value) ? null : value).required('Unit price is required').nullable(true)
+        unitPrice: Yup.number().transform((value) => Number.isNaN(value) ? null : value).required('Unit price is required').nullable(true),
+        rateType: Yup.string().max(255).required('Rate type is required').nullable(true)
       })
     ),
 
@@ -403,7 +405,31 @@ const InvoiceDetails = ({ invoice, onInvoiceUpdated }) => {
                     <Grid item xs={12}>
                       <Stack spacing={1.25}>
                         <Typography variant="subtitle1">Rate type</Typography>
-                        <Typography variant="subtitle2">{invoiceItem.rateType}</Typography>
+                        <Autocomplete
+                          id={`invoice-item-rateType${index}`}
+                          options={rateTypes}
+                          value={values?.invoiceItems[index].rateType ? rateTypes.filter((item) => item.code === values?.invoiceItems[index].rateType)[0] : null}
+                          onBlur={handleBlur}
+                          getOptionLabel={(option) => option?.label}
+                          isOptionEqualToValue={(option, value) => option.code === value?.code}
+                          onChange={(event, newValue) => {
+                            setFieldValue(`invoiceItems.${index}.rateType`, newValue === null ? '' : newValue.code);
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              placeholder="Select rate type"
+                              name={`rateType${index}`}
+                              inputProps={{
+                                ...params.inputProps,
+                                autoComplete: 'new-password'
+                              }} />
+                          )} />
+                        {touched.invoiceItems?.[index]?.rateType && errors.invoiceItems?.[index]?.rateType && (
+                          <FormHelperText error id={`invoice-item-rateType-helper${index}`}>
+                            {errors.invoiceItems?.[index]?.rateType}
+                          </FormHelperText>
+                        )}
                       </Stack>
                     </Grid>
                     <Grid item xs={12}>
@@ -612,7 +638,7 @@ const InvoiceDetails = ({ invoice, onInvoiceUpdated }) => {
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
                     <Typography variant="subtitle1">Country</Typography>
-                    
+
                     <Autocomplete
                       id="invoice-creditor-country"
                       fullWidth
@@ -853,7 +879,7 @@ const InvoiceDetails = ({ invoice, onInvoiceUpdated }) => {
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
                     <Typography variant="subtitle1">Country</Typography>
-                    
+
                     <Autocomplete
                       id="invoice-debtor-country"
                       fullWidth
