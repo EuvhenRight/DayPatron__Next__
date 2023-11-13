@@ -241,7 +241,7 @@ const ProductsPage = () => {
       })
     );
 
-    navigate('/orders/my');
+    navigate('/orders');
   };
 
   return (

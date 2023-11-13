@@ -35,6 +35,10 @@ const MissionOrderPage = Loadable(lazy(() => import('pages/mission-order-page'))
 
 const CreateMissionOrderPage = Loadable(lazy(() => import('pages/create-mission-order-page')));
 
+const EmployerProductServiceOrderPage = Loadable(lazy(() => import('pages/employer-product-service-order-page')));
+const ContractorProductServiceOrderPage = Loadable(lazy(() => import('pages/contractor-product-service-order-page')));
+const EmployerMissionServiceOrderPage = Loadable(lazy(() => import('pages/employer-mission-service-order-page')));
+
 const InvoicesPage = Loadable(lazy(() => import('pages/invoices-page')));
 const InvoiceSettingsPage = Loadable(lazy(() => import('pages/invoice-settings-page')));
 const InvoicesBilling = Loadable(lazy(() => import('pages/billing-page')));
@@ -150,8 +154,20 @@ const MainRoutes = {
           element: <MissionOrderPage />
         },
         {
-          path: 'orders/my',
+          path: 'orders',
           element: <OrdersPage />
+        },
+        {
+          path: 'orders/solution/:orderId/company-service-order/:role',
+          element: <EmployerProductServiceOrderPage />
+        },
+        {
+          path: 'orders/solution/:orderId/talent-service-order/:role',
+          element: <ContractorProductServiceOrderPage />
+        },
+        {
+          path: 'orders/mission/:orderId/company-service-order',
+          element: <EmployerMissionServiceOrderPage />
         },
         {
           path: 'invoices/settings',

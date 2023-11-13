@@ -1,11 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import {
-  Link,
-  Checkbox,
-  FormControlLabel,
   Grid,
   Stack,
   useMediaQuery,
@@ -16,21 +13,11 @@ import {
   Slide,
   Pagination,
   Typography,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemSecondaryAction
+  Button
 } from '@mui/material';
 
-import { openSnackbar } from 'store/reducers/snackbar';
 import EmptyCardList from 'components/cards/skeleton/EmptyCardList';
 import MissionOrderCard from 'sections/order/MissionOrderCard';
-import { PopupTransition } from 'components/@extended/Transitions';
-import SanitizedHTML from 'react-sanitized-html';
 
 import { GlobalFilter } from 'utils/react-table';
 import usePagination from 'hooks/usePagination';
@@ -38,10 +25,7 @@ import usePagination from 'hooks/usePagination';
 // assets
 import { useKeycloak } from '@react-keycloak/web';
 import { compareSortValues } from 'utils/stringUtils';
-import MainCard from 'components/MainCard';
 import { PlusOutlined } from '@ant-design/icons';
-
-import countries from 'data/countries';
 
 // ==============================|| ORDERS - PAGE ||============================== //
 
@@ -63,7 +47,6 @@ const allColumns = [
 const MissionOrders = () => {
   const { keycloak } = useKeycloak();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const personalInformation = useSelector(state => state.personalInformation);
   const matchDownSM = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
@@ -72,12 +55,6 @@ const MissionOrders = () => {
   const [orders, setOrders] = useState([]);
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [page, setPage] = useState(1);
-
-  const [openServiceOrderDialog, setOpenServiceOrderDialog] = useState(false);
-  const [orderToView, setOrderToView] = useState(null);
-  const [subOrderTypeToView, setSubOrderTypeToView] = useState(null);
-  const [roleToView, setRoleToView] = useState(null);
-  const [hasAcceptedProjectOrderTerms, setHasAcceptedProjectOrderTerms] = useState(null);
 
   const PER_PAGE = 10;
 
@@ -129,211 +106,14 @@ const MissionOrders = () => {
     _DATA.jump(p);
   };
 
-  const handleApproveConfirmClick = async () => {
-    let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/orders/' + orderToView.id + '/' + subOrderTypeToView + 's/' + roleToView + '-approvals',
-      {
-        method: 'PUT',
-        headers: {
-          'Authorization': 'Bearer ' + keycloak.idToken,
-          'Content-Type': 'application/json'
-        }
-      }
-    );
-
-    if (!response.ok) {
-      dispatch(
-        openSnackbar({
-          open: true,
-          message: 'Failed approving.',
-          variant: 'alert',
-          alert: {
-            color: 'error'
-          },
-          close: false
-        })
-      );
-
-      setOpenServiceOrderDialog(false);
-      setOrderToView(null);
-      setSubOrderTypeToView(null);
-      return;
-    }
-
-    setOpenServiceOrderDialog(false);
-    setOrderToView(null);
-    setSubOrderTypeToView(null);
-
-    bindOrders();
-
-    dispatch(
-      openSnackbar({
-        open: true,
-        message: "Approved.",
-        variant: 'alert',
-        alert: {
-          color: 'success'
-        },
-        close: false
-      })
-    );
-  };
-
-  const handleApproveClick = (order, subOrderType, role) => {
-    setOpenServiceOrderDialog(true);
-    setOrderToView(order);
-    setSubOrderTypeToView(subOrderType);
-    setRoleToView(role);
-    setHasAcceptedProjectOrderTerms(false);
-  };
-
-  const handleProjectOrderTermsClick = async () => {
-    try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/orders/project-order-terms',
-        {
-          method: 'GET',
-          headers: {
-            'Authorization': 'Bearer ' + keycloak.idToken
-          }
-        }
-      );
-
-      let file = await response.blob();
-      var fileUrl = URL.createObjectURL(file);
-
-      if (fileUrl)
-        setTimeout(function () {
-          URL.revokeObjectURL(fileUrl);
-        }, 300000);
-
-      window.open(fileUrl, '_blank');
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getIsServiceOrderApprovable = (order, subOrderType, role) => {
-    if (!hasAcceptedProjectOrderTerms) {
-      return false;
-    }
-
-    if (subOrderType === 'employer-service-order') {
-      if (role === 'employer')
-        return order?.employerServiceOrder?.employerStatus === 'Pending';
-    }
-
-    return false;
+  const handleApproveClick = (order, subOrderType) => {
+    let subOrderTypeInternal = subOrderType.replace('contractor', 'talent').replace('employer', 'company');
+    navigate('/orders/mission/' + order.id + '/' + subOrderTypeInternal);
   };
 
   const handleAdd = () => {
     navigate('/missions/orders/create');
   }
-
-  const getServiceOrderContent = (order, subOrderType, role) => {
-    if (!order)
-      return;
-
-    if (subOrderType === 'employer-service-order') {
-      return <>
-        <Grid item xs={12}>
-          <Typography>ID: {order?.employerServiceOrder?.id}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <MainCard>
-            <Stack>
-              <Typography>{order?.employerLegalEntityName}</Typography>
-              <Typography>{order?.employerLegalEntityRepresentativeName}</Typography>
-              <Typography>{order?.employerStreet} {order?.employerStreetNumber}</Typography>
-              <Typography>{order?.employerPostCode} {order?.employerCity}</Typography>
-              <Typography>{countries.find(x => x.code === order?.employerCountry)?.label}</Typography>
-            </Stack>
-          </MainCard>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <MainCard>
-            <Stack>
-              <Typography>{order?.adminLegalEntityName}</Typography>
-              <Typography>{order?.adminLegalEntityRepresentativeName}</Typography>
-              <Typography>{order?.adminStreet} {order?.adminStreetNumber}</Typography>
-              <Typography>{order?.adminPostCode} {order?.adminCity}</Typography>
-              <Typography>{countries.find(x => x.code === order?.adminCountry)?.label}</Typography>
-            </Stack>
-          </MainCard>
-        </Grid>
-        <Grid item xs={12}>
-          <MainCard>
-            <List sx={{ py: 0, '& .MuiListItem-root': { p: 0, py: 0 } }}>
-              <ListItem>
-                <ListItemText>
-                  10x-er
-                </ListItemText>
-                <ListItemSecondaryAction>
-                  {order?.contractorName}
-                </ListItemSecondaryAction>
-              </ListItem>
-              <ListItem>
-                <ListItemText>
-                  Mission
-                </ListItemText>
-                <ListItemSecondaryAction>
-                  {order?.missionTitle}
-                </ListItemSecondaryAction>
-              </ListItem>
-
-              <ListItem>
-                <ListItemText>
-                  Effort
-                </ListItemText>
-                <ListItemSecondaryAction>
-                  {order?.employerServiceOrder?.duration}
-                </ListItemSecondaryAction>
-              </ListItem>
-
-              <ListItem>
-                <ListItemText>
-                  <Typography>Rate Type</Typography>
-                </ListItemText>
-                <ListItemSecondaryAction>
-                  {order?.employerServiceOrder?.rateType}
-                </ListItemSecondaryAction>
-              </ListItem>
-
-              <ListItem>
-                <ListItemText>
-                  <Typography>Rate</Typography>
-                </ListItemText>
-                <ListItemSecondaryAction>
-                  &euro;{order?.employerServiceOrder?.rateAmount}
-                </ListItemSecondaryAction>
-              </ListItem>
-
-              <ListItem>
-                <ListItemText>
-                  <Typography>Total Amount</Typography>
-                </ListItemText>
-                <ListItemSecondaryAction>
-                  &euro;{order?.employerServiceOrder?.totalAmount}
-                </ListItemSecondaryAction>
-              </ListItem>
-            </List>
-          </MainCard>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="h5">Purchase Terms</Typography>
-          <SanitizedHTML html={order?.employerServiceOrder?.description} />
-        </Grid>
-        {keycloak.tokenParsed.roles.includes('employer') && role === 'employer' &&
-          <Grid item xs={12}>
-            <FormControlLabel
-              control={<Checkbox checked={hasAcceptedProjectOrderTerms} onChange={(event) => setHasAcceptedProjectOrderTerms(event.target.checked)} color="primary" />}
-              label={<p>I have read and agree to the <Link href="#" onClick={handleProjectOrderTermsClick}>Project Contract Terms &amp; Conditions</Link> that are applicable to this Service Order.</p>}
-            />
-          </Grid>
-        }
-      </>
-    }
-
-    return;
-  };
 
   return (
     <>
@@ -412,43 +192,6 @@ const MissionOrders = () => {
           onChange={handleChangePage}
         />
       </Stack>
-
-      <Dialog
-        open={openServiceOrderDialog}
-        onClose={() => {
-          setOpenServiceOrderDialog(false);
-          setOrderToView(null);
-          setSubOrderTypeToView(null);
-        }}
-        keepMounted
-        TransitionComponent={PopupTransition}
-        aria-labelledby="column-delete-title"
-        aria-describedby="column-delete-description"
-      >
-        <DialogTitle>Service Order</DialogTitle>
-        <DialogContent sx={{ mt: 2, my: 1 }}>
-
-          <Grid container spacing={2}>
-            {getServiceOrderContent(orderToView, subOrderTypeToView, roleToView)}
-            <Grid item xs={12}>
-              <Stack direction="row" spacing={2} sx={{ width: 1 }}>
-                <Button fullWidth onClick={() => {
-                  setOpenServiceOrderDialog(false);
-                  setOrderToView(null);
-                  setSubOrderTypeToView(null);
-                }}
-                  color="secondary"
-                  variant="outlined">
-                  Close
-                </Button>
-                <Button disabled={!getIsServiceOrderApprovable(orderToView, subOrderTypeToView, roleToView)} fullWidth color="primary" variant="contained" onClick={handleApproveConfirmClick} autoFocus>
-                  Approve
-                </Button>
-              </Stack>
-            </Grid>
-          </Grid>
-        </DialogContent>
-      </Dialog>
     </>
   );
 };
