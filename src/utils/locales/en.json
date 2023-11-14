@@ -92,5 +92,13 @@
   "product_order_card_project_order_company_approval_status_tooltip": "If you have approved, the pending status is changed to approved",
   "product_order_card_project_order_talent_approval_status_tooltip": "If you have approved, the pending status is changed to approved",
   "mission_order_card_mission_order_closed_date_tooltip": "The date where the mission order is closed",
-  "mission_hide_company_name_tooltip": null
+  "mission_hide_company_name_tooltip": null,
+
+  "invoice_header_invoice_number": "A unique identifier for the invoice",
+  "invoice_header_company": "The name of the company",
+  "invoice_header_mission_name": "The name of the mission for which the invoice is issued",
+  "invoice_header_invoice_date": "The date when the invoice is issued by 10X",
+  "invoice_header_due_date": "The date when the invoice is due",
+  "invoice_header_total_amount_incl_vat": "The total amount of the invoice including VAT",
+  "invoice_header_status": "Status of the invoice (pending, paid, sent)"
 }

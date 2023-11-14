@@ -29,6 +29,7 @@ import { useExpanded, useFilters, useGlobalFilter, usePagination, useRowSelect, 
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import { HeaderSort, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
+import InfoWrapper from 'components/InfoWrapper';
 
 import { dispatch, useSelector } from 'store';
 import { useSelector as reduxUseSelector } from 'react-redux';
@@ -339,41 +340,41 @@ const InvoicesPage = () => {
         disableFilters: true
       },
       {
-        Header: 'Invoice Number',
+        Header: <InfoWrapper tooltipText="invoice_header_invoice_number"><Typography variant='body2' fontWeight='Bold'>Invoice Number</Typography></InfoWrapper>,
         accessor: 'invoiceNumber',
         disableFilters: true
       },
       {
-        Header: 'Talent',
+        Header: <InfoWrapper tooltipText="invoice_header_company"><Typography variant='body2' fontWeight='Bold'>Talent</Typography></InfoWrapper>,
         accessor: 'counterPartyName',
         disableFilters: true,
         Cell: TalentCell
       },
       {
-        Header: 'Mission Name',
+        Header: <InfoWrapper tooltipText="invoice_header_mission_name"><Typography variant='body2' fontWeight='Bold'>Mission Name</Typography></InfoWrapper>,
         accessor: 'itemName',
         disableFilters: true
       },
       {
-        Header: 'Invoice Date',
+        Header: <InfoWrapper tooltipText="invoice_header_invoice_date"><Typography variant='body2' fontWeight='Bold'>Invoice Date</Typography></InfoWrapper>,
         accessor: 'invoiceDate',
         disableFilters: true,
         Cell: InvoiceDateCell
       },
       {
-        Header: 'Due Date',
+        Header: <InfoWrapper tooltipText="invoice_header_due_date"><Typography variant='body2' fontWeight='Bold'>Due Date</Typography></InfoWrapper>,
         accessor: 'dueDate',
         disableFilters: true,
         Cell: DueDateCell
       },
       {
-        Header: 'Total Amount Incl. VAT',
+        Header: <InfoWrapper tooltipText="invoice_header_total_amount_incl_vat"><Typography variant='body2' fontWeight='Bold'>Total Amount Incl. VAT</Typography></InfoWrapper>,
         accessor: 'totalAmount',
         disableFilters: true,
         Cell: AmountCell
       },
       {
-        Header: 'Status',
+        Header: <InfoWrapper tooltipText="invoice_header_status"><Typography variant='body2' fontWeight='Bold'>Status</Typography></InfoWrapper>,
         accessor: 'status',
         disableFilters: true,
         filter: 'includes',
