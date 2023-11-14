@@ -13,7 +13,7 @@ const EmptyCardList = ({ title }) => {
       <Grid item xs={12}>
         <Box
           sx={{
-            pt: { xs: 2 },
+            pt: { xs: 4 },
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
@@ -22,7 +22,7 @@ const EmptyCardList = ({ title }) => {
         >
           <Grid container direction="column" justifyContent="center" alignItems="center">
             <Grid item>
-              <Box sx={{ ml: -9, mb: { xs: -10, sm: -8 } }}>
+              <Box sx={{ ml: -9, mb: -10 }}>
                 <Box sx={{ position: 'relative' }}>
                   <EmptyCard />
                 </Box>
