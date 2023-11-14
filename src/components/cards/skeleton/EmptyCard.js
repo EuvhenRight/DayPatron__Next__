@@ -31,14 +31,6 @@ const UserCard = () => {
             </Stack>
           </Grid>
           <Grid item xs={12}>
-            <Skeleton animation={false} height={20} width={45} />
-            <Skeleton animation={false} height={20} />
-            <Stack direction="row" alignItems="center" spacing={1}>
-              <Skeleton animation={false} height={20} width={90} />
-              <Skeleton animation={false} height={20} width={38} />
-            </Stack>
-          </Grid>
-          <Grid item xs={12}>
             <Stack direction="row" justifyContent="space-between" alignItems="center">
               <Grid container spacing={1}>
                 <Grid item>
