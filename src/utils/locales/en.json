@@ -80,5 +80,12 @@
   "product_price_tooltip": "Specify the cost associated with your product. 10x will add between 25% and 50% to your list price depending on the niche product. Please note that 10x can assist you in setting your price before we offer it to our customers.",
   "product_description_tooltip": "Provide a clear description of your solution. Use the following headers to describe it: Solution Snapshot, Outcome Odyssey, Deliverables Delight and Approach Alchemy.",
   "product_cluster_tooltip": "10x Customers can filter Solutions based on cluster. Please select the most appropriate cluster for your solution",
-  "product_estimated_implementation_hours_tooltip": "This is an optional field. If you want to list the maximum hours, fill them in here. We recommend you to carefully match the pricing with your effort and scoping. You can always adjust the pricing."
+  "product_estimated_implementation_hours_tooltip": "This is an optional field. If you want to list the maximum hours, fill them in here. We recommend you to carefully match the pricing with your effort and scoping. You can always adjust the pricing.",
+  
+  "invoice_payouts_header_invoice_number": "A unique identifier for the invoice",
+  "invoice_payouts_header_company": "The name of the company",
+  "invoice_payouts_header_mission_name": "The name of the mission for which the invoice is issued",
+  "invoice_payouts_header_invoice_date": "The date when the invoice is issued by 10X",
+  "invoice_payouts_header_total_amount_incl_vat": "The total amount of the invoice including VAT",
+  "invoice_payouts_header_status": "Status of the invoice (pending, paid, sent)"
 }

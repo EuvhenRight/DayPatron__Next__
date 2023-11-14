@@ -37,6 +37,8 @@ import { renderFilterTypes, GlobalFilter, DateColumnFilter } from 'utils/react-t
 import { format } from 'date-fns';
 import { openSnackbar } from 'store/reducers/snackbar';
 
+import InfoWrapper from 'components/InfoWrapper';
+
 // ==============================|| REACT TABLE ||============================== //
 
 function ReactTable({ columns, data }) {
@@ -332,35 +334,35 @@ const InvoicesPage = () => {
         disableFilters: true
       },
       {
-        Header: 'Invoice Number',
+        Header: <InfoWrapper tooltipText="invoice_payouts_header_invoice_number"><Typography variant='body2' fontWeight='Bold'>Invoice Number</Typography></InfoWrapper>,
         accessor: 'invoiceNumber',
         disableFilters: true
       },
       {
-        Header: 'Company',
+        Header: <InfoWrapper tooltipText="invoice_payouts_header_company"><Typography variant='body2' fontWeight='Bold'>Company</Typography></InfoWrapper>,
         accessor: 'counterPartyName',
         disableFilters: true,
         Cell: CompanyCell
       },
       {
-        Header: 'Mission Name',
+        Header: <InfoWrapper tooltipText="invoice_payouts_header_mission_name"><Typography variant='body2' fontWeight='Bold'>Mission Name</Typography></InfoWrapper>,
         accessor: 'itemName',
         disableFilters: true
       },
       {
-        Header: 'Invoice Date',
+        Header: <InfoWrapper tooltipText="invoice_payouts_header_invoice_date"><Typography variant='body2' fontWeight='Bold'>Invoice Date</Typography></InfoWrapper>,
         accessor: 'invoiceDate',
         disableFilters: true,
         Cell: InvoiceDateCell
       },
       {
-        Header: 'Total Amount Incl. VAT',
+        Header: <InfoWrapper tooltipText="invoice_payouts_header_total_amount_incl_vat"><Typography variant='body2' fontWeight='Bold'>Total Amount Incl. VAT</Typography></InfoWrapper>,
         accessor: 'totalAmount',
         disableFilters: true,
         Cell: AmountCell
       },
       {
-        Header: 'Status',
+        Header: <InfoWrapper tooltipText="invoice_payouts_header_status"><Typography variant='body2' fontWeight='Bold'>Status</Typography></InfoWrapper>,
         accessor: 'status',
         disableFilters: true,
         filter: 'includes',
