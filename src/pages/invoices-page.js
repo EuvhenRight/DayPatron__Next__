@@ -120,11 +120,9 @@ function ReactTable({ columns, data }) {
                       ? data.length
                       : status === 'Pending'
                         ? counts.Pending
-                        : status === 'SentToAccountant'
-                          ? counts.SentToAccountant
                           : counts.Paid
                   }
-                  color={status === 'All' ? 'primary' : status === 'Paid' ? 'success' : status === 'SentToAccountant' ? 'warning' : 'error'}
+                  color={status === 'All' ? 'primary' : status === 'Paid' ? 'success' : 'warning'}
                   variant="light"
                   size="small"
                 />
@@ -231,13 +229,11 @@ TalentCell.propTypes = {
 // Status
 const StatusCell = ({ value }) => {
   switch (value) {
-    case 'SentToAccountant':
-      return <Chip color="warning" label="Sent" size="small" variant="light" />;
     case 'Paid':
       return <Chip color="success" label="Paid" size="small" variant="light" />;
     case 'Pending':
     default:
-      return <Chip color="error" label="Pending" size="small" variant="light" />;
+      return <Chip color="warning" label="Pending" size="small" variant="light" />;
   }
 };
 
