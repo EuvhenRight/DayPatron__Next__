@@ -124,7 +124,7 @@ const UpdateProductOrder = ({ productOrderId }) => {
           return;
         }
 
-        navigate('/orders/my');
+        navigate('/orders');
 
         dispatch(
           openSnackbar({
@@ -246,7 +246,7 @@ const UpdateProductOrder = ({ productOrderId }) => {
           </DialogContent>
           <DialogActions sx={{ p: 2.5 }}>
             <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 2.5 }}>
-              <Button color="error" onClick={() => { navigate('/orders/my'); }}>
+              <Button color="error" onClick={() => { navigate('/orders'); }}>
                 Cancel
               </Button>
               <Button type="submit" variant="contained" disabled={isSubmitting}>

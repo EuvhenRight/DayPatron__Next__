@@ -96,7 +96,7 @@ const menuItems = {
           id: 'my-orders',
           title: <FormattedMessage id="my-orders" />,
           type: 'item',
-          url: '/orders/my',
+          url: '/orders',
           icon: icons.ShoppingCartOutlined
         }
       ]

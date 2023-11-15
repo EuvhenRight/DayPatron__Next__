@@ -9,12 +9,11 @@ import EmptyCard from './EmptyCard';
 
 const EmptyCardList = ({ title }) => {
   return (
-    <Grid container spacing={3}>
+    <Grid container spacing={1}>
       <Grid item xs={12}>
         <Box
           sx={{
-            p: { xs: 2.5, sm: 6 },
-            height: `calc(100vh - 192px)`,
+            pt: { xs: 4 },
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
@@ -23,18 +22,18 @@ const EmptyCardList = ({ title }) => {
         >
           <Grid container direction="column" justifyContent="center" alignItems="center">
             <Grid item>
-              <Box sx={{ ml: -9, mb: { xs: -8, sm: -5 } }}>
+              <Box sx={{ ml: -9, mb: -10 }}>
                 <Box sx={{ position: 'relative' }}>
                   <EmptyCard />
                 </Box>
-                <Box sx={{ position: 'relative', top: -120, left: 72 }}>
+                <Box sx={{ position: 'relative', top: -110, left: 72 }}>
                   <EmptyCard />
                 </Box>
               </Box>
             </Grid>
             <Grid item>
               <Stack spacing={1}>
-                <Typography align="center" variant="h4">
+                <Typography align="center" variant="h5">
                   {title}
                 </Typography>
               </Stack>
