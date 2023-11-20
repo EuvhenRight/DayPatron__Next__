@@ -31,8 +31,7 @@ import InfoWrapper from 'components/InfoWrapper';
 
 import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import Rte from 'components/Rte';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { normalizeInputValue, normalizeBooleanInputValue, prepareApiBody } from 'utils/stringUtils';
 import { PERSONAL_INFORMATION_UPDATE } from 'store/reducers/actions';
@@ -611,7 +610,7 @@ const MissionPage = () => {
                           <InfoWrapper tooltipText="mission_my_notes_about_the_mission_tooltip">
                             <Typography color="secondary">My Notes About the Mission</Typography>
                           </InfoWrapper>
-                          <ReactQuill
+                          <Rte
                             id="contractor-mission-notes"
                             value={normalizeInputValue(values?.missionNotes)}
                             onChange={(e) => setFieldValue('missionNotes', e)}

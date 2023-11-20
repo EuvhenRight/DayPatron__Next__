@@ -3,9 +3,8 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
 import InfoWrapper from 'components/InfoWrapper';
+import Rte from 'components/Rte';
 
 // material-ui
 import {
@@ -58,7 +57,6 @@ const getInitialValues = (product) => {
 
   if (product) {
     var result = _.merge({}, newProduct, product);
-
     return result;
   }
 
@@ -476,7 +474,7 @@ const UpsertProduct = ({ productId }) => {
                         <InfoWrapper tooltipText="product_description_tooltip">
                           <InputLabel htmlFor="product-description">Description</InputLabel>
                         </InfoWrapper>
-                        <ReactQuill
+                        <Rte
                           id="product-description"
                           value={normalizeInputValue(values.description)}
                           onChange={(e) => setFieldValue('description', e)}
