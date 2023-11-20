@@ -3,8 +3,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import Rte from 'components/Rte';
 import InfoWrapper from 'components/InfoWrapper';
 
 // material-ui
@@ -188,7 +187,7 @@ const UpdateProductOrder = ({ productOrderId }) => {
                   <InfoWrapper tooltipText="product_order_employer_service_order_description_tooltip">
                     <InputLabel htmlFor="product-order-employer-service-order-description">Purchase Terms</InputLabel>
                   </InfoWrapper>
-                  <ReactQuill
+                  <Rte
                     id="product-order-employer-service-order-description"
                     value={normalizeInputValue(values.employerServiceOrderDescription)}
                     onChange={(e) => setFieldValue('employerServiceOrderDescription', e)}
@@ -229,7 +228,7 @@ const UpdateProductOrder = ({ productOrderId }) => {
                   <InfoWrapper tooltipText="product_order_contractor_service_order_description_tooltip">
                     <InputLabel htmlFor="product-order-contractor-service-order-description">Purchase Terms</InputLabel>
                   </InfoWrapper>
-                  <ReactQuill
+                  <Rte
                     id="product-order-contractor-service-order-description"
                     value={normalizeInputValue(values.contractorServiceOrderDescription)}
                     onChange={(e) => setFieldValue('contractorServiceOrderDescription', e)}

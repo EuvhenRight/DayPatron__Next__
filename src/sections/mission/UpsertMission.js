@@ -3,8 +3,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import Rte from 'components/Rte';
 import InfoWrapper from 'components/InfoWrapper';
 
 // material-ui
@@ -573,7 +572,7 @@ const UpsertMission = ({ missionId }) => {
                         <InfoWrapper tooltipText="mission_description_tooltip">
                           <InputLabel htmlFor="mission-description">Description</InputLabel>
                         </InfoWrapper>
-                        <ReactQuill
+                        <Rte
                           id="mission-description"
                           value={normalizeInputValue(values.description)}
                           onChange={(e) => setFieldValue('description', e)}
@@ -1006,7 +1005,7 @@ const UpsertMission = ({ missionId }) => {
                         <InfoWrapper tooltipText="mission_current_setup_tooltip">
                           <InputLabel htmlFor="mission-current-setup">Current Setup</InputLabel>
                         </InfoWrapper>
-                        <ReactQuill
+                        <Rte
                           id="mission-current-setup"
                           value={normalizeInputValue(values.currentSetup)}
                           onChange={(e) => setFieldValue('currentSetup', e)}
@@ -1043,7 +1042,7 @@ const UpsertMission = ({ missionId }) => {
                         <InfoWrapper tooltipText="mission_why_we_need_you_tooltip">
                           <InputLabel htmlFor="mission-why-we-need-you">Why We Need You</InputLabel>
                         </InfoWrapper>
-                        <ReactQuill
+                        <Rte
                           id="mission-why-we-need-you"
                           value={normalizeInputValue(values.whyWeNeedYou)}
                           onChange={(e) => setFieldValue('whyWeNeedYou', e)}
@@ -1080,7 +1079,7 @@ const UpsertMission = ({ missionId }) => {
                         <InfoWrapper tooltipText="mission_outcome_tooltip">
                           <InputLabel htmlFor="mission-outcome">Outcome</InputLabel>
                         </InfoWrapper>
-                        <ReactQuill
+                        <Rte
                           id="mission-outcome"
                           value={normalizeInputValue(values.outcome)}
                           onChange={(e) => setFieldValue('outcome', e)}
@@ -1117,7 +1116,7 @@ const UpsertMission = ({ missionId }) => {
                         <InfoWrapper tooltipText="mission_profile_we_are_looking_for_tooltip">
                           <InputLabel htmlFor="mission-profile-type">Profile We Are Looking For</InputLabel>
                         </InfoWrapper>
-                        <ReactQuill
+                        <Rte
                           id="mission-profile-type"
                           value={normalizeInputValue(values.profileType)}
                           onChange={(e) => setFieldValue('profileType', e)}

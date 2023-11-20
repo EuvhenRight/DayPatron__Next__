@@ -14,8 +14,7 @@ import {
 import _ from 'lodash';
 import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import Rte from 'components/Rte';
 
 import { openSnackbar } from 'store/reducers/snackbar';
 import { normalizeInputValue, normalizeBooleanInputValue, prepareApiBody } from 'utils/stringUtils';
@@ -145,7 +144,7 @@ const MissionContractorMatchAdminNotes = ({ missionId, contractorId, adminNotes,
           >
             <Stack spacing={1.25}>
               <InputLabel htmlFor="match-admin-contractor-notes">Notes About the Talent</InputLabel>
-              <ReactQuill
+              <Rte
                 id="match-admin-contractor-notes"
                 value={normalizeInputValue(values.contractorNotes)}
                 onChange={(e) => setFieldValue('contractorNotes', e)}
@@ -225,7 +224,7 @@ const MissionContractorMatchAdminNotes = ({ missionId, contractorId, adminNotes,
           >
             <Stack spacing={1.25}>
               <InputLabel htmlFor="match-admin-mission-notes">Notes About the Mission</InputLabel>
-              <ReactQuill
+              <Rte
                 id="match-admin-mission-notes"
                 value={normalizeInputValue(values.missionNotes)}
                 onChange={(e) => setFieldValue('missionNotes', e)}

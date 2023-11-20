@@ -3,8 +3,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import Rte from 'components/Rte';
 
 // material-ui
 import {
@@ -557,7 +556,7 @@ const UpsertEmployer = ({ employerId }) => {
                         <InfoWrapper tooltipText="company_description_tooltip">
                           <InputLabel htmlFor="employer-description">Description</InputLabel>
                         </InfoWrapper>
-                        <ReactQuill
+                        <Rte
                           id="employer-description"
                           value={normalizeInputValue(values.description)}
                           onChange={(e) => setFieldValue('description', e)} />

@@ -15,8 +15,7 @@ import InfoWrapper from 'components/InfoWrapper';
 import _ from 'lodash';
 import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import Rte from 'components/Rte';
 
 import { openSnackbar } from 'store/reducers/snackbar';
 import { normalizeInputValue, prepareApiBody, normalizeBooleanInputValue } from 'utils/stringUtils';
@@ -140,7 +139,7 @@ const MissionContractorMatchEmployerNotes = ({ missionId, contractorId, employer
               <InfoWrapper tooltipText="match_company_notes_about_the_talent_tooltip">
                 <InputLabel htmlFor="match-employer-contractor-notes">Notes About the Talent</InputLabel>
               </InfoWrapper>
-              <ReactQuill
+              <Rte
                 id="match-employer-contractor-notes"
                 value={normalizeInputValue(values.contractorNotes)}
                 onChange={(e) => setFieldValue('contractorNotes', e)}
