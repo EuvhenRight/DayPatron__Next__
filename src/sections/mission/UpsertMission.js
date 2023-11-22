@@ -547,27 +547,7 @@ const UpsertMission = ({ missionId }) => {
                         )}
                       </Stack>
                     </Grid>
-                    <Grid item xs={12}
-                      sx={{
-                        '& .quill': {
-                          borderRadius: '4px',
-                          '& .ql-toolbar': {
-                            bgcolor: theme.palette.mode === 'dark' ? 'dark.light' : 'grey.100',
-                            borderColor: theme.palette.divider,
-                            borderTopLeftRadius: '4px',
-                            borderTopRightRadius: '4px'
-                          },
-                          '& .ql-container': {
-                            borderColor: `${theme.palette.divider} !important`,
-                            borderBottomLeftRadius: '4px',
-                            borderBottomRightRadius: '4px',
-                            '& .ql-editor': {
-                              minHeight: 135
-                            }
-                          }
-                        }
-                      }}
-                    >
+                    <Grid item xs={12}>
                       <Stack spacing={1.25}>
                         <InfoWrapper tooltipText="mission_description_tooltip">
                           <InputLabel htmlFor="mission-description">Description</InputLabel>
@@ -980,27 +960,7 @@ const UpsertMission = ({ missionId }) => {
                         )}
                       </Stack>
                     </Grid>
-                    <Grid item xs={12}
-                      sx={{
-                        '& .quill': {
-                          borderRadius: '4px',
-                          '& .ql-toolbar': {
-                            bgcolor: theme.palette.mode === 'dark' ? 'dark.light' : 'grey.100',
-                            borderColor: theme.palette.divider,
-                            borderTopLeftRadius: '4px',
-                            borderTopRightRadius: '4px'
-                          },
-                          '& .ql-container': {
-                            borderColor: `${theme.palette.divider} !important`,
-                            borderBottomLeftRadius: '4px',
-                            borderBottomRightRadius: '4px',
-                            '& .ql-editor': {
-                              minHeight: 135
-                            }
-                          }
-                        }
-                      }}
-                    >
+                    <Grid item xs={12}>
                       <Stack spacing={1.25}>
                         <InfoWrapper tooltipText="mission_current_setup_tooltip">
                           <InputLabel htmlFor="mission-current-setup">Current Setup</InputLabel>
@@ -1017,27 +977,7 @@ const UpsertMission = ({ missionId }) => {
                         )}
                       </Stack>
                     </Grid>
-                    <Grid item xs={12}
-                      sx={{
-                        '& .quill': {
-                          borderRadius: '4px',
-                          '& .ql-toolbar': {
-                            bgcolor: theme.palette.mode === 'dark' ? 'dark.light' : 'grey.100',
-                            borderColor: theme.palette.divider,
-                            borderTopLeftRadius: '4px',
-                            borderTopRightRadius: '4px'
-                          },
-                          '& .ql-container': {
-                            borderColor: `${theme.palette.divider} !important`,
-                            borderBottomLeftRadius: '4px',
-                            borderBottomRightRadius: '4px',
-                            '& .ql-editor': {
-                              minHeight: 135
-                            }
-                          }
-                        }
-                      }}
-                    >
+                    <Grid item xs={12}>
                       <Stack spacing={1.25}>
                         <InfoWrapper tooltipText="mission_why_we_need_you_tooltip">
                           <InputLabel htmlFor="mission-why-we-need-you">Why We Need You</InputLabel>
@@ -1054,27 +994,7 @@ const UpsertMission = ({ missionId }) => {
                         )}
                       </Stack>
                     </Grid>
-                    <Grid item xs={12}
-                      sx={{
-                        '& .quill': {
-                          borderRadius: '4px',
-                          '& .ql-toolbar': {
-                            bgcolor: theme.palette.mode === 'dark' ? 'dark.light' : 'grey.100',
-                            borderColor: theme.palette.divider,
-                            borderTopLeftRadius: '4px',
-                            borderTopRightRadius: '4px'
-                          },
-                          '& .ql-container': {
-                            borderColor: `${theme.palette.divider} !important`,
-                            borderBottomLeftRadius: '4px',
-                            borderBottomRightRadius: '4px',
-                            '& .ql-editor': {
-                              minHeight: 135
-                            }
-                          }
-                        }
-                      }}
-                    >
+                    <Grid item xs={12}>
                       <Stack spacing={1.25}>
                         <InfoWrapper tooltipText="mission_outcome_tooltip">
                           <InputLabel htmlFor="mission-outcome">Outcome</InputLabel>
@@ -1091,27 +1011,7 @@ const UpsertMission = ({ missionId }) => {
                         )}
                       </Stack>
                     </Grid>
-                    <Grid item xs={12}
-                      sx={{
-                        '& .quill': {
-                          borderRadius: '4px',
-                          '& .ql-toolbar': {
-                            bgcolor: theme.palette.mode === 'dark' ? 'dark.light' : 'grey.100',
-                            borderColor: theme.palette.divider,
-                            borderTopLeftRadius: '4px',
-                            borderTopRightRadius: '4px'
-                          },
-                          '& .ql-container': {
-                            borderColor: `${theme.palette.divider} !important`,
-                            borderBottomLeftRadius: '4px',
-                            borderBottomRightRadius: '4px',
-                            '& .ql-editor': {
-                              minHeight: 135
-                            }
-                          }
-                        }
-                      }}
-                    >
+                    <Grid item xs={12}>
                       <Stack spacing={1.25}>
                         <InfoWrapper tooltipText="mission_profile_we_are_looking_for_tooltip">
                           <InputLabel htmlFor="mission-profile-type">Profile We Are Looking For</InputLabel>

@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useTheme } from '@mui/material/styles';
 import Rte from 'components/Rte';
 import InfoWrapper from 'components/InfoWrapper';
 
@@ -70,7 +69,6 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
 
   const navigate = useNavigate();
 
-  const theme = useTheme();
   const dispatch = useDispatch();
 
   const getMissionOrder = async () => {
@@ -458,27 +456,7 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
               <Grid item xs={12}>
                 <Typography variant="h5">Company Service Order</Typography>
               </Grid>
-              <Grid item xs={12}
-                sx={{
-                  '& .quill': {
-                    borderRadius: '4px',
-                    '& .ql-toolbar': {
-                      bgcolor: theme.palette.mode === 'dark' ? 'dark.light' : 'grey.100',
-                      borderColor: theme.palette.divider,
-                      borderTopLeftRadius: '4px',
-                      borderTopRightRadius: '4px'
-                    },
-                    '& .ql-container': {
-                      borderColor: `${theme.palette.divider} !important`,
-                      borderBottomLeftRadius: '4px',
-                      borderBottomRightRadius: '4px',
-                      '& .ql-editor': {
-                        minHeight: 135
-                      }
-                    }
-                  }
-                }}
-              >
+              <Grid item xs={12}>
                 <Stack spacing={1.25}>
                   <InfoWrapper tooltipText="mission_order_employer_service_order_description_tooltip">
                     <InputLabel htmlFor="mission-order-employer-service-order-description">Purchase Terms</InputLabel>
@@ -571,27 +549,7 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
               <Grid item xs={12}>
                 <Typography variant="h5">Talent Service Order</Typography>
               </Grid>
-              <Grid item xs={12}
-                sx={{
-                  '& .quill': {
-                    borderRadius: '4px',
-                    '& .ql-toolbar': {
-                      bgcolor: theme.palette.mode === 'dark' ? 'dark.light' : 'grey.100',
-                      borderColor: theme.palette.divider,
-                      borderTopLeftRadius: '4px',
-                      borderTopRightRadius: '4px'
-                    },
-                    '& .ql-container': {
-                      borderColor: `${theme.palette.divider} !important`,
-                      borderBottomLeftRadius: '4px',
-                      borderBottomRightRadius: '4px',
-                      '& .ql-editor': {
-                        minHeight: 135
-                      }
-                    }
-                  }
-                }}
-              >
+              <Grid item xs={12}>
                 <Stack spacing={1.25}>
                   <InfoWrapper tooltipText="mission_order_contractor_service_order_description_tooltip">
                     <InputLabel htmlFor="mission-order-contractor-service-order-description">Purchase Terms</InputLabel>

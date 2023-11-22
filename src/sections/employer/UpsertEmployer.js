@@ -531,27 +531,7 @@ const UpsertEmployer = ({ employerId }) => {
                     </Grid>
 
 
-                    <Grid item xs={12}
-                      sx={{
-                        '& .quill': {
-                          borderRadius: '4px',
-                          '& .ql-toolbar': {
-                            bgcolor: theme.palette.mode === 'dark' ? 'dark.light' : 'grey.100',
-                            borderColor: theme.palette.divider,
-                            borderTopLeftRadius: '4px',
-                            borderTopRightRadius: '4px'
-                          },
-                          '& .ql-container': {
-                            borderColor: `${theme.palette.divider} !important`,
-                            borderBottomLeftRadius: '4px',
-                            borderBottomRightRadius: '4px',
-                            '& .ql-editor': {
-                              minHeight: 135
-                            }
-                          }
-                        }
-                      }}
-                    >
+                    <Grid item xs={12}>
                       <Stack spacing={1.25}>
                         <InfoWrapper tooltipText="company_description_tooltip">
                           <InputLabel htmlFor="employer-description">Description</InputLabel>

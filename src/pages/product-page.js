@@ -13,19 +13,25 @@ import {
   DialogContent,
   InputLabel,
   Select,
-  MenuItem
+  MenuItem,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText
 } from '@mui/material';
 import InfoWrapper from 'components/InfoWrapper';
 import { PopupTransition } from 'components/@extended/Transitions';
 import Avatar from 'components/@extended/Avatar';
 import { ShoppingCartOutlined } from '@ant-design/icons';
 import { openSnackbar } from 'store/reducers/snackbar';
+import WelcomeBanner from 'sections/WelcomeBanner';
 
 // project imports
 import MainCard from 'components/MainCard';
 import { useKeycloak } from '@react-keycloak/web';
 import { normalizeInputValue, prepareApiBody } from 'utils/stringUtils';
 const avatarImage = require.context('assets/images/products', true);
+const avatarImageContractor = require.context('assets/images/users', true);
 
 // ==============================|| PRODUCT DETAILS - MAIN ||============================== //
 
@@ -37,6 +43,7 @@ const ProductDetails = () => {
 
   const [product, setProduct] = useState(null);
   const [avatar, setAvatar] = useState(avatarImage(`./default.png`));
+  const [avatarContractor, setAvatarContractor] = useState(avatarImageContractor(`./default.png`));
   const [openBuyDialog, setOpenBuyDialog] = useState(false);
   const [employers, setEmployers] = useState(null);
   const [employerId, setEmployerId] = useState(null);
@@ -102,7 +109,7 @@ const ProductDetails = () => {
 
   useEffect(() => {
     (async () => {
-      var imgSrc = await getImageSrc(product?.mainImageUrl);
+      var imgSrc = await getImageSrc(product?.mainImageUrl, avatarImage(`./default.png`));
       setAvatar(imgSrc);
 
       if (imgSrc)
@@ -113,10 +120,23 @@ const ProductDetails = () => {
     })();
   }, [product?.mainImageUrl, keycloak?.idToken]);
 
-  const getImageSrc = async (imageUrl) => {
+  useEffect(() => {
+    (async () => {
+      var imgSrc = await getImageSrc(product?.contractorMainImageUrl, avatarImageContractor(`./default.png`));
+      setAvatarContractor(imgSrc);
+
+      if (imgSrc)
+        setTimeout(function () {
+          URL.revokeObjectURL(imgSrc);
+        }, 1000);
+
+    })();
+  }, [product?.contractorMainImageUrl, keycloak?.idToken]);
+
+  const getImageSrc = async (imageUrl, defaultImage) => {
     try {
       if (!imageUrl) {
-        return avatarImage(`./default.png`);
+        return defaultImage;
       }
 
       let response = await fetch(imageUrl,
@@ -189,7 +209,31 @@ const ProductDetails = () => {
   return (
     <>
       {product && (
-        <Grid container spacing={2}>
+        <Grid container spacing={3}>
+
+          <Grid item xs={12}>
+            <WelcomeBanner title="Discover the Power of the 10x Solution Suite" subTitle="Elevate your vision with curated excellence" />
+          </Grid>
+
+          <Grid item xs={12}>
+
+            <List sx={{ width: 1, p: 0 }}>
+              <ListItem disablePadding>
+                <ListItemAvatar>
+                  <Avatar src={avatarContractor} />
+                </ListItemAvatar>
+                <ListItemText
+                  primary={<Typography variant="subtitle1">Solution by &apos;{product?.contractorFirstName + ' ' + product?.contractorLastName}&apos;</Typography>}
+                  secondary={
+                    <Typography variant="caption" color="secondary">
+                      Talent has {product?.contractorProductsCount <= 1 ? 'no' : product?.contractorProductsCount - 1} other solution(s)
+                    </Typography>
+                  }
+                />
+              </ListItem>
+            </List>
+
+          </Grid>
           <Grid item xs={12}>
             <MainCard>
               <Grid container spacing={3}>

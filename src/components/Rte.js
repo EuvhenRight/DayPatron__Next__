@@ -1,7 +1,12 @@
+import {
+  Stack
+} from '@mui/material';
 import ReactQuill/*, { Quill }*/ from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { useTheme } from '@mui/material/styles';
 
 const Rte = (props) => {
+  const theme = useTheme();
   /*const Delta = Quill.import('delta');
 
   function matchMsWordList(node, delta) {
@@ -52,14 +57,36 @@ const Rte = (props) => {
   ];*/
 
   return (
-    <ReactQuill
-      {...props}
-      modules={{
-        clipboard: {
-          matchVisual: false
+    <Stack
+      sx={{
+        '& .quill': {
+          borderRadius: '4px',
+          '& .ql-toolbar': {
+            bgcolor: theme.palette.mode === 'dark' ? 'dark.light' : 'grey.100',
+            borderColor: theme.palette.divider,
+            borderTopLeftRadius: '4px',
+            borderTopRightRadius: '4px'
+          },
+          '& .ql-container': {
+            borderColor: `${theme.palette.divider} !important`,
+            borderBottomLeftRadius: '4px',
+            borderBottomRightRadius: '4px',
+            '& .ql-editor': {
+              minHeight: 135
+            }
+          }
         }
       }}
-    />
+    >
+      <ReactQuill
+        {...props}
+        modules={{
+          clipboard: {
+            matchVisual: false
+          }
+        }}
+      />
+    </Stack>
   );
 }
 

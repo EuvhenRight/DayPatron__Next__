@@ -1,6 +1,5 @@
 import { useDispatch } from 'react-redux';
 import { useKeycloak } from '@react-keycloak/web';
-import { useTheme } from '@mui/material/styles';
 import {
   FormHelperText,
   Button,
@@ -42,7 +41,6 @@ const getInitialValues = (adminNotes) => {
 const MissionContractorMatchAdminNotes = ({ missionId, contractorId, adminNotes, setAdminNotes }) => {
   const dispatch = useDispatch();
   const { keycloak } = useKeycloak();
-  const theme = useTheme();
 
   const AdminNotesSchema = Yup.object().shape({
     contractorNotes: Yup.string().max(5000).nullable(true),
@@ -121,27 +119,7 @@ const MissionContractorMatchAdminNotes = ({ missionId, contractorId, adminNotes,
           <Grid item xs={12}>
             <Typography variant="h3">Admin Notes</Typography>
           </Grid>
-          <Grid item xs={12}
-            sx={{
-              '& .quill': {
-                borderRadius: '4px',
-                '& .ql-toolbar': {
-                  bgcolor: theme.palette.mode === 'dark' ? 'dark.light' : 'grey.100',
-                  borderColor: theme.palette.divider,
-                  borderTopLeftRadius: '4px',
-                  borderTopRightRadius: '4px'
-                },
-                '& .ql-container': {
-                  borderColor: `${theme.palette.divider} !important`,
-                  borderBottomLeftRadius: '4px',
-                  borderBottomRightRadius: '4px',
-                  '& .ql-editor': {
-                    minHeight: 135
-                  }
-                }
-              }
-            }}
-          >
+          <Grid item xs={12}>
             <Stack spacing={1.25}>
               <InputLabel htmlFor="match-admin-contractor-notes">Notes About the Talent</InputLabel>
               <Rte
@@ -201,27 +179,7 @@ const MissionContractorMatchAdminNotes = ({ missionId, contractorId, adminNotes,
             </Stack>
           </Grid>
 
-          <Grid item xs={12}
-            sx={{
-              '& .quill': {
-                borderRadius: '4px',
-                '& .ql-toolbar': {
-                  bgcolor: theme.palette.mode === 'dark' ? 'dark.light' : 'grey.100',
-                  borderColor: theme.palette.divider,
-                  borderTopLeftRadius: '4px',
-                  borderTopRightRadius: '4px'
-                },
-                '& .ql-container': {
-                  borderColor: `${theme.palette.divider} !important`,
-                  borderBottomLeftRadius: '4px',
-                  borderBottomRightRadius: '4px',
-                  '& .ql-editor': {
-                    minHeight: 135
-                  }
-                }
-              }
-            }}
-          >
+          <Grid item xs={12}>
             <Stack spacing={1.25}>
               <InputLabel htmlFor="match-admin-mission-notes">Notes About the Mission</InputLabel>
               <Rte

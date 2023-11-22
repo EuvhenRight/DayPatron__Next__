@@ -1,6 +1,5 @@
 import { useDispatch } from 'react-redux';
 import { useKeycloak } from '@react-keycloak/web';
-import { useTheme } from '@mui/material/styles';
 import {
   FormHelperText,
   Button,
@@ -40,7 +39,6 @@ const getInitialValues = (employerNotes) => {
 const MissionContractorMatchEmployerNotes = ({ missionId, contractorId, employerNotes, setEmployerNotes }) => {
   const dispatch = useDispatch();
   const { keycloak } = useKeycloak();
-  const theme = useTheme();
 
   const EmployerNotesSchema = Yup.object().shape({
     contractorNotes: Yup.string().max(5000).nullable(true),
@@ -114,27 +112,7 @@ const MissionContractorMatchEmployerNotes = ({ missionId, contractorId, employer
           <Grid item xs={12}>
             <Typography variant="h3">Company Notes</Typography>
           </Grid>
-          <Grid item xs={12}
-            sx={{
-              '& .quill': {
-                borderRadius: '4px',
-                '& .ql-toolbar': {
-                  bgcolor: theme.palette.mode === 'dark' ? 'dark.light' : 'grey.100',
-                  borderColor: theme.palette.divider,
-                  borderTopLeftRadius: '4px',
-                  borderTopRightRadius: '4px'
-                },
-                '& .ql-container': {
-                  borderColor: `${theme.palette.divider} !important`,
-                  borderBottomLeftRadius: '4px',
-                  borderBottomRightRadius: '4px',
-                  '& .ql-editor': {
-                    minHeight: 135
-                  }
-                }
-              }
-            }}
-          >
+          <Grid item xs={12}>
             <Stack spacing={1.25}>
               <InfoWrapper tooltipText="match_company_notes_about_the_talent_tooltip">
                 <InputLabel htmlFor="match-employer-contractor-notes">Notes About the Talent</InputLabel>
