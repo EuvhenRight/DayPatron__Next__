@@ -55,3 +55,6 @@ div.small-chip span {
     margin: revert !important;
     padding: revert !important;
 }
+.quill > .ql-container > .ql-editor.ql-blank::before{
+    padding-top: 13px;
+}

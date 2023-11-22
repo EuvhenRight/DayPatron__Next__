@@ -17,8 +17,12 @@ import {
   List,
   ListItem,
   ListItemAvatar,
-  ListItemText
+  ListItemText,
+  Tab,
+  Tabs,
+  Divider
 } from '@mui/material';
+import TabPanel from 'components/TabPanel';
 import InfoWrapper from 'components/InfoWrapper';
 import { PopupTransition } from 'components/@extended/Transitions';
 import Avatar from 'components/@extended/Avatar';
@@ -47,7 +51,12 @@ const ProductDetails = () => {
   const [openBuyDialog, setOpenBuyDialog] = useState(false);
   const [employers, setEmployers] = useState(null);
   const [employerId, setEmployerId] = useState(null);
-  
+  const [selectedFeaturesTabIndex, setSelectedFeaturesTabIndex] = useState(0);
+
+const handleChangeFeaturesTab = (event, newValue) => {
+	setSelectedFeaturesTabIndex(newValue);
+};
+
   const bindEmployers = async () => {
     try {
       let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers?employerUserId=' + encodeURIComponent(personalInformation.id),
@@ -259,6 +268,66 @@ const ProductDetails = () => {
 
                 </Grid>
               </Grid>
+            </MainCard>
+          </Grid>
+
+          <Grid item xs={12}>
+            <MainCard>
+              <Stack spacing={3}>
+                <Stack>
+                  <Tabs
+                    value={selectedFeaturesTabIndex}
+                    indicatorColor="primary"
+                    onChange={handleChangeFeaturesTab}
+                    variant="scrollable"
+                  >
+                    <Tab label="Outcome Odyssey" />
+                    <Tab label="Deliverables Delights" />
+                    <Tab label="Approach Alchemy" />
+                  </Tabs>
+                  <Divider />
+                </Stack>
+                <TabPanel value={selectedFeaturesTabIndex} index={0}>
+                  <Stack spacing={3}>
+                    <Stack spacing={0.25}>
+                      <Typography color="secondary">Outcome Description</Typography>
+                      <SanitizedHTML html={product?.outcomeDescription ?? '-'} />
+                    </Stack>
+                    <Stack spacing={0.25}>
+                      <Typography color="secondary">Outcome Importance</Typography>
+                      <SanitizedHTML html={product?.outcomeImportance ?? '-'} />
+                    </Stack>
+                    <Stack spacing={0.25}>
+                      <Typography color="secondary">Outcome Benefits</Typography>
+                      <SanitizedHTML html={product?.outcomeBenefits ?? '-'} />
+                    </Stack>
+                  </Stack>
+                </TabPanel>
+                <TabPanel value={selectedFeaturesTabIndex} index={1}>
+                <Stack spacing={3}>
+                    <Stack spacing={0.25}>
+                      <Typography color="secondary">Deliverables</Typography>
+                      <SanitizedHTML html={product?.deliverables ?? '-'} />
+                    </Stack>
+                  </Stack>
+                </TabPanel>
+                <TabPanel value={selectedFeaturesTabIndex} index={2}>
+                  <Stack spacing={3}>
+                    <Stack spacing={0.25}>
+                      <Typography color="secondary">Approach Methodology</Typography>
+                      <SanitizedHTML html={product?.approachMethodology ?? '-'} />
+                    </Stack>
+                    <Stack spacing={0.25}>
+                      <Typography color="secondary">Approach Best Practices</Typography>
+                      <SanitizedHTML html={product?.approachBestPractices ?? '-'} />
+                    </Stack>
+                    <Stack spacing={0.25}>
+                      <Typography color="secondary">Approach Success Stories</Typography>
+                      <SanitizedHTML html={product?.approachSuccessStories ?? '-'} />
+                    </Stack>
+                  </Stack>
+                </TabPanel>
+              </Stack>
             </MainCard>
           </Grid>
         </Grid>

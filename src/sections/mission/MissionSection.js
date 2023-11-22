@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useLocation, useParams, Link, Outlet } from 'react-router-dom';
 
 // material-ui
@@ -19,17 +18,11 @@ const MissionSection = () => {
     selectedTab = 1;
   }
   
-  const [value, setValue] = useState(selectedTab);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
   return (
     <MainCard>
 
       <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%' }}>
-        <Tabs value={value} onChange={handleChange} variant="scrollable" scrollButtons="auto" aria-label="mission tabs">
+        <Tabs value={selectedTab} variant="scrollable" scrollButtons="auto" aria-label="mission tabs">
           <Tab label="Overview" component={Link} to={'/missions/' + missionId + '/overview'} icon={<FileTextOutlined />} iconPosition="start" />
           <Tab label="Matches" component={Link} to={'/missions/' + missionId + '/matches'} icon={<BlockOutlined />} iconPosition="start" />
         </Tabs>
