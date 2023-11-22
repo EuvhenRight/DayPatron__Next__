@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
+import { useIntl } from 'react-intl';
 import InfoWrapper from 'components/InfoWrapper';
 import Rte from 'components/Rte';
 
@@ -52,7 +53,14 @@ const getInitialValues = (product) => {
     cluster: null,
     estimatedImplementationHours: null,
     contractorPrice: null,
-    adminPrice: null
+    adminPrice: null,
+    outcomeDescription: null,
+    outcomeImportance: null,
+    outcomeBenefits: null,
+    deliverables: null,
+    approachMethodology: null,
+    approachBestPractices: null,
+    approachSuccessStories: null
   };
 
   if (product) {
@@ -68,6 +76,7 @@ const getInitialValues = (product) => {
 const UpsertProduct = ({ productId }) => {
   const { keycloak } = useKeycloak();
   const [product, setProduct] = useState(null);
+  const intl = useIntl();
   const navigate = useNavigate();
 
   const [uploading, setUploading] = useState(false);
@@ -228,7 +237,14 @@ const UpsertProduct = ({ productId }) => {
     cluster: Yup.string().max(255).required('Cluster is required').nullable(true),
     estimatedImplementationHours: Yup.number("Should be a positive integer").integer("Should be a positive integer").min(0, "Should be a positive integer").max(9999999, "Maximum 9999999").nullable(true),
     contractorPrice: Yup.number("Should be a positive integer").integer("Should be a positive integer").min(0, "Should be a positive integer").max(9999999, "Maximum 9999999").nullable(true),
-    adminPrice: Yup.number("Should be a positive integer").integer("Should be a positive integer").min(0, "Should be a positive integer").max(9999999, "Maximum 9999999").nullable(true)
+    adminPrice: Yup.number("Should be a positive integer").integer("Should be a positive integer").min(0, "Should be a positive integer").max(9999999, "Maximum 9999999").nullable(true),
+    outcomeDescription: Yup.string().max(10000).nullable(true),
+    outcomeImportance: Yup.string().max(10000).nullable(true),
+    outcomeBenefits: Yup.string().max(10000).nullable(true),
+    deliverables: Yup.string().max(10000).nullable(true),
+    approachMethodology: Yup.string().max(10000).nullable(true),
+    approachBestPractices: Yup.string().max(10000).nullable(true),
+    approachSuccessStories: Yup.string().max(10000).nullable(true)
   });
 
   const formik = useFormik({
@@ -449,27 +465,7 @@ const UpsertProduct = ({ productId }) => {
                         )}
                       </Stack>
                     </Grid>
-                    <Grid item xs={12}
-                      sx={{
-                        '& .quill': {
-                          borderRadius: '4px',
-                          '& .ql-toolbar': {
-                            bgcolor: theme.palette.mode === 'dark' ? 'dark.light' : 'grey.100',
-                            borderColor: theme.palette.divider,
-                            borderTopLeftRadius: '4px',
-                            borderTopRightRadius: '4px'
-                          },
-                          '& .ql-container': {
-                            borderColor: `${theme.palette.divider} !important`,
-                            borderBottomLeftRadius: '4px',
-                            borderBottomRightRadius: '4px',
-                            '& .ql-editor': {
-                              minHeight: 135
-                            }
-                          }
-                        }
-                      }}
-                    >
+                    <Grid item xs={12}>
                       <Stack spacing={1.25}>
                         <InfoWrapper tooltipText="product_description_tooltip">
                           <InputLabel htmlFor="product-description">Description</InputLabel>
@@ -549,12 +545,12 @@ const UpsertProduct = ({ productId }) => {
                     {keycloak.tokenParsed.roles.includes('admin') &&
                       <>
                         <Grid item xs={12}>
-                          <Typography variant="h5">Admin Settings</Typography>
+                          <Typography variant="h4">Admin Settings</Typography>
                         </Grid>
 
                         <Grid item xs={12} sm={6}>
-                        <Stack spacing={1.25}>
-                          <InputLabel htmlFor="product-admin-price">Admin Price</InputLabel>
+                          <Stack spacing={1.25}>
+                            <InputLabel htmlFor="product-admin-price">Admin Price</InputLabel>
                             <TextField
                               fullWidth
                               id="product-admin-price"
@@ -573,6 +569,151 @@ const UpsertProduct = ({ productId }) => {
                         </Grid>
                       </>
                     }
+
+                    <Grid item xs={12}>
+                      <Typography variant="h4">Outcome Odyssey</Typography>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <Stack spacing={1.25}>
+                        <InfoWrapper tooltipText="product_outcome_description_tooltip">
+                          <InputLabel htmlFor="product-outcome-description">Outcome Description</InputLabel>
+                        </InfoWrapper>
+                        <Rte
+                          id="product-outcome-description"
+                          value={normalizeInputValue(values.outcomeDescription)}
+                          onChange={(e) => setFieldValue('outcomeDescription', e)}
+                          placeholder={intl.formatMessage({ id: 'product_outcome_description_tooltip' })}
+                        />
+                        {touched.outcomeDescription && errors.outcomeDescription && (
+                          <FormHelperText error id="product-outcome-description-helper">
+                            {errors.outcomeDescription}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <Stack spacing={1.25}>
+                        <InfoWrapper tooltipText="product_outcome_importance_tooltip">
+                          <InputLabel htmlFor="product-outcome-importance">Outcome Importance</InputLabel>
+                        </InfoWrapper>
+                        <Rte
+                          id="product-outcome-importance"
+                          value={normalizeInputValue(values.outcomeImportance)}
+                          onChange={(e) => setFieldValue('outcomeImportance', e)}
+                          placeholder={intl.formatMessage({ id: 'product_outcome_importance_tooltip' })}
+                        />
+                        {touched.outcomeImportance && errors.outcomeImportance && (
+                          <FormHelperText error id="product-outcome-importance-helper">
+                            {errors.outcomeImportance}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <Stack spacing={1.25}>
+                        <InfoWrapper tooltipText="product_outcome_benefits_tooltip">
+                          <InputLabel htmlFor="product-outcome-benefits">Outcome Benefits</InputLabel>
+                        </InfoWrapper>
+                        <Rte
+                          id="product-outcome-benefits"
+                          value={normalizeInputValue(values.outcomeBenefits)}
+                          onChange={(e) => setFieldValue('outcomeBenefits', e)}
+                          placeholder={intl.formatMessage({ id: 'product_outcome_benefits_tooltip' })}
+                        />
+                        {touched.outcomeBenefits && errors.outcomeBenefits && (
+                          <FormHelperText error id="product-outcome-benefits-helper">
+                            {errors.outcomeBenefits}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <Typography variant="h4">Deliverable Delights</Typography>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <Stack spacing={1.25}>
+                        <InfoWrapper tooltipText="product_deliverables_tooltip">
+                          <InputLabel htmlFor="product-deliverables">Deliverables</InputLabel>
+                        </InfoWrapper>
+                        <Rte
+                          id="product-deliverables"
+                          value={normalizeInputValue(values.deliverables)}
+                          onChange={(e) => setFieldValue('deliverables', e)}
+                          placeholder={intl.formatMessage({ id: 'product_deliverables_tooltip' })}
+                        />
+                        {touched.deliverables && errors.deliverables && (
+                          <FormHelperText error id="product-deliverables-helper">
+                            {errors.deliverables}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <Typography variant="h4">Approach Alchemy</Typography>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <Stack spacing={1.25}>
+                        <InfoWrapper tooltipText="product_approach_methodology_tooltip">
+                          <InputLabel htmlFor="product-approach-methodology">Approach Methodology</InputLabel>
+                        </InfoWrapper>
+                        <Rte
+                          id="product-approach-methodology"
+                          value={normalizeInputValue(values.approachMethodology)}
+                          onChange={(e) => setFieldValue('approachMethodology', e)}
+                          placeholder={intl.formatMessage({ id: 'product_approach_methodology_tooltip' })}
+                        />
+                        {touched.approachMethodology && errors.approachMethodology && (
+                          <FormHelperText error id="product-approach-methodology-helper">
+                            {errors.approachMethodology}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <Stack spacing={1.25}>
+                        <InfoWrapper tooltipText="product_approach_best_practices_tooltip">
+                          <InputLabel htmlFor="product-approach-best-practices">Approach Best Practices</InputLabel>
+                        </InfoWrapper>
+                        <Rte
+                          id="product-approach-best-practices"
+                          value={normalizeInputValue(values.approachBestPractices)}
+                          onChange={(e) => setFieldValue('approachBestPractices', e)}
+                          placeholder={intl.formatMessage({ id: 'product_approach_best_practices_tooltip' })}
+                        />
+                        {touched.approachBestPractices && errors.approachBestPractices && (
+                          <FormHelperText error id="product-approach-best-practices-helper">
+                            {errors.approachBestPractices}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                      <Stack spacing={1.25}>
+                        <InfoWrapper tooltipText="product_approach_success_stories_tooltip">
+                          <InputLabel htmlFor="product-approach-success-stories">Approach Success Stories</InputLabel>
+                        </InfoWrapper>
+                        <Rte
+                          id="product-approach-success-stories"
+                          value={normalizeInputValue(values.approachSuccessStories)}
+                          onChange={(e) => setFieldValue('approachSuccessStories', e)}
+                          placeholder={intl.formatMessage({ id: 'product_approach_success_stories_tooltip' })}
+                        />
+                        {touched.approachSuccessStories && errors.approachSuccessStories && (
+                          <FormHelperText error id="product-approach-success-stories-helper">
+                            {errors.approachSuccessStories}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
 
                   </Grid>
                 </Grid>

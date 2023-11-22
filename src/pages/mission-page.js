@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useKeycloak } from '@react-keycloak/web';
 import { useDispatch, useSelector } from 'react-redux';
-import { useTheme } from '@mui/material/styles';
 import {
   Autocomplete,
   TextField,
@@ -40,7 +39,6 @@ const avatarImage = require.context('assets/images/missions', true);
 
 const MissionPage = () => {
   const dispatch = useDispatch();
-  const theme = useTheme();
   const { keycloak } = useKeycloak();
   const { missionId } = useParams();
   const [mission, setMission] = useState(null);
@@ -583,26 +581,7 @@ const MissionPage = () => {
 
               <ListItem>
                 <Grid container spacing={3}>
-                  <Grid item xs={12}
-                    sx={{
-                      '& .quill': {
-                        borderRadius: '4px',
-                        '& .ql-toolbar': {
-                          bgcolor: theme.palette.mode === 'dark' ? 'dark.light' : 'grey.100',
-                          borderColor: theme.palette.divider,
-                          borderTopLeftRadius: '4px',
-                          borderTopRightRadius: '4px'
-                        },
-                        '& .ql-container': {
-                          borderColor: `${theme.palette.divider} !important`,
-                          borderBottomLeftRadius: '4px',
-                          borderBottomRightRadius: '4px',
-                          '& .ql-editor': {
-                            minHeight: 135
-                          }
-                        }
-                      }
-                    }}>
+                  <Grid item xs={12}>
 
                     <FormikProvider value={formik}>
                       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>

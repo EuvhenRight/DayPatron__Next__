@@ -81,7 +81,14 @@
   "product_description_tooltip": "Provide a clear description of your solution. Use the following headers to describe it: Solution Snapshot, Outcome Odyssey, Deliverables Delight and Approach Alchemy.",
   "product_cluster_tooltip": "10x Customers can filter Solutions based on cluster. Please select the most appropriate cluster for your solution",
   "product_estimated_implementation_hours_tooltip": "This is an optional field. If you want to list the maximum hours, fill them in here. We recommend you to carefully match the pricing with your effort and scoping. You can always adjust the pricing.",
-  
+  "product_outcome_description_tooltip": "Clearly outline the specific outcome your solution aims to achieve for companies.",
+  "product_outcome_importance_tooltip": "Explain why this outcome is essential and how it addresses a specific need.",
+  "product_outcome_benefits_tooltip": "Describe the tangible and intangible benefits companies will gain from your solution.",
+  "product_deliverables_tooltip": "Enumerate the tangible and intangible deliverables that companies will receive upon implementing your solution. Provide a brief description of each deliverable and how it contributes to the solution's success.",
+  "product_approach_methodology_tooltip": "Detail the step-by-step approach, strategy, or methods involved in executing your solution effectively.",
+  "product_approach_best_practices_tooltip": "Share any best practices or unique techniques that set your approach apart.",
+  "product_approach_success_stories_tooltip": "If applicable, include any success stories or case studies that showcase the effectiveness of your approach.",
+
   "invoice_payouts_header_invoice_number": "A unique identifier for the invoice",
   "invoice_payouts_header_company": "The name of the company",
   "invoice_payouts_header_mission_name": "The name of the mission for which the invoice is issued",
