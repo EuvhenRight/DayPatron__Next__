@@ -34,6 +34,8 @@ import WelcomeBanner from 'sections/WelcomeBanner';
 import MainCard from 'components/MainCard';
 import { useKeycloak } from '@react-keycloak/web';
 import { normalizeInputValue, prepareApiBody } from 'utils/stringUtils';
+import jobClusters from 'data/jobClusters';
+
 const avatarImage = require.context('assets/images/products', true);
 const avatarImageContractor = require.context('assets/images/users', true);
 
@@ -221,7 +223,7 @@ const handleChangeFeaturesTab = (event, newValue) => {
         <Grid container spacing={3}>
 
           <Grid item xs={12}>
-            <WelcomeBanner title="Discover the Power of the 10x Solution Suite" subTitle="Elevate your vision with curated excellence" />
+            <WelcomeBanner title={product?.title} subTitle={jobClusters.find(x => x.code === product?.cluster)?.label} />
           </Grid>
 
           <Grid item xs={12}>
