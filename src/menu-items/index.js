@@ -11,7 +11,8 @@ import {
   FileTextOutlined,
   SearchOutlined,
   ShoppingCartOutlined,
-  QuestionCircleOutlined
+  QuestionCircleOutlined,
+  FileOutlined
 } from '@ant-design/icons';
 
 // icons
@@ -24,7 +25,8 @@ const icons = {
   FileTextOutlined,
   SearchOutlined,
   ShoppingCartOutlined,
-  QuestionCircleOutlined
+  QuestionCircleOutlined,
+  FileOutlined
 };
 
 // ==============================|| MENU ITEMS ||============================== //
@@ -134,6 +136,13 @@ const menuItems = {
           type: 'item',
           url: '/billing',
           icon: icons.FileTextOutlined
+        },
+        {
+          id: 'subscription-plan-templates',
+          title: <FormattedMessage id="subscription-plan-templates" />,
+          type: 'item',
+          url: '/subscription-plans/templates',
+          icon: icons.FileOutlined
         }
       ]
     },
