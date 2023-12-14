@@ -26,6 +26,9 @@ const MissionSection = Loadable(lazy(() => import('sections/mission/MissionSecti
 const MissionOverviewTabContent = Loadable(lazy(() => import('sections/mission/MissionOverviewTabContent')));
 const MissionContractorMatchesTabContent = Loadable(lazy(() => import('sections/mission/MissionContractorMatchesTabContent')));
 
+const SubscriptionOfferPage = Loadable(lazy(() => import('pages/subscription-offer-page')));
+const SubscriptionOffersPage = Loadable(lazy(() => import('pages/subscription-offers-page')));
+
 const ProductsPage = Loadable(lazy(() => import('pages/products-page')));
 const ProductPage = Loadable(lazy(() => import('pages/product-page')));
 
@@ -146,6 +149,14 @@ const MainRoutes = {
         {
           path: 'solutions',
           element: <ProductsPage />
+        },
+        {
+          path: 'subscriptions/:subscriptionId',
+          element: <SubscriptionOfferPage />
+        },
+        {
+          path: 'subscriptions',
+          element: <SubscriptionOffersPage />
         },
         {
           path: 'orders/solution/:productOrderId',

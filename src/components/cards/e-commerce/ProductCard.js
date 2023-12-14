@@ -9,7 +9,7 @@ import { Box, Button, CardContent, CardMedia, Chip, Divider, Grid, Rating, Stack
 // project import
 import MainCard from 'components/MainCard';
 import IconButton from 'components/@extended/IconButton';
-import SkeletonProductPlaceholder from 'components/cards/skeleton/ProductPlaceholder';
+import ItemPlaceholder from 'components/cards/skeleton/ItemPlaceholder';
 import { useDispatch, useSelector } from 'store';
 import { addProduct } from 'store/reducers/cart';
 import { openSnackbar } from 'store/reducers/snackbar';
@@ -68,7 +68,7 @@ const ProductCard = ({ id, color, name, brand, offer, isStock, image, descriptio
   return (
     <>
       {isLoading ? (
-        <SkeletonProductPlaceholder />
+        <ItemPlaceholder />
       ) : (
         <MainCard
           content={false}

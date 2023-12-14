@@ -72,6 +72,13 @@ const menuItems = {
           type: 'item',
           url: '/missions/matches',
           icon: icons.BlockOutlined
+        },
+        {
+          id: 'find-subscriptions',
+          title: <FormattedMessage id="find-subscriptions" />,
+          type: 'item',
+          url: '/subscriptions',
+          icon: icons.SearchOutlined
         }
       ]
     },

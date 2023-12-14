@@ -13,22 +13,19 @@ import {
   Grid,
   Stack,
   Typography,
-  List,
   ListItem,
-  ListItemText,
-  ListItemIcon
+  Chip
 } from '@mui/material';
 
 // project import
 import MainCard from 'components/MainCard';
 import ItemPlaceholder from 'components/cards/skeleton/ItemPlaceholder';
-import { FieldTimeOutlined } from '@ant-design/icons';
 
-const avatarImage = require.context('assets/images/products', true);
+const avatarImage = require.context('assets/images/subscription-offers', true);
 
-// ==============================|| PRODUCT CARD ||============================== //
+// ==============================|| SUBSCRIPTION OFFER CARD ||============================== //
 
-const ProductCard = ({ product, onBuyClick }) => {
+const SubscriptionOfferCard = ({ subscriptionOffer }) => {
   const [avatar, setAvatar] = useState(avatarImage(`./default.png`));
   const [isLoading, setLoading] = useState(true);
   const { keycloak } = useKeycloak();
@@ -39,7 +36,7 @@ const ProductCard = ({ product, onBuyClick }) => {
 
   useEffect(() => {
     (async () => {
-      var imgSrc = await getImageSrc(product?.mainImageUrl);
+      var imgSrc = await getImageSrc(subscriptionOffer?.mainImageUrl);
       setAvatar(imgSrc);
 
       if (imgSrc)
@@ -48,7 +45,7 @@ const ProductCard = ({ product, onBuyClick }) => {
         }, 1000);
 
     })();
-  }, [product?.mainImageUrl, keycloak?.idToken]);
+  }, [subscriptionOffer?.mainImageUrl, keycloak?.idToken]);
 
   const getImageSrc = async (imageUrl) => {
     try {
@@ -93,17 +90,18 @@ const ProductCard = ({ product, onBuyClick }) => {
               sx={{ height: 250, textDecoration: 'none', opacity: 1 }}
               image={avatar}
               component={Link}
-              to={`/solutions/${product?.id}`}
+              to={`/subscriptions/${subscriptionOffer?.id}`}
             />
           </Box>
           <Divider />
           <CardContent sx={{ p: 2 }}>
             <Grid container spacing={2}>
+
               <Grid item xs={12}>
                 <Stack>
                   <Typography
                     component={Link}
-                    to={`/solutions/${product?.id}`}
+                    to={`/subscriptions/${subscriptionOffer?.id}`}
                     color="textPrimary"
                     variant="h5"
                     sx={{
@@ -114,33 +112,37 @@ const ProductCard = ({ product, onBuyClick }) => {
                       textDecoration: 'none'
                     }}
                   >
-                    {product?.title}
-                  </Typography>
-                  <Typography variant="h6" color="textSecondary">
-                      {jobClusters.find(x => x.code === product.cluster)?.label}
+                    {subscriptionOffer?.summary}
                   </Typography>
                 </Stack>
               </Grid>
 
-              <Grid item xs={6}>
-                <List sx={{ p: 0, overflow: 'hidden', '& .MuiListItem-root': { px: 0, py: 0.5 } }}>
-                  {product?.estimatedImplementationHours &&
-                    <ListItem>
-                      <ListItemIcon>
-                        <FieldTimeOutlined />
-                      </ListItemIcon>
-                      <ListItemText primary={<Typography color="secondary">{product.estimatedImplementationHours} hour(s)</Typography>} />
-                    </ListItem>}
-                </List>
+              <Grid item xs={12}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    listStyle: 'none',
+                    p: 0,
+                    m: 0
+                  }}
+                  component="ul"
+                >
+                  {subscriptionOffer?.clusters?.map((cluster, clusterIndex) => (
+                    <ListItem disablePadding key={clusterIndex} sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
+                      <Chip color="primary" variant="outlined" size="small" label={jobClusters.find(x => x.code === cluster)?.label} />
+                    </ListItem>
+                  ))}
+                </Box>
               </Grid>
 
               <Grid item xs={12}>
-                <Stack direction="row" justifyContent="space-between" alignItems="center">
-                  <Typography variant="h5">&euro;{product?.adminPrice}</Typography>
+                <Stack direction="row" justifyContent="flex-end" alignItems="center">
 
-                  <Button variant="contained" onClick={onBuyClick}>
-                    Buy
+                  <Button variant="contained" onClick={() => {}}>
+                    Details
                   </Button>
+
                 </Stack>
               </Grid>
             </Grid>
@@ -151,8 +153,8 @@ const ProductCard = ({ product, onBuyClick }) => {
   );
 };
 
-ProductCard.propTypes = {
-  product: PropTypes.object
+SubscriptionOfferCard.propTypes = {
+  subscriptionOffer: PropTypes.object
 };
 
-export default ProductCard;
+export default SubscriptionOfferCard;
