@@ -36,7 +36,7 @@ const SubscriptionOfferCard = ({ subscriptionOffer }) => {
 
   useEffect(() => {
     (async () => {
-      var imgSrc = await getImageSrc(subscriptionOffer?.mainImageUrl);
+      var imgSrc = await getImageSrc(subscriptionOffer?.contractorMainImageUrl);
       setAvatar(imgSrc);
 
       if (imgSrc)
@@ -45,7 +45,7 @@ const SubscriptionOfferCard = ({ subscriptionOffer }) => {
         }, 1000);
 
     })();
-  }, [subscriptionOffer?.mainImageUrl, keycloak?.idToken]);
+  }, [subscriptionOffer?.contractorMainImageUrl, keycloak?.idToken]);
 
   const getImageSrc = async (imageUrl) => {
     try {

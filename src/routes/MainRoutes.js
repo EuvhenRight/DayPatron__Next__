@@ -151,7 +151,7 @@ const MainRoutes = {
           element: <ProductsPage />
         },
         {
-          path: 'subscriptions/:subscriptionId',
+          path: 'subscriptions/:subscriptionOfferId',
           element: <SubscriptionOfferPage />
         },
         {
