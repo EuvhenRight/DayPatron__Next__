@@ -5,14 +5,16 @@ import { FormattedMessage } from 'react-intl';
 import {
   SearchOutlined,
   CommentOutlined,
-  FieldTimeOutlined
+  FieldTimeOutlined,
+  ContainerOutlined
 } from '@ant-design/icons';
 
 // icons
 const icons = {
   SearchOutlined,
   CommentOutlined,
-  FieldTimeOutlined
+  FieldTimeOutlined,
+  ContainerOutlined
 };
 
 // ==============================|| MENU ITEMS - MISSION ||============================== //
@@ -42,6 +44,13 @@ const mission = {
       type: 'item',
       url: '/missions/time-tracking',
       icon: icons.FieldTimeOutlined
+    },
+    {
+      id: 'my-subscription-plans',
+      title: <FormattedMessage id="subscriptions-plans" />,
+      type: 'item',
+      url: '/subscriptions/plans',
+      icon: icons.ContainerOutlined
     }
   ]
 };

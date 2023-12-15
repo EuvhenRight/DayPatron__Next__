@@ -65,7 +65,7 @@ const SubscriptionOfferingPage = () => {
 
     const handleSaveClick = async () => {
         try {
-            let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/subscription-offers',
+            let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(personalInformation.id) + '/subscription-offers',
                 {
                     method: 'PUT',
                     headers: {

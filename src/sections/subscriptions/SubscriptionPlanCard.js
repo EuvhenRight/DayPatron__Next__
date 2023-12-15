@@ -10,7 +10,7 @@ import { normalizeInputValue } from 'utils/stringUtils';
 const SubscriptionPlanCard = ({ subscriptionPlan, subscriptionPlanIndex, onSubscriptionPlanChanged }) => {
 
     const padArray = (array, length, fill = '') => {
-        return array.concat(Array(length).fill(fill)).slice(0, length);
+        return (array ?? []).concat(Array(length).fill(fill)).slice(0, length);
     };
 
     return (
@@ -30,6 +30,7 @@ const SubscriptionPlanCard = ({ subscriptionPlan, subscriptionPlanIndex, onSubsc
                         value={normalizeInputValue(feature)}
                         onChange={(event) => {
                             let newSubscriptionPlan = { ...subscriptionPlan };
+                            if(!newSubscriptionPlan.features) newSubscriptionPlan.features = [null, null, null, null, null, null, null, null, null, null];
                             newSubscriptionPlan.features[index] = event.target.value;
                             onSubscriptionPlanChanged(newSubscriptionPlan, subscriptionPlanIndex);
                         }}
