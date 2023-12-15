@@ -53,15 +53,14 @@ const SubscriptionOfferingPage = () => {
         }
     }
 
+    const onSubscriptionOfferChanged = (updatedSubscriptionOffer, updatedSubscriptionOfferIndex) => {
+        let newSubscriptionOffers = subscriptionOffers.map((subscriptionOffer, subscriptionOfferIndex) => {
+            if (subscriptionOfferIndex === updatedSubscriptionOfferIndex)
+                return updatedSubscriptionOffer;
 
-    const onSubscriptionOffersChanged = (updatedSubscriptionOffers) => {
-        // let newSubscriptionOffer = subscriptionOffers.map((subscriptionOffer, subscriptionOfferIndex) => {
-        //     if (subscriptionOfferIndex === updatedSubscriptionOfferIndex)
-        //         return updatedSubscriptionOffer;
-
-        //     return subscriptionOffer;
-        // });
-        setSubscriptionOffers(updatedSubscriptionOffers);
+             return subscriptionOffer;
+        });
+        setSubscriptionOffers(newSubscriptionOffers);
     }
 
     const handleSaveClick = async () => {
@@ -73,7 +72,7 @@ const SubscriptionOfferingPage = () => {
                         'Authorization': 'Bearer ' + keycloak.idToken,
                         'Content-Type': 'application/json'
                     },
-                    body: prepareApiBody({ subscriptionOffers })
+                    body: prepareApiBody({ offers: subscriptionOffers })
                 }
             );
 
@@ -94,7 +93,7 @@ const SubscriptionOfferingPage = () => {
             }
 
             let json = await response.json();
-            setSubscriptionOffers(json?.subscriptionPlans);
+            setSubscriptionOffers(json?.offers);
 
             dispatch(
                 openSnackbar({
@@ -120,7 +119,7 @@ const SubscriptionOfferingPage = () => {
                     close: false
                 })
             );
-            console.log(err);
+            console.log(error);
         }
     };
 
@@ -140,14 +139,12 @@ const SubscriptionOfferingPage = () => {
 
             {subscriptionOffers?.map((offer, index) => (
                 <Grid key={index} item xs={12}>
-                    <MainCard>
-                        <SubscriptionOfferingCard
-                            subscriptionOffer={offer}
-                            // subscriptionPlanIndex={index}
-                            onSubscriptionOffersChanged={onSubscriptionOffersChanged}
-                        >
-                        </SubscriptionOfferingCard>
-                    </MainCard>
+                    <SubscriptionOfferingCard
+                        subscriptionOffer={offer}
+                        subscriptionOfferIndex={index}
+                        onSubscriptionOfferChanged={onSubscriptionOfferChanged}
+                    >
+                    </SubscriptionOfferingCard>
                 </Grid>
             ))}
             <Grid item xs={12}>

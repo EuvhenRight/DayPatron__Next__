@@ -1,14 +1,13 @@
-// Material-UI components
+import PropTypes from 'prop-types';
 import {
     Grid,
     TextField,
     Typography
 } from '@mui/material'
 
-// Utils
 import { normalizeInputValue } from 'utils/stringUtils';
 
-const SubscriptionPlanCard = ({ subscriptionPlan, onSubscriptionPlanChanged }) => {
+const SubscriptionPlanCard = ({ subscriptionPlan, subscriptionPlanIndex, onSubscriptionPlanChanged }) => {
 
     const padArray = (array, length, fill = '') => {
         return array.concat(Array(length).fill(fill)).slice(0, length);
@@ -26,15 +25,13 @@ const SubscriptionPlanCard = ({ subscriptionPlan, onSubscriptionPlanChanged }) =
                 <Grid key={index} item xs={12}>
                     <TextField
                         fullWidth
-                        id={`subscription-plan-feature${index}`}
                         type="text"
-                        placeholder="Enter feature list"
-                        name="feature"
-                        // name={`feature${index}`}
+                        placeholder="Enter feature"
                         value={normalizeInputValue(feature)}
                         onChange={(event) => {
-                            subscriptionPlan.features[index] = event.target.value;
-                            onSubscriptionPlanChanged({ ...subscriptionPlan });
+                            let newSubscriptionPlan = { ...subscriptionPlan };
+                            newSubscriptionPlan.features[index] = event.target.value;
+                            onSubscriptionPlanChanged(newSubscriptionPlan, subscriptionPlanIndex);
                         }}
                     />
                 </Grid>
@@ -42,5 +39,11 @@ const SubscriptionPlanCard = ({ subscriptionPlan, onSubscriptionPlanChanged }) =
         </Grid>
     )
 }
+
+SubscriptionPlanCard.protoTypes = {
+    subscriptionPlan: PropTypes.object,
+    subscriptionPlanIndex: PropTypes.number,
+    onSubscriptionPlanChanged: PropTypes.func
+};
 
 export default SubscriptionPlanCard;
