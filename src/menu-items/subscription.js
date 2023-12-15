@@ -15,14 +15,14 @@ const icons = {
 
 const subscription = {
   id: 'subscriptions',
-  title: <FormattedMessage id="subscriptions" />,
+  title: <FormattedMessage id="subscriptions-offering" />,
   type: 'group',
   children: [
     {
-      id: 'my-subscription-offer',
-      title: <FormattedMessage id="My Subscriptions" />,
+      id: 'my-subscription-plans',
+      title: <FormattedMessage id="subscriptions-plans" />,
       type: 'item',
-      url: '/subscriptions/my',
+      url: '/subscriptions/plans',
       icon: icons.ContainerOutlined
     }
   ]

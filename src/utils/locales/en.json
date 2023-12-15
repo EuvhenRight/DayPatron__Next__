@@ -12,7 +12,8 @@
   "mission-chat": "Chat",
   "mission-time-tracking": "Time Tracking",
   "solutions": "SOLUTION SUITE",
-  "subscriptions" : "SUBSCRIPTION OFFERING",
+  "subscriptions-offering": "SUBSCRIPTION OFFERING",
+  "subscriptions-plans": "Plans",
   "my-products": "My Solutions",
   "orders": "ORDERS",
   "my-orders": "My Orders",
@@ -23,9 +24,7 @@
   "roadmap": "Roadmap",
   "support": "How-To Videos",
   "help": "HELP CENTER",
-
   "main_nav_support_body": "This option works best in Chrome and unfortunatly does not work in Safari yet.",
-
   "personal_information_first_name_tooltip": "Hey there! Your first name goes here. Let us know what to call you!",
   "personal_information_last_name_tooltip": "We'd love to know you last name! Share it with us, won't you?",
   "personal_information_email_name_tooltip": "Can you leave your email address? This is also your log-in username. So if you change this, your log-in details will also change.",
@@ -38,7 +37,6 @@
   "personal_information_address_city_tooltip": "Your base city. Let us know where you call home.",
   "personal_information_address_postal_code_tooltip": "Please enter your zip-code, postcode, postal code or whatever your locall annotation.",
   "personal_information_address_country_tooltip": "Where are you based? In this world of digital nomands, please let us know the country you are officially registered in.",
-
   "expertise_title": "My Expertise",
   "expertise_description": "We'd like to match you with the best companies and missions. Let's get to know you a bit more. Tell us about your expertise fields.",
   "expertise_industries_tooltip": "Select the industries you're a rockstar in. Show us where you shine!",
@@ -49,21 +47,18 @@
   "expertise_company_stages_tooltip": "We know that every company maturity stage requires different skills and personalities. Let us know the stage of companies you've contributed your magic to!",
   "expertise_financing_stages_tooltip": "Money money money...This indicated the types of budgets and financiall mind-set of the companies you've helped in the past. Let us know the stage of companies you've contributed your magic to!",
   "expertise_start_year_tooltip": "How many years have you owned this role like a boss? Tell us!",
-
   "preferences_rate_currency_tooltip": "Set your currency for your exceptional talent.",
   "preferences_rate_lower_limit_tooltip": "At 10x we try to optimize the rate you will receive per mission. This usually depends on duration, funding, scarcity and intensity. What's the minimum hourly rate you deserve for your incredible skills? Remember, you will not be matched with missions if your lower rate exceeds the mission rate.",
   "preferences_rate_upper_limit_tooltip": "Shoot for the stars! What's the maximum rate you command? We try to optimize the rate, but sometimes this can also mean you do not meet the requirements of the mission",
   "preferences_workplace_tooltip": "Let us know where you thrive best! Indicate your workplace preferences below. Select those options you like. Remote: Ready to conquer the world from the comfort of your home or a cozy café? Select this option! Hybrid: Prefer a perfect blend of remote and onsite work? Go for the hybrid experience! Onsite: Feel the buzz of a vibrant workplace? Choose onsite to be right where the action is!",
   "preferences_travel_radius_tooltip": "Tell us how far you'll spread your wings without charging extra. This is the distance that you include in your hourly rate.",
   "preferences_travel_international_tooltip": "Are you ready to jet-set internationally for thrilling opportunities?",
-
   "mission_notes_tooltip": "You can add all your notes to this section. If the community manager from 10x has relevant notes for you about the mission, they will be shown here as well.",
   "employer_notes_about_me_tooltip": "If the company has feedback or input for you, you will see notes appear here.",
   "mission_admin_notes_about_me_tooltip": "If our community manager has feedback or input for you, you will see notes appear here.",
   "mission_admin_notes_about_the_mission_tooltip": "Shh! Insider Intel from 10x's Community Manager! These notes are for your success, talent! They're filled in by the Community Manager to boost your mission mojo!",
   "mission_my_notes_about_the_mission_tooltip": "Take the stage and add your personal notes for this mission. Jot down your thoughts, ideas, and anything that inspires you! Use this space to keep track of important details and conversations.Edit and update your notes when you connect with a company or a 10x community manager. Your notes are private and for your eyes only. They won't be shared with anyone else. Let your creativity flow and make these notes your secret weapon to shine in every mission!",
   "mission_tags_tooltip": "It's our mission to make you more effective. Add your own tags to personalize and categorize missions. Create tags like 'Favorite,' 'Like,' 'Yes,' 'No,' or anything that resonates with you. Later, use these tags to filter and find missions that match your vibe! Make your mission journey uniquely yours with these custom tags! Go ahead, make it tag-tastic!",
-
   "invoice_settings_invoicing_name_tooltip": "The name under which you'd like to receive your invoices. This can be your business name or your personal name. Remember that a registration in a chamber of commerce is required in most countries to work fractional. Make it official!",
   "invoice_settings_vat_number_tooltip": "Your Value Added Tax (VAT) identification number, if applicable.",
   "invoice_settings_vat_percentage_tooltip": "Your default VAT percentage.",
@@ -76,7 +71,6 @@
   "invoice_settings_address_city_tooltip": "The vibrant city where your invoicing address resides.",
   "invoice_settings_address_postal_code_tooltip": "The postal code that adds zest to your invoicing address.",
   "invoice_settings_address_country_tooltip": "The country where your invoicing address calls home ;-) .",
-
   "product_title_tooltip": "Enter a consise and informative title for the Solution you are offering.",
   "product_price_tooltip": "Specify the cost associated with your product. 10x will add between 25% and 50% to your list price depending on the niche product. Please note that 10x can assist you in setting your price before we offer it to our customers.",
   "product_description_tooltip": "Provide a clear description of your solution. Use the following headers to describe it: Solution Snapshot, Outcome Odyssey, Deliverables Delight and Approach Alchemy.",
@@ -89,7 +83,6 @@
   "product_approach_methodology_tooltip": "Detail the step-by-step approach, strategy, or methods involved in executing your solution effectively.",
   "product_approach_best_practices_tooltip": "Share any best practices or unique techniques that set your approach apart.",
   "product_approach_success_stories_tooltip": "If applicable, include any success stories or case studies that showcase the effectiveness of your approach.",
-
   "invoice_payouts_header_invoice_number": "A unique identifier for the invoice",
   "invoice_payouts_header_company": "The name of the company",
   "invoice_payouts_header_mission_name": "The name of the mission for which the invoice is issued",

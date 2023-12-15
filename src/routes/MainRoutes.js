@@ -37,7 +37,7 @@ const InvoiceSettingsPage = Loadable(lazy(() => import('pages/invoice-settings-p
 
 const SupportPage = Loadable(lazy(() => import('pages/support-page')));
 
-const SubscriptionPage = Loadable(lazy(() => import('pages/subscription-page')));
+const SubscriptionOfferingPage = Loadable(lazy(() => import('pages/subscription-offering-page')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -146,8 +146,8 @@ const MainRoutes = {
           element: <SupportPage />
         },
         {
-          path: 'subscriptions/my',
-          element: <SubscriptionPage />
+          path: 'subscriptions/plans',
+          element: <SubscriptionOfferingPage />
         }
       ]
     },
