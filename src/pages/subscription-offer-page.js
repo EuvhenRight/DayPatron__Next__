@@ -19,8 +19,19 @@ import {
   ListItemText,
   ListItemIcon,
   Box,
-  Chip
+  Chip,
+  Divider,
+  FormHelperText,
+  TextField
 } from '@mui/material';
+
+import * as Yup from 'yup';
+
+import { useFormik, Form, FormikProvider } from 'formik';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+
 import InfoWrapper from 'components/InfoWrapper';
 import { PopupTransition } from 'components/@extended/Transitions';
 import Avatar from 'components/@extended/Avatar';
@@ -30,10 +41,11 @@ import { openSnackbar } from 'store/reducers/snackbar';
 // project imports
 import MainCard from 'components/MainCard';
 import { useKeycloak } from '@react-keycloak/web';
-import { normalizeInputValue, prepareApiBody } from 'utils/stringUtils';
+import { normalizeInputValue, prepareApiBody, normalizeNullableInputValue } from 'utils/stringUtils';
 import jobClusters from 'data/jobClusters';
 
-import { PlayCircleOutlined } from '@ant-design/icons';
+import { DoubleRightOutlined } from '@ant-design/icons';
+import rateTypes from 'data/rateTypes';
 
 const avatarImageContractor = require.context('assets/images/users', true);
 
@@ -47,7 +59,6 @@ const SubscriptionPage = () => {
   const [avatarContractor, setAvatarContractor] = useState(avatarImageContractor(`./default.png`));
   const [planToSubscribe, setPlanToSubscribe] = useState(false);
   const [employers, setEmployers] = useState(null);
-  const [employerId, setEmployerId] = useState(null);
 
   const bindEmployers = async () => {
     try {
@@ -74,12 +85,6 @@ const SubscriptionPage = () => {
         await bindEmployers();
     })();
   }, [planToSubscribe, employers, personalInformation?.id, keycloak?.idToken]);
-
-  useEffect(() => {
-    if (employers && employers.length > 0) {
-      setEmployerId(employers[0].id);
-    }
-  }, [employers]);
 
   const bindSubscriptionOffer = async () => {
     try {
@@ -146,53 +151,85 @@ const SubscriptionPage = () => {
 
   const handleSubscribeClick = (plan) => {
     setPlanToSubscribe(plan);
-  }
+  };
 
-  const handleConfirmSubscribeClick = async () => {
-    let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/subscriptions/orders',
-      {
-        method: 'POST',
-        headers: {
-          'Authorization': 'Bearer ' + keycloak.idToken,
-          'Content-Type': 'application/json'
-        },
-        body: prepareApiBody({ employerId })
+  const getInitialValues = () => {
+    const result = {
+      employerId: null,
+      startDate: null,
+      durationCycles: null
+    };
+  
+    return result;
+  };
+
+  const OrderSchema = Yup.object().shape({
+    employerId: Yup.string().required('Company is required').nullable(true),
+    startDate: Yup.string().required('Start Date is required').nullable(true),
+    durationCycles: Yup.number("Should be a positive integer").integer("Should be a positive integer").min(0, "Should be a positive integer").max(1000, "Maximum 1000").nullable(true)
+  });
+
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues: getInitialValues(),
+    validationSchema: OrderSchema,
+    onSubmit: async (values, { setSubmitting }) => {
+      try {
+        values.subscriptionPlanId = planToSubscribe.id;
+        let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/subscriptions/orders',
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + keycloak.idToken,
+            'Content-Type': 'application/json'
+          },
+          body: prepareApiBody(values)
+        }
+      );
+  
+      if (!response.ok) {
+        dispatch(
+          openSnackbar({
+            open: true,
+            message: 'Failed placing an order.',
+            variant: 'alert',
+            alert: {
+              color: 'error'
+            },
+            close: false
+          })
+        );
+  
+        setPlanToSubscribe(null);
+        setSubmitting(false);
+        return;
       }
-    );
-
-    if (!response.ok) {
+  
+      setPlanToSubscribe(null);
+  
+      let json = await response.json();
+  
       dispatch(
         openSnackbar({
           open: true,
-          message: 'Failed placing an order.',
+          message: "Placed order with id '" + json.id + "'",
           variant: 'alert',
           alert: {
-            color: 'error'
+            color: 'success'
           },
           close: false
         })
       );
+      setSubmitting(false);
 
-      setPlanToSubscribe(null);
-      return;
+      } catch (error) {
+        console.error(error);
+        setSubmitting(false);
+      }
     }
+  });
 
-    setPlanToSubscribe(null);
-
-    let json = await response.json();
-
-    dispatch(
-      openSnackbar({
-        open: true,
-        message: "Placed order with id '" + json.id + "'",
-        variant: 'alert',
-        alert: {
-          color: 'success'
-        },
-        close: false
-      })
-    );
-  };
+  const { errors, handleBlur, handleChange, touched, handleSubmit, isSubmitting, setFieldValue, values } = formik;
 
   return (
     <>
@@ -255,25 +292,36 @@ const SubscriptionPage = () => {
               <MainCard>
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
-                    <Stack spacing={2}>
-                      <Typography variant="h3">{plan?.title}</Typography>
 
-                      {plan?.features?.map((feature, featureIndex) => (
-                        <List sx={{ p: 0, overflow: 'hidden', '& .MuiListItem-root': { px: 0, py: 0 } }} key={featureIndex}>
-                          <ListItem>
+                    <Stack spacing={4}>
+
+                      <Stack spacing={3} alignItems="center">
+                        <Typography variant="h3">{plan?.title}</Typography>
+                        <Stack alignItems="center">
+                          <Typography variant="h5">&euro;{plan?.rateAmount} / {rateTypes.find((item) => item.code === plan?.rateType).itemLabel}</Typography>
+                          <Typography variant="caption" color="secondary">{plan?.minimumDurationCycles} {rateTypes.find((item) => item.code === plan?.rateType).itemLabel}(s) minimum</Typography>
+                        </Stack>
+
+                        <Button onClick={() => handleSubscribeClick(plan)} color="primary" variant="contained">
+                          Subscribe
+                        </Button>
+                      </Stack>
+                    
+                      <Divider />
+
+                      <List sx={{ p: 0, m: 0, overflow: 'hidden', '& .MuiListItem-root': { px: 0, py: 0 } }}>
+                        {plan?.features?.map((feature, featureIndex) => (
+                          <ListItem key={featureIndex}>
                             <ListItemIcon>
-                              <PlayCircleOutlined />
+                              <DoubleRightOutlined />
                             </ListItemIcon>
                             <ListItemText primary={<Typography color="secondary">{feature}</Typography>} />
                           </ListItem>
-                        </List>
-                      ))}
-                      
+                        ))}
+                      </List>
 
-                      <Button onClick={() => handleSubscribeClick(plan)} fullWidth color="primary" variant="contained" size="large">
-                        Subscribe
-                      </Button>
                     </Stack>
+
                   </Grid>
                 </Grid>
                   
@@ -284,62 +332,120 @@ const SubscriptionPage = () => {
       )}
 
       <Dialog
-        open={planToSubscribe}
+        open={planToSubscribe ? true : false}
         onClose={() => { setPlanToSubscribe(null); } }
         keepMounted
         TransitionComponent={PopupTransition}
         maxWidth="xs"
-        aria-labelledby="column-delete-title"
-        aria-describedby="column-delete-description"
       >
-        <DialogContent sx={{ mt: 2, my: 1 }}>
-          <Stack alignItems="center" spacing={3.5}>
-            <Avatar color="primary" sx={{ width: 72, height: 72, fontSize: '1.75rem' }}>
-              <ShoppingCartOutlined />
-            </Avatar>
-            <Stack spacing={2}>
-              <Typography variant="h4" align="center">
-                You are about to subscribe to plan &apos;{planToSubscribe?.title}&apos;. Select the company for which you want to place the order:
-              </Typography>
+          <FormikProvider value={formik}>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
+                <DialogContent sx={{ mt: 2, my: 1 }}>
+                  <Stack alignItems="center" spacing={3.5}>
+                    <Avatar color="primary" sx={{ width: 72, height: 72, fontSize: '1.75rem' }}>
+                      <ShoppingCartOutlined />
+                    </Avatar>
+                    <Stack spacing={2}>
+                      <Typography variant="h4" align="center">
+                        Subscribing to plan &apos;{planToSubscribe?.title}&apos;
+                      </Typography>
 
-              {employers?.length > 0 ?
-                (<Stack spacing={1.25}>
-                  <InfoWrapper tooltipText="plan_subscribe_company">
-                    <InputLabel htmlFor="company-name">Company</InputLabel>
-                  </InfoWrapper>
-                  <Select
-                    fullWidth
-                    id="employerId"
-                    name="employerId"
-                    displayEmpty
-                    value={normalizeInputValue(employerId)}
-                    onChange={(event) => { setEmployerId(event.target.value); }}
-                  >
-                    {employers?.map((employer) => (
-                      <MenuItem key={employer?.id} value={employer?.id}>
-                        {employer?.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </Stack>)
-                :
-                (<Typography>No companies found.</Typography>)
-              }
+                      {employers?.length > 0 ?
+                        (<Stack spacing={1.25}>
+                          <InfoWrapper tooltipText="plan_subscribe_company">
+                            <InputLabel htmlFor="employerId">Company</InputLabel>
+                          </InfoWrapper>
+                          <Select
+                            fullWidth
+                            id="employerId"
+                            name="employerId"
+                            displayEmpty
+                            value={normalizeInputValue(values.employerId)}
+                            onChange={(event) => { setFieldValue('employerId', event.target.value); }}
+                          >
+                            {employers?.map((employer) => (
+                              <MenuItem key={employer?.id} value={employer?.id}>
+                                {employer?.name}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                          {touched.employerId && errors.employerId && (
+                            <FormHelperText error id="employer-id-helper">
+                              {errors.employerId}
+                            </FormHelperText>
+                          )}
+                        </Stack>)
+                        :
+                        (<Typography>No companies found.</Typography>)
+                      }
 
-            </Stack>
+                      <Stack spacing={1.25}>
+                        <InfoWrapper tooltipText="subscription_start_date_tooltip">
+                          <InputLabel htmlFor="subscription-start-date">Start Date</InputLabel>
+                        </InfoWrapper>
+                        <DesktopDatePicker
+                          value={normalizeNullableInputValue(values.startDate)}
+                          inputFormat="yyyy-MM-dd"
+                          onChange={(date) => {
+                            setFieldValue('startDate', date);
+                          }}
+                          renderInput={(props) =>
+                            <>
+                              <TextField
+                                id="subscription-start-date"
+                                fullWidth
+                                {...props}
+                                placeholder="Start Date"
+                                name="startDate"
+                              />
+                              {touched.startDate && errors.startDate && (
+                                <FormHelperText error id="mission-start-date-helper">
+                                  {errors.startDate}
+                                </FormHelperText>
+                              )}
+                            </>
+                          }
+                        />
+                      </Stack>
 
-            <Stack direction="row" spacing={2} sx={{ width: 1 }}>
-              <Button disabled={!employerId} fullWidth color="primary" variant="contained" onClick={() => handleConfirmSubscribeClick()} autoFocus>
-                Subscribe
-              </Button>
-              <Button fullWidth onClick={() => { setPlanToSubscribe(null); }} color="secondary" variant="outlined">
-                Cancel
-              </Button>
-            </Stack>
-          </Stack>
-        </DialogContent>
+                      <Stack spacing={1.25}>
+                        <InfoWrapper tooltipText="subscription_duration_cycles_tooltip">
+                          <InputLabel htmlFor="subscription-duration-cycles">Cycles</InputLabel>
+                        </InfoWrapper>
+                        <TextField
+                          fullWidth
+                          id="subscription-duration-cycles"
+                          type="number"
+                          placeholder="Enter Subscription Cycles"
+                          value={normalizeInputValue(values.durationCycles)}
+                          name="durationCycles"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                        />
+                        {touched.durationCycles && errors.durationCycles && (
+                          <FormHelperText error id="subscription-duration-cycles-helper">
+                            {errors.durationCycles}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+
+                    </Stack>
+
+                    <Stack direction="row" spacing={2} sx={{ width: 1 }}>
+                      <Button fullWidth type="submit" color="primary" variant="contained" disabled={isSubmitting} autoFocus>
+                        Subscribe
+                      </Button>
+                      <Button fullWidth onClick={() => { setPlanToSubscribe(null); }} color="secondary" variant="outlined">
+                        Cancel
+                      </Button>
+                    </Stack>
+                  </Stack>
+                </DialogContent>
+              </Form>
+            </LocalizationProvider>
+          </FormikProvider>
       </Dialog>
-
     </>
   );
 };
