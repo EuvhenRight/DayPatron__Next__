@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useKeycloak } from '@react-keycloak/web';
@@ -29,6 +30,7 @@ const SubscriptionOfferCard = ({ subscriptionOffer }) => {
   const [avatar, setAvatar] = useState(avatarImage(`./default.png`));
   const [isLoading, setLoading] = useState(true);
   const { keycloak } = useKeycloak();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(false);
@@ -93,7 +95,14 @@ const SubscriptionOfferCard = ({ subscriptionOffer }) => {
               to={`/subscriptions/${subscriptionOffer?.id}`}
             />
           </Box>
-          <Divider />
+
+          <Stack spacing={2.5}>
+            <Stack alignItems="center">
+              <Typography variant='h4'>{subscriptionOffer?.contractorFirstName} {subscriptionOffer?.contractorLastName}</Typography>
+            </Stack>
+            <Divider />
+          </Stack>
+          
           <CardContent sx={{ p: 2 }}>
             <Grid container spacing={2}>
 
@@ -139,7 +148,7 @@ const SubscriptionOfferCard = ({ subscriptionOffer }) => {
               <Grid item xs={12}>
                 <Stack direction="row" justifyContent="flex-end" alignItems="center">
 
-                  <Button variant="contained" onClick={() => {}}>
+                  <Button variant="contained" onClick={() => {navigate(`/subscriptions/${subscriptionOffer?.id}`)}}>
                     Details
                   </Button>
 
