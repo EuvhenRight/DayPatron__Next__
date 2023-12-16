@@ -12,15 +12,23 @@ import {
     List
 } from '@mui/material'
 
-import { DoubleRightOutlined } from '@ant-design/icons';
+import IconButton from 'components/@extended/IconButton';
+import { DoubleRightOutlined, DeleteFilled, PlusCircleOutlined } from '@ant-design/icons';
 import { normalizeInputValue } from 'utils/stringUtils';
 import rateTypes from 'data/rateTypes';
 
 const SubscriptionPlanCard = ({ subscriptionPlan, subscriptionPlanIndex, onSubscriptionPlanChanged }) => {
+    const handleAddFeature = () => {
+        let newSubscriptionPlan = { ...subscriptionPlan };
+        newSubscriptionPlan.features.push(null);
+        onSubscriptionPlanChanged(newSubscriptionPlan, subscriptionPlanIndex);
+      }
 
-    const padArray = (array, length, fill = '') => {
-        return (array ?? []).concat(Array(length).fill(fill)).slice(0, length);
-    };
+    const handleRemoveFeature = (featureIndex) => {
+        let newSubscriptionPlan = { ...subscriptionPlan };
+        newSubscriptionPlan.features.splice(featureIndex, 1);
+        onSubscriptionPlanChanged(newSubscriptionPlan, subscriptionPlanIndex);
+    }
 
     return (
         <Grid container spacing={2}>
@@ -47,31 +55,40 @@ const SubscriptionPlanCard = ({ subscriptionPlan, subscriptionPlanIndex, onSubsc
                     </Stack>
 
                     <Divider />
-
-                    <List sx={{ p: 0, m: 0, overflow: 'hidden', '& .MuiListItem-root': { px: 0, py: 0 } }}>
-                        {padArray(subscriptionPlan?.features, 10).map((feature, featureIndex) => (
-                            <ListItem key={featureIndex}>
-                                <ListItemIcon>
-                                    <DoubleRightOutlined />
-                                </ListItemIcon>
-                                <ListItemText primary={
-                                    <TextField
-                                        fullWidth
-                                        type="text"
-                                        placeholder="Enter feature"
-                                        value={normalizeInputValue(feature)}
-                                        onChange={(event) => {
-                                            let newSubscriptionPlan = { ...subscriptionPlan };
-                                            if(!newSubscriptionPlan.features) newSubscriptionPlan.features = [null, null, null, null, null, null, null, null, null, null];
-                                            newSubscriptionPlan.features[featureIndex] = event.target.value;
-                                            onSubscriptionPlanChanged(newSubscriptionPlan, subscriptionPlanIndex);
-                                        }}
-                                    />
-                                } />
-                            </ListItem>
-                        ))}
-                    </List>
-
+                    <Stack spacing={1}>
+                        <List sx={{ p: 0, m: 0, overflow: 'hidden', '& .MuiListItem-root': { px: 0, py: 0 } }}>
+                            {subscriptionPlan?.features?.map((feature, featureIndex) => (
+                                <ListItem key={featureIndex}>
+                                    <ListItemIcon>
+                                        <DoubleRightOutlined />
+                                    </ListItemIcon>
+                                    <ListItemText primary={
+                                        <TextField
+                                            fullWidth
+                                            type="text"
+                                            placeholder="Enter feature"
+                                            value={normalizeInputValue(feature)}
+                                            onChange={(event) => {
+                                                let newSubscriptionPlan = { ...subscriptionPlan };
+                                                if(!newSubscriptionPlan.features) newSubscriptionPlan.features = [null, null, null, null, null, null, null, null, null, null];
+                                                newSubscriptionPlan.features[featureIndex] = event.target.value;
+                                                onSubscriptionPlanChanged(newSubscriptionPlan, subscriptionPlanIndex);
+                                            }}
+                                        />
+                                    } />
+                                    <IconButton onClick={() => { handleRemoveFeature(featureIndex); }} size="large" color="error">
+                                        <DeleteFilled />
+                                    </IconButton>
+                                </ListItem>
+                            ))}
+                        </List>
+                        
+                        <Stack alignItems="flex-end">
+                            <IconButton onClick={handleAddFeature} size="large" color="primary">
+                                <PlusCircleOutlined />
+                            </IconButton>
+                        </Stack>
+                    </Stack>
                 </Stack>
             </Grid>
         </Grid>
