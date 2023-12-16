@@ -2,10 +2,19 @@ import PropTypes from 'prop-types';
 import {
     Grid,
     TextField,
-    Typography
+    Typography,
+    ListItem,
+    ListItemText,
+    ListItemIcon,
+    Stack,
+    Divider,
+    Switch,
+    List
 } from '@mui/material'
 
+import { DoubleRightOutlined } from '@ant-design/icons';
 import { normalizeInputValue } from 'utils/stringUtils';
+import rateTypes from 'data/rateTypes';
 
 const SubscriptionPlanCard = ({ subscriptionPlan, subscriptionPlanIndex, onSubscriptionPlanChanged }) => {
 
@@ -17,26 +26,54 @@ const SubscriptionPlanCard = ({ subscriptionPlan, subscriptionPlanIndex, onSubsc
         <Grid container spacing={2}>
 
             <Grid key={subscriptionPlan.id} item xs={12}>
-                <Typography variant="h1">{subscriptionPlan?.title}</Typography>
-                <Typography variant="h4">€ {subscriptionPlan?.rateAmount} / month</Typography>
-            </Grid>
+                <Stack spacing={4}>
 
-            {padArray(subscriptionPlan?.features, 10).map((feature, index) => (
-                <Grid key={index} item xs={12}>
-                    <TextField
-                        fullWidth
-                        type="text"
-                        placeholder="Enter feature"
-                        value={normalizeInputValue(feature)}
-                        onChange={(event) => {
-                            let newSubscriptionPlan = { ...subscriptionPlan };
-                            if(!newSubscriptionPlan.features) newSubscriptionPlan.features = [null, null, null, null, null, null, null, null, null, null];
-                            newSubscriptionPlan.features[index] = event.target.value;
-                            onSubscriptionPlanChanged(newSubscriptionPlan, subscriptionPlanIndex);
-                        }}
-                    />
-                </Grid>
-            ))}
+                    <Stack spacing={3} alignItems="center">
+                        <Typography variant="h3">{subscriptionPlan?.title}</Typography>
+                        <Stack alignItems="center">
+                            <Typography variant="h5">&euro;{subscriptionPlan?.rateAmount} / {rateTypes.find((item) => item.code === subscriptionPlan?.rateType).itemLabel}</Typography>
+                            <Typography variant="caption" color="secondary">{subscriptionPlan?.minimumDurationCycles} {rateTypes.find((item) => item.code === subscriptionPlan?.rateType).itemLabel}(s) minimum</Typography>
+                        </Stack>
+
+                        <Switch
+                            edge="end"
+                            onChange={(event) => {
+                                let newSubscriptionPlan = { ...subscriptionPlan };
+                                newSubscriptionPlan.isActive = event.target.checked;
+                                onSubscriptionPlanChanged(newSubscriptionPlan, subscriptionPlanIndex);
+                            }}
+                            checked={subscriptionPlan?.isActive}
+                        />
+                    </Stack>
+
+                    <Divider />
+
+                    <List sx={{ p: 0, m: 0, overflow: 'hidden', '& .MuiListItem-root': { px: 0, py: 0 } }}>
+                        {padArray(subscriptionPlan?.features, 10).map((feature, featureIndex) => (
+                            <ListItem key={featureIndex}>
+                                <ListItemIcon>
+                                    <DoubleRightOutlined />
+                                </ListItemIcon>
+                                <ListItemText primary={
+                                    <TextField
+                                        fullWidth
+                                        type="text"
+                                        placeholder="Enter feature"
+                                        value={normalizeInputValue(feature)}
+                                        onChange={(event) => {
+                                            let newSubscriptionPlan = { ...subscriptionPlan };
+                                            if(!newSubscriptionPlan.features) newSubscriptionPlan.features = [null, null, null, null, null, null, null, null, null, null];
+                                            newSubscriptionPlan.features[featureIndex] = event.target.value;
+                                            onSubscriptionPlanChanged(newSubscriptionPlan, subscriptionPlanIndex);
+                                        }}
+                                    />
+                                } />
+                            </ListItem>
+                        ))}
+                    </List>
+
+                </Stack>
+            </Grid>
         </Grid>
     )
 }

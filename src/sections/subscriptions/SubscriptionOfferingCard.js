@@ -28,6 +28,14 @@ const SubscriptionOfferingCard = ({ subscriptionOffer, subscriptionOfferIndex, o
         onSubscriptionOfferChanged(newSubscriptionOffer, subscriptionOfferIndex);
     }
 
+    const convertClusterCodes = (clusterCodes) => {
+        var result = clusterCodes?.map((clusterCode) => {
+            return jobClusters.find(x => x.code === clusterCode);
+        });
+
+        return result;
+    }
+
     return (
         <Grid container spacing={2.25}>
             <Grid item xs={12}>
@@ -63,7 +71,7 @@ const SubscriptionOfferingCard = ({ subscriptionOffer, subscriptionOfferIndex, o
                                     fullWidth
                                     multiple
                                     options={jobClusters}
-                                    value={jobClusters.filter(x => subscriptionOffer?.clusters?.find(y => x.code === y)) ?? []}
+                                    value={convertClusterCodes(subscriptionOffer?.clusters) ?? []}
                                     getOptionLabel={(option) => option?.label}
                                     isOptionEqualToValue={(option, value) => option.code === value?.code}
                                     onChange={(event, newValue) => {
