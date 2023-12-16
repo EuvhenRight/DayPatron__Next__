@@ -20,6 +20,7 @@ import rateTypes from 'data/rateTypes';
 const SubscriptionPlanCard = ({ subscriptionPlan, subscriptionPlanIndex, onSubscriptionPlanChanged }) => {
     const handleAddFeature = () => {
         let newSubscriptionPlan = { ...subscriptionPlan };
+        if(!newSubscriptionPlan.features) newSubscriptionPlan.features = [];
         newSubscriptionPlan.features.push(null);
         onSubscriptionPlanChanged(newSubscriptionPlan, subscriptionPlanIndex);
       }
