@@ -88,5 +88,8 @@
   "invoice_payouts_header_mission_name": "The name of the mission for which the invoice is issued",
   "invoice_payouts_header_invoice_date": "The date when the invoice is issued by 10X",
   "invoice_payouts_header_total_amount_incl_vat": "The total amount of the invoice including VAT",
-  "invoice_payouts_header_status": "Status of the invoice (pending, paid, sent)"
+  "invoice_payouts_header_status": "Status of the invoice (pending, paid, sent)",
+
+  "subscription_offer_summary_tooltip": "Enter a short description of this subscription offer.",
+  "subscription_offer_clusters_tooltip": "Which clusters is this subscription offer about?"
 }
