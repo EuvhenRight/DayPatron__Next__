@@ -353,7 +353,7 @@ const SubscriptionPage = () => {
 
                       {employers?.length > 0 ?
                         (<Stack spacing={1.25}>
-                          <InfoWrapper tooltipText="plan_subscribe_company">
+                          <InfoWrapper tooltipText="subscription_company_tooltip">
                             <InputLabel htmlFor="employerId">Company</InputLabel>
                           </InfoWrapper>
                           <Select
@@ -411,13 +411,13 @@ const SubscriptionPage = () => {
 
                       <Stack spacing={1.25}>
                         <InfoWrapper tooltipText="subscription_duration_cycles_tooltip">
-                          <InputLabel htmlFor="subscription-duration-cycles">Cycles</InputLabel>
+                          <InputLabel htmlFor="subscription-duration-cycles">Duration ({planToSubscribe?.rateType?.toLowerCase()})</InputLabel>
                         </InfoWrapper>
                         <TextField
                           fullWidth
                           id="subscription-duration-cycles"
                           type="number"
-                          placeholder="Enter Subscription Cycles"
+                          placeholder="Enter Subscription Duration"
                           value={normalizeInputValue(values.durationCycles)}
                           name="durationCycles"
                           onBlur={handleBlur}

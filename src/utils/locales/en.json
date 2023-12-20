@@ -102,5 +102,9 @@
   "invoice_header_invoice_date": "The date when the invoice is issued by 10X",
   "invoice_header_due_date": "The date when the invoice is due",
   "invoice_header_total_amount_incl_vat": "The total amount of the invoice including VAT",
-  "invoice_header_status": "Status of the invoice (pending, paid, sent)"
+  "invoice_header_status": "Status of the invoice (pending, paid, sent)",
+
+  "subscription_company_tooltip": "Select the company for which you want to activate the subscription.",
+  "subscription_start_date_tooltip": "When should the subscription start?",
+  "subscription_duration_cycles_tooltip": "How long should the subscription be?"
 }
