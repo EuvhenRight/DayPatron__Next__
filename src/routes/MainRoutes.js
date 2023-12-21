@@ -35,12 +35,15 @@ const ProductPage = Loadable(lazy(() => import('pages/product-page')));
 const OrdersPage = Loadable(lazy(() => import('pages/orders-page')));
 const ProductOrderPage = Loadable(lazy(() => import('pages/product-order-page')));
 const MissionOrderPage = Loadable(lazy(() => import('pages/mission-order-page')));
+const SubscriptionOrderPage = Loadable(lazy(() => import('pages/subscription-order-page')));
 
 const CreateMissionOrderPage = Loadable(lazy(() => import('pages/create-mission-order-page')));
 
 const EmployerProductServiceOrderPage = Loadable(lazy(() => import('pages/employer-product-service-order-page')));
 const ContractorProductServiceOrderPage = Loadable(lazy(() => import('pages/contractor-product-service-order-page')));
 const EmployerMissionServiceOrderPage = Loadable(lazy(() => import('pages/employer-mission-service-order-page')));
+const EmployerSubscriptionServiceOrderPage = Loadable(lazy(() => import('pages/employer-subscription-service-order-page')));
+const ContractorSubscriptionServiceOrderPage = Loadable(lazy(() => import('pages/contractor-subscription-service-order-page')));
 
 const InvoicesPage = Loadable(lazy(() => import('pages/invoices-page')));
 const InvoiceSettingsPage = Loadable(lazy(() => import('pages/invoice-settings-page')));
@@ -167,6 +170,10 @@ const MainRoutes = {
           element: <MissionOrderPage />
         },
         {
+          path: 'orders/subscription/:subscriptionOrderId',
+          element: <SubscriptionOrderPage />
+        },
+        {
           path: 'orders',
           element: <OrdersPage />
         },
@@ -181,6 +188,14 @@ const MainRoutes = {
         {
           path: 'orders/mission/:orderId/company-service-order',
           element: <EmployerMissionServiceOrderPage />
+        },
+        {
+          path: 'orders/subscription/:orderId/company-service-order/:role',
+          element: <EmployerSubscriptionServiceOrderPage />
+        },
+        {
+          path: 'orders/subscription/:orderId/talent-service-order/:role',
+          element: <ContractorSubscriptionServiceOrderPage />
         },
         {
           path: 'invoices/settings',
