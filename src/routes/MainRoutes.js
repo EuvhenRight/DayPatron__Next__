@@ -31,6 +31,7 @@ const ProductPage = Loadable(lazy(() => import('pages/product-page')));
 const OrdersPage = Loadable(lazy(() => import('pages/orders-page')));
 const ContractorProductServiceOrderPage = Loadable(lazy(() => import('pages/contractor-product-service-order-page')));
 const ContractorMissionServiceOrderPage = Loadable(lazy(() => import('pages/contractor-mission-service-order-page')));
+const ContractorSubscriptionServiceOrderPage = Loadable(lazy(() => import('pages/contractor-subscription-service-order-page')));
 
 const InvoicesPage = Loadable(lazy(() => import('pages/invoices-page')));
 const InvoiceSettingsPage = Loadable(lazy(() => import('pages/invoice-settings-page')));
@@ -128,6 +129,10 @@ const MainRoutes = {
         {
           path: 'orders/mission-orders/:orderId/talent-service-order',
           element: <ContractorMissionServiceOrderPage />
+        },
+        {
+          path: 'orders/subscription-orders/:orderId/talent-service-order',
+          element: <ContractorSubscriptionServiceOrderPage />
         },
         {
           path: 'orders',
