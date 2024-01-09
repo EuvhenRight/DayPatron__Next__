@@ -29,7 +29,7 @@ const MissionTimeTrackingPage = () => {
   const dispatch = useDispatch();
   const personalInformation = useSelector(state => state.personalInformation);
   const today = new Date();
-  const [selectedPeriodType, setSelectedPeriodType] = useState('week');
+  const [selectedPeriodType, setSelectedPeriodType] = useState('month');
   const [week, setWeek] = useState({ start: startOfWeek(today, { weekStartsOn: 1 }), end: endOfWeek(today, { weekStartsOn: 1 }) });
   const [totalsPerDate, setTotalsPerDate] = useState(null);
   const [timeLogs, setTimeLogs] = useState([{ missionId: null }]);
