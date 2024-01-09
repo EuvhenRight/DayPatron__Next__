@@ -124,8 +124,8 @@ const SubscriptionOfferCard = ({ subscriptionOffer }) => {
                   >
                     {subscriptionOffer?.title}
                   </Typography>
-                  <Typography variant="h6" color="textSecondary">
-                    {getEllipsis(subscriptionOffer?.summary, 175)}
+                  <Typography variant="caption" color="secondary">
+                    {getEllipsis(subscriptionOffer?.summary, 285)}
                   </Typography>
                 </Stack>
               </Grid>
