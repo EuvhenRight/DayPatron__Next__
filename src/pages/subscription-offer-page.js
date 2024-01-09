@@ -163,7 +163,7 @@ const SubscriptionPage = () => {
     return result;
   };
 
-  const OrderSchema = Yup.object().shape({
+  const SubscriptionOrdersSchema = Yup.object().shape({
     employerId: Yup.string().required('Company is required').nullable(true),
     startDate: Yup.string().required('Start Date is required').nullable(true),
     durationCycles: Yup.number("Should be a positive integer").integer("Should be a positive integer").min(0, "Should be a positive integer").max(1000, "Maximum 1000").nullable(true)
@@ -172,7 +172,7 @@ const SubscriptionPage = () => {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: getInitialValues(),
-    validationSchema: OrderSchema,
+    validationSchema: SubscriptionOrdersSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
         values.subscriptionPlanId = planToSubscribe.id;
@@ -237,17 +237,21 @@ const SubscriptionPage = () => {
         <Grid container spacing={3}>
 
           <Grid item xs={12}>
+            <Typography variant='h3'>{subscriptionOffer?.title}</Typography>
+          </Grid>
+
+          <Grid item xs={12}>
 
             <List sx={{ width: 1, p: 0 }}>
               <ListItem disablePadding>
-                <ListItemAvatar>
-                  <Avatar src={avatarContractor} />
+                <ListItemAvatar sx={{ pr: 2 }}>
+                  <Avatar src={avatarContractor} size="xl" />
                 </ListItemAvatar>
                 <ListItemText
                   primary={<Typography variant="subtitle1">Subscripion plans by &apos;{subscriptionOffer?.contractorFirstName + ' ' + subscriptionOffer?.contractorLastName}&apos;</Typography>}
                   secondary={
                     <Typography variant="caption" color="secondary">
-                      Talent has {subscriptionOffer?.plans?.length <= 1 ? 'no' : subscriptionOffer?.plans?.length} plan(s)
+                      Subscription offer has {subscriptionOffer?.plans?.length <= 1 ? 'no' : subscriptionOffer?.plans?.length} plan(s)
                     </Typography>
                   }
                 />
