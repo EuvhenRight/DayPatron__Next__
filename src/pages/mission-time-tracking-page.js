@@ -406,7 +406,7 @@ const MissionTimeTrackingPage = () => {
                             fullWidth
                             value={missions?.find(x => x.id == timeLog?.missionId) ?? null}
                             options={getMissionOptions(timeLog?.missionId)}
-                            getOptionLabel={(option) => option?.title}
+                            getOptionLabel={(option) => option?.title + ' (' + option?.employerName + ')'}
                             isOptionEqualToValue={(option, value) => option.id === value?.id}
                             onChange={(event, newValue) => {
                               var newTimeLogs = timeLogs.map((currentTimeLog, currentTimeLogIndex) => {

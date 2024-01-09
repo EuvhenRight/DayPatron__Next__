@@ -17,7 +17,7 @@ import {
 
 // Local components
 import MainCard from 'components/MainCard';
-import SubscriptionOfferingCard from 'sections/subscriptions/SubscriptionOfferingCard';
+import UpsertSubscriptionOffering from 'sections/subscriptions/UpsertSubscriptionOffering';
 import WelcomeBanner from 'sections/WelcomeBanner';
 
 // Utils
@@ -139,12 +139,12 @@ const SubscriptionOfferingPage = () => {
 
             {subscriptionOffers?.map((offer, index) => (
                 <Grid key={index} item xs={12}>
-                    <SubscriptionOfferingCard
+                    <UpsertSubscriptionOffering
                         subscriptionOffer={offer}
                         subscriptionOfferIndex={index}
                         onSubscriptionOfferChanged={onSubscriptionOfferChanged}
                     >
-                    </SubscriptionOfferingCard>
+                    </UpsertSubscriptionOffering>
                 </Grid>
             ))}
             <Grid item xs={12}>

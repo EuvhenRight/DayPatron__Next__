@@ -12,7 +12,7 @@ import SubscriptionPlanCard from 'sections/subscriptions/SubscriptionPlanCard';
 import InfoWrapper from 'components/InfoWrapper';
 import jobClusters from 'data/jobClusters';
 
-const SubscriptionOfferingCard = ({ subscriptionOffer, subscriptionOfferIndex, onSubscriptionOfferChanged }) => {
+const UpsertSubscriptionOffering = ({ subscriptionOffer, subscriptionOfferIndex, onSubscriptionOfferChanged }) => {
 
     const onSubscriptionPlanChanged = (updatedSubscriptionPlan, updatedSubscriptionPlanIndex) => {
         let newSubscriptionPlans = subscriptionOffer.plans.map((subscriptionPlan, subscriptionPlanIndex) => {
@@ -41,6 +41,25 @@ const SubscriptionOfferingCard = ({ subscriptionOffer, subscriptionOfferIndex, o
             <Grid item xs={12}>
                 <MainCard>
                     <Grid container spacing={2.25}>
+                        <Grid item xs={12}>
+                            <Stack spacing={1.25}>
+                                <InfoWrapper tooltipText="subscription_offer_title_tooltip">
+                                    <InputLabel>Title</InputLabel>
+                                </InfoWrapper>
+                                <TextField
+                                    fullWidth
+                                    type="text"
+                                    placeholder="Enter title"
+                                    value={normalizeInputValue(subscriptionOffer?.title)}
+                                    onChange={(event) => {
+                                        let newSubscriptionOffer = {...subscriptionOffer};
+                                        newSubscriptionOffer.title = event.target.value;
+
+                                        onSubscriptionOfferChanged(newSubscriptionOffer, subscriptionOfferIndex);
+                                    }}
+                                />
+                            </Stack>
+                        </Grid>
                         <Grid item xs={12}>
                             <Stack spacing={1.25}>
                                 <InfoWrapper tooltipText="subscription_offer_summary_tooltip">
@@ -107,10 +126,10 @@ const SubscriptionOfferingCard = ({ subscriptionOffer, subscriptionOfferIndex, o
     )
 };
 
-SubscriptionOfferingCard.protoTypes = {
+UpsertSubscriptionOffering.protoTypes = {
     subscriptionOffer: PropTypes.object,
     subscriptionOfferIndex: PropTypes.number,
     onSubscriptionOfferChanged: PropTypes.func
 };
 
-export default SubscriptionOfferingCard;
+export default UpsertSubscriptionOffering;
