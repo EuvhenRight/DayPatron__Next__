@@ -121,6 +121,9 @@ const SubscriptionOfferCard = ({ subscriptionOffer }) => {
                       textDecoration: 'none'
                     }}
                   >
+                    {subscriptionOffer?.title}
+                  </Typography>
+                  <Typography variant="h6" color="textSecondary">
                     {subscriptionOffer?.summary}
                   </Typography>
                 </Stack>
