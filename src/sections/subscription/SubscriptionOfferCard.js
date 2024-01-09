@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useKeycloak } from '@react-keycloak/web';
 import jobClusters from 'data/jobClusters';
+import { getEllipsis } from 'utils/stringUtils';
 // material-ui
 import {
   Box,
@@ -124,7 +125,7 @@ const SubscriptionOfferCard = ({ subscriptionOffer }) => {
                     {subscriptionOffer?.title}
                   </Typography>
                   <Typography variant="h6" color="textSecondary">
-                    {subscriptionOffer?.summary}
+                    {getEllipsis(subscriptionOffer?.summary, 175)}
                   </Typography>
                 </Stack>
               </Grid>
