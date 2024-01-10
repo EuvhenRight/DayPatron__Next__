@@ -67,7 +67,7 @@ const UpsertSubscriptionOffering = ({ subscriptionOffer, subscriptionOfferIndex,
                                 </InfoWrapper>
                                 <TextField
                                     multiline
-                                    rows={3}
+                                    rows={5}
                                     fullWidth
                                     type="text"
                                     placeholder="Enter summary"
