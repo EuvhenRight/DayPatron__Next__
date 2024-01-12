@@ -19,7 +19,7 @@ import SubscriptionContractorServiceOrderPdfCard from 'sections/order/Subscripti
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import InfoWrapper from 'components/InfoWrapper';
-import { ShoppingCartOutlined, DownloadOutlined, LoadingOutlined } from '@ant-design/icons';
+import { ShoppingCartOutlined, DownloadOutlined, LoadingOutlined, LinkOutlined } from '@ant-design/icons';
 import { useTheme } from '@mui/material/styles';
 import { useKeycloak } from '@react-keycloak/web';
 
@@ -52,6 +52,31 @@ const SubscriptionOrderCard = ({ order, handleApproveClick }) => {
       setTimeout(function () {
         URL.revokeObjectURL(fileUrl);
       }, 120000);
+  }
+  
+  const handleProjectOrderTermsClick = async () => {
+    try {
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/subscriptions/orders/project-order-terms',
+        {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + keycloak.idToken
+          }
+        }
+      );
+
+      let file = await response.blob();
+      var fileUrl = URL.createObjectURL(file);
+
+      if (fileUrl)
+        setTimeout(function () {
+          URL.revokeObjectURL(fileUrl);
+        }, 300000);
+
+      window.open(fileUrl, '_blank');
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -194,11 +219,19 @@ const SubscriptionOrderCard = ({ order, handleApproveClick }) => {
               </Stack>
 
               <Stack direction="column" spacing={1}>
-                <InfoWrapper tooltipText="subscription_order_card_project_order_title_tooltip">
-                  <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                    Project Order
-                  </Typography>
-                </InfoWrapper>
+                <Stack direction="row" justifyContent="space-between" alignItems="flex-end">
+                  <InfoWrapper tooltipText="subscription_order_card_project_order_title_tooltip">
+                    <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                      Project Order
+                    </Typography>
+                  </InfoWrapper>
+
+                  <IconButton sx={{ width: 22, height: 22, mr: 1.5 }} onClick={async () => {
+                    await handleProjectOrderTermsClick();
+                  }}>
+                    <LinkOutlined />
+                  </IconButton>
+                </Stack>
                 <Divider />
                 <List component="nav" aria-label="main mailbox folders" sx={{ py: 0, '& .MuiListItem-root': { p: 0, py: 0 } }}>
 
