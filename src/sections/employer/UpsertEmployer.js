@@ -240,7 +240,7 @@ const UpsertEmployer = ({ employerId }) => {
     postCode: Yup.string().nullable(true),
     country: Yup.string().nullable(true),
     industry: Yup.string().required('Industry is required').nullable(true),
-    chamberOfCommerceIdentifier: Yup.string().max(50).required('Chamber of Commerce Number is required').nullable(true),
+    chamberOfCommerceIdentifier: Yup.string().max(50).nullable(true),
     linkedInUrl: Yup.string().max(255).required('LinkedIn Page is required').nullable(true),
     description: Yup.string().max(5000).nullable(true)
   });
