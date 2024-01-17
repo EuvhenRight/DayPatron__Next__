@@ -41,7 +41,7 @@ import { openSnackbar } from 'store/reducers/snackbar';
 // project imports
 import MainCard from 'components/MainCard';
 import { useKeycloak } from '@react-keycloak/web';
-import { normalizeInputValue, prepareApiBody, normalizeNullableInputValue } from 'utils/stringUtils';
+import { normalizeInputValue, prepareApiBody, normalizeNullableInputValue, getHtmlInnerText } from 'utils/stringUtils';
 import jobClusters from 'data/jobClusters';
 
 import { CheckOutlined } from '@ant-design/icons';
@@ -294,7 +294,7 @@ const SubscriptionPage = () => {
               </Grid>
             </MainCard>
           </Grid>
-          {subscriptionOffer?.description && subscriptionOffer?.description !== '' &&
+          {getHtmlInnerText(subscriptionOffer?.description) &&
             <Grid item xs={12}>
               <MainCard>
                 <Grid container spacing={3}>

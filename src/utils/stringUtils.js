@@ -58,4 +58,13 @@ function compareSortValues(a, b) {
   return result;
 }
 
-export { normalizeInputValue, normalizeNumberInputValue, normalizeNullableInputValue, normalizeBooleanInputValue, prepareApiBody, removeEmptyOrNull, getEllipsis, compareSortValues, getCounterPartyLabel };
+function getHtmlInnerText(htmlString) {
+  if(!htmlString)
+    return null;
+  
+  var result = htmlString.replace(/<[^>]+>/g, '');;
+
+  return result;
+}
+
+export { normalizeInputValue, normalizeNumberInputValue, normalizeNullableInputValue, normalizeBooleanInputValue, prepareApiBody, removeEmptyOrNull, getEllipsis, compareSortValues, getCounterPartyLabel, getHtmlInnerText };
