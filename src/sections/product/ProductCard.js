@@ -90,7 +90,7 @@ const ProductCard = ({ product, onBuyClick }) => {
         >
           <Box sx={{ width: 250, m: 'auto', mt: '25px', mb: '25px' }}>
             <CardMedia
-              sx={{ height: 250, textDecoration: 'none', opacity: 1 }}
+              sx={{ height: 250, textDecoration: 'none', opacity: 1, borderRadius: '50%' }}
               image={avatar}
               component={Link}
               to={`/solutions/${product?.id}`}
