@@ -35,6 +35,7 @@ import MainCard from 'components/MainCard';
 import { useKeycloak } from '@react-keycloak/web';
 import { normalizeInputValue, prepareApiBody } from 'utils/stringUtils';
 import jobClusters from 'data/jobClusters';
+import { useNavigate } from 'react-router-dom';
 
 const avatarImage = require.context('assets/images/products', true);
 const avatarImageContractor = require.context('assets/images/users', true);
@@ -45,6 +46,7 @@ const ProductDetails = () => {
   const { keycloak } = useKeycloak();
   const { productId } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const personalInformation = useSelector(state => state.personalInformation);
 
   const [product, setProduct] = useState(null);
@@ -171,6 +173,10 @@ const handleChangeFeaturesTab = (event, newValue) => {
     setOpenBuyDialog(true);
   }
 
+  const handleBackClick = () => {
+    navigate('/solutions');
+  }
+
   const handleConfirmBuyClick = async () => {
     let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/products/' + productId + '/orders',
       {
@@ -259,14 +265,27 @@ const handleChangeFeaturesTab = (event, newValue) => {
                 </Grid>
                 <Grid item xs={12} sm={8}>
 
-                  <Stack spacing={2}>
-                    <Typography variant="h3">{product?.title}</Typography>
-                    <SanitizedHTML html={product?.description} />
-                    <Typography variant="h3">&euro;{product?.adminPrice}</Typography>
-                    <Button onClick={() => handleBuyClick()} fullWidth color="primary" variant="contained" size="large">
-                      Buy Now
-                    </Button>
-                  </Stack>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      <Stack spacing={2}>
+                        <Typography variant="h3">{product?.title}</Typography>
+                        <SanitizedHTML html={product?.description} />
+                        <Typography variant="h3">&euro;{product?.adminPrice}</Typography>
+                      </Stack>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Button onClick={() => handleBuyClick()} fullWidth color="primary" variant="contained" size="large">
+                        Buy Now
+                      </Button>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Button onClick={() => handleBackClick()} fullWidth color="secondary" variant="outlined" size="large">
+                        Back
+                      </Button>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                    </Grid>
+                  </Grid>
 
                 </Grid>
               </Grid>
