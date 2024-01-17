@@ -91,8 +91,8 @@
   "invoice_payouts_header_status": "Status of the invoice (pending, paid, sent)",
 
   "subscription_offer_title_tooltip": "Enter a title for this subscription offer.",
-  "subscription_offer_summary_tooltip": "Enter a short summary for this subscription offer.",
+  "subscription_offer_summary_tooltip": "Enter a short summary for this subscription offer. This text will be shown in the overview of subscription offers.",
   "subscription_offer_clusters_tooltip": "Which clusters is this subscription offer about?",
-  "subscription_offer_description_tooltip": "Enter a description for this subscription offer.",
+  "subscription_offer_description_tooltip": "Enter a description for this subscription offer. This text will be shown on the subscription offer details page.",
   "subscription_offer_plan_active_tooltip": "Do not forget to hit the toggle button to activate a plan. If you have an active plan and you save your subscription offering it will be published and companies will be able to subscribe to your active plans."
 }
