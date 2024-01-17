@@ -24,7 +24,10 @@ const SubscriptionPlanCard = ({ subscriptionPlan, subscriptionPlanIndex, onSubsc
     const theme = useTheme();
 
     const mayAddFeature = () => {
-        if(subscriptionPlan?.features?.length < 15) return true;
+        if(!subscriptionPlan?.features) return true;
+
+        if(subscriptionPlan.features.length < 15) return true;
+
 
         return false;
     }
