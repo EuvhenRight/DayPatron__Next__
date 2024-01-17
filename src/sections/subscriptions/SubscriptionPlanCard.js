@@ -9,15 +9,20 @@ import {
     Stack,
     Divider,
     Switch,
-    List
+    List,
+    InputLabel
 } from '@mui/material'
 
+import InfoWrapper from 'components/InfoWrapper';
 import IconButton from 'components/@extended/IconButton';
-import { DoubleRightOutlined, DeleteFilled, PlusCircleOutlined } from '@ant-design/icons';
+import { CheckOutlined, DeleteFilled, PlusCircleOutlined } from '@ant-design/icons';
 import { normalizeInputValue } from 'utils/stringUtils';
 import rateTypes from 'data/rateTypes';
+import { useTheme } from '@mui/material/styles';
 
 const SubscriptionPlanCard = ({ subscriptionPlan, subscriptionPlanIndex, onSubscriptionPlanChanged }) => {
+    const theme = useTheme();
+
     const handleAddFeature = () => {
         let newSubscriptionPlan = { ...subscriptionPlan };
         if(!newSubscriptionPlan.features) newSubscriptionPlan.features = [];
@@ -44,15 +49,20 @@ const SubscriptionPlanCard = ({ subscriptionPlan, subscriptionPlanIndex, onSubsc
                             <Typography variant="caption" color="secondary">{subscriptionPlan?.minimumDurationCycles} {rateTypes.find((item) => item.code === subscriptionPlan?.rateType).itemLabel}(s) minimum</Typography>
                         </Stack>
 
-                        <Switch
-                            edge="end"
-                            onChange={(event) => {
-                                let newSubscriptionPlan = { ...subscriptionPlan };
-                                newSubscriptionPlan.isActive = event.target.checked;
-                                onSubscriptionPlanChanged(newSubscriptionPlan, subscriptionPlanIndex);
-                            }}
-                            checked={subscriptionPlan?.isActive}
-                        />
+                        <Stack spacing={1}>
+                            <InfoWrapper tooltipText="subscription_offer_plan_active_tooltip">
+                                <InputLabel>Active?</InputLabel>
+                            </InfoWrapper>
+                            <Switch
+                                edge="end"
+                                onChange={(event) => {
+                                    let newSubscriptionPlan = { ...subscriptionPlan };
+                                    newSubscriptionPlan.isActive = event.target.checked;
+                                    onSubscriptionPlanChanged(newSubscriptionPlan, subscriptionPlanIndex);
+                                }}
+                                checked={subscriptionPlan?.isActive}
+                            />
+                        </Stack>
                     </Stack>
 
                     <Divider />
@@ -61,7 +71,7 @@ const SubscriptionPlanCard = ({ subscriptionPlan, subscriptionPlanIndex, onSubsc
                             {subscriptionPlan?.features?.map((feature, featureIndex) => (
                                 <ListItem key={featureIndex}>
                                     <ListItemIcon>
-                                        <DoubleRightOutlined />
+                                        <CheckOutlined style={{ color: theme.palette.primary.main }}/>
                                     </ListItemIcon>
                                     <ListItemText primary={
                                         <TextField
