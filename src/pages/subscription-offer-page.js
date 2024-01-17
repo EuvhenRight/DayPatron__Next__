@@ -294,7 +294,7 @@ const SubscriptionPage = () => {
               </Grid>
             </MainCard>
           </Grid>
-          {subscriptionOffer?.description &&
+          {subscriptionOffer?.description && subscriptionOffer?.description !== '' &&
             <Grid item xs={12}>
               <MainCard>
                 <Grid container spacing={3}>
