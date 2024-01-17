@@ -133,7 +133,8 @@ const SubscriptionOfferingPage = () => {
                 <MainCard>
                     We&apos;re thrilled that you are ready to offer a subscription plan to your dedicated audience.
                     This is your space to customize and tailor a subscription offering that aligns perfectly with your unique offerings and the expectations of your community.
-                    Once you&apos;ve fine-tuned your subscription offering to perfection, hit the &quot;Save&quot; button to apply the changes.
+                    Once you&apos;ve fine-tuned your subscription offering to perfection, hit the &quot;Save&quot; button to apply the changes. 
+                    Do not forget to hit the toggle button to activate a plan. If you have an active plan and you save your subscription offering it will be published and companies will be able to subscribe to your activeplans.
                 </MainCard>
             </Grid>
 
