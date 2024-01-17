@@ -217,7 +217,7 @@ const SubscriptionOffersPage = () => {
                 })
                 .map((subscriptionOffer, index) => (
                   <Slide key={index} direction="up" in={true} timeout={50}>
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} sm={4}>
                       <SubscriptionOfferCard subscriptionOffer={subscriptionOffer} />
                     </Grid>
                   </Slide>

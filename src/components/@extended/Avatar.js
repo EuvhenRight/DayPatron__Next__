@@ -76,6 +76,12 @@ function getSizeStyle(size) {
         width: 64,
         height: 64
       };
+      case 'xxl':
+        return {
+          fontSize: '1.5rem',
+          width: 100,
+          height: 100
+        };
     case 'md':
     default:
       return {

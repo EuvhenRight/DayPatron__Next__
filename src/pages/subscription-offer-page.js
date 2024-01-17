@@ -44,12 +44,14 @@ import { useKeycloak } from '@react-keycloak/web';
 import { normalizeInputValue, prepareApiBody, normalizeNullableInputValue } from 'utils/stringUtils';
 import jobClusters from 'data/jobClusters';
 
-import { DoubleRightOutlined } from '@ant-design/icons';
+import { CheckOutlined } from '@ant-design/icons';
 import rateTypes from 'data/rateTypes';
+import { useTheme } from '@mui/material/styles';
 
 const avatarImageContractor = require.context('assets/images/users', true);
 
 const SubscriptionPage = () => {
+  const theme = useTheme();
   const { keycloak } = useKeycloak();
   const { subscriptionOfferId } = useParams();
   const dispatch = useDispatch();
@@ -237,18 +239,20 @@ const SubscriptionPage = () => {
         <Grid container spacing={3}>
 
           <Grid item xs={12}>
-            <Typography variant='h3'>{subscriptionOffer?.title}</Typography>
-          </Grid>
-
-          <Grid item xs={12}>
 
             <List sx={{ width: 1, p: 0 }}>
               <ListItem disablePadding>
                 <ListItemAvatar sx={{ pr: 2 }}>
-                  <Avatar src={avatarContractor} size="xl" />
+                  <Avatar src={avatarContractor} size="xxl" />
                 </ListItemAvatar>
                 <ListItemText
-                  primary={<Typography variant="subtitle1">Subscripion plans by &apos;{subscriptionOffer?.contractorFirstName + ' ' + subscriptionOffer?.contractorLastName}&apos;</Typography>}
+                  primary={
+                    <Stack>
+                      <Typography variant='h3'>{subscriptionOffer?.title}</Typography>
+                      <Typography variant="h5">Subscripion plans by &apos;{subscriptionOffer?.contractorFirstName + ' ' + subscriptionOffer?.contractorLastName}&apos;</Typography>
+                    </Stack>
+                    
+                  }
                   secondary={
                     <Typography variant="caption" color="secondary">
                       Subscription offer has {subscriptionOffer?.plans?.length <= 1 ? 'no' : subscriptionOffer?.plans?.length} plan(s)
@@ -293,7 +297,7 @@ const SubscriptionPage = () => {
 
           {subscriptionOffer?.plans?.map((plan, planIndex) => (
             <Grid item xs={12} sm={4} key={planIndex}>
-              <MainCard>
+              <MainCard sx={{height: "100%"}}>
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
 
@@ -317,9 +321,9 @@ const SubscriptionPage = () => {
                         {plan?.features?.map((feature, featureIndex) => (
                           <ListItem key={featureIndex}>
                             <ListItemIcon>
-                              <DoubleRightOutlined />
+                              <CheckOutlined style={{ color: theme.palette.primary.main }}/>
                             </ListItemIcon>
-                            <ListItemText primary={<Typography color="secondary">{feature}</Typography>} />
+                            <ListItemText primary={<Typography>{feature}</Typography>} />
                           </ListItem>
                         ))}
                       </List>
