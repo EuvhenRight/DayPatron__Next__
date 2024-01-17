@@ -61,8 +61,10 @@ function compareSortValues(a, b) {
 function getHtmlInnerText(htmlString) {
   if(!htmlString)
     return null;
-  
-  var result = htmlString.replace(/<[^>]+>/g, '');;
+
+  var result = htmlString.replace(/<[^>]+>/g, '');
+
+  if(result === '') return null;
 
   return result;
 }
