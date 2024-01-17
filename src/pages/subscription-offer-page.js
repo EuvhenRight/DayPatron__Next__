@@ -294,6 +294,19 @@ const SubscriptionPage = () => {
               </Grid>
             </MainCard>
           </Grid>
+          {subscriptionOffer?.description &&
+            <Grid item xs={12}>
+              <MainCard>
+                <Grid container spacing={3}>
+                  <Grid item xs={12}>
+
+                    <SanitizedHTML html={subscriptionOffer?.description} />
+
+                  </Grid>
+                </Grid>
+              </MainCard>
+            </Grid>
+          }
 
           {subscriptionOffer?.plans?.map((plan, planIndex) => (
             <Grid item xs={12} sm={4} key={planIndex}>
