@@ -319,7 +319,7 @@ const SubscriptionPage = () => {
 
                       <List sx={{ p: 0, m: 0, overflow: 'hidden', '& .MuiListItem-root': { px: 0, py: 0 } }}>
                         {plan?.features?.map((feature, featureIndex) => (
-                          <ListItem key={featureIndex}>
+                          <ListItem key={featureIndex} alignItems="flex-start">
                             <ListItemIcon>
                               <CheckOutlined style={{ color: theme.palette.primary.main }}/>
                             </ListItemIcon>
