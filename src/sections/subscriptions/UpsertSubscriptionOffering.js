@@ -10,6 +10,7 @@ import MainCard from 'components/MainCard';
 import { normalizeInputValue } from 'utils/stringUtils';
 import SubscriptionPlanCard from 'sections/subscriptions/SubscriptionPlanCard';
 import InfoWrapper from 'components/InfoWrapper';
+import Rte from 'components/Rte';
 import jobClusters from 'data/jobClusters';
 
 const UpsertSubscriptionOffering = ({ subscriptionOffer, subscriptionOfferIndex, onSubscriptionOfferChanged }) => {
@@ -109,6 +110,23 @@ const UpsertSubscriptionOffering = ({ subscriptionOffer, subscriptionOfferIndex,
                                             }}
                                         />
                                     )}
+                                />
+                            </Stack>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Stack spacing={1.25}>
+                                <InfoWrapper tooltipText="subscription_offer_description_tooltip">
+                                    <InputLabel>Description</InputLabel>
+                                </InfoWrapper>
+                                <Rte
+                                    id="subscription-offer-description"
+                                    value={normalizeInputValue(subscriptionOffer?.description)}
+                                    onChange={(event) => {
+                                        let newSubscriptionOffer = {...subscriptionOffer};
+                                        newSubscriptionOffer.description = event;
+
+                                        onSubscriptionOfferChanged(newSubscriptionOffer, subscriptionOfferIndex);
+                                    }}
                                 />
                             </Stack>
                         </Grid>
