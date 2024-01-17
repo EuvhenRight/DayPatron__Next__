@@ -23,12 +23,20 @@ import { useTheme } from '@mui/material/styles';
 const SubscriptionPlanCard = ({ subscriptionPlan, subscriptionPlanIndex, onSubscriptionPlanChanged }) => {
     const theme = useTheme();
 
+    const mayAddFeature = () => {
+        if(subscriptionPlan?.features?.length < 15) return true;
+
+        return false;
+    }
+
     const handleAddFeature = () => {
+        if(!mayAddFeature()) return;
+
         let newSubscriptionPlan = { ...subscriptionPlan };
         if(!newSubscriptionPlan.features) newSubscriptionPlan.features = [];
         newSubscriptionPlan.features.push(null);
         onSubscriptionPlanChanged(newSubscriptionPlan, subscriptionPlanIndex);
-      }
+    }
 
     const handleRemoveFeature = (featureIndex) => {
         let newSubscriptionPlan = { ...subscriptionPlan };
@@ -95,7 +103,7 @@ const SubscriptionPlanCard = ({ subscriptionPlan, subscriptionPlanIndex, onSubsc
                         </List>
                         
                         <Stack alignItems="flex-end">
-                            <IconButton onClick={handleAddFeature} size="large" color="primary">
+                            <IconButton onClick={handleAddFeature} size="large" color="primary" disabled={!mayAddFeature()}>
                                 <PlusCircleOutlined />
                             </IconButton>
                         </Stack>
