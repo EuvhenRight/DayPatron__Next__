@@ -255,7 +255,7 @@ const SubscriptionPage = () => {
                   }
                   secondary={
                     <Typography variant="caption" color="secondary">
-                      Subscription offer has {subscriptionOffer?.plans?.length <= 1 ? 'no' : subscriptionOffer?.plans?.length} plan(s)
+                      Subscription offer has {subscriptionOffer?.plans?.length < 1 ? 'no' : subscriptionOffer?.plans?.length} plan(s)
                     </Typography>
                   }
                 />
