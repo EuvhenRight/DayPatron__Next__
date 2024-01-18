@@ -55,6 +55,21 @@ const SubscriptionPlanTemplateCard = ({ template, templateIndex, onTemplateUpdat
       </Grid>
       <Grid item xs={12}>
         <Stack spacing={1.25}>
+          <InputLabel htmlFor="subscription-plan-template-admin-margin-percentage">Admin Margin %</InputLabel>
+          <TextField
+            fullWidth
+            id="subscription-plan-template-admin-margin-percentage"
+            type="number"
+            inputProps={{ min: 0, max: 100 }}
+            placeholder="Enter margin %"
+            name="adminMarginPercentage"
+            value={normalizeInputValue(template?.adminMarginPercentage)}
+            onChange={(event) => {onTemplateUpdated({ ...template, adminMarginPercentage: event.target.value }, templateIndex);}}
+          />
+        </Stack>
+      </Grid>
+      <Grid item xs={12}>
+        <Stack spacing={1.25}>
           <InputLabel htmlFor="subscription-plan-template-minimum-duration-cycles">Minimum Duration Cycles</InputLabel>
           <TextField
             fullWidth
