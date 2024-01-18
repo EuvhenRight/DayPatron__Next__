@@ -57,6 +57,9 @@ const SubscriptionPlanCard = ({ subscriptionPlan, subscriptionPlanIndex, onSubsc
                         <Typography variant="h3">{subscriptionPlan?.title}</Typography>
                         <Stack alignItems="center">
                             <Typography variant="h5">&euro;{subscriptionPlan?.rateAmount} / {rateTypes.find((item) => item.code === subscriptionPlan?.rateType).itemLabel}</Typography>
+                            {(subscriptionPlan?.adminMarginPercentage || subscriptionPlan?.adminMarginPercentage === 0) && 
+                                <Typography variant="caption" color="secondary">{subscriptionPlan?.adminMarginPercentage}% fee</Typography>
+                            }
                             <Typography variant="caption" color="secondary">{subscriptionPlan?.minimumDurationCycles} {rateTypes.find((item) => item.code === subscriptionPlan?.rateType).itemLabel}(s) minimum</Typography>
                         </Stack>
 
