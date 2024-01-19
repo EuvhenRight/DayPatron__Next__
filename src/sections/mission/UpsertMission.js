@@ -58,6 +58,7 @@ const getInitialValues = (mission) => {
     employerId: null,
     title: null,
     hideEmployerName: null,
+    isClosed: null,
     description: null,
     cluster: null,
     role: null,
@@ -88,6 +89,8 @@ const getInitialValues = (mission) => {
     if (mission.requiredLanguages)
       result.requiredLanguages = languages.filter(x => mission.requiredLanguages.find(y => x.code === y));
     
+    result.isClosed = mission.closedOnUtc ? true : false;
+
     return result;
   }
 
@@ -285,6 +288,7 @@ const UpsertMission = ({ missionId }) => {
     employerId: Yup.string().required('Company is required').nullable(true),
     title: Yup.string().max(255).required('Title is required').nullable(true),
     hideEmployerName: Yup.boolean().nullable(true),
+    isClosed: Yup.boolean().nullable(true),
     description: Yup.string().max(5000).required('Description is required').nullable(true),
     cluster: Yup.string().max(255).required('Cluster is required').nullable(true),
     role: Yup.string().max(255).required('Role is required').nullable(true),
@@ -543,6 +547,26 @@ const UpsertMission = ({ missionId }) => {
                         {touched.hideEmployerName && errors.hideEmployerName && (
                           <FormHelperText error id="mission-hide-company-name-helper">
                             {errors.hideEmployerName}
+                          </FormHelperText>
+                        )}
+                      </Stack>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Stack spacing={1.25}>
+                        <InfoWrapper tooltipText="mission_is_closed_tooltip">
+                          <InputLabel htmlFor="mission-is-closed">Closed?</InputLabel>
+                        </InfoWrapper>
+                        <Switch
+                          id="mission-is-closed"
+                          name="isClosed"
+                          checked={normalizeBooleanInputValue(values?.isClosed)}
+                          onChange={(event, checked) => {
+                            setFieldValue("isClosed", checked);
+                          }}
+                        />
+                        {touched.isClosed && errors.isClosed && (
+                          <FormHelperText error id="mission-is-closed-helper">
+                            {errors.isClosed}
                           </FormHelperText>
                         )}
                       </Stack>

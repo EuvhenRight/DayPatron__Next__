@@ -207,11 +207,31 @@ const MissionCard = ({ mission, alertMissionToDelete }) => {
                 }}
                 component="ul"
               >
-                {mission?.languages?.map((language, index) => (
+                {mission?.requiredLanguages?.map((language, index) => (
                   <ListItem disablePadding key={index} sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
                     <Chip color="secondary" variant="outlined" size="small" label={languages.find(x => x.code === language)?.label} />
                   </ListItem>
                 ))}
+              </Box>
+            </Box>
+          </Grid>
+          <Grid item xs={12}>
+            <Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  listStyle: 'none',
+                  p: 0.5,
+                  m: 0
+                }}
+                component="ul"
+              >
+                {mission?.closedOnUtc &&
+                  <ListItem disablePadding sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
+                    <Chip color="error" size="small" label="Closed" />
+                  </ListItem>
+                }
               </Box>
             </Box>
           </Grid>
