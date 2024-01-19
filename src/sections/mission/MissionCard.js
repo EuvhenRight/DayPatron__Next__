@@ -243,6 +243,11 @@ const MissionCard = ({ mission }) => {
                     <Chip color="success" size="small" label="Approved" />
                   </ListItem>
                 }
+                {mission?.closedOnUtc &&
+                  <ListItem disablePadding sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
+                    <Chip color="error" size="small" label="Closed" />
+                  </ListItem>
+                }
               </Box>
             </Box>
           </Grid>

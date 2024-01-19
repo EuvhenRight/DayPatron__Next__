@@ -504,16 +504,21 @@ const MissionPage = () => {
                           <Chip color="success" size="small" label="Approved" />
                         </ListItem>
                       }
+                      {mission?.closedOnUtc &&
+                        <ListItem disablePadding sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
+                          <Chip color="error" size="small" label="Closed" />
+                        </ListItem>
+                      }
                     </Box>
                   </Grid>
                   <Grid item xs={12}>
                     <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 2.5 }}>
-                      {!missionContractor?.application &&
+                      {!missionContractor?.application && !mission?.closedOnUtc &&
                         <Button variant="contained" onClick={handleApplyButtonClick} disabled={isCreatingApplication}>
                           Apply
                         </Button>  
                       }
-                      {missionContractor?.application &&
+                      {missionContractor?.application && !mission?.closedOnUtc &&
                         <Button variant="outlined" onClick={handleUnapplyButtonClick} disabled={isDeletingApplication}>
                           Unapply
                         </Button>
