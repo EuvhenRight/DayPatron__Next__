@@ -190,10 +190,11 @@ const SubscriptionPage = () => {
       );
   
       if (!response.ok) {
+        let errorMessage = (await response.text()) ?? 'Failed placing an order.';
         dispatch(
           openSnackbar({
             open: true,
-            message: 'Failed placing an order.',
+            message: errorMessage,
             variant: 'alert',
             alert: {
               color: 'error'
