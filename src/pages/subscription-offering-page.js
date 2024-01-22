@@ -63,8 +63,43 @@ const SubscriptionOfferingPage = () => {
         setSubscriptionOffers(newSubscriptionOffers);
     }
 
+    const hasActivePlanWithEmptyFeatures = (subscriptionOffersParam) => {
+        for(var subscriptionOffersParamIndex = 0; subscriptionOffersParamIndex < subscriptionOffersParam.length; subscriptionOffersParamIndex++) {
+            let subscriptionOffer = subscriptionOffersParam[subscriptionOffersParamIndex];
+
+            for(var planIndex = 0; planIndex < subscriptionOffer?.plans?.length; planIndex++) {
+                let plan = subscriptionOffer?.plans[planIndex];
+                if(plan?.isActive === true) {
+                    if(!plan?.features || plan?.features?.length === 0)
+                        return true;
+
+                    if(plan?.features?.every((feature) => !feature || feature.match(/^ *$/) !== null))
+                        return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     const handleSaveClick = async () => {
         try {
+            if(hasActivePlanWithEmptyFeatures(subscriptionOffers)) {
+                dispatch(
+                    openSnackbar({
+                        open: true,
+                        message: 'Active plan with no features found.',
+                        variant: 'alert',
+                        alert: {
+                            color: 'error'
+                        },
+                        close: false
+                    })
+                );
+
+                return;
+            }
+
             let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(personalInformation.id) + '/subscription-offers',
                 {
                     method: 'PUT',

@@ -74,7 +74,7 @@ const SubscriptionPlanCard = ({ subscriptionPlan, subscriptionPlanIndex, onSubsc
                                     newSubscriptionPlan.isActive = event.target.checked;
                                     onSubscriptionPlanChanged(newSubscriptionPlan, subscriptionPlanIndex);
                                 }}
-                                checked={subscriptionPlan?.isActive}
+                                checked={subscriptionPlan?.isActive ?? false}
                             />
                         </Stack>
                     </Stack>
