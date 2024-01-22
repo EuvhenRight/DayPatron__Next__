@@ -3,18 +3,24 @@ import {
   Grid,
   Button,
   Stack,
-  Typography
+  Typography,
+  InputLabel,
+  TextField
 } from '@mui/material';
 import { useKeycloak } from '@react-keycloak/web';
 import MainCard from 'components/MainCard';
 import SubscriptionPlanTemplateCard from 'sections/subscription/SubscriptionPlanTemplateCard';
-import { prepareApiBody } from 'utils/stringUtils';
+import { prepareApiBody, normalizeInputValue } from 'utils/stringUtils';
 import { useDispatch } from 'react-redux';
 import { openSnackbar } from 'store/reducers/snackbar';
+import Rte from 'components/Rte';
 
 const SubscriptionPlanTemplatesPage = () => {
   const { keycloak } = useKeycloak();
   const [templates, setTemplates] = useState([]);
+  const [summaryTemplate, setSummaryTemplate] = useState(null);
+  const [descriptionTemplate, setDescriptionTemplate] = useState(null);
+
   const dispatch = useDispatch();
   
   useEffect(() => {
@@ -36,6 +42,8 @@ const SubscriptionPlanTemplatesPage = () => {
       let json = await response.json();
 
       setTemplates(json?.templates);
+      setSummaryTemplate(json?.summaryTemplate);
+      setDescriptionTemplate(json?.descriptionTemplate);
     } catch (error) {
       console.log(error);
     }
@@ -74,7 +82,7 @@ const SubscriptionPlanTemplatesPage = () => {
             'Authorization': 'Bearer ' + keycloak.idToken,
             'Content-Type': 'application/json'
           },
-          body: prepareApiBody({templates})
+          body: prepareApiBody({summaryTemplate, descriptionTemplate, templates})
         }
       );
 
@@ -130,6 +138,39 @@ const SubscriptionPlanTemplatesPage = () => {
 
   return (
     <Grid container spacing={1}>
+      <Grid item xs={12}>
+        <MainCard>
+          <Stack spacing={1.25}>
+            <InputLabel htmlFor="subscription-plan-template-summary">Summary Template</InputLabel>
+            <TextField
+                multiline
+                rows={5}
+                fullWidth
+                type="text"
+                placeholder="Enter summary template"
+                value={normalizeInputValue(summaryTemplate)}
+                onChange={(event) => {
+                    setSummaryTemplate(event.target.value);
+                }}
+              />
+          </Stack>
+        </MainCard>
+      </Grid>
+      <Grid item xs={12}>
+        <MainCard>
+          <Stack spacing={1.25}>
+            <InputLabel htmlFor="subscription-plan-template-description">Description Template</InputLabel>
+            <Rte
+                id="subscription-plan-template-description"
+                value={normalizeInputValue(descriptionTemplate)}
+                placeholder="Enter description template"
+                onChange={(event) => {
+                  setDescriptionTemplate(event);
+                }}
+            />
+          </Stack>
+        </MainCard>
+      </Grid>
       {templates?.map((template, templateIndex) => (
         <Grid key={templateIndex} item xs={12} md={4}>
           <MainCard>
