@@ -31,6 +31,30 @@
 
     <!-- this is to resolve issue in old safari browser in tablet -->
     <script src="https://cdn.jsdelivr.net/npm/resize-observer-polyfill@1.5.1/dist/ResizeObserver.min.js"></script>
+
+    <script defer src="https://openai-widget.web.app/ChatComponent.bundle.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Check if the chat container exists
+        var chatContainer = document.getElementById('chat-container');
+        // If the chat container doesn't exist, create it
+        if (!chatContainer) {
+          chatContainer = document.createElement('div');
+          chatContainer.id = 'chat-container';
+          document.body.appendChild(chatContainer);
+        }
+        // Initialize the Chat component
+        if (window.ChatComponent) {
+          try {
+            ChatComponent.init('MeLaemHsJtKCgBhSGYFk','#chat-container');
+          } catch(e){
+            console.log(e);
+          }
+        } else {
+          console.error('ChatComponent is not available');
+        }
+      });
+    </script>
   </head>
   <body>
       <noscript>You need to enable JavaScript to run this app.</noscript>
