@@ -1,6 +1,11 @@
+'use client'
+import classNames from 'classnames'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 function Header() {
+	const pathname = usePathname()
+
 	const links = [
 		{ label: 'Products', href: '/products' },
 		{ label: 'About', href: '/about' },
@@ -15,7 +20,11 @@ function Header() {
 					{links.map(link => (
 						<li key={link.href}>
 							<Link
-								className='text-zinc-500 hover:text-zinc-800 transition-colors'
+								className={classNames({
+									'text-zinc-900': pathname === link.href,
+									'text-zinc-500': pathname !== link.href,
+									'hover:text-zinc-700 transition-colors': true,
+								})}
 								href={link.href}
 							>
 								{link.label}
