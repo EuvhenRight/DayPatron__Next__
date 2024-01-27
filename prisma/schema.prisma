@@ -12,45 +12,65 @@ datasource db {
 
 // prisma/schema.prisma
 model Image {
-  id          String     @id @default(auto()) @map("_id") @db.ObjectId
-  url         String
-  DayPatron   DayPatron? @relation(fields: [dayPatronId], references: [id])
-  dayPatronId String?    @db.ObjectId
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  url       String
+  Product   Product? @relation(fields: [productId], references: [id])
+  productId String?  @db.ObjectId
 }
 
 model Faq {
-  id            String     @id @default(auto()) @map("_id") @db.ObjectId
-  question_1_en String
-  question_1_ua String
-  question_2_en String
-  question_2_ua String
-  question_3_en String
-  question_3_ua String
-  question_4_en String
-  question_4_ua String
-  DayPatron     DayPatron? @relation(fields: [dayPatronId], references: [id])
-  dayPatronId   String?    @db.ObjectId
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  question_1_en String?
+  question_1_ua String?
+  question_2_en String?
+  question_2_ua String?
+  question_3_en String?
+  question_3_ua String?
+  question_4_en String?
+  question_4_ua String?
+  Product       Product? @relation(fields: [productId], references: [id])
+  productId     String?  @db.ObjectId
 }
 
-model Specification {
-  id          String     @id @default(auto()) @map("_id") @db.ObjectId
-  text_en     String
-  url_en      String
-  text_ua     String
-  url_ua      String
-  DayPatron   DayPatron? @relation(fields: [dayPatronId], references: [id])
-  dayPatronId String?    @db.ObjectId
+model User {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  name            String?
+  lastName        String?
+  email           String
+  password        Int
+  city            String?
+  streetName      String?
+  houseNumber     Int?
+  additionNumber  String?
+  zipCode         String?
+  logisticCompany String?
+  department      String?
+  createdAt       DateTime
+  updatedAt       DateTime
+  orders          Order?   @relation(fields: [orderId], references: [id])
+  orderId         String?  @db.ObjectId
 }
 
-model DayPatron {
-  id             String          @id @default(auto()) @map("_id") @db.ObjectId
+model Order {
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  date           DateTime
+  product        Product[]
+  typeOfDelivery String
+  count          Int
+  User           User[]
+  sum            Float
+  createdAt      DateTime
+  updatedAt      DateTime
+}
+
+model Product {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
   article        Int
   linkName       String
   name_en        String
   name_ua        String
   UTP_en         String
   UTP_ua         String
-  specification  Specification[]
   description_en String
   description_ua String
   useTo_en       String
@@ -66,5 +86,11 @@ model DayPatron {
   shelfLife_ua   String
   faq            Faq[]
   category       String
+  price          Float
+  amount         Int
+  stock          Boolean
+  current_rating Float
   tradeMarkImage String
+  Order          Order?   @relation(fields: [orderId], references: [id])
+  orderId        String?  @db.ObjectId
 }
