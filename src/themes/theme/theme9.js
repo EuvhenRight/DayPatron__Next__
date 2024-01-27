@@ -23,7 +23,7 @@ const Theme9 = (colors, mode) => {
   };
   const contrastText = '#fff';
 
-  let primaryColors = ['#ececf9', '#6365d1', '#7778d6', '#8a8bdc', '#9e9fe2', '#3c3ec5', '#b1b2e8', '#c5c5ee', '#d8d8f3', '#ececf9'];
+  let primaryColors = ['#fef5f2', '#532C1D', '#9F4D01', '#D35200', '#df5611', '#EB5A21', '#f5ad90', '#fad6c8', '#000000', '#fef5f2'];
   let errorColors = ['#FDE8E7', '#F25E52', '#F04134', '#EE3B2F', '#E92A21'];
   let warningColors = ['#FFF7E0', '#FFC926', '#FFBF00', '#FFB900', '#FFA900'];
   let infoColors = ['#E0F4F5', '#26B0BA', '#00A2AE', '#009AA7', '#008694'];

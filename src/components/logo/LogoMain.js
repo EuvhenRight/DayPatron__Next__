@@ -14,7 +14,7 @@ const LogoMain = () => {
   const theme = useTheme();
   return (
     
-    <img src={theme.palette.mode === 'dark' ? logoDark : logo} alt="10x" width="65" />
+    <img src={theme.palette.mode === 'dark' ? logoDark : logo} alt="10x" width="100" style={{margin: "17px 0px 7px 0px"}} />
     
   );
 };
