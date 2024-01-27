@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// prisma/schema.prisma
+model Image {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  url         String
+  DayPatron   DayPatron? @relation(fields: [dayPatronId], references: [id])
+  dayPatronId String?    @db.ObjectId
+}
+
+model Faq {
+  id            String     @id @default(auto()) @map("_id") @db.ObjectId
+  question_1_en String
+  question_1_ua String
+  question_2_en String
+  question_2_ua String
+  question_3_en String
+  question_3_ua String
+  question_4_en String
+  question_4_ua String
+  DayPatron     DayPatron? @relation(fields: [dayPatronId], references: [id])
+  dayPatronId   String?    @db.ObjectId
+}
+
+model Specification {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  text_en     String
+  url_en      String
+  text_ua     String
+  url_ua      String
+  DayPatron   DayPatron? @relation(fields: [dayPatronId], references: [id])
+  dayPatronId String?    @db.ObjectId
+}
+
+model DayPatron {
+  id             String          @id @default(auto()) @map("_id") @db.ObjectId
+  article        Int
+  linkName       String
+  name_en        String
+  name_ua        String
+  UTP_en         String
+  UTP_ua         String
+  specification  Specification[]
+  description_en String
+  description_ua String
+  useTo_en       String
+  useTo_ua       String
+  image          Image[]
+  volume_en      String[]
+  volume_ua      String[]
+  benefits_en    String[]
+  benefits_ua    String[]
+  ingredients_en String
+  ingredients_ua String
+  shelfLife_en   String
+  shelfLife_ua   String
+  faq            Faq[]
+  category       String
+  tradeMarkImage String
+}
