@@ -56,7 +56,15 @@ export async function POST(request: NextRequest) {
 			})
 			// Schedule a task to delete the password after 15 minutes
 			schedulePasswordDeletion(updatedUser.id, 15)
-			return NextResponse.json(updatedUser, { status: 201 })
+			// Generate token for the new user
+			const token = jwt.sign(
+				{
+					id: updatedUser.id,
+				},
+				process.env.KEY_JWT_AUTH || '', // secret code
+				{ expiresIn: '1d' } // one day
+			)
+			return NextResponse.json({ ...updatedUser, token }, { status: 201 })
 		} else {
 			// If the user doesn't exist, create a new user
 			const newUser = await prisma.user.create({
@@ -78,10 +86,10 @@ export async function POST(request: NextRequest) {
 					id: newUser.id,
 				},
 				process.env.KEY_JWT_AUTH || '', // secret code
-				{ expiresIn: '30d' }
+				{ expiresIn: '1d' } // one day
 			)
 
-			return NextResponse.json(newUser, { status: 201 })
+			return NextResponse.json({ ...newUser, token }, { status: 201 })
 		}
 	} catch (error) {
 		console.error('Error processing request:', error)
