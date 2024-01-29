@@ -3,34 +3,38 @@ import prisma from '@/prisma/client'
 import { generateRandomPassword, sendEmail } from '@/prisma/mail-password'
 import jwt from 'jsonwebtoken'
 import { NextRequest, NextResponse } from 'next/server'
+import cron from 'node-cron'
 import { z } from 'zod'
 
 const AuthSchema = z.object({
 	email: z.string().email({ message: 'Invalid email address' }),
 })
-
 export async function POST(request: NextRequest) {
-	const passwordNew: string = generateRandomPassword()
-	const body = await request.json()
+	const generatedPassword: string = generateRandomPassword()
+	const requestData = await request.json()
 
 	try {
 		// Validate the request body
-		const validatedBody = AuthSchema.safeParse(body)
+		const validatedBody = AuthSchema.safeParse(requestData)
 		if (!validatedBody.success) {
 			return NextResponse.json(validatedBody.error.errors, { status: 400 })
 		}
 
 		// Send email with the new password
 		await sendEmail({
-			to: body.email,
-			subject: 'Your password',
-			text: `Your password is: ${passwordNew}`,
+			to: requestData.email,
+			subject: 'DayPatron 6-значний пароль',
+			text: `Ваш 6-значний пароль: ${generatedPassword} Цей код може бути використаний лише один раз. Він закінчується через 15 хвилин. 
+			© 2023 DayPatron Inc. Усі права захищені`,
+			html: `<p style="font-size: 14px; color: #666;">Ваш 6-значний пароль: <strong>${generatedPassword}</strong></p>
+			<p style="font-size: 14px; color: #666;">Цей код може бути використаний лише один раз. Він закінчується через 15 хвилин.</p>
+			<p style="font-size: 12px; color: #999; text-align: center">© 2023 DayPatron Inc. Усі права захищені</p>`,
 		})
 
 		// Check if the email already exists in the database
 		const existingUser = await prisma.user.findUnique({
 			where: {
-				email: body.email,
+				email: requestData.email,
 			},
 		})
 
@@ -38,28 +42,35 @@ export async function POST(request: NextRequest) {
 			// If the user exists, update the password
 			const updatedUser = await prisma.user.update({
 				where: {
-					email: body.email,
+					email: requestData.email,
 				},
 				data: {
-					password: passwordNew,
+					password: generatedPassword,
+					// 15 minutes expiration
+					passwordExpiresAt: new Date(Date.now() + 15 * 60 * 1000),
 				},
 				// Return the updated data of the existing user after the update
 				include: {
 					// Include any other fields you want to return in the response
 				},
 			})
-
+			// Schedule a task to delete the password after 15 minutes
+			schedulePasswordDeletion(updatedUser.id, 15)
 			return NextResponse.json(updatedUser, { status: 201 })
 		} else {
 			// If the user doesn't exist, create a new user
 			const newUser = await prisma.user.create({
 				data: {
-					email: body.email,
-					password: passwordNew,
+					email: requestData.email,
+					password: generatedPassword,
+					// 15 minutes expiration
+					passwordExpiresAt: new Date(Date.now() + 15 * 60 * 1000),
 					createdAt: new Date(),
 					updatedAt: new Date(),
 				},
 			})
+			// Schedule a task to delete the password after 15 minutes
+			schedulePasswordDeletion(newUser.id, 15)
 
 			// Generate token for the new user
 			const token = jwt.sign(
@@ -79,4 +90,28 @@ export async function POST(request: NextRequest) {
 			{ status: 500 }
 		)
 	}
+}
+
+function schedulePasswordDeletion(userId: string, minutes: number) {
+	const job = cron.schedule(`*/${minutes} * * * *`, async () => {
+		try {
+			// Delete the password for the user
+			await prisma.user.update({
+				where: {
+					id: userId,
+				},
+				data: {
+					password: null,
+					passwordExpiresAt: null,
+				},
+			})
+
+			console.log(`Password deleted for user with ID ${userId}`)
+			job.stop() // Destroy the cron job after execution
+		} catch (error) {
+			console.error('Error deleting password:', error)
+		}
+	})
+
+	job.start() // Start the cron job
 }

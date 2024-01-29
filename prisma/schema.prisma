@@ -33,23 +33,24 @@ model Faq {
 }
 
 model User {
-  id              String   @id @default(auto()) @map("_id") @db.ObjectId
-  name            String?
-  lastName        String?
-  email           String   @unique
-  password        String?
-  phoneNumber     String?
-  city            String?
-  streetName      String?
-  houseNumber     Int?
-  additionNumber  String?
-  zipCode         String?
-  logisticCompany String?
-  department      String?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  orders          Order?   @relation(fields: [orderId], references: [id])
-  orderId         String?  @db.ObjectId
+  id                String    @id @default(auto()) @map("_id") @db.ObjectId
+  name              String?
+  lastName          String?
+  email             String    @unique
+  password          String?
+  passwordExpiresAt DateTime?
+  phoneNumber       String?
+  city              String?
+  streetName        String?
+  houseNumber       Int?
+  additionNumber    String?
+  zipCode           String?
+  logisticCompany   String?
+  department        String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  orders            Order?    @relation(fields: [orderId], references: [id])
+  orderId           String?   @db.ObjectId
 }
 
 model Order {

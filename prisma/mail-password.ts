@@ -20,12 +20,14 @@ type Email = {
 	to: string
 	subject: string
 	text: string
+	html?: string
 }
 
 export const sendEmail = async ({
 	to,
 	subject,
 	text,
+	html,
 }: Email): Promise<void> => {
 	// Create a transporter object using your email service provider's SMTP settings
 	const transporter = nodeMailer.createTransport({
@@ -45,6 +47,7 @@ export const sendEmail = async ({
 		to,
 		subject,
 		text,
+		html,
 	}
 
 	try {
