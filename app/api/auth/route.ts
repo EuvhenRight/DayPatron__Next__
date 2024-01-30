@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
 				{
 					id: updatedUser.id,
 				},
-				process.env.KEY_JWT_AUTH || '', // secret code
+				process.env.KEY_JWT_AUTH!, // secret code
 				{ expiresIn: '1d' } // one day
 			)
 			return NextResponse.json({ ...updatedUser, token }, { status: 201 })
@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
 				{
 					id: newUser.id,
 				},
-				process.env.KEY_JWT_AUTH || '', // secret code
+				process.env.KEY_JWT_AUTH!, // secret code
 				{ expiresIn: '1d' } // one day
 			)
 
