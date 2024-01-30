@@ -17,20 +17,33 @@ const UserSchema = z.object({
 	department: z.string().nullable(),
 	orders: z.string().array().nullable(),
 })
-export async function GET(request: NextRequest & { query: { id: string } }) {
-	const { id } = request.query // Access the 'id' parameter from the URL
-	console.log(id, 'id')
+interface User {
+	name: string
+	lastName: string
+	email: string
+	phoneNumber: number
+	city: string
+	streetName: string
+	houseNumber: number
+	additionNumber: string
+	zipCode: string
+	logisticCompany: string
+	department: string
+	orders: string[]
+}
+export async function GET(
+	request: NextRequest,
+	{ params }: { params: { id: string } }
+) {
+	const userId = params.id
 	try {
-		// Use Prisma to find the user by ID
 		const user = await prisma.user.findUnique({
 			where: {
-				id: id,
+				id: userId,
 			},
 		})
-
-		// Check if the user is found
 		if (!user) {
-			return NextResponse.json("Users don't found", { status: 404 })
+			return NextResponse.json('User not found', { status: 404 })
 		}
 		return NextResponse.json(user, { status: 200 })
 	} catch (error) {
