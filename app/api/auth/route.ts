@@ -1,25 +1,21 @@
-// app/api/user/route.ts
+// app/api/user/auth/route.ts
 import prisma from '@/prisma/client'
 import { generateRandomPassword, sendEmail } from '@/prisma/mail-password'
 import jwt from 'jsonwebtoken'
 import { NextRequest, NextResponse } from 'next/server'
 import cron from 'node-cron'
-import { z } from 'zod'
+import { ValidationSchema } from './../../../prisma/validation'
 
-const AuthSchema = z.object({
-	email: z.string().email({ message: 'Invalid email address' }),
-})
 export async function POST(request: NextRequest) {
 	const generatedPassword: string = generateRandomPassword()
 	const requestData = await request.json()
 
 	try {
 		// Validate the request body
-		const validatedBody = AuthSchema.safeParse(requestData)
+		const validatedBody = ValidationSchema.authUser.safeParse(requestData)
 		if (!validatedBody.success) {
 			return NextResponse.json(validatedBody.error.errors, { status: 400 })
 		}
-
 		// Send email with the new password
 		await sendEmail({
 			to: requestData.email,

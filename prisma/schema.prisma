@@ -11,25 +11,11 @@ datasource db {
 }
 
 // prisma/schema.prisma
-model Image {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  url       String
-  Product   Product? @relation(fields: [productId], references: [id])
-  productId String?  @db.ObjectId
-}
 
-model Faq {
-  id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  question_1_en String?
-  question_1_ua String?
-  question_2_en String?
-  question_2_ua String?
-  question_3_en String?
-  question_3_ua String?
-  question_4_en String?
-  question_4_ua String?
-  Product       Product? @relation(fields: [productId], references: [id])
-  productId     String?  @db.ObjectId
+// User, Role
+enum Role {
+  USER
+  ADMIN
 }
 
 model User {
@@ -39,60 +25,78 @@ model User {
   email             String    @unique
   password          String?
   passwordExpiresAt DateTime?
-  phoneNumber       String?
-  city              String?
-  streetName        String?
-  houseNumber       Int?
-  additionNumber    String?
-  zipCode           String?
-  logisticCompany   String?
-  department        String?
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
-  orders            Order?    @relation(fields: [orderId], references: [id])
-  orderId           String?   @db.ObjectId
+  role              Role      @default(USER)
+  order             Order[]
+}
+
+//Cart, CartItem
+model CartItem {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  item      Product @relation(fields: [productId], references: [id])
+  quantity  Int
+  productId String  @db.ObjectId
+  Cart      Cart?   @relation(fields: [cartId], references: [id])
+  cartId    String? @db.ObjectId
+}
+
+model Cart {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  items       CartItem[]
+  subquantity Int
+  subtotal    Float
+  order       Order?     @relation(fields: [orderId], references: [id])
+  orderId     String?    @db.ObjectId
+}
+
+//Order, Delivery, 
+type Delivery {
+  phoneNumber     String?
+  city            String?
+  streetName      String?
+  houseNumber     Int?
+  additionNumber  String?
+  zipCode         String?
+  logisticCompany String?
+  department      String?
+  typeOfDelivery  String?
 }
 
 model Order {
-  id             String    @id @default(auto()) @map("_id") @db.ObjectId
-  date           DateTime
-  product        Product[]
-  typeOfDelivery String
-  count          Int
-  User           User[]
-  sum            Float
-  createdAt      DateTime
-  updatedAt      DateTime
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  date      DateTime
+  Address   Delivery
+  count     Int
+  user      User     @relation(fields: [userId], references: [id])
+  sum       Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String   @db.ObjectId
+  cart      Cart[]
+}
+
+// Product, Image
+type Image {
+  url String
 }
 
 model Product {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  article        Int
+  id             String     @id @default(auto()) @map("_id") @db.ObjectId
+  article        Int        @unique
   linkName       String
-  name_en        String
-  name_ua        String
-  UTP_en         String
-  UTP_ua         String
-  description_en String
-  description_ua String
-  useTo_en       String
-  useTo_ua       String
+  name           String
+  UTP            String
+  description    String
+  useTo          String
   image          Image[]
-  volume_en      String[]
-  volume_ua      String[]
-  benefits_en    String[]
-  benefits_ua    String[]
-  ingredients_en String
-  ingredients_ua String
-  shelfLife_en   String
-  shelfLife_ua   String
-  faq            Faq[]
+  volume         String[]
+  ingredients    String
+  specification  String
+  shelfLife      String
   category       String
-  price          Float
-  amount         Int
-  stock          Boolean
+  price          Float?
+  stock          Boolean    @default(true)
   current_rating Float
-  tradeMarkImage String
-  Order          Order?   @relation(fields: [orderId], references: [id])
-  orderId        String?  @db.ObjectId
+  CartItem       CartItem[]
 }

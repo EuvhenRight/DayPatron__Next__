@@ -1,6 +1,6 @@
-// app/api/users/route.ts
+// app/api/user/route.ts
 import prisma from '@/prisma/client'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
 // const UserSchema = z.object({
 // 	name: z.string().min(3, 'must contain 3 or more items').nullable(),
@@ -16,13 +16,35 @@ import { NextResponse } from 'next/server'
 // 	department: z.string().nullable(),
 // 	orders: z.string().array().nullable(),
 // })
-export async function GET() {
+// interface User {
+// 	name: string
+// 	lastName: string
+// 	email: string
+// 	phoneNumber: number
+// 	city: string
+// 	streetName: string
+// 	houseNumber: number
+// 	additionNumber: string
+// 	zipCode: string
+// 	logisticCompany: string
+// 	department: string
+// 	orders: string[]
+// }
+export async function GET(
+	request: NextRequest,
+	{ params }: { params: { id: string } }
+) {
+	const userId = params.id
 	try {
-		const users = await prisma.user.findMany()
-		if (!users) {
-			return NextResponse.json("Users don't found", { status: 404 })
+		const user = await prisma.user.findUnique({
+			where: {
+				id: userId,
+			},
+		})
+		if (!user) {
+			return NextResponse.json('User not found', { status: 404 })
 		}
-		return NextResponse.json(users, { status: 200 })
+		return NextResponse.json(user, { status: 200 })
 	} catch (error) {
 		console.error('Error processing request:', error)
 		return NextResponse.json(
