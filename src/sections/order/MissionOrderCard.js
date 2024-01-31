@@ -217,7 +217,7 @@ const MissionOrderCard = ({ order, onClose, handleApproveClick }) => {
                   <ShoppingCartOutlined style={{ color: theme.palette.primary.main, fontSize: '2.5rem' }} />
                 </ListItemAvatar>
                 <ListItemText
-                  primary={<Typography variant="subtitle1">Buy mission &apos;{order?.itemTitle}&apos;</Typography>}
+                  primary={<Typography variant="subtitle1">Mission &apos;{order?.itemTitle}&apos;</Typography>}
                   secondary={
                     <Typography variant="caption" color="secondary">
                       Talent &apos;{order?.contractorName}&apos;

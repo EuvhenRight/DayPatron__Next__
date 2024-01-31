@@ -38,11 +38,11 @@ const allColumns = [
   },
   {
     id: 2,
-    header: 'ItemTitle'
+    header: 'Title'
   },
   {
     id: 3,
-    header: 'ContractorName'
+    header: 'Contractor'
   }
 ];
 
@@ -179,8 +179,8 @@ const Orders = () => {
           _DATA
             .currentData()
             .sort(function (a, b) {
-              if (sortBy === 'ItemTitle') return compareSortValues(a?.itemTitle, b?.itemTitle);
-              if (sortBy === 'ContractorName') return compareSortValues(a?.contractorName, b?.contractorName);
+              if (sortBy === 'Title') return compareSortValues(a?.itemTitle, b?.itemTitle);
+              if (sortBy === 'Contractor') return compareSortValues(a?.contractorName, b?.contractorName);
               return a;
             })
             .map((order, index) => (
