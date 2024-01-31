@@ -176,7 +176,7 @@ const SubscriptionOrderCard = ({ order, handleApproveClick }) => {
                   <ShoppingCartOutlined style={{ color: theme.palette.primary.main, fontSize: '2.5rem' }} />
                 </ListItemAvatar>
                 <ListItemText
-                  primary={<Typography variant="subtitle1">Buy &apos;{order?.subscriptionPlanTitle}&apos;</Typography>}
+                  primary={<Typography variant="subtitle1">Buy subscription &apos;{order?.itemTitle}&apos;</Typography>}
                   secondary={
                     <Typography variant="caption" color="secondary">
                       Subscription by &apos;{order?.contractorName}&apos;

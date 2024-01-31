@@ -6,7 +6,7 @@ import Logo from 'assets/images/logo.png';
 import countries from 'data/countries';
 
 const textPrimary = '#262626';
-const textTitle = '#3c3ec5';
+const textTitle = '#EB5A21';
 const border = '#f0f0f0';
 
 const styles = StyleSheet.create({
@@ -129,7 +129,7 @@ const ProductEmployerServiceOrderPdfCard = ({ order }) => {
               </View>
               <View style={styles.half}>
                 <View style={styles.end}>
-                  <Text style={styles.text}>{order?.productTitle}</Text>
+                  <Text style={styles.text}>{order?.itemTitle}</Text>
                 </View>
               </View>
             </View>

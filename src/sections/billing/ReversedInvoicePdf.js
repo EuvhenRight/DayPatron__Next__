@@ -32,7 +32,7 @@ const RegularInvoicePdf = ({ invoice }) => {
         <InvoiceEmptyRowsPdf rows={1} />
         <InvoiceMessagePdf message="This invoice is due as soon as the payment from the customer has been received." fontSize="10" textColor="#262626" />
         <InvoiceEmptyRowsPdf rows={1} />
-        <InvoiceMessagePdf message="THANK YOU FOR YOUR BUSINESS!" fontSize="11" textColor="#3c3ec5" />
+        <InvoiceMessagePdf message="THANK YOU FOR YOUR BUSINESS!" fontSize="11" textColor="#EB5A21" />
         <InvoiceFooterPdf />
       </Page >
     </Document >

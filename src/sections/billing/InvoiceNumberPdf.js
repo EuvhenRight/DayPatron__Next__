@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { format } from 'date-fns';
 
 const textPrimary = '#262626';
-const textTitle = '#3c3ec5';
+const textTitle = '#EB5A21';
 
 const styles = StyleSheet.create({
   table: {

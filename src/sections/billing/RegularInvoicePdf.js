@@ -32,7 +32,7 @@ const RegularInvoicePdf = ({ invoice }) => {
         <InvoiceEmptyRowsPdf rows={1} />
         <InvoiceMessagePdf message="Please ensure that the invoice number is included in the payment description for this invoice." fontSize="10" textColor="#262626" />
         <InvoiceEmptyRowsPdf rows={1} />
-        <InvoiceMessagePdf message="THANK YOU FOR YOUR BUSINESS!" fontSize="11" textColor="#3c3ec5" />
+        <InvoiceMessagePdf message="THANK YOU FOR YOUR BUSINESS!" fontSize="11" textColor="#EB5A21" />
         <InvoiceFooterPdf />
       </Page >
     </Document >
