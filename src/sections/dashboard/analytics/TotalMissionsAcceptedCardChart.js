@@ -60,6 +60,11 @@ const TotalMissionsAcceptedCardChart = ({months}) => {
       },
       marker: {
         show: false
+      },
+      y: {
+        formatter: function(value) {
+          return value;
+        }
       }
     }
   };
@@ -79,7 +84,7 @@ const TotalMissionsAcceptedCardChart = ({months}) => {
     }));
   }, [mode, primary, secondary, line, theme]);
 
-  const [series] = useState([
+  const series = [
     {
       name: 'Missions',
       data: months?.map((month) => {
@@ -89,7 +94,7 @@ const TotalMissionsAcceptedCardChart = ({months}) => {
         };
       })
     }
-  ]);
+  ];
 
   return <ReactApexChart options={options} series={series} type="bar" height={120} />;
 };

@@ -11,7 +11,7 @@ import { RiseOutlined, FallOutlined } from '@ant-design/icons';
 
 // ==============================|| STATISTICS - ECOMMERCE CARD  ||============================== //
 
-const AnalyticsDataCard = ({ color = 'primary', title, count, percentage, isLoss, children }) => (
+const AnalyticsDataCard = ({ color = 'primary', title, countPrefix, count, percentage, isLoss, children }) => (
   <MainCard content={false}>
     <Box sx={{ p: 2.25 }}>
       <Stack spacing={0.5}>
@@ -20,7 +20,7 @@ const AnalyticsDataCard = ({ color = 'primary', title, count, percentage, isLoss
         </Typography>
         <Stack direction="row" alignItems="center">
           <Typography variant="h4" color="inherit">
-            {count}
+            {countPrefix}{count}
           </Typography>
           {percentage && (
             <Chip
@@ -46,7 +46,7 @@ const AnalyticsDataCard = ({ color = 'primary', title, count, percentage, isLoss
 
 AnalyticsDataCard.propTypes = {
   title: PropTypes.string,
-  count: PropTypes.string,
+  count: PropTypes.number,
   percentage: PropTypes.number,
   isLoss: PropTypes.bool,
   color: PropTypes.string,

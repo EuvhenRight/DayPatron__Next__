@@ -10,11 +10,10 @@ import useConfig from 'hooks/useConfig';
 import ReactApexChart from 'react-apexcharts';
 import { format } from 'date-fns'
 
-const TotalHoursCardChart = ({ months }) => {
+const TotalProductsSoldCardChart = ({months}) => {
   const theme = useTheme();
   const { mode } = useConfig();
 
-  // chart options
   const areaChartOptions = {
     chart: {
       id: 'new-stack-chart',
@@ -61,6 +60,11 @@ const TotalHoursCardChart = ({ months }) => {
       },
       marker: {
         show: false
+      },
+      y: {
+        formatter: function(value) {
+          return value;
+        }
       }
     }
   };
@@ -82,11 +86,11 @@ const TotalHoursCardChart = ({ months }) => {
 
   const series = [
     {
-      name: 'Hours',
+      name: 'Solutions Sold',
       data: months?.map((month) => {
         return {
           x: format(new Date(month.month + '-01'), 'MMMMM'),
-          y: month.amount
+          y: month.count
         };
       })
     }
@@ -95,4 +99,4 @@ const TotalHoursCardChart = ({ months }) => {
   return <ReactApexChart options={options} series={series} type="bar" height={120} />;
 };
 
-export default TotalHoursCardChart;
+export default TotalProductsSoldCardChart;
