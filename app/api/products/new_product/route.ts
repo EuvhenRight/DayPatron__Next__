@@ -1,6 +1,6 @@
-import { ValidationSchema } from './../../../../prisma/validation'
+import { ValidationSchema } from '@/app/lib/db/validation'
 // app/api/user/login-route.ts
-import prisma from '@/prisma/client'
+import prisma from '@/app/lib/db/client'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {

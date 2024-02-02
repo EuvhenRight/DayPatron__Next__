@@ -1,6 +1,6 @@
-import prisma from '@/prisma/client'
 import { Prisma } from '@prisma/client'
 import { cookies } from 'next/headers'
+import prisma from '../db/client'
 
 export type CartWithProducts = Prisma.CartGetPayload<{
 	include: { items: { include: { product: true } } }

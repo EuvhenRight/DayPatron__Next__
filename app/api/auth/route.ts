@@ -1,10 +1,10 @@
 // app/api/user/auth/route.ts
-import prisma from '@/prisma/client'
-import { generateRandomPassword, sendEmail } from '@/prisma/mail-password'
+import prisma from '@/app/lib/db/client'
+import { generateRandomPassword, sendEmail } from '@/app/lib/db/mail-password'
+import { ValidationSchema } from '@/app/lib/db/validation'
 import jwt from 'jsonwebtoken'
 import { NextRequest, NextResponse } from 'next/server'
 import cron from 'node-cron'
-import { ValidationSchema } from './../../../prisma/validation'
 
 export async function POST(request: NextRequest) {
 	const generatedPassword: string = generateRandomPassword()

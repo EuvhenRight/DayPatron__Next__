@@ -1,5 +1,5 @@
 // app/api/user/login-route.ts
-import prisma from '@/prisma/client'
+import prisma from '@/app/lib/db/client'
 import jwt from 'jsonwebtoken'
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
