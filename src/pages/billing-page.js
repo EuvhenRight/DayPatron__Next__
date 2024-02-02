@@ -309,8 +309,7 @@ const InvoicesBillingPage = () => {
                   onChange={(startDateValue) => {
                     setStartDate(startDateValue);
                   }}
-                  inputFormat="dd-MM-yyyy"
-                  renderInput={(params) => <TextField {...params} />} />
+                  format="dd-MM-yyyy" />
                 <DatePicker
                   label="End date"
                   value={endDate}
@@ -318,8 +317,7 @@ const InvoicesBillingPage = () => {
                     let newValue = new Date(endDateValue.getFullYear(), endDateValue.getMonth(), endDateValue.getDate(), 23, 59, 59, 999);
                     setEndDate(newValue);
                   }}
-                  inputFormat="dd-MM-yyyy"
-                  renderInput={(params) => <TextField {...params} />} />
+                  format="dd-MM-yyyy"/>
                 <Button
                   onClick={() => {
                     handleSubmitBillRun()
