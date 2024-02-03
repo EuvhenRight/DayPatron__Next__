@@ -97,7 +97,7 @@ model Product {
   specification  String
   shelfLife      String
   category       String
-  price          Float?
+  price          Float      @default(0)
   stock          Boolean    @default(true)
   current_rating Float
   CartItem       CartItem[]

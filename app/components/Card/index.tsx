@@ -1,26 +1,30 @@
-'use client'
+import { PriceTag } from '@/app/components/priceTag'
+import { Product } from '@prisma/client'
+import Link from 'next/link'
 
-import { useTransition } from 'react'
-
-interface Props {
-	products: any
-	incrementProductQuantity: any
+interface ProductCardProps {
+	product: Product
 }
-export function Card({ products, incrementProductQuantity }: Props) {
-	const [isPanging, startTransition] = useTransition()
+export function Card({ product }: ProductCardProps) {
 	return (
-		<div className='container'>
-			<h1>{products[0].name}</h1>
-			<p>{products[0].price}</p>
-			<button
-				onClick={() => {
-					startTransition(async () => {
-						await incrementProductQuantity(products[0].id)
-					})
-				}}
-			>
-				Add to cart
-			</button>
-		</div>
+		<Link href={`/products/${product.id}`}>
+			<div className='group relative bg-white border shadow-md border-slate-100 cursor-pointer w-80'>
+				<div className='flex flex-col items-center'>
+					<img src={`/images/${product.image[3].url}`} />
+					<button className='group-hover:opacity-100 group-hover:-translate-y-1 opacity-0 w-full bg-[--colorBtnPrimary] text-white py-2 px-1 transition ease-in-out delay-150'>
+						View Details
+					</button>
+					<div className='text-center px-5 pb-5'>
+						<h2 className='text-lg text-[--color-body-text] uppercase -tracking-2'>
+							{product.name}
+						</h2>
+						<h3 className='text-md -tracking-0 mt-1 uppercase opacity-65 text-[--color-body-text]'>
+							{product.UTP}
+						</h3>
+						<PriceTag price={product.price} />
+					</div>
+				</div>
+			</div>
+		</Link>
 	)
 }

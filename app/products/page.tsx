@@ -1,8 +1,7 @@
 import { Card } from '@/app/components/Card'
-import { incrementProductQuantity } from '../api/products/[id]/actions'
 import prisma from '../lib/db/client'
 export default async function Products() {
-	const allProducts = await prisma?.product.findMany({
+	const productsData = await prisma?.product.findMany({
 		orderBy: {
 			name: 'asc',
 		},
@@ -10,10 +9,9 @@ export default async function Products() {
 
 	return (
 		<div>
-			<Card
-				products={allProducts}
-				incrementProductQuantity={incrementProductQuantity}
-			/>
+			{productsData?.map(product => (
+				<Card key={product.id} product={product} />
+			))}
 		</div>
 	)
 }
