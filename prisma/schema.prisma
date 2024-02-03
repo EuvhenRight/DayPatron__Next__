@@ -83,24 +83,32 @@ type Image {
   url String
 }
 
+type Variant {
+  volume         String
+  article        String
+  stock          Boolean
+  image          String
+  discount_price Float   @default(0)
+  original_price Float   @default(0)
+}
+
 model Product {
   id             String     @id @default(auto()) @map("_id") @db.ObjectId
-  article        Int        @unique
   linkName       String
   name           String
   UTP            String
   description    String
   useTo          String
   image          Image[]
-  volume         String[]
   ingredients    String
   specification  String
   shelfLife      String
   category       String
-  price          Float      @default(0)
-  stock          Boolean    @default(true)
+  variants       Variant[]
   current_rating Float
   CartItem       CartItem[]
+  tradeMarkImage String
+  min_price      Float?
 
   @@map("products")
 }

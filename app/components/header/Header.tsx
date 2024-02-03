@@ -2,6 +2,9 @@
 import classNames from 'classnames'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { FaUserCircle } from 'react-icons/fa'
+import { IoSearchSharp } from 'react-icons/io5'
+import { TbShoppingCart } from 'react-icons/tb'
 
 function Header() {
 	const pathname = usePathname()
@@ -13,9 +16,11 @@ function Header() {
 		{ label: 'Contacts', href: '/contacts' },
 	]
 	return (
-		<header className='border-b border-gray-300'>
-			<nav className='flex justify-between xl:container xl:mx-auto py-5'>
-				<Link href='/'>LOGO</Link>
+		<header className='border-b border-gray-300 bg-none'>
+			<nav className='flex justify-between xl:container xl:mx-auto py-5 items-center'>
+				<Link href='/'>
+					<img className='w-48' src='/images/DayLogo.svg' alt='logo' />
+				</Link>
 				<ul className='flex space-x-5'>
 					{links.map(link => (
 						<li key={link.href}>
@@ -32,12 +37,22 @@ function Header() {
 						</li>
 					))}
 				</ul>
-				<ul className='flex space-x-3'>
+				<ul className='flex space-x-6 justify-center items-center'>
 					<li>
-						<Link href='/login'>Login</Link>
+						<Link href='/login'>
+							<FaUserCircle className='w-7 h-7 cursor-pointer' />
+						</Link>
 					</li>
-					<li>Search</li>
-					<li>Cart</li>
+					<li>
+						<div className='w-7 h-7 cursor-pointer'>
+							<IoSearchSharp className='w-full h-full' />
+						</div>
+					</li>
+					<li>
+						<div className='w-7 h-7 cursor-pointer'>
+							<TbShoppingCart className='w-full h-full' />
+						</div>
+					</li>
 				</ul>
 			</nav>
 		</header>

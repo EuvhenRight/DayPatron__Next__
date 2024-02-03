@@ -3,7 +3,6 @@ export interface Product {
 		url: string
 	}[]
 	id: string
-	article: number
 	linkName: string
 	name: string
 	UTP: string
