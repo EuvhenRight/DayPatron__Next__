@@ -79,7 +79,7 @@ const EarningsCardChart = ({ months }) => {
     }));
   }, [mode, primary, secondary, line, theme]);
 
-  const [series] = useState([
+  const series = [
     {
       name: 'Earnings',
       data: months?.map((month) => {
@@ -89,7 +89,7 @@ const EarningsCardChart = ({ months }) => {
         };
       })
     }
-  ]);
+  ];
 
   return <ReactApexChart options={options} series={series} type="bar" height={120} />;
 };

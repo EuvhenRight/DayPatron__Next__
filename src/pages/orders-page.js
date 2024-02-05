@@ -1,6 +1,4 @@
-import ProductOrders from 'sections/order/ProductOrders';
-import MissionOrders from 'sections/order/MissionOrders';
-import SubscriptionOrders from 'sections/order/SubscriptionOrders';
+import Orders from 'sections/order/Orders';
 import {
   Typography,
   Grid
@@ -21,16 +19,8 @@ const OrdersPage = () => {
         </MainCard>
       </Grid>
       <Grid item xs={12}>
-        <Typography variant="h3">Solution Orders</Typography>
-        <ProductOrders></ProductOrders>
-      </Grid>
-      <Grid item xs={12}>
-        <Typography variant="h3">Mission Orders</Typography>
-        <MissionOrders></MissionOrders>
-      </Grid>
-      <Grid item xs={12}>
-        <Typography variant="h3">Subscription Orders</Typography>
-        <SubscriptionOrders></SubscriptionOrders>
+        <Typography variant="h3">Orders</Typography>
+        <Orders></Orders>
       </Grid>
     </Grid>
   );

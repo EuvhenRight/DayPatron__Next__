@@ -4,6 +4,7 @@ import { useTheme } from '@mui/material/styles';
 
 // project import
 import MainCard from 'components/MainCard';
+import WelcomeImage from 'assets/images/welcome.png';
 
 // ==============================|| ANALYTICS - WELCOME ||============================== //
 
@@ -16,8 +17,8 @@ const WelcomeBanner = ({title, subTitle}) => {
       sx={{
         background:
           theme.direction === 'rtl'
-            ? `linear-gradient(60.38deg, ${theme.palette.primary.lighter} 114%, ${theme.palette.primary.light} 34.42%, ${theme.palette.primary.main} 60.95%, ${theme.palette.primary.dark} 84.83%, ${theme.palette.primary.darker} 104.37%)`
-            : `linear-gradient(250.38deg, ${theme.palette.primary.lighter} 2.39%, ${theme.palette.primary.light} 34.42%, ${theme.palette.primary.main} 60.95%, ${theme.palette.primary.dark} 84.83%, ${theme.palette.primary.darker} 104.37%)`
+          ? `linear-gradient(60.38deg, ${theme.palette.primary.main} 114%, ${theme.palette.primary.light} 34.42%, ${theme.palette.primary.main} 60.95%, ${theme.palette.primary.dark} 84.83%, ${theme.palette.primary.dark} 104.37%)`
+          : `linear-gradient(250.38deg, ${theme.palette.primary.main} 2.39%, ${theme.palette.primary.light} 34.42%, ${theme.palette.primary.main} 60.95%, ${theme.palette.primary.dark} 84.83%, ${theme.palette.primary.dark} 104.37%)`
       }}
     >
       <Grid container>
@@ -29,6 +30,11 @@ const WelcomeBanner = ({title, subTitle}) => {
             <Typography variant="h6" color={theme.palette.background.paper}>
               {subTitle}
             </Typography>
+          </Stack>
+        </Grid>
+        <Grid item sm={6} xs={12} sx={{ display: { xs: 'none', sm: 'initial' } }}>
+          <Stack justifyContent="center" alignItems="flex-end">
+            <img src={WelcomeImage} alt="Welcome" style={{ position: 'absolute', height: '100%', top: '0px', right: '0px'}} />
           </Stack>
         </Grid>
       </Grid>
