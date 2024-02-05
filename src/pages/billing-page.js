@@ -13,6 +13,7 @@ import { PopupTransition } from 'components/@extended/Transitions';
 import {
   Button,
   Grid,
+  TextField,
   Stack,
   Box,
   Typography,
@@ -308,7 +309,8 @@ const InvoicesBillingPage = () => {
                   onChange={(startDateValue) => {
                     setStartDate(startDateValue);
                   }}
-                  format="dd-MM-yyyy" />
+                  format="dd-MM-yyyy"
+                  renderInput={(params) => <TextField {...params} />} />
                 <DatePicker
                   label="End date"
                   value={endDate}
@@ -316,7 +318,8 @@ const InvoicesBillingPage = () => {
                     let newValue = new Date(endDateValue.getFullYear(), endDateValue.getMonth(), endDateValue.getDate(), 23, 59, 59, 999);
                     setEndDate(newValue);
                   }}
-                  format="dd-MM-yyyy"/>
+                  format="dd-MM-yyyy"
+                  renderInput={(params) => <TextField {...params} />} />
                 <Button
                   onClick={() => {
                     handleSubmitBillRun()
@@ -413,7 +416,7 @@ const InvoicesBillingPage = () => {
       </Grid>
 
       <Dialog
-        open={notificationRecipientTypes}
+        open={notificationRecipientTypes ? true : false}
         onClose={() => { setNotificationRecipientTypes(null); }}
         keepMounted
         TransitionComponent={PopupTransition}
