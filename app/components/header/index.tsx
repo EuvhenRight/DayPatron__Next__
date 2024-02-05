@@ -6,7 +6,10 @@ import { FaUserCircle } from 'react-icons/fa'
 import { IoSearchSharp } from 'react-icons/io5'
 import { TbShoppingCart } from 'react-icons/tb'
 
-function Header() {
+interface Props {
+	toggleDrawer: () => void
+}
+function Header({ toggleDrawer }: Props) {
 	const pathname = usePathname()
 
 	const links = [
@@ -49,8 +52,12 @@ function Header() {
 						</div>
 					</li>
 					<li>
-						<div className='w-7 h-7 cursor-pointer'>
-							<TbShoppingCart className='w-full h-full' />
+						<div className='w-7 h-7 cursor-pointer relative'>
+							<TbShoppingCart
+								className='w-full h-full'
+								onClick={toggleDrawer}
+							/>
+							<span className='inline-flex rounded-full h-3 w-3 bg-[--colorBtnPrimary] absolute top-0 right-0 border border-white'></span>
 						</div>
 					</li>
 				</ul>
