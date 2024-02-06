@@ -12,9 +12,9 @@ export interface Product {
 	category: string
 	variants: Variant[]
 	current_rating: number
-	CartItem: CartItem[]
+	cartItem?: CartItem[]
 	tradeMarkImage: string
-	min_price?: number // Use "?" for optional properties
+	min_price: number | null // Use "?" for optional properties
 }
 
 export interface Image {

@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { IoMdClose } from 'react-icons/io'
-import CartItem from '../CartItem'
+import CartItem from '../Cart-item'
 
 interface Props {
 	toggleDrawer: () => void

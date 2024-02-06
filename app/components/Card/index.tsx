@@ -10,7 +10,7 @@ export function Card({ product }: ProductCardProps) {
 		<Link href={`/products/${product.id}`}>
 			<div className='group relative bg-white border shadow-md border-slate-100 cursor-pointer w-80'>
 				<div className='flex flex-col items-center'>
-					<img src={`/images/${product.tradeMarkImage}`} />
+					<img src={`/images/${product.variants[0].image}`} />
 					<button className='group-hover:opacity-100 group-hover:-translate-y-1 opacity-0 w-full bg-[--colorBtnPrimary] text-white py-2 px-1 transition ease-in-out delay-150'>
 						View Details
 					</button>
