@@ -1,7 +1,7 @@
 'use client'
 import type { ReactNode } from 'react'
 import React, { useEffect, useState } from 'react'
-import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
+import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
 
 interface SliderProps {
 	children: ReactNode[]
@@ -13,8 +13,8 @@ const Slider: React.FC<SliderProps> = ({ children }: SliderProps) => {
 	const transitionDuration = 500 // Adjust as needed
 
 	// Duplicate slides for infinite looping
-	const duplicatedSlides = [children[numSlides - 1], ...children, children[0]]
-
+	const duplicatedSlides = [...children]
+	duplicatedSlides.push(...children)
 	useEffect(() => {
 		const transitionEndListener = () => {
 			// Reset transition after animation completes
@@ -52,7 +52,6 @@ const Slider: React.FC<SliderProps> = ({ children }: SliderProps) => {
 			setCurrentPage(numSlides)
 		}
 	}
-
 	return (
 		<div className='relative px-10'>
 			<div className='overflow-hidden w-full'>
@@ -74,17 +73,13 @@ const Slider: React.FC<SliderProps> = ({ children }: SliderProps) => {
 				className='absolute left-0 top-1/2 -translate-y-1/2 ml-10'
 				onClick={prevSlide}
 			>
-				<IoIosArrowBack
-					style={{ width: '30px', height: '30px', color: 'red' }}
-				/>
+				<AiOutlineLeft className='absolute left-0 m-auto text-5xl inset-y-1/2 cursor-pointer text-gray-400 z-20' />
 			</button>
 			<button
 				className='absolute right-0 top-1/2 -translate-y-1/2 mr-10'
 				onClick={nextSlide}
 			>
-				<IoIosArrowForward
-					style={{ width: '30px', height: '30px', color: 'red' }}
-				/>
+				<AiOutlineRight className='absolute right-0 m-auto text-5xl inset-y-1/2 cursor-pointer text-gray-400 z-20' />
 			</button>
 		</div>
 	)
