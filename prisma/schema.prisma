@@ -107,7 +107,7 @@ model Product {
   category       String
   variants       Variant[]
   current_rating Float
-  CartItem       CartItem[]
+  cartItem       CartItem[]
   tradeMarkImage String
   min_price      Float?
 
