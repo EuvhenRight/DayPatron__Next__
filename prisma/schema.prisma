@@ -96,6 +96,8 @@ type Variant {
 model Product {
   id             String     @id @default(auto()) @map("_id") @db.ObjectId
   linkName       String
+  NEW            Boolean
+  HIT            Boolean
   name           String
   UTP            String
   description    String

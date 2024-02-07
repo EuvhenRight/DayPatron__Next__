@@ -2,9 +2,11 @@
 import classNames from 'classnames'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { FaUserCircle } from 'react-icons/fa'
-import { IoSearchSharp } from 'react-icons/io5'
-import { TbShoppingCart } from 'react-icons/tb'
+import {
+	AiOutlineSearch,
+	AiOutlineShoppingCart,
+	AiOutlineUser,
+} from 'react-icons/ai'
 
 interface Props {
 	toggleDrawer: () => void
@@ -43,17 +45,17 @@ function Header({ toggleDrawer }: Props) {
 				<ul className='flex space-x-6 justify-center items-center'>
 					<li>
 						<Link href='/login'>
-							<FaUserCircle className='w-7 h-7 cursor-pointer' />
+							<AiOutlineUser className='w-7 h-7 cursor-pointer' />
 						</Link>
 					</li>
 					<li>
 						<div className='w-7 h-7 cursor-pointer'>
-							<IoSearchSharp className='w-full h-full' />
+							<AiOutlineSearch className='w-full h-full' />
 						</div>
 					</li>
 					<li>
 						<div className='w-7 h-7 cursor-pointer relative'>
-							<TbShoppingCart
+							<AiOutlineShoppingCart
 								className='w-full h-full'
 								onClick={toggleDrawer}
 							/>
