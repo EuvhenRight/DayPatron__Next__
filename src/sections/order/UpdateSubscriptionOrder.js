@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Rte from 'components/Rte';
 import InfoWrapper from 'components/InfoWrapper';
-
+import { format } from 'date-fns';
 // material-ui
 import {
   TextField,
@@ -292,6 +292,14 @@ const UpdateSubscriptionOrder = ({ subscriptionOrderId }) => {
                     />
                   </Stack>
                 </Grid>
+
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.25}>
+                    <InputLabel htmlFor="subscription-start-date">End Date</InputLabel>
+                    <TextField disabled={true} fullWidth value={subscriptionOrder?.endDate ? format(new Date(subscriptionOrder?.endDate), "yyyy-MM-dd hh:mm:ss") : ''} />
+                  </Stack>
+                </Grid>
+
                 <Grid item xs={12}>
                   <Typography variant="h5">Company Service Order</Typography>
                 </Grid>
@@ -365,7 +373,7 @@ const UpdateSubscriptionOrder = ({ subscriptionOrderId }) => {
                 <Grid item xs={12} md={6}>
                   <Stack spacing={1.25}>
                     <InfoWrapper tooltipText="subscription_order_employer_service_order_duration_tooltip">
-                      <InputLabel htmlFor="employer-service-order-duration">Effort</InputLabel>
+                      <InputLabel htmlFor="employer-service-order-duration">Duration</InputLabel>
                     </InfoWrapper>
                     <TextField
                       fullWidth
@@ -457,7 +465,7 @@ const UpdateSubscriptionOrder = ({ subscriptionOrderId }) => {
                 <Grid item xs={12} md={6}>
                   <Stack spacing={1.25}>
                     <InfoWrapper tooltipText="subscription_order_contractor_service_order_duration_tooltip">
-                      <InputLabel htmlFor="contractor-service-order-duration">Effort</InputLabel>
+                      <InputLabel htmlFor="contractor-service-order-duration">Duration</InputLabel>
                     </InfoWrapper>
                     <TextField
                       fullWidth
