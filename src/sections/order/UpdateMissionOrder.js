@@ -5,10 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import Rte from 'components/Rte';
 import InfoWrapper from 'components/InfoWrapper';
 
-import countries from 'data/countries';
-
 // material-ui
 import {
+  TextField,
   FormHelperText,
   Button,
   DialogActions,
@@ -17,7 +16,8 @@ import {
   InputLabel,
   Stack,
   Typography,
-  TextField,
+  Select,
+  MenuItem,
   Autocomplete,
   Box
 } from '@mui/material';
@@ -32,53 +32,58 @@ import { openSnackbar } from 'store/reducers/snackbar';
 // assets
 import { normalizeInputValue, prepareApiBody } from 'utils/stringUtils';
 import { useKeycloak } from '@react-keycloak/web';
+import rateTypes from 'data/rateTypes';
+import countries from 'data/countries';
 
 // constant
-const getInitialValues = (productOrder) => {
+const getInitialValues = (missionOrder) => {
   const result = {
-    id: productOrder?.id,
+    id: missionOrder?.id,
 
-    contractorServiceOrderDescription: productOrder?.contractorServiceOrder?.description,
-    contractorServiceOrderDuration: productOrder?.contractorServiceOrder?.duration,
-    contractorServiceOrderRateAmount: productOrder?.contractorServiceOrder?.rateAmount,
+    contractorServiceOrderDescription: missionOrder?.contractorServiceOrder?.description,
+    contractorServiceOrderDuration: missionOrder?.contractorServiceOrder?.duration,
+    contractorServiceOrderRateType: missionOrder?.contractorServiceOrder?.rateType,
+    contractorServiceOrderRateAmount: missionOrder?.contractorServiceOrder?.rateAmount,
 
-    employerServiceOrderDescription: productOrder?.employerServiceOrder?.description,
-    employerServiceOrderDuration: productOrder?.employerServiceOrder?.duration,
-    employerServiceOrderRateAmount: productOrder?.employerServiceOrder?.rateAmount,
+    employerServiceOrderDescription: missionOrder?.employerServiceOrder?.description,
+    employerServiceOrderDuration: missionOrder?.employerServiceOrder?.duration,
+    employerServiceOrderRateType: missionOrder?.employerServiceOrder?.rateType,
+    employerServiceOrderRateAmount: missionOrder?.employerServiceOrder?.rateAmount,
 
-    contractorLegalEntityName: productOrder?.contractorLegalEntityName,
-    contractorLegalEntityRepresentativeName: productOrder?.contractorLegalEntityRepresentativeName,
-    contractorStreet: productOrder?.contractorStreet,
-    contractorStreetNumber: productOrder?.contractorStreetNumber,
-    contractorPostCode: productOrder?.contractorPostCode,
-    contractorCity: productOrder?.contractorCity,
-    contractorCountry: productOrder?.contractorCountry,
-    contractorVatNumber: productOrder?.contractorVatNumber,
-    contractorChamberOfCommerceIdentifier: productOrder?.contractorChamberOfCommerceIdentifier,
+    contractorLegalEntityName: missionOrder?.contractorLegalEntityName,
+    contractorLegalEntityRepresentativeName: missionOrder?.contractorLegalEntityRepresentativeName,
+    contractorStreet: missionOrder?.contractorStreet,
+    contractorStreetNumber: missionOrder?.contractorStreetNumber,
+    contractorPostCode: missionOrder?.contractorPostCode,
+    contractorCity: missionOrder?.contractorCity,
+    contractorCountry: missionOrder?.contractorCountry,
+    contractorVatNumber: missionOrder?.contractorVatNumber,
+    contractorChamberOfCommerceIdentifier: missionOrder?.contractorChamberOfCommerceIdentifier,
 
-    employerLegalEntityName: productOrder?.employerLegalEntityName,
-    employerLegalEntityRepresentativeName: productOrder?.employerLegalEntityRepresentativeName,
-    employerStreet: productOrder?.employerStreet,
-    employerStreetNumber: productOrder?.employerStreetNumber,
-    employerPostCode: productOrder?.employerPostCode,
-    employerCity: productOrder?.employerCity,
-    employerCountry: productOrder?.employerCountry
+    employerLegalEntityName: missionOrder?.employerLegalEntityName,
+    employerLegalEntityRepresentativeName: missionOrder?.employerLegalEntityRepresentativeName,
+    employerStreet: missionOrder?.employerStreet,
+    employerStreetNumber: missionOrder?.employerStreetNumber,
+    employerPostCode: missionOrder?.employerPostCode,
+    employerCity: missionOrder?.employerCity,
+    employerCountry: missionOrder?.employerCountry
   };
 
   return result;
 };
 
-// ==============================|| PRODUCT ORDER ADD / EDIT / DELETE ||============================== //
-
-const UpdateProductOrder = ({ productOrderId }) => {
+const UpdateMissionOrder = ({ missionOrderId }) => {
   const { keycloak } = useKeycloak();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [productOrder, setProductOrder] = useState(null);
 
-  const getProductOrder = async () => {
+  const [missionOrder, setMissionOrder] = useState(null);
+
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
+  const getMissionOrder = async () => {
     try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/products/orders/' + productOrderId,
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/orders/' + missionOrderId,
         {
           method: 'GET',
           headers: {
@@ -95,26 +100,28 @@ const UpdateProductOrder = ({ productOrderId }) => {
     }
   };
 
-  const bindProductOrder = async () => {
-    let productOrderResponse = await getProductOrder();
-    setProductOrder(productOrderResponse?.order);
+  const bindMissionOrder = async () => {
+    let missionOrderResponse = await getMissionOrder();
+
+    setMissionOrder(missionOrderResponse);
   };
 
   useEffect(() => {
     (async () => {
-      if (productOrderId) {
-        await bindProductOrder();
+      if (missionOrderId) {
+        await bindMissionOrder();
       }
     })();
-  }, [productOrderId, keycloak?.idToken]);
+  }, [missionOrderId, keycloak?.idToken]);
 
-  const ProductSchema = Yup.object().shape({
+  const MissionSchema = Yup.object().shape({
     contractorServiceOrderDescription: Yup.string().max(5000).required('Required').nullable(true),
     contractorServiceOrderDuration: Yup.number().test('is-decimal', 'Invalid duration', value => {
       if (!value)
         return true;
       return (value + "").match(/^\d*\.?\d*$/);
     }).max(0).max(999999).nullable(true),
+    contractorServiceOrderRateType: Yup.string().max(255).required('Required').nullable(true),
     contractorServiceOrderRateAmount: Yup.number().required("Required").test('is-decimal', 'Invalid rate', value => {
       if (!value)
         return true;
@@ -126,6 +133,7 @@ const UpdateProductOrder = ({ productOrderId }) => {
         return true;
       return (value + "").match(/^\d*\.?\d*$/);
     }).max(0).max(999999).nullable(true),
+    employerServiceOrderRateType: Yup.string().max(255).required('Required').nullable(true),
     employerServiceOrderRateAmount: Yup.number().required("Required").test('is-decimal', 'Invalid rate', value => {
       if (!value)
         return true;
@@ -153,8 +161,8 @@ const UpdateProductOrder = ({ productOrderId }) => {
 
   const formik = useFormik({
     enableReinitialize: true,
-    initialValues: getInitialValues(productOrder),
-    validationSchema: ProductSchema,
+    initialValues: getInitialValues(missionOrder),
+    validationSchema: MissionSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
         var body = {
@@ -179,17 +187,19 @@ const UpdateProductOrder = ({ productOrderId }) => {
           contractorServiceOrder: {
             description: values.contractorServiceOrderDescription,
             duration: values.contractorServiceOrderDuration,
+            rateType: values.contractorServiceOrderRateType,
             rateAmount: values.contractorServiceOrderRateAmount
           },
 
           employerServiceOrder: {
             description: values.employerServiceOrderDescription,
             duration: values.employerServiceOrderDuration,
+            rateType: values.employerServiceOrderRateType,
             rateAmount: values.employerServiceOrderRateAmount
           }
         };
 
-        let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/products/orders/' + productOrderId,
+        let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/orders/' + missionOrder.id,
           {
             method: 'PUT',
             headers: {
@@ -221,7 +231,7 @@ const UpdateProductOrder = ({ productOrderId }) => {
         dispatch(
           openSnackbar({
             open: true,
-            message: 'Order updated.',
+            message: 'Mission order updated.',
             variant: 'alert',
             alert: {
               color: 'success'
@@ -237,6 +247,33 @@ const UpdateProductOrder = ({ productOrderId }) => {
     }
   });
 
+  const getContractorServiceOrderDescription = (description) => {
+    if (description)
+      return description;
+
+    return `<ul>
+  <li>Start: week commencing {{startDate}} for {{durationMonths}} months.</li>
+  <li>All Fees are in Euro and are excluding VAT.</li>
+  <li>Payments are due as soon as the payment from the customer is received.</li>
+  <li>This proposal is subject to the <a href="https://10x.team/10x-talent-terms-of-service/" target="_blank">10x Terms of Service</a> and <a href="https://10x.team/privacypolicy/" target="_blank">Privacy Statement</a>.</li>
+</ul>`;
+  }
+
+  const getEmployerServiceOrderDescription = (description) => {
+
+    if (description)
+      return description;
+
+    return `<ul>
+  <li>Start: week commencing {{startDate}} for {{durationMonths}} months.</li>
+  <li>All Fees are in Euro and are excluding VAT.</li>
+  <li>Payments are due within 14 days after the date of the invoice.</li>
+  <li>This proposal is valid until 7 days after the proposal date.</li>
+  <li>Invoice schedule: 75% in advance, 25% afterwards.</li>
+  <li>This proposal is subject to the <a href="https://10x.team/10x-client-terms-of-service/" target="_blank">10x Terms of Service</a>.</li>
+</ul>`;
+  }
+
   const { errors, handleBlur, handleChange, touched, handleSubmit, isSubmitting, setFieldValue, values } = formik;
 
   if (!keycloak.tokenParsed.roles.includes('admin'))
@@ -249,31 +286,58 @@ const UpdateProductOrder = ({ productOrderId }) => {
 
           <DialogContent sx={{ p: 2.5 }}>
             <Grid container spacing={3}>
-
               <Grid item xs={12}>
                 <Typography variant="h5">Company Service Order</Typography>
               </Grid>
               <Grid item xs={12}>
                 <Stack spacing={1.25}>
-                  <InfoWrapper tooltipText="product_order_employer_service_order_description_tooltip">
-                    <InputLabel htmlFor="product-order-employer-service-order-description">Purchase Terms</InputLabel>
+                  <InfoWrapper tooltipText="mission_order_employer_service_order_description_tooltip">
+                    <InputLabel htmlFor="mission-order-employer-service-order-description">Purchase Terms</InputLabel>
                   </InfoWrapper>
                   <Rte
-                    id="product-order-employer-service-order-description"
-                    value={normalizeInputValue(values.employerServiceOrderDescription)}
+                    id="mission-order-employer-service-order-description"
+                    value={getEmployerServiceOrderDescription(values.employerServiceOrderDescription)}
                     onChange={(e) => setFieldValue('employerServiceOrderDescription', e)}
                   />
                   {touched.employerServiceOrderDescription && errors.employerServiceOrderDescription && (
-                    <FormHelperText error id="product-order-employer-service-order-description-helper">
+                    <FormHelperText error id="mission-order-employer-service-order-description-helper">
                       {errors.employerServiceOrderDescription}
                     </FormHelperText>
                   )}
                 </Stack>
               </Grid>
 
+              <Grid item xs={12} sm={6}>
+                <Stack spacing={1.25}>
+                  <InfoWrapper tooltipText="mission_order_employer_service_order_rate_type_tooltip">
+                    <InputLabel htmlFor="employer-service-order-rate-type">Rate Type</InputLabel>
+                  </InfoWrapper>
+
+                  <Select
+                    id="employerServiceOrderRateType"
+                    name="employerServiceOrderRateType"
+                    displayEmpty
+                    value={normalizeInputValue(values.employerServiceOrderRateType)}
+                    onChange={handleChange}
+                  >
+                    {rateTypes.map((rateType) => (
+                      <MenuItem key={rateType.code} value={rateType.code}>
+                        {rateType.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  {touched.employerServiceOrderRateType && errors.employerServiceOrderRateType && (
+                    <FormHelperText error id="employer-service-order-rate-type-helper">
+                      {errors.employerServiceOrderRateType}
+                    </FormHelperText>
+                  )}
+
+                </Stack>
+              </Grid>
+
               <Grid item xs={12} md={6}>
                 <Stack spacing={1.25}>
-                  <InfoWrapper tooltipText="product_order_employer_service_order_rate_amount_tooltip">
+                  <InfoWrapper tooltipText="mission_order_employer_service_order_rate_amount_tooltip">
                     <InputLabel htmlFor="employer-service-order-rate-amount">Rate</InputLabel>
                   </InfoWrapper>
                   <TextField
@@ -295,7 +359,7 @@ const UpdateProductOrder = ({ productOrderId }) => {
 
               <Grid item xs={12} md={6}>
                 <Stack spacing={1.25}>
-                  <InfoWrapper tooltipText="product_order_employer_service_order_duration_tooltip">
+                  <InfoWrapper tooltipText="mission_order_employer_service_order_duration_tooltip">
                     <InputLabel htmlFor="employer-service-order-duration">Effort</InputLabel>
                   </InfoWrapper>
                   <TextField
@@ -320,25 +384,53 @@ const UpdateProductOrder = ({ productOrderId }) => {
               </Grid>
               <Grid item xs={12}>
                 <Stack spacing={1.25}>
-                  <InfoWrapper tooltipText="product_order_contractor_service_order_description_tooltip">
-                    <InputLabel htmlFor="product-order-contractor-service-order-description">Purchase Terms</InputLabel>
+                  <InfoWrapper tooltipText="mission_order_contractor_service_order_description_tooltip">
+                    <InputLabel htmlFor="mission-order-contractor-service-order-description">Purchase Terms</InputLabel>
                   </InfoWrapper>
                   <Rte
-                    id="product-order-contractor-service-order-description"
-                    value={normalizeInputValue(values.contractorServiceOrderDescription)}
+                    id="mission-order-contractor-service-order-description"
+                    value={getContractorServiceOrderDescription(values.contractorServiceOrderDescription)}
                     onChange={(e) => setFieldValue('contractorServiceOrderDescription', e)}
                   />
                   {touched.contractorServiceOrderDescription && errors.contractorServiceOrderDescription && (
-                    <FormHelperText error id="product-order-contractor-service-order-description-helper">
+                    <FormHelperText error id="mission-order-contractor-service-order-description-helper">
                       {errors.contractorServiceOrderDescription}
                     </FormHelperText>
                   )}
                 </Stack>
               </Grid>
 
+              <Grid item xs={12} sm={6}>
+                <Stack spacing={1.25}>
+                  <InfoWrapper tooltipText="mission_order_contractor_service_order_rate_type_tooltip">
+                    <InputLabel htmlFor="contractor-service-order-rate-type">Rate Type</InputLabel>
+                  </InfoWrapper>
+
+                  <Select
+                    id="contractorServiceOrderRateType"
+                    name="contractorServiceOrderRateType"
+                    displayEmpty
+                    value={normalizeInputValue(values.contractorServiceOrderRateType)}
+                    onChange={handleChange}
+                  >
+                    {rateTypes.map((rateType) => (
+                      <MenuItem key={rateType.code} value={rateType.code}>
+                        {rateType.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  {touched.contractorServiceOrderRateType && errors.contractorServiceOrderRateType && (
+                    <FormHelperText error id="contractor-service-order-rate-type-helper">
+                      {errors.contractorServiceOrderRateType}
+                    </FormHelperText>
+                  )}
+
+                </Stack>
+              </Grid>
+
               <Grid item xs={12} md={6}>
                 <Stack spacing={1.25}>
-                  <InfoWrapper tooltipText="product_order_contractor_service_order_rate_amount_tooltip">
+                  <InfoWrapper tooltipText="mission_order_contractor_service_order_rate_amount_tooltip">
                     <InputLabel htmlFor="contractor-service-order-rate-amount">Rate</InputLabel>
                   </InfoWrapper>
                   <TextField
@@ -360,7 +452,7 @@ const UpdateProductOrder = ({ productOrderId }) => {
 
               <Grid item xs={12} md={6}>
                 <Stack spacing={1.25}>
-                  <InfoWrapper tooltipText="product_order_contractor_service_order_duration_tooltip">
+                  <InfoWrapper tooltipText="mission_order_contractor_service_order_duration_tooltip">
                     <InputLabel htmlFor="contractor-service-order-duration">Effort</InputLabel>
                   </InfoWrapper>
                   <TextField
@@ -778,7 +870,7 @@ const UpdateProductOrder = ({ productOrderId }) => {
                 Cancel
               </Button>
               <Button type="submit" variant="contained" disabled={isSubmitting}>
-                Update
+                {missionOrder ? 'Update' : 'Create'}
               </Button>
             </Stack>
           </DialogActions>
@@ -788,8 +880,8 @@ const UpdateProductOrder = ({ productOrderId }) => {
   );
 };
 
-UpdateProductOrder.propTypes = {
-  productId: PropTypes.any
+UpdateMissionOrder.propTypes = {
+  missionId: PropTypes.any
 };
 
-export default UpdateProductOrder;
+export default UpdateMissionOrder;

@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import UpsertMissionOrder from 'sections/order/UpsertMissionOrder';
+import UpdateMissionOrder from 'sections/order/UpdateMissionOrder';
 
 // project import
 import MainCard from 'components/MainCard';
@@ -9,7 +9,7 @@ const MissionOrderPage = () => {
 
   return (
     <MainCard>
-      <UpsertMissionOrder missionOrderId={missionOrderId}></UpsertMissionOrder>
+      <UpdateMissionOrder missionOrderId={missionOrderId}></UpdateMissionOrder>
     </MainCard>
   );
 };

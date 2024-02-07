@@ -35,33 +35,29 @@ import { useKeycloak } from '@react-keycloak/web';
 import rateTypes from 'data/rateTypes';
 
 // constant
-const getInitialValues = (missionOrder) => {
+const getInitialValues = () => {
   const result = {
-    id: missionOrder?.id,
-    contractorId: missionOrder?.contractorId,
-    employerId: missionOrder?.employerId,
-    missionId: missionOrder?.missionId,
+    id: null,
+    contractorId: null,
+    employerId: null,
+    missionId: null,
 
-    contractorServiceOrderDescription: missionOrder?.contractorServiceOrder?.description,
-    contractorServiceOrderDuration: missionOrder?.contractorServiceOrder?.duration,
-    contractorServiceOrderRateType: missionOrder?.contractorServiceOrder?.rateType,
-    contractorServiceOrderRateAmount: missionOrder?.contractorServiceOrder?.rateAmount,
+    contractorServiceOrderDescription: null,
+    contractorServiceOrderDuration: null,
+    contractorServiceOrderRateType: null,
+    contractorServiceOrderRateAmount: null,
 
-    employerServiceOrderDescription: missionOrder?.employerServiceOrder?.description,
-    employerServiceOrderDuration: missionOrder?.employerServiceOrder?.duration,
-    employerServiceOrderRateType: missionOrder?.employerServiceOrder?.rateType,
-    employerServiceOrderRateAmount: missionOrder?.employerServiceOrder?.rateAmount
+    employerServiceOrderDescription: null,
+    employerServiceOrderDuration: null,
+    employerServiceOrderRateType: null,
+    employerServiceOrderRateAmount: null
   };
 
   return result;
 };
 
-// ==============================|| MISSION ORDER ADD / EDIT / DELETE ||============================== //
-
-const UpsertMissionOrder = ({ missionOrderId }) => {
+const CreateMissionOrder = () => {
   const { keycloak } = useKeycloak();
-
-  const [missionOrder, setMissionOrder] = useState(null);
 
   const [contractors, setContractors] = useState([]);
   const [employers, setEmployers] = useState([]);
@@ -70,31 +66,6 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
-
-  const getMissionOrder = async () => {
-    try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/orders/' + missionOrderId,
-        {
-          method: 'GET',
-          headers: {
-            'Authorization': 'Bearer ' + keycloak.idToken
-          }
-        }
-      );
-
-      let json = await response.json();
-
-      return json;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const bindMissionOrder = async () => {
-    let missionOrderResponse = await getMissionOrder();
-
-    setMissionOrder(missionOrderResponse);
-  };
 
   const bindContractors = async () => {
     try {
@@ -160,21 +131,6 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
     })();
   }, [keycloak?.idToken]);
 
-  useEffect(() => {
-    (async () => {
-      if (missionOrderId) {
-        await bindMissionOrder();
-      }
-    })();
-  }, [missionOrderId, keycloak?.idToken]);
-
-  useEffect(() => {
-    (async () => {
-      if(missionOrder?.employerId)
-        await bindMissions(missionOrder?.employerId);
-    })();
-  }, [missionOrder?.employerId, keycloak?.idToken]);
-
   const MissionSchema = Yup.object().shape({
     contractorId: Yup.string().required('Talent is required').nullable(true),
     employerId: Yup.string().required('Company is required').nullable(true),
@@ -208,7 +164,7 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
 
   const formik = useFormik({
     enableReinitialize: true,
-    initialValues: getInitialValues(missionOrder),
+    initialValues: getInitialValues(),
     validationSchema: MissionSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
@@ -232,92 +188,47 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
           }
         };
 
-        if (missionOrder) {
-
-          let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/orders/' + missionOrder.id,
-            {
-              method: 'PUT',
-              headers: {
-                'Authorization': 'Bearer ' + keycloak.idToken,
-                'Content-Type': 'application/json'
-              },
-              body: prepareApiBody(body)
-            }
-          );
-
-          if (!response.ok) {
-            dispatch(
-              openSnackbar({
-                open: true,
-                message: 'Update failed.',
-                variant: 'alert',
-                alert: {
-                  color: 'error'
-                },
-                close: false
-              })
-            );
-            setSubmitting(false);
-            return;
+        
+        let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/' + body.missionId + '/contractors/' + body.contractorId + '/orders',
+          {
+            method: 'POST',
+            headers: {
+              'Authorization': 'Bearer ' + keycloak.idToken,
+              'Content-Type': 'application/json'
+            },
+            body: prepareApiBody(body)
           }
+        );
 
-          navigate('/orders');
-
+        if (!response.ok) {
           dispatch(
             openSnackbar({
               open: true,
-              message: 'Mission order updated.',
+              message: 'Creating a mission order failed.',
               variant: 'alert',
               alert: {
-                color: 'success'
+                color: 'error'
               },
               close: false
             })
           );
-
-        } else {
-          let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/' + body.missionId + '/contractors/' + body.contractorId + '/orders',
-            {
-              method: 'POST',
-              headers: {
-                'Authorization': 'Bearer ' + keycloak.idToken,
-                'Content-Type': 'application/json'
-              },
-              body: prepareApiBody(body)
-            }
-          );
-
-          if (!response.ok) {
-            dispatch(
-              openSnackbar({
-                open: true,
-                message: 'Creating a mission order failed.',
-                variant: 'alert',
-                alert: {
-                  color: 'error'
-                },
-                close: false
-              })
-            );
-            setSubmitting(false);
-            return;
-          }
-
-          navigate('/orders');
-
-          dispatch(
-            openSnackbar({
-              open: true,
-              message: 'Mission order created.',
-              variant: 'alert',
-              alert: {
-                color: 'success'
-              },
-              close: false
-            })
-          );
-
+          setSubmitting(false);
+          return;
         }
+
+        navigate('/orders');
+
+        dispatch(
+          openSnackbar({
+            open: true,
+            message: 'Mission order created.',
+            variant: 'alert',
+            alert: {
+              color: 'success'
+            },
+            close: false
+          })
+        );
 
         setSubmitting(false);
       } catch (error) {
@@ -362,12 +273,8 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
     <>
       <FormikProvider value={formik}>
         <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-          {!missionOrder &&
-            <>
-              <DialogTitle>Create Mission Order</DialogTitle>
-              <Divider />
-            </>
-          }
+          <DialogTitle>Create Mission Order</DialogTitle>
+          <Divider />
 
           <DialogContent sx={{ p: 2.5 }}>
             <Grid container spacing={3}>
@@ -647,7 +554,7 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
                 Cancel
               </Button>
               <Button type="submit" variant="contained" disabled={isSubmitting}>
-                {missionOrder ? 'Update' : 'Create'}
+                Create
               </Button>
             </Stack>
           </DialogActions>
@@ -657,8 +564,8 @@ const UpsertMissionOrder = ({ missionOrderId }) => {
   );
 };
 
-UpsertMissionOrder.propTypes = {
+CreateMissionOrder.propTypes = {
   missionId: PropTypes.any
 };
 
-export default UpsertMissionOrder;
+export default CreateMissionOrder;
