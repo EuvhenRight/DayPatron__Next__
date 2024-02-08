@@ -13,8 +13,6 @@ const Slider: React.FC<SliderProps> = ({ children }: SliderProps) => {
 	const transitionDuration = 500 // Adjust as needed
 
 	// Duplicate slides for infinite looping
-	const duplicatedSlides = [...children]
-	duplicatedSlides.push(...children)
 	useEffect(() => {
 		const transitionEndListener = () => {
 			// Reset transition after animation completes
@@ -36,21 +34,13 @@ const Slider: React.FC<SliderProps> = ({ children }: SliderProps) => {
 				?.removeEventListener('transitionend', transitionEndListener)
 		}
 	}, [transitionDuration])
-
+	// Logic to handle infinite looping without going back to the beginning
 	const nextSlide = () => {
-		if (currentPage < numSlides) {
-			setCurrentPage(prevPage => prevPage + 1)
-		} else {
-			setCurrentPage(0)
-		}
+		setCurrentPage(prevPage => (prevPage + 1) % numSlides)
 	}
 
 	const prevSlide = () => {
-		if (currentPage > 0) {
-			setCurrentPage(prevPage => prevPage - 1)
-		} else {
-			setCurrentPage(numSlides)
-		}
+		setCurrentPage(prevPage => (prevPage - 1 + numSlides) % numSlides)
 	}
 	return (
 		<div className='relative px-10'>
@@ -58,11 +48,11 @@ const Slider: React.FC<SliderProps> = ({ children }: SliderProps) => {
 				<div
 					className={`flex gap-5 carousel-container transitioning`}
 					style={{
-						transform: `translateX(-${currentPage * (100 / (numSlides + 2))}%)`,
+						transform: `translateX(-${currentPage * (100 / (numSlides + 4))}%)`,
 						transitionDuration: `${transitionDuration}ms`,
 					}}
 				>
-					{duplicatedSlides.map((slide, index) => (
+					{children.map((slide, index) => (
 						<div key={index} className='w-full'>
 							{slide}
 						</div>
@@ -73,13 +63,13 @@ const Slider: React.FC<SliderProps> = ({ children }: SliderProps) => {
 				className='absolute left-0 top-1/2 -translate-y-1/2 ml-10'
 				onClick={prevSlide}
 			>
-				<AiOutlineLeft className='absolute left-0 m-auto text-5xl inset-y-1/2 cursor-pointer text-gray-400 z-20' />
+				<AiOutlineLeft className='absolute left-0 m-auto text-5xl inset-y-1/2 cursor-pointer text-nav z-20 bg-white rounded' />
 			</button>
 			<button
 				className='absolute right-0 top-1/2 -translate-y-1/2 mr-10'
 				onClick={nextSlide}
 			>
-				<AiOutlineRight className='absolute right-0 m-auto text-5xl inset-y-1/2 cursor-pointer text-gray-400 z-20' />
+				<AiOutlineRight className='absolute right-0 m-auto text-5xl inset-y-1/2 cursor-pointer text-nav z-20 bg-white rounded' />
 			</button>
 		</div>
 	)

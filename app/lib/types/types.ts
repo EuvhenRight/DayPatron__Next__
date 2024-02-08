@@ -3,6 +3,8 @@ export interface Product {
 	linkName: string
 	name: string
 	UTP: string
+	NEW: boolean
+	HIT: boolean
 	description: string
 	useTo: string
 	image: Image[]
