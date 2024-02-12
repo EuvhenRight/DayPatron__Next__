@@ -11,11 +11,11 @@ function ClientLayout({ children }: { children: React.ReactNode }) {
 	}
 
 	return (
-		<>
+		<div>
 			{isOpenDrawer && <Drawer toggleDrawer={toggleDrawer} />}
 			<Header toggleDrawer={toggleDrawer} />
 			<main>{children}</main>
-		</>
+		</div>
 	)
 }
 

@@ -7,6 +7,7 @@ import {
 	AiOutlineShoppingCart,
 	AiOutlineUser,
 } from 'react-icons/ai'
+import ThemeController from '../ThemeController'
 
 interface Props {
 	toggleDrawer: () => void
@@ -21,7 +22,7 @@ function Header({ toggleDrawer }: Props) {
 		{ label: 'Contacts', href: '/contacts' },
 	]
 	return (
-		<header className='border-b border-gray-300 bg-none'>
+		<header className='border-b border-gray-300 bg-none relative'>
 			<nav className='flex justify-between xl:container xl:mx-auto py-5 items-center'>
 				<Link href='/'>
 					<img className='w-48' src='/images/DayLogo.svg' alt='logo' />
@@ -59,11 +60,14 @@ function Header({ toggleDrawer }: Props) {
 								className='w-full h-full'
 								onClick={toggleDrawer}
 							/>
-							<span className='inline-flex rounded-full h-3 w-3 bg-[--colorBtnPrimary] absolute top-0 right-0 border border-white'></span>
+							<span className='inline-flex rounded-full h-3 w-3 bg-btnPrimary absolute top-0 right-0 border border-white'></span>
 						</div>
 					</li>
 				</ul>
 			</nav>
+			<div className='absolute top-9 right-5'>
+				<ThemeController />
+			</div>
 		</header>
 	)
 }

@@ -1,6 +1,7 @@
 'use client'
 import { Product } from '@prisma/client'
 import Link from 'next/link'
+import PriceTag from '../PriceTag'
 
 interface ProductCardProps {
 	product: Product
@@ -31,7 +32,7 @@ const Card: React.FC<ProductCardProps> = ({ product }: ProductCardProps) => {
 						<h3 className='text-md -tracking-0 mt-1 uppercase opacity-65 text-textBody'>
 							{product.UTP}
 						</h3>
-						500
+						{<PriceTag price={product.min_price!} />}
 					</div>
 				</div>
 			</div>

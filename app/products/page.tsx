@@ -1,7 +1,8 @@
 import prisma from '@/app/lib/db/client'
+import Breadcrumbs from '../components/Breadcrumbs'
 import CardList from '../components/Card-list'
 
-async function Products() {
+const Products = async () => {
 	const productsData = await prisma?.product.findMany({
 		orderBy: {
 			name: 'asc',
@@ -9,6 +10,7 @@ async function Products() {
 	})
 	return (
 		<div>
+			<Breadcrumbs />
 			<CardList productsData={productsData} />
 		</div>
 	)
