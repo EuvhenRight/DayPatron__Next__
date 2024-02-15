@@ -1,5 +1,6 @@
 import Breadcrumbs from '@/app/components/Breadcrumbs'
 import RatingInfo from '@/app/components/Rating'
+import Variants from '@/app/components/Variants'
 import prisma from '@/app/lib/db/client'
 import { Metadata } from 'next'
 import React, { cache } from 'react'
@@ -27,9 +28,9 @@ export const generateMetadata = async ({
 	return {
 		title: product?.name,
 		description: product?.UTP,
-		openGraph: {
-			images: [{ url: product?.variants[0].image }],
-		},
+		// openGraph: {
+		// 	images: [{ url: product?.variants[0].image }],
+		// },
 	}
 }
 
@@ -52,15 +53,19 @@ const ProductDetails: React.FC<ProductDetailsProps> = async ({
 			<div className='flex flex-col items-end'>
 				<Breadcrumbs children={product.name} />
 				<RatingInfo />
+				<p>{product.current_rating}</p>
 				<h1 className='text-typeHeader font-typeHeader uppercase space-typeHeader line-height-typeHeaderLineHeight'>
 					{product.name}
 				</h1>
 				<p>{product.UTP}</p>
-				<p>{product.description}</p>
-				<p>{product.shelfLife}</p>
-				<p>{product.current_rating}</p>
-				<p>{product.useTo}</p>
-				<button className='bg-btnPrimary text-white py-2 '>Add to cart</button>
+				<Variants variants={product.variants} />
+				<button className='bg-btnPrimary text-white p-2'>Add to cart</button>
+				<div>
+					<p>{product.description}</p>
+					<p>{product.shelfLife}</p>
+					<p>{product.specification}</p>
+					<p>{product.useTo}</p>
+				</div>
 			</div>
 		</div>
 	)
