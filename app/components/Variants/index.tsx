@@ -3,24 +3,26 @@ import { Variant } from '@/app/lib/types/types'
 import React, { useState } from 'react'
 
 interface VariantsProps {
-	variants: Variant[]
+	variantsProduct: Variant[]
 }
 
-const Variants: React.FC<VariantsProps> = ({ variants }: VariantsProps) => {
+const Variants: React.FC<VariantsProps> = ({
+	variantsProduct,
+}: VariantsProps) => {
 	const [currentIndex, setCurrentIndex] = useState(0)
 
 	const handleVolumeClick = (index: number) => {
 		setCurrentIndex(index)
 	}
 
-	const stock = variants[currentIndex].stock
+	const stock = variantsProduct[currentIndex].stock
 
-	const discountPrice = variants[currentIndex].discount_price
+	const discountPrice = variantsProduct[currentIndex].discount_price
 	return (
 		<>
 			{/* VOLUME */}
 			<div>
-				{variants.map((variant, index) => {
+				{variantsProduct.map((variant, index) => {
 					return (
 						<div key={index} onClick={() => handleVolumeClick(index)}>
 							{variant.volume}
@@ -48,15 +50,15 @@ const Variants: React.FC<VariantsProps> = ({ variants }: VariantsProps) => {
 					</div>
 				)}
 			</div>
-			<p>{variants[currentIndex].article}</p>
+			<p>{variantsProduct[currentIndex].article}</p>
 			{/* PRICE */}
 			<div className='flex gap-2 items-center'>
 				<p className={discountPrice > 0 ? 'line-through' : ''}>
-					{variants[currentIndex].original_price}
+					{variantsProduct[currentIndex].original_price}
 				</p>
 				{discountPrice > 0 ? (
 					<p className='text-btnPrimary bold'>
-						{variants[currentIndex].discount_price}
+						{variantsProduct[currentIndex].discount_price}
 					</p>
 				) : null}
 			</div>

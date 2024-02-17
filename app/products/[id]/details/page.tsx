@@ -1,4 +1,5 @@
 import Breadcrumbs from '@/app/components/Breadcrumbs'
+import ImageBlock from '@/app/components/ImageBlock'
 import RatingInfo from '@/app/components/Rating'
 import Variants from '@/app/components/Variants'
 import prisma from '@/app/lib/db/client'
@@ -46,7 +47,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = async ({
 					<img
 						src={`/images/${product.variants[1].image}`}
 						alt={product?.name}
-						className='w-full h-full object-cover'
+						className='w-auto h-auto object-cover'
 					/>
 				</div>
 			</div>
@@ -58,7 +59,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = async ({
 					{product.name}
 				</h1>
 				<p>{product.UTP}</p>
-				<Variants variants={product.variants} />
+				<Variants variantsProduct={product.variants} />
 				<button className='bg-btnPrimary text-white p-2'>Add to cart</button>
 				<div>
 					<p>{product.description}</p>
@@ -66,6 +67,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = async ({
 					<p>{product.specification}</p>
 					<p>{product.useTo}</p>
 				</div>
+				<ImageBlock product={product} />
 			</div>
 		</div>
 	)
