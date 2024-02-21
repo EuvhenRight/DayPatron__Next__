@@ -10,34 +10,45 @@ const ImageBlock: React.FC<ImageBlockProps> = ({
 	product,
 }: ImageBlockProps) => {
 	const [currentImage, setCurrentImage] = useState<number | null>(null)
-	console.log(currentImage)
+	const [animate, setAnimate] = useState(false)
+	const countImages = product.variants.length
+
+	const next = () => {
+		if (currentImage) {
+			setCurrentImage(currentImage === countImages - 1 ? 0 : currentImage + 1)
+		}
+	}
+
 	const toggleImage = (index: number) => {
+		setAnimate(true)
 		setCurrentImage(index)
 	}
 
 	return (
 		<div className='flex flex-col lg:flex-row'>
-			<div className='flex flex-col items-center justify-between'>
+			<div className='w-96 flex flex-col justify-between items-center'>
 				{/* ARROW TOP */}
 				<button className='hover:-translate-y-1 transition-transform'>
 					<AiOutlineLeft className='rotate-90' />
 				</button>
-				{/* IMAGES CAROUSEL */}
-				{product.variants.map((item, index) => {
-					return (
-						<div
-							onClick={() => toggleImage(index)}
-							className='w-28 h-auto focus:ring-2 focus:ring-black focus:outline-none'
-							key={index}
-							tabIndex={0}
-						>
-							<img src={`/images/${item.image}`} alt='item.url' />
-						</div>
-					)
-				})}
+				<div className='flex flex-col items-center justify-between snap-y h-full translate-x-2'>
+					{/* IMAGES CAROUSEL */}
+					{product.variants.map((item, index) => {
+						return (
+							<div
+								onClick={() => toggleImage(index)}
+								className=' focus:ring-2 focus:ring-black focus:outline-none snap-center'
+								key={index}
+								tabIndex={0}
+							>
+								<img src={`/images/${item.image}`} alt='item.url' />
+							</div>
+						)
+					})}
+				</div>
 				{/* ARROW BOTTOM */}
 				<button className='hover:translate-y-1 transition-transform'>
-					<AiOutlineLeft className='-rotate-90' />
+					<AiOutlineLeft onClick={next} className='-rotate-90' />
 				</button>
 			</div>
 			{/* MAIN IMAGE */}
@@ -48,8 +59,11 @@ const ImageBlock: React.FC<ImageBlockProps> = ({
 							? `/images/${product.variants[currentImage].image}`
 							: `/images/${product.image[0].url}`
 					}
-					className='w-1/2 h-auto object-cover'
+					className={`cursor-zoom-in object-cover w-96 ${
+						animate ? 'animate-rotate-vert-center' : '' // Apply animation class conditionally
+					}`}
 					alt={product.name}
+					onAnimationEnd={() => setAnimate(false)} // Reset animate state after animation ends
 				/>
 			</div>
 		</div>

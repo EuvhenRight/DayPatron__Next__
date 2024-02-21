@@ -4,6 +4,7 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
 import React from 'react'
 import Card from '../Card'
 import Slider from '../Slider'
+import Carousel from '../Slider/Carousel'
 
 interface CardListProps {
 	productsData: Product[]
@@ -12,15 +13,18 @@ interface CardListProps {
 const CardList: React.FC<CardListProps> = ({ productsData }: CardListProps) => {
 	const [parent, enable] = useAutoAnimate({ duration: 200 })
 	return (
-		<ul ref={parent}>
-			<Slider>
-				{productsData.map(product => (
-					<li key={product.id}>
-						<Card product={product} />
-					</li>
-				))}
-			</Slider>
-		</ul>
+		<>
+			<ul ref={parent}>
+				<Slider>
+					{productsData.map(product => (
+						<li key={product.id}>
+							<Card product={product} />
+						</li>
+					))}
+				</Slider>
+			</ul>
+			<Carousel productsData={productsData} />
+		</>
 	)
 }
 

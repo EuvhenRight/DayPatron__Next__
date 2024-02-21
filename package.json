@@ -29,6 +29,8 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@egjs/flicking-plugins": "^4.7.1",
+    "@egjs/react-flicking": "^4.11.2",
     "@formkit/auto-animate": "^0.8.1",
     "@types/jsonwebtoken": "^9.0.5",
     "@types/node-cron": "^3.0.11",
