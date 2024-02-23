@@ -22,7 +22,7 @@ function Header({ toggleDrawer }: Props) {
 		{ label: 'Contacts', href: '/contacts' },
 	]
 	return (
-		<header className='border-b border-gray-300 bg-none relative'>
+		<header className='border-b border-gray-300 bg-none relative dark:border-red-500'>
 			<nav className='flex justify-between xl:container xl:mx-auto py-5 items-center'>
 				<Link href='/'>
 					<img className='w-48' src='/images/DayLogo.svg' alt='logo' />

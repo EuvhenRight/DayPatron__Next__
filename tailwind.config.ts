@@ -2,6 +2,7 @@ import type { Config } from 'tailwindcss'
 
 const config: Config = {
 	content: [
+		'./node_modules/flowbite-react/lib/**/*.js',
 		'./pages/**/*.{js,ts,jsx,tsx,mdx}',
 		'./components/**/*.{js,ts,jsx,tsx,mdx}',
 		'./app/**/*.{js,ts,jsx,tsx,mdx}',
@@ -88,16 +89,9 @@ const config: Config = {
 				button: '0',
 				// Add more border radius values based on your custom properties
 			},
-			customClasses: {
-				// Define your custom classes here
-				flickinArrowPrev:
-					'absolute top-1/2 left-4 transform -translate-y-1/2 w-10 h-10 bg-white bg-opacity-50 rounded-full border-none z-10',
-				flickingArrowNext:
-					'absolute top-1/2 right-4 transform -translate-y-1/2 w-10 h-10 bg-white bg-opacity-50 rounded-full border-none z-10',
-			},
 		},
 	},
-	plugins: [require('daisyui')],
+	plugins: [require('daisyui'), require('flowbite/plugin')],
 	daisyui: {
 		themes: ['light', 'black'],
 	},
