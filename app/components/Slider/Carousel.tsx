@@ -1,5 +1,6 @@
 import { Product } from '@/app/lib/types/types'
 import { Arrow } from '@egjs/flicking-plugins'
+// ALL THE PLUGINS
 import '@egjs/flicking-plugins/dist/flicking-plugins.css'
 import '@egjs/flicking/dist/flicking.css'
 import Flicking, { ViewportSlot } from '@egjs/react-flicking'
@@ -16,7 +17,7 @@ const Carousel: React.FC<CarouselProps> = ({ productsData }) => {
 
 	useEffect(() => {
 		const handleResize = () => {
-			// Adjust the number of panels per view based on screen width
+			// SET PANELS PER VIEW
 			if (window.innerWidth < 450) {
 				setPanelsPerView(1)
 			} else if (window.innerWidth < 955) {
@@ -32,13 +33,13 @@ const Carousel: React.FC<CarouselProps> = ({ productsData }) => {
 			}
 		}
 
-		// Add event listener for window resize
+		// ADD EVENT LISTENER
 		window.addEventListener('resize', handleResize)
 
-		// Initial call to set the initial number of panels per view
+		// CALL HANDLE RESIZE FUNCTION
 		handleResize()
 
-		// Cleanup on component unmount
+		// REMOVE EVENT LISTENER
 		return () => {
 			window.removeEventListener('resize', handleResize)
 		}
@@ -47,23 +48,34 @@ const Carousel: React.FC<CarouselProps> = ({ productsData }) => {
 	return (
 		<>
 			<Flicking
+				//CIRCULAR LOOP CAROUSEL
 				circular={true}
+				// SET PANELS PER VIEW
 				panelsPerView={panelsPerView}
+				// PLUGINS
 				plugins={plugins}
+				// HORIZONTAL CAROUSEL
 				horizontal={true}
+				// SET AUTO RESIZE
 				adaptive={true}
 				autoResize={true}
 				useResizeObserver={true}
+				// MOVE TYPE
 				moveType={['strict', { count: 1 }]}
+				// ANIMATION
 				easing={x => x * (3 - x)}
+				// SWIPE THRESHOLD
 				iOSEdgeSwipeThreshold={30}
+				// ALIGN
 				align={'prev'}
+				// FIRST PANEL
 				firstPanelSize='200px'
 				className='xl:container xl:mx-auto'
 			>
 				{productsData.map(product => (
 					<div
 						key={product.id}
+						// STYLE FOR CAROUSEL CENTER POSITION
 						className='h-full w-full flex align-center items-center flex-col justify-center'
 					>
 						<Card product={product} />
