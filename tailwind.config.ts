@@ -89,6 +89,28 @@ const config: Config = {
 				button: '0',
 				// Add more border radius values based on your custom properties
 			},
+			keyframes: {
+				'slide-right': {
+					'0%': {
+						transform: 'translateX(-100%)',
+						opacity: '0',
+					},
+					'33%': {
+						opacity: '0',
+					},
+					'66%': {
+						opacity: '1',
+					},
+					'100%': {
+						transform: 'translateX(0)',
+						opacity: '1',
+					},
+				},
+			},
+			animation: {
+				'slide-right':
+					'slide-right 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both',
+			},
 		},
 	},
 	plugins: [require('daisyui'), require('flowbite/plugin')],
