@@ -2,7 +2,6 @@ import type { Config } from 'tailwindcss'
 
 const config: Config = {
 	content: [
-		'./node_modules/flowbite-react/lib/**/*.js',
 		'./pages/**/*.{js,ts,jsx,tsx,mdx}',
 		'./components/**/*.{js,ts,jsx,tsx,mdx}',
 		'./app/**/*.{js,ts,jsx,tsx,mdx}',
@@ -92,7 +91,8 @@ const config: Config = {
 			keyframes: {
 				'slide-right': {
 					'0%': {
-						transform: 'translateX(-100%)',
+						transform:
+							'translateX(-100%) scale(0.5) perspective(1000px) rotateY(-90deg);',
 						opacity: '0',
 					},
 					'33%': {
@@ -102,7 +102,7 @@ const config: Config = {
 						opacity: '1',
 					},
 					'100%': {
-						transform: 'translateX(0)',
+						transform: 'translateX(0) scale(1) perspective(1000px) rotateY(0)',
 						opacity: '1',
 					},
 				},
@@ -113,7 +113,7 @@ const config: Config = {
 			},
 		},
 	},
-	plugins: [require('daisyui'), require('flowbite/plugin')],
+	plugins: [require('daisyui')],
 	daisyui: {
 		themes: ['light', 'black'],
 	},

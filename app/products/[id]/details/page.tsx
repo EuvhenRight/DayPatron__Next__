@@ -1,7 +1,4 @@
-import Breadcrumbs from '@/app/components/Breadcrumbs'
-import ImageBlock from '@/app/components/ImageBlock'
-import RatingInfo from '@/app/components/Rating'
-import Variants from '@/app/components/Variants'
+import ProductInOrderBlock from '@/app/components/ProductInOrderBlock'
 import prisma from '@/app/lib/db/client'
 import { Metadata } from 'next'
 import React, { cache } from 'react'
@@ -42,35 +39,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = async ({
 
 	return (
 		<>
-			<div className='xl:container xl:mx-auto flex flex-col lg:flex-row'>
-				<div>
-					<div>
-						<img
-							src={`/images/${product.variants[1].image}`}
-							alt={product?.name}
-							className='w-auto h-auto object-cover'
-						/>
-					</div>
-				</div>
-				<div className='flex flex-col items-end'>
-					<Breadcrumbs children={product.name} />
-					<RatingInfo />
-					<p>{product.current_rating}</p>
-					<h1 className='text-typeHeader font-typeHeader uppercase space-typeHeader line-height-typeHeaderLineHeight'>
-						{product.name}
-					</h1>
-					<p>{product.UTP}</p>
-					<Variants variantsProduct={product.variants} />
-					<button className='bg-btnPrimary text-white p-2'>Add to cart</button>
-					<div>
-						<p>{product.description}</p>
-						<p>{product.shelfLife}</p>
-						<p>{product.specification}</p>
-						<p>{product.useTo}</p>
-					</div>
-				</div>
-			</div>
-			<ImageBlock product={product} />
+			<ProductInOrderBlock product={product} />
 		</>
 	)
 }

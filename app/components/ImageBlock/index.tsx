@@ -1,56 +1,70 @@
 'use client'
 import { Product } from '@prisma/client'
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 import { AiOutlineLeft } from 'react-icons/ai'
 
 interface ImageBlockProps {
 	product: Product
+	setCurrentIndex: React.Dispatch<React.SetStateAction<number>>
+	currentIndex: number
+	animate: boolean
+	setAnimate: React.Dispatch<React.SetStateAction<boolean>>
 }
 const ImageBlock: React.FC<ImageBlockProps> = ({
 	product,
+	currentIndex,
+	setCurrentIndex,
+	animate,
+	setAnimate,
 }: ImageBlockProps) => {
-	const [currentImage, setCurrentImage] = useState<number | null>(null)
-	const [animate, setAnimate] = useState(false)
+	// ON/OFF ANIMATION
 	const countImages = product.variants.length
+	// REF TO IMAGE LIST
 	const imagesRef = useRef<HTMLUListElement>(null)
-
 	const handleNextClick = () => {
-		// Check if currentImage is not null or undefined and not already at the last image
-		if (typeof currentImage === 'number' && currentImage < countImages - 1) {
-			setCurrentImage(currentImage + 1) // Increment currentImage to move to the next image
+		// CHECK IF CURRENT IMAGE IS NOT NULL OR UNDEFINED AND NOT ALREADY AT THE LAST IMAGE
+		if (typeof currentIndex === 'number' && currentIndex < countImages - 1) {
+			// INCREMENT CURRENT IMAGE TO MOVE TO THE NEXT IMAGE
+			setCurrentIndex(currentIndex + 1)
+			setAnimate(true)
+			if (imagesRef.current) {
+				const children = imagesRef.current
+					.children as HTMLCollectionOf<HTMLLIElement>
+				// SET FOCUS TO THE NEXT IMAGE
+				children[currentIndex + 1].focus()
+			}
 		}
-		if (imagesRef.current) {
-			imagesRef.current.focus()
-			console.log('work')
-		}
-		setAnimate(true)
 	}
 
 	const handlePrevClick = () => {
-		// Check if currentImage is not null or undefined and not already at the first image
-		if (typeof currentImage === 'number' && currentImage > 0) {
-			setCurrentImage(currentImage - 1) // Decrement currentImage to move to the previous image
-		}
-		if (imagesRef.current) {
-			imagesRef.current.focus()
-			console.log('work 2')
-		}
-		setAnimate(true)
-	}
-
-	const toggleImage = (index: number) => {
-		if (index !== currentImage) {
+		// CHECK IF CURRENT IMAGE IS NOT NULL OR UNDEFINED AND NOT ALREADY AT THE FIRST IMAGE
+		if (typeof currentIndex === 'number' && currentIndex > 0) {
+			// DECREMENT CURRENT IMAGE TO MOVE TO THE PREVIOUS IMAGE
+			setCurrentIndex(currentIndex - 1)
 			setAnimate(true)
-			setCurrentImage(index)
+			if (imagesRef.current) {
+				const children = imagesRef.current
+					.children as HTMLCollectionOf<HTMLLIElement>
+				// SET FOCUS TO THE PREVIOUS IMAGE
+				children[currentIndex - 1].focus()
+			}
 		}
 	}
+	const toggleImage = (index: number) => {
+		if (index !== currentIndex) {
+			setAnimate(true)
+			setCurrentIndex(index)
+		}
+	}
+	console.log(currentIndex)
+	// Function to update the parent container position
 
 	return (
-		<div className='relative xl:container xl:mx-auto'>
+		<div className=' xl:container xl:mx-auto sticky top-0'>
 			<div className='flex xl:flex-row items-center'>
 				<div className='flex items-center flex-col max-h-96 w-24 z-10'>
-					{/* ARROW TOP */}
-					{currentImage! > 0 && (
+					{/* ALWAYS RENDER ARROW TOP */}
+					<div className={`${currentIndex === 0 ? 'opacity-0' : ''}`}>
 						<button
 							className='hover:-translate-y-1 transition-transform'
 							onClick={() => handlePrevClick()}
@@ -58,9 +72,9 @@ const ImageBlock: React.FC<ImageBlockProps> = ({
 						>
 							<AiOutlineLeft className='rotate-90' />
 						</button>
-					)}
+					</div>
 					{/* IMAGES CAROUSEL */}
-					<ul className='px-1' ref={imagesRef} tabIndex={0}>
+					<ul className='px-1' ref={imagesRef}>
 						{product.variants.map((item, index) => {
 							return (
 								<li
@@ -74,8 +88,10 @@ const ImageBlock: React.FC<ImageBlockProps> = ({
 							)
 						})}
 					</ul>
-					{/* ARROW BOTTOM */}
-					{currentImage! < countImages - 1 && (
+					{/* ALWAYS RENDER ARROW BOTTOM */}
+					<div
+						className={`${currentIndex < countImages - 1 ? '' : 'opacity-0'}`}
+					>
 						<button
 							className='hover:translate-y-1 transition-transform'
 							onClick={handleNextClick}
@@ -83,22 +99,24 @@ const ImageBlock: React.FC<ImageBlockProps> = ({
 						>
 							<AiOutlineLeft className='-rotate-90' />
 						</button>
-					)}
+					</div>
 				</div>
 				{/* MAIN IMAGE */}
 				<img
 					src={
-						currentImage !== null
-							? `/images/${product.variants[currentImage].image}`
+						currentIndex !== null
+							? `/images/${product.variants[currentIndex].image}`
 							: `/images/${product.image[0].url}`
 					}
-					className={`cursor-zoom-in w-auto max-h-[600px] ${
-						animate ? 'animate-slide-right' : '' // Apply animation class conditionally
+					className={`cursor-zoom-in w-auto px-24 max-h-[700px] ${
+						// APPLY ANIMATION CLASS
+						animate ? 'animate-slide-right' : ''
 					}`}
 					alt={product.name}
 					onAnimationEnd={() => {
+						// RESET ANIMATION CLASS
 						setAnimate(false)
-					}} // Reset animate state after animation ends
+					}}
 				/>
 			</div>
 		</div>

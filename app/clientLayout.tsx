@@ -2,6 +2,7 @@
 import React, { useState } from 'react'
 import Drawer from './components/drawer'
 import Header from './components/header'
+import CartProvider from './lib/providers/CartProvider'
 
 function ClientLayout({ children }: { children: React.ReactNode }) {
 	const [isOpenDrawer, setIsOpenDrawer] = useState(false)
@@ -12,9 +13,11 @@ function ClientLayout({ children }: { children: React.ReactNode }) {
 
 	return (
 		<div>
-			{isOpenDrawer && <Drawer toggleDrawer={toggleDrawer} />}
-			<Header toggleDrawer={toggleDrawer} />
-			<main>{children}</main>
+			<CartProvider>
+				{isOpenDrawer && <Drawer toggleDrawer={toggleDrawer} />}
+				<Header toggleDrawer={toggleDrawer} />
+				<main>{children}</main>
+			</CartProvider>
 		</div>
 	)
 }

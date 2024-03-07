@@ -39,3 +39,14 @@ export interface CartItem {
 	cartId: string
 	product: Product // Include the product property in the CartItem type
 }
+
+export type ProductInCart = {
+	id: string
+	name: string
+	volume: string
+	image: string
+	quantity: number
+	article: string
+	discount_price?: number
+	original_price: number
+}
