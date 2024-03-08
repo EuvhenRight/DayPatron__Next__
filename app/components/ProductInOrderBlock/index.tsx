@@ -15,7 +15,7 @@ interface ProductInOrderBlockProps {
 const ProductInOrderBlock: React.FC<ProductInOrderBlockProps> = ({
 	product,
 }) => {
-	const { cartTotalQuantity, cartItems, handleAddToCart } = useCart()
+	const { cartTotalQuantity, cartItems, handleAddToCart, showToast } = useCart()
 	const [currentIndex, setCurrentIndex] = useState<number>(0)
 	const [animate, setAnimate] = useState<boolean>(false)
 	const [itemInCart, setItemInCart] = useState<boolean>(false)
@@ -42,11 +42,21 @@ const ProductInOrderBlock: React.FC<ProductInOrderBlockProps> = ({
 		}
 	}, [cartItem, cartItems])
 
+	console.log(showToast)
+
 	const stock = product.variants[currentIndex].stock!
-	console.log(cartItems)
+
 	return (
 		<section className='xl:container xl:mx-auto pt-5'>
 			<div className='flex flex-row justify-between relative'>
+				{showToast && (
+					<div className='toast toast-end z-20'>
+						<div className='alert alert-success bg-green-700 text-white rounded-none'>
+							<AiOutlineCheckSquare className='mr-2' size={25} />
+							<span>Товар додано в кошик. Слава Україні!</span>
+						</div>
+					</div>
+				)}
 				<div>
 					<ImageBlock
 						product={product}
@@ -74,13 +84,13 @@ const ProductInOrderBlock: React.FC<ProductInOrderBlockProps> = ({
 						stock={stock}
 					/>
 					{itemInCart ? (
-						<p className='p-3 w-1/2 text-xl my-4 flex gap-4 justify-end items-center'>
+						<p className='p-3 w-1/2 text-xl my-4 flex gap-4 justify-end items-center transition duration-1000'>
 							<AiOutlineCheckSquare size={25} />
 							<span>Товар у кошику</span>
 						</p>
 					) : (
 						<button
-							className='bg-btnPrimary text-white p-3 w-1/2 text-xl my-4'
+							className='bg-btnPrimary text-white p-3 w-1/2 text-xl my-4 transition duration-1000'
 							disabled={!stock}
 							onClick={() => handleAddToCart(cartItem!)}
 						>
