@@ -34,7 +34,7 @@ const Variants: React.FC<VariantsProps> = memo(
 		return (
 			<>
 				{/* PRICE */}
-				<div className='flex gap-2 items-center my-6 text-xl text-price'>
+				<div className='flex gap-2 items-center my-6 text-xl'>
 					<p className={discountPrice > 0 ? 'line-through' : ''}>
 						{<PriceTag price={variantsProduct[currentIndex].original_price} />}
 					</p>

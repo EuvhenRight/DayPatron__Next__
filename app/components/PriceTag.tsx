@@ -1,6 +1,9 @@
 import { formatPrice } from '../lib/db/format'
 
-const PriceTag = ({ price }: { price: number }) => {
+interface PriceTagProps {
+	price: number
+}
+const PriceTag: React.FC<PriceTagProps> = ({ price }) => {
 	return <span>{formatPrice(price)}</span>
 }
 

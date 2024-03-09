@@ -1,5 +1,6 @@
 'use client'
 import { useCart } from '@/app/lib/hooks/useCart'
+import { memo } from 'react'
 import { IoMdClose } from 'react-icons/io'
 import CartItem from '../Cart-item'
 import PriceTag from '../PriceTag'
@@ -8,13 +9,14 @@ interface Props {
 	isOpenDrawer: boolean
 	toggleDrawer: () => void
 }
-const Drawer: React.FC<Props> = ({ toggleDrawer, isOpenDrawer }) => {
+const Drawer: React.FC<Props> = memo(({ toggleDrawer, isOpenDrawer }) => {
 	const { cartItems, handleClearCart, cartTotalAmount, cartTotalSumDiscount } =
 		useCart()
 
 	return (
 		<div
 			className={`fixed top-0 left-0 w-full h-full bg-gray-200 bg-opacity-50 z-10 ${
+				//TODO: Fix animation
 				!isOpenDrawer && 'animate-drawer-close'
 			}`}
 		>
@@ -35,6 +37,7 @@ const Drawer: React.FC<Props> = ({ toggleDrawer, isOpenDrawer }) => {
 							style={{ color: 'white', width: 25, height: 25 }}
 						/>
 					</div>
+					{/* IF CART IS EMPTY */}
 					{!cartItems || cartItems.length === 0 ? (
 						<h2 className='text-white text-xl py-2'>Your cart is empty</h2>
 					) : (
@@ -51,6 +54,7 @@ const Drawer: React.FC<Props> = ({ toggleDrawer, isOpenDrawer }) => {
 							{/* SECOND PART CHECKOUT */}
 							<div className='relative'>
 								<div className='flex justify-end'>
+									{/* CLEAR CART BUTTON */}
 									<button
 										onClick={() => handleClearCart()}
 										className='border border-white my-2 p-1 marker:hover:translate-x-0 opacity-60 text-white hover:opacity-100 transition text-sm'
@@ -58,6 +62,7 @@ const Drawer: React.FC<Props> = ({ toggleDrawer, isOpenDrawer }) => {
 										Clear Cart
 									</button>
 								</div>
+								{/* SUBTOTAL AND DISCOUNT */}
 								<div className='flex flex-col text-white py-4 mb-4'>
 									<div className='flex justify-between'>
 										<h2>SUBTOTAL</h2>
@@ -70,6 +75,7 @@ const Drawer: React.FC<Props> = ({ toggleDrawer, isOpenDrawer }) => {
 										</h2>
 									</div>
 								</div>
+								{/* CHECKOUT */}
 								<button className='w-full bg-btnPrimary text-white text-xl py-2 transition ease-in-out delay-350 animate-pulse'>
 									Checkout
 								</button>
@@ -80,5 +86,5 @@ const Drawer: React.FC<Props> = ({ toggleDrawer, isOpenDrawer }) => {
 			</div>
 		</div>
 	)
-}
+})
 export default Drawer

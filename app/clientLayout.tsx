@@ -1,15 +1,19 @@
 'use client'
-import React, { useState } from 'react'
+import React, { memo, useCallback, useState } from 'react'
 import Drawer from './components/drawer'
 import Header from './components/header'
 import CartProvider from './lib/providers/CartProvider'
 
-function ClientLayout({ children }: { children: React.ReactNode }) {
+interface ClientLayoutProps {
+	children: React.ReactNode
+}
+
+const ClientLayout: React.FC<ClientLayoutProps> = memo(({ children }) => {
 	const [isOpenDrawer, setIsOpenDrawer] = useState(false)
 
-	const toggleDrawer = () => {
+	const toggleDrawer = useCallback(() => {
 		setIsOpenDrawer(!isOpenDrawer)
-	}
+	}, [isOpenDrawer])
 
 	return (
 		<div>
@@ -22,6 +26,6 @@ function ClientLayout({ children }: { children: React.ReactNode }) {
 			</CartProvider>
 		</div>
 	)
-}
+})
 
 export default ClientLayout

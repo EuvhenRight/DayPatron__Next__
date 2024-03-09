@@ -1,7 +1,7 @@
 import ProductInOrderBlock from '@/app/components/ProductInOrderBlock'
 import prisma from '@/app/lib/db/client'
 import { Metadata } from 'next'
-import React, { cache } from 'react'
+import { cache } from 'react'
 
 interface ProductDetailsProps {
 	params: {
@@ -32,9 +32,7 @@ export const generateMetadata = async ({
 	}
 }
 
-const ProductDetails: React.FC<ProductDetailsProps> = async ({
-	params: { id },
-}: ProductDetailsProps) => {
+const ProductDetails = async ({ params: { id } }: ProductDetailsProps) => {
 	const product = await getProduct(id)
 
 	return (

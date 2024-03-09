@@ -3,6 +3,7 @@ import { useCart } from '@/app/lib/hooks/useCart'
 import classNames from 'classnames'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { memo } from 'react'
 import {
 	AiOutlineSearch,
 	AiOutlineShoppingCart,
@@ -10,13 +11,13 @@ import {
 } from 'react-icons/ai'
 import ThemeController from '../ThemeController'
 
-interface Props {
+interface HeaderProps {
 	toggleDrawer: () => void
 }
-function Header({ toggleDrawer }: Props) {
+const Header: React.FC<HeaderProps> = memo(({ toggleDrawer }) => {
 	const pathname = usePathname()
 	const { cartItems } = useCart()
-	console.log(cartItems)
+
 	const links = [
 		{ label: 'Products', href: '/products' },
 		{ label: 'About', href: '/about' },
@@ -29,12 +30,12 @@ function Header({ toggleDrawer }: Props) {
 				<Link href='/'>
 					<img className='w-48' src='/images/DayLogo.svg' alt='logo' />
 				</Link>
+				{/* LINKS MENU */}
 				<ul className='flex space-x-5'>
 					{links.map(link => (
 						<li key={link.href}>
 							<Link
 								className={classNames({
-									'text-zinc-900': pathname === link.href,
 									'text-zinc-500': pathname !== link.href,
 									'hover:text-zinc-700 transition-colors': true,
 								})}
@@ -44,6 +45,7 @@ function Header({ toggleDrawer }: Props) {
 							</Link>
 						</li>
 					))}
+					{/* ICONS MENU */}
 				</ul>
 				<ul className='flex space-x-6 justify-center items-center'>
 					<li>
@@ -62,6 +64,7 @@ function Header({ toggleDrawer }: Props) {
 								className='w-full h-full'
 								onClick={toggleDrawer}
 							/>
+							{/* CART INDICATOR */}
 							{cartItems && cartItems.length > 0 && (
 								<span className='inline-flex rounded-full h-3 w-3 bg-btnPrimary absolute top-0 right-0 border border-white'></span>
 							)}
@@ -69,11 +72,12 @@ function Header({ toggleDrawer }: Props) {
 					</li>
 				</ul>
 			</nav>
+			{/* THEME */}
 			<div className='absolute top-9 right-5'>
 				<ThemeController />
 			</div>
 		</header>
 	)
-}
+})
 
 export default Header

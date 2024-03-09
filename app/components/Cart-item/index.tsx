@@ -39,6 +39,7 @@ const CartItem: React.FC<CartItemProps> = memo(({ item, toggleDrawer }) => {
 						style={{ color: 'white', width: 20, height: 20 }}
 					/>
 				</div>
+				{/* SIZE */}
 				<div className='flex gap-2'>
 					<h4>Size:</h4>
 					<h4>{item.volume}</h4>
@@ -50,6 +51,7 @@ const CartItem: React.FC<CartItemProps> = memo(({ item, toggleDrawer }) => {
 							onClick={() => handleDecrementQuantity(item)}
 							className='hover:bg-white hover:text-gridOverlay px-2'
 						>
+							{/* MINUS ICON */}
 							<img
 								className='w-3'
 								src='/icons/minus-sign.svg'
@@ -61,6 +63,7 @@ const CartItem: React.FC<CartItemProps> = memo(({ item, toggleDrawer }) => {
 							onClick={() => handleIncrementQuantity(item)}
 							className='hover:bg-white hover:text-gridOverlay px-2'
 						>
+							{/* PLUS ICON */}
 							<img
 								className='w-3 fill-white hover:fill-black'
 								src='/icons/add-plus.svg'
@@ -71,7 +74,7 @@ const CartItem: React.FC<CartItemProps> = memo(({ item, toggleDrawer }) => {
 					{/* PRICE */}
 					{/* DISCOUNT ON/OFF */}
 					{item.discount_price! > 0 ? (
-						<p className='text-btnPrimary font-bold'>
+						<p className='text-green-500 font-bold'>
 							{<PriceTag price={item.discount_price!} />}
 						</p>
 					) : (

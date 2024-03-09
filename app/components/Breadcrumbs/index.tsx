@@ -6,10 +6,9 @@ import { AiFillHome } from 'react-icons/ai'
 interface BreadcrumbsProps {
 	children?: string
 }
-const Breadcrumbs = ({ children }: BreadcrumbsProps) => {
+const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ children }) => {
 	const pathname = usePathname()
 
-	// Define the breadcrumb links based on the current page
 	const breadcrumbLinks = [
 		{
 			path: '/',
@@ -19,13 +18,13 @@ const Breadcrumbs = ({ children }: BreadcrumbsProps) => {
 		{ path: '/products', text: 'Products' },
 	]
 
-	// Filter out the current page from the breadcrumb links
+	// FILTER THE BREADCRUMBS LINKS
 	const filteredBreadcrumbs = breadcrumbLinks.filter(
 		breadcrumb => breadcrumb.path !== pathname
 	)
 
 	return (
-		<div className='text-sm breadcrumbs text-textBody py-4'>
+		<div className='text-sm breadcrumbs py-4'>
 			<ul>
 				{filteredBreadcrumbs.map((breadcrumb, index) => (
 					<li key={index}>

@@ -4,17 +4,18 @@ import { Arrow } from '@egjs/flicking-plugins'
 import '@egjs/flicking-plugins/dist/flicking-plugins.css'
 import '@egjs/flicking/dist/flicking.css'
 import Flicking, { ViewportSlot } from '@egjs/react-flicking'
-import React, { useEffect, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import Card from '../Card'
 
 interface CarouselProps {
 	productsData: Product[]
 }
 
-const Carousel: React.FC<CarouselProps> = ({ productsData }) => {
+const Carousel: React.FC<CarouselProps> = memo(({ productsData }) => {
 	const plugins = [new Arrow()]
 	const [panelsPerView, setPanelsPerView] = useState<number>()
 
+	//RESPONSIVE DESIGN
 	useEffect(() => {
 		const handleResize = () => {
 			// SET PANELS PER VIEW
@@ -69,7 +70,7 @@ const Carousel: React.FC<CarouselProps> = ({ productsData }) => {
 				// ALIGN
 				align={'prev'}
 				// FIRST PANEL
-				firstPanelSize='200px'
+				firstpanelsize='200px'
 				className='xl:container xl:mx-auto'
 			>
 				{productsData.map(product => (
@@ -81,6 +82,7 @@ const Carousel: React.FC<CarouselProps> = ({ productsData }) => {
 						<Card product={product} />
 					</div>
 				))}
+				{/* TODO: CHANGE ARROW COLOR */}
 				<ViewportSlot>
 					<span className='flicking-arrow-prev'></span>
 					<span className='flicking-arrow-next'></span>
@@ -88,6 +90,6 @@ const Carousel: React.FC<CarouselProps> = ({ productsData }) => {
 			</Flicking>
 		</>
 	)
-}
+})
 
 export default Carousel

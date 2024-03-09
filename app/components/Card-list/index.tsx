@@ -7,8 +7,7 @@ interface CardListProps {
 	productsData: Product[]
 }
 
-const CardList: React.FC<CardListProps> = ({ productsData }: CardListProps) => {
-	// const [parent, enable] = useAutoAnimate({ duration: 200 })
+const CardList: React.FC<CardListProps> = ({ productsData }) => {
 	return (
 		<>
 			<Carousel productsData={productsData} />
