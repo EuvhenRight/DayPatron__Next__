@@ -1,41 +1,66 @@
 // components/CartItem.tsx
 'use client'
+import { useCart } from '@/app/lib/hooks/useCart'
+import { ProductInCart } from '@/app/lib/types/types'
+import Link from 'next/link'
+import { memo } from 'react'
+import { IoMdClose } from 'react-icons/io'
+import PriceTag from '../PriceTag'
 
-// interface CartItemProps {
-// 	cartItem: CartItemModel
-// 	onQuantityChange: (itemId: string, newQuantity: number) => void
-// }
+interface CartItemProps {
+	item: ProductInCart
+	toggleDrawer: () => void
+}
 
-const CartItem = () => {
-	// const handleQuantityChange = (newQuantity: number) => {
-	// 	// Notify the parent component (Cart) about the quantity change
-	// 	onQuantityChange(cartItem.id, newQuantity)
-	// }
-
+const CartItem: React.FC<CartItemProps> = memo(({ item, toggleDrawer }) => {
+	const {
+		handleRemoveFromCart,
+		handleIncrementQuantity,
+		handleDecrementQuantity,
+	} = useCart()
 	return (
 		<div className='flex flex-row text-white p-3 w-full justify-between border-b-2 border-black'>
-			<img
-				className='w-24 bg-white'
-				src='/images/Carbon-killer-100ml.png'
-				alt=''
-			/>
+			{/* CLICK TO PRODUCT DETAILS */}
+			<Link href={`/products/${item.id}/details`}>
+				<img
+					onClick={toggleDrawer}
+					className='w-20'
+					src={`/images/${item.image}`}
+					alt={item.image}
+				/>
+			</Link>
 			<div className='w-full flex flex-col justify-between ml-4'>
-				<h2 className='text-typeCollectionTitle'>Carbon killer</h2>
+				<div className='flex justify-between items-center'>
+					<h2 className='text-typeCollectionTitle'>{item.name}</h2>
+					{/* REMOVE ONE CART ITEM FROM CART */}
+					<IoMdClose
+						onClick={() => handleRemoveFromCart(item)}
+						className='hover:translate-x-0 opacity-60 hover:opacity-100 transition cursor-pointer'
+						style={{ color: 'white', width: 20, height: 20 }}
+					/>
+				</div>
 				<div className='flex gap-2'>
 					<h4>Size:</h4>
-					<h4>100 ml</h4>
+					<h4>{item.volume}</h4>
 				</div>
 				<div className='flex justify-between'>
 					<div className='flex border border-white text-sm'>
-						<button className='hover:bg-white hover:text-gridOverlay px-2'>
+						{/* QUANTITY */}
+						<button
+							onClick={() => handleDecrementQuantity(item)}
+							className='hover:bg-white hover:text-gridOverlay px-2'
+						>
 							<img
 								className='w-3'
 								src='/icons/minus-sign.svg'
 								alt='minus_icon'
 							/>
 						</button>
-						<h4 className='p-2'>1</h4>
-						<button className='hover:bg-white hover:text-gridOverlay px-2'>
+						<h4 className='p-1'>{item.quantity}</h4>
+						<button
+							onClick={() => handleIncrementQuantity(item)}
+							className='hover:bg-white hover:text-gridOverlay px-2'
+						>
 							<img
 								className='w-3 fill-white hover:fill-black'
 								src='/icons/add-plus.svg'
@@ -43,10 +68,18 @@ const CartItem = () => {
 							/>
 						</button>
 					</div>
-					<h4>$99.99</h4>
+					{/* PRICE */}
+					{/* DISCOUNT ON/OFF */}
+					{item.discount_price! > 0 ? (
+						<p className='text-btnPrimary font-bold'>
+							{<PriceTag price={item.discount_price!} />}
+						</p>
+					) : (
+						<h4>{<PriceTag price={item.original_price} />}</h4>
+					)}
 				</div>
 			</div>
 		</div>
 	)
-}
+})
 export default CartItem

@@ -14,7 +14,9 @@ function ClientLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<div>
 			<CartProvider>
-				{isOpenDrawer && <Drawer toggleDrawer={toggleDrawer} />}
+				{isOpenDrawer && (
+					<Drawer toggleDrawer={toggleDrawer} isOpenDrawer={isOpenDrawer} />
+				)}
 				<Header toggleDrawer={toggleDrawer} />
 				<main>{children}</main>
 			</CartProvider>

@@ -106,10 +106,28 @@ const config: Config = {
 						opacity: '1',
 					},
 				},
+				'drawer-open': {
+					'0%': {
+						transform: 'translateX(100%)',
+					},
+					'100%': {
+						transform: 'translateX(0)',
+					},
+				},
+				'drawer-close': {
+					'0%': {
+						transform: 'translateX(0)',
+					},
+					'100%': {
+						transform: 'translateX(100%)',
+					},
+				},
 			},
 			animation: {
 				'slide-right':
 					'slide-right 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both',
+				'drawer-open': 'drawer-open 0.5s ease-in-out both',
+				'drawer-close': 'drawer-close 0.5s ease-in-out both',
 			},
 		},
 	},

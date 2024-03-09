@@ -56,8 +56,6 @@ const ImageBlock: React.FC<ImageBlockProps> = ({
 			setCurrentIndex(index)
 		}
 	}
-	console.log(currentIndex)
-	// Function to update the parent container position
 
 	return (
 		<div className=' xl:container xl:mx-auto sticky top-0'>
@@ -80,7 +78,7 @@ const ImageBlock: React.FC<ImageBlockProps> = ({
 								<li
 									tabIndex={0}
 									onClick={() => toggleImage(index)}
-									className='focus:ring-2 focus:ring-black focus:outline-none snap-center m-2 gap-2 cursor-pointer'
+									className='focus:ring-2 focus:ring-black focus:outline-none dark:focus:ring-gray-200 focus:snap-center m-2 gap-2 cursor-pointer'
 									key={index}
 								>
 									<img src={`/images/${item.image}`} alt='item.url' />
@@ -108,7 +106,7 @@ const ImageBlock: React.FC<ImageBlockProps> = ({
 							? `/images/${product.variants[currentIndex].image}`
 							: `/images/${product.image[0].url}`
 					}
-					className={`cursor-zoom-in w-auto px-24 max-h-[700px] ${
+					className={`cursor-zoom-in w-auto px-24 max-h-[650px] ${
 						// APPLY ANIMATION CLASS
 						animate ? 'animate-slide-right' : ''
 					}`}

@@ -1,4 +1,5 @@
 'use client'
+import { useCart } from '@/app/lib/hooks/useCart'
 import classNames from 'classnames'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -14,7 +15,8 @@ interface Props {
 }
 function Header({ toggleDrawer }: Props) {
 	const pathname = usePathname()
-
+	const { cartItems } = useCart()
+	console.log(cartItems)
 	const links = [
 		{ label: 'Products', href: '/products' },
 		{ label: 'About', href: '/about' },
@@ -60,7 +62,9 @@ function Header({ toggleDrawer }: Props) {
 								className='w-full h-full'
 								onClick={toggleDrawer}
 							/>
-							<span className='inline-flex rounded-full h-3 w-3 bg-btnPrimary absolute top-0 right-0 border border-white'></span>
+							{cartItems && cartItems.length > 0 && (
+								<span className='inline-flex rounded-full h-3 w-3 bg-btnPrimary absolute top-0 right-0 border border-white'></span>
+							)}
 						</div>
 					</li>
 				</ul>

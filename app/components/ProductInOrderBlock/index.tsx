@@ -84,13 +84,13 @@ const ProductInOrderBlock: React.FC<ProductInOrderBlockProps> = ({
 						stock={stock}
 					/>
 					{itemInCart ? (
-						<p className='p-3 w-1/2 text-xl my-4 flex gap-4 justify-end items-center transition duration-1000'>
+						<p className='p-3 w-1/2 text-xl my-4 flex gap-4 justify-end items-center'>
 							<AiOutlineCheckSquare size={25} />
 							<span>Товар у кошику</span>
 						</p>
 					) : (
 						<button
-							className='bg-btnPrimary text-white p-3 w-1/2 text-xl my-4 transition duration-1000'
+							className='bg-btnPrimary text-white p-3 w-1/2 text-xl my-4'
 							disabled={!stock}
 							onClick={() => handleAddToCart(cartItem!)}
 						>
