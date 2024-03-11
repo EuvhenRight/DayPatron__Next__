@@ -3,7 +3,7 @@ import { useCart } from '@/app/lib/hooks/useCart'
 import classNames from 'classnames'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { memo } from 'react'
+import { memo, useState } from 'react'
 import {
 	AiOutlineSearch,
 	AiOutlineShoppingCart,
@@ -15,6 +15,7 @@ interface HeaderProps {
 	toggleDrawer: () => void
 }
 const Header: React.FC<HeaderProps> = memo(({ toggleDrawer }) => {
+	const [isOpen, setIsOpen] = useState(false)
 	const pathname = usePathname()
 	const { cartItems } = useCart()
 
@@ -24,14 +25,17 @@ const Header: React.FC<HeaderProps> = memo(({ toggleDrawer }) => {
 		{ label: 'Where to Buy', href: '/where-to-buy' },
 		{ label: 'Contacts', href: '/contacts' },
 	]
+
+	//<AiOutlineMenu />
+	//<AiOutlineClose />
 	return (
 		<header className='border-b border-gray-300 bg-none relative dark:border-red-500'>
-			<nav className='flex justify-between xl:container xl:mx-auto py-5 items-center'>
+			<nav className='nav-class flex justify-between py-5 items-center xl:container mx-auto'>
 				<Link href='/'>
-					<img className='w-48' src='/images/DayLogo.svg' alt='logo' />
+					<img className='lg:w-48' src='/images/DayLogo.svg' alt='logo' />
 				</Link>
 				{/* LINKS MENU */}
-				<ul className='flex space-x-5'>
+				<ul className='flex space-x-5 text-xl font-weight-bolt'>
 					{links.map(link => (
 						<li key={link.href}>
 							<Link
@@ -50,16 +54,16 @@ const Header: React.FC<HeaderProps> = memo(({ toggleDrawer }) => {
 				<ul className='flex space-x-6 justify-center items-center'>
 					<li>
 						<Link href='/login'>
-							<AiOutlineUser className='w-7 h-7 cursor-pointer' />
+							<AiOutlineUser className='w-8 h-8 cursor-pointer' />
 						</Link>
 					</li>
 					<li>
-						<div className='w-7 h-7 cursor-pointer'>
+						<div className='w-8 h-8 cursor-pointer'>
 							<AiOutlineSearch className='w-full h-full' />
 						</div>
 					</li>
 					<li>
-						<div className='w-7 h-7 cursor-pointer relative'>
+						<div className='w-8 h-8 cursor-pointer relative'>
 							<AiOutlineShoppingCart
 								className='w-full h-full'
 								onClick={toggleDrawer}
@@ -70,12 +74,11 @@ const Header: React.FC<HeaderProps> = memo(({ toggleDrawer }) => {
 							)}
 						</div>
 					</li>
+					<li>
+						<ThemeController />
+					</li>
 				</ul>
 			</nav>
-			{/* THEME */}
-			<div className='absolute top-9 right-5'>
-				<ThemeController />
-			</div>
 		</header>
 	)
 })

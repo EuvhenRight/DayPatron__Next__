@@ -32,12 +32,14 @@ export const CartContextProvider = (props: Props) => {
 	const [cartItems, setCartItems] = useState<ProductInCart[] | null>(null)
 	const [showToast, setShowToast] = useState<boolean>(false)
 
+	// GET CART
 	useEffect(() => {
 		const localCard: any = localStorage.getItem('ProductDayPatron')
 		const cart = JSON.parse(localCard)
 		setCartItems(cart)
 	}, [])
 
+	// CALCULATE TOTAL
 	useEffect(() => {
 		if (cartItems) {
 			const { qty, amount, sumDiscount } = cartItems?.reduce(
@@ -67,7 +69,7 @@ export const CartContextProvider = (props: Props) => {
 			setCartTotalAmount(amount)
 		}
 	}, [cartItems])
-
+	// ADD TO CART
 	const handleAddToCart = useCallback((product: ProductInCart) => {
 		let clear: NodeJS.Timeout // Define clear variable in the outer scope
 		setCartItems(prev => {
@@ -88,12 +90,13 @@ export const CartContextProvider = (props: Props) => {
 		return () => clearTimeout(clear)
 	}, [])
 
+	// CLEAR CART
 	const handleClearCart = useCallback(() => {
 		setCartItems([])
 		setCartTotalQuantity(0)
 		localStorage.removeItem('ProductDayPatron')
 	}, [cartItems])
-
+	// REMOVE FROM CART
 	const handleRemoveFromCart = useCallback(
 		(product: ProductInCart) => {
 			if (cartItems) {
@@ -109,7 +112,7 @@ export const CartContextProvider = (props: Props) => {
 		},
 		[cartItems]
 	)
-
+	// INCREMENT QUANTITY
 	const handleIncrementQuantity = useCallback(
 		(product: ProductInCart) => {
 			let updateCartItems
@@ -137,7 +140,7 @@ export const CartContextProvider = (props: Props) => {
 		},
 		[cartItems]
 	)
-
+	// DECREMENT QUANTITY
 	const handleDecrementQuantity = useCallback(
 		(product: ProductInCart) => {
 			let updateCartItems

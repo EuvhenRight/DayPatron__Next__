@@ -4,7 +4,7 @@ import { useCart } from '@/app/lib/hooks/useCart'
 import { ProductInCart } from '@/app/lib/types/types'
 import Link from 'next/link'
 import { memo } from 'react'
-import { IoMdClose } from 'react-icons/io'
+import { AiOutlineClose } from 'react-icons/ai'
 import PriceTag from '../PriceTag'
 
 interface CartItemProps {
@@ -19,7 +19,7 @@ const CartItem: React.FC<CartItemProps> = memo(({ item, toggleDrawer }) => {
 		handleDecrementQuantity,
 	} = useCart()
 	return (
-		<div className='flex flex-row text-white p-3 w-full justify-between border-b-2 border-black'>
+		<div className='flex flex-row text-white py-2 w-full justify-between border-b-2 border-black'>
 			{/* CLICK TO PRODUCT DETAILS */}
 			<Link href={`/products/${item.id}/details`}>
 				<img
@@ -33,7 +33,7 @@ const CartItem: React.FC<CartItemProps> = memo(({ item, toggleDrawer }) => {
 				<div className='flex justify-between items-center'>
 					<h2 className='text-typeCollectionTitle'>{item.name}</h2>
 					{/* REMOVE ONE CART ITEM FROM CART */}
-					<IoMdClose
+					<AiOutlineClose
 						onClick={() => handleRemoveFromCart(item)}
 						className='hover:translate-x-0 opacity-60 hover:opacity-100 transition cursor-pointer'
 						style={{ color: 'white', width: 20, height: 20 }}

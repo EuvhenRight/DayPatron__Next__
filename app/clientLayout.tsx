@@ -12,15 +12,21 @@ const ClientLayout: React.FC<ClientLayoutProps> = memo(({ children }) => {
 	const [isOpenDrawer, setIsOpenDrawer] = useState(false)
 
 	const toggleDrawer = useCallback(() => {
-		setIsOpenDrawer(!isOpenDrawer)
+		setIsOpenDrawer(prev => !prev)
 	}, [isOpenDrawer])
 
 	return (
-		<div>
+		<div className='relative'>
+			{isOpenDrawer && (
+				<button
+					onClick={() => toggleDrawer()}
+					className='border border-white m-4 p-1 marker:hover:translate-x-0 opacity-60 text-white hover:opacity-100 transition text-sm absolute top-0 right-0 z-50 '
+				>
+					Close
+				</button>
+			)}
 			<CartProvider>
-				{isOpenDrawer && (
-					<Drawer toggleDrawer={toggleDrawer} isOpenDrawer={isOpenDrawer} />
-				)}
+				<Drawer toggleDrawer={toggleDrawer} isOpenDrawer={isOpenDrawer} />
 				<Header toggleDrawer={toggleDrawer} />
 				<main>{children}</main>
 			</CartProvider>

@@ -1,20 +1,15 @@
 // app/api/user/login-route.ts
 import prisma from '@/app/lib/db/client'
+import { ValidationSchema } from '@/app/lib/db/validation'
 import jwt from 'jsonwebtoken'
 import { NextRequest, NextResponse } from 'next/server'
-import { z } from 'zod'
-
-const LoginSchema = z.object({
-	email: z.string().email({ message: 'Invalid email address' }),
-	password: z.string().length(6),
-})
 
 export async function POST(request: NextRequest) {
 	try {
 		const requestData = await request.json()
 
 		// Validate the request body
-		const validatedBody = LoginSchema.safeParse(requestData)
+		const validatedBody = ValidationSchema.loginUser.safeParse(requestData)
 		if (!validatedBody.success) {
 			return NextResponse.json(validatedBody.error.errors, { status: 400 })
 		}

@@ -4,6 +4,10 @@ export const ValidationSchema = {
 	authUser: z.object({
 		email: z.string().email({ message: 'Invalid email address' }),
 	}),
+	loginUser: z.object({
+		email: z.string().email({ message: 'Invalid email address' }),
+		password: z.string().length(6),
+	}),
 	newProductSchema: z.object({
 		linkName: z.string(),
 		name: z.string(),

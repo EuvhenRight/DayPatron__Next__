@@ -1,7 +1,9 @@
 'use client'
 import { Product } from '@prisma/client'
 import { memo, useCallback, useRef } from 'react'
-import { AiOutlineLeft } from 'react-icons/ai'
+import { AiOutlineClose, AiOutlineLeft } from 'react-icons/ai'
+import Zoom from 'react-medium-image-zoom'
+import 'react-medium-image-zoom/dist/styles.css'
 
 interface ImageBlockProps {
 	product: Product
@@ -51,6 +53,7 @@ const ImageBlock: React.FC<ImageBlockProps> = memo(
 				}
 			}
 		}, [currentIndex])
+		// TOGGLE IMAGE
 		const toggleImage = useCallback(
 			(index: number) => {
 				if (index !== currentIndex) {
@@ -60,7 +63,6 @@ const ImageBlock: React.FC<ImageBlockProps> = memo(
 			},
 			[currentIndex, setAnimate, setCurrentIndex]
 		)
-
 		return (
 			<div className=' xl:container xl:mx-auto sticky top-0'>
 				<div className='flex xl:flex-row items-center'>
@@ -82,7 +84,7 @@ const ImageBlock: React.FC<ImageBlockProps> = memo(
 									<li
 										tabIndex={0}
 										onClick={() => toggleImage(index)}
-										className='focus:ring-2 focus:ring-black focus:outline-none dark:focus:ring-gray-200 focus:snap-center m-2 gap-2 cursor-pointer'
+										className='focus:ring-black focus:outline-none dark:focus:ring-2 dark:focus:ring-gray-200 focus:snap-center m-2 gap-2 cursor-pointer'
 										key={index}
 									>
 										<img src={`/images/${item.image}`} alt='item.url' />
@@ -104,22 +106,27 @@ const ImageBlock: React.FC<ImageBlockProps> = memo(
 						</div>
 					</div>
 					{/* MAIN IMAGE */}
-					<img
-						src={
-							currentIndex !== null
-								? `/images/${product.variants[currentIndex].image}`
-								: `/images/${product.image[0].url}`
-						}
-						className={`cursor-zoom-in w-auto px-24 max-h-[650px] ${
-							// APPLY ANIMATION CLASS
-							animate ? 'animate-slide-right' : ''
-						}`}
-						alt={product.name}
-						onAnimationEnd={() => {
-							// RESET ANIMATION CLASS
-							setAnimate(false)
-						}}
-					/>
+					<div className='relative'>
+						<Zoom IconUnzoom={AiOutlineClose}>
+							<img
+								src={
+									currentIndex !== null
+										? `/images/${product.variants[currentIndex].image}`
+										: `/images/${product.image[0].url}`
+								}
+								className={`cursor-zoom-in w-auto px-24 max-h-[650px] ${
+									// APPLY ANIMATION CLASS
+									animate ? 'animate-slide-right' : ''
+								}`}
+								style={{ width: '100%', height: 'auto', objectFit: 'contain' }} // Ensure the image fits within the container
+								alt={product.name}
+								onAnimationEnd={() => {
+									// RESET ANIMATION CLASS
+									setAnimate(false)
+								}}
+							/>
+						</Zoom>
+					</div>
 				</div>
 			</div>
 		)
