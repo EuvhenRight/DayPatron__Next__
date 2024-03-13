@@ -75,8 +75,8 @@ const ProductInOrderBlock: React.FC<ProductInOrderBlockProps> = memo(
 						</h1>
 						<p className='font-bold italic my-2'>{product.UTP}</p>
 						<div className='my-2 flex justify-end gap-2 mt-6'>
-							<p>{product.current_rating} відгуків</p>
 							<RatingInfo rating={product.current_rating} />
+							<p>{product.current_rating} відгуків</p>
 						</div>
 						{/* VARIANTS */}
 						<Variants

@@ -22,7 +22,11 @@ const Card: React.FC<ProductCardProps> = memo(({ product }) => {
 					</div>
 				)}
 				<div className='flex flex-col items-center'>
-					<img className='w-56' src={`/images/${product.variants[1].image}`} />
+					<img
+						className='w-56'
+						src={`/images/${product.variants[1].image}`}
+						alt={product.variants[1].image}
+					/>
 					<button className='group-hover:opacity-100 group-hover:-translate-y-2 opacity-0 w-full bg-btnPrimary text-white py-2 px-1 transition ease-in delay-150 mt-2'>
 						View Details
 					</button>

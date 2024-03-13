@@ -16,26 +16,26 @@ const Drawer: React.FC<Props> = memo(({ toggleDrawer, isOpenDrawer }) => {
 		if (isOpenDrawer) {
 			document.body.classList.add(
 				'overflow-hidden',
-				'bg-gray-200',
-				'bg-opacity-50'
+				'bg-modalBg',
+				'bg-opacity-60'
 			)
 		} else {
 			document.body.classList.remove(
 				'overflow-hidden',
-				'bg-gray-200',
-				'bg-opacity-50'
+				'bg-modalBg',
+				'bg-opacity-60'
 			)
 		}
 	}, [isOpenDrawer])
 
 	return (
 		<div
-			className={`bg-drawer fixed top-0 left-0 right-0 bottom-0 w-full h-full   z-40 ${
+			className={`fixed top-0 left-0 right-0 bottom-0 w-full h-full z-40 ${
 				isOpenDrawer ? 'translate-x-0' : 'translate-x-full'
 			} ease-in-out duration-300`}
 		>
 			<div
-				className={`bg-[--colorDrawers] absolute top-0 right-0 h-full w-96 z-50 p-4 flex flex-col`}
+				className={`bg-drawers absolute top-0 right-0 h-full w-full sm:w-96 z-50 p-4 flex flex-col`}
 			>
 				{/* FIRST PART CART */}
 				<div>
@@ -46,10 +46,12 @@ const Drawer: React.FC<Props> = memo(({ toggleDrawer, isOpenDrawer }) => {
 					</div>
 					{/* IF CART IS EMPTY */}
 					{!cartItems || cartItems.length === 0 ? (
-						<h2 className='text-white text-xl py-2'>Your cart is empty</h2>
+						<h2 className='text-white text-lg md:text-xl py-2'>
+							Your cart is empty
+						</h2>
 					) : (
 						<>
-							<div className='border-b-2 border-white pb-4 mb-1 overflow-auto max-h-[500px]'>
+							<div className='border-b-2 border-white pb-4 mb-1 overflow-auto max-h-[400px] sm:max-h-[500px]'>
 								{cartItems.map((item, index) => (
 									<CartItem
 										toggleDrawer={toggleDrawer}

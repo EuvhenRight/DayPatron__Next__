@@ -59,7 +59,7 @@ const Variants: React.FC<VariantsProps> = memo(
 						return (
 							<li
 								// FOCUS VOLUME BUTTON
-								className='cursor-pointer border border-gray-600 px-2 py-1 snap-center text-lg focus:ring focus:ring-textBody dark:focus:ring-white focus:ring-offset-2 dark:focus:ring-offset-0'
+								className='cursor-pointer border border-gray-600 px-2 py-1 snap-center text-lg focus:ring-2 focus:ring-current focus:outline-none'
 								key={index}
 								tabIndex={0}
 								onClick={() => handleVolumeClick(index)}

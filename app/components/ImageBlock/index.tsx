@@ -1,7 +1,8 @@
 'use client'
 import { Product } from '@prisma/client'
+import Image from 'next/image'
 import { memo, useCallback, useRef } from 'react'
-import { AiOutlineClose, AiOutlineLeft } from 'react-icons/ai'
+import { AiOutlineFullscreenExit, AiOutlineLeft } from 'react-icons/ai'
 import Zoom from 'react-medium-image-zoom'
 import 'react-medium-image-zoom/dist/styles.css'
 
@@ -84,7 +85,7 @@ const ImageBlock: React.FC<ImageBlockProps> = memo(
 									<li
 										tabIndex={0}
 										onClick={() => toggleImage(index)}
-										className='focus:ring-black focus:outline-none dark:focus:ring-2 dark:focus:ring-gray-200 focus:snap-center m-2 gap-2 cursor-pointer'
+										className='focus:outline-none border border-gray-600 focus:ring-2 focus:ring-current focus:ring-inset m-2 gap-2 cursor-pointer'
 										key={index}
 									>
 										<img src={`/images/${item.image}`} alt='item.url' />
@@ -107,8 +108,8 @@ const ImageBlock: React.FC<ImageBlockProps> = memo(
 					</div>
 					{/* MAIN IMAGE */}
 					<div className='relative'>
-						<Zoom IconUnzoom={AiOutlineClose}>
-							<img
+						<Zoom IconUnzoom={AiOutlineFullscreenExit}>
+							<Image
 								src={
 									currentIndex !== null
 										? `/images/${product.variants[currentIndex].image}`
@@ -120,6 +121,8 @@ const ImageBlock: React.FC<ImageBlockProps> = memo(
 								}`}
 								style={{ width: '100%', height: 'auto', objectFit: 'contain' }} // Ensure the image fits within the container
 								alt={product.name}
+								width={1000}
+								height={650}
 								onAnimationEnd={() => {
 									// RESET ANIMATION CLASS
 									setAnimate(false)
