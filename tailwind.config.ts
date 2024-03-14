@@ -14,7 +14,7 @@ const config: Config = {
 			colors: {
 				announcement: '#6a8469',
 				announcementText: '#fffffe',
-				body: '#fefefe',
+				body: '#f5f5f5',
 				bodyAlpha05: 'rgba(254, 254, 254, 0.05)',
 				bodyDim: '#f1f1f1',
 				bodyLightDim: '#f9f9f9',
@@ -56,7 +56,6 @@ const config: Config = {
 				textBodyAlpha005: 'rgba(28, 27, 25, 0.05)',
 				textBodyAlpha008: 'rgba(28, 27, 25, 0.08)',
 				textSavings: '#d62a2f',
-				// Add more colors based on your custom properties
 			},
 			spacing: {
 				gridGutter: '17px',

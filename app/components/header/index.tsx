@@ -2,6 +2,7 @@
 import { useCart } from '@/app/lib/hooks/useCart'
 import classNames from 'classnames'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { memo, useState } from 'react'
 import {
 	AiOutlineClose,
@@ -20,6 +21,7 @@ const Header: React.FC<HeaderProps> = memo(({ toggleDrawer }) => {
 	const [isOpenMenu, setIsOpenMenu] = useState(false)
 	const { cartItems } = useCart()
 	const [isActive, setIsActive] = useState('')
+	const pathName = usePathname()
 
 	const links = [
 		{ label: 'Products', href: '/products' },
@@ -55,7 +57,8 @@ const Header: React.FC<HeaderProps> = memo(({ toggleDrawer }) => {
 											true,
 									},
 									{
-										'border-b-2 border-b-red-500': isActive === link.href,
+										'border-b-2 border-b-red-500':
+											isActive === link.href || pathName === link.href,
 									}
 								)}
 								onClick={() => toggleActive(link.href)}

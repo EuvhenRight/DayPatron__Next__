@@ -1,13 +1,25 @@
-import { z } from 'zod'
+import { ZodSchema, z } from 'zod'
+
+export interface AuthUserSchema {
+	email: string
+}
+
+interface LoginUserSchema {
+	email: string
+	password: string
+}
 
 export const ValidationSchema = {
 	authUser: z.object({
-		email: z.string().email({ message: 'Invalid email address' }),
-	}),
+		email: z
+			.string()
+			.nonempty('This field is required')
+			.email({ message: 'Invalid email address' }),
+	}) as ZodSchema<AuthUserSchema>,
 	loginUser: z.object({
 		email: z.string().email({ message: 'Invalid email address' }),
 		password: z.string().length(6),
-	}),
+	}) as ZodSchema<LoginUserSchema>,
 	newProductSchema: z.object({
 		linkName: z.string(),
 		name: z.string(),
