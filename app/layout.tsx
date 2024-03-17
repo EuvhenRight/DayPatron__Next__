@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
-		<html lang='en' data-theme='dark'>
+		<html lang='en'>
 			<body className={mulish.className}>
 				<ClientLayout>{children}</ClientLayout>
 			</body>

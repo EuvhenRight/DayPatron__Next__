@@ -1,5 +1,6 @@
 'use client'
 import classNames from 'classnames'
+import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { memo } from 'react'
@@ -65,6 +66,7 @@ const MenuMobile: React.FC<Props> = memo(
 						<button className='w-8 h-8 m-4' onClick={toggleHamburger}>
 							<ThemeController />
 						</button>
+						<button onClick={() => signOut()}>Logout</button>
 					</div>
 				</div>
 			</div>

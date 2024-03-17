@@ -2,7 +2,6 @@
 import prisma from '@/app/lib/db/client'
 import { generateRandomPassword, sendEmail } from '@/app/lib/db/mail-password'
 import { ValidationSchema } from '@/app/lib/db/validation'
-import jwt from 'jsonwebtoken'
 import { NextRequest, NextResponse } from 'next/server'
 import cron from 'node-cron'
 
@@ -53,14 +52,8 @@ export async function POST(request: NextRequest) {
 			// Schedule a task to delete the password after 15 minutes
 			schedulePasswordDeletion(updatedUser.id, 15)
 			// Generate token for the new user
-			const token = jwt.sign(
-				{
-					id: updatedUser.id,
-				},
-				process.env.KEY_JWT_AUTH!, // secret code
-				{ expiresIn: '1d' } // one day
-			)
-			return NextResponse.json({ ...updatedUser, token }, { status: 201 })
+
+			return NextResponse.json({ ...updatedUser }, { status: 201 })
 		} else {
 			// If the user doesn't exist, create a new user
 			const newUser = await prisma.user.create({
@@ -76,16 +69,7 @@ export async function POST(request: NextRequest) {
 			// Schedule a task to delete the password after 15 minutes
 			schedulePasswordDeletion(newUser.id, 15)
 
-			// Generate token for the new user
-			const token = jwt.sign(
-				{
-					id: newUser.id,
-				},
-				process.env.KEY_JWT_AUTH!, // secret code
-				{ expiresIn: '1d' } // one day
-			)
-
-			return NextResponse.json({ ...newUser, token }, { status: 201 })
+			return NextResponse.json({ ...newUser }, { status: 201 })
 		}
 	} catch (error) {
 		console.error('Error processing request:', error)

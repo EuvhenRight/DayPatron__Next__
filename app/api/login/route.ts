@@ -1,19 +1,16 @@
 // app/api/user/login-route.ts
 import prisma from '@/app/lib/db/client'
 import { ValidationSchema } from '@/app/lib/db/validation'
-import jwt from 'jsonwebtoken'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
 	try {
 		const requestData = await request.json()
-
 		// Validate the request body
 		const validatedBody = ValidationSchema.loginUser.safeParse(requestData)
 		if (!validatedBody.success) {
 			return NextResponse.json(validatedBody.error.errors, { status: 400 })
 		}
-
 		// Check if the user exists in the database
 		const existingUser = await prisma.user.findUnique({
 			where: {
@@ -21,33 +18,23 @@ export async function POST(request: NextRequest) {
 			},
 		})
 
-		if (existingUser) {
-			// Check if the provided password matches the stored password
-			if (requestData.password === existingUser.password) {
-				// Password is correct
-				const token = jwt.sign(
-					{
-						id: existingUser.id,
-					},
-					process.env.KEY_JWT_AUTH || '',
-					{ expiresIn: '1d' }
-				)
-
-				return NextResponse.json({ ...existingUser, token }, { status: 200 })
-			} else {
-				// Password is incorrect
-				return NextResponse.json(
-					{ error: 'Invalid email or password' },
-					{ status: 401 }
-				)
-			}
-		} else {
+		if (!existingUser) {
 			// User doesn't exist
 			return NextResponse.json(
 				{ error: 'User not found. Please register first.' },
 				{ status: 404 }
 			)
 		}
+
+		if (existingUser.password !== requestData.password) {
+			// Password doesn't match
+			return NextResponse.json(
+				{ error: 'Incorrect password. Please try again.' },
+				{ status: 401 }
+			)
+		}
+
+		return NextResponse.json({ existingUser }, { status: 200 })
 	} catch (error) {
 		console.error('Error processing login request:', error)
 		return NextResponse.json(
