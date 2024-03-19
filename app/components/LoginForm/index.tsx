@@ -1,5 +1,6 @@
 'use client'
 import { ValidationSchema } from '@/app/lib/db/validation'
+import { useSpinner } from '@/app/lib/hooks/useSpinner'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { AxiosError } from 'axios'
 import axios from 'axios'
@@ -13,9 +14,9 @@ import Input from '../Input'
 const LoginForm = () => {
 	const [errorMessage, setErrorMessage] = useState<string>()
 	const [isAuthUser, setIsAuthUser] = useState(false)
-	const [spinner, setSpinner] = useState(false)
 	const router = useRouter()
 	const { data: session, status } = useSession()
+	const { isLoading, startLoading, stopLoading } = useSpinner()
 
 	const {
 		register,
@@ -37,7 +38,7 @@ const LoginForm = () => {
 		// AUTH
 		if (!isAuthUser) {
 			try {
-				setSpinner(true)
+				startLoading()
 				const response = await axios.post(
 					'http://localhost:3000/api/register',
 					{
@@ -48,13 +49,13 @@ const LoginForm = () => {
 			} catch (error) {
 				console.log(error)
 			}
-			setSpinner(false)
+			stopLoading()
 		}
 		setIsAuthUser(true)
 		// LOGIN
 		if (isAuthUser) {
 			try {
-				setSpinner(true)
+				startLoading()
 				const response = await axios.post('http://localhost:3000/api/login', {
 					email,
 					password,
@@ -74,7 +75,7 @@ const LoginForm = () => {
 					})
 					.catch(err => console.log(err))
 					.finally(() => {
-						setIsAuthUser(false), setSpinner(false)
+						setIsAuthUser(false), stopLoading()
 					})
 				console.log(response.data)
 			} catch (error) {
@@ -85,7 +86,7 @@ const LoginForm = () => {
 				} else {
 					setErrorMessage('An error occurred')
 				}
-				setSpinner(false)
+				stopLoading()
 			}
 		}
 	}
@@ -147,10 +148,11 @@ const LoginForm = () => {
 						onClick={handleSubmit(onSubmit)}
 						className='btn btn-error w-full btn-lg'
 					>
-						{/* SPINNER */}
-						{spinner ? (
+						{/* SPINNER CONDITION */}
+						{isLoading ? (
 							<span className='loading loading-ring loading-md'></span>
-						) : isAuthUser ? (
+						) : // TITLE BUTTON CONDITION
+						isAuthUser ? (
 							'ВХІД'
 						) : (
 							'Продовжити'

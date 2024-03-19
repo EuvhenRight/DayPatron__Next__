@@ -4,6 +4,7 @@ import React, { memo, useCallback, useState } from 'react'
 import Drawer from './components/Drawer'
 import Header from './components/Header'
 import CartProvider from './lib/providers/CartProvider'
+import { SpinnerProvider } from './lib/providers/SpinnerProvider'
 
 interface ClientLayoutProps {
 	children: React.ReactNode
@@ -26,13 +27,15 @@ const ClientLayout: React.FC<ClientLayoutProps> = memo(({ children }) => {
 					Close
 				</button>
 			)}
-			<SessionProvider>
-				<CartProvider>
-					<Drawer toggleDrawer={toggleDrawer} isOpenDrawer={isOpenDrawer} />
-					<Header toggleDrawer={toggleDrawer} />
-					<main>{children}</main>
-				</CartProvider>
-			</SessionProvider>
+			<SpinnerProvider>
+				<SessionProvider>
+					<CartProvider>
+						<Drawer toggleDrawer={toggleDrawer} isOpenDrawer={isOpenDrawer} />
+						<Header toggleDrawer={toggleDrawer} />
+						<main>{children}</main>
+					</CartProvider>
+				</SessionProvider>
+			</SpinnerProvider>
 		</div>
 	)
 })
