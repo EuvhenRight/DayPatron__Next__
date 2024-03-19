@@ -3,10 +3,10 @@ import { ValidationSchema } from '@/app/lib/db/validation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { AxiosError } from 'axios'
 import axios from 'axios'
-import { signIn } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import Input from '../Input'
 
@@ -15,6 +15,7 @@ const LoginForm = () => {
 	const [isAuthUser, setIsAuthUser] = useState(false)
 	const [spinner, setSpinner] = useState(false)
 	const router = useRouter()
+	const { data: session, status } = useSession()
 
 	const {
 		register,
@@ -58,6 +59,7 @@ const LoginForm = () => {
 					email,
 					password,
 				})
+				// SING IN CREDENTIALS
 				signIn('credentials', {
 					...data,
 					redirect: false,
@@ -91,9 +93,27 @@ const LoginForm = () => {
 	const handleLogin = () => {
 		setIsAuthUser(false)
 	}
+	// CHECK IF USER IS ALREADY LOGGED IN
+	useEffect(() => {
+		if (status === 'authenticated') {
+			router.push('/dashboard')
+			router.refresh()
+		}
+	}, [status, router])
+
+	// CHECK IF USER IS ALREADY LOGGED IN
+	if (status === 'authenticated') {
+		return (
+			<>
+				<p className='text-center py-4 text-lg'>
+					Ви вже авторизовані, перенаправлення...
+				</p>
+			</>
+		)
+	}
 	return (
 		<div className='w-full h-screen flex flex-col justify-center items-center'>
-			<section className='w-11/12 md:w-auto shadow-xl p-5 flex flex-col justify-center items-center'>
+			<section className='w-11/12 md:w-auto shadow-xl p-5 flex flex-col justify-center items-center bg-default'>
 				<h1 className='text-3xl'>Увійдіть до свого облікового запису</h1>
 				<p className='py-4'>
 					Введіть свою електронну адресу, і ми надішлемо вам код входу

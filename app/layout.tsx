@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 	description: 'Догляд, що перевершує очікування',
 }
 
-function RootLayout({ children }: { children: React.ReactNode }) {
+async function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang='en'>
 			<body className={mulish.className}>

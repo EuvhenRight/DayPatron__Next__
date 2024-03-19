@@ -35,7 +35,7 @@ const Drawer: React.FC<Props> = memo(({ toggleDrawer, isOpenDrawer }) => {
 			} ease-in-out duration-300`}
 		>
 			<div
-				className={`bg-drawers absolute top-0 right-0 h-full w-full sm:w-96 z-50 p-4 flex flex-col`}
+				className={`bg-drawers absolute top-0 right-0 h-full w-full sm:w-96 z-50 p-4 flex flex-col overflow-auto`}
 			>
 				{/* FIRST PART CART */}
 				<div>

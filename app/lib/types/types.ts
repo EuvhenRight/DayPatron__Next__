@@ -1,3 +1,5 @@
+import { User } from '@prisma/client'
+
 export interface Product {
 	id: string
 	linkName: string
@@ -49,4 +51,10 @@ export type ProductInCart = {
 	article: string
 	discount_price?: number
 	original_price: number
+}
+
+export type SafeUser = Omit<User, 'createdAt' | 'updatedAt' | 'email'> & {
+	createdAt: string
+	updatedAt: string
+	email: string
 }

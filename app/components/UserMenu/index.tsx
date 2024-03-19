@@ -1,16 +1,18 @@
-const UserMenu = () => {
+import { useSession } from 'next-auth/react'
+import Link from 'next/link'
+
+const UserMenu: React.FC = () => {
+	const { data: session } = useSession()
+	const CurrentName = session?.user?.name?.charAt(0)
 	return (
 		<div className='dropdown dropdown-end'>
 			<div
 				tabIndex={0}
 				role='button'
-				className='btn btn-ghost btn-circle avatar'
+				className='btn btn-ghost btn-circle avatar placeholder'
 			>
-				<div className='w-10 rounded-full'>
-					<img
-						alt='Tailwind CSS Navbar component'
-						src='https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg'
-					/>
+				<div className='bg-neutral text-neutral-content rounded-full w-10'>
+					<span className='text-lg'>{session ? CurrentName : 'U'}</span>
 				</div>
 			</div>
 			<ul
@@ -18,16 +20,10 @@ const UserMenu = () => {
 				className='menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52'
 			>
 				<li>
-					<a className='justify-between'>
-						Profile
-						<span className='badge'>New</span>
-					</a>
+					<Link href='/dashboard'>Dashboard</Link>
 				</li>
 				<li>
-					<a>Settings</a>
-				</li>
-				<li>
-					<a>Logout</a>
+					<Link href={'/api/auth/signout?callbackUrl=/'}>Logout</Link>
 				</li>
 			</ul>
 		</div>

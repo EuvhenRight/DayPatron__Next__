@@ -4,7 +4,7 @@ import type { NextAuthOptions } from 'next-auth'
 import NextAuth from 'next-auth'
 import CredentialProvider from 'next-auth/providers/credentials'
 
-const AuthOptions: NextAuthOptions = {
+export const AuthOptions: NextAuthOptions = {
 	adapter: PrismaAdapter(prisma),
 	providers: [
 		CredentialProvider({

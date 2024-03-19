@@ -1,6 +1,7 @@
 'use client'
 import { useCart } from '@/app/lib/hooks/useCart'
 import classNames from 'classnames'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { memo, useState } from 'react'
@@ -12,6 +13,7 @@ import {
 	AiOutlineUser,
 } from 'react-icons/ai'
 import ThemeController from '../ThemeController'
+import UserMenu from '../UserMenu'
 import MenuMobile from './MenuMobile'
 
 interface HeaderProps {
@@ -22,6 +24,8 @@ const Header: React.FC<HeaderProps> = memo(({ toggleDrawer }) => {
 	const { cartItems } = useCart()
 	const [isActive, setIsActive] = useState('')
 	const pathName = usePathname()
+
+	const { data: session, status } = useSession()
 
 	const links = [
 		{ label: 'Products', href: '/products' },
@@ -39,8 +43,8 @@ const Header: React.FC<HeaderProps> = memo(({ toggleDrawer }) => {
 	}
 
 	return (
-		<header className='border-b border-gray-300 bg-none relative'>
-			<nav className='nav-class flex justify-between py-5 px-3 sm:px-0 items-center container mx-auto'>
+		<header className='border-b border-gray-300 bg-none relative flex justify-center'>
+			<nav className='flex justify-between py-5 px-3 sm:px-0 items-center container'>
 				{/* LOGO */}
 				<Link href='/' onClick={() => toggleActive('/')}>
 					<img className='w-32 lg:w-48' src='/images/DayLogo.svg' alt='logo' />
@@ -70,15 +74,18 @@ const Header: React.FC<HeaderProps> = memo(({ toggleDrawer }) => {
 					))}
 					{/* ICONS MENU */}
 				</ul>
-				<ul className='flex md:gap-4 gap-2 justify-center items-center'>
-					<li>
-						{/* LOGIN */}
-						<Link href='/login' onClick={() => toggleActive('/login')}>
-							<button className='w-8 h-8 cursor-pointer'>
-								<AiOutlineUser className='w-full h-full cursor-pointer' />
-							</button>
-						</Link>
-						{/* <UserMenu /> */}
+				<ul className='flex md:gap-4 gap-6 justify-center items-center'>
+					<li className='hidden md:block'>
+						{/* LOGIN CONDITION */}
+						{status === 'authenticated' ? (
+							<UserMenu />
+						) : (
+							<Link href='/login' onClick={() => toggleActive('/login')}>
+								<button className='w-8 h-8 cursor-pointer'>
+									<AiOutlineUser className='w-full h-full cursor-pointer' />
+								</button>
+							</Link>
+						)}
 					</li>
 					<li>
 						{/* SEARCH ICON */}
@@ -88,31 +95,6 @@ const Header: React.FC<HeaderProps> = memo(({ toggleDrawer }) => {
 						>
 							<AiOutlineSearch className='w-full h-full' />
 						</button>
-						{/* HAMBURGER */}
-						<div className='cursor-pointer block md:hidden'>
-							{/* CONDITION OPEN/CLOSE MENU */}
-							{isOpenMenu ? (
-								<>
-									{/* CLOSE BUTTON MOBILE MENU */}
-									<button
-										className='m-4 p-1 w-8 h-8 marker:hover:translate-x-0 opacity-60 text-white hover:opacity-100 transition text-sm absolute top-2 right-2 z-50'
-										onClick={toggleHamburger}
-									>
-										<AiOutlineClose className='w-full h-full' />
-									</button>
-								</>
-							) : (
-								<button className={'w-8 h-8'} onClick={toggleHamburger}>
-									<AiOutlineMenu className='w-full h-full' />
-								</button>
-							)}
-							<MenuMobile
-								isActive={isActive}
-								toggleHamburger={toggleHamburger}
-								isOpenMenu={isOpenMenu}
-								toggleActive={toggleActive}
-							/>
-						</div>
 					</li>
 					<li>
 						{/* SHOPPING CART ICON */}
@@ -126,6 +108,31 @@ const Header: React.FC<HeaderProps> = memo(({ toggleDrawer }) => {
 								<span className='inline-flex rounded-full h-4 w-4 bg-btnPrimary absolute top-0 right-0 border border-white'></span>
 							)}
 						</button>
+					</li>
+					<li className='cursor-pointer block md:hidden'>
+						{/* HAMBURGER */}
+						{/* CONDITION OPEN/CLOSE MENU */}
+						{isOpenMenu ? (
+							<>
+								{/* CLOSE BUTTON MOBILE MENU */}
+								<button
+									className='m-4 p-1 w-8 h-8 marker:hover:translate-x-0 opacity-60 text-white hover:opacity-100 transition text-sm absolute top-2 right-2 z-50'
+									onClick={toggleHamburger}
+								>
+									<AiOutlineClose className='w-full h-full' />
+								</button>
+							</>
+						) : (
+							<button className={'w-8 h-8'} onClick={toggleHamburger}>
+								<AiOutlineMenu className='w-full h-full' />
+							</button>
+						)}
+						<MenuMobile
+							isActive={isActive}
+							toggleHamburger={toggleHamburger}
+							isOpenMenu={isOpenMenu}
+							toggleActive={toggleActive}
+						/>
 					</li>
 					<li>
 						<button className='w-8 h-8 cursor-pointer relative justify-center items-center hidden md:flex'>

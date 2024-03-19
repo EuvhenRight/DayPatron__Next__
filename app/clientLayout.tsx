@@ -1,7 +1,8 @@
 'use client'
+import { SessionProvider } from 'next-auth/react'
 import React, { memo, useCallback, useState } from 'react'
-import Drawer from './components/drawer'
-import Header from './components/header'
+import Drawer from './components/Drawer'
+import Header from './components/Header'
 import CartProvider from './lib/providers/CartProvider'
 
 interface ClientLayoutProps {
@@ -25,11 +26,13 @@ const ClientLayout: React.FC<ClientLayoutProps> = memo(({ children }) => {
 					Close
 				</button>
 			)}
-			<CartProvider>
-				<Drawer toggleDrawer={toggleDrawer} isOpenDrawer={isOpenDrawer} />
-				<Header toggleDrawer={toggleDrawer} />
-				<main>{children}</main>
-			</CartProvider>
+			<SessionProvider>
+				<CartProvider>
+					<Drawer toggleDrawer={toggleDrawer} isOpenDrawer={isOpenDrawer} />
+					<Header toggleDrawer={toggleDrawer} />
+					<main>{children}</main>
+				</CartProvider>
+			</SessionProvider>
 		</div>
 	)
 })

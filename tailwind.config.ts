@@ -8,9 +8,6 @@ const config: Config = {
 	],
 	theme: {
 		extend: {
-			screens: {
-				mobile: '375px',
-			},
 			colors: {
 				announcement: '#6a8469',
 				announcementText: '#fffffe',
