@@ -1,5 +1,5 @@
 'use client'
-import { Variant } from '@/app/lib/types/types'
+import { Variant } from '@/lib/types/types'
 import React, { memo } from 'react'
 import PriceTag from '../PriceTag'
 

@@ -1,10 +1,10 @@
 'use client'
 import { SessionProvider } from 'next-auth/react'
 import React, { memo, useCallback, useState } from 'react'
-import Drawer from './components/Drawer'
-import Header from './components/Header'
-import CartProvider from './lib/providers/CartProvider'
-import { SpinnerProvider } from './lib/providers/SpinnerProvider'
+import Drawer from '../components/Drawer'
+import Header from '../components/Header'
+import CartProvider from '../lib/providers/CartProvider'
+import { SpinnerProvider } from '../lib/providers/SpinnerProvider'
 
 interface ClientLayoutProps {
 	children: React.ReactNode

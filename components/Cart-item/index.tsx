@@ -1,7 +1,7 @@
 // components/CartItem.tsx
 'use client'
-import { useCart } from '@/app/lib/hooks/useCart'
-import { ProductInCart } from '@/app/lib/types/types'
+import { useCart } from '@/lib/hooks/useCart'
+import { ProductInCart } from '@/lib/types/types'
 import Link from 'next/link'
 import { memo } from 'react'
 import { AiOutlineClose } from 'react-icons/ai'

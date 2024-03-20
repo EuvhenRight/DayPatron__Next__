@@ -1,4 +1,4 @@
-import { SpinnerContext } from '@/app/lib/hooks/useSpinner'
+import { SpinnerContext } from '@/lib/hooks/useSpinner'
 import { useState } from 'react'
 
 interface SpinnerContextType {

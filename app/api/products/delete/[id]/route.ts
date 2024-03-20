@@ -1,5 +1,5 @@
 // app/api/products/delete/[id]/route.ts
-import prisma from '@/app/lib/db/client'
+import prisma from '@/lib/db/client'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function DELETE(

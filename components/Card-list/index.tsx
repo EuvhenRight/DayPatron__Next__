@@ -1,5 +1,5 @@
 'use client'
-import type { Product } from '@/app/lib/types/types'
+import type { Product } from '@/lib/types/types'
 import React from 'react'
 import Carousel from '../Slider/Carousel'
 

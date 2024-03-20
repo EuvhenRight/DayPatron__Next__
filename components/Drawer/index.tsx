@@ -1,5 +1,5 @@
 'use client'
-import { useCart } from '@/app/lib/hooks/useCart'
+import { useCart } from '@/lib/hooks/useCart'
 import { memo, useEffect } from 'react'
 import CartItem from '../Cart-item'
 import PriceTag from '../PriceTag'

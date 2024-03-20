@@ -1,5 +1,5 @@
 // app/api/users/route.ts
-import prisma from '@/app/lib/db/client'
+import prisma from '@/lib/db/client'
 import { NextResponse } from 'next/server'
 
 // const UserSchema = z.object({

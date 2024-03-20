@@ -1,7 +1,7 @@
 // app/api/user/auth/route.ts
-import prisma from '@/app/lib/db/client'
-import { generateRandomPassword, sendEmail } from '@/app/lib/db/mail-password'
-import { ValidationSchema } from '@/app/lib/db/validation'
+import prisma from '@/lib/db/client'
+import { generateRandomPassword, sendEmail } from '@/lib/db/mail-password'
+import { ValidationSchema } from '@/lib/db/validation'
 import { NextRequest, NextResponse } from 'next/server'
 import cron from 'node-cron'
 

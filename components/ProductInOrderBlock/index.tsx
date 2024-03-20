@@ -1,6 +1,6 @@
 'use client'
-import { useCart } from '@/app/lib/hooks/useCart'
-import type { Product, ProductInCart } from '@/app/lib/types/types'
+import { useCart } from '@/lib/hooks/useCart'
+import type { Product, ProductInCart } from '@/lib/types/types'
 import { memo, useEffect, useState } from 'react'
 import { AiOutlineCheckSquare } from 'react-icons/ai'
 import Breadcrumbs from '../Breadcrumbs'

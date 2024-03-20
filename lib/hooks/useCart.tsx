@@ -1,4 +1,4 @@
-import type { ProductInCart } from '@/app/lib/types/types'
+import type { ProductInCart } from '@/lib/types/types'
 import {
 	createContext,
 	useCallback,

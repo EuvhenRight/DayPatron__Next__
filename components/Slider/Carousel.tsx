@@ -1,4 +1,4 @@
-import { Product } from '@/app/lib/types/types'
+import { Product } from '@/lib/types/types'
 import { Arrow } from '@egjs/flicking-plugins'
 // ALL THE PLUGINS
 import '@egjs/flicking-plugins/dist/flicking-plugins.css'

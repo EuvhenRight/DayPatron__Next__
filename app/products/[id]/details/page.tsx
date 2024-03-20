@@ -1,5 +1,5 @@
-import ProductInOrderBlock from '@/app/components/ProductInOrderBlock'
-import prisma from '@/app/lib/db/client'
+import ProductInOrderBlock from '@/components/ProductInOrderBlock'
+import prisma from '@/lib/db/client'
 import { Metadata } from 'next'
 import { cache } from 'react'
 

@@ -1,5 +1,5 @@
 'use client'
-import { useCart } from '@/app/lib/hooks/useCart'
+import { useCart } from '@/lib/hooks/useCart'
 import classNames from 'classnames'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'

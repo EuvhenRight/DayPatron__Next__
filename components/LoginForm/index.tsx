@@ -1,6 +1,6 @@
 'use client'
-import { ValidationSchema } from '@/app/lib/db/validation'
-import { useSpinner } from '@/app/lib/hooks/useSpinner'
+import { ValidationSchema } from '@/lib/db/validation'
+import { useSpinner } from '@/lib/hooks/useSpinner'
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { AxiosError } from 'axios'
 import axios from 'axios'
