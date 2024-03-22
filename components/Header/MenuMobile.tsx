@@ -30,7 +30,7 @@ const MenuMobile: React.FC<MenuMobileProps> = memo(
 			{ label: 'Contacts', href: '/contacts' },
 			session
 				? { label: currentName, href: '/dashboard', special: true }
-				: { label: 'log in', href: '/login' },
+				: { label: 'log in', href: 'auth/register' },
 		]
 
 		return (

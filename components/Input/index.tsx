@@ -31,7 +31,7 @@ const Input: React.FC<InputProps> = ({
 					required,
 				})}
 				placeholder=''
-				className={`peer input input-bordered input-lg w-full outline-none transition disabled:opacity-70 disabled:cursor-not-allowed pl-4
+				className={`peer rounded-md input input-bordered input-lg w-full outline-none transition disabled:opacity-70 disabled:cursor-not-allowed pl-4
         ${
 					(errors && errors[id]) || errorMessage
 						? 'focus:input-error input-error'

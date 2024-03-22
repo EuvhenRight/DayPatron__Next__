@@ -80,9 +80,12 @@ const Header: React.FC<HeaderProps> = memo(({ toggleDrawer }) => {
 						{status === 'authenticated' ? (
 							<UserMenu />
 						) : (
-							<Link href='/login' onClick={() => toggleActive('/login')}>
+							<Link
+								href='auth/register'
+								onClick={() => toggleActive('auth/register')}
+							>
 								<button className='w-8 h-8 cursor-pointer'>
-									<AiOutlineUser className='w-full h-full cursor-pointer' />
+									<AiOutlineUser className='w-full h-full' />
 								</button>
 							</Link>
 						)}
