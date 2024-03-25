@@ -1,14 +1,16 @@
-import AdminNav from '@/components/AdminNav/admin-nav'
+import UserNav from '@/components/UserNav/UserNav'
 
 export const metadata = {
-	title: 'DayPatron Admin',
-	description: 'Admin Dashboard',
+	title: 'DayPatron Dashboard',
+	description: 'User Dashboard',
 }
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<>
-			<AdminNav />
+			<div>
+				<UserNav />
+			</div>
 			<div>{children}</div>
 		</>
 	)
