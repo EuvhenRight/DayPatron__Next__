@@ -15,6 +15,7 @@ const UserProfileForm: React.FC<UserProfileFormProps> = ({ currentUser }) => {
 		formState: { errors },
 	} = useForm<FieldValues>({
 		defaultValues: {
+			id: currentUser.id,
 			name: currentUser.name,
 			last_name: currentUser.lastName,
 		},
@@ -46,7 +47,7 @@ const UserProfileForm: React.FC<UserProfileFormProps> = ({ currentUser }) => {
 			<div>{currentUser.lastName}</div>
 			<div>{currentUser.name}</div>
 			<div>{currentUser.email}</div>
-			<div>{currentUser.role}</div>
+			<div>{currentUser.id}</div>
 		</>
 	)
 }

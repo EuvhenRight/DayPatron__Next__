@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import axios, { AxiosError } from 'axios'
 import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import Input from '../Input'
 import { CardWrapper } from './card-wrapper'
@@ -65,26 +65,7 @@ export const LoginForm = () => {
 			stopLoading()
 		}
 	}
-
-	// CHECK IF USER IS ALREADY LOGGED IN
-	useEffect(() => {
-		if (status === 'authenticated') {
-			router.push('/dashboard')
-			router.refresh()
-		}
-	}, [status, router])
-
-	// CHECK IF USER IS ALREADY LOGGED IN
-	if (status === 'authenticated') {
-		return (
-			<>
-				<p className='text-center py-4 text-lg'>
-					Ви вже авторизовані, перенаправлення...
-				</p>
-			</>
-		)
-	}
-
+	// TODO: need change buttonBackLabel
 	return (
 		<CardWrapper
 			headerLabel='Введіть свій 6-значний код входу'

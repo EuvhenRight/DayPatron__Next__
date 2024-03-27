@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState, useTransition } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import Input from '../Input'
 import { CardWrapper } from './card-wrapper'
@@ -14,6 +14,7 @@ export const RegisterForm = () => {
 	const [errorMessage, setErrorMessage] = useState<string>('')
 	const { isLoading, startLoading, stopLoading } = useSpinner()
 	const { status } = useSession()
+	const [isPending, startTransition] = useTransition()
 	const router = useRouter()
 	const {
 		register,
@@ -29,37 +30,20 @@ export const RegisterForm = () => {
 
 	const onSubmit: SubmitHandler<FieldValues> = async data => {
 		const { email } = data
-		startLoading() // Start the loading spinner immediately
+		startLoading()
 		try {
 			const response = await axios.post('http://localhost:3000/api/register', {
 				email,
 			})
-			console.log(response.data)
+			startTransition(() => {
+				console.log(response.data)
+			})
 		} catch (error) {
 			console.log(error)
 		} finally {
-			stopLoading() // Stop the loading spinner once the request is complete
 			router.push('/auth/login') // Navigate to the login page
+			stopLoading()
 		}
-	}
-
-	// CHECK IF USER IS ALREADY LOGGED IN
-	useEffect(() => {
-		if (status === 'authenticated') {
-			router.push('/dashboard')
-			router.refresh()
-		}
-	}, [status, router])
-
-	// CHECK IF USER IS ALREADY LOGGED IN
-	if (status === 'authenticated') {
-		return (
-			<>
-				<p className='text-center py-4 text-lg'>
-					Ви вже авторизовані, перенаправлення...
-				</p>
-			</>
-		)
 	}
 
 	return (
@@ -86,10 +70,10 @@ export const RegisterForm = () => {
 					<button
 						onClick={handleSubmit(onSubmit)}
 						className='btn btn-primary w-full btn-lg rounded-md'
-						disabled={isLoading}
+						disabled={isPending}
 					>
 						{/* CONDITION LOADING */}
-						{isLoading ? (
+						{isPending || isLoading ? (
 							<span className='loading loading-ring loading-md'></span>
 						) : (
 							'Надіслати код входу'
