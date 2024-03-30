@@ -28,42 +28,46 @@ export const LoginForm = () => {
 		resolver: zodResolver(ValidationSchema.loginUser),
 	})
 
-	const onSubmit = async (data: FieldValues) => {
+	const onSubmit = (data: FieldValues) => {
 		const { email, password } = data
-		try {
-			startLoading()
-			const response = await axios.post('http://localhost:3000/api/login', {
+		startLoading()
+		axios
+			.post('http://localhost:3000/api/login', {
 				email,
 				password,
 			})
-			// SING IN CREDENTIALS
-			signIn('credentials', {
-				...data,
-				redirect: false,
+			.then(() => {
+				// SING IN CREDENTIALS
+				signIn('credentials', {
+					...data,
+					redirect: false,
+				})
+					.then(callback => {
+						console.log(callback)
+						if (callback?.ok) {
+							router.push('/dashboard')
+						}
+						if (callback?.error) {
+							console.log(callback.error)
+						}
+					})
+					.catch(err => console.log(err))
+					.finally(() => {
+						stopLoading()
+					})
 			})
-				.then(callback => {
-					if (callback?.ok) {
-						router.push('/dashboard')
-					}
-					if (callback?.error) {
-						console.log(callback.error)
-					}
-				})
-				.catch(err => console.log(err))
-				.finally(() => {
-					stopLoading()
-				})
-			console.log(response.data)
-		} catch (error) {
-			// CHECK IF ERROR IS AN AXIOS ERROR
-			if (axios.isAxiosError(error)) {
-				const err = error as AxiosError<{ error: string }>
-				setErrorMessage(err.response?.data?.error)
-			} else {
-				setErrorMessage('An error occurred')
-			}
-			stopLoading()
-		}
+			.catch(error => {
+				// CHECK IF ERROR IS AN AXIOS ERROR
+				if (axios.isAxiosError(error)) {
+					const err = error as AxiosError<{ error: string }>
+					setErrorMessage(err.response?.data?.error)
+				} else {
+					setErrorMessage('An error occurred')
+				}
+			})
+			.finally(() => {
+				stopLoading()
+			})
 	}
 	// TODO: need change buttonBackLabel
 	return (

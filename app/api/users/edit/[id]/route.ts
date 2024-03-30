@@ -1,5 +1,4 @@
 // app/api/products/edit/[id]/route.ts
-
 import prisma from '@/lib/db/client'
 import { NextRequest, NextResponse } from 'next/server'
 // import { ValidationSchema } from '../../../../../lib/db/validation'

@@ -4,6 +4,7 @@ import Link from 'next/link'
 const UserMenu: React.FC = () => {
 	const { data: session } = useSession()
 	const CurrentName = session?.user?.name?.charAt(0)
+
 	return (
 		<div className='dropdown dropdown-end'>
 			<div
@@ -12,7 +13,7 @@ const UserMenu: React.FC = () => {
 				className='btn btn-ghost btn-circle avatar placeholder'
 			>
 				<div className='bg-neutral text-neutral-content rounded-full w-10'>
-					<span className='text-lg'>{session ? CurrentName : 'U'}</span>
+					<span className='text-lg'>{CurrentName ? CurrentName : 'U'}</span>
 				</div>
 			</div>
 			<ul

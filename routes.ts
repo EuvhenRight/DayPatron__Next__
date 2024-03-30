@@ -36,3 +36,10 @@ export const apiAuthPrefix = 'api/auth'
  */
 
 export const DEFAULT_LOGIN_REDIRECT = '/dashboard'
+
+/**
+ * An array routes that are used for authentication and admin.
+ * These routes will redirect to the admin page.
+ * @type {string[]}
+ */
+export const adminRoutes = ['/admin', '/admin/*']

@@ -1,3 +1,4 @@
+import authConfig from '@/auth.config'
 import {
 	apiAuthPrefix,
 	authRoutes,
@@ -5,13 +6,14 @@ import {
 	publicRoutes,
 } from '@/routes'
 import NextAuth from 'next-auth'
-import authConfig from './auth.config'
 
 const { auth } = NextAuth(authConfig)
 
 export default auth(req => {
 	const { nextUrl } = req
 	const isLoggedIn = !!req.auth
+
+	// const isAdminUser = req.auth?.user?.role === 'ADMIN'
 
 	const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix)
 
@@ -28,6 +30,17 @@ export default auth(req => {
 		}
 	})
 
+	// const isAdminRoute = adminRoutes.some(route => {
+	// 	// Use the includes() method to check if the requested URL matches any of the public routes
+	// 	if (route.endsWith('*')) {
+	// 		// If the route ends with '*', check if the requested URL starts with the route path
+	// 		return nextUrl.pathname.startsWith(route.slice(0, -1))
+	// 	} else {
+	// 		// Otherwise, check if the requested URL exactly matches the route path
+	// 		return nextUrl.pathname === route
+	// 	}
+	// })
+
 	if (isApiAuthRoute) {
 		return null
 	}
@@ -42,6 +55,7 @@ export default auth(req => {
 	if (!isLoggedIn && !isPublicRoute) {
 		return Response.redirect(new URL('/auth/register', nextUrl))
 	}
+
 	return null
 })
 

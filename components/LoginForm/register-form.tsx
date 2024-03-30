@@ -2,19 +2,16 @@
 import { ValidationSchema } from '@/lib/db/validation'
 import { useSpinner } from '@/lib/hooks/useSpinner'
 import { zodResolver } from '@hookform/resolvers/zod'
-import axios from 'axios'
-import { useSession } from 'next-auth/react'
+import axios, { AxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
-import { useState, useTransition } from 'react'
+import { useState } from 'react'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import Input from '../Input'
 import { CardWrapper } from './card-wrapper'
 
 export const RegisterForm = () => {
-	const [errorMessage, setErrorMessage] = useState<string>('')
+	const [errorMessage, setErrorMessage] = useState<string | undefined>('')
 	const { isLoading, startLoading, stopLoading } = useSpinner()
-	const { status } = useSession()
-	const [isPending, startTransition] = useTransition()
 	const router = useRouter()
 	const {
 		register,
@@ -28,24 +25,31 @@ export const RegisterForm = () => {
 		resolver: zodResolver(ValidationSchema.authUser),
 	})
 
-	const onSubmit: SubmitHandler<FieldValues> = async data => {
+	const onSubmit: SubmitHandler<FieldValues> = data => {
 		const { email } = data
 		startLoading()
-		try {
-			const response = await axios.post('http://localhost:3000/api/register', {
+		axios
+			.post('http://localhost:3000/api/register', {
 				email,
 			})
-			startTransition(() => {
+			.then(response => {
 				console.log(response.data)
+				response.data
+				router.push('/auth/login')
 			})
-		} catch (error) {
-			console.log(error)
-		} finally {
-			router.push('/auth/login') // Navigate to the login page
-			stopLoading()
-		}
+			.catch(error => {
+				if (axios.isAxiosError(error)) {
+					const err = error as AxiosError<{ error: string }>
+					setErrorMessage(err.response?.data?.error)
+				} else {
+					setErrorMessage('An error occurred')
+				}
+				console.log(error)
+			})
+			.finally(() => {
+				stopLoading()
+			})
 	}
-
 	return (
 		<CardWrapper
 			headerLabel='Введіть свою електронну адресу, і ми надішлемо вам код входу'
@@ -70,10 +74,10 @@ export const RegisterForm = () => {
 					<button
 						onClick={handleSubmit(onSubmit)}
 						className='btn btn-primary w-full btn-lg rounded-md'
-						disabled={isPending}
+						disabled={isLoading}
 					>
 						{/* CONDITION LOADING */}
-						{isPending || isLoading ? (
+						{isLoading ? (
 							<span className='loading loading-ring loading-md'></span>
 						) : (
 							'Надіслати код входу'
