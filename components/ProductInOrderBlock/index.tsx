@@ -1,6 +1,9 @@
 'use client'
+import currentUser from '@/lib/hooks/currentUser'
 import { useCart } from '@/lib/hooks/useCart'
-import type { Product, ProductInCart } from '@/lib/types/types'
+import type { CartItem, Product, ProductInCart } from '@/lib/types/types'
+import { User } from '@prisma/client'
+import axios from 'axios'
 import { memo, useEffect, useState } from 'react'
 import { AiOutlineCheckSquare } from 'react-icons/ai'
 import Breadcrumbs from '../Breadcrumbs'
@@ -19,11 +22,13 @@ const ProductInOrderBlock: React.FC<ProductInOrderBlockProps> = memo(
 		// CHECK ITEM IN CART
 		const [itemInCart, setItemInCart] = useState<boolean>(false)
 		const [cartItem, setCartItem] = useState<ProductInCart | null>(null)
-
+		const user = currentUser() as User | null
+		const userId = user?.id
+		if (!user) return null
 		// ADD TO CART
 		useEffect(() => {
 			setCartItem({
-				id: product.id,
+				productId: product.id,
 				name: product.name,
 				volume: product.variants[currentIndex].volume,
 				image: product.variants[currentIndex].image,
@@ -42,6 +47,24 @@ const ProductInOrderBlock: React.FC<ProductInOrderBlockProps> = memo(
 					: setItemInCart(false)
 			}
 		}, [cartItem, cartItems])
+
+		const addCartItem = async (user: User | null, item: CartItem) => {
+			try {
+				if (!item) {
+					throw new Error('Product is not defined')
+				}
+
+				const response = await axios.post(
+					`http://localhost:3000/api/cart/${userId}/item`,
+					item
+				)
+
+				return response.data.updatedCart // Assuming the response contains the updated cart
+			} catch (error) {
+				console.error(error)
+				throw error // Re-throw the error to be handled by the caller
+			}
+		}
 
 		// CHECK STOCKS
 		const stock = product.variants[currentIndex].stock!
@@ -97,7 +120,7 @@ const ProductInOrderBlock: React.FC<ProductInOrderBlockProps> = memo(
 							<button
 								className='bg-btnPrimary text-white p-3 w-1/2 text-xl my-4'
 								disabled={!stock}
-								onClick={() => handleAddToCart(cartItem!)}
+								onClick={() => addCartItem(userId, cartItem!)}
 							>
 								Add to cart
 							</button>
