@@ -1,5 +1,6 @@
 'use client'
-import { SessionProvider } from 'next-auth/react'
+import SignOut from '@/components/SignOut/sign-out'
+import { LogOutProvider } from '@/lib/providers/LogOutProvider'
 import React, { memo, useCallback, useState } from 'react'
 import Drawer from '../components/Drawer'
 import Header from '../components/Header'
@@ -12,7 +13,6 @@ interface ClientLayoutProps {
 
 const ClientLayout: React.FC<ClientLayoutProps> = memo(({ children }) => {
 	const [isOpenDrawer, setIsOpenDrawer] = useState(false)
-
 	const toggleDrawer = useCallback(() => {
 		setIsOpenDrawer(prev => !prev)
 	}, [isOpenDrawer])
@@ -27,15 +27,16 @@ const ClientLayout: React.FC<ClientLayoutProps> = memo(({ children }) => {
 					Close
 				</button>
 			)}
-			<SpinnerProvider>
-				<SessionProvider>
+			<LogOutProvider>
+				<SpinnerProvider>
 					<CartProvider>
+						<SignOut />
 						<Drawer toggleDrawer={toggleDrawer} isOpenDrawer={isOpenDrawer} />
 						<Header toggleDrawer={toggleDrawer} />
 						<main>{children}</main>
 					</CartProvider>
-				</SessionProvider>
-			</SpinnerProvider>
+				</SpinnerProvider>
+			</LogOutProvider>
 		</div>
 	)
 })

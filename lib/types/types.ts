@@ -21,11 +21,11 @@ export interface Product {
 	min_price: number | null // Use "?" for optional properties
 }
 
-export interface Image {
+export type Image = {
 	url: string
 }
 
-export interface Variant {
+export type Variant = {
 	volume: string
 	article: string
 	stock: boolean
@@ -35,15 +35,19 @@ export interface Variant {
 }
 
 export interface CartItem {
-	id: string
+	article: String
+	discount_price: number
+	image: String
+	name: String
+	original_price: number
 	quantity: number
-	productId: string
-	cartId: string
-	product: Product // Include the product property in the CartItem type
+	volume: String
+	productId: String
+	cartId: String
 }
 
-export type ProductInCart = {
-	id: string
+export interface ProductInCart {
+	productId: string
 	name: string
 	volume: string
 	image: string

@@ -87,6 +87,7 @@ export const LoginForm = () => {
 					errors={errors}
 					register={register}
 					required
+					errorMessage={errorMessage}
 				/>
 				{/* PASSWORD */}
 				<Input

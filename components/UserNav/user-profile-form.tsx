@@ -1,6 +1,7 @@
 'use client'
 import { User } from '@prisma/client'
 import axios from 'axios'
+
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { FieldValues, useForm } from 'react-hook-form'
@@ -12,7 +13,7 @@ interface UserProfileFormProps {
 const UserProfileForm: React.FC<UserProfileFormProps> = ({ currentUser }) => {
 	const route = useRouter()
 
-	const { data: session } = useSession()
+	const { data: session, update } = useSession()
 	console.log(session)
 
 	const {
@@ -41,6 +42,7 @@ const UserProfileForm: React.FC<UserProfileFormProps> = ({ currentUser }) => {
 			)
 			if (response.status === 202) {
 				console.log('User updated successfully:', response.data)
+				update()
 				route.refresh()
 				return response.data // Return the updated user data
 			} else {

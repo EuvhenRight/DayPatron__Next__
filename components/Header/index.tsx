@@ -1,5 +1,6 @@
 'use client'
 import { useCart } from '@/lib/hooks/useCart'
+import { useLogOut } from '@/lib/hooks/useLogout'
 import classNames from 'classnames'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
@@ -12,6 +13,7 @@ import {
 	AiOutlineShoppingCart,
 	AiOutlineUser,
 } from 'react-icons/ai'
+import SignOut from '../SignOut/sign-out'
 import ThemeController from '../ThemeController'
 import UserMenu from '../UserMenu'
 import MenuMobile from './MenuMobile'
@@ -24,6 +26,7 @@ const Header: React.FC<HeaderProps> = memo(({ toggleDrawer }) => {
 	const { cartItems } = useCart()
 	const [isActive, setIsActive] = useState('')
 	const pathName = usePathname()
+	const { isModalOpen } = useLogOut()
 
 	const { data: session, status } = useSession()
 
@@ -49,6 +52,7 @@ const Header: React.FC<HeaderProps> = memo(({ toggleDrawer }) => {
 				<Link href='/' onClick={() => toggleActive('/')}>
 					<img className='w-32 lg:w-48' src='/images/DayLogo.svg' alt='logo' />
 				</Link>
+				{isModalOpen && <SignOut />}
 				{/* LINKS MENU */}
 				<ul className='md:flex md:gap-4 gap-2 md:text-xl text-md font-bold hidden'>
 					{links.map(link => (

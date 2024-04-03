@@ -1,4 +1,6 @@
+import { auth } from '@/auth'
 import type { Metadata } from 'next'
+import { SessionProvider } from 'next-auth/react'
 import { Mulish } from 'next/font/google'
 import ClientLayout from './clientLayout'
 import './globals.css'
@@ -13,12 +15,15 @@ export const metadata: Metadata = {
 }
 
 async function RootLayout({ children }: { children: React.ReactNode }) {
+	const session = await auth()
 	return (
-		<html lang='en'>
-			<body className={mulish.className}>
-				<ClientLayout>{children}</ClientLayout>
-			</body>
-		</html>
+		<SessionProvider session={session}>
+			<html lang='en'>
+				<body className={mulish.className}>
+					<ClientLayout>{children}</ClientLayout>
+				</body>
+			</html>
+		</SessionProvider>
 	)
 }
 

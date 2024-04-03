@@ -1,8 +1,8 @@
 'use client'
 import classNames from 'classnames'
-import { useSession } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { memo } from 'react'
 import { AiOutlineFacebook } from 'react-icons/ai'
 import { BiLogoTelegram } from 'react-icons/bi'
@@ -18,9 +18,16 @@ const MenuMobile: React.FC<MenuMobileProps> = memo(
 	({ isOpenMenu, toggleHamburger, toggleActive, isActive }) => {
 		const pathName = usePathname()
 		const { data: session, status } = useSession()
+		const router = useRouter()
+		const handleOut = () => {
+			signOut()
+			router.push('/')
+		}
 		// NAME OF USER
 		const currentName =
 			session?.user?.name === null ? 'Account' : session?.user?.name
+
+		const currenRole = session?.user?.role === 'ADMIN' ? '/admin' : '/dashboard'
 
 		const menuItems = [
 			{ label: 'Home', href: '/' },
@@ -29,13 +36,13 @@ const MenuMobile: React.FC<MenuMobileProps> = memo(
 			{ label: 'Where to Buy', href: '/where-to-buy' },
 			{ label: 'Contacts', href: '/contacts' },
 			session
-				? { label: currentName, href: '/dashboard', special: true }
+				? { label: currentName, href: currenRole, special: true }
 				: { label: 'log in', href: 'auth/register' },
 		]
 
 		return (
 			<div
-				className={`fixed top-0 left-0 right-0 bottom-0 w-full h-full z-10 ${
+				className={`fixed top-0 left-0 right-0 bottom-0 w-full h-full z-20 ${
 					isOpenMenu ? 'translate-x-0' : 'translate-x-full'
 				} ease-in-out duration-300`}
 			>
@@ -70,9 +77,7 @@ const MenuMobile: React.FC<MenuMobileProps> = memo(
 						</nav>
 					</div>
 					{status === 'authenticated' && (
-						<Link className='py-4' href='/api/auth/signout?callbackUrl=/'>
-							<button>Logout</button>
-						</Link>
+						<button onClick={handleOut}>Logout</button>
 					)}
 					{/* ICONS MENU */}
 					<div className='flex flex-row text-white py-4 justify-end'>
