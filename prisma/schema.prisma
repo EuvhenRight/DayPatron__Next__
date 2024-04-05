@@ -81,30 +81,30 @@ enum Role {
 
 //Cart, CartItem
 model CartItem {
-  id             String  @id @default(auto()) @map("_id") @db.ObjectId
-  article        String
-  discount_price Float   @default(0)
-  image          String
-  name           String
-  original_price Float
-  quantity       Int
-  volume         String
-  productId      String  @db.ObjectId
-  cartId         String  @db.ObjectId
-  cart           Cart    @relation(fields: [cartId], references: [id])
-  product        Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  quantity  Int
+  productId String @db.ObjectId
+  cartId    String @db.ObjectId
+
+  cart    Cart    @relation(fields: [cartId], references: [id])
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("cartItems")
 }
 
 model Cart {
-  id         String     @id @default(auto()) @map("_id") @db.ObjectId
-  items      CartItem[]
-  user       User       @relation(fields: [userId], references: [id])
-  userId     String     @db.ObjectId
-  totalItems Float
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String   @db.ObjectId
+  itemsTotal Float
   subTotal   Float
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
+  user User @relation(fields: [userId], references: [id])
+
+  items CartItem[]
+
+  @@unique([userId])
   @@map("carts")
 }
 
@@ -126,11 +126,12 @@ model Order {
   date      DateTime
   Address   Delivery
   count     Int
-  user      User     @relation(fields: [userId], references: [id])
   sum       Float
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   userId    String   @db.ObjectId
+
+  user User @relation(fields: [userId], references: [id])
 
   @@map("orders")
 }
@@ -140,34 +141,35 @@ type Image {
   url String
 }
 
-type Variant {
-  volume         String
-  article        String
-  stock          Boolean
-  image          String
-  discount_price Float   @default(0)
-  original_price Float   @default(0)
-}
-
-model Product {
-  id             String     @id @default(auto()) @map("_id") @db.ObjectId
-  linkName       String
+type Group {
+  ingredients    String
+  specification  String
+  shelfLife      String
+  category       String
   NEW            Boolean
   HIT            Boolean
   name           String
   UTP            String
   description    String
   useTo          String
-  image          Image[]
-  ingredients    String
-  specification  String
-  shelfLife      String
-  category       String
-  variants       Variant[]
-  current_rating Float
-  cartItem       CartItem[]
+  linkName       String
   tradeMarkImage String
-  min_price      Float?
+
+  image Image[]
+}
+
+model Product {
+  id             String  @id @default(auto()) @map("_id") @db.ObjectId
+  volume         String
+  article        String
+  stock          Boolean
+  discount_price Float   @default(0)
+  original_price Float   @default(0)
+  current_rating Float
+
+  image    Image[]
+  group    Group[]
+  cartItem CartItem[]
 
   @@map("products")
 }
