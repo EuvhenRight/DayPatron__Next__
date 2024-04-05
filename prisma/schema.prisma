@@ -81,10 +81,15 @@ enum Role {
 
 //Cart, CartItem
 model CartItem {
-  id        String @id @default(auto()) @map("_id") @db.ObjectId
-  quantity  Int
-  productId String @db.ObjectId
-  cartId    String @db.ObjectId
+  id             String @id @default(auto()) @map("_id") @db.ObjectId
+  quantity       Int
+  name           String
+  article        String
+  original_price Float
+  discount_price Float
+  volume         String
+  productId      String @db.ObjectId
+  cartId         String @db.ObjectId
 
   cart    Cart    @relation(fields: [cartId], references: [id])
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
@@ -142,16 +147,9 @@ type Image {
 }
 
 type Group {
-  ingredients    String
-  specification  String
-  shelfLife      String
   category       String
   NEW            Boolean
   HIT            Boolean
-  name           String
-  UTP            String
-  description    String
-  useTo          String
   linkName       String
   tradeMarkImage String
 
@@ -163,8 +161,15 @@ model Product {
   volume         String
   article        String
   stock          Boolean
+  ingredients    String
+  specification  String
+  shelfLife      String
+  name           String
+  UTP            String
+  description    String
+  useTo          String
   discount_price Float   @default(0)
-  original_price Float   @default(0)
+  original_price Float
   current_rating Float
 
   image    Image[]
