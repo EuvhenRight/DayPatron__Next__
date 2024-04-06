@@ -4,12 +4,16 @@ export interface AuthUserSchema {
 	email: string
 }
 
-interface LoginUserSchema {
+export interface CartSchema {
+	quantity: number
+}
+
+export interface LoginUserSchema {
 	email: string
 	password: string
 }
 
-interface ProfileUserSchema {
+export interface ProfileUserSchema {
 	name: string
 	lastName: string
 }
@@ -54,3 +58,10 @@ export const ValidationSchema = {
 		mim_price: z.number(),
 	}),
 }
+
+export const cartValidationSchema = z.object({
+	quantity: z
+		.number()
+		.min(1, 'Quantity must be greater than or equal to 1')
+		.max(99, 'Quantity must be less than or equal to 99'),
+})
