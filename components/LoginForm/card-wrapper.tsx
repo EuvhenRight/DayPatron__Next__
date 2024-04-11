@@ -1,9 +1,12 @@
 'use client'
+import { BackButton } from '@/components/LoginForm/back-button'
+import { Header } from '@/components/LoginForm/header'
+import { PrivacyButton } from '@/components/LoginForm/privacy-button'
+import { ShowSocial } from '@/components/LoginForm/show-social'
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
+
 import React from 'react'
-import { BackButton } from './back-button'
-import { Header } from './header'
-import { PrivacyButton } from './privacy-button'
-import { ShowSocial } from './show-social'
+
 interface CardWrapperProps {
 	children: React.ReactNode
 	headerLabel: string
@@ -13,7 +16,6 @@ interface CardWrapperProps {
 	buttonPrivacyLabel: string
 	showSocial?: boolean
 }
-
 export const CardWrapper: React.FC<CardWrapperProps> = ({
 	children,
 	headerLabel,
@@ -24,24 +26,24 @@ export const CardWrapper: React.FC<CardWrapperProps> = ({
 	showSocial,
 }) => {
 	return (
-		<div className='card w-[500px] shadow-xl my-6'>
-			<div className='card-body justify-center'>
-				<div className='card-title flex-col'>
-					<Header label={headerLabel} />
-				</div>
-				<div>{children}</div>
-				<div className='card-actions justify-center'>
-					{showSocial && (
-						<div className='card-actions w-full justify-center'>
-							<ShowSocial />
-						</div>
-					)}
-					{buttonBackLabel && (
-						<BackButton label={buttonBackLabel} href={buttonBackHref} />
-					)}
-					<PrivacyButton label={buttonPrivacyLabel} href={buttonPrivacyHref} />
-				</div>
-			</div>
-		</div>
+		<Card className=' w-[500px] shadow-xl'>
+			<CardHeader className='flex flex-col justify-center text-center items-center'>
+				<Header label={headerLabel} />
+			</CardHeader>
+			<CardContent>{children}</CardContent>
+			{showSocial && (
+				<CardFooter className='w-full justify-center'>
+					<ShowSocial />
+				</CardFooter>
+			)}
+			{buttonBackLabel && (
+				<CardFooter>
+					<BackButton label={buttonBackLabel} href={buttonBackHref} />
+				</CardFooter>
+			)}
+			<CardFooter className='justify-center'>
+				<PrivacyButton label={buttonPrivacyLabel} href={buttonPrivacyHref} />
+			</CardFooter>
+		</Card>
 	)
 }

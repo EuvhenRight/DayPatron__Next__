@@ -1,8 +1,8 @@
 import { auth } from '@/auth'
+import Header from '@/components/Header'
 import type { Metadata } from 'next'
 import { SessionProvider } from 'next-auth/react'
 import { Mulish } from 'next/font/google'
-import ClientLayout from './clientLayout'
 import './globals.css'
 const mulish = Mulish({
 	weight: ['200', '300', '400', '500', '600', '700'],
@@ -20,7 +20,8 @@ async function RootLayout({ children }: { children: React.ReactNode }) {
 		<SessionProvider session={session}>
 			<html lang='en'>
 				<body className={mulish.className}>
-					<ClientLayout>{children}</ClientLayout>
+					<Header />
+					<main>{children}</main>
 				</body>
 			</html>
 		</SessionProvider>

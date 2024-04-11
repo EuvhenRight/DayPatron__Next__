@@ -1,75 +1,76 @@
 'use client'
+import { CardWrapper } from '@/components/LoginForm/card-wrapper'
+import { Button } from '@/components/ui/button'
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from '@/components/ui/form'
+import { FormError } from '@/components/ui/form-error'
+import { FormSuccess } from '@/components/ui/form-success'
+import { Input } from '@/components/ui/input'
 import { ValidationSchema } from '@/lib/db/validation'
-import { useSpinner } from '@/lib/hooks/useSpinner'
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios, { AxiosError } from 'axios'
-import { signIn, useSession } from 'next-auth/react'
+import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { FieldValues, useForm } from 'react-hook-form'
-import Input from '../Input'
-import { CardWrapper } from './card-wrapper'
+import { useForm } from 'react-hook-form'
+import * as z from 'zod'
 
 export const LoginForm = () => {
 	const [errorMessage, setErrorMessage] = useState<string | undefined>('')
-	const { isLoading, startLoading, stopLoading } = useSpinner()
+	const [isSuccess, setSuccess] = useState<string | undefined>('')
+	const [isButtonDisabled, setIsButtonDisabled] = useState(false)
 	const router = useRouter()
-	const { status } = useSession()
-	const {
-		register,
-		handleSubmit,
-		formState: { errors },
-	} = useForm<FieldValues>({
+
+	const form = useForm<z.infer<typeof ValidationSchema.loginUser>>({
+		resolver: zodResolver(ValidationSchema.loginUser),
 		defaultValues: {
 			email: 'ugnivenko.ea@gmail.com',
 			password: '',
 		},
-		// CHANGE THE VALIDATION LOGIC AUTH OR LOGIN
-		resolver: zodResolver(ValidationSchema.loginUser),
 	})
 
-	const onSubmit = (data: FieldValues) => {
+	const onSubmit = async (data: z.infer<typeof ValidationSchema.loginUser>) => {
 		const { email, password } = data
-		startLoading()
-		axios
-			.post('http://localhost:3000/api/login', {
+		setIsButtonDisabled(true)
+		setErrorMessage('')
+		setSuccess('')
+
+		try {
+			const response = await axios.post('http://localhost:3000/api/login', {
 				email,
 				password,
 			})
-			.then(() => {
+
+			// Check if response has an error
+			if (response.data?.error) {
+				setErrorMessage('Invalid email or password, please try again')
+			} else {
 				// SING IN CREDENTIALS
-				signIn('credentials', {
+				await signIn('credentials', {
 					...data,
 					redirect: false,
 				})
-					.then(callback => {
-						console.log(callback)
-						if (callback?.ok) {
-							router.push('/dashboard')
-						}
-						if (callback?.error) {
-							console.log(callback.error)
-						}
-					})
-					.catch(err => console.log(err))
-					.finally(() => {
-						stopLoading()
-					})
-			})
-			.catch(error => {
-				// CHECK IF ERROR IS AN AXIOS ERROR
-				if (axios.isAxiosError(error)) {
-					const err = error as AxiosError<{ error: string }>
-					setErrorMessage(err.response?.data?.error)
-				} else {
-					setErrorMessage('An error occurred')
-				}
-			})
-			.finally(() => {
-				stopLoading()
-			})
+
+				// Redirect to dashboard upon successful sign-in
+				router.push('/dashboard')
+			}
+		} catch (error) {
+			// Handle Axios error
+			if (axios.isAxiosError(error)) {
+				const err = error as AxiosError<{ error: string }>
+				setErrorMessage(err.response?.data?.error || 'Something went wrong')
+			}
+		} finally {
+			setIsButtonDisabled(false)
+		}
 	}
-	// TODO: need change buttonBackLabel
+
 	return (
 		<CardWrapper
 			headerLabel='Введіть свій 6-значний код входу'
@@ -77,45 +78,58 @@ export const LoginForm = () => {
 			buttonBackLabel='Увійдіть за допомогою іншої електронної пошти'
 			buttonPrivacyHref='/privacy'
 			buttonPrivacyLabel='Політика конфіденційності'
+			showSocial
 		>
-			<form className='flex flex-col gap-4 w-full'>
-				{/* EMAIL */}
-				<Input
-					type='email'
-					id='email'
-					label='Email'
-					errors={errors}
-					register={register}
-					required
-					errorMessage={errorMessage}
-				/>
-				{/* PASSWORD */}
-				<Input
-					type='password'
-					id='password'
-					label='Password'
-					errors={errors}
-					register={register}
-					required
-					errorMessage={errorMessage}
-				/>
-				{/* ERROR MESSAGE */}
-				<p className='text-error text-sm'>{errorMessage}</p>
-				<div className='justify-center flex flex-col'>
-					<button
-						onClick={handleSubmit(onSubmit)}
-						disabled={isLoading}
-						className='btn btn-primary w-full btn-lg rounded-md '
+			<Form {...form}>
+				<form
+					className='flex flex-col w-full gap-5'
+					onSubmit={form.handleSubmit(onSubmit)}
+				>
+					<div className='space-y-4'>
+						<FormField
+							control={form.control}
+							name='email'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Email</FormLabel>
+									<FormControl>
+										<Input
+											type='email'
+											{...field}
+											placeholder='john.doe@example.com'
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name='password'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Password</FormLabel>
+									<FormControl>
+										<Input type='password' {...field} placeholder='********' />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormSuccess message={isSuccess} />
+						<FormError message={errorMessage} />
+					</div>
+					<Button
+						type='submit'
+						className='w-full'
+						variant='office'
+						disabled={isButtonDisabled}
 					>
 						{/* CONDITION LOADING */}
-						{isLoading ? (
-							<span className='loading loading-ring loading-md'></span>
-						) : (
-							'Увійти'
-						)}
-					</button>
-				</div>
-			</form>
+						Увійти
+					</Button>
+				</form>
+			</Form>
 		</CardWrapper>
 	)
 }

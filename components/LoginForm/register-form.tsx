@@ -1,54 +1,63 @@
 'use client'
+import { CardWrapper } from '@/components/LoginForm/card-wrapper'
+import { Button } from '@/components/ui/button'
+
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from '@/components/ui/form'
+import { FormError } from '@/components/ui/form-error'
+import { FormSuccess } from '@/components/ui/form-success'
+import { Input } from '@/components/ui/input'
 import { ValidationSchema } from '@/lib/db/validation'
-import { useSpinner } from '@/lib/hooks/useSpinner'
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios, { AxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
-import Input from '../Input'
-import { CardWrapper } from './card-wrapper'
+import { useForm } from 'react-hook-form'
+import * as z from 'zod'
 
 export const RegisterForm = () => {
 	const [errorMessage, setErrorMessage] = useState<string | undefined>('')
-	const { isLoading, startLoading, stopLoading } = useSpinner()
+	const [isButtonDisabled, setIsButtonDisabled] = useState(false)
+	const [isSuccess, setSuccess] = useState<string | undefined>('')
+
 	const router = useRouter()
-	const {
-		register,
-		handleSubmit,
-		formState: { errors },
-	} = useForm<FieldValues>({
+	const form = useForm<z.infer<typeof ValidationSchema.authUser>>({
+		resolver: zodResolver(ValidationSchema.authUser),
 		defaultValues: {
 			email: 'ugnivenko.ea@gmail.com',
 		},
-		// CHANGE THE VALIDATION LOGIC AUTH OR LOGIN
-		resolver: zodResolver(ValidationSchema.authUser),
 	})
 
-	const onSubmit: SubmitHandler<FieldValues> = data => {
+	const onSubmit = async (data: z.infer<typeof ValidationSchema.authUser>) => {
+		setIsButtonDisabled(true)
 		const { email } = data
-		startLoading()
-		axios
-			.post('http://localhost:3000/api/register', {
+		try {
+			const { data } = await axios.post('http://localhost:3000/api/register', {
 				email,
 			})
-			.then(response => {
-				console.log(response.data)
-				response.data
-				router.push('/auth/login')
-			})
-			.catch(error => {
-				if (axios.isAxiosError(error)) {
-					const err = error as AxiosError<{ error: string }>
-					setErrorMessage(err.response?.data?.error)
-				} else {
-					setErrorMessage('An error occurred')
-				}
-				console.log(error)
-			})
-			.finally(() => {
-				stopLoading()
-			})
+			console.log(data)
+			data
+			if (data?.id) {
+				setSuccess('Check your email')
+			}
+			router.push('/auth/login')
+		} catch (error) {
+			if (axios.isAxiosError(error)) {
+				const err = (await error) as AxiosError<{ error: string }>
+				setErrorMessage(err.response?.data?.error)
+			} else {
+				setErrorMessage('An error occurred')
+			}
+			console.log(error)
+		} finally {
+			setIsButtonDisabled(false)
+		}
 	}
 	return (
 		<CardWrapper
@@ -58,33 +67,41 @@ export const RegisterForm = () => {
 			buttonPrivacyLabel='Політика конфіденційності'
 			showSocial
 		>
-			<form className='flex flex-col w-full gap-4'>
-				{/* EMAIL */}
-				<Input
-					type='email'
-					id='email'
-					label='Email'
-					errors={errors}
-					register={register}
-					required
-				/>
-				{/* ERROR MESSAGE */}
-				<p className='text-error'>{errorMessage}</p>
-				<div className='card-actions justify-center flex flex-col'>
-					<button
-						onClick={handleSubmit(onSubmit)}
-						className='btn btn-primary w-full btn-lg rounded-md'
-						disabled={isLoading}
+			<Form {...form}>
+				<form
+					className='flex flex-col w-full gap-5'
+					onSubmit={form.handleSubmit(onSubmit)}
+				>
+					<FormField
+						control={form.control}
+						name='email'
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Email</FormLabel>
+								<FormControl>
+									<Input
+										type='email'
+										{...field}
+										placeholder='john.doe@example.com'
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<FormSuccess message={isSuccess} />
+					<FormError message={errorMessage} />
+					<Button
+						type='submit'
+						className='w-full'
+						variant='office'
+						disabled={isButtonDisabled}
 					>
 						{/* CONDITION LOADING */}
-						{isLoading ? (
-							<span className='loading loading-ring loading-md'></span>
-						) : (
-							'Надіслати код входу'
-						)}
-					</button>
-				</div>
-			</form>
+						Надіслати код входу
+					</Button>
+				</form>
+			</Form>
 		</CardWrapper>
 	)
 }

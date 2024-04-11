@@ -8,10 +8,8 @@ interface PrivacyButtonProps {
 
 export const PrivacyButton = ({ label, href }: PrivacyButtonProps) => {
 	return (
-		<Link href={href}>
-			<button className='btn btn-link btn-sm'>
-				{label}
-			</button>
+		<Link href={href} className='text-center hover:underline'>
+			{label}
 		</Link>
 	)
 }
