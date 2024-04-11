@@ -1,12 +1,12 @@
 'use client'
 import classNames from 'classnames'
+import { LogOut } from 'lucide-react'
 import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { memo } from 'react'
 import { AiOutlineFacebook } from 'react-icons/ai'
 import { BiLogoTelegram } from 'react-icons/bi'
-import ThemeController from '../ThemeController'
 
 interface MenuMobileProps {
 	isActive: string
@@ -37,7 +37,7 @@ const MenuMobile: React.FC<MenuMobileProps> = memo(
 			{ label: 'Contacts', href: '/contacts' },
 			session
 				? { label: currentName, href: currenRole, special: true }
-				: { label: 'log in', href: 'auth/register' },
+				: { label: 'Login', href: 'auth/register' },
 		]
 
 		return (
@@ -47,7 +47,7 @@ const MenuMobile: React.FC<MenuMobileProps> = memo(
 				} ease-in-out duration-300`}
 			>
 				<div
-					className={`bg-drawers absolute top-0 right-0 h-full w-full sm:w-96 p-4 flex flex-col text-drawerText font-bold overflow-auto`}
+					className={`bg-neutral-700 absolute top-0 right-0 h-full w-full sm:w-96 p-4 flex flex-col font-bold overflow-auto`}
 				>
 					{/* MENU */}
 					<div className='gap-5 border-b-2'>
@@ -57,8 +57,8 @@ const MenuMobile: React.FC<MenuMobileProps> = memo(
 									<li
 										key={index}
 										onClick={toggleHamburger}
-										className={`py-2 ${
-											link.special && 'text-green-200 text-3xl'
+										className={`pt-5 pb-2 ${
+											link.special && 'text-zinc-400 text-3xl'
 										}`}
 									>
 										<Link
@@ -77,7 +77,12 @@ const MenuMobile: React.FC<MenuMobileProps> = memo(
 						</nav>
 					</div>
 					{status === 'authenticated' && (
-						<button onClick={handleOut}>Logout</button>
+						<button
+							onClick={handleOut}
+							className='text-white py-4 text-xl flex'
+						>
+							<LogOut className='w-8 h-8 m-4' />
+						</button>
 					)}
 					{/* ICONS MENU */}
 					<div className='flex flex-row text-white py-4 justify-end'>
@@ -86,9 +91,6 @@ const MenuMobile: React.FC<MenuMobileProps> = memo(
 						</button>
 						<button onClick={toggleHamburger}>
 							<AiOutlineFacebook className='w-8 h-8 m-4' />
-						</button>
-						<button className='w-8 h-8 m-4' onClick={toggleHamburger}>
-							<ThemeController />
 						</button>
 					</div>
 				</div>
