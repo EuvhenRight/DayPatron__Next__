@@ -1,5 +1,5 @@
 import { auth } from '@/auth'
-import Header from '@/components/Header'
+import Header from '@/components/Header/Header'
 import type { Metadata } from 'next'
 import { SessionProvider } from 'next-auth/react'
 import { Mulish } from 'next/font/google'

@@ -4,8 +4,7 @@ export const generateRandomPassword = () => {
 	// For example, you can use a library like `crypto` to generate a secure random password.
 	// Here, we're generating an 6-character password with alphanumeric characters.
 	const length = 6
-	const charset =
-		'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+	const charset = '0123456789'
 	let randomPassword = ''
 
 	for (let i = 0; i < length; i++) {
