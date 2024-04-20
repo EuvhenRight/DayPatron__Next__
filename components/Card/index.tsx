@@ -1,13 +1,8 @@
 'use client'
-import { Product } from '@prisma/client'
 import Link from 'next/link'
-import { memo } from 'react'
 import PriceTag from '../PriceTag'
 
-interface ProductCardProps {
-	product: Product
-}
-const Card: React.FC<ProductCardProps> = memo(({ product }) => {
+const Card: React.FC= () => {
 	return (
 		<Link href={`/products/${product.id}/details`}>
 			<div className='group relative cursor-pointer w-80 h-[600px]'>

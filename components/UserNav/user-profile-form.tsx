@@ -24,7 +24,6 @@ const UserProfileForm: React.FC<UserProfileFormProps> = ({ currentUser }) => {
 		defaultValues: {
 			id: currentUser.id,
 			name: currentUser.name,
-			lastName: currentUser.lastName,
 		},
 		// CHANGE THE VALIDATION LOGIC AUTH OR LOGIN
 		// resolver: zodResolver(ValidationSchema.profileUser),
@@ -81,8 +80,6 @@ const UserProfileForm: React.FC<UserProfileFormProps> = ({ currentUser }) => {
 					Safe
 				</button>
 			</form>
-			<div>{currentUser.lastName}</div>
-			<div>{currentUser.lastName}</div>
 			<div>{currentUser.email}</div>
 			<div>{currentUser.role}</div>
 			<div>{currentUser.id}</div>

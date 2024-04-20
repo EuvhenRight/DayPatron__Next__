@@ -12,6 +12,9 @@ export async function GET(
 			where: {
 				id: itemId,
 			},
+			include: {
+				variant: true,
+			},
 		})
 		if (!item) {
 			return NextResponse.json('Product not found', { status: 404 })

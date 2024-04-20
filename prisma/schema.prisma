@@ -71,6 +71,7 @@ model VerificationRequest {
   updatedAt  DateTime @updatedAt
 
   @@unique([identifier, token])
+  @@map("verificationRequests")
 }
 
 // Role
@@ -146,21 +147,27 @@ type Image {
   url String
 }
 
-type Group {
-  category       String
-  NEW            Boolean
-  HIT            Boolean
-  linkName       String
-  tradeMarkImage String
+model Variant {
+  id             String  @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  image          String
+  volume         String
+  article        String
+  discount_price Float   @default(0)
+  original_price Float
+  stock          Boolean
 
-  image Image[]
+  productId String  @db.ObjectId
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@map("variants")
 }
 
 model Product {
-  id             String  @id @default(auto()) @map("_id") @db.ObjectId
-  volume         String
-  article        String
-  stock          Boolean
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  category       String
+  NEW            Boolean
+  HIT            Boolean
   ingredients    String
   specification  String
   shelfLife      String
@@ -168,12 +175,12 @@ model Product {
   UTP            String
   description    String
   useTo          String
-  discount_price Float   @default(0)
-  original_price Float
   current_rating Float
+  volume         String[]
+  exlusive_size  String[]
 
   image    Image[]
-  group    Group[]
+  variant  Variant[]
   cartItem CartItem[]
 
   @@map("products")

@@ -4,11 +4,15 @@ import { NextResponse } from 'next/server'
 
 export async function GET() {
 	try {
-		const items = await prisma.product.findMany()
+		const items = await prisma.product.findMany({
+			include: {
+				variant: true,
+			},
+		})
 		if (!items) {
 			return NextResponse.json("Products don't found", { status: 404 })
 		}
-		return NextResponse.json({ items }, { status: 200 })
+		return NextResponse.json(items, { status: 200 })
 	} catch (error) {
 		console.error('Error processing request:', error)
 		return NextResponse.json(

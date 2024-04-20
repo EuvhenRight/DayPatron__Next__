@@ -1,41 +1,49 @@
-import { useLogOut } from '@/lib/hooks/useLogout'
-import { signOut, useSession } from 'next-auth/react'
+'use client'
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
+import { buttonVariants } from '@/components/ui/button'
+import { signOut } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 
-const SignOut = () => {
-	const { isModalOpen, handleClose } = useLogOut()
-	const session = useSession()
+export const LogOutModal = () => {
+	const router = useRouter()
 
 	const handleSignOut = () => {
 		signOut()
+		router.push('/')
 	}
 
 	return (
 		<>
-			<dialog className='modal' open={isModalOpen}>
-				<div className='modal-box bg-base-200 shadow-sm'>
-					<form method='dialog'>
-						{/* if there is a button in form, it will close the modal */}
-						<button
-							className='btn btn-sm btn-circle btn-ghost absolute right-2 top-2'
-							onClick={handleClose}
-						>
-							✕
-						</button>
-					</form>
-					<h3 className='font-bold text-lg'>Sign Out</h3>
-					<p className='py-4'>Are you sure you want to sign out?</p>
-					<div className='modal-action'>
-						<button
-							className='btn btn-primary btn-sm btn-active rounded-md'
+			<AlertDialog>
+				<AlertDialogTrigger>Logout</AlertDialogTrigger>
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle>Are you sure want to logout?</AlertDialogTitle>
+						<AlertDialogDescription>
+							You will be logout of your account.
+						</AlertDialogDescription>
+					</AlertDialogHeader>
+					<AlertDialogFooter>
+						<AlertDialogCancel>Cancel</AlertDialogCancel>
+						<AlertDialogAction
+							className={buttonVariants({ variant: 'office' })}
 							onClick={handleSignOut}
 						>
-							Sign Out
-						</button>
-					</div>
-				</div>
-			</dialog>
+							Yes
+						</AlertDialogAction>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
 		</>
 	)
 }
-
-export default SignOut

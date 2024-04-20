@@ -1,11 +1,6 @@
 import UserNav from '@/components/UserNav/UserNav'
 
-export const metadata = {
-	title: 'DayPatron Dashboard',
-	description: 'User Dashboard',
-}
-
-const AdminLayout = ({ children }: { children: React.ReactNode }) => {
+const UserLayout = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<>
 			<div>
@@ -16,4 +11,4 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
 	)
 }
 
-export default AdminLayout
+export default UserLayout

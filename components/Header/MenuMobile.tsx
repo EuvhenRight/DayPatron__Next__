@@ -1,12 +1,13 @@
 'use client'
 import classNames from 'classnames'
 import { LogOut } from 'lucide-react'
-import { signOut, useSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { memo } from 'react'
 import { AiOutlineFacebook } from 'react-icons/ai'
 import { BiLogoTelegram } from 'react-icons/bi'
+import { LogOutModal } from '../SignOut/sign-out'
 
 interface MenuMobileProps {
 	isActive: string
@@ -14,15 +15,12 @@ interface MenuMobileProps {
 	toggleHamburger: () => void
 	toggleActive: (href: string) => void
 }
-const MenuMobile: React.FC<MenuMobileProps> = memo(
+export const MenuMobile: React.FC<MenuMobileProps> = memo(
 	({ isOpenMenu, toggleHamburger, toggleActive, isActive }) => {
 		const pathName = usePathname()
 		const { data: session, status } = useSession()
 		const router = useRouter()
-		const handleOut = () => {
-			signOut()
-			router.push('/')
-		}
+
 		// NAME OF USER
 		const currentName =
 			session?.user?.name === null ? 'Account' : session?.user?.name
@@ -77,11 +75,8 @@ const MenuMobile: React.FC<MenuMobileProps> = memo(
 						</nav>
 					</div>
 					{status === 'authenticated' && (
-						<button
-							onClick={handleOut}
-							className='text-white py-4 text-xl flex'
-						>
-							<LogOut className='w-8 h-8 m-4' />
+						<button className='text-white py-4 text-xl flex items-center'>
+							<LogOut className='w-8 h-8 m-4' /> <LogOutModal />
 						</button>
 					)}
 					{/* ICONS MENU */}
@@ -98,4 +93,3 @@ const MenuMobile: React.FC<MenuMobileProps> = memo(
 		)
 	}
 )
-export default MenuMobile

@@ -2,13 +2,13 @@
 import React from 'react'
 import { IconType } from 'react-icons/lib'
 
-interface AdminNavItemProps {
+interface UserNavItemProps {
 	label: string
 	icon: IconType
 	isActive?: boolean
 }
 
-const UserNavItem: React.FC<AdminNavItemProps> = ({
+const UserNavItem: React.FC<UserNavItemProps> = ({
 	label,
 	icon: Icon,
 	isActive,

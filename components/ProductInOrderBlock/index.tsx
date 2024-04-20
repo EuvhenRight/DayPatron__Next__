@@ -1,6 +1,5 @@
 'use client'
 import currentUser from '@/lib/hooks/currentUser'
-import { useCart } from '@/lib/hooks/useCart'
 import type { CartItem, Product, ProductInCart } from '@/lib/types/types'
 import { User } from '@prisma/client'
 import axios from 'axios'
@@ -16,7 +15,6 @@ interface ProductInOrderBlockProps {
 }
 const ProductInOrderBlock: React.FC<ProductInOrderBlockProps> = memo(
 	({ product }) => {
-		const { cartItems, handleAddToCart, showToast } = useCart()
 		const [currentIndex, setCurrentIndex] = useState<number>(0)
 		const [animate, setAnimate] = useState<boolean>(false)
 		// CHECK ITEM IN CART
