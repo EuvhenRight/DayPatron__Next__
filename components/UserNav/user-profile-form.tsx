@@ -10,11 +10,12 @@ import Input from '../Input'
 interface UserProfileFormProps {
 	currentUser: User
 }
-const UserProfileForm: React.FC<UserProfileFormProps> = ({ currentUser }) => {
+export const UserProfileForm: React.FC<UserProfileFormProps> = ({
+	currentUser,
+}) => {
 	const route = useRouter()
 
 	const { data: session, update } = useSession()
-	console.log(session)
 
 	const {
 		register,
@@ -86,5 +87,3 @@ const UserProfileForm: React.FC<UserProfileFormProps> = ({ currentUser }) => {
 		</>
 	)
 }
-
-export default UserProfileForm

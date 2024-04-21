@@ -1,5 +1,5 @@
 import { getCurrentUser } from '@/actions/getCurrentUser'
-import AdminNav from '@/components/AdminNav/admin-nav'
+import { AdminNav } from '@/components/AdminNav/admin-nav'
 
 export const metadata = {
 	title: 'DayPatron Admin',

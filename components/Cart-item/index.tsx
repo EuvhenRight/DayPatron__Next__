@@ -1,6 +1,5 @@
 // components/CartItem.tsx
 'use client'
-import { useCart } from '@/lib/hooks/useCart'
 import { ProductInCart } from '@/lib/types/types'
 import Link from 'next/link'
 import { memo } from 'react'
@@ -13,11 +12,6 @@ interface CartItemProps {
 }
 
 const CartItem: React.FC<CartItemProps> = memo(({ item, toggleDrawer }) => {
-	const {
-		handleRemoveFromCart,
-		handleIncrementQuantity,
-		handleDecrementQuantity,
-	} = useCart()
 	return (
 		<div className='flex flex-row text-white py-2 w-full justify-between border-b-2 border-black'>
 			{/* CLICK TO PRODUCT DETAILS */}

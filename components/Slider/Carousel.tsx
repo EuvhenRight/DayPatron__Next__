@@ -1,16 +1,37 @@
 'use client'
-import { Product } from '@/lib/types/types'
-// ALL THE PLUGINS
-import '@egjs/flicking-plugins/dist/flicking-plugins.css'
-import '@egjs/flicking/dist/flicking.css'
-import React, { memo } from 'react'
+import {
+	Carousel,
+	CarouselContent,
+	CarouselItem,
+	CarouselNext,
+	CarouselPrevious,
+} from '@/components/ui/carousel'
+import { Product } from '@prisma/client'
+import { ProductsCard } from './products-card/products-card'
 
 interface CarouselProps {
-	productsData: Product[]
+	dataProducts: Product[]
 }
 
-const Carousel: React.FC<CarouselProps> = memo(({ productsData }) => {
-	return <div>Carusel</div>
-})
-
-export default Carousel
+export const CarouselMixCards = ({ dataProducts }: CarouselProps) => {
+	return (
+		<Carousel
+			opts={{
+				align: 'start',
+			}}
+			className='w-full flex justify-center items-center'
+		>
+			<CarouselPrevious />
+			<CarouselContent className='mx-0.1'>
+				{dataProducts.map((product, index) => (
+					<CarouselItem key={index} className='md:basis-1/2 lg:basis-1/4'>
+						<div className='p-1'>
+							<ProductsCard product={product} />
+						</div>
+					</CarouselItem>
+				))}
+			</CarouselContent>
+			<CarouselNext />
+		</Carousel>
+	)
+}

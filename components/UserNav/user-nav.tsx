@@ -7,7 +7,7 @@ import {
 	AiOutlineProject,
 } from 'react-icons/ai'
 import UserNavItem from './user-nav-item'
-const UserNav = () => {
+export const UserNav = () => {
 	const pathName = usePathname()
 
 	const Items = [
@@ -47,5 +47,3 @@ const UserNav = () => {
 		</div>
 	)
 }
-
-export default UserNav

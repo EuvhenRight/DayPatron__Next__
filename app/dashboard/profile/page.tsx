@@ -1,5 +1,5 @@
 import { getCurrentUser } from '@/actions/getCurrentUser'
-import UserProfileForm from '@/components/UserNav/user-profile-form'
+import { UserProfileForm } from '@/components/UserNav/user-profile-form'
 import { NextResponse } from 'next/server'
 
 const UserProfilePage = async () => {

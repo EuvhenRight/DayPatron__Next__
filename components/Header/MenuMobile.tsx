@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import { LogOut } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { memo } from 'react'
 import { AiOutlineFacebook } from 'react-icons/ai'
 import { BiLogoTelegram } from 'react-icons/bi'
@@ -19,7 +19,6 @@ export const MenuMobile: React.FC<MenuMobileProps> = memo(
 	({ isOpenMenu, toggleHamburger, toggleActive, isActive }) => {
 		const pathName = usePathname()
 		const { data: session, status } = useSession()
-		const router = useRouter()
 
 		// NAME OF USER
 		const currentName =
@@ -75,9 +74,9 @@ export const MenuMobile: React.FC<MenuMobileProps> = memo(
 						</nav>
 					</div>
 					{status === 'authenticated' && (
-						<button className='text-white py-4 text-xl flex items-center'>
+						<div className='text-white py-4 text-xl flex items-center'>
 							<LogOut className='w-8 h-8 m-4' /> <LogOutModal />
-						</button>
+						</div>
 					)}
 					{/* ICONS MENU */}
 					<div className='flex flex-row text-white py-4 justify-end'>

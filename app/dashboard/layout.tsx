@@ -1,4 +1,4 @@
-import UserNav from '@/components/UserNav/UserNav'
+import { UserNav } from '@/components/UserNav/user-nav'
 
 const UserLayout = ({ children }: { children: React.ReactNode }) => {
 	return (

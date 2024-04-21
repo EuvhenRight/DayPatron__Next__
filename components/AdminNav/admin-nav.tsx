@@ -7,8 +7,8 @@ import {
 	AiOutlineAreaChart,
 	AiOutlineProject,
 } from 'react-icons/ai'
-import AdminNavItem from './admin-nav-item'
-const AdminNav = () => {
+import { AdminNavItem } from './admin-nav-item'
+export const AdminNav = () => {
 	const pathName = usePathname()
 
 	const Items = [
@@ -53,5 +53,3 @@ const AdminNav = () => {
 		</div>
 	)
 }
-
-export default AdminNav

@@ -1,4 +1,4 @@
-'use client'
+import { logOut } from '@/actions/logout'
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -11,14 +11,13 @@ import {
 	AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { buttonVariants } from '@/components/ui/button'
-import { signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 
 export const LogOutModal = () => {
 	const router = useRouter()
 
 	const handleSignOut = () => {
-		signOut()
+		logOut()
 		router.push('/')
 	}
 

@@ -8,7 +8,7 @@ interface AdminNavItemProps {
 	isActive?: boolean
 }
 
-const AdminNavItem: React.FC<AdminNavItemProps> = ({
+export const AdminNavItem: React.FC<AdminNavItemProps> = ({
 	label,
 	icon: Icon,
 	isActive,
@@ -26,5 +26,3 @@ const AdminNavItem: React.FC<AdminNavItemProps> = ({
 		</div>
 	)
 }
-
-export default AdminNavItem
