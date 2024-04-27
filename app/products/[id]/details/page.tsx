@@ -23,7 +23,7 @@ const getProductOne = cache(async (id: string) => {
 export const generateMetadata = async ({
 	params: { id },
 }: ProductDetailsProps): Promise<Metadata> => {
-	const product = await getProduct(id)
+	const product = await getProductOne(id)
 
 	return {
 		title: product?.name,

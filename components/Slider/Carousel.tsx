@@ -14,7 +14,6 @@ interface CarouselProps {
 }
 
 export const CarouselMixCards = ({ dataProducts }: CarouselProps) => {
-	console.log(dataProducts)
 	return (
 		<Carousel
 			opts={{
