@@ -1,9 +1,10 @@
+import { Product } from '.prisma/client'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import { CarouselMixCards } from '@/components/Slider/carousel'
 import { getAllProducts } from './api-products'
 
 const Products = async () => {
-	const dataProducts = await getAllProducts()
+	const dataProducts: Product[] = await getAllProducts()
 
 	return (
 		<div className='flex flex-col items-center justify-center'>

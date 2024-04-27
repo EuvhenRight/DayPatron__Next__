@@ -22,7 +22,8 @@ const ImageBlock: React.FC<ImageBlockProps> = memo(
 		setAnimate,
 	}: ImageBlockProps) => {
 		// ON/OFF ANIMATION
-		const countImages = product.variants.length
+		const countImages = 2
+		console.log(product.image)
 		// REF TO IMAGE LIST
 		const imagesRef = useRef<HTMLUListElement>(null)
 		const handleNextClick = useCallback(() => {
@@ -80,7 +81,7 @@ const ImageBlock: React.FC<ImageBlockProps> = memo(
 						</div>
 						{/* IMAGES CAROUSEL */}
 						<ul className='px-1' ref={imagesRef}>
-							{product.variants.map((item, index) => {
+							{product.image.map((item, index) => {
 								return (
 									<li
 										tabIndex={0}
@@ -88,7 +89,7 @@ const ImageBlock: React.FC<ImageBlockProps> = memo(
 										className='focus:outline-none border border-gray-600 focus:ring-2 focus:ring-current focus:ring-inset m-2 gap-2 cursor-pointer'
 										key={index}
 									>
-										<img src={`/images/${item.image}`} alt='item.url' />
+										<img src={`/images/${item.url}`} alt='item.url' />
 									</li>
 								)
 							})}
@@ -112,7 +113,7 @@ const ImageBlock: React.FC<ImageBlockProps> = memo(
 							<Image
 								src={
 									currentIndex !== null
-										? `/images/${product.variants[currentIndex].image}`
+										? `/images/${product.image[currentIndex].url}`
 										: `/images/${product.image[0].url}`
 								}
 								className={`cursor-zoom-in w-auto px-24 max-h-[650px] ${

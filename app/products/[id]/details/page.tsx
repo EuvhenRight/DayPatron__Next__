@@ -1,14 +1,16 @@
+import { Product } from '.prisma/client'
 import ProductInOrderBlock from '@/components/ProductInOrderBlock'
 import prisma from '@/lib/db/client'
 import { Metadata } from 'next'
 import { cache } from 'react'
+import { getProduct } from '../../api-products'
 
 interface ProductDetailsProps {
 	params: {
 		id: string
 	}
 }
-const getProduct = cache(async (id: string) => {
+const getProductOne = cache(async (id: string) => {
 	const product = await prisma?.product.findUnique({
 		where: {
 			id,
@@ -33,7 +35,7 @@ export const generateMetadata = async ({
 }
 
 const ProductDetails = async ({ params: { id } }: ProductDetailsProps) => {
-	const product = await getProduct(id)
+	const product: Product = await getProduct(id)
 
 	return (
 		<>

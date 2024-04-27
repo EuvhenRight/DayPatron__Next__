@@ -8,7 +8,7 @@ export async function GET(
 ) {
 	const itemId = params.id
 	try {
-		const item = await prisma.product.findUnique({
+		const product = await prisma.product.findUnique({
 			where: {
 				id: itemId,
 			},
@@ -16,10 +16,10 @@ export async function GET(
 				variant: true,
 			},
 		})
-		if (!item) {
+		if (!product) {
 			return NextResponse.json('Product not found', { status: 404 })
 		}
-		return NextResponse.json({ item }, { status: 200 })
+		return NextResponse.json(product, { status: 200 })
 	} catch (error) {
 		console.error('Error processing request:', error)
 		return NextResponse.json(
