@@ -1,15 +1,26 @@
 'use client'
+import { BreadcrumbProduct } from '@/components/ProductForm/breadcrumb'
 import currentUser from '@/lib/hooks/currentUser'
-import type { ProductInCart } from '@/lib/types/types'
-import { Product, User } from '@prisma/client'
-import { useState } from 'react'
-import ImageBlock from '../ImageBlock'
+import type { ProductInCart, ProductsWithVariants } from '@/lib/types/types'
+import { User } from '@prisma/client'
+import { useEffect, useState } from 'react'
+import Zoom from 'react-medium-image-zoom'
+import 'react-medium-image-zoom/dist/styles.css'
+import { Variants } from './variants'
+
+import Image from 'next/image'
+import { RatingProducts } from './rating'
+import { SliderWithProducts } from './slider-with-products'
 
 interface Props {
-	product: Product
+	product: ProductsWithVariants
 }
-const ProductInOrderBlock = ({ product }: Props) => {
+export const ProductForm = ({ product }: Props) => {
+	// CHOOSE VARIANTS INDEX PRODUCT
 	const [currentIndex, setCurrentIndex] = useState<number>(0)
+	const [imageUrl, setImageUrl] = useState<string>(``)
+	// CHOOSE IMAGE INDEX
+	const [imageIndex, setImageIndex] = useState<number | null>(null)
 	const [animate, setAnimate] = useState<boolean>(false)
 	// CHECK ITEM IN CART
 	const [itemInCart, setItemInCart] = useState<boolean>(false)
@@ -17,6 +28,21 @@ const ProductInOrderBlock = ({ product }: Props) => {
 	const user = currentUser() as User | null
 	const userId = user?.id
 
+	useEffect(() => {
+		if (imageIndex !== null && currentIndex !== 0) {
+			setImageUrl(`/images/${product.variant[currentIndex].image}`)
+			setImageIndex(null)
+		} else if (imageIndex !== null && currentIndex === 0) {
+			setImageUrl(`/images/${product.image[imageIndex].url}`)
+			setCurrentIndex(0)
+		} else if (imageIndex === null && currentIndex === 0) {
+			setImageUrl(`/images/${product.variant[currentIndex].image}`)
+		}
+	}, [currentIndex, imageIndex, product])
+
+	console.log(imageIndex, 'imageIndex')
+	console.log(currentIndex, 'currentIndex')
+	console.log(imageUrl, 'imageUrl')
 	// if (!user) return null
 	// ADD TO CART
 	// useEffect(() => {
@@ -61,18 +87,65 @@ const ProductInOrderBlock = ({ product }: Props) => {
 
 	// // CHECK STOCKS
 	// //@ts-ignore
-	// const stock = product?.variant[currentIndex].stock
+	const stock =
+		currentIndex <= 3
+			? product?.variant[currentIndex].stock
+			: product?.variant[0].stock
 
 	return (
 		<section className='xl:container xl:mx-auto pt-5'>
-			<div>
-				<ImageBlock
-					product={product}
-					currentIndex={currentIndex}
-					setCurrentIndex={setCurrentIndex}
-					animate={animate}
-					setAnimate={setAnimate}
-				/>
+			<div className='flex flex-row justify-center relative'>
+				<div className='xl:container xl:mx-auto sticky top-0 flex'>
+					{/* MAIN IMAGE */}
+					<SliderWithProducts
+						product={product}
+						currentIndex={currentIndex!}
+						setCurrentIndex={setCurrentIndex}
+						imageIndex={imageIndex!}
+						setImageIndex={setImageIndex}
+						setAnimate={setAnimate}
+						animate={animate}
+					/>
+					<div className='relative'>
+						<Zoom>
+							{/* IMAGE LIST */}
+							<Image
+								src={imageUrl}
+								className={`cursor-zoom-in w-auto px-24 max-h-[650px] ${
+									// APPLY ANIMATION CLASS
+									animate ? 'animate-slide-right' : ''
+								}`}
+								style={{ objectFit: 'contain' }} // Ensure the image fits within the container
+								alt={product.name}
+								width={1000}
+								height={650}
+								onAnimationEnd={() => {
+									// RESET ANIMATION CLASS
+									setAnimate(false)
+								}}
+							/>
+						</Zoom>
+					</div>
+				</div>
+				<div className='flex flex-col items-end w-1/2'>
+					<BreadcrumbProduct product={product} />
+					<h1 className='text-3xl font-bold uppercase space-y-2 line-height-[1.5] text-end my-5'>
+						{product.name}
+					</h1>
+					<p className='font-bold italic my-2'>{product.UTP}</p>
+					<div className='my-2 flex justify-end gap-2 mt-6'>
+						<RatingProducts currentRating={product.current_rating} />
+						<p>{product.current_rating} відгуків</p>
+					</div>
+					{/* VARIANTS */}
+					<Variants
+						variantsProduct={product?.variant}
+						currentIndex={currentIndex!}
+						setCurrentIndex={setCurrentIndex}
+						setAnimate={setAnimate}
+						stock={stock}
+					/>
+				</div>
 			</div>
 		</section>
 		// <section className='xl:container xl:mx-auto pt-5'>
@@ -154,5 +227,3 @@ const ProductInOrderBlock = ({ product }: Props) => {
 		// </section>
 	)
 }
-
-export default ProductInOrderBlock

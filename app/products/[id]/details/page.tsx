@@ -1,15 +1,19 @@
-import { Product } from '.prisma/client'
-import ProductInOrderBlock from '@/components/ProductInOrderBlock'
+import { getProduct } from '@/app/products/api-products'
+import { ProductForm } from '@/components/ProductForm/product-form'
 import prisma from '@/lib/db/client'
+import { Prisma } from '@prisma/client'
 import { Metadata } from 'next'
 import { cache } from 'react'
-import { getProduct } from '../../api-products'
 
-interface ProductDetailsProps {
+type ProductsWithVariants = Prisma.ProductGetPayload<{
+	include: { variant: true }
+}>
+interface Props {
 	params: {
 		id: string
 	}
 }
+
 const getProductOne = cache(async (id: string) => {
 	const product = await prisma?.product.findUnique({
 		where: {
@@ -22,7 +26,7 @@ const getProductOne = cache(async (id: string) => {
 
 export const generateMetadata = async ({
 	params: { id },
-}: ProductDetailsProps): Promise<Metadata> => {
+}: Props): Promise<Metadata> => {
 	const product = await getProductOne(id)
 
 	return {
@@ -34,12 +38,12 @@ export const generateMetadata = async ({
 	}
 }
 
-const ProductDetails = async ({ params: { id } }: ProductDetailsProps) => {
-	const product: Product = await getProduct(id)
+const ProductDetails = async ({ params: { id } }: Props) => {
+	const product: ProductsWithVariants = await getProduct(id)
 
 	return (
 		<>
-			<ProductInOrderBlock product={product} />
+			<ProductForm product={product} />
 		</>
 	)
 }

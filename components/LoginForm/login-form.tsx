@@ -12,6 +12,12 @@ import {
 import { FormError } from '@/components/ui/form-error'
 import { FormSuccess } from '@/components/ui/form-success'
 import { Input } from '@/components/ui/input'
+import {
+	InputOTP,
+	InputOTPGroup,
+	InputOTPSeparator,
+	InputOTPSlot,
+} from '@/components/ui/input-otp'
 import { ValidationSchema } from '@/lib/db/validation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios, { AxiosError } from 'axios'
@@ -20,12 +26,6 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
-import {
-	InputOTP,
-	InputOTPGroup,
-	InputOTPSeparator,
-	InputOTPSlot,
-} from '../ui/input-otp'
 
 export const LoginForm = () => {
 	const [errorMessage, setErrorMessage] = useState<string | undefined>('')
@@ -33,6 +33,7 @@ export const LoginForm = () => {
 	const [isButtonDisabled, setIsButtonDisabled] = useState(false)
 	const router = useRouter()
 
+	// FORM VALIDATION AND ERROR HANDLING
 	const form = useForm<z.infer<typeof ValidationSchema.loginUser>>({
 		resolver: zodResolver(ValidationSchema.loginUser),
 		defaultValues: {
@@ -53,7 +54,7 @@ export const LoginForm = () => {
 				password,
 			})
 
-			// Check if response has an error
+			// HANDLE AXIOS ERROR
 			if (response.data?.error) {
 				setErrorMessage('Invalid email or password, please try again')
 			} else {
@@ -63,11 +64,11 @@ export const LoginForm = () => {
 					redirect: false,
 				})
 
-				// Redirect to dashboard upon successful sign-in
+				// REDIRECT TO DASHBOARD PAGE
 				router.push('/dashboard')
 			}
 		} catch (error) {
-			// Handle Axios error
+			// HANDLE AXIOS ERROR
 			if (axios.isAxiosError(error)) {
 				const err = error as AxiosError<{ error: string }>
 				setErrorMessage(err.response?.data?.error || 'Something went wrong')
@@ -92,6 +93,7 @@ export const LoginForm = () => {
 					onSubmit={form.handleSubmit(onSubmit)}
 				>
 					<div className='space-y-4'>
+						{/* FORM FIELDS */}
 						<FormField
 							control={form.control}
 							name='email'
@@ -119,13 +121,15 @@ export const LoginForm = () => {
 										<InputOTP {...field} maxLength={6}>
 											<InputOTPGroup>
 												<InputOTPSlot index={0} />
+												<InputOTPSeparator />
 												<InputOTPSlot index={1} />
+												<InputOTPSeparator />
 												<InputOTPSlot index={2} />
-											</InputOTPGroup>
-											<InputOTPSeparator />
-											<InputOTPGroup>
+												<InputOTPSeparator />
 												<InputOTPSlot index={3} />
+												<InputOTPSeparator />
 												<InputOTPSlot index={4} />
+												<InputOTPSeparator />
 												<InputOTPSlot index={5} />
 											</InputOTPGroup>
 										</InputOTP>

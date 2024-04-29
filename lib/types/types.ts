@@ -1,4 +1,4 @@
-import { User } from '@prisma/client'
+import { Prisma, User } from '@prisma/client'
 
 export interface Product {
 	id: string
@@ -62,3 +62,7 @@ export type SafeUser = Omit<User, 'createdAt' | 'updatedAt' | 'email'> & {
 	updatedAt: string
 	email: string
 }
+
+export type ProductsWithVariants = Prisma.ProductGetPayload<{
+	include: { variant: true }
+}>

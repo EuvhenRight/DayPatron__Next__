@@ -1,9 +1,10 @@
 'use client'
 import classNames from 'classnames'
 import { useSession } from 'next-auth/react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { memo, useState } from 'react'
+import { useState } from 'react'
 import {
 	AiOutlineClose,
 	AiOutlineMenu,
@@ -14,7 +15,7 @@ import {
 import { UserMenu } from '../Header/HeaderUserMenu'
 import { MenuMobile } from './MenuMobile'
 
-export const Header = memo(() => {
+export const Header = () => {
 	const [isOpenMenu, setIsOpenMenu] = useState(false)
 	const [isActive, setIsActive] = useState('')
 	const pathName = usePathname()
@@ -41,7 +42,13 @@ export const Header = memo(() => {
 			<nav className='flex justify-between py-5 px-3 items-center container'>
 				{/* LOGO */}
 				<Link href='/' onClick={() => toggleActive('/')}>
-					<img className='w-32 lg:w-48' src='/images/DayLogo.svg' alt='logo' />
+					<Image
+						className='w-32 lg:w-48'
+						src='/images/DayLogo.svg'
+						alt='logo'
+						width={48}
+						height={100}
+					/>
 				</Link>
 
 				{/* LINKS MENU */}
@@ -131,4 +138,4 @@ export const Header = memo(() => {
 			</nav>
 		</header>
 	)
-})
+}

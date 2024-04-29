@@ -1,16 +1,11 @@
 'use client'
-import { useCart } from '@/lib/hooks/useCart'
-import { memo, useEffect } from 'react'
-import CartItem from '../Cart-item'
-import PriceTag from '../PriceTag'
+import { useEffect } from 'react'
 
 interface Props {
 	isOpenDrawer: boolean
 	toggleDrawer: () => void
 }
-const Drawer: React.FC<Props> = memo(({ toggleDrawer, isOpenDrawer }) => {
-	const { cartItems, cartTotalAmount, cartTotalSumDiscount } = useCart()
-
+const Drawer: React.FC<Props> = ({ toggleDrawer, isOpenDrawer }) => {
 	//UPDATE BODY OVERFLOW
 	useEffect(() => {
 		if (isOpenDrawer) {
@@ -45,25 +40,25 @@ const Drawer: React.FC<Props> = memo(({ toggleDrawer, isOpenDrawer }) => {
 						</h2>
 					</div>
 					{/* IF CART IS EMPTY */}
-					{!cartItems || cartItems.length === 0 ? (
+					{0 === 0 ? (
 						<h2 className='text-white text-lg md:text-xl py-2'>
 							Your cart is empty
 						</h2>
 					) : (
 						<>
 							<div className='border-b-2 border-white pb-4 mb-1 overflow-auto max-h-[400px] sm:max-h-[500px]'>
-								{cartItems.map((item, index) => (
+								{/* {cartItems.map((item, index) => (
 									<CartItem
 										toggleDrawer={toggleDrawer}
 										key={index}
 										item={item}
 									/>
-								))}
+								))} */}
 							</div>
 							{/* SECOND PART CHECKOUT */}
 							<div className='relative'>
 								{/* SUBTOTAL AND DISCOUNT */}
-								<div className='flex flex-col text-white py-4 mb-4'>
+								{/* <div className='flex flex-col text-white py-4 mb-4'>
 									<div className='flex justify-between'>
 										<h2>SUBTOTAL</h2>
 										<h2>{<PriceTag price={cartTotalAmount} />}</h2>
@@ -74,7 +69,7 @@ const Drawer: React.FC<Props> = memo(({ toggleDrawer, isOpenDrawer }) => {
 											-{<PriceTag price={cartTotalSumDiscount} />}
 										</h2>
 									</div>
-								</div>
+								</div> */}
 								{/* CHECKOUT */}
 								<button className='w-full bg-btnPrimary text-white text-xl py-2 transition ease-in-out delay-350 animate-pulse'>
 									Checkout
@@ -86,5 +81,5 @@ const Drawer: React.FC<Props> = memo(({ toggleDrawer, isOpenDrawer }) => {
 			</div>
 		</div>
 	)
-})
+}
 export default Drawer

@@ -1,14 +1,14 @@
-import { Product } from '.prisma/client'
-import Breadcrumbs from '@/components/Breadcrumbs'
+import { BreadcrumbProduct } from '@/components/ProductForm/breadcrumb'
 import { CarouselMixCards } from '@/components/Slider/carousel'
+import { ProductsWithVariants } from '@/lib/types/types'
 import { getAllProducts } from './api-products'
 
 const Products = async () => {
-	const dataProducts: Product[] = await getAllProducts()
+	const dataProducts: ProductsWithVariants[] = await getAllProducts()
 
 	return (
 		<div className='flex flex-col items-center justify-center'>
-			<Breadcrumbs />
+			<BreadcrumbProduct />
 			<CarouselMixCards dataProducts={dataProducts} />
 		</div>
 	)
