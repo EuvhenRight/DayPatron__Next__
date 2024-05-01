@@ -1,8 +1,9 @@
 'use client'
 import { ProductsWithVariants } from '@/lib/types/types'
 import Image from 'next/image'
-import { useCallback, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { AiOutlineLeft } from 'react-icons/ai'
+import Zoom from 'react-medium-image-zoom'
 
 interface Props {
 	product: ProductsWithVariants
@@ -10,6 +11,10 @@ interface Props {
 	setImageIndex: React.Dispatch<React.SetStateAction<number | null>>
 	setAnimate: React.Dispatch<React.SetStateAction<boolean>>
 	animate: boolean
+	imageUrl: string
+	setImageUrl: React.Dispatch<React.SetStateAction<string>>
+	setCurrentIndex: React.Dispatch<React.SetStateAction<number | null>>
+	currentIndex: number | null
 }
 export const SliderWithProducts = ({
 	product,
@@ -17,59 +22,92 @@ export const SliderWithProducts = ({
 	setImageIndex,
 	setAnimate,
 	animate,
+	imageUrl,
+	setImageUrl,
+	setCurrentIndex,
+	currentIndex,
 }: Props) => {
+	const [arrowToggle, setArrowToggle] = useState<number>(1)
 	// ON/OFF ANIMATION
 	const countImages = product.image.length
 	// REF TO IMAGE LIST
 	const imagesRef = useRef<HTMLUListElement>(null)
 	const handleNextClick = useCallback(() => {
 		// CHECK IF CURRENT IMAGE IS NOT NULL OR UNDEFINED AND NOT ALREADY AT THE LAST IMAGE
-		if (typeof imageIndex === 'number' && imageIndex < countImages - 1) {
+		if (typeof arrowToggle === 'number' && arrowToggle < countImages - 1) {
 			// INCREMENT CURRENT IMAGE TO MOVE TO THE NEXT IMAGE
-			setImageIndex(imageIndex + 1)
+			setArrowToggle(arrowToggle + 1)
 			setAnimate(true)
 			if (imagesRef.current) {
 				const children = imagesRef.current
 					.children as HTMLCollectionOf<HTMLLIElement>
 				// SET FOCUS TO THE NEXT IMAGE
-				children[imageIndex + 1].focus()
+				children[arrowToggle + 1].focus()
 			}
 		}
-	}, [imageIndex, countImages, setAnimate, setImageIndex])
+	}, [arrowToggle, countImages, setAnimate, setArrowToggle])
 
 	const handlePrevClick = useCallback(() => {
 		// CHECK IF CURRENT IMAGE IS NOT NULL OR UNDEFINED AND NOT ALREADY AT THE FIRST IMAGE
-		if (typeof imageIndex === 'number' && imageIndex > 0) {
+		if (typeof arrowToggle === 'number' && arrowToggle > 0) {
 			// DECREMENT CURRENT IMAGE TO MOVE TO THE PREVIOUS IMAGE
-			setImageIndex(imageIndex - 1)
+			setArrowToggle(arrowToggle - 1)
 			setAnimate(true)
 			if (imagesRef.current) {
 				const children = imagesRef.current
 					.children as HTMLCollectionOf<HTMLLIElement>
 				// SET FOCUS TO THE PREVIOUS IMAGE
-				children[imageIndex - 1].focus()
+				children[arrowToggle - 1].focus()
 			}
 		}
-	}, [imageIndex, setAnimate, setImageIndex])
+	}, [arrowToggle, setAnimate, setArrowToggle])
 	// TOGGLE IMAGE
 	const toggleImage = useCallback(
 		(index: number) => {
 			setAnimate(true)
 			setImageIndex(index)
+			setArrowToggle(index)
 		},
-		[setAnimate, setImageIndex]
+		[setAnimate, setImageIndex, setArrowToggle]
 	)
 
+	// SET CURRENT IMAGE
+	useEffect(() => {
+		if (imageIndex !== null) {
+			setImageUrl(`/images/${product.image[imageIndex!].url}`)
+			setCurrentIndex(null)
+			setImageIndex(null)
+		} else if (currentIndex === 2) {
+			setImageIndex(null)
+			setImageUrl(`/images/${product.variant[currentIndex].image}`)
+		} else if (currentIndex === 1) {
+			setImageIndex(null)
+			setImageUrl(`/images/${product.variant[currentIndex].image}`)
+		} else if (currentIndex === 0) {
+			setImageIndex(null)
+			setImageUrl(`/images/${product.variant[currentIndex].image}`)
+		}
+	}, [
+		imageIndex,
+		currentIndex,
+		setImageIndex,
+		product,
+		setCurrentIndex,
+		setImageUrl,
+	])
+
 	return (
-		<div className='flex xl:flex-row relative'>
+		<div className='flex xl:flex-row lg:sticky top-5 mt-3'>
 			<div className='flex items-center flex-col w-24 z-10'>
 				{/* ALWAYS RENDER ARROW TOP */}
-				<div className={`${imageIndex! === 0 ? 'opacity-0' : ''}`}>
+				<div
+					className={`${arrowToggle === 0 ? 'opacity-0' : ''} hidden lg:block`}
+				>
 					<button
 						className='hover:-translate-y-1 transition-transform'
 						onClick={() => handlePrevClick()}
 						aria-label='Prev'
-						disabled={imageIndex === 0}
+						disabled={arrowToggle === 0}
 					>
 						<AiOutlineLeft className='rotate-90' />
 					</button>
@@ -95,16 +133,40 @@ export const SliderWithProducts = ({
 					})}
 				</ul>
 				{/* ALWAYS RENDER ARROW BOTTOM */}
-				<div className={`${imageIndex! < countImages - 1 ? '' : 'opacity-0'}`}>
+				<div
+					className={`${
+						arrowToggle! < countImages - 1 ? '' : 'opacity-0'
+					} hidden lg:block`}
+				>
 					<button
 						className='hover:translate-y-1 transition-transform'
 						onClick={handleNextClick}
 						aria-label='Next'
-						disabled={imageIndex === countImages - 1}
+						disabled={arrowToggle === countImages - 1}
 					>
 						<AiOutlineLeft className='-rotate-90' />
 					</button>
 				</div>
+			</div>
+			{/* MAIN IMAGE */}
+			<div className='w-full'>
+				<Zoom>
+					<Image
+						src={imageUrl}
+						className={`cursor-zoom-in w-auto px-24 max-h-[650px] ${
+							// APPLY ANIMATION CLASS
+							animate ? 'animate-slide-right' : ''
+						}`}
+						style={{ objectFit: 'contain' }} // Ensure the image fits within the container
+						alt={product.name}
+						width={1000}
+						height={650}
+						onAnimationEnd={() => {
+							// RESET ANIMATION CLASS
+							setAnimate(false)
+						}}
+					/>
+				</Zoom>
 			</div>
 		</div>
 	)

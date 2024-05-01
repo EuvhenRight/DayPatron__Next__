@@ -3,12 +3,10 @@ import { BreadcrumbProduct } from '@/components/ProductForm/breadcrumb'
 import currentUser from '@/lib/hooks/currentUser'
 import type { ProductInCart, ProductsWithVariants } from '@/lib/types/types'
 import { User } from '@prisma/client'
-import { useEffect, useState } from 'react'
-import Zoom from 'react-medium-image-zoom'
+import { useState } from 'react'
 import 'react-medium-image-zoom/dist/styles.css'
 import { Variants } from './variants'
 
-import Image from 'next/image'
 import { RatingProducts } from './rating'
 import { SliderWithProducts } from './slider-with-products'
 
@@ -27,26 +25,6 @@ export const ProductForm = ({ product }: Props) => {
 	const [cartItem, setCartItem] = useState<ProductInCart | null>(null)
 	const user = currentUser() as User | null
 	const userId = user?.id
-
-	useEffect(() => {
-		if (imageIndex !== null) {
-			setImageUrl(`/images/${product.image[imageIndex!].url}`)
-			setCurrentIndex(null)
-			setImageIndex(null)
-		} else if (currentIndex === 2) {
-			setImageIndex(null)
-			setImageUrl(`/images/${product.variant[currentIndex].image}`)
-		} else if (currentIndex === 1) {
-			setImageIndex(null)
-			setImageUrl(`/images/${product.variant[currentIndex].image}`)
-		} else if (currentIndex === 0) {
-			setImageIndex(null)
-			setImageUrl(`/images/${product.variant[currentIndex].image}`)
-		}
-	}, [currentIndex, imageIndex, product.image])
-
-	console.log(imageIndex, 'imageIndex')
-	console.log(currentIndex, 'currentIndex')
 
 	// if (!user) return null
 	// ADD TO CART
@@ -96,8 +74,8 @@ export const ProductForm = ({ product }: Props) => {
 
 	return (
 		<section className='xl:container xl:mx-auto pt-5 relative'>
-			<div className='flex flex-row justify-center sticky top-0'>
-				<div className=' flex w-1/2'>
+			<div className='flex lg:flex-row flex-col lg:justify-center'>
+				<div className='w-1/2'>
 					{/* IMAGE LIST */}
 					<SliderWithProducts
 						product={product}
@@ -105,27 +83,11 @@ export const ProductForm = ({ product }: Props) => {
 						setImageIndex={setImageIndex}
 						setAnimate={setAnimate}
 						animate={animate}
+						imageUrl={imageUrl}
+						setImageUrl={setImageUrl}
+						setCurrentIndex={setCurrentIndex}
+						currentIndex={currentIndex!}
 					/>
-					<div className='relative'>
-						{/* MAIN IMAGE */}
-						<Zoom>
-							<Image
-								src={imageUrl}
-								className={`cursor-zoom-in w-auto px-24 max-h-[650px] ${
-									// APPLY ANIMATION CLASS
-									animate ? 'animate-slide-right' : ''
-								}`}
-								style={{ objectFit: 'contain' }} // Ensure the image fits within the container
-								alt={product.name}
-								width={1000}
-								height={650}
-								onAnimationEnd={() => {
-									// RESET ANIMATION CLASS
-									setAnimate(false)
-								}}
-							/>
-						</Zoom>
-					</div>
 				</div>
 				<div className='flex flex-col items-end w-1/2'>
 					<BreadcrumbProduct product={product} />
@@ -146,24 +108,6 @@ export const ProductForm = ({ product }: Props) => {
 						stock={stock}
 					/>
 					{/* INFO BLOCK INFORMATION */}
-					<div className='text-justify'>
-						<p className='py-2'>
-							<b>description: </b>
-							{product.description}
-						</p>
-						<p className='py-2'>
-							<b>shelfLie: </b>
-							{product.shelfLife}
-						</p>
-						<p className='py-2'>
-							<b>specification: </b>
-							{product.specification}
-						</p>
-						<p className='py-2'>
-							<b>useTo: </b>
-							{product.useTo}
-						</p>
-					</div>
 					<div className='text-justify'>
 						<p className='py-2'>
 							<b>description: </b>
