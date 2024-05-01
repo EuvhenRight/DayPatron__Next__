@@ -6,8 +6,6 @@ import { AiOutlineLeft } from 'react-icons/ai'
 
 interface Props {
 	product: ProductsWithVariants
-	setCurrentIndex: React.Dispatch<React.SetStateAction<number>>
-	currentIndex: number
 	imageIndex: number | null
 	setImageIndex: React.Dispatch<React.SetStateAction<number | null>>
 	setAnimate: React.Dispatch<React.SetStateAction<boolean>>
@@ -15,8 +13,6 @@ interface Props {
 }
 export const SliderWithProducts = ({
 	product,
-	currentIndex,
-	setCurrentIndex,
 	imageIndex,
 	setImageIndex,
 	setAnimate,

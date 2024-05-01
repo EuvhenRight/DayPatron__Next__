@@ -6,7 +6,7 @@ import PriceTag from '../PriceTag'
 interface VariantsProps {
 	variantsProduct: Variant[]
 	currentIndex: number
-	setCurrentIndex: React.Dispatch<React.SetStateAction<number>>
+	setCurrentIndex: React.Dispatch<React.SetStateAction<number | null>>
 	setAnimate: React.Dispatch<React.SetStateAction<boolean>>
 	stock: boolean
 }
@@ -33,17 +33,25 @@ export const Variants: React.FC<VariantsProps> = ({
 	return (
 		<>
 			{/* PRICE */}
-			<div className='flex gap-2 items-center my-6 text-xl'>
-				<p className={discountPrice > 0 ? 'line-through' : ''}>
-					{<PriceTag price={variantsProduct[currentIndex]?.original_price} />}
-				</p>
-				{/* DISCOUNT ON/OFF */}
-				{discountPrice > 0 ? (
-					<p className='text-btnPrimary font-bold animate-bounce'>
-						{<PriceTag price={variantsProduct[currentIndex]?.discount_price} />}
+			{currentIndex !== null ? (
+				<div className='flex gap-2 items-center my-6 text-xl'>
+					<p className={discountPrice > 0 ? 'line-through' : ''}>
+						{<PriceTag price={variantsProduct[currentIndex]?.original_price} />}
 					</p>
-				) : null}
-			</div>
+					{/* DISCOUNT ON/OFF */}
+					{discountPrice > 0 ? (
+						<p className='text-btnPrimary font-bold animate-bounce'>
+							{
+								<PriceTag
+									price={variantsProduct[currentIndex]?.discount_price}
+								/>
+							}
+						</p>
+					) : null}
+				</div>
+			) : (
+				'choose volume' // TODO: change text to 'choose variant'
+			)}
 			{/* VOLUME */}
 			<ul className='flex gap-5 items-center my-2' onBlur={handleContainerBlur}>
 				SIZE
@@ -88,7 +96,11 @@ export const Variants: React.FC<VariantsProps> = ({
 					</div>
 				)}
 			</div>
-			<p className='mb-4'>article: {variantsProduct[currentIndex]?.article}</p>
+			{currentIndex !== null ? (
+				<p className='mb-4'>
+					article: {variantsProduct[currentIndex]?.article}
+				</p>
+			) : null}
 		</>
 	)
 }

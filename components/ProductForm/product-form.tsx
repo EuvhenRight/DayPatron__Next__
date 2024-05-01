@@ -17,7 +17,7 @@ interface Props {
 }
 export const ProductForm = ({ product }: Props) => {
 	// CHOOSE VARIANTS INDEX PRODUCT
-	const [currentIndex, setCurrentIndex] = useState<number>(0)
+	const [currentIndex, setCurrentIndex] = useState<number | null>(0)
 	const [imageUrl, setImageUrl] = useState<string>(``)
 	// CHOOSE IMAGE INDEX
 	const [imageIndex, setImageIndex] = useState<number | null>(null)
@@ -29,20 +29,25 @@ export const ProductForm = ({ product }: Props) => {
 	const userId = user?.id
 
 	useEffect(() => {
-		if (imageIndex !== null && currentIndex !== 0) {
-			setImageUrl(`/images/${product.variant[currentIndex].image}`)
+		if (imageIndex !== null) {
+			setImageUrl(`/images/${product.image[imageIndex!].url}`)
+			setCurrentIndex(null)
 			setImageIndex(null)
-		} else if (imageIndex !== null && currentIndex === 0) {
-			setImageUrl(`/images/${product.image[imageIndex].url}`)
-			setCurrentIndex(0)
-		} else if (imageIndex === null && currentIndex === 0) {
-			setImageUrl(`/images/${product.variant[currentIndex].image}`)
+		} else if (currentIndex === 2) {
+			setImageIndex(null)
+			setImageUrl(`/images/${product.image[5].url}`)
+		} else if (currentIndex === 1) {
+			setImageIndex(null)
+			setImageUrl(`/images/${product.image[3].url}`)
+		} else if (currentIndex === 0) {
+			setImageIndex(null)
+			setImageUrl(`/images/${product.image[0].url}`)
 		}
-	}, [currentIndex, imageIndex, product])
+	}, [currentIndex, imageIndex, product.image])
 
 	console.log(imageIndex, 'imageIndex')
 	console.log(currentIndex, 'currentIndex')
-	console.log(imageUrl, 'imageUrl')
+
 	// if (!user) return null
 	// ADD TO CART
 	// useEffect(() => {
@@ -87,20 +92,15 @@ export const ProductForm = ({ product }: Props) => {
 
 	// // CHECK STOCKS
 	// //@ts-ignore
-	const stock =
-		currentIndex <= 3
-			? product?.variant[currentIndex].stock
-			: product?.variant[0].stock
+	const stock = currentIndex !== null && product?.variant[currentIndex].stock
 
 	return (
 		<section className='xl:container xl:mx-auto pt-5'>
 			<div className='flex flex-row justify-center relative'>
-				<div className='xl:container xl:mx-auto sticky top-0 flex'>
+				<div className='sticky top-0 flex'>
 					{/* MAIN IMAGE */}
 					<SliderWithProducts
 						product={product}
-						currentIndex={currentIndex!}
-						setCurrentIndex={setCurrentIndex}
 						imageIndex={imageIndex!}
 						setImageIndex={setImageIndex}
 						setAnimate={setAnimate}
@@ -145,6 +145,43 @@ export const ProductForm = ({ product }: Props) => {
 						setAnimate={setAnimate}
 						stock={stock}
 					/>
+					{/* INFO BLOCK INFORMATION */}
+					<div className='text-justify'>
+						<p className='py-2'>
+							<b>description: </b>
+							{product.description}
+						</p>
+						<p className='py-2'>
+							<b>shelfLie: </b>
+							{product.shelfLife}
+						</p>
+						<p className='py-2'>
+							<b>specification: </b>
+							{product.specification}
+						</p>
+						<p className='py-2'>
+							<b>useTo: </b>
+							{product.useTo}
+						</p>
+					</div>
+					<div className='text-justify'>
+						<p className='py-2'>
+							<b>description: </b>
+							{product.description}
+						</p>
+						<p className='py-2'>
+							<b>shelfLie: </b>
+							{product.shelfLife}
+						</p>
+						<p className='py-2'>
+							<b>specification: </b>
+							{product.specification}
+						</p>
+						<p className='py-2'>
+							<b>useTo: </b>
+							{product.useTo}
+						</p>
+					</div>
 				</div>
 			</div>
 		</section>
