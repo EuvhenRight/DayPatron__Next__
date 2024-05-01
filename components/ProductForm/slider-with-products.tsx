@@ -61,7 +61,7 @@ export const SliderWithProducts = ({
 	)
 
 	return (
-		<div className='flex xl:flex-row items-center'>
+		<div className='flex xl:flex-row relative'>
 			<div className='flex items-center flex-col w-24 z-10'>
 				{/* ALWAYS RENDER ARROW TOP */}
 				<div className={`${imageIndex! === 0 ? 'opacity-0' : ''}`}>

@@ -40,7 +40,7 @@ export const Variants: React.FC<VariantsProps> = ({
 					</p>
 					{/* DISCOUNT ON/OFF */}
 					{discountPrice > 0 ? (
-						<p className='text-btnPrimary font-bold animate-bounce'>
+						<p className='text-red-500 font-bold animate-bounce'>
 							{
 								<PriceTag
 									price={variantsProduct[currentIndex]?.discount_price}
@@ -50,11 +50,11 @@ export const Variants: React.FC<VariantsProps> = ({
 					) : null}
 				</div>
 			) : (
-				'choose volume' // TODO: change text to 'choose variant'
+				<div className='my-6 text-xl'>Please choose a SIZE</div>
 			)}
 			{/* VOLUME */}
 			<ul className='flex gap-5 items-center my-2' onBlur={handleContainerBlur}>
-				SIZE
+				SIZE:
 				{variantsProduct.map((variant, index) => {
 					return (
 						<li
@@ -100,7 +100,9 @@ export const Variants: React.FC<VariantsProps> = ({
 				<p className='mb-4'>
 					article: {variantsProduct[currentIndex]?.article}
 				</p>
-			) : null}
+			) : (
+				<p className='mb-4'>article: ----</p>
+			)}
 		</>
 	)
 }

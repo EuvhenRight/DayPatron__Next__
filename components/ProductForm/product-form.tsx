@@ -35,13 +35,13 @@ export const ProductForm = ({ product }: Props) => {
 			setImageIndex(null)
 		} else if (currentIndex === 2) {
 			setImageIndex(null)
-			setImageUrl(`/images/${product.image[5].url}`)
+			setImageUrl(`/images/${product.variant[currentIndex].image}`)
 		} else if (currentIndex === 1) {
 			setImageIndex(null)
-			setImageUrl(`/images/${product.image[3].url}`)
+			setImageUrl(`/images/${product.variant[currentIndex].image}`)
 		} else if (currentIndex === 0) {
 			setImageIndex(null)
-			setImageUrl(`/images/${product.image[0].url}`)
+			setImageUrl(`/images/${product.variant[currentIndex].image}`)
 		}
 	}, [currentIndex, imageIndex, product.image])
 
@@ -95,10 +95,10 @@ export const ProductForm = ({ product }: Props) => {
 	const stock = currentIndex !== null && product?.variant[currentIndex].stock
 
 	return (
-		<section className='xl:container xl:mx-auto pt-5'>
-			<div className='flex flex-row justify-center relative'>
-				<div className='sticky top-0 flex'>
-					{/* MAIN IMAGE */}
+		<section className='xl:container xl:mx-auto pt-5 relative'>
+			<div className='flex flex-row justify-center sticky top-0'>
+				<div className=' flex w-1/2'>
+					{/* IMAGE LIST */}
 					<SliderWithProducts
 						product={product}
 						imageIndex={imageIndex!}
@@ -107,8 +107,8 @@ export const ProductForm = ({ product }: Props) => {
 						animate={animate}
 					/>
 					<div className='relative'>
+						{/* MAIN IMAGE */}
 						<Zoom>
-							{/* IMAGE LIST */}
 							<Image
 								src={imageUrl}
 								className={`cursor-zoom-in w-auto px-24 max-h-[650px] ${
