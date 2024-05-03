@@ -22,9 +22,12 @@ export const CarouselMixCards = ({ dataProducts }: CarouselProps) => {
 			className='w-full flex justify-center items-center'
 		>
 			<CarouselPrevious />
-			<CarouselContent className='mx-0.1'>
+			<CarouselContent>
 				{dataProducts.map((product, index) => (
-					<CarouselItem key={index} className='md:basis-1/2 lg:basis-1/4'>
+					<CarouselItem
+						key={index}
+						className='md:basis-1/2 lg:basis-1/3 xl:basis-1/4'
+					>
 						<div className='p-1'>
 							<ProductsCard product={product} />
 						</div>

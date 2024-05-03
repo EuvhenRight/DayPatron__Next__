@@ -11,7 +11,7 @@ interface ProductsCardProps {
 export const ProductsCard: React.FC<ProductsCardProps> = ({ product }) => {
 	return (
 		<Link href={`/products/${product.id}/details`}>
-			<div className='group relative cursor-pointer w-80 h-[600px]'>
+			<div className='group relative cursor-pointer xl:w-80 h-[600px]'>
 				{product.NEW && (
 					<div className='animate-pulse absolute top-20 right-10 bg-green-800 text-white py-2 px-1'>
 						NEW
@@ -30,7 +30,7 @@ export const ProductsCard: React.FC<ProductsCardProps> = ({ product }) => {
 						height={1000}
 						alt={product.name}
 					/>
-					<button className='group-hover:opacity-100 group-hover:-translate-y-2 opacity-100 w-full bg-red-800 text-white py-2 px-1 transition ease-in delay-150 mt-2 sm:opacity-0 sm:-translate-y-0'>
+					<button className='group-hover:opacity-100 group-hover:-translate-y-2 opacity-100 w-full bg-red-800 text-white py-2 px-1 transition ease-in delay-150 mt-2 xl:opacity-0 xl:-translate-y-0'>
 						View Details
 					</button>
 					<div className='text-center px-5 pb-5'>

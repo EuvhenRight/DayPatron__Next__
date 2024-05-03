@@ -2,7 +2,8 @@
 import { ProductsWithVariants } from '@/lib/types/types'
 import Image from 'next/image'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { AiOutlineLeft } from 'react-icons/ai'
+import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
+import { GoDotFill } from 'react-icons/go'
 import Zoom from 'react-medium-image-zoom'
 
 interface Props {
@@ -37,6 +38,7 @@ export const SliderWithProducts = ({
 		if (typeof arrowToggle === 'number' && arrowToggle < countImages - 1) {
 			// INCREMENT CURRENT IMAGE TO MOVE TO THE NEXT IMAGE
 			setArrowToggle(arrowToggle + 1)
+			setImageIndex(arrowToggle + 1)
 			setAnimate(true)
 			if (imagesRef.current) {
 				const children = imagesRef.current
@@ -45,13 +47,14 @@ export const SliderWithProducts = ({
 				children[arrowToggle + 1].focus()
 			}
 		}
-	}, [arrowToggle, countImages, setAnimate, setArrowToggle])
+	}, [arrowToggle, countImages, setAnimate, setArrowToggle, setImageIndex])
 
 	const handlePrevClick = useCallback(() => {
 		// CHECK IF CURRENT IMAGE IS NOT NULL OR UNDEFINED AND NOT ALREADY AT THE FIRST IMAGE
 		if (typeof arrowToggle === 'number' && arrowToggle > 0) {
 			// DECREMENT CURRENT IMAGE TO MOVE TO THE PREVIOUS IMAGE
 			setArrowToggle(arrowToggle - 1)
+			setImageIndex(arrowToggle - 1)
 			setAnimate(true)
 			if (imagesRef.current) {
 				const children = imagesRef.current
@@ -60,7 +63,7 @@ export const SliderWithProducts = ({
 				children[arrowToggle - 1].focus()
 			}
 		}
-	}, [arrowToggle, setAnimate, setArrowToggle])
+	}, [arrowToggle, setAnimate, setArrowToggle, setImageIndex])
 	// TOGGLE IMAGE
 	const toggleImage = useCallback(
 		(index: number) => {
@@ -97,15 +100,15 @@ export const SliderWithProducts = ({
 	])
 
 	return (
-		<div className='flex xl:flex-row lg:sticky top-5 mt-3'>
-			<div className='flex items-center flex-col w-24 z-10'>
+		<div className='flex lg:flex-row flex-col-reverse lg:sticky lg:top-5 lg:mt-3 items-center'>
+			<div className='lg:w-24 z-10 lg:flex lg:justify-center lg:items-center lg:flex-col'>
 				{/* ALWAYS RENDER ARROW TOP */}
 				<div
 					className={`${arrowToggle === 0 ? 'opacity-0' : ''} hidden lg:block`}
 				>
 					<button
 						className='hover:-translate-y-1 transition-transform'
-						onClick={() => handlePrevClick()}
+						onClick={handlePrevClick}
 						aria-label='Prev'
 						disabled={arrowToggle === 0}
 					>
@@ -113,21 +116,26 @@ export const SliderWithProducts = ({
 					</button>
 				</div>
 				{/* IMAGES CAROUSEL */}
-				<ul className='px-1 overflow-y-scroll max-h-[650px]' ref={imagesRef}>
+				<ul
+					className='px-1 flex lg:block mt-2 lg:mt-0 lg:overflow-y-scroll xl:h-[650px]'
+					ref={imagesRef}
+				>
 					{product.image.map((item, index) => {
 						return (
 							<li
 								tabIndex={0}
 								onClick={() => toggleImage(index)}
-								className='focus:outline-none border border-gray-600 focus:ring-2 focus:ring-current focus:ring-inset m-2 gap-2 cursor-pointer'
+								className='focus:outline-none lg:border lg:border-gray-600 lg:focus:ring-2 lg:focus:ring-current lg:focus:ring-inset m-1 lg:m-2 lg:gap-2 cursor-pointer focus:text-red-500 lg:focus:text-black text-gray-500'
 								key={index}
 							>
 								<Image
 									src={`/images/${item.url}`}
 									alt='item.url'
 									width={100}
-									height={100}
+									height={0}
+									className=' lg:h-auto hidden lg:block'
 								/>
+								<GoDotFill className='lg:hidden' />
 							</li>
 						)
 					})}
@@ -149,24 +157,40 @@ export const SliderWithProducts = ({
 				</div>
 			</div>
 			{/* MAIN IMAGE */}
-			<div className='w-full'>
-				<Zoom>
-					<Image
-						src={imageUrl}
-						className={`cursor-zoom-in w-auto px-24 max-h-[650px] ${
-							// APPLY ANIMATION CLASS
-							animate ? 'animate-slide-right' : ''
-						}`}
-						style={{ objectFit: 'contain' }} // Ensure the image fits within the container
-						alt={product.name}
-						width={1000}
-						height={650}
-						onAnimationEnd={() => {
-							// RESET ANIMATION CLASS
-							setAnimate(false)
-						}}
-					/>
-				</Zoom>
+			<div className='flex items-center justify-between lg:block max-w-[550px]'>
+				<button
+					onClick={handlePrevClick}
+					aria-label='Prev'
+					className='lg:hidden'
+				>
+					<AiOutlineLeft />
+				</button>
+				<div className='w-1/2 lg:w-full lg:h-auto'>
+					<Zoom>
+						<Image
+							src={imageUrl}
+							className={`cursor-zoom-in w-auto lg:px-24 lg:max-h-[500px] xl:max-h-[650px] ${
+								// APPLY ANIMATION CLASS
+								animate ? 'animate-slide-right' : ''
+							}`}
+							style={{ objectFit: 'contain' }} // Ensure the image fits within the container
+							alt={product.name}
+							width={1000}
+							height={650}
+							onAnimationEnd={() => {
+								// RESET ANIMATION CLASS
+								setAnimate(false)
+							}}
+						/>
+					</Zoom>
+				</div>
+				<button
+					onClick={handleNextClick}
+					aria-label='Next'
+					className='lg:hidden'
+				>
+					<AiOutlineRight />
+				</button>
 			</div>
 		</div>
 	)

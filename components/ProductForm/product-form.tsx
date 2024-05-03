@@ -73,9 +73,9 @@ export const ProductForm = ({ product }: Props) => {
 	const stock = currentIndex !== null && product?.variant[currentIndex].stock
 
 	return (
-		<section className='xl:container xl:mx-auto pt-5 relative'>
+		<section className='xl:container xl:mx-auto lg:pt-5 relative px-2'>
 			<div className='flex lg:flex-row flex-col lg:justify-center'>
-				<div className='w-1/2'>
+				<div className='lg:w-1/2'>
 					{/* IMAGE LIST */}
 					<SliderWithProducts
 						product={product}
@@ -89,12 +89,14 @@ export const ProductForm = ({ product }: Props) => {
 						currentIndex={currentIndex!}
 					/>
 				</div>
-				<div className='flex flex-col items-end w-1/2'>
-					<BreadcrumbProduct product={product} />
-					<h1 className='text-3xl font-bold uppercase space-y-2 line-height-[1.5] text-end my-5'>
+				<div className='flex flex-col items-end lg:w-1/2'>
+					<div className='hidden lg:block'>
+						<BreadcrumbProduct product={product} />
+					</div>
+					<h1 className='text-xl md:text-2xl lg:text-3xl font-bold uppercase space-y-2 line-height-[1.5] text-center lg:text-end my-1 lg:my-5 mt-2 lg:mt-0'>
 						{product.name}
 					</h1>
-					<p className='font-bold italic my-2'>{product.UTP}</p>
+					<p className='font-bold italic my-2 text-center'>{product.UTP}</p>
 					<div className='my-2 flex justify-end gap-2 mt-6'>
 						<RatingProducts currentRating={product.current_rating} />
 						<p>{product.current_rating} відгуків</p>
@@ -129,6 +131,7 @@ export const ProductForm = ({ product }: Props) => {
 				</div>
 			</div>
 		</section>
+
 		// <section className='xl:container xl:mx-auto pt-5'>
 		// 	{/* <div className='flex flex-row justify-between relative'> */}
 		// 		{/* ADD TOAST */}
