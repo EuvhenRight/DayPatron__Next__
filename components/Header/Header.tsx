@@ -1,4 +1,7 @@
 'use client'
+import { Drawer } from '@/components/Drawer/Drawer'
+import { UserMenu } from '@/components/Header/HeaderUserMenu'
+import { MenuMobile } from '@/components/Header/MenuMobile'
 import classNames from 'classnames'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
@@ -9,11 +12,8 @@ import {
 	AiOutlineClose,
 	AiOutlineMenu,
 	AiOutlineSearch,
-	AiOutlineShoppingCart,
 	AiOutlineUser,
 } from 'react-icons/ai'
-import { UserMenu } from '../Header/HeaderUserMenu'
-import { MenuMobile } from './MenuMobile'
 
 export const Header = () => {
 	const [isOpenMenu, setIsOpenMenu] = useState(false)
@@ -38,104 +38,102 @@ export const Header = () => {
 	}
 
 	return (
-		<header className='border-b border-gray-300 bg-none relative flex justify-center'>
-			<nav className='flex justify-between py-5 px-3 items-center container'>
-				{/* LOGO */}
-				<Link href='/' onClick={() => toggleActive('/')}>
-					<Image
-						className='w-32 lg:w-48'
-						src='/images/DayLogo.svg'
-						alt='logo'
-						width={48}
-						height={100}
-					/>
-				</Link>
-
-				{/* LINKS MENU */}
-				<ul className='md:flex md:gap-4 gap-2 md:text-xl text-md font-bold hidden'>
-					{links.map(link => (
-						<li key={link.href}>
-							<Link
-								// CONDITION ACTIVE LINK
-								className={classNames(
-									{
-										'hover:border-b-2 hover:border-b-red-500 transition-colors':
-											true,
-									},
-									{
-										'border-b-2 border-b-red-500':
-											isActive === link.href || pathName === link.href,
-									}
-								)}
-								onClick={() => toggleActive(link.href)}
-								href={link.href}
-							>
-								{link.label}
-							</Link>
-						</li>
-					))}
-					{/* ICONS MENU */}
-				</ul>
-				<ul className='flex md:gap-4 gap-6 justify-center items-center'>
-					<li className='hidden md:block'>
-						{/* LOGIN CONDITION */}
-						{status === 'authenticated' ? (
-							<UserMenu />
-						) : (
-							<Link
-								href='auth/register'
-								onClick={() => toggleActive('auth/register')}
-							>
-								<button className='w-8 h-8 cursor-pointer'>
-									<AiOutlineUser className='w-full h-full' />
-								</button>
-							</Link>
-						)}
-					</li>
-					<li>
-						{/* SEARCH ICON */}
-						<button
-							className='w-8 h-8 cursor-pointer hidden md:block'
-							onClick={() => toggleActive('/search')}
-						>
-							<AiOutlineSearch className='w-full h-full' />
-						</button>
-					</li>
-					<li>
-						{/* SHOPPING CART ICON */}
-						<button className='w-8 h-8 cursor-pointer relative'>
-							<AiOutlineShoppingCart className='w-full h-full' />
-							{/* CART INDICATOR */}
-							<span className='inline-flex rounded-full h-4 w-4 bg-btnPrimary absolute top-0 right-0 border border-white'></span>
-						</button>
-					</li>
-					<li className='cursor-pointer block md:hidden'>
-						{/* HAMBURGER */}
-						{/* CONDITION OPEN/CLOSE MENU */}
-						{isOpenMenu ? (
-							<>
-								{/* CLOSE BUTTON MOBILE MENU */}
-								<button
-									className='m-4 p-1 w-8 h-8 marker:hover:translate-x-0 opacity-60 text-white hover:opacity-100 transition text-sm absolute top-2 right-2 z-50'
-									onClick={toggleHamburger}
-								>
-									<AiOutlineClose className='w-full h-full' />
-								</button>
-							</>
-						) : (
-							<button className={'w-8 h-8'} onClick={toggleHamburger}>
-								<AiOutlineMenu className='w-full h-full' />
-							</button>
-						)}
-						<MenuMobile
-							isActive={isActive}
-							toggleHamburger={toggleHamburger}
-							isOpenMenu={isOpenMenu}
-							toggleActive={toggleActive}
+		<>
+			<header className='border-b border-gray-300 bg-none relative flex justify-center'>
+				<nav className='flex justify-between py-5 px-3 items-center container'>
+					{/* LOGO */}
+					<Link href='/' onClick={() => toggleActive('/')}>
+						<Image
+							className='w-32 lg:w-48'
+							src='/images/DayLogo.svg'
+							alt='logo'
+							width={48}
+							height={100}
 						/>
-					</li>
-				</ul>
-			</nav>
-		</header>
+					</Link>
+
+					{/* LINKS MENU */}
+					<ul className='md:flex md:gap-4 gap-2 md:text-xl text-md font-bold hidden'>
+						{links.map(link => (
+							<li key={link.href}>
+								<Link
+									// CONDITION ACTIVE LINK
+									className={classNames(
+										{
+											'hover:border-b-2 hover:border-b-red-500 transition-colors':
+												true,
+										},
+										{
+											'border-b-2 border-b-red-500':
+												isActive === link.href || pathName === link.href,
+										}
+									)}
+									onClick={() => toggleActive(link.href)}
+									href={link.href}
+								>
+									{link.label}
+								</Link>
+							</li>
+						))}
+						{/* ICONS MENU */}
+					</ul>
+					<ul className='flex md:gap-4 gap-6 justify-center items-center'>
+						<li className='hidden md:block'>
+							{/* LOGIN CONDITION */}
+							{status === 'authenticated' ? (
+								<UserMenu />
+							) : (
+								<Link
+									href='auth/register'
+									onClick={() => toggleActive('auth/register')}
+								>
+									<button className='w-8 h-8 cursor-pointer'>
+										<AiOutlineUser className='w-full h-full' />
+									</button>
+								</Link>
+							)}
+						</li>
+						<li>
+							{/* SEARCH ICON */}
+							<button
+								className='w-8 h-8 cursor-pointer hidden md:block'
+								onClick={() => toggleActive('/search')}
+							>
+								<AiOutlineSearch className='w-full h-full' />
+							</button>
+						</li>
+						<li>
+							{/* SHOPPING CART ICON */}
+							<Drawer />
+						</li>
+						<li className='cursor-pointer block md:hidden'>
+							{/* HAMBURGER */}
+							{/* CONDITION OPEN/CLOSE MENU */}
+							{isOpenMenu ? (
+								<>
+									{/* CLOSE BUTTON MOBILE MENU */}
+									<button
+										className='m-4 p-1 w-8 h-8 marker:hover:translate-x-0 opacity-60 text-white hover:opacity-100 transition text-sm absolute top-2 right-2 z-50'
+										onClick={toggleHamburger}
+									>
+										<AiOutlineClose className='w-full h-full' />
+									</button>
+								</>
+							) : (
+								<button className={'w-8 h-8'} onClick={toggleHamburger}>
+									<AiOutlineMenu className='w-full h-full' />
+								</button>
+							)}
+							<MenuMobile
+								isActive={isActive}
+								toggleHamburger={toggleHamburger}
+								isOpenMenu={isOpenMenu}
+								toggleActive={toggleActive}
+							/>
+						</li>
+					</ul>
+				</nav>
+			</header>
+		</>
 	)
 }

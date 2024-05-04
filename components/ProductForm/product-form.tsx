@@ -7,6 +7,7 @@ import { useState } from 'react'
 import 'react-medium-image-zoom/dist/styles.css'
 import { Variants } from './variants'
 
+import { Button } from '../ui/button'
 import { RatingProducts } from './rating'
 import { SliderWithProducts } from './slider-with-products'
 
@@ -68,8 +69,6 @@ export const ProductForm = ({ product }: Props) => {
 	// 	}
 	// }
 
-	// // CHECK STOCKS
-	// //@ts-ignore
 	const stock = currentIndex !== null && product?.variant[currentIndex].stock
 
 	return (
@@ -93,7 +92,7 @@ export const ProductForm = ({ product }: Props) => {
 					<div className='hidden lg:block'>
 						<BreadcrumbProduct product={product} />
 					</div>
-					<h1 className='text-xl md:text-2xl lg:text-3xl font-bold uppercase space-y-2 line-height-[1.5] text-center lg:text-end my-1 lg:my-5 mt-2 lg:mt-0'>
+					<h1 className='text-xl md:text-2xl lg:text-3xl font-bold uppercase space-y-2 line-height-[1.5] text-center lg:text-end my-1 lg:my-5 mt-0'>
 						{product.name}
 					</h1>
 					<p className='font-bold italic my-2 text-center'>{product.UTP}</p>
@@ -109,6 +108,16 @@ export const ProductForm = ({ product }: Props) => {
 						setAnimate={setAnimate}
 						stock={stock}
 					/>
+					{/* ADD TO CART */}
+					<Button
+						variant={'destructive'}
+						className='p-2 my-2 text-xl'
+						size='lg'
+						disabled={!stock}
+						onClick={() => {}}
+					>
+						Add to cart
+					</Button>
 					{/* INFO BLOCK INFORMATION */}
 					<div className='text-justify'>
 						<p className='py-2'>

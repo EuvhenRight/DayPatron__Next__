@@ -1,5 +1,5 @@
 import { BreadcrumbProduct } from '@/components/ProductForm/breadcrumb'
-import { CarouselMixCards } from '@/components/Slider/carousel'
+import { CarouselMixCards } from '@/components/Slider/Carousel'
 import { ProductsWithVariants } from '@/lib/types/types'
 import { getAllProducts } from './api-products'
 
