@@ -9,7 +9,7 @@ import { Button, Stack, Typography, Grid, InputLabel, TextField, Tooltip, Autoco
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { TimeField } from '@mui/x-date-pickers';
-import { startOfWeek, endOfWeek, startOfMonth, endOfMonth, subDays, addDays, subMonths, addMonths, lastDayOfMonth, format } from 'date-fns'
+import { startOfWeek, endOfWeek, startOfMonth, endOfMonth, subDays, addDays, subMonths, addMonths, lastDayOfMonth, format } from 'date-fns';
 import { prepareApiBody } from 'utils/stringUtils';
 import { getDatesInRange } from 'utils/dateUtils';
 
