@@ -29,8 +29,10 @@ import {
   Box,
   IconButton
 } from '@mui/material';
+
+import { format } from 'date-fns';
 import SanitizedHTML from 'react-sanitized-html';
-import { LinkedinOutlined, EnvironmentOutlined, MailOutlined, PhoneOutlined, RightOutlined, RiseOutlined, QuestionOutlined, CloseOutlined, FileTextOutlined } from '@ant-design/icons';
+import { LinkedinOutlined, EnvironmentOutlined, MailOutlined, PhoneOutlined, RightOutlined, RiseOutlined, QuestionOutlined, CloseOutlined, FileTextOutlined, ShopOutlined, FileDoneOutlined } from '@ant-design/icons';
 import MainCard from 'components/MainCard';
 import Avatar from 'components/@extended/Avatar';
 import { getEllipsis } from 'utils/stringUtils';
@@ -49,6 +51,9 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
   const peraResponseResultTabGroup = 'ai-results';
   const peraQuestionsAndAnswersTabGroup = 'ai-qa';
   const notesTabGroup = 'notes';
+  const jobExperiencesTabGroup = 'jobExperiences';
+  const educationsTabGroup = 'educations';
+  const certificationsTabGroup = 'certifications';
   
   const { keycloak } = useKeycloak();
   const dispatch = useDispatch();
@@ -569,16 +574,42 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                           </ListItemButton>
                         );
                       })}
-                      {missionContractorMatch?.contractorPeraSurveyResponse &&
-                        <ListItemButton selected={tabGroupId === peraQuestionsAndAnswersTabGroup} onClick={() => handleTabClick(peraQuestionsAndAnswersTabGroup)}>
-                          <ListItemText primary="Questions & Answers" />
+                      <ListItemButton selected={tabGroupId === peraQuestionsAndAnswersTabGroup} onClick={() => handleTabClick(peraQuestionsAndAnswersTabGroup)}>
+                        <ListItemText primary="Questions & Answers" />
+                        <ListItemIcon>
+                          <RightOutlined />
+                        </ListItemIcon>
+                      </ListItemButton>
+                    </List>
+                  }
+
+                  <List
+                    component="nav"
+                    sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32, color: theme.palette.grey[500] } }}
+                    subheader={
+                      <Typography variant="subtitle1" color="text.primary" sx={{ pl: 2, mb: 1, mt: 2 }}>
+                        Profile
+                      </Typography>
+                    }>
+                      <ListItemButton selected={tabGroupId === jobExperiencesTabGroup} onClick={() => handleTabClick(jobExperiencesTabGroup)}>
+                        <ListItemText primary="Experience" />
                           <ListItemIcon>
                             <RightOutlined />
                           </ListItemIcon>
-                        </ListItemButton>
-                      }
-                    </List>
-                  }
+                      </ListItemButton>
+                      <ListItemButton selected={tabGroupId === educationsTabGroup} onClick={() => handleTabClick(educationsTabGroup)}>
+                        <ListItemText primary="Education" />
+                          <ListItemIcon>
+                            <RightOutlined />
+                          </ListItemIcon>
+                      </ListItemButton>
+                      <ListItemButton selected={tabGroupId === certificationsTabGroup} onClick={() => handleTabClick(certificationsTabGroup)}>
+                        <ListItemText primary="Certification" />
+                          <ListItemIcon>
+                            <RightOutlined />
+                          </ListItemIcon>
+                      </ListItemButton>
+                  </List>
 
                   <List
                     component="nav"
@@ -782,6 +813,151 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                     </MissionContractorMatchAdminNotes>
                   </MainCard>
                 </Grid>
+              </Grid>
+            }
+            {tabGroupId === jobExperiencesTabGroup &&
+              <Grid container spacing={3}>
+                
+                <Grid item xs={12}>
+                  <MainCard>
+                    <Grid container spacing={3}>
+                      <Grid item xs={12}>
+                        <Typography variant="h3">Experience</Typography>
+                      </Grid>
+                      {missionContractorMatch?.contractor?.jobExperiences?.map((jobExperience, jobExperienceIndex) => {
+                        return (<Grid key={jobExperienceIndex} item xs={12}>
+                          <Grid container spacing={2}>
+                            <Grid item>
+                              {jobExperience?.companyLogoUrl ? 
+                              (
+                                <img
+                                  style={{ width: 50, height: 50, textDecoration: 'none', opacity: 1 }}
+                                  alt={jobExperience?.company}
+                                  src={jobExperience?.companyLogoUrl}
+                                />
+                              ) : 
+                              (
+                                <ShopOutlined style={{ fontSize: '3rem' }}  />
+                              )}
+                            </Grid>
+                            <Grid item xs zeroMinWidth>
+                              <Typography align="left" variant="h5">
+                                {jobExperience?.title}
+                              </Typography>
+                              <Typography variant="h6">
+                                {jobExperience?.company}
+                              </Typography>
+                              <Typography color="secondary">
+                                {jobExperience?.location}
+                              </Typography>
+                              <Typography color="secondary">
+                                {format(new Date(jobExperience?.startDateUtc), 'MMM y')}&nbsp;-&nbsp;{jobExperience?.endDateUtc ? format(new Date(jobExperience?.endDateUtc), 'MMM y') : 'Present'}
+                              </Typography>
+                              <Typography align="left" variant="body1">
+                                {jobExperience?.description}
+                              </Typography>
+                            </Grid>
+                          </Grid>
+                        </Grid>);
+                      })}
+                    </Grid>
+                  </MainCard>
+                </Grid>
+
+              </Grid>
+            }
+            {tabGroupId === educationsTabGroup &&
+              <Grid container spacing={3}>
+                
+                <Grid item xs={12}>
+                  <MainCard>
+
+                    <Grid container spacing={3}>
+                      <Grid item xs={12}>
+                        <Typography variant="h3">Education</Typography>
+                      </Grid>
+                      {missionContractorMatch?.contractor?.educations?.map((education, educationIndex) => {
+                        return (<Grid key={educationIndex} item xs={12}>
+                          <Grid container spacing={2}>
+                            <Grid item>
+                              {education?.schoolLogoUrl ? 
+                              (
+                                <img
+                                  style={{ width: 50, height: 50, textDecoration: 'none', opacity: 1 }}
+                                  alt={education?.school}
+                                  src={education?.schoolLogoUrl}
+                                />
+                              ) : 
+                              (
+                                <ShopOutlined style={{ fontSize: '3rem' }}  />
+                              )}
+                            </Grid>
+                            <Grid item xs zeroMinWidth>
+                              <Typography align="left" variant="h5">
+                                {education?.degreeName}
+                              </Typography>
+                              <Typography variant="h6">
+                                {education?.school}
+                              </Typography>
+                              <Typography color="secondary">
+                                {education?.fieldOfStudy}
+                              </Typography>
+                              <Typography color="secondary">
+                                {format(new Date(education?.startDateUtc), 'MMM y')}&nbsp;-&nbsp;{education?.endDateUtc ? format(new Date(education?.endDateUtc), 'MMM y') : 'Present'}
+                              </Typography>
+                              <Typography align="left" variant="body1">
+                                {education?.description}
+                              </Typography>
+                            </Grid>
+                          </Grid>
+                        </Grid>);
+                      })}
+                    </Grid>
+
+                  </MainCard>
+                </Grid>
+
+              </Grid>
+            }
+            {tabGroupId === certificationsTabGroup &&
+              <Grid container spacing={3}>
+                
+                <Grid item xs={12}>
+                  <MainCard>
+                    
+                    <Grid container spacing={3}>
+                      <Grid item xs={12}>
+                        <Typography variant="h3">Certification</Typography>
+                      </Grid>
+                      {missionContractorMatch?.contractor?.certifications?.map((certification, certificationIndex) => {
+                        return (<Grid key={certificationIndex} item xs={12}>
+                          <Grid container spacing={2}>
+                            <Grid item>
+                              <FileDoneOutlined style={{ fontSize: '3rem' }}  />
+                            </Grid>
+                            <Grid item xs zeroMinWidth>
+                              <Typography align="left" variant="h5">
+                                {certification?.name}
+                              </Typography>
+                              <Typography variant="h6">
+                                {certification?.authority}
+                              </Typography>
+                              <Typography color="secondary">
+                                {format(new Date(certification?.startDateUtc), 'MMM y')}&nbsp;-&nbsp;{certification?.endDateUtc ? format(new Date(certification?.endDateUtc), 'MMM y') : 'Present'}
+                              </Typography>
+                              
+                              <Typography color="secondary">
+                                {certification?.url}
+                              </Typography>
+                            </Grid>
+                          </Grid>
+                        </Grid>);
+                      })}
+                    </Grid>
+
+                  </MainCard>
+                </Grid>
+
               </Grid>
             }
           </Grid>
