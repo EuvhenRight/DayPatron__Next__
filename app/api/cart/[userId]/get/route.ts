@@ -12,8 +12,8 @@ export async function GET(
 			include: { items: true },
 		})
 
-		return NextResponse.json({ cart }, { status: 200 })
-	} catch (error: any) {
+		return NextResponse.json(cart, { status: 200 })
+	} catch (error) {
 		console.error('Error adding item to cart:', error)
 		return NextResponse.json(
 			{ error: 'Internal Server Error' },

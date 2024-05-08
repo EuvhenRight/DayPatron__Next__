@@ -1,12 +1,14 @@
 'use client'
 import { BreadcrumbProduct } from '@/components/ProductForm/breadcrumb'
 import currentUser from '@/lib/hooks/currentUser'
-import type { ProductInCart, ProductsWithVariants } from '@/lib/types/types'
+import type { CartItem, ProductsWithVariants } from '@/lib/types/types'
 import { User } from '@prisma/client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import 'react-medium-image-zoom/dist/styles.css'
 import { Variants } from './variants'
 
+import { addItem } from '@/actions/cart'
+import { toast } from 'sonner'
 import { Button } from '../ui/button'
 import { RatingProducts } from './rating'
 import { SliderWithProducts } from './slider-with-products'
@@ -22,55 +24,46 @@ export const ProductForm = ({ product }: Props) => {
 	const [imageIndex, setImageIndex] = useState<number | null>(null)
 	const [animate, setAnimate] = useState<boolean>(false)
 	// CHECK ITEM IN CART
-	const [itemInCart, setItemInCart] = useState<boolean>(false)
-	const [cartItem, setCartItem] = useState<ProductInCart | null>(null)
+	const [cartItem, setCartItem] = useState<CartItem | null>(null)
 	const user = currentUser() as User | null
 	const userId = user?.id
 
-	// if (!user) return null
 	// ADD TO CART
-	// useEffect(() => {
-	// 	setCartItem({
-	// 		productId: product.id,
-	// 		name: product.name,
-	// 		volume: product.variants[currentIndex].volume,
-	// 		image: product.variants[currentIndex].image,
-	// 		quantity: 1,
-	// 		article: product.variants[currentIndex].article,
-	// 		original_price: product.variants[currentIndex].original_price,
-	// 		discount_price: product.variants[currentIndex].discount_price,
-	// 	})
-	// }, [currentIndex])
+	useEffect(() => {
+		if (currentIndex !== null) {
+			setCartItem({
+				id: product.variant[currentIndex].id,
+				productId: product.id,
+				name: product.variant[currentIndex].name,
+				volume: product.variant[currentIndex].volume,
+				image: product.variant[currentIndex].image,
+				quantity: 1,
+				stock: product.variant[currentIndex].stock,
+				article: product.variant[currentIndex].article,
+				original_price: product.variant[currentIndex].original_price,
+				discount_price: product.variant[currentIndex].discount_price,
+			})
+		}
+	}, [currentIndex, product, userId])
 
-	// CHECK ITEM IN CART ITEMS
-	// useEffect(() => {
-	// 	if (cartItem) {
-	// 		cartItems?.find(item => item.article === cartItem.article)
-	// 			? setItemInCart(true)
-	// 			: setItemInCart(false)
-	// 	}
-	// }, [cartItem, cartItems])
-
-	// const addCartItem = async (user: User | null, item: CartItem) => {
-	// 	try {
-	// 		if (!item) {
-	// 			throw new Error('Product is not defined')
-	// 		}
-
-	// 		const response = await axios.post(
-	// 			`http://localhost:3000/api/cart/${userId}/item`,
-	// 			item
-	// 		)
-
-	// 		return response.data.updatedCart // Assuming the response contains the updated cart
-	// 	} catch (error) {
-	// 		console.error(error)
-	// 		throw error // Re-throw the error to be handled by the caller
-	// 	}
-	// }
+	//SERVER ACTION ADD TO CART
+	const addItemToCart = async (userId: string, cartItem: CartItem) => {
+		if (!userId || !cartItem) {
+			// TOAST ERROR
+			return toast.error('something went wrong')
+		}
+		const response = await addItem(userId, cartItem!)
+		// TOAST SUCCESS
+		toast.success('Product added to cart', {
+			position: 'bottom-right',
+			icon: '🛒',
+		})
+		return response
+	}
 
 	const stock = currentIndex !== null && product?.variant[currentIndex].stock
-
+	// const productN = product.variant[currentIndex!]
+	// console.log(productN)
 	return (
 		<section className='xl:container xl:mx-auto lg:pt-5 relative px-2'>
 			<div className='flex lg:flex-row flex-col lg:justify-center'>
@@ -114,7 +107,9 @@ export const ProductForm = ({ product }: Props) => {
 						className='p-2 my-2 text-xl'
 						size='lg'
 						disabled={!stock}
-						onClick={() => {}}
+						onClick={() => {
+							addItemToCart(userId!, cartItem!)
+						}}
 					>
 						Add to cart
 					</Button>

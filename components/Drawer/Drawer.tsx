@@ -6,21 +6,38 @@ import {
 	SheetContent,
 	SheetTrigger,
 } from '@/components/ui/sheet'
-import { useSession } from 'next-auth/react'
+import CurrentUser from '@/lib/hooks/currentUser'
+import { Cart } from '@/lib/types/types'
+import { User } from '@prisma/client'
+import { useEffect, useState } from 'react'
 import { AiOutlineClose, AiOutlineShoppingCart } from 'react-icons/ai'
-import { getCart } from './api-cart'
+import { CartItemComponent } from '../Cart-item/CartItem'
+import PriceTag from '../PriceTag'
 
-export const Drawer = () => {
-	const { data: session } = useSession()
+interface Props {
+	cart: Cart
+}
 
-	const dataCart = getCart(session?.user?.id!)
+export const Drawer = ({ cart }: Props) => {
+	const [cartData, setCartData] = useState<Cart | null>(null)
+	const user = CurrentUser() as User | null
+
+	useEffect(() => {
+		setCartData(cart)
+	}, [cartData, cart])
+
+	// CART INDICATOR
+	if (!cartData) return null
+	const cartIndicate = cartData.items.length > 0
 
 	return (
 		<Sheet>
 			<SheetTrigger className='w-8 h-8 cursor-pointer relative'>
 				<AiOutlineShoppingCart className='w-full h-full' />
 				{/* CART INDICATOR */}
-				<span className='inline-flex rounded-full h-4 w-4 bg-red-500 absolute top-0 right-0 border border-white'></span>
+				{cartIndicate && (
+					<span className='inline-flex rounded-full h-4 w-4 bg-red-500 absolute top-0 right-0 border border-white'></span>
+				)}
 			</SheetTrigger>
 			<SheetContent>
 				<div
@@ -42,40 +59,40 @@ export const Drawer = () => {
 							</SheetClose>
 						</div>
 						{/* IF CART IS EMPTY */}
-						{0 === 0 ? (
+						{!cartIndicate ? (
 							<h2 className='text-white text-lg md:text-xl py-2'>
 								Your cart is empty
 							</h2>
 						) : (
 							<>
 								<div className='border-b-2 border-white pb-4 mb-1 overflow-auto max-h-[400px] sm:max-h-[500px]'>
-									{/* {cartItems.map((item, index) => (
-									<CartItem
-										toggleDrawer={toggleDrawer}
-										key={index}
-										item={item}
-									/>
-								))} */}
+									{cartData?.items.map((item, index) => (
+										<CartItemComponent key={index} item={item} />
+									))}
 								</div>
 								{/* SECOND PART CHECKOUT */}
 								<div className='relative'>
 									{/* SUBTOTAL AND DISCOUNT */}
-									{/* <div className='flex flex-col text-white py-4 mb-4'>
-									<div className='flex justify-between'>
-										<h2>SUBTOTAL</h2>
-										<h2>{<PriceTag price={cartTotalAmount} />}</h2>
+									<div className='flex flex-col text-white py-4 mb-4'>
+										<div className='flex justify-between'>
+											<h2>SUBTOTAL</h2>
+											<h2>{<PriceTag price={cartData?.subTotal!} />}</h2>
+										</div>
+										<div className='flex justify-between'>
+											<h2>DISCOUNT</h2>
+											<h2 className='text-green-500'>
+												-{<PriceTag price={cartData?.itemsTotal!} />}
+											</h2>
+										</div>
 									</div>
-									<div className='flex justify-between'>
-										<h2>DISCOUNT</h2>
-										<h2 className='text-green-500'>
-											-{<PriceTag price={cartTotalSumDiscount} />}
-										</h2>
-									</div>
-								</div> */}
 									{/* CHECKOUT */}
-									<button className='w-full text-white text-xl py-2 transition ease-in-out delay-350 animate-pulse'>
+									<Button
+										variant='destructive'
+										size='sm'
+										className='w-full text-white text-xl py-2 transition ease-in-out delay-350 animate-pulse'
+									>
 										Checkout
-									</button>
+									</Button>
 								</div>
 							</>
 						)}

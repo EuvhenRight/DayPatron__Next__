@@ -4,7 +4,7 @@ interface Props {
 	currentRating: number
 }
 
-export const RatingProducts: React.FC<Props> = ({ currentRating }) => {
+export const RatingProducts = ({ currentRating }: Props) => {
 	return (
 		<div>
 			<StarRating

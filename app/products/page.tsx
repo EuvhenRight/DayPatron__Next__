@@ -5,7 +5,6 @@ import { getAllProducts } from './api-products'
 
 const Products = async () => {
 	const dataProducts: ProductsWithVariants[] = await getAllProducts()
-
 	return (
 		<div className='flex flex-col items-center justify-center'>
 			<BreadcrumbProduct />

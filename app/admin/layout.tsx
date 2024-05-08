@@ -1,4 +1,4 @@
-import { getCurrentUser } from '@/actions/getCurrentUser'
+import { getCurrentUser } from '@/actions/user'
 import { AdminNav } from '@/components/AdminNav/admin-nav'
 
 export const metadata = {

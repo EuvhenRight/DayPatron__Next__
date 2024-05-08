@@ -1,6 +1,6 @@
 import prisma from '@/lib/db/client'
 import { cartValidationSchema } from '@/lib/db/validation'
-import { Product } from '@prisma/client'
+import { Variant } from '@prisma/client'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(
@@ -8,15 +8,15 @@ export async function POST(
 	{ params: { userId } }: { params: { userId: string } }
 ) {
 	try {
-		const product: Product = await request.json()
+		const variant: Variant = await request.json()
 
 		//	CHECK VALIDATION
-		const validatedBody = cartValidationSchema.safeParse(product)
+		const validatedBody = cartValidationSchema.safeParse(variant)
 		if (!validatedBody.success) {
 			return NextResponse.json(validatedBody.error.errors, { status: 400 })
 		}
 
-		if (!product) {
+		if (!variant) {
 			return NextResponse.json(
 				{ error: 'Invalid product in cart' },
 				{ status: 400 }
@@ -37,13 +37,15 @@ export async function POST(
 					subTotal: 0,
 					itemsTotal: 0,
 				},
-				include: { items: { include: { product: true } } },
+				include: {
+					items: { include: { variant: true } },
+				},
 			})
 		}
 
 		// FIND EXISTING CART ITEM
 		const existingCartItem = cart.items.find(
-			item => item.productId === product.id
+			item => item.variantId === variant.id
 		)
 
 		// UPDATE CART ITEM
@@ -56,12 +58,14 @@ export async function POST(
 		} else {
 			cartItem = await prisma.cartItem.create({
 				data: {
-					name: product.name,
-					article: product.article,
-					volume: product.volume,
-					original_price: product.original_price,
-					discount_price: product.discount_price,
-					productId: product.id,
+					name: variant.name,
+					volume: variant.volume,
+					image: variant.image,
+					article: variant.article,
+					original_price: variant.original_price,
+					discount_price: variant.discount_price,
+					productId: variant.productId,
+					variantId: variant.id,
 					quantity: 1,
 					cartId: cart.id,
 				},

@@ -1,5 +1,6 @@
 'use client'
-import { Variant } from '@/lib/types/types'
+
+import { Variant } from '@prisma/client'
 import React from 'react'
 import PriceTag from '../PriceTag'
 

@@ -1,4 +1,4 @@
-import { getCurrentUser } from '@/actions/getCurrentUser'
+import { getCurrentUser } from '@/actions/user'
 import { UserProfileForm } from '@/components/UserNav/user-profile-form'
 import { NextResponse } from 'next/server'
 

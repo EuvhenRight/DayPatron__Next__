@@ -1,4 +1,5 @@
-export const getAllProducts = async () => {
+import { cache } from 'react'
+export const getAllProducts = cache(async () => {
 	try {
 		const res = await fetch('http://localhost:3000/api/products')
 		if (!res.ok) {
@@ -8,9 +9,9 @@ export const getAllProducts = async () => {
 	} catch (error) {
 		console.error('Error fetching products:', error)
 	}
-}
+})
 
-export const getProduct = async (id: string) => {
+export const getProduct = cache(async (id: string) => {
 	try {
 		const res = await fetch(`http://localhost:3000/api/products/${id}/details`)
 		if (!res.ok) {
@@ -21,4 +22,4 @@ export const getProduct = async (id: string) => {
 	} catch (error) {
 		console.error('Error fetching product:', error)
 	}
-}
+})

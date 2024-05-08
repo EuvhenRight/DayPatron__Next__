@@ -2,6 +2,7 @@
 import { Drawer } from '@/components/Drawer/Drawer'
 import { UserMenu } from '@/components/Header/HeaderUserMenu'
 import { MenuMobile } from '@/components/Header/MenuMobile'
+import { Cart } from '@prisma/client'
 import classNames from 'classnames'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
@@ -15,7 +16,11 @@ import {
 	AiOutlineUser,
 } from 'react-icons/ai'
 
-export const Header = () => {
+interface Props {
+	cart: Cart
+}
+
+export const Header = ({ cart }: Props) => {
 	const [isOpenMenu, setIsOpenMenu] = useState(false)
 	const [isActive, setIsActive] = useState('')
 	const pathName = usePathname()
@@ -47,7 +52,8 @@ export const Header = () => {
 							className='w-32 lg:w-48'
 							src='/images/DayLogo.svg'
 							alt='logo'
-							width={48}
+							priority={true}
+							width={300}
 							height={100}
 						/>
 					</Link>
@@ -104,7 +110,7 @@ export const Header = () => {
 						</li>
 						<li>
 							{/* SHOPPING CART ICON */}
-							<Drawer />
+							<Drawer cart={cart} />
 						</li>
 						<li className='cursor-pointer block md:hidden'>
 							{/* HAMBURGER */}
