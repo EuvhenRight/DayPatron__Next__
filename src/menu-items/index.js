@@ -12,7 +12,8 @@ import {
   SearchOutlined,
   ShoppingCartOutlined,
   QuestionCircleOutlined,
-  FileOutlined
+  FileOutlined,
+  CheckCircleOutlined
 } from '@ant-design/icons';
 
 // icons
@@ -26,7 +27,8 @@ const icons = {
   SearchOutlined,
   ShoppingCartOutlined,
   QuestionCircleOutlined,
-  FileOutlined
+  FileOutlined,
+  CheckCircleOutlined
 };
 
 // ==============================|| MENU ITEMS ||============================== //
@@ -164,6 +166,13 @@ const menuItems = {
           type: 'item',
           url: '/support',
           icon: icons.QuestionCircleOutlined
+        },
+        {
+          id: 'fast-track',
+          title: <FormattedMessage id="fast-track" />,
+          type: 'item',
+          url: '/fast-track',
+          icon: icons.CheckCircleOutlined
         }
       ]
     }
