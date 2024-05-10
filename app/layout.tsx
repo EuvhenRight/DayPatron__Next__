@@ -1,11 +1,11 @@
 import { auth } from '@/auth'
 import { Header } from '@/components/Header/Header'
-import { Toaster } from '@/components/ui/sonner'
 
 import { SessionProvider } from 'next-auth/react'
 import { Mulish } from 'next/font/google'
 
-import { getCart } from '@/actions/cart'
+import { Toaster } from '@/components/ui/sonner'
+import { getCartQuery } from '@/lib/db/queries'
 import type { Metadata } from 'next'
 import './globals.css'
 
@@ -20,20 +20,18 @@ export const metadata: Metadata = {
 }
 
 async function RootLayout({ children }: { children: React.ReactNode }) {
+	// FETCH USER
 	const session = await auth()
-
-	const data = await getCart(session?.user?.id as string)
-	const cart = await data
+	// FETCH CART
+	const cart = await getCartQuery(session?.user?.id as string)
 
 	return (
 		<SessionProvider session={session}>
 			<html lang='en'>
 				<body className={mulish.className}>
+					<Toaster />
 					<Header cart={cart} />
-					<main>
-						<Toaster />
-						{children}
-					</main>
+					<main>{children}</main>
 				</body>
 			</html>
 		</SessionProvider>

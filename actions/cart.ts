@@ -5,20 +5,6 @@ import { cartValidationSchema } from '@/lib/db/validation'
 import { Variant } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
 
-export async function getCart(userId: string) {
-	const cart = await prisma.cart.findUnique({
-		where: { userId },
-		include: { items: true },
-	})
-
-	if (!cart) {
-		throw new Error('Cart not found')
-	}
-	revalidatePath('/products', 'page')
-
-	return cart
-}
-
 export async function addItem(userId: string, variant: Variant) {
 	//	CHECK VALIDATION
 	const validatedBody = cartValidationSchema.safeParse(variant)
@@ -102,4 +88,43 @@ export async function addItem(userId: string, variant: Variant) {
 		where: { userId },
 		data: { subTotal: totalPrice, itemsTotal: totalItems },
 	})
+
+	revalidatePath('/products')
+}
+
+export async function deleteItem(userId: string, itemId: string) {
+	const cart = await prisma.cart.findUnique({
+		where: { userId },
+	})
+
+	if (!cart) {
+		throw new Error('Cart not found')
+	}
+
+	await prisma.cartItem.delete({
+		where: { id: itemId },
+	})
+
+	const newCart = await prisma.cart.findUnique({
+		where: { userId },
+		include: { items: true },
+	})
+
+	const totalPrice = newCart?.items.reduce((acc, item) => {
+		const price =
+			item.discount_price !== 0 ? item.discount_price : item.original_price
+		return acc + price * item.quantity
+	}, 0)
+
+	const totalItems = newCart?.items.reduce(
+		(acc, item) => acc + item.quantity,
+		0
+	)
+
+	await prisma.cart.update({
+		where: { userId },
+		data: { subTotal: totalPrice, itemsTotal: totalItems },
+	})
+
+	revalidatePath('/products')
 }

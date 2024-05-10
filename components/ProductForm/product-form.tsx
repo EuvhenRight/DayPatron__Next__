@@ -1,13 +1,14 @@
 'use client'
 import { BreadcrumbProduct } from '@/components/ProductForm/breadcrumb'
 import currentUser from '@/lib/hooks/currentUser'
-import type { CartItem, ProductsWithVariants } from '@/lib/types/types'
+import type { Cart, CartItem, ProductsWithVariants } from '@/lib/types/types'
 import { User } from '@prisma/client'
 import { useEffect, useState } from 'react'
 import 'react-medium-image-zoom/dist/styles.css'
 import { Variants } from './variants'
 
 import { addItem } from '@/actions/cart'
+import { AiOutlineCheckSquare } from 'react-icons/ai'
 import { toast } from 'sonner'
 import { Button } from '../ui/button'
 import { RatingProducts } from './rating'
@@ -15,8 +16,9 @@ import { SliderWithProducts } from './slider-with-products'
 
 interface Props {
 	product: ProductsWithVariants
+	cart: Cart
 }
-export const ProductForm = ({ product }: Props) => {
+export const ProductForm = ({ product, cart }: Props) => {
 	// CHOOSE VARIANTS INDEX PRODUCT
 	const [currentIndex, setCurrentIndex] = useState<number | null>(0)
 	const [imageUrl, setImageUrl] = useState<string>(``)
@@ -27,6 +29,7 @@ export const ProductForm = ({ product }: Props) => {
 	const [cartItem, setCartItem] = useState<CartItem | null>(null)
 	const user = currentUser() as User | null
 	const userId = user?.id
+	const [itemInCart, setItemInCart] = useState<CartItem | null>(null)
 
 	// ADD TO CART
 	useEffect(() => {
@@ -47,23 +50,30 @@ export const ProductForm = ({ product }: Props) => {
 	}, [currentIndex, product, userId])
 
 	//SERVER ACTION ADD TO CART
-	const addItemToCart = async (userId: string, cartItem: CartItem) => {
+	const addItemToCart = (userId: string, cartItem: CartItem) => {
 		if (!userId || !cartItem) {
 			// TOAST ERROR
 			return toast.error('something went wrong')
 		}
-		const response = await addItem(userId, cartItem!)
+		const response = addItem(userId, cartItem!)
 		// TOAST SUCCESS
-		toast.success('Product added to cart', {
+		toast('Product added to cart', {
 			position: 'bottom-right',
 			icon: '🛒',
 		})
 		return response
 	}
-
+	// CHECK STOCK
 	const stock = currentIndex !== null && product?.variant[currentIndex].stock
-	// const productN = product.variant[currentIndex!]
-	// console.log(productN)
+	// CHECK PRODUCTS IN CART
+	useEffect(() => {
+		const check = cart.items?.find(item => {
+			if (currentIndex === null) return
+			return item.article === product.variant[currentIndex!].article
+		})
+		setItemInCart(check || null)
+	}, [cart, product, currentIndex])
+
 	return (
 		<section className='xl:container xl:mx-auto lg:pt-5 relative px-2'>
 			<div className='flex lg:flex-row flex-col lg:justify-center'>
@@ -101,18 +111,26 @@ export const ProductForm = ({ product }: Props) => {
 						setAnimate={setAnimate}
 						stock={stock}
 					/>
-					{/* ADD TO CART */}
-					<Button
-						variant={'destructive'}
-						className='p-2 my-2 text-xl'
-						size='lg'
-						disabled={!stock}
-						onClick={() => {
-							addItemToCart(userId!, cartItem!)
-						}}
-					>
-						Add to cart
-					</Button>
+
+					{/* SHOW PRODUCT IN CART */}
+					{itemInCart ? (
+						<p className='p-3 w-1/2 text-xl my-4 flex gap-4 justify-end items-center'>
+							<AiOutlineCheckSquare size={25} />
+							<span>Товар у кошику</span>
+						</p>
+					) : (
+						<Button
+							variant={'destructive'}
+							className='p-2 my-2 text-xl'
+							size='lg'
+							disabled={!stock}
+							onClick={() => {
+								addItemToCart(userId!, cartItem!)
+							}}
+						>
+							Add to cart
+						</Button>
+					)}
 					{/* INFO BLOCK INFORMATION */}
 					<div className='text-justify'>
 						<p className='py-2'>

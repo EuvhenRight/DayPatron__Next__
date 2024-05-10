@@ -1,18 +1,16 @@
+import prisma from '@/lib/db/client'
 import { cache } from 'react'
 
-export const getCart = cache(async (userId: string) => {
-	try {
-		const res = await fetch(`http://localhost:3000/api/cart/${userId}/get`, {
-			method: 'GET',
-		})
-		if (!res.ok) {
-			throw new Error('Failed to fetch products')
-		}
+export const getCartCC = cache(async (userId: string) => {
+	const cart = await prisma.cart.findUnique({
+		where: { userId },
+		include: { items: true },
+	})
 
-		return res.json()
-	} catch (error) {
-		console.error('Error fetching products:', error)
+	if (!cart) {
+		throw new Error('Cart not found')
 	}
+	return cart
 })
 
 export const deleteItem = cache(async (userId: string, itemId: string) => {

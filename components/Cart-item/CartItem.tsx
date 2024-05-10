@@ -29,7 +29,6 @@ export const CartItemComponent = ({ item }: CartItemProps) => {
 			}
 		}
 	}
-	console.log(item)
 
 	return (
 		<div className='flex flex-row text-white py-2 w-full justify-between border-b-2 border-black'>

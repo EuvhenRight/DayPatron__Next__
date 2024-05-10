@@ -1,6 +1,8 @@
+import { getCurrentUser } from '@/actions/user'
 import { getProduct } from '@/app/products/api-products'
 import { ProductForm } from '@/components/ProductForm/product-form'
 import prisma from '@/lib/db/client'
+import { getCartQuery } from '@/lib/db/queries'
 import { Prisma } from '@prisma/client'
 import { Metadata } from 'next'
 import { cache } from 'react'
@@ -39,11 +41,13 @@ export const generateMetadata = async ({
 }
 
 const ProductDetails = async ({ params: { id } }: Props) => {
+	const user = await getCurrentUser()
 	const product: ProductsWithVariants = await getProduct(id)
+	const cart = await getCartQuery(user?.id as string)
 
 	return (
 		<>
-			<ProductForm product={product} />
+			<ProductForm product={product} cart={cart} />
 		</>
 	)
 }

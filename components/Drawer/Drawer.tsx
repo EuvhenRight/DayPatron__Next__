@@ -9,7 +9,6 @@ import {
 import CurrentUser from '@/lib/hooks/currentUser'
 import { Cart } from '@/lib/types/types'
 import { User } from '@prisma/client'
-import { useEffect, useState } from 'react'
 import { AiOutlineClose, AiOutlineShoppingCart } from 'react-icons/ai'
 import { CartItemComponent } from '../Cart-item/CartItem'
 import PriceTag from '../PriceTag'
@@ -19,16 +18,12 @@ interface Props {
 }
 
 export const Drawer = ({ cart }: Props) => {
-	const [cartData, setCartData] = useState<Cart | null>(null)
+	// CURRENT USER
 	const user = CurrentUser() as User | null
 
-	useEffect(() => {
-		setCartData(cart)
-	}, [cartData, cart])
-
 	// CART INDICATOR
-	if (!cartData) return null
-	const cartIndicate = cartData.items.length > 0
+	if (!cart) return null
+	const cartIndicate = cart.items.length > 0
 
 	return (
 		<Sheet>
@@ -66,7 +61,7 @@ export const Drawer = ({ cart }: Props) => {
 						) : (
 							<>
 								<div className='border-b-2 border-white pb-4 mb-1 overflow-auto max-h-[400px] sm:max-h-[500px]'>
-									{cartData?.items.map((item, index) => (
+									{cart?.items.map((item, index) => (
 										<CartItemComponent key={index} item={item} />
 									))}
 								</div>
@@ -76,12 +71,12 @@ export const Drawer = ({ cart }: Props) => {
 									<div className='flex flex-col text-white py-4 mb-4'>
 										<div className='flex justify-between'>
 											<h2>SUBTOTAL</h2>
-											<h2>{<PriceTag price={cartData?.subTotal!} />}</h2>
+											<h2>{<PriceTag price={cart?.subTotal!} />}</h2>
 										</div>
 										<div className='flex justify-between'>
 											<h2>DISCOUNT</h2>
 											<h2 className='text-green-500'>
-												-{<PriceTag price={cartData?.itemsTotal!} />}
+												-{<PriceTag price={cart?.itemsTotal!} />}
 											</h2>
 										</div>
 									</div>
