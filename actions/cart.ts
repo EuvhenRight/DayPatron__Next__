@@ -129,3 +129,62 @@ export async function deleteItem(userId: string, itemId: string) {
 
 	revalidatePath('/products')
 }
+
+// EDIT CART ITEM
+export async function editItem(
+	userId: string,
+	itemId: string,
+	quantity: number
+) {
+	const cart = await prisma.cart.findUnique({
+		where: { userId },
+		include: { items: true },
+	})
+
+	if (!cart) {
+		throw new Error('Cart not found')
+	}
+
+	const findItem = cart.items.find(item => item.id === itemId)
+
+	if (!findItem) {
+		throw new Error('Cart item not found')
+	}
+
+	if (quantity <= 0 || quantity >= 99) {
+		// UPDATE CART IF QUANTITY IS 0
+		await prisma.cartItem.delete({
+			where: { id: findItem.id },
+		})
+	} else {
+		// UPDATE CART ITEM
+		await prisma.cartItem.update({
+			where: { id: findItem.id },
+			data: { quantity: quantity },
+		})
+	}
+
+	const newCart = await prisma.cart.findUnique({
+		where: { userId },
+		include: { items: true },
+	})
+
+	const totalPrice = newCart?.items.reduce((acc, item) => {
+		const price =
+			item.discount_price !== 0 ? item.discount_price : item.original_price
+		return acc + price * item.quantity
+	}, 0)
+
+	const totalItems = newCart?.items.reduce(
+		(acc, item) => acc + item.quantity,
+		0
+	)
+
+	// UPDATE CART TOTAL
+	await prisma.cart.update({
+		where: { userId },
+		data: { subTotal: totalPrice, itemsTotal: totalItems },
+	})
+
+	revalidatePath('/products')
+}

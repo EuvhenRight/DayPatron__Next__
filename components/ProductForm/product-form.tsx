@@ -121,7 +121,7 @@ export const ProductForm = ({ product, cart }: Props) => {
 					) : (
 						<Button
 							variant={'destructive'}
-							className='p-2 my-2 text-xl'
+							className='p-2 my-2 text-lg'
 							size='lg'
 							disabled={!stock}
 							onClick={() => {

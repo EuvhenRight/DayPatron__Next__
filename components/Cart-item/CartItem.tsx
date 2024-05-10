@@ -1,20 +1,44 @@
 // components/CartItem.tsx
 'use client'
+import { deleteItem, editItem } from '@/actions/cart'
 import CurrentUser from '@/lib/hooks/currentUser'
 import { CartItem } from '@/lib/types/types'
 import { User } from '@prisma/client'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useTransition } from 'react'
 import { AiOutlineClose } from 'react-icons/ai'
+import { toast } from 'sonner'
 import PriceTag from '../PriceTag'
 
 interface Props {
 	item: CartItem
-	deleteCartItem: (itemId: string, userId: string) => void
 }
 
-export const CartItemComponent = ({ item, deleteCartItem }: Props) => {
+export const CartItemComponent = ({ item }: Props) => {
 	const user = CurrentUser() as User | null
+
+	const [pending, startTransition] = useTransition()
+
+	// DELETE CART ITEM
+	const deleteCartItem = (userId: string, itemId: string) => {
+		if (!itemId) {
+			toast.error('something went wrong')
+		}
+		startTransition(() => {
+			deleteItem(userId, itemId)
+		})
+	}
+
+	// UPDATE QUANTITY OF CART ITEM
+	const updateQuantity = (userId: string, itemId: string, quantity: number) => {
+		if (!itemId) {
+			toast.error('something went wrong')
+		}
+		startTransition(() => {
+			editItem(userId, itemId, quantity)
+		})
+	}
 
 	return (
 		<div className='flex flex-row text-white py-2 w-full justify-between border-b-2 border-black'>
@@ -50,7 +74,10 @@ export const CartItemComponent = ({ item, deleteCartItem }: Props) => {
 					<div className='flex border border-white text-sm'>
 						{/* QUANTITY */}
 						<button
-							onClick={() => {}}
+							disabled={pending}
+							onClick={() => {
+								updateQuantity(user?.id!, item.id, item.quantity - 1)
+							}}
 							className='hover:bg-white hover:text-gridOverlay px-2'
 						>
 							{/* MINUS ICON */}
@@ -64,7 +91,10 @@ export const CartItemComponent = ({ item, deleteCartItem }: Props) => {
 						</button>
 						<h4 className='p-1'>{item.quantity}</h4>
 						<button
-							onClick={() => {}}
+							disabled={pending}
+							onClick={() => {
+								updateQuantity(user?.id!, item.id, item.quantity + 1)
+							}}
 							className='hover:bg-white hover:text-gridOverlay px-2'
 						>
 							{/* PLUS ICON */}
