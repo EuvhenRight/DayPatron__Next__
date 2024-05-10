@@ -1,4 +1,7 @@
 'use client'
+import { deleteItem } from '@/actions/cart'
+import { CartItemComponent } from '@/components/Cart-item/CartItem'
+import PriceTag from '@/components/PriceTag'
 import { Button } from '@/components/ui/button'
 import {
 	Sheet,
@@ -9,21 +12,32 @@ import {
 import CurrentUser from '@/lib/hooks/currentUser'
 import { Cart } from '@/lib/types/types'
 import { User } from '@prisma/client'
+import { useTransition } from 'react'
 import { AiOutlineClose, AiOutlineShoppingCart } from 'react-icons/ai'
-import { CartItemComponent } from '../Cart-item/CartItem'
-import PriceTag from '../PriceTag'
+import { toast } from 'sonner'
 
 interface Props {
 	cart: Cart
 }
 
 export const Drawer = ({ cart }: Props) => {
+	const [pending, startTransition] = useTransition()
 	// CURRENT USER
 	const user = CurrentUser() as User | null
 
 	// CART INDICATOR
-	if (!cart) return null
+	if (!cart) return
 	const cartIndicate = cart.items.length > 0
+
+	const deleteCartItem = (userId: string, itemId: string) => {
+		if (!itemId) {
+			toast.error('something went wrong')
+		}
+		startTransition(() => {
+			deleteItem(userId, itemId)
+			console.log('delete cart item', itemId)
+		})
+	}
 
 	return (
 		<Sheet>
@@ -62,7 +76,11 @@ export const Drawer = ({ cart }: Props) => {
 							<>
 								<div className='border-b-2 border-white pb-4 mb-1 overflow-auto max-h-[400px] sm:max-h-[500px]'>
 									{cart?.items.map((item, index) => (
-										<CartItemComponent key={index} item={item} />
+										<CartItemComponent
+											key={index}
+											item={item}
+											deleteCartItem={deleteCartItem}
+										/>
 									))}
 								</div>
 								{/* SECOND PART CHECKOUT */}
@@ -84,6 +102,7 @@ export const Drawer = ({ cart }: Props) => {
 									<Button
 										variant='destructive'
 										size='sm'
+										disabled={pending}
 										className='w-full text-white text-xl py-2 transition ease-in-out delay-350 animate-pulse'
 									>
 										Checkout

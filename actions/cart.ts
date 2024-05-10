@@ -92,6 +92,7 @@ export async function addItem(userId: string, variant: Variant) {
 	revalidatePath('/products')
 }
 
+// DELETE CART ITEM
 export async function deleteItem(userId: string, itemId: string) {
 	const cart = await prisma.cart.findUnique({
 		where: { userId },

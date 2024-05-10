@@ -1,4 +1,4 @@
-import { formatPrice } from '../lib/db/format'
+import { formatPrice } from '@/lib/db/format'
 
 interface PriceTagProps {
 	price: number

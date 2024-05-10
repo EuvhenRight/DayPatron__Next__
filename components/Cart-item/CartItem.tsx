@@ -8,27 +8,13 @@ import Link from 'next/link'
 import { AiOutlineClose } from 'react-icons/ai'
 import PriceTag from '../PriceTag'
 
-interface CartItemProps {
+interface Props {
 	item: CartItem
+	deleteCartItem: (itemId: string, userId: string) => void
 }
 
-export const CartItemComponent = ({ item }: CartItemProps) => {
+export const CartItemComponent = ({ item, deleteCartItem }: Props) => {
 	const user = CurrentUser() as User | null
-
-	const deleteCartItem = async (userId: string, itemId: string) => {
-		if (itemId) {
-			const res = await fetch(
-				`http://localhost:3000/api/cart/${userId}/delete`,
-				{
-					method: 'DELETE',
-					body: JSON.stringify({ id: itemId }),
-				}
-			)
-			if (res.status === 200) {
-				return res.json()
-			}
-		}
-	}
 
 	return (
 		<div className='flex flex-row text-white py-2 w-full justify-between border-b-2 border-black'>

@@ -53,7 +53,7 @@ export const ProductForm = ({ product, cart }: Props) => {
 	const addItemToCart = (userId: string, cartItem: CartItem) => {
 		if (!userId || !cartItem) {
 			// TOAST ERROR
-			return toast.error('something went wrong')
+			toast.error('something went wrong')
 		}
 		const response = addItem(userId, cartItem!)
 		// TOAST SUCCESS
