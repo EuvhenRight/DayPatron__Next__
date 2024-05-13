@@ -58,3 +58,9 @@ div.small-chip span {
 .quill > .ql-container > .ql-editor.ql-blank::before{
     padding-top: 13px;
 }
+.left-list {
+    padding-inline-start: 16px; 
+}
+.vcenter-title {
+    padding: 7px 0px 16px 0px;
+}

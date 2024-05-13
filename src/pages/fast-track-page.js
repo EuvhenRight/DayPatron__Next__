@@ -22,7 +22,7 @@ const FastTrackPage = () => {
                 </Avatar>
               </Grid>
               <Grid item xs zeroMinWidth>
-                <Typography align="left" variant="h5">
+                <Typography align="left" variant="h5" className='vcenter-title'>
                   SET CLEAR OUTCOMES
                 </Typography>
                 <Typography align="left" variant="body1" color="secondary">
@@ -42,12 +42,12 @@ const FastTrackPage = () => {
                 </Avatar>
               </Grid>
               <Grid item xs zeroMinWidth>
-                <Typography align="left" variant="h5">
+                <Typography align="left" variant="h5" className='vcenter-title'>
                   CREATE COMPREHENSIVE BRIEFING
                 </Typography>
                 <Typography align="left" variant="body1" color="secondary">
                   Do you have a comprehensive briefing with mission details and background information? Is this briefing shared internally as well with relevant stakeholders?
-                  <ul>
+                  <ul className='left-list'>
                     <li>Objectives</li>
                     <li>Budgets</li>
                     <li>Target audiences</li>
@@ -70,12 +70,12 @@ const FastTrackPage = () => {
                 </Avatar>
               </Grid>
               <Grid item xs zeroMinWidth>
-                <Typography align="left" variant="h5">
+                <Typography align="left" variant="h5" className='vcenter-title'>
                   COMPILE ONBOARDING PACKAGE
                 </Typography>
                 <Typography align="left" variant="body1" color="secondary">
                   Prepare an onboarding package with reading material. Think of:
-                  <ul>
+                  <ul className='left-list'>
                     <li>Due diligence reports</li>
                     <li>Strategy documentation</li>
                     <li>Organizational chart</li>
@@ -100,12 +100,12 @@ const FastTrackPage = () => {
                 </Avatar>
               </Grid>
               <Grid item xs zeroMinWidth>
-                <Typography align="left" variant="h5">
+                <Typography align="left" variant="h5" className='vcenter-title'>
                   GRANT ACCESS TO SYSTEMS & REPORTS
                 </Typography>
                 <Typography align="left" variant="body1" color="secondary">
                   Grant access to required systems, tools and platforms. Does the 10x-er need to see dashboards, reports, or any other information? Do you have sufficient licenses for these applications? Think of:
-                  <ul>
+                  <ul className='left-list'>
                     <li>Knowledge base</li>
                     <li>Document sharing</li>
                     <li>HRIS & ATS</li>
@@ -127,12 +127,12 @@ const FastTrackPage = () => {
                 </Avatar>
               </Grid>
               <Grid item xs zeroMinWidth>
-                <Typography align="left" variant="h5">
+                <Typography align="left" variant="h5" className='vcenter-title'>
                   ARRANGE SIGNING AUTHORIZATIONS
                 </Typography>
                 <Typography align="left" variant="body1" color="secondary">
                   Is your 10x-er going to sign documents on your behalf? Do you need a signing mandate for your 10x-er? Think of:
-                  <ul>
+                  <ul className='left-list'>
                     <li>Internally</li>
                     <li>Your bank</li>
                     <li>Accountant</li>
@@ -154,12 +154,12 @@ const FastTrackPage = () => {
                 </Avatar>
               </Grid>
               <Grid item xs zeroMinWidth>
-                <Typography align="left" variant="h5">
+                <Typography align="left" variant="h5" className='vcenter-title'>
                   MAP COMMUNICATION CHANNELS
                 </Typography>
                 <Typography align="left" variant="body1" color="secondary">
                   Are there any messaging applications being used within your company? Think of:
-                  <ul>
+                  <ul className='left-list'>
                     <li>Microsoft Teams</li>
                     <li>Slack channels</li>
                     <li>Skype</li>
@@ -182,12 +182,12 @@ const FastTrackPage = () => {
                 </Avatar>
               </Grid>
               <Grid item xs zeroMinWidth>
-                <Typography align="left" variant="h5">
+                <Typography align="left" variant="h5" className='vcenter-title'>
                   SHARE TEMPLATES & STYLE GUIDE
                 </Typography>
                 <Typography align="left" variant="body1" color="secondary">
                   Ask any CEO and CMO…we’d love for all documents to be consistent in terms of lay-out and structure. Think of sharing your:
-                  <ul>
+                  <ul className='left-list'>
                     <li>Templates (Word, Excel, PowerPoint)</li>
                     <li>Style guide</li>
                     <li>Brand guidelines</li>
@@ -207,7 +207,7 @@ const FastTrackPage = () => {
                 </Avatar>
               </Grid>
               <Grid item xs zeroMinWidth>
-                <Typography align="left" variant="h5">
+                <Typography align="left" variant="h5" className='vcenter-title'>
                   FORWARD RECURRING MEETINGS
                 </Typography>
                 <Typography align="left" variant="body1" color="secondary">
@@ -227,12 +227,12 @@ const FastTrackPage = () => {
                 </Avatar>
               </Grid>
               <Grid item xs zeroMinWidth>
-                <Typography align="left" variant="h5">
+                <Typography align="left" variant="h5" className='vcenter-title'>
                   SHARE CONTACT DETAILS
                 </Typography>
                 <Typography align="left" variant="body1" color="secondary">
                   Think of sharing the following information internally and with relevant external stakeholders:
-                  <ul>
+                  <ul className='left-list'>
                     <li>Full name</li>
                     <li>Phone number</li>
                     <li>Email address</li>
@@ -255,7 +255,7 @@ const FastTrackPage = () => {
                 </Avatar>
               </Grid>
               <Grid item xs zeroMinWidth>
-                <Typography align="left" variant="h5">
+                <Typography align="left" variant="h5" className='vcenter-title'>
                   CREATE A CONTACT LIST
                 </Typography>
                 <Typography align="left" variant="body1" color="secondary">
@@ -275,7 +275,7 @@ const FastTrackPage = () => {
                 </Avatar>
               </Grid>
               <Grid item xs zeroMinWidth>
-                <Typography align="left" variant="h5">
+                <Typography align="left" variant="h5" className='vcenter-title'>
                   ASSIGN DEDICATED POINT OF CONTACT
                 </Typography>
                 <Typography align="left" variant="body1" color="secondary">
@@ -295,7 +295,7 @@ const FastTrackPage = () => {
                 </Avatar>
               </Grid>
               <Grid item xs zeroMinWidth>
-                <Typography align="left" variant="h5">
+                <Typography align="left" variant="h5" className='vcenter-title'>
                   EQUIP YOUR 10X-ER
                 </Typography>
                 <Typography align="left" variant="body1" color="secondary">
@@ -315,7 +315,7 @@ const FastTrackPage = () => {
                 </Avatar>
               </Grid>
               <Grid item xs zeroMinWidth>
-                <Typography align="left" variant="h5">
+                <Typography align="left" variant="h5" className='vcenter-title'>
                   CONDUCT DAY 1 ONBOARDING SESSION
                 </Typography>
                 <Typography align="left" variant="body1" color="secondary">
