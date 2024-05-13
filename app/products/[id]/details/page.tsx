@@ -1,15 +1,11 @@
-import { getCurrentUser } from '@/actions/user'
 import { getProduct } from '@/app/products/api-products'
 import { ProductForm } from '@/components/ProductForm/product-form'
+import { getCart } from '@/lib/db/cart'
 import prisma from '@/lib/db/client'
-import { getCartQuery } from '@/lib/db/queries'
-import { Prisma } from '@prisma/client'
+import { ProductsWithVariants } from '@/lib/types/types'
 import { Metadata } from 'next'
 import { cache } from 'react'
 
-type ProductsWithVariants = Prisma.ProductGetPayload<{
-	include: { variant: true }
-}>
 interface Props {
 	params: {
 		id: string
@@ -41,9 +37,8 @@ export const generateMetadata = async ({
 }
 
 const ProductDetails = async ({ params: { id } }: Props) => {
-	const user = await getCurrentUser()
 	const product: ProductsWithVariants = await getProduct(id)
-	const cart = await getCartQuery(user?.id as string)
+	const cart = await getCart()
 
 	return (
 		<>

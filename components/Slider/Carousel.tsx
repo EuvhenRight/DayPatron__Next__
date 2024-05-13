@@ -6,11 +6,11 @@ import {
 	CarouselNext,
 	CarouselPrevious,
 } from '@/components/ui/carousel'
-import { Product } from '@prisma/client'
+import { ProductsWithVariants } from '@/lib/types/types'
 import { ProductsCard } from './products-card/products-card'
 
 interface CarouselProps {
-	dataProducts: Product[]
+	dataProducts: ProductsWithVariants[]
 }
 
 export const CarouselMixCards = ({ dataProducts }: CarouselProps) => {

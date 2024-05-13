@@ -1,9 +1,7 @@
 // components/CartItem.tsx
 'use client'
 import { deleteItem, editItem } from '@/actions/cart'
-import CurrentUser from '@/lib/hooks/currentUser'
-import { CartItem } from '@/lib/types/types'
-import { User } from '@prisma/client'
+import { CartItemWithVariants } from '@/lib/types/types'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useTransition } from 'react'
@@ -12,54 +10,54 @@ import { toast } from 'sonner'
 import PriceTag from '../PriceTag'
 
 interface Props {
-	item: CartItem
+	item: CartItemWithVariants
 }
 
-export const CartItemComponent = ({ item }: Props) => {
-	const user = CurrentUser() as User | null
-
+export const CartItemComponent = ({
+	item: { variant: product, quantity },
+}: Props) => {
 	const [pending, startTransition] = useTransition()
 
 	// DELETE CART ITEM
-	const deleteCartItem = (userId: string, itemId: string) => {
+	const deleteCartItem = (itemId: string) => {
 		if (!itemId) {
 			toast.error('something went wrong')
 		}
 		startTransition(() => {
-			deleteItem(userId, itemId)
+			deleteItem(itemId)
 		})
 	}
 
 	// UPDATE QUANTITY OF CART ITEM
-	const updateQuantity = (userId: string, itemId: string, quantity: number) => {
+	const updateQuantity = (itemId: string, quantity: number) => {
 		if (!itemId) {
 			toast.error('something went wrong')
 		}
 		startTransition(() => {
-			editItem(userId, itemId, quantity)
+			editItem(itemId, quantity)
 		})
 	}
 
 	return (
 		<div className='flex flex-row text-white py-2 w-full justify-between border-b-2 border-black'>
 			{/* CLICK TO PRODUCT DETAILS */}
-			<Link href={`/products/${item.productId}/details`}>
+			<Link href={`/products/${product.productId}/details`}>
 				<Image
 					onClick={() => {}}
 					className='w-20'
 					width={100}
 					height={100}
-					src={`/images/${item.image}`}
-					alt={item.image}
+					src={`/images/${product.image}`}
+					alt={product.image}
 				/>
 			</Link>
 			<div className='w-full flex flex-col justify-between ml-4'>
 				<div className='flex justify-between items-center'>
-					<h2 className='text-typeCollectionTitle'>{item.name}</h2>
+					<h2 className='text-typeCollectionTitle'>{product.name}</h2>
 					{/* REMOVE ONE CART ITEM FROM CART */}
 					<AiOutlineClose
 						onClick={() => {
-							deleteCartItem(user?.id!, item.id)
+							deleteCartItem(product.id)
 						}}
 						className='hover:translate-x-0 opacity-60 hover:opacity-100 transition cursor-pointer'
 						style={{ color: 'white', width: 20, height: 20 }}
@@ -68,7 +66,7 @@ export const CartItemComponent = ({ item }: Props) => {
 				{/* SIZE */}
 				<div className='flex gap-2'>
 					<h4>Size:</h4>
-					<h4>{item.volume}</h4>
+					<h4>{product.volume}</h4>
 				</div>
 				<div className='flex justify-between'>
 					<div className='flex border border-white text-sm'>
@@ -76,7 +74,7 @@ export const CartItemComponent = ({ item }: Props) => {
 						<button
 							disabled={pending}
 							onClick={() => {
-								updateQuantity(user?.id!, item.id, item.quantity - 1)
+								updateQuantity(product.id, quantity - 1)
 							}}
 							className='hover:bg-white hover:text-gridOverlay px-2'
 						>
@@ -89,11 +87,11 @@ export const CartItemComponent = ({ item }: Props) => {
 								alt='minus_icon'
 							/>
 						</button>
-						<h4 className='p-1'>{item.quantity}</h4>
+						<h4 className='p-1'>{quantity}</h4>
 						<button
 							disabled={pending}
 							onClick={() => {
-								updateQuantity(user?.id!, item.id, item.quantity + 1)
+								updateQuantity(product.id, quantity + 1)
 							}}
 							className='hover:bg-white hover:text-gridOverlay px-2'
 						>
@@ -109,12 +107,12 @@ export const CartItemComponent = ({ item }: Props) => {
 					</div>
 					{/* PRICE */}
 					{/* DISCOUNT ON/OFF */}
-					{item.discount_price! > 0 ? (
+					{product.discount_price! > 0 ? (
 						<p className='text-green-500 font-bold'>
-							{<PriceTag price={item.discount_price!} />}
+							{<PriceTag price={product.discount_price!} />}
 						</p>
 					) : (
-						<h4>{<PriceTag price={item.original_price} />}</h4>
+						<h4>{<PriceTag price={product.original_price} />}</h4>
 					)}
 				</div>
 			</div>

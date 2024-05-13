@@ -82,37 +82,30 @@ enum Role {
 
 //Cart, CartItem
 model CartItem {
-  id             String @id @default(auto()) @map("_id") @db.ObjectId
-  quantity       Int
-  name           String
-  image          String
-  article        String
-  original_price Float
-  discount_price Float
-  volume         String
-  variantId      String @db.ObjectId
-  productId      String @db.ObjectId
-  cartId         String @db.ObjectId
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  quantity  Int
+  variantId String @db.ObjectId
+  cartId    String @db.ObjectId
 
-  cart    Cart    @relation(fields: [cartId], references: [id])
+  cart    Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
   variant Variant @relation(fields: [variantId], references: [id], onDelete: Cascade)
 
   @@map("cartItems")
 }
 
 model Cart {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId     String   @db.ObjectId
-  itemsTotal Float
-  subTotal   Float
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String?  @db.ObjectId
+  itemsTotal    Float
+  subTotal      Float
+  discountTotal Float
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user User? @relation(fields: [userId], references: [id])
 
   items CartItem[]
 
-  @@unique([userId])
   @@map("carts")
 }
 

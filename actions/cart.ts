@@ -1,151 +1,136 @@
 'use server'
 // pages/api/cart/[cartId]/items.ts
+import { createCart, getCart } from '@/lib/db/cart'
 import prisma from '@/lib/db/client'
-import { cartValidationSchema } from '@/lib/db/validation'
-import { Variant } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
 
-export async function addItem(userId: string, variant: Variant) {
-	//	CHECK VALIDATION
-	const validatedBody = cartValidationSchema.safeParse(variant)
-	if (!validatedBody.success) {
-		throw new Error(validatedBody.error.errors[0].message)
-	}
-
-	if (!variant) {
-		throw new Error('Invalid product in cart')
-	}
-
+export async function addItem(variantId: string) {
 	// FIND EXISTING CART
-	let cart = await prisma.cart.findUnique({
-		where: { userId },
-		include: { items: true },
-	})
-
-	if (!cart) {
-		cart = await prisma.cart.create({
-			data: {
-				userId,
-				items: { create: [] },
-				subTotal: 0,
-				itemsTotal: 0,
-			},
-			include: {
-				items: { include: { variant: true } },
-			},
-		})
-	}
+	const cart = (await getCart()) ?? (await createCart())
 
 	// FIND EXISTING CART ITEM
-	const existingCartItem = cart.items.find(
-		item => item.variantId === variant.id
-	)
+	const findItem = cart.items.find(item => item.variantId === variantId)
 
 	// UPDATE CART ITEM
-	let cartItem
-	if (existingCartItem) {
-		cartItem = await prisma.cartItem.update({
-			where: { id: existingCartItem.id },
+	if (findItem) {
+		await prisma.cartItem.update({
+			where: { id: findItem.id },
 			data: { quantity: { increment: 1 } },
 		})
 	} else {
-		cartItem = await prisma.cartItem.create({
+		await prisma.cartItem.create({
 			data: {
-				name: variant.name,
-				volume: variant.volume,
-				image: variant.image,
-				article: variant.article,
-				original_price: variant.original_price,
-				discount_price: variant.discount_price,
-				productId: variant.productId,
-				variantId: variant.id,
+				variantId,
 				quantity: 1,
 				cartId: cart.id,
 			},
 		})
 	}
-
-	// FIND NEW CART
-	const newCart = await prisma.cart.findUnique({
-		where: { userId },
-		include: { items: true },
-	})
+	// Re-fetch the cart to get the updated version
+	const updatedCart = await getCart()
 
 	// RECALCULATE TOTALS
-	const totalPrice = newCart?.items.reduce((acc, item) => {
+	const totalPrice = updatedCart?.items.reduce((acc, item) => {
 		const price =
-			item.discount_price !== 0 ? item.discount_price : item.original_price
+			item.variant.discount_price !== 0
+				? item.variant.discount_price
+				: item.variant.original_price
 		return acc + price * item.quantity
 	}, 0)
 
-	const totalItems = newCart?.items.reduce(
+	const original = updatedCart?.items.reduce((acc, item) => {
+		const price = item.variant.original_price
+		return acc + price * item.quantity
+	}, 0)
+
+	// TOTAL DISCOUNT
+	const total_discount = original! - totalPrice!
+
+	const totalItems = updatedCart?.items.reduce(
 		(acc, item) => acc + item.quantity,
 		0
 	)
 
 	// UPDATE CART
 	await prisma.cart.update({
-		where: { userId },
-		data: { subTotal: totalPrice, itemsTotal: totalItems },
+		where: { id: cart.id },
+		data: {
+			subTotal: totalPrice,
+			itemsTotal: totalItems,
+			discountTotal: total_discount,
+		},
 	})
 
 	revalidatePath('/products')
+
+	return { ...cart }
 }
 
 // DELETE CART ITEM
-export async function deleteItem(userId: string, itemId: string) {
-	const cart = await prisma.cart.findUnique({
-		where: { userId },
-	})
+export async function deleteItem(itemId: string) {
+	const cart = await getCart()
 
 	if (!cart) {
 		throw new Error('Cart not found')
 	}
 
+	const findItem = cart.items.find(item => item.variantId === itemId)
+
+	if (!findItem) {
+		throw new Error('Cart item not found')
+	}
+
 	await prisma.cartItem.delete({
-		where: { id: itemId },
+		where: { id: findItem.id },
 	})
 
-	const newCart = await prisma.cart.findUnique({
-		where: { userId },
-		include: { items: true },
-	})
+	// Re-fetch the cart to get the updated version
+	const updatedCart = await getCart()
 
-	const totalPrice = newCart?.items.reduce((acc, item) => {
+	const totalPrice = updatedCart?.items.reduce((acc, item) => {
 		const price =
-			item.discount_price !== 0 ? item.discount_price : item.original_price
+			item.variant.discount_price !== 0
+				? item.variant.discount_price
+				: item.variant.original_price
 		return acc + price * item.quantity
 	}, 0)
 
-	const totalItems = newCart?.items.reduce(
+	const totalItems = updatedCart?.items.reduce(
 		(acc, item) => acc + item.quantity,
 		0
 	)
 
+	// RECALCULATE TOTALS
+	const original = updatedCart?.items.reduce((acc, item) => {
+		const price = item.variant.original_price
+		return acc + price * item.quantity
+	}, 0)
+
+	// TOTAL DISCOUNT
+	const total_discount = original! - totalPrice!
+
 	await prisma.cart.update({
-		where: { userId },
-		data: { subTotal: totalPrice, itemsTotal: totalItems },
+		where: { id: cart.id },
+		data: {
+			subTotal: totalPrice,
+			itemsTotal: totalItems,
+			discountTotal: total_discount,
+		},
 	})
 
 	revalidatePath('/products')
-}
 
+	return { ...cart }
+}
 // EDIT CART ITEM
-export async function editItem(
-	userId: string,
-	itemId: string,
-	quantity: number
-) {
-	const cart = await prisma.cart.findUnique({
-		where: { userId },
-		include: { items: true },
-	})
+export async function editItem(itemId: string, quantity: number) {
+	const cart = await getCart()
 
 	if (!cart) {
 		throw new Error('Cart not found')
 	}
 
-	const findItem = cart.items.find(item => item.id === itemId)
+	const findItem = cart.items.find(item => item.variantId === itemId)
 
 	if (!findItem) {
 		throw new Error('Cart item not found')
@@ -164,27 +149,43 @@ export async function editItem(
 		})
 	}
 
-	const newCart = await prisma.cart.findUnique({
-		where: { userId },
-		include: { items: true },
-	})
+	// Re-fetch the cart to get the updated version
+	const updatedCart = await getCart()
 
-	const totalPrice = newCart?.items.reduce((acc, item) => {
+	const totalPrice = updatedCart?.items.reduce((acc, item) => {
 		const price =
-			item.discount_price !== 0 ? item.discount_price : item.original_price
+			item.variant.discount_price !== 0
+				? item.variant.discount_price
+				: item.variant.original_price
 		return acc + price * item.quantity
 	}, 0)
+	console.log(totalPrice, 'total price')
 
-	const totalItems = newCart?.items.reduce(
+	const totalItems = updatedCart?.items.reduce(
 		(acc, item) => acc + item.quantity,
 		0
 	)
 
+	// RECALCULATE TOTALS
+	const original = updatedCart?.items.reduce((acc, item) => {
+		const price = item.variant.original_price
+		return acc + price * item.quantity
+	}, 0)
+	console.log(original, 'original price')
+	// TOTAL DISCOUNT
+	const total_discount = original! - totalPrice!
+	console.log(total_discount, 'total discount')
 	// UPDATE CART TOTAL
 	await prisma.cart.update({
-		where: { userId },
-		data: { subTotal: totalPrice, itemsTotal: totalItems },
+		where: { id: cart.id },
+		data: {
+			subTotal: totalPrice,
+			itemsTotal: totalItems,
+			discountTotal: total_discount,
+		},
 	})
 
 	revalidatePath('/products')
+
+	return { ...cart }
 }

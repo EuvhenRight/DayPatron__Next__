@@ -1,22 +1,26 @@
 'use client'
 import { BreadcrumbProduct } from '@/components/ProductForm/breadcrumb'
+import { Variants } from '@/components/ProductForm/variants'
 import currentUser from '@/lib/hooks/currentUser'
-import type { Cart, CartItem, ProductsWithVariants } from '@/lib/types/types'
+import type {
+	CartItemWithVariants,
+	CartWithVariants,
+	ProductsWithVariants,
+} from '@/lib/types/types'
 import { User } from '@prisma/client'
 import { useEffect, useState } from 'react'
 import 'react-medium-image-zoom/dist/styles.css'
-import { Variants } from './variants'
 
 import { addItem } from '@/actions/cart'
+import { RatingProducts } from '@/components/ProductForm/rating'
+import { SliderWithProducts } from '@/components/ProductForm/slider-with-products'
+import { Button } from '@/components/ui/button'
 import { AiOutlineCheckSquare } from 'react-icons/ai'
 import { toast } from 'sonner'
-import { Button } from '../ui/button'
-import { RatingProducts } from './rating'
-import { SliderWithProducts } from './slider-with-products'
 
 interface Props {
 	product: ProductsWithVariants
-	cart: Cart
+	cart: CartWithVariants | null
 }
 export const ProductForm = ({ product, cart }: Props) => {
 	// CHOOSE VARIANTS INDEX PRODUCT
@@ -26,36 +30,20 @@ export const ProductForm = ({ product, cart }: Props) => {
 	const [imageIndex, setImageIndex] = useState<number | null>(null)
 	const [animate, setAnimate] = useState<boolean>(false)
 	// CHECK ITEM IN CART
-	const [cartItem, setCartItem] = useState<CartItem | null>(null)
 	const user = currentUser() as User | null
 	const userId = user?.id
-	const [itemInCart, setItemInCart] = useState<CartItem | null>(null)
-
-	// ADD TO CART
-	useEffect(() => {
-		if (currentIndex !== null) {
-			setCartItem({
-				id: product.variant[currentIndex].id,
-				productId: product.id,
-				name: product.variant[currentIndex].name,
-				volume: product.variant[currentIndex].volume,
-				image: product.variant[currentIndex].image,
-				quantity: 1,
-				stock: product.variant[currentIndex].stock,
-				article: product.variant[currentIndex].article,
-				original_price: product.variant[currentIndex].original_price,
-				discount_price: product.variant[currentIndex].discount_price,
-			})
-		}
-	}, [currentIndex, product, userId])
+	const [itemInCart, setItemInCart] = useState<CartItemWithVariants | null>(
+		null
+	)
 
 	//SERVER ACTION ADD TO CART
-	const addItemToCart = (userId: string, cartItem: CartItem) => {
-		if (!userId || !cartItem) {
+	const addItemToCart = (variantId: string) => {
+		if (!userId || !variantId) {
 			// TOAST ERROR
 			toast.error('something went wrong')
 		}
-		const response = addItem(userId, cartItem!)
+		const response = addItem(variantId!)
+
 		// TOAST SUCCESS
 		toast('Product added to cart', {
 			position: 'bottom-right',
@@ -67,9 +55,9 @@ export const ProductForm = ({ product, cart }: Props) => {
 	const stock = currentIndex !== null && product?.variant[currentIndex].stock
 	// CHECK PRODUCTS IN CART
 	useEffect(() => {
-		const check = cart.items?.find(item => {
+		const check = cart?.items?.find(item => {
 			if (currentIndex === null) return
-			return item.article === product.variant[currentIndex!].article
+			return item.variant.article === product.variant[currentIndex!].article
 		})
 		setItemInCart(check || null)
 	}, [cart, product, currentIndex])
@@ -125,7 +113,7 @@ export const ProductForm = ({ product, cart }: Props) => {
 							size='lg'
 							disabled={!stock}
 							onClick={() => {
-								addItemToCart(userId!, cartItem!)
+								addItemToCart(product.variant[currentIndex!].id)
 							}}
 						>
 							Add to cart

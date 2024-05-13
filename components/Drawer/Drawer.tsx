@@ -8,22 +8,16 @@ import {
 	SheetContent,
 	SheetTrigger,
 } from '@/components/ui/sheet'
-import CurrentUser from '@/lib/hooks/currentUser'
-import { Cart } from '@/lib/types/types'
-import { User } from '@prisma/client'
+import { CartWithVariants } from '@/lib/types/types'
 import { AiOutlineClose, AiOutlineShoppingCart } from 'react-icons/ai'
 
 interface Props {
-	cart: Cart
+	cart?: CartWithVariants | null
 }
 
 export const Drawer = ({ cart }: Props) => {
-	// CURRENT USER
-	const user = CurrentUser() as User | null
-
 	// CART INDICATOR
-	if (!cart) return
-	const cartIndicate = cart.items.length > 0
+	const cartIndicate = cart ? cart.items.length > 0 : false
 
 	return (
 		<Sheet>
@@ -76,7 +70,7 @@ export const Drawer = ({ cart }: Props) => {
 										<div className='flex justify-between'>
 											<h2>DISCOUNT</h2>
 											<h2 className='text-green-500'>
-												-{<PriceTag price={cart?.itemsTotal!} />}
+												-{<PriceTag price={cart?.discountTotal!} />}
 											</h2>
 										</div>
 									</div>

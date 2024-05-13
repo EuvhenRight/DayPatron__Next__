@@ -2,7 +2,7 @@
 import { Drawer } from '@/components/Drawer/Drawer'
 import { UserMenu } from '@/components/Header/HeaderUserMenu'
 import { MenuMobile } from '@/components/Header/MenuMobile'
-import { Cart } from '@prisma/client'
+import { CartWithVariants } from '@/lib/types/types'
 import classNames from 'classnames'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
@@ -17,7 +17,7 @@ import {
 } from 'react-icons/ai'
 
 interface Props {
-	cart: Cart
+	cart?: CartWithVariants | null
 }
 
 export const Header = ({ cart }: Props) => {
@@ -90,8 +90,8 @@ export const Header = ({ cart }: Props) => {
 								<UserMenu />
 							) : (
 								<Link
-									href='auth/register'
-									onClick={() => toggleActive('auth/register')}
+									href='/auth/register'
+									onClick={() => toggleActive('/auth/register')}
 								>
 									<button className='w-8 h-8 cursor-pointer'>
 										<AiOutlineUser className='w-full h-full' />

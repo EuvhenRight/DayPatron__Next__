@@ -5,7 +5,7 @@ import { SessionProvider } from 'next-auth/react'
 import { Mulish } from 'next/font/google'
 
 import { Toaster } from '@/components/ui/sonner'
-import { getCartQuery } from '@/lib/db/queries'
+import { getCart } from '@/lib/db/cart'
 import type { Metadata } from 'next'
 import './globals.css'
 
@@ -22,8 +22,9 @@ export const metadata: Metadata = {
 async function RootLayout({ children }: { children: React.ReactNode }) {
 	// FETCH USER
 	const session = await auth()
+
 	// FETCH CART
-	const cart = await getCartQuery(session?.user?.id as string)
+	const cart = await getCart()
 
 	return (
 		<SessionProvider session={session}>
