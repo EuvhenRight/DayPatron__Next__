@@ -4,6 +4,11 @@
   "profile": "PROFILE",
   "profile-personal": "Personal Information",
   "profile-expertise": "Expertise",
+  
+  "profile-experience": "Experience",
+  "profile-education": "Education",
+  "profile-certification": "Certification",
+
   "profile-preferences": "Preferences",
   "profile-availability": "Availability",
   "profile-ai": "AI Profile",

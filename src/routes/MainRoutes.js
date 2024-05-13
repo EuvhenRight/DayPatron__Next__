@@ -15,6 +15,11 @@ const MaintenanceComingSoon = Loadable(lazy(() => import('pages/maintenance/comi
 const DashboardPage = Loadable(lazy(() => import('pages/dashboard-page')));
 const ProfilePersonalPage = Loadable(lazy(() => import('pages/profile-personal-page')));
 const ProfileExpertisePage = Loadable(lazy(() => import('pages/profile-expertise-page')));
+
+const ProfileExperiencePage = Loadable(lazy(() => import('pages/profile-experience-page')));
+const ProfileEducationPage = Loadable(lazy(() => import('pages/profile-education-page')));
+const ProfileCertificationPage = Loadable(lazy(() => import('pages/profile-certification-page')));
+
 const ProfilePreferencesPage = Loadable(lazy(() => import('pages/profile-preferences-page')));
 const ProfileAvailabilityPage = Loadable(lazy(() => import('pages/profile-availability-page')));
 const ProfileAiPage = Loadable(lazy(() => import('pages/profile-ai-page')));
@@ -68,6 +73,20 @@ const MainRoutes = {
               path: 'expertise',
               element: <ProfileExpertisePage />
             },
+            
+            {
+              path: 'experience',
+              element: <ProfileExperiencePage />
+            },
+            {
+              path: 'education',
+              element: <ProfileEducationPage />
+            },
+            {
+              path: 'certification',
+              element: <ProfileCertificationPage />
+            },
+
             {
               path: 'preferences',
               element: <ProfilePreferencesPage />

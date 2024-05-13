@@ -7,7 +7,10 @@ import {
   BulbOutlined,
   SettingOutlined,
   CalendarOutlined,
-  RobotOutlined
+  RobotOutlined,
+  LaptopOutlined,
+  EditOutlined,
+  FileProtectOutlined
 } from '@ant-design/icons';
 
 // icons
@@ -16,7 +19,10 @@ const icons = {
   BulbOutlined,
   SettingOutlined,
   CalendarOutlined,
-  RobotOutlined
+  RobotOutlined,
+  LaptopOutlined,
+  EditOutlined,
+  FileProtectOutlined
 };
 
 // ==============================|| MENU ITEMS - PROFILE ||============================== //
@@ -40,6 +46,29 @@ const profile = {
       url: '/profile/expertise',
       icon: icons.BulbOutlined
     },
+
+    {
+      id: 'profile-experience',
+      title: <FormattedMessage id="profile-experience" />,
+      type: 'item',
+      url: '/profile/experience',
+      icon: icons.LaptopOutlined
+    },
+    {
+      id: 'profile-education',
+      title: <FormattedMessage id="profile-education" />,
+      type: 'item',
+      url: '/profile/education',
+      icon: icons.EditOutlined
+    },
+    {
+      id: 'profile-certification',
+      title: <FormattedMessage id="profile-certification" />,
+      type: 'item',
+      url: '/profile/certification',
+      icon: icons.FileProtectOutlined
+    },
+
     {
       id: 'profile-preferences',
       title: <FormattedMessage id="profile-preferences" />,
