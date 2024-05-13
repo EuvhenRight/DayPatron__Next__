@@ -51,7 +51,7 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
   const peraResponseResultTabGroup = 'ai-results';
   const peraQuestionsAndAnswersTabGroup = 'ai-qa';
   const notesTabGroup = 'notes';
-  const jobExperiencesTabGroup = 'jobExperiences';
+  const professionalExperiencesTabGroup = 'professionalExperiences';
   const educationsTabGroup = 'educations';
   const certificationsTabGroup = 'certifications';
   
@@ -591,7 +591,7 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                         Profile
                       </Typography>
                     }>
-                      <ListItemButton selected={tabGroupId === jobExperiencesTabGroup} onClick={() => handleTabClick(jobExperiencesTabGroup)}>
+                      <ListItemButton selected={tabGroupId === professionalExperiencesTabGroup} onClick={() => handleTabClick(professionalExperiencesTabGroup)}>
                         <ListItemText primary="Experience" />
                           <ListItemIcon>
                             <RightOutlined />
@@ -815,7 +815,7 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                 </Grid>
               </Grid>
             }
-            {tabGroupId === jobExperiencesTabGroup &&
+            {tabGroupId === professionalExperiencesTabGroup &&
               <Grid container spacing={3}>
                 
                 <Grid item xs={12}>
@@ -824,16 +824,16 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                       <Grid item xs={12}>
                         <Typography variant="h3">Experience</Typography>
                       </Grid>
-                      {missionContractorMatch?.contractor?.jobExperiences?.map((jobExperience, jobExperienceIndex) => {
-                        return (<Grid key={jobExperienceIndex} item xs={12}>
+                      {missionContractorMatch?.contractor?.professionalExperiences?.map((professionalExperience, professionalExperienceIndex) => {
+                        return (<Grid key={professionalExperienceIndex} item xs={12}>
                           <Grid container spacing={2}>
                             <Grid item>
-                              {jobExperience?.companyLogoUrl ? 
+                              {professionalExperience?.companyLogoUrl ? 
                               (
                                 <img
                                   style={{ width: 50, height: 50, textDecoration: 'none', opacity: 1 }}
-                                  alt={jobExperience?.company}
-                                  src={jobExperience?.companyLogoUrl}
+                                  alt={professionalExperience?.company}
+                                  src={professionalExperience?.companyLogoUrl}
                                 />
                               ) : 
                               (
@@ -842,19 +842,19 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                             </Grid>
                             <Grid item xs zeroMinWidth>
                               <Typography align="left" variant="h5">
-                                {jobExperience?.title}
+                                {professionalExperience?.title}
                               </Typography>
                               <Typography variant="h6">
-                                {jobExperience?.company}
+                                {professionalExperience?.company}
                               </Typography>
                               <Typography color="secondary">
-                                {jobExperience?.location}
+                                {professionalExperience?.location}
                               </Typography>
                               <Typography color="secondary">
-                                {format(new Date(jobExperience?.startDateUtc), 'MMM y')}&nbsp;-&nbsp;{jobExperience?.endDateUtc ? format(new Date(jobExperience?.endDateUtc), 'MMM y') : 'Present'}
+                                {format(new Date(professionalExperience?.startDateUtc), 'MMM y')}&nbsp;-&nbsp;{professionalExperience?.endDateUtc ? format(new Date(professionalExperience?.endDateUtc), 'MMM y') : 'Present'}
                               </Typography>
                               <Typography align="left" variant="body1">
-                                {jobExperience?.description}
+                                {professionalExperience?.description}
                               </Typography>
                             </Grid>
                           </Grid>
