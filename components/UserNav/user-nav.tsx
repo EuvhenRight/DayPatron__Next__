@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import {
 	AiOutlineAppstoreAdd,
 	AiOutlineAreaChart,
@@ -9,6 +9,8 @@ import {
 import UserNavItem from './user-nav-item'
 export const UserNav = () => {
 	const pathName = usePathname()
+	const router = useRouter()
+	router.refresh()
 
 	const Items = [
 		{

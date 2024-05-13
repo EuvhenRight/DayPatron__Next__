@@ -13,8 +13,6 @@ export default auth(req => {
 	const { nextUrl } = req
 	const isLoggedIn = !!req.auth
 
-	// const isAdminUser = req.auth?.user?.role === 'ADMIN'
-
 	const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix)
 
 	const isAuthRoute = authRoutes.includes(nextUrl.pathname)
@@ -29,17 +27,6 @@ export default auth(req => {
 			return nextUrl.pathname === route
 		}
 	})
-
-	// const isAdminRoute = adminRoutes.some(route => {
-	// 	// Use the includes() method to check if the requested URL matches any of the public routes
-	// 	if (route.endsWith('*')) {
-	// 		// If the route ends with '*', check if the requested URL starts with the route path
-	// 		return nextUrl.pathname.startsWith(route.slice(0, -1))
-	// 	} else {
-	// 		// Otherwise, check if the requested URL exactly matches the route path
-	// 		return nextUrl.pathname === route
-	// 	}
-	// })
 
 	if (isApiAuthRoute) {
 		return null

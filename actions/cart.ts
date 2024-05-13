@@ -159,7 +159,6 @@ export async function editItem(itemId: string, quantity: number) {
 				: item.variant.original_price
 		return acc + price * item.quantity
 	}, 0)
-	console.log(totalPrice, 'total price')
 
 	const totalItems = updatedCart?.items.reduce(
 		(acc, item) => acc + item.quantity,
@@ -171,10 +170,10 @@ export async function editItem(itemId: string, quantity: number) {
 		const price = item.variant.original_price
 		return acc + price * item.quantity
 	}, 0)
-	console.log(original, 'original price')
+
 	// TOTAL DISCOUNT
 	const total_discount = original! - totalPrice!
-	console.log(total_discount, 'total discount')
+
 	// UPDATE CART TOTAL
 	await prisma.cart.update({
 		where: { id: cart.id },

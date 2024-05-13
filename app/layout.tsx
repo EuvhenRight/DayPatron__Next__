@@ -23,8 +23,12 @@ async function RootLayout({ children }: { children: React.ReactNode }) {
 	// FETCH USER
 	const session = await auth()
 
+	let cart = await getCart()
+
+	if (session) {
+		cart = await getCart()
+	}
 	// FETCH CART
-	const cart = await getCart()
 
 	return (
 		<SessionProvider session={session}>
