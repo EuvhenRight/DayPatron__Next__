@@ -2,7 +2,7 @@
 
 import { Variant } from '@prisma/client'
 import React from 'react'
-import PriceTag from '../PriceTag'
+import { PriceTag } from '../PriceTag'
 
 interface VariantsProps {
 	variantsProduct: Variant[]
@@ -60,7 +60,7 @@ export const Variants: React.FC<VariantsProps> = ({
 					return (
 						<li
 							// FOCUS VOLUME BUTTON
-							className='cursor-pointer border border-gray-600 px-2 py-1 snap-center text-lg focus:ring-2 focus:ring-current focus:outline-none'
+							className='cursor-pointer rounded-md border border-gray-600 px-2 py-1 snap-center text-lg focus:ring-2 focus:ring-current focus:outline-none'
 							key={index}
 							tabIndex={0}
 							onClick={() => handleVolumeClick(index)}

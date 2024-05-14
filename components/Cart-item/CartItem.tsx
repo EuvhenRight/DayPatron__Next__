@@ -1,13 +1,13 @@
 // components/CartItem.tsx
 'use client'
 import { deleteItem, editItem } from '@/actions/cart'
+import { PriceTag } from '@/components/PriceTag'
 import { CartItemWithVariants } from '@/lib/types/types'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useTransition } from 'react'
 import { AiOutlineClose } from 'react-icons/ai'
 import { toast } from 'sonner'
-import PriceTag from '../PriceTag'
 
 interface Props {
 	item: CartItemWithVariants
@@ -55,13 +55,17 @@ export const CartItemComponent = ({
 				<div className='flex justify-between items-center'>
 					<h2 className='text-typeCollectionTitle'>{product.name}</h2>
 					{/* REMOVE ONE CART ITEM FROM CART */}
-					<AiOutlineClose
+					<button
 						onClick={() => {
 							deleteCartItem(product.id)
 						}}
-						className='hover:translate-x-0 opacity-60 hover:opacity-100 transition cursor-pointer'
-						style={{ color: 'white', width: 20, height: 20 }}
-					/>
+						disabled={pending}
+					>
+						<AiOutlineClose
+							className='hover:translate-x-0 opacity-60 hover:opacity-100 transition cursor-pointer'
+							style={{ color: 'white', width: 20, height: 20 }}
+						/>
+					</button>
 				</div>
 				{/* SIZE */}
 				<div className='flex gap-2'>

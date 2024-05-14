@@ -21,14 +21,7 @@ export const metadata: Metadata = {
 
 async function RootLayout({ children }: { children: React.ReactNode }) {
 	// FETCH USER
-	const session = await auth()
-
-	let cart = await getCart()
-
-	if (session) {
-		cart = await getCart()
-	}
-	// FETCH CART
+	const [session, cart] = await Promise.all([auth(), getCart()])
 
 	return (
 		<SessionProvider session={session}>

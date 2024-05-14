@@ -1,18 +1,15 @@
 'use client'
 import { User } from '@prisma/client'
-import axios from 'axios'
 
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { FieldValues, useForm } from 'react-hook-form'
 import Input from '../Input'
 
-interface UserProfileFormProps {
+interface Props {
 	currentUser: User
 }
-export const UserProfileForm: React.FC<UserProfileFormProps> = ({
-	currentUser,
-}) => {
+export const UserProfileForm = ({ currentUser }: Props) => {
 	const route = useRouter()
 
 	const { data: session, update } = useSession()
@@ -26,32 +23,9 @@ export const UserProfileForm: React.FC<UserProfileFormProps> = ({
 			id: currentUser.id,
 			name: currentUser.name,
 		},
-		// CHANGE THE VALIDATION LOGIC AUTH OR LOGIN
+		// TODO: CHANGE THE VALIDATION LOGIC AUTH OR LOGIN
 		// resolver: zodResolver(ValidationSchema.profileUser),
 	})
-
-	const onSubmit = async (data: FieldValues) => {
-		const { name, lastName } = data
-		try {
-			const response = await axios.patch(
-				`http://localhost:3000/api/users/edit/${currentUser.id}`,
-				{
-					name,
-					lastName,
-				}
-			)
-			if (response.status === 202) {
-				console.log('User updated successfully:', response.data)
-				update()
-				route.refresh()
-				return response.data // Return the updated user data
-			} else {
-				console.error('Failed to update user:', response.statusText)
-			}
-		} catch (err) {
-			console.log(err)
-		}
-	}
 
 	return (
 		<>
@@ -74,12 +48,7 @@ export const UserProfileForm: React.FC<UserProfileFormProps> = ({
 					register={register}
 					required
 				/>
-				<button
-					className='btn btn-primary w-3'
-					onClick={handleSubmit(onSubmit)}
-				>
-					Safe
-				</button>
+				<button className='btn btn-primary w-3'>Safe</button>
 			</form>
 			<div>{currentUser.email}</div>
 			<div>{currentUser.role}</div>

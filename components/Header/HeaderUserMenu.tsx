@@ -11,7 +11,7 @@ import {
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 
-export const UserMenu: React.FC = () => {
+export const UserMenu = () => {
 	const { data: session } = useSession()
 	const role = session?.user?.role
 	const currentName = session?.user?.name?.charAt(0)
@@ -22,11 +22,13 @@ export const UserMenu: React.FC = () => {
 				<MenubarTrigger>
 					<Avatar>
 						<AvatarImage src={session?.user?.image!} />
+						{/* NAME OF USER */}
 						<AvatarFallback>{currentName ? currentName : 'U'}</AvatarFallback>
 					</Avatar>
 				</MenubarTrigger>
 				<MenubarContent>
 					<MenubarItem>
+						{/* CONDITION IF USER IS ADMIN */}
 						{role === 'ADMIN' ? (
 							<Link href='/admin'>Admin</Link>
 						) : (
@@ -34,6 +36,7 @@ export const UserMenu: React.FC = () => {
 						)}
 					</MenubarItem>
 					<MenubarItem onSelect={event => event.preventDefault()}>
+						{/* LOGOUT */}
 						<LogOutModal />
 					</MenubarItem>
 				</MenubarContent>

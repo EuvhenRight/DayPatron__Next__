@@ -6,7 +6,8 @@ import {
 	AiOutlineAreaChart,
 	AiOutlineProject,
 } from 'react-icons/ai'
-import UserNavItem from './user-nav-item'
+import { UserNavItem } from './user-nav-item'
+
 export const UserNav = () => {
 	const pathName = usePathname()
 	const router = useRouter()

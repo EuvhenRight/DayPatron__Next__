@@ -1,10 +1,10 @@
 import { BreadcrumbProduct } from '@/components/ProductForm/breadcrumb'
 import { CarouselMixCards } from '@/components/Slider/Carousel'
-import { ProductsWithVariants } from '@/lib/types/types'
-import { getAllProducts } from './api-products'
+import { getAllProducts } from '@/lib/db/products'
 
 const Products = async () => {
-	const dataProducts: ProductsWithVariants[] = await getAllProducts()
+	// FETCH ALL PRODUCTS
+	const dataProducts = await getAllProducts()
 	return (
 		<div className='flex flex-col items-center justify-center'>
 			<BreadcrumbProduct />

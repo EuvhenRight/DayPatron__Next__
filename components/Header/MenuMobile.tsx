@@ -8,18 +8,18 @@ import { AiOutlineFacebook } from 'react-icons/ai'
 import { BiLogoTelegram } from 'react-icons/bi'
 import { LogOutModal } from '../SignOut/sign-out'
 
-interface MenuMobileProps {
+interface Props {
 	isActive: string
 	isOpenMenu: boolean
 	toggleHamburger: () => void
 	toggleActive: (href: string) => void
 }
-export const MenuMobile: React.FC<MenuMobileProps> = ({
+export const MenuMobile = ({
 	isOpenMenu,
 	toggleHamburger,
 	toggleActive,
 	isActive,
-}) => {
+}: Props) => {
 	const pathName = usePathname()
 	const { data: session, status } = useSession()
 
@@ -30,11 +30,11 @@ export const MenuMobile: React.FC<MenuMobileProps> = ({
 	const currenRole = session?.user?.role === 'ADMIN' ? '/admin' : '/dashboard'
 
 	const menuItems = [
-		{ label: 'Home', href: '/' },
-		{ label: 'Products', href: '/products' },
-		{ label: 'About', href: '/about' },
-		{ label: 'Where to Buy', href: '/where-to-buy' },
-		{ label: 'Contacts', href: '/contacts' },
+		{ label: 'Головна', href: '/' },
+		{ label: 'Продукти', href: '/products' },
+		{ label: 'Про нас', href: '/about' },
+		{ label: 'Де купити?', href: '/where-to-buy' },
+		{ label: 'Контакти', href: '/contacts' },
 		session
 			? { label: currentName, href: currenRole, special: true }
 			: { label: 'Login', href: 'auth/register' },

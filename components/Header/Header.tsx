@@ -28,10 +28,10 @@ export const Header = ({ cart }: Props) => {
 	const { data: session, status } = useSession()
 
 	const links = [
-		{ label: 'Products', href: '/products' },
-		{ label: 'About', href: '/about' },
-		{ label: 'Where to Buy', href: '/where-to-buy' },
-		{ label: 'Contacts', href: '/contacts' },
+		{ label: 'Головна', href: '/products' },
+		{ label: 'Про нас', href: '/about' },
+		{ label: 'Де купити', href: '/where-to-buy' },
+		{ label: 'Контакти', href: '/contacts' },
 	]
 	// TOGGLE HAMBURGER MENU
 	const toggleHamburger = () => {

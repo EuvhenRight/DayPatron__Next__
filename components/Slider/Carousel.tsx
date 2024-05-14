@@ -1,4 +1,5 @@
 'use client'
+import { ProductsCard } from '@/components/Slider/products-card/products-card'
 import {
 	Carousel,
 	CarouselContent,
@@ -7,7 +8,6 @@ import {
 	CarouselPrevious,
 } from '@/components/ui/carousel'
 import { ProductsWithVariants } from '@/lib/types/types'
-import { ProductsCard } from './products-card/products-card'
 
 interface CarouselProps {
 	dataProducts: ProductsWithVariants[]
@@ -23,9 +23,9 @@ export const CarouselMixCards = ({ dataProducts }: CarouselProps) => {
 		>
 			<CarouselPrevious />
 			<CarouselContent>
-				{dataProducts.map((product, index) => (
+				{dataProducts.map(product => (
 					<CarouselItem
-						key={index}
+						key={product.id}
 						className='md:basis-1/2 lg:basis-1/3 xl:basis-1/4'
 					>
 						<div className='p-1'>

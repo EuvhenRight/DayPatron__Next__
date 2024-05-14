@@ -1,9 +1,9 @@
 'use client'
 import { OTPInput, OTPInputContext } from 'input-otp'
-import { SquareAsterisk } from 'lucide-react'
 import * as React from 'react'
 
 import { cn } from '@/lib/utils'
+import { Dot } from 'lucide-react'
 
 const InputOTP = React.forwardRef<
 	React.ElementRef<typeof OTPInput>,
@@ -63,7 +63,7 @@ const InputOTPSeparator = React.forwardRef<
 	React.ComponentPropsWithoutRef<'div'>
 >(({ ...props }, ref) => (
 	<div ref={ref} role='separator' {...props}>
-		<SquareAsterisk className='h-4 w-4 mx-3' />
+		<Dot className='h-4 w-4 mx-3' />
 	</div>
 ))
 InputOTPSeparator.displayName = 'InputOTPSeparator'

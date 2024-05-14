@@ -125,7 +125,7 @@ export const SliderWithProducts = ({
 							<li
 								tabIndex={0}
 								onClick={() => toggleImage(index)}
-								className='focus:outline-none lg:border lg:border-gray-600 lg:focus:ring-2 lg:focus:ring-current lg:focus:ring-inset m-1 lg:m-2 lg:gap-2 cursor-pointer focus:text-red-500 lg:focus:text-black text-gray-500'
+								className='focus:outline-none lg:border rounded-md lg:border-gray-600 lg:focus:ring-2 lg:focus:ring-current lg:focus:ring-inset m-1 lg:m-2 lg:gap-2 cursor-pointer focus:text-red-500 lg:focus:text-black text-gray-500'
 								key={index}
 							>
 								<Image
@@ -169,7 +169,7 @@ export const SliderWithProducts = ({
 					<Zoom>
 						<Image
 							src={imageUrl}
-							className={`cursor-zoom-in w-full h-auto lg:px-24 lg:max-h-[500px] xl:max-h-[650px] object-contain ${
+							className={`cursor-zoom-in w-auto h-auto lg:px-24 lg:max-h-[500px] xl:max-h-[650px] object-contain ${
 								// APPLY ANIMATION CLASS
 								animate ? 'animate-slide-right' : ''
 							}`}

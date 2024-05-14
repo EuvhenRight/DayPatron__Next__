@@ -1,6 +1,6 @@
 'use client'
 import { CartItemComponent } from '@/components/Cart-item/CartItem'
-import PriceTag from '@/components/PriceTag'
+import { PriceTag } from '@/components/PriceTag'
 import { Button } from '@/components/ui/button'
 import {
 	Sheet,

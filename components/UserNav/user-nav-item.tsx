@@ -1,18 +1,13 @@
 'use client'
-import React from 'react'
 import { IconType } from 'react-icons/lib'
 
-interface UserNavItemProps {
+interface Props {
 	label: string
 	icon: IconType
 	isActive?: boolean
 }
 
-const UserNavItem: React.FC<UserNavItemProps> = ({
-	label,
-	icon: Icon,
-	isActive,
-}) => {
+export const UserNavItem = ({ label, icon: Icon, isActive }: Props) => {
 	return (
 		<div
 			className={`flex text-center justify-center gap-1 items-center p-2 border-b-2 text-primary-content hover:text-base-content transition cursor-pointer ${
@@ -26,5 +21,3 @@ const UserNavItem: React.FC<UserNavItemProps> = ({
 		</div>
 	)
 }
-
-export default UserNavItem
