@@ -1,10 +1,9 @@
 'use client'
 
-interface HeaderProps {
+interface Props {
 	label?: string
 }
-
-export const Header: React.FC<HeaderProps> = ({ label }) => {
+export const Header = ({ label }: Props) => {
 	return (
 		<>
 			<h3 className='font-bold'>Увійдіть до свого облікового запису</h3>

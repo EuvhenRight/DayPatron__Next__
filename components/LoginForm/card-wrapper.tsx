@@ -7,7 +7,7 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 
 import React from 'react'
 
-interface CardWrapperProps {
+interface Props {
 	children: React.ReactNode
 	headerLabel: string
 	buttonBackHref: string
@@ -16,7 +16,7 @@ interface CardWrapperProps {
 	buttonPrivacyLabel: string
 	showSocial?: boolean
 }
-export const CardWrapper: React.FC<CardWrapperProps> = ({
+export const CardWrapper = ({
 	children,
 	headerLabel,
 	buttonBackHref,
@@ -24,7 +24,7 @@ export const CardWrapper: React.FC<CardWrapperProps> = ({
 	buttonPrivacyHref,
 	buttonPrivacyLabel,
 	showSocial,
-}) => {
+}: Props) => {
 	return (
 		<Card className=' w-[500px] shadow-xl'>
 			<CardHeader className='flex flex-col justify-center text-center items-center'>

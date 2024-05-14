@@ -1,5 +1,5 @@
 'use client'
-import { ProductsCard } from '@/components/Slider/products-card/products-card'
+import { ProductsCard } from '@/components/Slider/products-card'
 import {
 	Carousel,
 	CarouselContent,
@@ -9,11 +9,11 @@ import {
 } from '@/components/ui/carousel'
 import { ProductsWithVariants } from '@/lib/types/types'
 
-interface CarouselProps {
+interface Props {
 	dataProducts: ProductsWithVariants[]
 }
 
-export const CarouselMixCards = ({ dataProducts }: CarouselProps) => {
+export const CarouselMixCards = ({ dataProducts }: Props) => {
 	return (
 		<Carousel
 			opts={{

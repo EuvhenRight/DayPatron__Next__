@@ -1,30 +1,29 @@
 'use client'
 
+import { PriceTag } from '@/components/PriceTag'
 import { Variant } from '@prisma/client'
 import React from 'react'
-import { PriceTag } from '../PriceTag'
 
-interface VariantsProps {
+interface Props {
 	variantsProduct: Variant[]
 	currentIndex: number
 	setCurrentIndex: React.Dispatch<React.SetStateAction<number | null>>
 	setAnimate: React.Dispatch<React.SetStateAction<boolean>>
 	stock: boolean
 }
-export const Variants: React.FC<VariantsProps> = ({
+export const Variants = ({
 	variantsProduct,
 	currentIndex,
 	setCurrentIndex,
 	setAnimate,
 	stock,
-}: VariantsProps) => {
+}: Props) => {
 	const handleVolumeClick = (index: number) => {
 		if (currentIndex !== index) {
 			setAnimate(true)
 			setCurrentIndex(index)
 		}
 	}
-
 	const handleContainerBlur = () => {
 		setCurrentIndex(currentIndex)
 	}

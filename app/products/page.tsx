@@ -1,5 +1,5 @@
 import { BreadcrumbProduct } from '@/components/ProductForm/breadcrumb'
-import { CarouselMixCards } from '@/components/Slider/Carousel'
+import { CarouselMixCards } from '@/components/Slider/carousel'
 import { getAllProducts } from '@/lib/db/products'
 
 const Products = async () => {
