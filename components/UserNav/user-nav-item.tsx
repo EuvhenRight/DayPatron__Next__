@@ -10,12 +10,14 @@ interface Props {
 export const UserNavItem = ({ label, icon: Icon, isActive }: Props) => {
 	return (
 		<div
-			className={`flex text-center justify-center gap-1 items-center p-2 border-b-2 text-primary-content hover:text-base-content transition cursor-pointer ${
-				isActive ? 'text-secondary border-b-secondary' : 'border-b-transparent'
+			className={`flex text-center justify-center gap-1 items-center p-3 border-b-2 text-white hover:text-base-content transition cursor-pointer ${
+				isActive
+					? 'text-zinc-300 border-b-red-500 py-1'
+					: 'border-b-transparent'
 			}`}
 		>
 			<Icon size={26} />
-			<div className='font-medium text-sm text-center break-normal'>
+			<div className='font-medium text-md text-center break-normal'>
 				{label}
 			</div>
 		</div>

@@ -41,14 +41,12 @@ export const ProductForm = ({ product, cart }: Props) => {
 	const addItemToCart = (variantId: string) => {
 		if (!variantId) {
 			// TOAST ERROR
-			toast.error('something went wrong')
+			toast.error('Щось пішло не так, спробуйте ще раз')
 		}
 		startTransition(() => {
 			addItem(variantId!)
 
-			toast.success('Product added to cart', {
-				icon: '🛒',
-			})
+			toast.success('Продукт додано до кошика!')
 		})
 		// TOAST SUCCESS
 	}
@@ -102,7 +100,7 @@ export const ProductForm = ({ product, cart }: Props) => {
 					/>
 					{/* SHOW PRODUCT IN CART */}
 					{itemInCart ? (
-						<p className='p-3 w-1/2 text-xl my-4 flex gap-4 justify-end items-center'>
+						<p className='p-2 w-1/2 text-lg my-2 flex gap-4 justify-end items-center'>
 							<AiOutlineCheckSquare size={25} />
 							<span>Товар у кошику</span>
 						</p>

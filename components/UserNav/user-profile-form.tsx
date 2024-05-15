@@ -28,7 +28,7 @@ export const UserProfileForm = ({ currentUser }: Props) => {
 	})
 
 	return (
-		<>
+		<div>
 			<form className='flex flex-col gap-4 w-full'>
 				{/* NAME */}
 				<Input
@@ -53,6 +53,6 @@ export const UserProfileForm = ({ currentUser }: Props) => {
 			<div>{currentUser.email}</div>
 			<div>{currentUser.role}</div>
 			<div>{currentUser.id}</div>
-		</>
+		</div>
 	)
 }
