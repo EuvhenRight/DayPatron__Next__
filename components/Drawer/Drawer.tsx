@@ -38,13 +38,8 @@ export const Drawer = ({ cart }: Props) => {
 							<h2 className='text-3xl font-bold flex items-center gap-5 text-white'>
 								CART
 							</h2>
-							<SheetClose>
-								<Button
-									variant='ghost'
-									className='text-gray-300 transition-transform translate-x-2'
-								>
-									<AiOutlineClose className='w-6 h-6' />
-								</Button>
+							<SheetClose className='text-gray-300 hover:text-white'>
+								<AiOutlineClose className='w-6 h-6' />
 							</SheetClose>
 						</div>
 						{/* IF CART IS EMPTY */}
@@ -77,7 +72,7 @@ export const Drawer = ({ cart }: Props) => {
 									{/* CHECKOUT */}
 									<Button
 										variant='destructive'
-										size='sm'
+										size='lg'
 										className='w-full text-white text-xl py-2 transition ease-in-out delay-350 animate-pulse'
 									>
 										Checkout

@@ -129,11 +129,11 @@ export const SliderWithProducts = ({
 								key={index}
 							>
 								<Image
-									src={`/images/${item.url}`}
-									alt='item.url'
+									src={`${process.env.PUBLIC_IMAGE_URL}/${item.url}`}
+									alt={item.url}
 									width={100}
 									height={100}
-									className=' lg:h-auto hidden lg:block w-auto'
+									className='lg:h-auto hidden lg:block w-auto'
 								/>
 								<GoDotFill className='lg:hidden' />
 							</li>
@@ -168,14 +168,14 @@ export const SliderWithProducts = ({
 				<div className='w-1/2 lg:w-full lg:h-auto'>
 					<Zoom>
 						<Image
-							src={imageUrl}
+							src={imageUrl!}
 							className={`cursor-zoom-in w-auto h-auto lg:px-24 lg:max-h-[500px] xl:max-h-[650px] object-contain ${
 								// APPLY ANIMATION CLASS
 								animate ? 'animate-slide-right' : ''
 							}`}
 							alt={product.name}
 							width={650}
-							height={650}
+							height={355}
 							onAnimationEnd={() => {
 								// RESET ANIMATION CLASS
 								setAnimate(false)

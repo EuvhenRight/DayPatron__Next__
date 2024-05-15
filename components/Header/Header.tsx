@@ -28,7 +28,7 @@ export const Header = ({ cart }: Props) => {
 	const { data: session, status } = useSession()
 
 	const links = [
-		{ label: 'Головна', href: '/products' },
+		{ label: 'Продукти', href: '/products' },
 		{ label: 'Про нас', href: '/about' },
 		{ label: 'Де купити', href: '/where-to-buy' },
 		{ label: 'Контакти', href: '/contacts' },

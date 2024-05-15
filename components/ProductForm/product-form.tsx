@@ -8,7 +8,7 @@ import type {
 	ProductsWithVariants,
 } from '@/lib/types/types'
 import { User } from '@prisma/client'
-import { Suspense, useEffect, useState, useTransition } from 'react'
+import { useEffect, useState, useTransition } from 'react'
 import 'react-medium-image-zoom/dist/styles.css'
 
 import { addItem } from '@/actions/cart'
@@ -100,37 +100,24 @@ export const ProductForm = ({ product, cart }: Props) => {
 						setAnimate={setAnimate}
 						stock={stock}
 					/>
-
 					{/* SHOW PRODUCT IN CART */}
 					{itemInCart ? (
-						<Suspense
-							fallback={
-								<div className='w-14 h-14 border-b-2 border-gray-900 rounded-full animate-spin'></div>
-							}
-						>
-							<p className='p-3 w-1/2 text-xl my-4 flex gap-4 justify-end items-center'>
-								<AiOutlineCheckSquare size={25} />
-								<span>Товар у кошику</span>
-							</p>
-						</Suspense>
+						<p className='p-3 w-1/2 text-xl my-4 flex gap-4 justify-end items-center'>
+							<AiOutlineCheckSquare size={25} />
+							<span>Товар у кошику</span>
+						</p>
 					) : (
-						<Suspense
-							fallback={
-								<div className='w-14 h-14 border-b-2 border-gray-900 rounded-full animate-spin'></div>
-							}
+						<Button
+							variant={'destructive'}
+							className='p-2 my-2 text-lg'
+							size='lg'
+							disabled={!stock}
+							onClick={() => {
+								addItemToCart(product.variant[currentIndex!].id)
+							}}
 						>
-							<Button
-								variant={'destructive'}
-								className='p-2 my-2 text-lg'
-								size='lg'
-								disabled={!stock}
-								onClick={() => {
-									addItemToCart(product.variant[currentIndex!].id)
-								}}
-							>
-								Add to cart
-							</Button>
-						</Suspense>
+							Add to cart
+						</Button>
 					)}
 
 					{/* INFO BLOCK INFORMATION */}
