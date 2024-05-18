@@ -13,7 +13,7 @@ const FastTrackPage = () => {
   return (
     <>
       <Grid container spacing={4}>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={6} lg={4}>
           <MainCard sx={{height: '100%'}}>
             <Grid container spacing={2}>
               <Grid item>
@@ -33,7 +33,7 @@ const FastTrackPage = () => {
           </MainCard>
         </Grid>
         
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={6} lg={4}>
           <MainCard sx={{height: '100%'}}>
             <Grid container spacing={2}>
               <Grid item>
@@ -61,7 +61,7 @@ const FastTrackPage = () => {
           </MainCard>
         </Grid>
         
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={6} lg={4}>
           <MainCard sx={{height: '100%'}}>
             <Grid container spacing={2}>
               <Grid item>
@@ -91,7 +91,7 @@ const FastTrackPage = () => {
           </MainCard>
         </Grid>
         
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={6} lg={4}>
           <MainCard sx={{height: '100%'}}>
             <Grid container spacing={2}>
               <Grid item>
@@ -118,7 +118,7 @@ const FastTrackPage = () => {
           </MainCard>
         </Grid>
         
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={6} lg={4}>
           <MainCard sx={{height: '100%'}}>
             <Grid container spacing={2}>
               <Grid item>
@@ -145,7 +145,7 @@ const FastTrackPage = () => {
           </MainCard>
         </Grid>
         
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={6} lg={4}>
           <MainCard sx={{height: '100%'}}>
             <Grid container spacing={2}>
               <Grid item>
@@ -173,7 +173,7 @@ const FastTrackPage = () => {
           </MainCard>
         </Grid>
         
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={6} lg={4}>
           <MainCard sx={{height: '100%'}}>
             <Grid container spacing={2}>
               <Grid item>
@@ -198,7 +198,7 @@ const FastTrackPage = () => {
           </MainCard>
         </Grid>
         
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={6} lg={4}>
           <MainCard sx={{height: '100%'}}>
             <Grid container spacing={2}>
               <Grid item>
@@ -218,7 +218,7 @@ const FastTrackPage = () => {
           </MainCard>
         </Grid>
         
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={6} lg={4}>
           <MainCard sx={{height: '100%'}}>
             <Grid container spacing={2}>
               <Grid item>
@@ -246,7 +246,7 @@ const FastTrackPage = () => {
           </MainCard>
         </Grid>
         
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={6} lg={4}>
           <MainCard sx={{height: '100%'}}>
             <Grid container spacing={2}>
               <Grid item>
@@ -266,7 +266,7 @@ const FastTrackPage = () => {
           </MainCard>
         </Grid>
         
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={6} lg={4}>
           <MainCard sx={{height: '100%'}}>
             <Grid container spacing={2}>
               <Grid item>
@@ -286,7 +286,7 @@ const FastTrackPage = () => {
           </MainCard>
         </Grid>
         
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={6} lg={4}>
           <MainCard sx={{height: '100%'}}>
             <Grid container spacing={2}>
               <Grid item>
@@ -306,7 +306,7 @@ const FastTrackPage = () => {
           </MainCard>
         </Grid>
         
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={6} lg={4}>
           <MainCard sx={{height: '100%'}}>
             <Grid container spacing={2}>
               <Grid item>
