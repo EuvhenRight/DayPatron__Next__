@@ -65,7 +65,7 @@ export const LoginForm = () => {
 				})
 
 				// REDIRECT TO DASHBOARD PAGE
-				router.push('/dashboard')
+				router.push('/dashboard/profile')
 			}
 		} catch (error) {
 			// HANDLE AXIOS ERROR

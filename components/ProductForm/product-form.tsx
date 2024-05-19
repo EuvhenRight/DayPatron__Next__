@@ -45,10 +45,10 @@ export const ProductForm = ({ product, cart }: Props) => {
 		}
 		startTransition(() => {
 			addItem(variantId!)
-
+			// TOAST SUCCESS
 			toast.success('Продукт додано до кошика!')
 		})
-		// TOAST SUCCESS
+		return true
 	}
 	// CHECK STOCK
 	const stock = currentIndex !== null && product?.variant[currentIndex].stock

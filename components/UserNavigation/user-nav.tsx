@@ -9,7 +9,7 @@ import {
 } from 'react-icons/ai'
 import { UserNavItem } from './user-nav-item'
 
-export const UserNav = () => {
+export const UserNavigation = () => {
 	const pathName = usePathname()
 	const router = useRouter()
 

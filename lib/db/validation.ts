@@ -14,8 +14,9 @@ export interface LoginUserSchema {
 }
 
 export interface ProfileUserSchema {
-	name: string
+	firstName: string
 	lastName: string
+	email: string
 }
 
 export const ValidationSchema = {
@@ -30,8 +31,15 @@ export const ValidationSchema = {
 		password: z.string().length(6),
 	}) as ZodSchema<LoginUserSchema>,
 	profileUser: z.object({
-		name: z.string().min(3, 'must contain 3 or more items').nullable(),
-		lastName: z.string().min(3, 'must contain 3 or more items').nullable(),
+		email: z.any(),
+		firstName: z
+			.string()
+			.min(3, 'має містити 3 або більше елементів')
+			.nullable(),
+		lastName: z
+			.string()
+			.min(3, 'має містити 3 або більше елементів')
+			.nullable(),
 	}) as ZodSchema<ProfileUserSchema>,
 	newProductSchema: z.object({
 		linkName: z.string(),

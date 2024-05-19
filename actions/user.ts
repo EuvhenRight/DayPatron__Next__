@@ -1,6 +1,8 @@
+'use server'
 import { auth } from '@/auth'
 import prisma from '@/lib/db/client'
 import { type DefaultSession } from 'next-auth'
+import { revalidatePath } from 'next/cache'
 
 export type ExtendedUser = DefaultSession['user'] & {
 	role: 'ADMIN' | 'USER'
@@ -62,4 +64,23 @@ export const getCurrentRole = async () => {
 	} catch (error) {
 		console.log(error)
 	}
+}
+
+export const editInfoUser = async (
+	id: string,
+	firstName: string,
+	lastName: string
+) => {
+	const user = await prisma.user.update({
+		where: {
+			id,
+		},
+		data: {
+			first_name: firstName,
+			last_name: lastName,
+		},
+	})
+
+	revalidatePath('/dashboard/profile')
+	return user
 }
