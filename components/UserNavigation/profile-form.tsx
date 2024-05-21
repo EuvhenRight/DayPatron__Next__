@@ -10,7 +10,7 @@ export const ProfileForm = ({ currentUser }: Props) => {
 	return (
 		<div className='border p-2 border-spacing-1 rounded-md'>
 			<div className='flex justify-between'>
-				<h2 className='font-bold text-xl px-2 text-end'>Ваш профіль</h2>
+				<h2 className='font-bold text-xl px-2 text-end mt-2'>Ваш профіль</h2>
 				<ProfileFormDialog currentUser={currentUser} />
 			</div>
 			<div className='space-y-4 pt-4'>

@@ -9,7 +9,6 @@ import {
 import { ValidationSchema } from '@/lib/db/validation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { User } from '@prisma/client'
-import { Pencil } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -40,8 +39,8 @@ export const DeliveryFormDialog = ({ currentUser }: Props) => {
 	const onSubmit = () => {}
 	return (
 		<Dialog>
-			<DialogTrigger className='hover:text-gray-500'>
-				<Pencil style={{ width: '20px', height: '20px', color: 'green' }} />
+			<DialogTrigger className='hover:text-green-500 text-green-700 px-2'>
+				+ Add
 			</DialogTrigger>
 			<DialogContent>
 				<Form {...form}>

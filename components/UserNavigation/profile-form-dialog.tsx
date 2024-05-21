@@ -79,8 +79,8 @@ export const ProfileFormDialog = ({ currentUser }: Props) => {
 
 	return (
 		<Dialog>
-			<DialogTrigger className='hover:text-gray-500'>
-				<Pencil style={{ width: '20px', height: '20px', color: 'green' }} />
+			<DialogTrigger className='hover:text-green-500 text-green-700 px-2'>
+				<Pencil style={{ width: '20px', height: '20px' }} />
 			</DialogTrigger>
 			<DialogContent>
 				<DialogHeader>
