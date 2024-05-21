@@ -1,26 +1,26 @@
 import { User } from '@prisma/client'
 import { Label } from '../ui/label'
-import { UserFormDialog } from './user-form-dialog'
+import { ProfileFormDialog } from './profile-form-dialog'
 
 interface Props {
 	currentUser: User
 }
 
-export const UserForm = ({ currentUser }: Props) => {
+export const ProfileForm = ({ currentUser }: Props) => {
 	return (
 		<div className='border p-2 border-spacing-1 rounded-md'>
 			<div className='flex justify-between'>
 				<h2 className='font-bold text-xl px-2 text-end'>Ваш профіль</h2>
-				<UserFormDialog currentUser={currentUser} />
+				<ProfileFormDialog currentUser={currentUser} />
 			</div>
 			<div className='space-y-4 pt-4'>
 				<div>
 					<Label className='px-3 font-bold'>Ім&apos;я:</Label>
-					{currentUser.first_name}
+					{currentUser.firstName}
 				</div>
 				<div>
 					<Label className='px-3 font-bold'>Прізвище:</Label>
-					{currentUser.last_name}
+					{currentUser.lastName}
 				</div>
 				<div>
 					<Label className='px-3 font-bold'>Пошта:</Label>

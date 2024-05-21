@@ -76,8 +76,8 @@ export const editInfoUser = async (
 			id,
 		},
 		data: {
-			first_name: firstName,
-			last_name: lastName,
+			firstName: firstName,
+			lastName: lastName,
 		},
 	})
 

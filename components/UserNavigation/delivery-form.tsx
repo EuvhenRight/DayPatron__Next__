@@ -1,92 +1,32 @@
-import {
-	Form,
-	FormControl,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from '@/components/ui/form'
-import { ValidationSchema } from '@/lib/db/validation'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { Label } from '@/components/ui/label'
 import { User } from '@prisma/client'
-import { useSession } from 'next-auth/react'
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { FormError } from '../ui/form-error'
-import { FormSuccess } from '../ui/form-success'
-import { Input } from '../ui/input'
+import { DeliveryFormDialog } from './delivery-form-dialog'
 
 interface Props {
 	currentUser: User
 }
 
 export const DeliveryForm = ({ currentUser }: Props) => {
-	const { data: session, update } = useSession()
-	const [errorMessage, setErrorMessage] = useState<string | undefined>('')
-	const [isSuccess, setSuccess] = useState<string | undefined>('')
-
-	// FORM VALIDATION AND ERROR HANDLING
-	const form = useForm<z.infer<typeof ValidationSchema.profileUser>>({
-		resolver: zodResolver(ValidationSchema.profileUser),
-		defaultValues: {
-			firstName: currentUser.first_name || '',
-			lastName: currentUser.last_name || '',
-		},
-	})
-
-	const onSubmit = () => {}
 	return (
-		<div>
-			<Form {...form}>
-				<form onSubmit={form.handleSubmit(onSubmit)}>
-					{/* FIRST NAME */}
-					<FormField
-						control={form.control}
-						name='firstName'
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>First Name</FormLabel>
-								<FormControl>
-									<Input type='text' {...field} placeholder='First Name' />
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-					{/* LAST NAME */}
-					<FormField
-						control={form.control}
-						name='lastName'
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Last Name</FormLabel>
-								<FormControl>
-									<Input type='text' {...field} placeholder='Last Name' />
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-					{/* EMAIL */}
-					<FormField
-						control={form.control}
-						name='email'
-						disabled={true}
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Email</FormLabel>
-								<FormControl>
-									<Input type='email' {...field} placeholder='Name' />
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-					<FormSuccess message={isSuccess} />
-					<FormError message={errorMessage} />
-				</form>
-			</Form>
+		<div className='border p-2 border-spacing-1 rounded-md'>
+			<div className='flex justify-between'>
+				<h2 className='font-bold text-xl px-2 text-end'>Ваш профіль</h2>
+				<DeliveryFormDialog currentUser={currentUser} />
+			</div>
+			<div className='space-y-4 pt-4'>
+				<div>
+					<Label className='px-3 font-bold'>Ім&apos;я:</Label>
+					{currentUser.firstName}
+				</div>
+				<div>
+					<Label className='px-3 font-bold'>Прізвище:</Label>
+					{currentUser.lastName}
+				</div>
+				<div>
+					<Label className='px-3 font-bold'>Пошта:</Label>
+					{currentUser.email}
+				</div>
+			</div>
 		</div>
 	)
 }

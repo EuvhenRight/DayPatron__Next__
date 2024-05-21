@@ -2,6 +2,7 @@ import { editInfoUser } from '@/actions/user'
 import { Button } from '@/components/ui/button'
 import {
 	Dialog,
+	DialogClose,
 	DialogContent,
 	DialogHeader,
 	DialogTitle,
@@ -31,7 +32,7 @@ interface Props {
 	currentUser: User
 }
 
-export const UserFormDialog = ({ currentUser }: Props) => {
+export const ProfileFormDialog = ({ currentUser }: Props) => {
 	const [errorMessage, setErrorMessage] = useState<string | undefined>('')
 	const [isSuccess, setSuccess] = useState<string | undefined>('')
 	const [pending, startTransition] = useTransition()
@@ -41,8 +42,8 @@ export const UserFormDialog = ({ currentUser }: Props) => {
 		resolver: zodResolver(ValidationSchema.profileUser),
 		defaultValues: {
 			email: currentUser.email || '',
-			firstName: currentUser.first_name || '',
-			lastName: currentUser.last_name || '',
+			firstName: currentUser.firstName || '',
+			lastName: currentUser.lastName || '',
 		},
 	})
 
@@ -79,7 +80,7 @@ export const UserFormDialog = ({ currentUser }: Props) => {
 	return (
 		<Dialog>
 			<DialogTrigger className='hover:text-gray-500'>
-				<Pencil />
+				<Pencil style={{ width: '20px', height: '20px', color: 'green' }} />
 			</DialogTrigger>
 			<DialogContent>
 				<DialogHeader>
@@ -135,18 +136,20 @@ export const UserFormDialog = ({ currentUser }: Props) => {
 									</FormItem>
 								)}
 							/>
-							<p className='text-red-500 text-[12px] text-center px-2'>
+							<p className='text-zinc-700 text-[12px] text-start px-2'>
 								Ви не можете змінити електронну адресу в цьому профілі!
 							</p>
 							<FormSuccess message={isSuccess} />
 							<FormError message={errorMessage} />
-							<div className='flex justify-end relative'>
-								<Button
-									type='submit'
-									variant='office'
-									className='mt-4'
-									disabled={pending}
-								>
+							<div className='flex items-center justify-end relative mt-4'>
+								{/* BUTTON CLOSE */}
+								<DialogClose>
+									<Button variant='link' type='button'>
+										Скасувати
+									</Button>
+								</DialogClose>
+								{/* BUTTON SAVE */}
+								<Button type='submit' variant='office' disabled={pending}>
 									Зберегти
 								</Button>
 							</div>
