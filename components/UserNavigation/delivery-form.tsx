@@ -1,6 +1,7 @@
 import { Label } from '@/components/ui/label'
 import { User } from '@prisma/client'
 import { DeliveryFormDialog } from './delivery-form-dialog'
+import { RadioTypesOfDelivery } from './radio-types-of-delivery'
 
 interface Props {
 	currentUser: User
@@ -14,6 +15,7 @@ export const DeliveryForm = ({ currentUser }: Props) => {
 				<DeliveryFormDialog currentUser={currentUser} />
 			</div>
 			<div className='space-y-4 pt-4'>
+				<RadioTypesOfDelivery />
 				<div>
 					<Label className='px-3 font-bold'>Ім&apos;я:</Label>
 					{currentUser.firstName}
