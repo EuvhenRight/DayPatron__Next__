@@ -8,6 +8,7 @@ import {
 import { Label } from '@/components/ui/label'
 import { User } from '@prisma/client'
 import { useState } from 'react'
+import { DeliveryFormEditDialog } from './delivery-form-edit-dialog'
 
 interface Props {
 	currentUser: User
@@ -16,7 +17,6 @@ interface Props {
 const FakeData = [
 	{
 		id: 0,
-		phone: '044 123 45 67',
 		deliveryType: "Кур'єром",
 		branchNumber: null,
 		city: 'Київ',
@@ -28,7 +28,6 @@ const FakeData = [
 	},
 	{
 		id: 1,
-		phone: '044 123 45 67',
 		deliveryType: 'У відділення',
 		branchNumber: '12232Nava',
 		city: null,
@@ -41,13 +40,17 @@ const FakeData = [
 ]
 
 export const DeliveryForm = ({ currentUser }: Props) => {
-	const [typeOfDelivery, setTypeOfDelivery] = useState<number>(0)
+	const [typeOfDelivery, setTypeOfDelivery] = useState<string>('У відділення')
 
 	return (
 		<div className='border p-2 border-spacing-1 rounded-md'>
 			<div className='flex justify-between'>
 				<h2 className='font-bold text-xl px-2 mt-2 text-end'>Доставка</h2>
-				<DeliveryFormDialog currentUser={currentUser} />
+				<DeliveryFormDialog
+					currentUser={currentUser}
+					setTypeOfDelivery={setTypeOfDelivery}
+					typeOfDelivery={typeOfDelivery}
+				/>
 			</div>
 			{FakeData.length > 0 ? (
 				<div>
@@ -65,7 +68,7 @@ export const DeliveryForm = ({ currentUser }: Props) => {
 											<Label className='px-3 font-bold'>Тип доставки:</Label>
 											{item.deliveryType}
 										</div>
-										<DeliveryFormDialog currentUser={currentUser} />
+										<DeliveryFormEditDialog />
 									</div>
 									<div>
 										<Label className='px-3 font-bold'>Номер відділення:</Label>

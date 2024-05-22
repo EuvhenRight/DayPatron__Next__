@@ -1,4 +1,4 @@
-import { ZodSchema, z } from 'zod'
+import { ZodSchema, any, z } from 'zod'
 
 export interface AuthUserSchema {
 	email: string
@@ -19,28 +19,66 @@ export interface ProfileUserSchema {
 	email: string
 }
 
+export interface DeliveryAddress {
+	typeOfDelivery: string
+	city: string
+	street: string
+	houseNumber: number
+	apartmentNumber: number
+	additionNumber: string
+	zipCode: string
+}
+export interface DeliveryBranch {
+	typeOfDelivery: string
+	branchNumber: string
+}
+
 export const ValidationSchema = {
+	// AUTH
 	authUser: z.object({
-		email: z
-			.string()
-			.nonempty('This field is required')
-			.email({ message: 'Invalid email address' }),
+		email: z.string().email({ message: 'Invalid email address' }),
 	}) as ZodSchema<AuthUserSchema>,
+	// LOGIN
 	loginUser: z.object({
 		email: z.string().email({ message: 'Invalid email address' }),
 		password: z.string().length(6),
 	}) as ZodSchema<LoginUserSchema>,
+	// PROFILE
 	profileUser: z.object({
 		email: z.any(),
 		firstName: z
 			.string()
 			.min(3, 'має містити 3 або більше елементів')
+			.max(50, 'має містити 50 або менше елементів')
 			.nullable(),
 		lastName: z
 			.string()
 			.min(3, 'має містити 3 або більше елементів')
+			.max(50, 'має містити 50 або менше елементів')
 			.nullable(),
 	}) as ZodSchema<ProfileUserSchema>,
+	// DELIVERY
+	deliveryAddress: z.object({
+		typeOfDelivery: any(),
+		city: z
+			.string({ required_error: "це поле є обов'язковим" })
+			.min(3, 'має містити 3 або більше елементів')
+			.max(50, 'має містити 50 або менше елементів'),
+		street: z
+			.string({ required_error: "це поле є обов'язковим" })
+			.min(3, 'має містити 3 або більше елементів')
+			.max(50, 'має містити 50 або менше елементів'),
+		houseNumber: z.number({ required_error: "це поле є обов'язковим" }),
+		apartmentNumber: z.number({ required_error: "це поле є обов'язковим" }),
+		additionNumber: z.string().nullable().optional(),
+		zipCode: z.string({ required_error: "це поле є обов'язковим" }),
+	}) as ZodSchema<DeliveryAddress>,
+	// DELIVERY BRANCH
+	deliveryBranch: z.object({
+		typeOfDelivery: z.any(),
+		branchNumber: z.string({ required_error: "це поле є обов'язковим" }),
+	}),
+	// PRODUCT
 	newProductSchema: z.object({
 		linkName: z.string(),
 		name: z.string(),
@@ -66,7 +104,7 @@ export const ValidationSchema = {
 		mim_price: z.number(),
 	}),
 }
-
+// TODO: FIX VALIDATION CART
 export const cartValidationSchema = z.object({
 	quantity: z
 		.number()
