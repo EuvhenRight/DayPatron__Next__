@@ -1,4 +1,5 @@
 'use client'
+import { DeliveryWithItems } from '@/lib/types/types'
 import { User } from '@prisma/client'
 import { useRouter } from 'next/navigation'
 import { DeliveryForm } from './delivery-form'
@@ -6,8 +7,9 @@ import { ProfileForm } from './profile-form'
 
 interface Props {
 	currentUser: User
+	currentDelivery: DeliveryWithItems | null
 }
-export const UserProfile = ({ currentUser }: Props) => {
+export const UserProfile = ({ currentUser, currentDelivery }: Props) => {
 	const route = useRouter()
 
 	return (
@@ -16,7 +18,10 @@ export const UserProfile = ({ currentUser }: Props) => {
 				<ProfileForm currentUser={currentUser} />
 			</div>
 			<div className='w-2/3 p-2'>
-				<DeliveryForm currentUser={currentUser} />
+				<DeliveryForm
+					currentUser={currentUser}
+					currentDelivery={currentDelivery}
+				/>
 			</div>
 		</section>
 	)

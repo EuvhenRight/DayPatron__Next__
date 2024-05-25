@@ -37,7 +37,7 @@ export const MenuMobile = ({
 		{ label: 'Контакти', href: '/contacts' },
 		session
 			? { label: currentName, href: currenRole, special: true }
-			: { label: 'Login', href: 'auth/register' },
+			: { label: 'Login', href: '/auth/register' },
 	]
 
 	return (

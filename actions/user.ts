@@ -19,7 +19,7 @@ export const getCurrentSession = async () => {
 		const session = await auth()
 		return session
 	} catch (err) {
-		console.log(err)
+		console.log(err, 'Something went wrong')
 	}
 }
 
@@ -39,7 +39,7 @@ export const getCurrentUser = async () => {
 
 		return currentUser
 	} catch (error) {
-		console.log(error)
+		console.log(error, 'Something went wrong')
 	}
 }
 
@@ -52,7 +52,7 @@ export const getCurrentUserById = async ({ id }: { id: string }) => {
 		})
 		return currentUser
 	} catch (error) {
-		console.log(error)
+		console.log(error, 'Something went wrong')
 	}
 }
 
@@ -62,7 +62,7 @@ export const getCurrentRole = async () => {
 
 		return session?.user?.role
 	} catch (error) {
-		console.log(error)
+		console.log(error, 'Something went wrong')
 	}
 }
 

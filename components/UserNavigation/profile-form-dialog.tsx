@@ -16,14 +16,12 @@ import {
 	FormLabel,
 	FormMessage,
 } from '@/components/ui/form'
-import { FormError } from '@/components/ui/form-error'
-import { FormSuccess } from '@/components/ui/form-success'
 import { Input } from '@/components/ui/input'
 import { ValidationSchema } from '@/lib/db/validation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { User } from '@prisma/client'
 import { Pencil } from 'lucide-react'
-import { useState, useTransition } from 'react'
+import { useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
@@ -33,8 +31,6 @@ interface Props {
 }
 
 export const ProfileFormDialog = ({ currentUser }: Props) => {
-	const [errorMessage, setErrorMessage] = useState<string | undefined>('')
-	const [isSuccess, setSuccess] = useState<string | undefined>('')
 	const [pending, startTransition] = useTransition()
 
 	// FORM VALIDATION AND ERROR HANDLING
@@ -51,8 +47,6 @@ export const ProfileFormDialog = ({ currentUser }: Props) => {
 		data: z.infer<typeof ValidationSchema.profileUser>
 	) => {
 		const { firstName, lastName } = data
-		setErrorMessage('')
-		setSuccess('')
 
 		if (!currentUser) {
 			toast.error('Щось пішло не так, спробуйте ще раз')
@@ -139,11 +133,9 @@ export const ProfileFormDialog = ({ currentUser }: Props) => {
 							<p className='text-zinc-700 text-[12px] text-start px-2'>
 								Ви не можете змінити електронну адресу в цьому профілі!
 							</p>
-							<FormSuccess message={isSuccess} />
-							<FormError message={errorMessage} />
 							<div className='flex items-center justify-end relative mt-4'>
 								{/* BUTTON CLOSE */}
-								<DialogClose>
+								<DialogClose asChild>
 									<Button variant='link' type='button'>
 										Скасувати
 									</Button>

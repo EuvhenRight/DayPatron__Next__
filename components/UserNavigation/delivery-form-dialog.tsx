@@ -1,3 +1,11 @@
+import { addItemDelivery } from '@/actions/delivery'
+import { Button } from '@/components/ui/button'
+import {
+	Dialog,
+	DialogClose,
+	DialogContent,
+	DialogTrigger,
+} from '@/components/ui/dialog'
 import {
 	Form,
 	FormControl,
@@ -6,30 +14,29 @@ import {
 	FormLabel,
 	FormMessage,
 } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { RadioTypesOfDelivery } from '@/components/UserNavigation/radio-types-of-delivery'
 import { ValidationSchema } from '@/lib/db/validation'
+import { DeliveryWithItems } from '@/lib/types/types'
+
 import { zodResolver } from '@hookform/resolvers/zod'
-import { User } from '@prisma/client'
-import { useSession } from 'next-auth/react'
+import { useTransition } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
-import { Button } from '../ui/button'
-import { Dialog, DialogClose, DialogContent, DialogTrigger } from '../ui/dialog'
-import { Input } from '../ui/input'
-import { RadioTypesOfDelivery } from './radio-types-of-delivery'
 
 interface Props {
-	currentUser: User
 	setTypeOfDelivery: React.Dispatch<React.SetStateAction<string>>
 	typeOfDelivery: string
 }
 
 export const DeliveryFormDialog = ({
-	currentUser,
 	typeOfDelivery,
 	setTypeOfDelivery,
 }: Props) => {
-	const { data: session, update } = useSession()
+	const [pending, startTransition] = useTransition()
 
+	// STATE AND HANDLERS
 	const getFormConfig = (typeOfDelivery: string) => {
 		if (typeOfDelivery !== 'У відділення') {
 			return {
@@ -38,8 +45,8 @@ export const DeliveryFormDialog = ({
 					typeOfDelivery: '' || undefined,
 					city: '' || undefined,
 					street: '' || undefined,
-					houseNumber: 11 || undefined,
-					apartmentNumber: 11 || undefined,
+					houseNumber: '' || undefined,
+					apartmentNumber: '' || undefined,
 					additionNumber: '' || undefined,
 					zipCode: '' || undefined,
 				},
@@ -64,14 +71,27 @@ export const DeliveryFormDialog = ({
 			>
 		>(formConfig)
 
-	const onSubmit = (
-		formConfig: z.infer<
-			| typeof ValidationSchema.deliveryAddress
-			| typeof ValidationSchema.deliveryBranch
-		>
-	) => {
-		console.log(formConfig)
+	const onSubmit = async (formConfig: any) => {
+		let deliveryItem: Promise<DeliveryWithItems>
+		try {
+			// CREATE DELIVERY
+			deliveryItem = new Promise<DeliveryWithItems>(resolve => {
+				startTransition(() => {
+					resolve(addItemDelivery(formConfig))
+				})
+			})
+
+			// UPDATE DELIVERY
+			await toast.promise(deliveryItem, {
+				loading: 'Зачекаємо...',
+				success: 'Вашу інформацію оновлено!',
+				error: 'Щось пішло не так, спробуйте ще раз',
+			})
+		} catch (error) {
+			console.error(error, 'Щось пішло не так, спробуйте ще раз')
+		}
 	}
+
 	return (
 		<Dialog>
 			<DialogTrigger className='hover:text-green-500 text-green-700 px-2'>
@@ -92,6 +112,7 @@ export const DeliveryFormDialog = ({
 												<RadioTypesOfDelivery
 													setTypeOfDelivery={setTypeOfDelivery}
 													onChange={field.onChange}
+													typeOfDelivery={typeOfDelivery}
 												/>
 											</FormControl>
 											<FormMessage />
@@ -129,6 +150,7 @@ export const DeliveryFormDialog = ({
 												<RadioTypesOfDelivery
 													setTypeOfDelivery={setTypeOfDelivery}
 													onChange={field.onChange}
+													typeOfDelivery={typeOfDelivery}
 												/>
 											</FormControl>
 											<FormMessage />
@@ -257,7 +279,7 @@ export const DeliveryFormDialog = ({
 						)}
 						<div className='flex items-center justify-end relative mt-4'>
 							{/* BUTTON CLOSE */}
-							<DialogClose>
+							<DialogClose asChild>
 								<Button variant='link' type='button'>
 									Скасувати
 								</Button>
