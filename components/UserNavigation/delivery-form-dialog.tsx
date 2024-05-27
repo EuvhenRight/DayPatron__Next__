@@ -20,7 +20,7 @@ import { ValidationSchema } from '@/lib/db/validation'
 import { DeliveryWithItems } from '@/lib/types/types'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useTransition } from 'react'
+import { useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
@@ -35,30 +35,35 @@ export const DeliveryFormDialog = ({
 	setTypeOfDelivery,
 }: Props) => {
 	const [pending, startTransition] = useTransition()
-
+	const [isOpen, setIsOpen] = useState(false)
 	// STATE AND HANDLERS
+	const getValidationSchema = (typeOfDelivery: string) => {
+		return typeOfDelivery === 'У відділення'
+			? ValidationSchema.deliveryBranch
+			: ValidationSchema.deliveryAddress
+	}
+
+	const getDefaultValues = (typeOfDelivery: string) => {
+		return typeOfDelivery === 'У відділення'
+			? {
+					typeOfDelivery: '',
+					branchNumber: '',
+			  }
+			: {
+					typeOfDelivery: '',
+					city: '',
+					street: '',
+					houseNumber: '',
+					apartmentNumber: '',
+					additionNumber: '',
+					zipCode: '',
+			  }
+	}
+
 	const getFormConfig = (typeOfDelivery: string) => {
-		if (typeOfDelivery !== 'У відділення') {
-			return {
-				resolver: zodResolver(ValidationSchema.deliveryAddress),
-				defaultValues: {
-					typeOfDelivery: '' || undefined,
-					city: '' || undefined,
-					street: '' || undefined,
-					houseNumber: '' || undefined,
-					apartmentNumber: '' || undefined,
-					additionNumber: '' || undefined,
-					zipCode: '' || undefined,
-				},
-			}
-		} else {
-			return {
-				resolver: zodResolver(ValidationSchema.deliveryBranch),
-				defaultValues: {
-					typeOfDelivery: '' || undefined,
-					branchNumber: '' || undefined,
-				},
-			}
+		return {
+			resolver: zodResolver(getValidationSchema(typeOfDelivery)),
+			defaultValues: getDefaultValues(typeOfDelivery),
 		}
 	}
 
@@ -76,9 +81,7 @@ export const DeliveryFormDialog = ({
 		try {
 			// CREATE DELIVERY
 			deliveryItem = new Promise<DeliveryWithItems>(resolve => {
-				startTransition(() => {
-					resolve(addItemDelivery(formConfig))
-				})
+				resolve(addItemDelivery(formConfig))
 			})
 
 			// UPDATE DELIVERY
@@ -87,13 +90,15 @@ export const DeliveryFormDialog = ({
 				success: 'Вашу інформацію оновлено!',
 				error: 'Щось пішло не так, спробуйте ще раз',
 			})
+
+			return setIsOpen(!isOpen)
 		} catch (error) {
 			console.error(error, 'Щось пішло не так, спробуйте ще раз')
 		}
 	}
 
 	return (
-		<Dialog>
+		<Dialog open={isOpen} onOpenChange={setIsOpen}>
 			<DialogTrigger className='hover:text-green-500 text-green-700 px-2'>
 				+ Add
 			</DialogTrigger>
@@ -277,10 +282,14 @@ export const DeliveryFormDialog = ({
 								</div>
 							</>
 						)}
-						<div className='flex items-center justify-end relative mt-4'>
-							{/* BUTTON CLOSE */}
+						<div className='flex justify-end gap-2 relative mt-4'>
+							{/* BUTTON CANCEL */}
 							<DialogClose asChild>
-								<Button variant='link' type='button'>
+								<Button
+									variant='link'
+									onClick={() => form.reset()}
+									type='button'
+								>
 									Скасувати
 								</Button>
 							</DialogClose>

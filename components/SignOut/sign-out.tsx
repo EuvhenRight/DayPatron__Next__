@@ -22,27 +22,25 @@ export const LogOutModal = () => {
 	}
 
 	return (
-		<>
-			<AlertDialog>
-				<AlertDialogTrigger>Logout</AlertDialogTrigger>
-				<AlertDialogContent>
-					<AlertDialogHeader>
-						<AlertDialogTitle>Are you sure want to logout?</AlertDialogTitle>
-						<AlertDialogDescription>
-							You will be logout of your account.
-						</AlertDialogDescription>
-					</AlertDialogHeader>
-					<AlertDialogFooter>
-						<AlertDialogCancel>Cancel</AlertDialogCancel>
-						<AlertDialogAction
-							className={buttonVariants({ variant: 'office' })}
-							onClick={handleSignOut}
-						>
-							Yes
-						</AlertDialogAction>
-					</AlertDialogFooter>
-				</AlertDialogContent>
-			</AlertDialog>
-		</>
+		<AlertDialog>
+			<AlertDialogTrigger>Вийти з системи</AlertDialogTrigger>
+			<AlertDialogContent>
+				<AlertDialogHeader>
+					<AlertDialogTitle>Ви дійсно хочете вийти?</AlertDialogTitle>
+					<AlertDialogDescription>
+						Ви вийдете зі свого облікового запису.
+					</AlertDialogDescription>
+				</AlertDialogHeader>
+				<AlertDialogFooter>
+					<AlertDialogCancel>Скасувати</AlertDialogCancel>
+					<AlertDialogAction
+						className={buttonVariants({ variant: 'office' })}
+						onClick={handleSignOut}
+					>
+						Вийти
+					</AlertDialogAction>
+				</AlertDialogFooter>
+			</AlertDialogContent>
+		</AlertDialog>
 	)
 }

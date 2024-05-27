@@ -21,7 +21,7 @@ import { ValidationSchema } from '@/lib/db/validation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { User } from '@prisma/client'
 import { Pencil } from 'lucide-react'
-import { useTransition } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
@@ -31,7 +31,7 @@ interface Props {
 }
 
 export const ProfileFormDialog = ({ currentUser }: Props) => {
-	const [pending, startTransition] = useTransition()
+	const [isOpen, setIsOpen] = useState(false)
 
 	// FORM VALIDATION AND ERROR HANDLING
 	const form = useForm<z.infer<typeof ValidationSchema.profileUser>>({
@@ -56,9 +56,7 @@ export const ProfileFormDialog = ({ currentUser }: Props) => {
 		let userPromise: Promise<User>
 		try {
 			userPromise = new Promise<User>(resolve => {
-				startTransition(() => {
-					resolve(editInfoUser(currentUser.id, firstName, lastName))
-				})
+				resolve(editInfoUser(currentUser.id, firstName, lastName))
 			})
 			// UPDATE USER PROMISE AND TOAST
 			await toast.promise(userPromise, {
@@ -66,13 +64,15 @@ export const ProfileFormDialog = ({ currentUser }: Props) => {
 				success: 'Ваш профіль було оновлено!',
 				error: 'Щось пішло не так, спробуйте ще раз',
 			})
+
+			return setIsOpen(!isOpen)
 		} catch (error) {
 			toast.error('Щось пішло не так, спробуйте ще раз')
 		}
 	}
 
 	return (
-		<Dialog>
+		<Dialog open={isOpen} onOpenChange={setIsOpen}>
 			<DialogTrigger className='hover:text-green-500 text-green-700 px-2'>
 				<Pencil style={{ width: '20px', height: '20px' }} />
 			</DialogTrigger>
@@ -141,7 +141,7 @@ export const ProfileFormDialog = ({ currentUser }: Props) => {
 									</Button>
 								</DialogClose>
 								{/* BUTTON SAVE */}
-								<Button type='submit' variant='office' disabled={pending}>
+								<Button type='submit' variant='office'>
 									Зберегти
 								</Button>
 							</div>

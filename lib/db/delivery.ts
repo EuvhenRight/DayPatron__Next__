@@ -11,7 +11,13 @@ export async function getDelivery(): Promise<DeliveryWithItems | null> {
 	if (session) {
 		delivery = await prisma.delivery.findFirst({
 			where: { userId: session.user.id },
-			include: { items: true },
+			include: {
+				items: {
+					orderBy: {
+						updatedAt: 'desc',
+					},
+				},
+			},
 		})
 	} else {
 		return null

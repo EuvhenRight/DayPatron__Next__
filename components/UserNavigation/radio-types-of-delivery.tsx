@@ -20,7 +20,11 @@ export const RadioTypesOfDelivery = ({
 	}
 
 	return (
-		<RadioGroup value={typeOfDelivery} onValueChange={toggleOnDelivery}>
+		<RadioGroup
+			value={typeOfDelivery}
+			onValueChange={toggleOnDelivery}
+			className='mb-2'
+		>
 			{deliveryOptions.map((item, index) => (
 				<div key={index} className='flex items-center space-x-2'>
 					<RadioGroupItem

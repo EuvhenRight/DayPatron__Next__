@@ -1,4 +1,4 @@
-import { addItemDelivery } from '@/actions/delivery'
+import { deleteItemDelivery, editItemDelivery } from '@/actions/delivery'
 import { Button } from '@/components/ui/button'
 import {
 	Dialog,
@@ -15,37 +15,37 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { RadioTypesOfDelivery } from '@/components/UserNavigation/radio-types-of-delivery'
 import { ValidationSchema } from '@/lib/db/validation'
 import { DeliveryWithItems } from '@/lib/types/types'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { DeliveryItem } from '@prisma/client'
 import { Pencil } from 'lucide-react'
-import { useTransition } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
 interface Props {
 	item: DeliveryItem
-	setTypeOfDelivery: React.Dispatch<React.SetStateAction<string>>
-	typeOfDelivery: string
 }
 
-export const DeliveryFormEditDialog = ({
-	item,
-	typeOfDelivery,
-	setTypeOfDelivery,
-}: Props) => {
-	const [pending, startTransition] = useTransition()
-
+export const DeliveryFormEditDialog = ({ item }: Props) => {
+	const [isOpen, setIsOpen] = useState(false)
 	// STATE AND HANDLERS
-	const getFormConfig = (typeOfDelivery: string) => {
-		if (typeOfDelivery !== 'У відділення') {
-			return {
-				resolver: zodResolver(ValidationSchema.deliveryAddress),
-				defaultValues: {
+	const getValidationSchema = (typeOfDelivery: string) => {
+		return typeOfDelivery === 'У відділення'
+			? ValidationSchema.deliveryBranch
+			: ValidationSchema.deliveryAddress
+	}
+
+	const getDefaultValues = (item: DeliveryItem) => {
+		return item.typeOfDelivery === 'У відділення'
+			? {
+					typeOfDelivery: item?.typeOfDelivery,
+					branchNumber: item?.branchNumber,
+			  }
+			: {
 					typeOfDelivery: item?.typeOfDelivery,
 					city: item?.city,
 					street: item?.street,
@@ -53,20 +53,17 @@ export const DeliveryFormEditDialog = ({
 					apartmentNumber: item?.apartmentNumber,
 					additionNumber: item?.additionNumber,
 					zipCode: item?.zipCode,
-				},
-			}
-		} else {
-			return {
-				resolver: zodResolver(ValidationSchema.deliveryBranch),
-				defaultValues: {
-					typeOfDelivery: item?.typeOfDelivery,
-					branchNumber: item?.branchNumber,
-				},
-			}
+			  }
+	}
+
+	const getFormConfig = (item: DeliveryItem) => {
+		return {
+			resolver: zodResolver(getValidationSchema(item.typeOfDelivery)),
+			defaultValues: getDefaultValues(item),
 		}
 	}
 
-	const formConfig = getFormConfig(typeOfDelivery)
+	const formConfig = getFormConfig(item)
 	const form =
 		useForm<
 			z.infer<
@@ -75,36 +72,40 @@ export const DeliveryFormEditDialog = ({
 			>
 		>(formConfig)
 
+	// DELIVERY DELETE ITEM
+	const toggleDeleteItem = () => {
+		deleteItemDelivery(item.id)
+	}
+
 	const onSubmit = async (formConfig: any) => {
 		let deliveryItem: Promise<DeliveryWithItems>
 		try {
 			// CREATE DELIVERY
 			deliveryItem = new Promise<DeliveryWithItems>(resolve => {
-				startTransition(() => {
-					resolve(addItemDelivery(formConfig))
-				})
+				resolve(editItemDelivery(item.id, formConfig))
 			})
-
 			// UPDATE DELIVERY
 			await toast.promise(deliveryItem, {
 				loading: 'Зачекаємо...',
 				success: 'Вашу інформацію оновлено!',
 				error: 'Щось пішло не так, спробуйте ще раз',
 			})
+			// TOAST SUCCESS CLOSE MODAL
+			return setIsOpen(!isOpen)
 		} catch (error) {
 			console.error(error, 'Щось пішло не так, спробуйте ще раз')
 		}
 	}
 
 	return (
-		<Dialog>
+		<Dialog open={isOpen} onOpenChange={setIsOpen}>
 			<DialogTrigger className='hover:text-green-500 text-green-700 px-2'>
 				<Pencil style={{ width: '20px', height: '20px' }} />
 			</DialogTrigger>
 			<DialogContent className='sm:max-w-[768px]'>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)}>
-						{typeOfDelivery === 'У відділення' ? (
+						{item.typeOfDelivery === 'У відділення' ? (
 							<>
 								{/* TYPE OF DELIVERY */}
 								<FormField
@@ -112,12 +113,9 @@ export const DeliveryFormEditDialog = ({
 									name='typeOfDelivery'
 									render={({ field }) => (
 										<FormItem>
+											<FormLabel>Тип доставки</FormLabel>
 											<FormControl>
-												<RadioTypesOfDelivery
-													setTypeOfDelivery={setTypeOfDelivery}
-													onChange={field.onChange}
-													typeOfDelivery={typeOfDelivery}
-												/>
+												<Input type='text' {...field} disabled />
 											</FormControl>
 											<FormMessage />
 										</FormItem>
@@ -150,12 +148,9 @@ export const DeliveryFormEditDialog = ({
 									name='typeOfDelivery'
 									render={({ field }) => (
 										<FormItem>
+											<FormLabel>Тип доставки</FormLabel>
 											<FormControl>
-												<RadioTypesOfDelivery
-													setTypeOfDelivery={setTypeOfDelivery}
-													onChange={field.onChange}
-													typeOfDelivery={typeOfDelivery}
-												/>
+												<Input type='text' {...field} disabled />
 											</FormControl>
 											<FormMessage />
 										</FormItem>
@@ -281,26 +276,32 @@ export const DeliveryFormEditDialog = ({
 								</div>
 							</>
 						)}
-						<div className='flex items-center justify-between relative mt-4'>
+						<div className='flex items-center justify-between gap-2 relative mt-4'>
 							{/* BUTTON DELETE */}
 							<DialogClose asChild>
-								<Button variant='outline' type='button'>
+								<Button
+									variant='outline'
+									type='button'
+									onClick={toggleDeleteItem}
+								>
 									Delete
 								</Button>
 							</DialogClose>
 							<div>
 								{/* BUTTON CANCEL */}
 								<DialogClose asChild>
-									<Button variant='link' type='button'>
+									<Button
+										variant='link'
+										onClick={() => form.reset()}
+										type='button'
+									>
 										Скасувати
 									</Button>
 								</DialogClose>
 								{/* BUTTON SAVE */}
-								<DialogClose asChild>
-									<Button type='submit' variant='office'>
-										Зберегти
-									</Button>
-								</DialogClose>
+								<Button type='submit' variant='office'>
+									Зберегти
+								</Button>
 							</div>
 						</div>
 					</form>
