@@ -23,9 +23,10 @@ import { User } from '@prisma/client'
 import { Pencil } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { PhoneInput } from 'react-international-phone'
+import 'react-international-phone/style.css'
 import { toast } from 'sonner'
 import { z } from 'zod'
-
 interface Props {
 	currentUser: User
 }
@@ -40,13 +41,14 @@ export const ProfileFormDialog = ({ currentUser }: Props) => {
 			email: currentUser.email || '',
 			firstName: currentUser.firstName || '',
 			lastName: currentUser.lastName || '',
+			phone: currentUser.phone || '',
 		},
 	})
 
 	const onSubmit = async (
 		data: z.infer<typeof ValidationSchema.profileUser>
 	) => {
-		const { firstName, lastName } = data
+		const { firstName, lastName, phone } = data
 
 		if (!currentUser) {
 			toast.error('Щось пішло не так, спробуйте ще раз')
@@ -56,7 +58,7 @@ export const ProfileFormDialog = ({ currentUser }: Props) => {
 		let userPromise: Promise<User>
 		try {
 			userPromise = new Promise<User>(resolve => {
-				resolve(editInfoUser(currentUser.id, firstName, lastName))
+				resolve(editInfoUser(currentUser.id, firstName, lastName, phone))
 			})
 			// UPDATE USER PROMISE AND TOAST
 			await toast.promise(userPromise, {
@@ -113,6 +115,25 @@ export const ProfileFormDialog = ({ currentUser }: Props) => {
 												type='text'
 												{...field}
 												placeholder='введіть Прізвище'
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							{/* PHONE */}
+							<FormField
+								control={form.control}
+								name='phone'
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>номер телефону</FormLabel>
+										<FormControl>
+											<PhoneInput
+												className='w-full important'
+												placeholder='введіть номер телефону'
+												defaultCountry='ua'
+												{...field}
 											/>
 										</FormControl>
 										<FormMessage />

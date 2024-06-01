@@ -17,6 +17,7 @@ export interface ProfileUserSchema {
 	firstName: string
 	lastName: string
 	email: string
+	phone: string
 }
 
 export interface DeliveryAddress {
@@ -56,6 +57,7 @@ export const ValidationSchema = {
 			.min(3, 'має містити 3 або більше елементів')
 			.max(50, 'має містити 50 або менше елементів')
 			.nullable(),
+		phone: z.string({ invalid_type_error: "це поле є обов'язковим" }),
 	}) as ZodSchema<ProfileUserSchema>,
 	// DELIVERY
 	deliveryAddress: z.object({

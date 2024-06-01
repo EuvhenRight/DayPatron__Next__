@@ -69,7 +69,8 @@ export const getCurrentRole = async () => {
 export const editInfoUser = async (
 	id: string,
 	firstName: string,
-	lastName: string
+	lastName: string,
+	phone: string
 ) => {
 	const user = await prisma.user.update({
 		where: {
@@ -78,6 +79,7 @@ export const editInfoUser = async (
 		data: {
 			firstName: firstName,
 			lastName: lastName,
+			phone: phone,
 		},
 	})
 

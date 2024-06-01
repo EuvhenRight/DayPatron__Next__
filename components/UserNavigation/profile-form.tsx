@@ -23,6 +23,10 @@ export const ProfileForm = ({ currentUser }: Props) => {
 					{currentUser.lastName}
 				</div>
 				<div>
+					<Label className='px-3 font-bold'>Номер телефону:</Label>
+					{currentUser.phone}
+				</div>
+				<div>
 					<Label className='px-3 font-bold'>Пошта:</Label>
 					{currentUser.email}
 				</div>

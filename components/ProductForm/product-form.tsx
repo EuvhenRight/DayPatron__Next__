@@ -38,16 +38,26 @@ export const ProductForm = ({ product, cart }: Props) => {
 	const [pending, startTransition] = useTransition()
 
 	//SERVER ACTION ADD TO CART
-	const addItemToCart = (variantId: string) => {
+	const addItemToCart = async (variantId: string) => {
+		let itemInCart: Promise<ProductsWithVariants>
 		if (!variantId) {
 			// TOAST ERROR
 			toast.error('Щось пішло не так, спробуйте ще раз')
 		}
-		startTransition(() => {
-			addItem(variantId!)
-			// TOAST SUCCESS
-			toast.success('Продукт додано до кошика!')
+
+		itemInCart = new Promise<ProductsWithVariants>(resolve => {
+			// ADD TO CART
+			// @ts-ignore TODO: fix type
+			resolve(addItem(variantId!))
 		})
+
+		// TOAST SUCCESS
+		await toast.promise(itemInCart, {
+			loading: 'Зачекаємо...',
+			success: 'Товар додано до кошика',
+			error: 'Щось пішло не так, спробуйте ще раз',
+		})
+
 		return true
 	}
 	// CHECK STOCK

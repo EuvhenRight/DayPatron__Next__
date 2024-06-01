@@ -46,6 +46,7 @@ model User {
   name              String?
   firstName         String?
   lastName          String?
+  phone             String?
   email             String    @unique
   emailVerified     DateTime?
   image             String?
@@ -121,9 +122,9 @@ model Delivery {
 
   userId String? @db.ObjectId
 
-  User  User?          @relation(fields: [userId], references: [id])
-  Order Order[]
+  user  User?          @relation(fields: [userId], references: [id])
   items DeliveryItem[]
+  order OrderItem[]
 
   @@map("deliveries")
 }
@@ -154,27 +155,28 @@ model OrderItem {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  cart    Cart?  @relation(fields: [cartId], references: [id])
-  order   Order? @relation(fields: [orderId], references: [id])
-  cartId  String @db.ObjectId
-  orderId String @db.ObjectId
+  cartId     String @db.ObjectId
+  orderId    String @db.ObjectId
+  deliveryId String @db.ObjectId
+
+  address Delivery? @relation(fields: [deliveryId], references: [id])
+  cart    Cart?     @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  order   Order?    @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
   @@map("orderItems")
 }
 
 model Order {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  date      DateTime
-  address   Delivery @relation(fields: [deliveryId], references: [id])
-  count     Int
-  sum       Float
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  userId    String   @db.ObjectId
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  itemsTotal Float
+  subTotal   Float
+  bonus      String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  userId     String   @db.ObjectId
 
-  user       User        @relation(fields: [userId], references: [id])
-  deliveryId String      @db.ObjectId
-  OrderItem  OrderItem[]
+  user      User        @relation(fields: [userId], references: [id])
+  orderItem OrderItem[]
 
   @@map("orders")
 }

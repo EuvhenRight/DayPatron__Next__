@@ -27,7 +27,8 @@ export const MenuMobile = ({
 	const currentName =
 		session?.user?.name === null ? 'Account' : session?.user?.name
 
-	const currenRole = session?.user?.role === 'ADMIN' ? '/admin' : '/dashboard'
+	const currenRole =
+		session?.user?.role === 'ADMIN' ? '/admin' : '/dashboard/profile'
 
 	const menuItems = [
 		{ label: 'Головна', href: '/' },

@@ -52,10 +52,7 @@ export const sendEmail = async ({
 	try {
 		// Send the email
 		const info = await transporter.sendMail(mailOptions)
-		// eslint-disable-next-line no-console
-		console.log('Email sent:', info.response)
 	} catch (error) {
-		// eslint-disable-next-line no-console
 		console.error('Error sending email:', error)
 		throw error
 	}

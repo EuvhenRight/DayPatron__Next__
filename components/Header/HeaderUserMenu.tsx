@@ -32,7 +32,7 @@ export const UserMenu = () => {
 						{role === 'ADMIN' ? (
 							<Link href='/admin'>Admin</Link>
 						) : (
-							<Link href='/dashboard'>Dashboard</Link>
+							<Link href='/dashboard/profile'>Dashboard</Link>
 						)}
 					</MenubarItem>
 					<MenubarItem onSelect={event => event.preventDefault()}>
