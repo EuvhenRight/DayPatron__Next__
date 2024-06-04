@@ -53,6 +53,7 @@ const countries = [
   { code: 'BW', label: 'Botswana', phone: '+267' },
   { code: 'BY', label: 'Belarus', phone: '+375' },
   { code: 'BZ', label: 'Belize', phone: '+501' },
+  { code: 'CA', label: 'Canada', phone: '+1' },
   {
     code: 'CD',
     label: 'Congo, Democratic Republic of the',
