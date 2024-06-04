@@ -122,9 +122,9 @@ model Delivery {
 
   userId String? @db.ObjectId
 
-  user  User?          @relation(fields: [userId], references: [id])
-  items DeliveryItem[]
-  order OrderItem[]
+  user      User?          @relation(fields: [userId], references: [id])
+  items     DeliveryItem[]
+  orderItem OrderItem[]
 
   @@map("deliveries")
 }
@@ -170,13 +170,13 @@ model Order {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   itemsTotal Float
   subTotal   Float
-  bonus      String
+  bonus      String?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-  userId     String   @db.ObjectId
+  userId     String?  @db.ObjectId
 
-  user      User        @relation(fields: [userId], references: [id])
-  orderItem OrderItem[]
+  user User?       @relation(fields: [userId], references: [id])
+  item OrderItem[]
 
   @@map("orders")
 }

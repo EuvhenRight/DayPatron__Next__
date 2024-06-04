@@ -1,4 +1,3 @@
-import { auth } from '@/auth'
 import prisma from '@/lib/db/client'
 
 export const getUserByEmail = async (email: string) => {
@@ -25,9 +24,4 @@ export const getUserById = async (id: string) => {
 	} catch {
 		return null
 	}
-}
-
-export const getUserTest = async () => {
-	const session = await auth()
-	return session?.user
 }

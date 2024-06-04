@@ -18,10 +18,7 @@ export const UserProfile = ({ currentUser, currentDelivery }: Props) => {
 				<ProfileForm currentUser={currentUser} />
 			</div>
 			<div className='w-2/3 p-2'>
-				<DeliveryForm
-					currentUser={currentUser}
-					currentDelivery={currentDelivery}
-				/>
+				<DeliveryForm currentDelivery={currentDelivery} />
 			</div>
 		</section>
 	)

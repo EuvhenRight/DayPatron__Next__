@@ -54,7 +54,7 @@ export const Variants = ({
 			)}
 			{/* VOLUME */}
 			<ul className='flex gap-5 items-center my-2' onBlur={handleContainerBlur}>
-				SIZE:
+				Об&apos;єм:
 				{variantsProduct.map((variant, index) => {
 					return (
 						<li
@@ -84,7 +84,7 @@ export const Variants = ({
 							<span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-green-700 opacity-75'></span>
 							<span className='relative inline-flex rounded-full h-3 w-3 bg-green-500'></span>
 						</span>
-						<span>In stock, ready to ship</span>
+						<span>Є в наявності</span>
 					</div>
 				) : (
 					<div className='flex gap-5 items-center my-4'>
@@ -92,7 +92,7 @@ export const Variants = ({
 							<span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-btnPrimary opacity-75'></span>
 							<span className='relative inline-flex rounded-full h-3 w-3 bg-btnPrimary'></span>
 						</span>
-						<span>Out of stock</span>
+						<span>Немає в наявності</span>
 					</div>
 				)}
 			</div>

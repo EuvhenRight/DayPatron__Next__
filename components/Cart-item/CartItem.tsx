@@ -69,7 +69,7 @@ export const CartItemComponent = ({
 				</div>
 				{/* SIZE */}
 				<div className='flex gap-2'>
-					<h4>Size:</h4>
+					<h4>Об&apos;єм:</h4>
 					<h4>{product.volume}</h4>
 				</div>
 				<div className='flex justify-between'>

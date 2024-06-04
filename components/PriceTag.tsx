@@ -1,8 +1,8 @@
-import { formatPrice } from '@/lib/db/format'
+import { formatCurrency } from '@/lib/formatPrice'
 
-interface PriceTagProps {
+interface Props {
 	price: number
 }
-export const PriceTag: React.FC<PriceTagProps> = ({ price }) => {
-	return <span>{formatPrice(price)}</span>
+export const PriceTag = ({ price }: Props) => {
+	return <span>{formatCurrency(price)}</span>
 }

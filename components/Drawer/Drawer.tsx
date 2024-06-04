@@ -9,8 +9,8 @@ import {
 	SheetTrigger,
 } from '@/components/ui/sheet'
 import { CartWithVariants } from '@/lib/types/types'
+import { useRouter } from 'next/navigation'
 import { AiOutlineClose, AiOutlineShoppingCart } from 'react-icons/ai'
-
 interface Props {
 	cart?: CartWithVariants | null
 }
@@ -18,6 +18,11 @@ interface Props {
 export const Drawer = ({ cart }: Props) => {
 	// CART INDICATOR
 	const cartIndicate = cart ? cart.items.length > 0 : false
+	const router = useRouter()
+	// TOGGLE DRAWER
+	const toggleDrawer = () => {
+		router.push('/checkouts')
+	}
 
 	return (
 		<Sheet>
@@ -36,7 +41,7 @@ export const Drawer = ({ cart }: Props) => {
 					<div>
 						<div className='flex gap-5 justify-between items-center border-b-2 border-white pb-4 mb-1'>
 							<h2 className='text-3xl font-bold flex items-center gap-5 text-white'>
-								CART
+								КОШИК
 							</h2>
 							<SheetClose className='text-gray-300 hover:text-white'>
 								<AiOutlineClose className='w-6 h-6' />
@@ -45,7 +50,7 @@ export const Drawer = ({ cart }: Props) => {
 						{/* IF CART IS EMPTY */}
 						{!cartIndicate ? (
 							<h2 className='text-white text-lg md:text-xl py-2'>
-								Your cart is empty
+								Ваш кошик порожній
 							</h2>
 						) : (
 							<>
@@ -59,11 +64,11 @@ export const Drawer = ({ cart }: Props) => {
 									{/* SUBTOTAL AND DISCOUNT */}
 									<div className='flex flex-col text-white py-4 mb-4'>
 										<div className='flex justify-between'>
-											<h2>SUBTOTAL</h2>
+											<h2>СУМА</h2>
 											<h2>{<PriceTag price={cart?.subTotal!} />}</h2>
 										</div>
 										<div className='flex justify-between'>
-											<h2>DISCOUNT</h2>
+											<h2>ЗНИЖКА</h2>
 											<h2 className='text-green-500'>
 												-{<PriceTag price={cart?.discountTotal!} />}
 											</h2>
@@ -73,9 +78,10 @@ export const Drawer = ({ cart }: Props) => {
 									<Button
 										variant='destructive'
 										size='lg'
-										className='w-full text-white text-xl py-2 transition ease-in-out delay-350 animate-pulse'
+										className='w-full text-white text-xl py-2 transition ease-in-out delay-350'
+										onClick={toggleDrawer}
 									>
-										Checkout
+										Оформити замовлення
 									</Button>
 								</div>
 							</>

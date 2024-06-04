@@ -130,9 +130,10 @@ export const ProfileFormDialog = ({ currentUser }: Props) => {
 										<FormLabel>номер телефону</FormLabel>
 										<FormControl>
 											<PhoneInput
-												className='w-full important'
 												placeholder='введіть номер телефону'
-												defaultCountry='ua'
+												inputStyle={{
+													width: '100%',
+												}}
 												{...field}
 											/>
 										</FormControl>

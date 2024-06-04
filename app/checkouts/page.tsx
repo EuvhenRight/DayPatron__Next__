@@ -3,19 +3,19 @@ import { CheckoutForm } from '@/components/CheckoutForm/checkout-form'
 import { getCart } from '@/lib/db/cart'
 import { getDelivery } from '@/lib/db/delivery'
 
-export default async function Home() {
-	const [currentUser, currentDelivery, cart] = await Promise.all([
-		getCurrentUser(),
+export default async function Checkouts() {
+	const [currentDelivery, cart, currentUser] = await Promise.all([
 		getDelivery(),
 		getCart(),
+		getCurrentUser(),
 	])
 
 	return (
 		<div>
 			<CheckoutForm
-				currentUser={currentUser}
 				currentDelivery={currentDelivery}
 				cart={cart}
+				currentUser={currentUser}
 			/>
 		</div>
 	)

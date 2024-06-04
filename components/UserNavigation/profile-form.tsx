@@ -1,3 +1,4 @@
+'use client'
 import { User } from '@prisma/client'
 import { Label } from '../ui/label'
 import { ProfileFormDialog } from './profile-form-dialog'
@@ -8,7 +9,7 @@ interface Props {
 
 export const ProfileForm = ({ currentUser }: Props) => {
 	return (
-		<div className='border p-2 border-spacing-1 rounded-md'>
+		<div className='border p-2 border-spacing-1 rounded-md my-4'>
 			<div className='flex justify-between'>
 				<h2 className='font-bold text-xl px-2 text-end mt-2'>Ваш профіль</h2>
 				<ProfileFormDialog currentUser={currentUser} />

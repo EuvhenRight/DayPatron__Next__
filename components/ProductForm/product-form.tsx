@@ -124,14 +124,14 @@ export const ProductForm = ({ product, cart }: Props) => {
 								addItemToCart(product.variant[currentIndex!].id)
 							}}
 						>
-							Add to cart
+							Додати до кошика
 						</Button>
 					)}
 
 					{/* INFO BLOCK INFORMATION */}
 					<div className='text-justify'>
 						<p className='py-2'>
-							<b>description: </b>
+							<b>опис: </b>
 							{product.description}
 						</p>
 						<p className='py-2'>
@@ -139,11 +139,11 @@ export const ProductForm = ({ product, cart }: Props) => {
 							{product.shelfLife}
 						</p>
 						<p className='py-2'>
-							<b>specification: </b>
+							<b>характеристики: </b>
 							{product.specification}
 						</p>
 						<p className='py-2'>
-							<b>useTo: </b>
+							<b>використання: </b>
 							{product.useTo}
 						</p>
 					</div>
