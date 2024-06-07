@@ -10,6 +10,11 @@
 
       gtag('config', 'G-2D7TQ6113N');
     </script>
+    <script>
+      var tnxritParam = new URLSearchParams(window.location.search).get("10x-register");
+      if(tnxritParam)
+        window.location.href = "%REACT_APP_KEYCLOAK_URL%/realms/%REACT_APP_KEYCLOAK_REALM%/protocol/openid-connect/registrations?client_id=%REACT_APP_KEYCLOAK_CLIENT_ID%&scope=openid%20profile&redirect_uri=" + encodeURIComponent(window.location.origin) + "&response_type=code&tnxinvtkn=" + tnxritParam;
+    </script>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
