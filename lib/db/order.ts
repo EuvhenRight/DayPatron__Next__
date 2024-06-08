@@ -32,7 +32,6 @@ export async function createOrder(): Promise<OrderWithItems | null> {
 				userId: session.user.id,
 				itemsTotal: 0,
 				subTotal: 0,
-				bonus: 'best',
 			},
 			include: { item: true },
 		})

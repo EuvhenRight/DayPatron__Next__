@@ -5,6 +5,7 @@ import { PriceTag } from '@/components/PriceTag'
 import { CartItemWithVariants } from '@/lib/types/types'
 import Image from 'next/image'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useTransition } from 'react'
 import { AiOutlineClose } from 'react-icons/ai'
 import { toast } from 'sonner'
@@ -17,6 +18,7 @@ export const CartItemComponent = ({
 	item: { variant: product, quantity },
 }: Props) => {
 	const [pending, startTransition] = useTransition()
+	const path = usePathname()
 
 	// DELETE CART ITEM
 	const deleteCartItem = (itemId: string) => {
@@ -39,7 +41,11 @@ export const CartItemComponent = ({
 	}
 
 	return (
-		<div className='flex flex-row text-white py-2 w-full justify-between border-b-2 border-black'>
+		<div
+			className={`flex flex-row ${
+				path === '/checkouts' ? 'text-black' : 'text-white'
+			} py-2 w-full justify-between border-b-2 border-black`}
+		>
 			{/* CLICK TO PRODUCT DETAILS */}
 			<Link href={`/products/${product.productId}/details`}>
 				<Image
@@ -53,7 +59,7 @@ export const CartItemComponent = ({
 			</Link>
 			<div className='w-full flex flex-col justify-between ml-4'>
 				<div className='flex justify-between items-center'>
-					<h2 className='text-typeCollectionTitle'>{product.name}</h2>
+					<h2 className='text-md'>{product.name}</h2>
 					{/* REMOVE ONE CART ITEM FROM CART */}
 					<button
 						onClick={() => {
@@ -73,14 +79,18 @@ export const CartItemComponent = ({
 					<h4>{product.volume}</h4>
 				</div>
 				<div className='flex justify-between'>
-					<div className='flex border border-white text-sm'>
+					<div
+						className={`flex border ${
+							path === '/checkouts' ? 'border-black' : 'border-white'
+						} text-md`}
+					>
 						{/* QUANTITY */}
 						<button
 							disabled={pending}
 							onClick={() => {
 								updateQuantity(product.id, quantity - 1)
 							}}
-							className='hover:bg-white hover:text-gridOverlay px-2'
+							className='hover:bg-white hover:text-zinc-100 px-2'
 						>
 							{/* MINUS ICON */}
 							<Image
@@ -97,7 +107,7 @@ export const CartItemComponent = ({
 							onClick={() => {
 								updateQuantity(product.id, quantity + 1)
 							}}
-							className='hover:bg-white hover:text-gridOverlay px-2'
+							className='hover:bg-white hover:text-zinc-100 px-2'
 						>
 							{/* PLUS ICON */}
 							<Image

@@ -37,64 +37,103 @@ export interface DeliveryBranch {
 export const ValidationSchema = {
 	// AUTH
 	authUser: z.object({
-		email: z.string().email({ message: 'Invalid email address' }),
+		email: z.string().email({ message: 'Невірна адреса електронної пошти' }),
 	}) as ZodSchema<AuthUserSchema>,
 	// LOGIN
 	loginUser: z.object({
-		email: z.string().email({ message: 'Invalid email address' }),
+		email: z.string().email({ message: 'Невірна адреса електронної пошти' }),
 		password: z.string().length(6),
 	}) as ZodSchema<LoginUserSchema>,
 	// PROFILE
 	profileUser: z.object({
 		email: z.any(),
 		firstName: z
-			.string({ invalid_type_error: "це поле є обов'язковим" })
-			.min(3, 'має містити 3 або більше елементів')
-			.max(50, 'має містити 50 або менше елементів')
+			.string({ invalid_type_error: "Це поле є обов'язковим" })
+			.regex(/^[\u0400-\u04FF]+$/, {
+				message: 'Використовуйте тільки кириличні символи',
+			})
+			.min(3, 'Має містити 3 або більше елементів')
+			.max(50, 'Має містити 50 або менше елементів')
 			.nullable(),
 		lastName: z
-			.string({ invalid_type_error: "це поле є обов'язковим" })
-			.min(3, 'має містити 3 або більше елементів')
-			.max(50, 'має містити 50 або менше елементів')
+			.string({ invalid_type_error: "Це поле є обов'язковим" })
+			.regex(/^[\u0400-\u04FF]+$/, {
+				message: 'Використовуйте тільки кириличні символи',
+			})
+			.min(3, 'Має містити 3 або більше елементів')
+			.max(50, 'Має містити 50 або менше елементів')
 			.nullable(),
-		phone: z.string({ invalid_type_error: "це поле є обов'язковим" }),
+		phone: z
+			.string({ invalid_type_error: "Це поле є обов'язковим" })
+			.min(13, 'Невірний номер телефону'),
+	}) as ZodSchema<ProfileUserSchema>,
+	// EXTRA USER
+	extraUser: z.object({
+		email: z
+			.string({ required_error: "Це поле є обов'язковим" })
+			.email({ message: 'Невірна адреса електронної пошти' }),
+		firstName: z
+			.string({ invalid_type_error: "Це поле є обов'язковим" })
+			.regex(/^[\u0400-\u04FF]+$/, {
+				message: 'Використовуйте тільки кириличні символи',
+			})
+			.min(3, 'Має містити 3 або більше елементів')
+			.max(50, 'Має містити 50 або менше елементів')
+			.nullable(),
+		lastName: z
+			.string({ invalid_type_error: "Це поле є обов'язковим" })
+			.regex(/^[\u0400-\u04FF]+$/, {
+				message: 'Використовуйте тільки кириличні символи',
+			})
+			.min(3, 'Має містити 3 або більше елементів')
+			.max(50, 'Має містити 50 або менше елементів')
+			.nullable(),
+		phone: z
+			.string({ invalid_type_error: "Це поле є обов'язковим" })
+			.min(13, 'Невірний номер телефону'),
 	}) as ZodSchema<ProfileUserSchema>,
 	// DELIVERY
 	deliveryAddress: z.object({
 		typeOfDelivery: z
-			.string({ required_error: "це поле є обов'язковим" })
-			.min(3, 'виберіть тип доставки'),
+			.string({ required_error: "Це поле є обов'язковим" })
+			.min(3, 'Виберіть тип доставки'),
 		city: z
-			.string({ invalid_type_error: "це поле є обов'язковим" })
-			.min(3, 'має містити 3 або більше елементів')
-			.max(50, 'має містити 50 або менше елементів'),
+			.string({ invalid_type_error: "Це поле є обов'язковим" })
+			.regex(/^[\u0400-\u04FF]+$/, {
+				message: 'Використовуйте тільки кириличні символи',
+			})
+			.min(3, 'Має містити 3 або більше елементів')
+			.max(50, 'Має містити 50 або менше елементів'),
 		street: z
-			.string({ invalid_type_error: "це поле є обов'язковим" })
-			.min(3, 'має містити 3 або більше елементів')
-			.max(50, 'має містити 50 або менше елементів'),
+			.string({ invalid_type_error: "Це поле є обов'язковим" })
+			.regex(/^[\u0400-\u04FF]+$/, {
+				message: 'Використовуйте тільки кириличні символи',
+			})
+			.min(3, 'Має містити 3 або більше елементів')
+			.max(50, 'Має містити 50 або менше елементів'),
 		houseNumber: z
-			.number({ invalid_type_error: "це поле є обов'язковим" })
-			.nonnegative({ message: 'не може бути відємним' })
+			.number({ invalid_type_error: "Це поле є обов'язковим" })
+			.nonnegative({ message: "Не може бути від'ємним" })
 			.nullable(),
 		apartmentNumber: z
-			.number({ invalid_type_error: "це поле є обов'язковим" })
-			.nonnegative({ message: 'не може бути відємним' })
+			.number({ invalid_type_error: "Це поле є обов'язковим" })
+			.nonnegative({ message: "Не може бути від'ємним" })
 			.nullable(),
 		additionNumber: z.string().nullable().optional(),
 		zipCode: z
-			.string({ invalid_type_error: "це поле є обов'язковим" })
-			.min(3, 'має містити 3 або більше елементів')
-			.max(50, 'має містити 50 або менше елементів'),
+			.string({ invalid_type_error: "Це поле є обов'язковим" })
+			.min(3, 'Має містити 3 або більше елементів')
+			.max(50, 'Має містити 50 або менше елементів'),
 	}) as ZodSchema<DeliveryAddress>,
 	// DELIVERY BRANCH
 	deliveryBranch: z.object({
 		typeOfDelivery: z
-			.string({ required_error: "це поле є обов'язковим" })
-			.min(3, 'виберіть тип доставки'),
+			.string({ required_error: "Це поле є обов'язковим" })
+			.min(3, 'Bиберіть тип доставки'),
 		branchNumber: z
-			.string({ invalid_type_error: "це поле є обов'язковим" })
-			.min(1, 'має містити 1 або більше елементів')
-			.max(50, 'має містити 50 або менше елементів'),
+			.string({ invalid_type_error: "Це поле є обов'язковим" })
+			.min(1, 'Має містити 1 або більше елементів')
+			.max(50, 'Має містити 50 або менше елементів'),
 	}),
 	// PRODUCT
 	newProductSchema: z.object({
@@ -126,6 +165,6 @@ export const ValidationSchema = {
 export const cartValidationSchema = z.object({
 	quantity: z
 		.number()
-		.min(1, 'Quantity must be greater than or equal to 1')
-		.max(99, 'Quantity must be less than or equal to 99'),
+		.min(1, 'Кількість має бути більше або дорівнювати 1')
+		.max(99, 'Кількість має бути менше або дорівнювати 99'),
 })

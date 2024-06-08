@@ -150,14 +150,28 @@ model DeliveryItem {
   @@map("deliveryItems")
 }
 
-model OrderItem {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+enum Payment {
+  POSTPAID
+  PAIMENTBYCARD
+}
 
-  cartId     String @db.ObjectId
-  orderId    String @db.ObjectId
-  deliveryId String @db.ObjectId
+type ExtraUser {
+  firstName String
+  lastName  String
+  email     String
+  phone     String
+}
+
+model OrderItem {
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  extra_user ExtraUser?
+  cartId     String     @db.ObjectId
+  orderId    String     @db.ObjectId
+  deliveryId String     @db.ObjectId
+  payment    Payment    @default(PAIMENTBYCARD)
+  comment    String?
 
   address Delivery? @relation(fields: [deliveryId], references: [id])
   cart    Cart?     @relation(fields: [cartId], references: [id], onDelete: Cascade)

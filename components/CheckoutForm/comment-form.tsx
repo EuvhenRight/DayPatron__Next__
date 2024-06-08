@@ -5,46 +5,64 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from '@/components/ui/accordion'
+import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import { AccordionHeader } from '@radix-ui/react-accordion'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { Label } from '../ui/label'
-export const CommentForm = () => {
+
+interface Props {
+	onChangeText: (value: string) => void
+}
+export const CommentForm = ({ onChangeText }: Props) => {
 	// INITIAL STATE FOR TEXTAREA
-	const [comment, setComment] = useState('')
-	const [isOpen, setIsOpen] = useState(true)
+	const [comment, setComment] = useState<string>('')
+	const [isOpen, setIsOpen] = useState<boolean>(true)
+	const [active, setActive] = useState<boolean>(false)
 
 	const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
 		setComment(e.target.value)
+		onChangeText(e.target.value)
+		setActive(true)
+		if (e.target.value.length === 0) {
+			setActive(false)
+		}
 	}
 
 	// HANDLERS
 	const toggleAccordion = () => {
 		setIsOpen(!isOpen)
 	}
+
 	return (
 		<div className='border p-2 border-spacing-1 rounded-md my-4 relative'>
-			<Accordion type='single' collapsible>
-				<AccordionItem value='item-1 w-full'>
-					<AccordionHeader asChild>
-						<AccordionTrigger onClick={toggleAccordion}>
-							<div className='font-bold flex flex-col text-left'>
-								Коментар до замовлення
-								{isOpen && <Label>{comment}</Label>}
-							</div>
-						</AccordionTrigger>
-					</AccordionHeader>
+			<Accordion type='single' collapsible className='p-2'>
+				<AccordionItem
+					value='comment'
+					className='w-full bg-zinc-100 rounded-md px-2 mt-2'
+				>
+					<AccordionTrigger onClick={toggleAccordion}>
+						<div className='font-bold flex flex-col text-left'>
+							Коментар до замовлення
+							<span>{isOpen ? <Label>{comment}</Label> : null}</span>
+						</div>
+					</AccordionTrigger>
 					<AccordionContent className='p-2'>
+						{/* TYPE OF DELIVERY */}
 						<Textarea
 							id='comment'
-							onChange={handleTextareaChange}
 							value={comment}
-							placeholder='Type your message here.'
+							onChange={handleTextareaChange}
+							placeholder='Додати коментар'
 							maxLength={250}
 						/>
-						<p className='text-right text-neutral-500 text-sm py-1'>
+						<p className='text-left text-neutral-500 text-sm py-1'>
 							Залишилось символів:{250 - comment.length}
 						</p>
+						<div className='flex justify-end mb-2'>
+							<Button type='submit' variant='office' disabled={!active}>
+								Зберегти
+							</Button>
+						</div>
 					</AccordionContent>
 				</AccordionItem>
 			</Accordion>

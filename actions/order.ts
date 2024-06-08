@@ -20,6 +20,7 @@ export async function addOrderItem(data: OrderItem) {
 				orderId: order?.id!,
 				cartId: data.cartId,
 				deliveryId: data.deliveryId,
+				payment: data.payment,
 			},
 		})
 	}

@@ -20,7 +20,7 @@ import { ValidationSchema } from '@/lib/db/validation'
 import { DeliveryWithItems } from '@/lib/types/types'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useState, useTransition } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
@@ -34,7 +34,6 @@ export const DeliveryFormDialog = ({
 	typeOfDelivery,
 	setTypeOfDelivery,
 }: Props) => {
-	const [pending, startTransition] = useTransition()
 	const [isOpen, setIsOpen] = useState(false)
 	// STATE AND HANDLERS
 	const getValidationSchema = (typeOfDelivery: string) => {

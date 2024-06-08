@@ -8,7 +8,7 @@ import type {
 	ProductsWithVariants,
 } from '@/lib/types/types'
 import { User } from '@prisma/client'
-import { useEffect, useState, useTransition } from 'react'
+import { useEffect, useState } from 'react'
 import 'react-medium-image-zoom/dist/styles.css'
 
 import { addItem } from '@/actions/cart'
@@ -35,8 +35,6 @@ export const ProductForm = ({ product, cart }: Props) => {
 	const [itemInCart, setItemInCart] = useState<CartItemWithVariants | null>(
 		null
 	)
-	const [pending, startTransition] = useTransition()
-
 	//SERVER ACTION ADD TO CART
 	const addItemToCart = async (variantId: string) => {
 		let itemInCart: Promise<ProductsWithVariants>

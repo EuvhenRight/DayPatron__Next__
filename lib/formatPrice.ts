@@ -1,3 +1,4 @@
+'use client'
 export function formatCurrency(amount: number) {
 	const locale = 'uk-UA'
 	const formatter = new Intl.NumberFormat(locale, {
