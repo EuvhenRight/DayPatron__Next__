@@ -24,6 +24,7 @@ import IconButton from 'components/@extended/IconButton';
 
 // assets
 import { EnvironmentOutlined, LinkedinOutlined, MailOutlined, MoreOutlined } from '@ant-design/icons';
+import { getEllipsis } from 'utils/stringUtils';
 import { useNavigate } from 'react-router-dom';
 import countries from 'data/countries';
 import { useKeycloak } from '@react-keycloak/web';
@@ -179,7 +180,7 @@ const MissionContractorMatchCard = ({ missionContractorMatch, missionId }) => {
                       <ListItemText
                         primary={
                           <Link href={missionContractorMatch?.contractor?.linkedInUrl} target="_blank" sx={{ textTransform: 'lowercase' }}>
-                            {missionContractorMatch?.contractor?.linkedInUrl}
+                            {getEllipsis(missionContractorMatch?.contractor?.linkedInUrl, 40)}
                           </Link>
                         }
                       />
