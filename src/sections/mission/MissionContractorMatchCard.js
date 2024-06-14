@@ -15,30 +15,35 @@ import {
   Menu,
   MenuItem,
   Stack,
-  Typography
+  Typography,
+  Box,
+  Chip
 } from '@mui/material';
 
 import MainCard from 'components/MainCard';
 import Avatar from 'components/@extended/Avatar';
 import IconButton from 'components/@extended/IconButton';
+import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
 import { EnvironmentOutlined, LinkedinOutlined, MailOutlined, MoreOutlined } from '@ant-design/icons';
-import { getEllipsis } from 'utils/stringUtils';
+import { getEllipsis, prepareApiBody } from 'utils/stringUtils';
 import { useNavigate } from 'react-router-dom';
 import countries from 'data/countries';
 import { useKeycloak } from '@react-keycloak/web';
+import { useDispatch } from 'react-redux';
 
 // ==============================|| MISSION CONTRACTOR MATCH - CARD ||============================== //
 
 const avatarImage = require.context('assets/images/users', true);
 
-const MissionContractorMatchCard = ({ missionContractorMatch, missionId }) => {
+const MissionContractorMatchCard = ({ missionContractorMatch, missionId, bindMissionMatches }) => {
   const { keycloak } = useKeycloak();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const [avatar, setAvatar] = useState(avatarImage(`./default.png`));
   const openMenu = Boolean(anchorEl);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     (async () => {
@@ -55,6 +60,27 @@ const MissionContractorMatchCard = ({ missionContractorMatch, missionId }) => {
 
   const handleClickDetails = () => {
     navigate('/missions/' + missionId + '/matches/' + missionContractorMatch?.contractor?.id);
+  };
+
+  const handleClickUnmatch = async () => {
+    let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/' + encodeURIComponent(missionId) + '/matches/' + encodeURIComponent(missionContractorMatch.contractor.id),
+      {
+        method: 'PUT',
+        headers: {
+          'Authorization': 'Bearer ' + keycloak.idToken,
+          'Content-Type': 'application/json'
+        },
+        body: prepareApiBody({isMatch: false})
+      }
+    );
+
+    if (!response.ok) {
+      dispatch(openSnackbar({ open: true, message: 'Unmatch failed.', variant: 'alert', alert: { color: 'error' }, close: false }));
+      return;
+    }
+
+    dispatch(openSnackbar({ open: true, message: 'Unmatched.', variant: 'alert', alert: { color: 'success' }, close: false }));
+    await bindMissionMatches();
   };
 
   const handleMenuClick = (event) => {
@@ -140,6 +166,9 @@ const MissionContractorMatchCard = ({ missionContractorMatch, missionId }) => {
               }}
             >
               <MenuItem onClick={handleClickDetails}>Details</MenuItem>
+              {keycloak.tokenParsed.roles.includes('admin') && missionContractorMatch.isMatch &&
+                <MenuItem onClick={handleClickUnmatch}>Unmatch</MenuItem>
+              }
             </Menu>
           </Grid>
           <Grid item xs={12}>
@@ -187,6 +216,43 @@ const MissionContractorMatchCard = ({ missionContractorMatch, missionId }) => {
                     </ListItem>}
                 </List>
               </Grid>
+              
+              <Grid item xs={12}>
+                <Box>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      listStyle: 'none',
+                      p: 0.5,
+                      m: 0
+                    }}
+                    component="ul"
+                  >
+                    {missionContractorMatch?.isMatch &&
+                      <ListItem disablePadding sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
+                        <Chip color="primary" size="small" label="Matched" />
+                      </ListItem>
+                    }
+                    {missionContractorMatch?.invitation &&
+                      <ListItem disablePadding sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
+                        <Chip color="primary" size="small" label="Invited" />
+                      </ListItem>
+                    }
+                    {missionContractorMatch?.application &&
+                      <ListItem disablePadding sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
+                        <Chip color="primary" size="small" label="Applied" />
+                      </ListItem>
+                    }
+                    {missionContractorMatch?.approval &&
+                      <ListItem disablePadding sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
+                        <Chip color="success" size="small" label="Approved" />
+                      </ListItem>
+                    }
+                  </Box>
+                </Box>
+              </Grid>
+
             </Grid>
           </Grid>
           

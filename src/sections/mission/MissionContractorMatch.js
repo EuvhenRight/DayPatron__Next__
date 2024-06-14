@@ -35,7 +35,7 @@ import SanitizedHTML from 'react-sanitized-html';
 import { LinkedinOutlined, EnvironmentOutlined, MailOutlined, PhoneOutlined, RightOutlined, RiseOutlined, QuestionOutlined, CloseOutlined, FileTextOutlined, ShopOutlined, FileDoneOutlined } from '@ant-design/icons';
 import MainCard from 'components/MainCard';
 import Avatar from 'components/@extended/Avatar';
-import { getEllipsis } from 'utils/stringUtils';
+import { getEllipsis, prepareApiBody } from 'utils/stringUtils';
 import countries from 'data/countries';
 import { PopupTransition } from 'components/@extended/Transitions';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -63,6 +63,7 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
   const [isDeletingInvitation, setIsDeletingInvitation] = useState(false);
   const [isCreatingApproval, setIsCreatingApproval] = useState(false);
   const [isDeletingApproval, setIsDeletingApproval] = useState(false);
+  const [isTogglingMatch, setIsTogglingMatch] = useState(false);
   const [isCalendlyOpen, setIsCalendlyOpen] = useState(false);
   
   const navigate = useNavigate();
@@ -250,6 +251,35 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
     }
   }
 
+  const handleToggleMatchButtonClick = async () => {
+    setIsTogglingMatch(true);
+    let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/missions/' + encodeURIComponent(missionId) + '/matches/' + encodeURIComponent(contractorId),
+      {
+        method: 'PUT',
+        headers: {
+          'Authorization': 'Bearer ' + keycloak.idToken,
+          'Content-Type': 'application/json'
+        },
+        body: prepareApiBody({isMatch: !missionContractorMatch?.isMatch})
+      }
+    );
+
+    if (!response.ok) {
+      dispatch(openSnackbar({ open: true, message: 'Toggling match failed.', variant: 'alert', alert: { color: 'error' }, close: false }));
+      setIsTogglingMatch(false);
+      return;
+    }
+
+    dispatch(openSnackbar({ open: true, message: 'Match toggled.', variant: 'alert', alert: { color: 'success' }, close: false }));
+    setIsTogglingMatch(false);
+
+    let json = await response.json();
+    var newMissionContractorMatch = { ...missionContractorMatch };
+    newMissionContractorMatch.isMatch = json?.missionContractorMatch?.isMatch;
+
+    setMissionContractorMatch(newMissionContractorMatch);
+  };
+
   const handleUnapproveButtonClick = async () => {
     try {
       setIsDeletingApproval(true);
@@ -424,9 +454,11 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                         }}
                         component="ul"
                       >
-                        <ListItem disablePadding sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
-                          <Chip color="primary" size="small" label="Matched" />
-                        </ListItem>
+                        {missionContractorMatch?.isMatch &&
+                          <ListItem disablePadding sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
+                            <Chip color="primary" size="small" label="Matched" />
+                          </ListItem>
+                        }
                         {missionContractorMatch?.invitation &&
                           <ListItem disablePadding sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
                             <Chip color="primary" size="small" label="Invited" />
@@ -471,6 +503,14 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                           Approve
                         </Button>
                       </Stack>)
+                    }
+
+                    {keycloak.tokenParsed.roles.includes('admin') &&
+                      <Stack spacing={0.5} alignItems="center">
+                        <Button color="primary" variant="outlined" onClick={handleToggleMatchButtonClick} disabled={isTogglingMatch}>
+                          {missionContractorMatch?.isMatch ? "Unmatch" : "Match"}
+                        </Button>
+                      </Stack>
                     }
 
                     {missionContractorMatch?.contractor?.calendlyUrl &&

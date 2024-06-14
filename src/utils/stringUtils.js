@@ -21,9 +21,8 @@ function prepareApiBody(obj) {
 function removeEmptyOrNull(obj) {
   Object.keys(obj).forEach(k =>
     (obj[k] && typeof obj[k] === 'object') && removeEmptyOrNull(obj[k]) ||
-    (!obj[k] && obj[k] !== undefined) && delete obj[k]
+    (!obj[k] && obj[k] !== undefined && obj[k] !== false) && delete obj[k]
   );
-
   return obj;
 }  
 

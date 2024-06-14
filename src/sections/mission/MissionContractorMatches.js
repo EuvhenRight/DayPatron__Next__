@@ -17,6 +17,7 @@ import {
 // project import
 import EmptyCardList from 'components/cards/skeleton/EmptyCardList';
 import MissionContractorMatchCard from 'sections/mission/MissionContractorMatchCard';
+import AddMissionContractorMatch from 'sections/mission/AddMissionContractorMatch';
 
 import { GlobalFilter } from 'utils/react-table';
 import usePagination from 'hooks/usePagination';
@@ -164,7 +165,7 @@ const MissionContractorMatches = ({ missionId }) => {
             .map((missionContractorMatch, index) => (
               <Slide key={index} direction="up" in={true} timeout={50}>
                 <Grid item xs={12} sm={6} lg={4}>
-                  <MissionContractorMatchCard missionContractorMatch={missionContractorMatch} missionId={missionId} />
+                  <MissionContractorMatchCard missionContractorMatch={missionContractorMatch} missionId={missionId} bindMissionMatches={bindMissionContractorMatches} />
                 </Grid>
               </Slide>
             ))
@@ -184,6 +185,18 @@ const MissionContractorMatches = ({ missionId }) => {
           onChange={handleChangePage}
         />
       </Stack>
+      {keycloak.tokenParsed.roles.includes('admin') &&
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Typography variant="h3">Admin</Typography>
+          </Grid>
+
+          <Grid item xs={12} sm={6} lg={4}>
+            <AddMissionContractorMatch missionId={missionId} bindMissionMatches={bindMissionContractorMatches}></AddMissionContractorMatch>
+          </Grid>
+
+        </Grid>
+      }
     </>
   );
 };
