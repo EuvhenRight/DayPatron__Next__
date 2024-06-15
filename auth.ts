@@ -15,7 +15,6 @@ export const {
 			if (token.sub && session.user) {
 				session.user.id = token.sub
 			}
-
 			if (token.role && session.user) {
 				session.user.role = token.role as 'ADMIN' | 'USER'
 			}

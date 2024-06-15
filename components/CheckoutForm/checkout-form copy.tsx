@@ -1,10 +1,9 @@
 'use client'
-import { addOrderItem } from '@/actions/order'
 import { CommentForm } from '@/components/CheckoutForm/comment-form'
-import { DeliveryForm } from '@/components/CheckoutForm/delivery-form'
+import { DeliveryFormCopy } from '@/components/CheckoutForm/delivery-form'
 import { ExtraUserForm } from '@/components/CheckoutForm/extra-user-form'
 import { InvoiceForm } from '@/components/CheckoutForm/invoce-form'
-import { PaymentForm } from '@/components/CheckoutForm/payment-form'
+import { PaymentFormCopy } from '@/components/CheckoutForm/payment-form'
 import { Button } from '@/components/ui/button'
 import {
 	Form,
@@ -15,12 +14,7 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { ProfileForm } from '@/components/UserNavigation/profile-form'
-import {
-	CartWithVariants,
-	DeliveryWithItems,
-	OrderFormInputs,
-	OrderWithItems,
-} from '@/lib/types/types'
+import { CartWithVariants, DeliveryWithItems } from '@/lib/types/types'
 import { User } from '@prisma/client'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -29,47 +23,47 @@ interface Props {
 	cart?: CartWithVariants | null
 	currentDelivery?: DeliveryWithItems | null
 	currentUser?: User | null
-	order?: OrderWithItems | null
-	orders: OrderWithItems[] | null
 }
 
-export const CheckoutForm = ({
+export const CheckoutFormCopy = ({
 	cart,
 	currentDelivery,
 	currentUser,
-	order,
-	orders,
 }: Props) => {
 	const form = useForm({
 		defaultValues: {
-			extra_user: {
-				email: '',
-				firstName: '',
-				lastName: '',
-				phone: '',
-			},
+			extra_user: '',
+			profile: currentUser || '',
 			payment: '',
 			comment: '',
-			address: currentDelivery,
-			cartId: cart?.id,
+			delivery: '',
+			cart: cart || null,
 		},
 	})
 	const [payment, setPayment] = useState('Карткою')
 
-	const onSubmit = (data: OrderFormInputs) => {
+	const onSubmit = (data: any) => {
 		console.log(data)
-		addOrderItem(data)
 	}
-
-	console.log(orders, 'orders')
-
 	return (
-		<section className='xl:container xl:mx-auto lg:pt-5 relative px-2'>
-			<Form {...form}>
-				<form onSubmit={form.handleSubmit(onSubmit)} className='flex'>
-					<div className='w-2/3 p-2'>
+		<section className='xl:container xl:mx-auto lg:pt-5 relative px-2 flex'>
+			<div className='w-2/3 p-2 h-10'>
+				<Form {...form}>
+					<form onSubmit={form.handleSubmit(onSubmit)}>
 						{/* PROFILE */}
-						<ProfileForm currentUser={currentUser!} />
+						<FormField
+							control={form.control}
+							name='profile'
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Test</FormLabel>
+									<FormControl>
+										<ProfileForm currentUser={currentUser!} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
 						{/* EXTRA USER */}
 						<FormField
 							control={form.control}
@@ -92,7 +86,7 @@ export const CheckoutForm = ({
 								<FormItem>
 									<FormLabel>Test</FormLabel>
 									<FormControl>
-										<PaymentForm
+										<PaymentFormCopy
 											onChange={field.onChange}
 											payment={payment}
 											setPayment={setPayment}
@@ -105,12 +99,12 @@ export const CheckoutForm = ({
 						{/* DELIVERY */}
 						<FormField
 							control={form.control}
-							name='address'
+							name='delivery'
 							render={({ field }) => (
 								<FormItem>
 									<FormLabel>Test</FormLabel>
 									<FormControl>
-										<DeliveryForm
+										<DeliveryFormCopy
 											onChange={field.onChange}
 											currentDelivery={currentDelivery!}
 										/>
@@ -132,15 +126,12 @@ export const CheckoutForm = ({
 								</FormItem>
 							)}
 						/>
-						<Button type='submit'>Далі</Button>
-					</div>
-					<div className='w-1/3 p-2'>
 						{/* CART */}
 						<FormField
 							control={form.control}
-							name='cartId'
+							name='cart'
 							render={({ field }) => (
-								<FormItem className='sticky top-5'>
+								<FormItem>
 									<FormLabel></FormLabel>
 									<FormControl>
 										<InvoiceForm cart={cart} />
@@ -149,9 +140,10 @@ export const CheckoutForm = ({
 								</FormItem>
 							)}
 						/>
-					</div>
-				</form>
-			</Form>
+						<Button type='submit'>Далі</Button>
+					</form>
+				</Form>
+			</div>
 		</section>
 	)
 }

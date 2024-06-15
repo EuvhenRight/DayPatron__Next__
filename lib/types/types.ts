@@ -5,6 +5,14 @@ export type SafeUser = Omit<User, 'createdAt' | 'updatedAt' | 'email'> & {
 	updatedAt: string
 	email: string
 }
+
+export type ExtraUser = {
+	email: string
+	firstName: string
+	lastName: string
+	phone: string
+}
+
 export type ProductsWithVariants = Prisma.ProductGetPayload<{
 	include: { variant: true }
 }>
@@ -32,3 +40,31 @@ export type CartItemWithVariants = Prisma.CartItemGetPayload<{
 export type OrderWithItems = Prisma.OrderGetPayload<{
 	include: { item: true }
 }>
+export type OrderForm = Prisma.OrderGetPayload<{
+	include: {
+		item: true
+		address: true
+		user: true
+	}
+}>
+
+type AddressInput = {
+	id: string
+	typeOfDelivery: string
+	branchNumber: string | null
+	city: string | null
+	street: string | null
+	houseNumber: number | null
+	apartmentNumber: number | null
+	additionNumber: string | null
+	zipCode: string | null
+	deliveryId: string
+}
+
+export type OrderFormInputs = {
+	extra_user: ExtraUser
+	payment: string
+	comment: string
+	address: AddressInput
+	cartId: string | undefined
+}

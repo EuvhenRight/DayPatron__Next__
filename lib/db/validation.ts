@@ -33,6 +33,17 @@ export interface DeliveryBranch {
 	typeOfDelivery: string
 	branchNumber: string
 }
+export interface ExtraUser {
+	firstName: string
+	lastName: string
+	email: string
+	phone: string
+}
+
+export interface OrderItem {
+	payment: string
+	address: DeliveryAddress
+}
 
 export const ValidationSchema = {
 	// AUTH
@@ -69,9 +80,7 @@ export const ValidationSchema = {
 	}) as ZodSchema<ProfileUserSchema>,
 	// EXTRA USER
 	extraUser: z.object({
-		email: z
-			.string({ required_error: "Це поле є обов'язковим" })
-			.email({ message: 'Невірна адреса електронної пошти' }),
+		email: z.string().email({ message: 'Невірна адреса електронної пошти' }),
 		firstName: z
 			.string({ invalid_type_error: "Це поле є обов'язковим" })
 			.regex(/^[\u0400-\u04FF]+$/, {
@@ -91,7 +100,7 @@ export const ValidationSchema = {
 		phone: z
 			.string({ invalid_type_error: "Це поле є обов'язковим" })
 			.min(13, 'Невірний номер телефону'),
-	}) as ZodSchema<ProfileUserSchema>,
+	}) as ZodSchema<ExtraUser>,
 	// DELIVERY
 	deliveryAddress: z.object({
 		typeOfDelivery: z
@@ -134,7 +143,7 @@ export const ValidationSchema = {
 			.string({ invalid_type_error: "Це поле є обов'язковим" })
 			.min(1, 'Має містити 1 або більше елементів')
 			.max(50, 'Має містити 50 або менше елементів'),
-	}),
+	}) as ZodSchema<DeliveryBranch>,
 	// PRODUCT
 	newProductSchema: z.object({
 		linkName: z.string(),
@@ -168,3 +177,13 @@ export const cartValidationSchema = z.object({
 		.min(1, 'Кількість має бути більше або дорівнювати 1')
 		.max(99, 'Кількість має бути менше або дорівнювати 99'),
 })
+
+export const orderItemScheme = z.object({
+	payment: z
+		.string({ required_error: "Це поле є обов'язковим" })
+		.min(1, 'Виберіть спосіб оплати'),
+	comment: z.string().nullable().optional(),
+	cart: z.any(),
+	extraUser: ValidationSchema.extraUser,
+	address: ValidationSchema.deliveryAddress,
+}) as ZodSchema<OrderItem>

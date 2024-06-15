@@ -28,8 +28,9 @@ import { z } from 'zod'
 
 interface Props {
 	onChange?: (value: z.infer<typeof ValidationSchema.extraUser>) => void
+	setExtraUser: (value: z.infer<typeof ValidationSchema.extraUser>) => void
 }
-export const ExtraUserDialog = ({ onChange }: Props) => {
+export const ExtraUserDialog = ({ onChange, setExtraUser }: Props) => {
 	const [isOpen, setIsOpen] = useState<boolean>(false)
 	// FORM VALIDATION AND ERROR HANDLING
 	const form = useForm<z.infer<typeof ValidationSchema.extraUser>>({
@@ -43,6 +44,7 @@ export const ExtraUserDialog = ({ onChange }: Props) => {
 	})
 
 	const onSubmit = async (data: z.infer<typeof ValidationSchema.extraUser>) => {
+		setExtraUser(data)
 		onChange!(data)
 	}
 
@@ -100,7 +102,7 @@ export const ExtraUserDialog = ({ onChange }: Props) => {
 								name='phone'
 								render={({ field }) => (
 									<FormItem>
-										<FormLabel>номер телефону</FormLabel>
+										<FormLabel>Номер телефону</FormLabel>
 										<FormControl>
 											<PhoneInput
 												placeholder='введіть номер телефону'
@@ -116,15 +118,19 @@ export const ExtraUserDialog = ({ onChange }: Props) => {
 							/>
 							{/* EMAIL */}
 							<FormField
+								control={form.control}
 								name='email'
 								render={({ field }) => (
 									<FormItem>
 										<FormLabel>Email</FormLabel>
-										<Input
-											type='email'
-											{...field}
-											placeholder='введіть електронну пошту'
-										/>
+										<FormControl>
+											<Input
+												type='email'
+												{...field}
+												placeholder='введіть електронну пошту'
+											/>
+										</FormControl>
+										<FormMessage />
 									</FormItem>
 								)}
 							/>
