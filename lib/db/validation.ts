@@ -1,4 +1,4 @@
-import { ZodSchema, z } from 'zod'
+import { ZodSchema, any, z } from 'zod'
 
 export interface AuthUserSchema {
 	email: string
@@ -40,9 +40,12 @@ export interface ExtraUser {
 	phone: string
 }
 
-export interface OrderItem {
+export interface OrderFormSchema {
+	extra_user: ExtraUser
 	payment: string
-	address: DeliveryAddress
+	comment: string
+	address: string
+	cartId: string
 }
 
 export const ValidationSchema = {
@@ -170,7 +173,7 @@ export const ValidationSchema = {
 		mim_price: z.number(),
 	}),
 }
-// TODO: FIX VALIDATION CART
+
 export const cartValidationSchema = z.object({
 	quantity: z
 		.number()
@@ -183,7 +186,9 @@ export const orderItemScheme = z.object({
 		.string({ required_error: "Це поле є обов'язковим" })
 		.min(1, 'Виберіть спосіб оплати'),
 	comment: z.string().nullable().optional(),
-	cart: z.any(),
-	extraUser: ValidationSchema.extraUser,
-	address: ValidationSchema.deliveryAddress,
-}) as ZodSchema<OrderItem>
+	cartId: z.any(),
+	extra_user: any(),
+	address: z
+		.string({ required_error: "Це поле є обов'язковим" })
+		.min(1, 'Виберіть спосіб доставки'),
+}) as ZodSchema<OrderFormSchema>

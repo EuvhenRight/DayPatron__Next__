@@ -36,7 +36,12 @@ export async function getManyOrders(): Promise<OrderWithItems[] | null> {
 	if (session) {
 		orders = await prisma.order.findMany({
 			where: { userId: session.user.id },
-			include: { item: true, status: true, user: true, address: true },
+			include: {
+				item: true,
+				status: true,
+				user: true,
+				address: true,
+			},
 		})
 	}
 
@@ -61,17 +66,23 @@ export async function createOrder(
 		phone: data.extra_user?.phone || '',
 	}
 
+	const deliveryItem = await prisma.deliveryItem.findFirst({
+		where: { id: data.address },
+	})
+
 	if (session) {
 		order = await prisma.order.create({
 			data: {
 				item: { create: [] },
 				userId: session.user.id,
 				cartId: data.cartId,
+				address: {
+					connect: { id: deliveryItem?.id },
+				},
 				itemsTotal: 0,
 				subTotal: 0,
 				payment: 'PAIMENTBYCARD' || 'PAIMENTBYCASH',
 				comment: data.comment || null,
-				address: { create: [] },
 				bonus: '' || null,
 				extra_user: extraUser || null,
 			},

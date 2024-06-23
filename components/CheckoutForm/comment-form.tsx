@@ -5,7 +5,6 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from '@/components/ui/accordion'
-import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import React, { useState } from 'react'
 import { Label } from '../ui/label'
@@ -58,11 +57,7 @@ export const CommentForm = ({ onChangeText }: Props) => {
 						<p className='text-left text-neutral-500 text-sm py-1'>
 							Залишилось символів:{250 - comment.length}
 						</p>
-						<div className='flex justify-end mb-2'>
-							<Button type='submit' variant='office' disabled={!active}>
-								Зберегти
-							</Button>
-						</div>
+						<div className='flex justify-end mb-2'></div>
 					</AccordionContent>
 				</AccordionItem>
 			</Accordion>

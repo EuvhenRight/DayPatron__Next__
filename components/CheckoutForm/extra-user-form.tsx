@@ -15,8 +15,8 @@ export const ExtraUserForm = ({ onChange }: Props) => {
 	return (
 		<div className='border p-2 border-spacing-1 rounded-md my-4'>
 			<div className='flex justify-between'>
-				<h2 className='font-bold text-xl px-2 text-end mt-2'>
-					Додатковий отримувач
+				<h2 className='font-bold text-lg px-2 text-end mt-2'>
+					Додатковий отримувач (необов&apos;язково)
 				</h2>
 				<ExtraUserDialog onChange={onChange} setExtraUser={setExtraUser} />
 			</div>

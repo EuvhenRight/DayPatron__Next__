@@ -15,15 +15,18 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { ProfileForm } from '@/components/UserNavigation/profile-form'
+import { orderItemScheme } from '@/lib/db/validation'
 import {
 	CartWithVariants,
 	DeliveryWithItems,
 	OrderFormInputs,
 	OrderWithItems,
 } from '@/lib/types/types'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { User } from '@prisma/client'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 interface Props {
 	cart?: CartWithVariants | null
@@ -40,7 +43,9 @@ export const CheckoutForm = ({
 	order,
 	orders,
 }: Props) => {
-	const form = useForm({
+	const [payment, setPayment] = useState<string>('Карткою')
+	const form = useForm<z.infer<typeof orderItemScheme>>({
+		resolver: zodResolver(orderItemScheme),
 		defaultValues: {
 			extra_user: {
 				email: '',
@@ -50,36 +55,27 @@ export const CheckoutForm = ({
 			},
 			payment: '',
 			comment: '',
-			address: currentDelivery,
+			address: '',
 			cartId: cart?.id,
 		},
 	})
-	const [payment, setPayment] = useState('Карткою')
 
 	const onSubmit = (data: OrderFormInputs) => {
-		console.log(data)
 		addOrderItem(data)
 	}
-
-	console.log(orders, 'orders')
-
 	return (
 		<section className='xl:container xl:mx-auto lg:pt-5 relative px-2'>
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className='flex'>
-					<div className='w-2/3 p-2'>
+					<div className='w-2/3 px-2'>
 						{/* PROFILE */}
 						<ProfileForm currentUser={currentUser!} />
 						{/* EXTRA USER */}
 						<FormField
-							control={form.control}
 							name='extra_user'
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Test</FormLabel>
-									<FormControl>
-										<ExtraUserForm onChange={field.onChange} />
-									</FormControl>
+									<ExtraUserForm onChange={field.onChange} />
 									<FormMessage />
 								</FormItem>
 							)}
@@ -90,7 +86,6 @@ export const CheckoutForm = ({
 							name='payment'
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Test</FormLabel>
 									<FormControl>
 										<PaymentForm
 											onChange={field.onChange}
@@ -108,7 +103,6 @@ export const CheckoutForm = ({
 							name='address'
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel>Test</FormLabel>
 									<FormControl>
 										<DeliveryForm
 											onChange={field.onChange}
@@ -132,15 +126,14 @@ export const CheckoutForm = ({
 								</FormItem>
 							)}
 						/>
-						<Button type='submit'>Далі</Button>
 					</div>
-					<div className='w-1/3 p-2'>
+					<div className='w-1/3 p-2 sticky top-5'>
 						{/* CART */}
 						<FormField
 							control={form.control}
 							name='cartId'
 							render={({ field }) => (
-								<FormItem className='sticky top-5'>
+								<FormItem>
 									<FormLabel></FormLabel>
 									<FormControl>
 										<InvoiceForm cart={cart} />
@@ -149,6 +142,13 @@ export const CheckoutForm = ({
 								</FormItem>
 							)}
 						/>
+						<Button className='w-full' type='submit' variant='office'>
+							Оформити замовлення
+						</Button>
+						{/* Error Message */}
+						{Object.keys(form.formState.errors).length > 0 && (
+							<p className='text-red-500 mt-2'>* Перевірте введені дані</p>
+						)}
 					</div>
 				</form>
 			</Form>

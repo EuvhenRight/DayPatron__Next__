@@ -2,6 +2,7 @@
 import prisma from '@/lib/db/client'
 import { createOrder } from '@/lib/db/order'
 import { OrderFormInputs } from '@/lib/types/types'
+import { revalidatePath } from 'next/cache'
 
 export async function addOrderItem(data: OrderFormInputs) {
 	// FIND EXISTING ORDER
@@ -46,28 +47,12 @@ export async function addOrderItem(data: OrderFormInputs) {
 			},
 		})
 
-		const delivery = await tx.delivery.findFirst({
-			where: { id: data?.address?.deliveryId },
-			include: {
-				items: true,
-			},
-		})
-		const findDelivery = delivery?.items.find(
-			delivery => delivery.id === delivery.id
-		)
-		console.log(findDelivery, 'findDelivery')
-
 		// UPDATE CART
 		await tx.order.update({
 			where: { id: order?.id },
 			data: {
 				subTotal: totalPrice,
 				itemsTotal: totalItems,
-				address: {
-					connect: {
-						id: findDelivery?.id,
-					},
-				},
 				status: {
 					connect: {
 						id: orderEvent.id,
@@ -81,7 +66,8 @@ export async function addOrderItem(data: OrderFormInputs) {
 				},
 			},
 		})
-		console.log(order, 'order')
+
+		revalidatePath('/checkout')
 		return order
 	})
 }

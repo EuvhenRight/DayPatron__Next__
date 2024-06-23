@@ -48,23 +48,35 @@ export type OrderForm = Prisma.OrderGetPayload<{
 	}
 }>
 
-type AddressInput = {
-	id: string
-	typeOfDelivery: string
-	branchNumber: string | null
-	city: string | null
-	street: string | null
-	houseNumber: number | null
-	apartmentNumber: number | null
-	additionNumber: string | null
-	zipCode: string | null
-	deliveryId: string
-}
-
 export type OrderFormInputs = {
 	extra_user: ExtraUser
 	payment: string
 	comment: string
-	address: AddressInput
-	cartId: string | undefined
+	address: string
+	cartId: string
+}
+
+type OrderItem = {
+	variantId: string
+	quantity: number
+}
+
+// export type DeliveryItem = {
+// 	typeOfDelivery: string
+// 	branchNumber?: string
+// 	city?: string
+// 	street?: string
+// 	houseNumber?: number
+// 	additionNumber?: string
+// 	apartmentNumber?: number
+// 	zipCode?: string
+// 	deliveryId: string
+// }
+
+export type OrderFormTest = Prisma.OrderCreateInput & {
+	extra_user: ExtraUser
+	payment: string
+	items: OrderItem[]
+	address: string
+	user: User
 }

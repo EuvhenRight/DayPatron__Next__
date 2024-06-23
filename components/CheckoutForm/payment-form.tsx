@@ -5,7 +5,7 @@ import {
 	AccordionTrigger,
 } from '@/components/ui/accordion'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { CreditCard, Wallet } from 'lucide-react'
+import { Asterisk, CreditCard, Wallet } from 'lucide-react'
 import React from 'react'
 
 const paymentArray = [
@@ -35,45 +35,51 @@ export const PaymentForm = ({ onChange, payment, setPayment }: Props) => {
 		onChange(value)
 	}
 	return (
-		<RadioGroup
-			value={payment}
-			onValueChange={toggleOnDelivery}
-			className='mb-2 flex flex-col gap-1'
-		>
-			{paymentArray.map((item, index) => (
-				<div key={index} className='flex items-center space-x-2'>
-					<RadioGroupItem
-						key={index}
-						value={item.type}
-						onClick={() => toggleOnDelivery(item.type)}
-						id={`r${index}`}
-					/>
-					<Accordion type='single' collapsible className='p-2 w-full'>
-						<AccordionItem
+		<div className='border p-2 border-spacing-1 rounded-md my-4 relative'>
+			<RadioGroup
+				value={payment}
+				onValueChange={toggleOnDelivery}
+				className='mb-2 flex flex-col gap-1'
+			>
+				<div className='flex items-center'>
+					<h2 className='font-bold text-lg px-2 mt-2 text-end'>Оплата</h2>
+					<Asterisk size={16} className='text-red-500' />
+				</div>
+				{paymentArray.map((item, index) => (
+					<div key={index} className='flex items-center space-x-2'>
+						<RadioGroupItem
 							key={index}
 							value={item.type}
-							className='w-full bg-zinc-100 rounded-md px-2 mt-2'
-						>
-							<AccordionTrigger>
-								<div className='font-bold flex flex-row text-left gap-2 '>
-									{item.logo} {item.title}
-								</div>
-							</AccordionTrigger>
-							<AccordionContent>
-								<p>
-									{/* ADD TEXT <br /> */}
-									{item.text.split('\n').map((line, index) => (
-										<React.Fragment key={index}>
-											{line}
-											<br />
-										</React.Fragment>
-									))}
-								</p>
-							</AccordionContent>
-						</AccordionItem>
-					</Accordion>
-				</div>
-			))}
-		</RadioGroup>
+							onClick={() => toggleOnDelivery(item.type)}
+							id={`r${index}`}
+						/>
+						<Accordion type='single' collapsible className='p-2 w-full'>
+							<AccordionItem
+								key={index}
+								value={item.type}
+								className='w-full bg-zinc-100 rounded-md px-2 mt-2'
+							>
+								<AccordionTrigger>
+									<div className='font-bold flex flex-row text-left gap-2 '>
+										{item.logo} {item.title}
+									</div>
+								</AccordionTrigger>
+								<AccordionContent>
+									<p>
+										{/* ADD TEXT <br /> */}
+										{item.text.split('\n').map((line, index) => (
+											<React.Fragment key={index}>
+												{line}
+												<br />
+											</React.Fragment>
+										))}
+									</p>
+								</AccordionContent>
+							</AccordionItem>
+						</Accordion>
+					</div>
+				))}
+			</RadioGroup>
+		</div>
 	)
 }
