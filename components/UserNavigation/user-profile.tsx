@@ -13,11 +13,11 @@ export const UserProfile = ({ currentUser, currentDelivery }: Props) => {
 	const route = useRouter()
 
 	return (
-		<section className='xl:container xl:mx-auto lg:pt-5 relative px-2 flex'>
-			<div className='w-1/3 p-2'>
+		<section className='xl:container xl:mx-auto lg:pt-5 relative px-2 flex flex-col md:flex-row'>
+			<div className='w-full md:w-1/3 p-2'>
 				<ProfileForm currentUser={currentUser} />
 			</div>
-			<div className='w-2/3 p-2'>
+			<div className='w-full md:w-2/3 p-2'>
 				<DeliveryForm currentDelivery={currentDelivery} />
 			</div>
 		</section>

@@ -38,8 +38,8 @@ export const UserNavigation = () => {
 	return (
 		<div className='w-full shadow-sm top-20 border-b-[1px] pt-4 bg-gray-800'>
 			<div
-				className='w-full flex flex-row justify-between items-center 
-			md:justify-center gap-8 md:gap-12 overflow-x-auto flex-nowrap'
+				className='w-full flex flex-row justify-center items-center 
+			 gap-8 md:gap-12 overflow-x-auto flex-nowrap'
 			>
 				{Items.map((item, index) => (
 					<Link href={item.href} key={index}>

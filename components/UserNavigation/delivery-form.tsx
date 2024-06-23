@@ -32,7 +32,11 @@ export const DeliveryForm = ({ currentDelivery }: Props) => {
 			{/* SHOW DELIVERY FORM */}
 			{currentDelivery?.items.length! > 0 ? (
 				<div>
-					<Accordion type='single' collapsible className='p-2'>
+					<Accordion
+						type='single'
+						collapsible
+						className='p-2 overflow-auto max-h-96'
+					>
 						{currentDelivery?.items.map(item => (
 							<AccordionItem
 								key={item.id}

@@ -2,7 +2,7 @@ import { LoginForm } from '@/components/LoginForm/login-form'
 
 const LoginPage = () => {
 	return (
-		<div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
+		<div className='sm:absolute sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 flex justify-center items-center min-h-screen mx-2'>
 			<LoginForm />
 		</div>
 	)

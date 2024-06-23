@@ -89,7 +89,7 @@ export const DeliveryFormDialog = ({
 				success: 'Вашу інформацію оновлено!',
 				error: 'Щось пішло не так, спробуйте ще раз',
 			})
-
+			form.reset()
 			return setIsOpen(!isOpen)
 		} catch (error) {
 			console.error(error, 'Щось пішло не так, спробуйте ще раз')

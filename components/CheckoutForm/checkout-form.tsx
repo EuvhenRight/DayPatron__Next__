@@ -5,7 +5,6 @@ import { DeliveryForm } from '@/components/CheckoutForm/delivery-form'
 import { ExtraUserForm } from '@/components/CheckoutForm/extra-user-form'
 import { InvoiceForm } from '@/components/CheckoutForm/invoce-form'
 import { PaymentForm } from '@/components/CheckoutForm/payment-form'
-import { Button } from '@/components/ui/button'
 import {
 	Form,
 	FormControl,
@@ -27,6 +26,7 @@ import { User } from '@prisma/client'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { PaymentItem } from './payment-item'
 
 interface Props {
 	cart?: CartWithVariants | null
@@ -66,8 +66,11 @@ export const CheckoutForm = ({
 	return (
 		<section className='xl:container xl:mx-auto lg:pt-5 relative px-2'>
 			<Form {...form}>
-				<form onSubmit={form.handleSubmit(onSubmit)} className='flex'>
-					<div className='w-2/3 px-2'>
+				<form
+					onSubmit={form.handleSubmit(onSubmit)}
+					className='flex flex-col-reverse lg:flex-row'
+				>
+					<div className='w-full lg:w-2/3 px-2'>
 						{/* PROFILE */}
 						<ProfileForm currentUser={currentUser!} />
 						{/* EXTRA USER */}
@@ -127,8 +130,13 @@ export const CheckoutForm = ({
 							)}
 						/>
 					</div>
-					<div className='w-1/3 p-2 sticky top-5'>
+					<div className='w-full lg:w-1/3 p-2'>
 						{/* CART */}
+						<div className='bg-zinc-100 rounded-md p-4 my-2 overflow-auto max-h-[400px] sm:max-h-[500px]'>
+							{cart?.items.map((item, index) => (
+								<PaymentItem key={index} item={item} />
+							))}
+						</div>
 						<FormField
 							control={form.control}
 							name='cartId'
@@ -142,9 +150,6 @@ export const CheckoutForm = ({
 								</FormItem>
 							)}
 						/>
-						<Button className='w-full' type='submit' variant='office'>
-							Оформити замовлення
-						</Button>
 						{/* Error Message */}
 						{Object.keys(form.formState.errors).length > 0 && (
 							<p className='text-red-500 mt-2'>* Перевірте введені дані</p>

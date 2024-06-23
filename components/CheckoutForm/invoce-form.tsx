@@ -1,7 +1,7 @@
 import { PriceTag } from '@/components/PriceTag'
 import { CartWithVariants } from '@/lib/types/types'
+import { Button } from '../ui/button'
 import BonusForm from './bonus-form'
-import { PaymentItem } from './payment-item'
 
 interface Props {
 	cart?: CartWithVariants | null
@@ -9,11 +9,6 @@ interface Props {
 export const InvoiceForm = ({ cart }: Props) => {
 	return (
 		<>
-			<div className='bg-zinc-100 rounded-md p-4 overflow-auto max-h-[400px] sm:max-h-[500px]'>
-				{cart?.items.map((item, index) => (
-					<PaymentItem key={index} item={item} />
-				))}
-			</div>
 			{/* SECOND PART CHECKOUT */}
 			<div className='relative'>
 				{/* SUBTOTAL AND DISCOUNT */}
@@ -32,6 +27,9 @@ export const InvoiceForm = ({ cart }: Props) => {
 				<div className='flex flex-col p-2 mb-4 bg-zinc-100 rounded-md'>
 					<BonusForm />
 				</div>
+				<Button className='w-full' type='submit' variant='office'>
+					Оформити замовлення
+				</Button>
 			</div>
 		</>
 	)
