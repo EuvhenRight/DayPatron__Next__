@@ -46,6 +46,7 @@ export const ExtraUserDialog = ({ onChange, setExtraUser }: Props) => {
 	const onSubmit = async (data: z.infer<typeof ValidationSchema.extraUser>) => {
 		setExtraUser(data)
 		onChange!(data)
+		setIsOpen(false)
 	}
 
 	return (
@@ -142,7 +143,11 @@ export const ExtraUserDialog = ({ onChange, setExtraUser }: Props) => {
 									</Button>
 								</DialogClose>
 								{/* BUTTON SAVE */}
-								<Button type='submit' variant='office'>
+								<Button
+									type='button'
+									onClick={form.handleSubmit(onSubmit)}
+									variant='office'
+								>
 									Зберегти
 								</Button>
 							</div>

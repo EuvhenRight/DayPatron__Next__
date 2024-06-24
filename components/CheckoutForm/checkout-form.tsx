@@ -10,7 +10,6 @@ import {
 	FormControl,
 	FormField,
 	FormItem,
-	FormLabel,
 	FormMessage,
 } from '@/components/ui/form'
 import { ProfileForm } from '@/components/UserNavigation/profile-form'
@@ -68,9 +67,9 @@ export const CheckoutForm = ({
 			<Form {...form}>
 				<form
 					onSubmit={form.handleSubmit(onSubmit)}
-					className='flex flex-col-reverse lg:flex-row'
+					className='grid grid-cols-1 grid-rows-auto gap-2 lg:grid-cols-3 lg:grid-rows-2 lg:gap-4'
 				>
-					<div className='w-full lg:w-2/3 px-2'>
+					<div className='row-start-2 row-span-auto lg:col-span-2 lg:row-span-2 lg:row-start-1'>
 						{/* PROFILE */}
 						<ProfileForm currentUser={currentUser!} />
 						{/* EXTRA USER */}
@@ -83,6 +82,8 @@ export const CheckoutForm = ({
 								</FormItem>
 							)}
 						/>
+					</div>
+					<div className='row-start-3 row-span-auto lg:col-span-2 lg:row-span-2 lg:row-start-3'>
 						{/* PAYMENT */}
 						<FormField
 							control={form.control}
@@ -130,19 +131,18 @@ export const CheckoutForm = ({
 							)}
 						/>
 					</div>
-					<div className='w-full lg:w-1/3 p-2'>
-						{/* CART */}
-						<div className='bg-zinc-100 rounded-md p-4 my-2 overflow-auto max-h-[400px] sm:max-h-[500px]'>
-							{cart?.items.map((item, index) => (
-								<PaymentItem key={index} item={item} />
-							))}
-						</div>
+					{/* CART */}
+					<div className='bg-zinc-100 rounded-md p-4 my-2 overflow-auto max-h-[450px] sm:max-h-[450px] row-start-1 row-span-auto lg:row-span-2 lg:col-start-3 lg:row-start-1'>
+						{cart?.items.map((item, index) => (
+							<PaymentItem key={index} item={item} />
+						))}
+					</div>
+					<div>
 						<FormField
 							control={form.control}
 							name='cartId'
 							render={({ field }) => (
-								<FormItem>
-									<FormLabel></FormLabel>
+								<FormItem className='row-start-4 row-span-auto lg:col-start-3 lg:row-start-3 lg:row-span-1'>
 									<FormControl>
 										<InvoiceForm cart={cart} />
 									</FormControl>

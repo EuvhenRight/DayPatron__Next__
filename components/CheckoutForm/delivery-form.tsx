@@ -28,7 +28,7 @@ export const DeliveryForm = ({ onChange, currentDelivery }: Props) => {
 		}
 	}
 	return (
-		<div className='border p-2 border-spacing-1 rounded-md my-4 relative overflow-auto max-h-96'>
+		<div className='border p-2 border-spacing-1 rounded-md my-4 relative overflow-auto max-h-64'>
 			<RadioGroup
 				onValueChange={toggleOnDelivery}
 				className='mb-2 flex flex-col gap-1'
