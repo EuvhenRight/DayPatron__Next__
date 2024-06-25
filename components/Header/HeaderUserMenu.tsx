@@ -27,12 +27,12 @@ export const UserMenu = () => {
 					</Avatar>
 				</MenubarTrigger>
 				<MenubarContent>
-					<MenubarItem>
+					<MenubarItem asChild className='cursor-pointer'>
 						{/* CONDITION IF USER IS ADMIN */}
 						{role === 'ADMIN' ? (
-							<Link href='/admin'>Admin</Link>
+							<Link href='/admin'>Адмін</Link>
 						) : (
-							<Link href='/dashboard/profile'>Dashboard</Link>
+							<Link href='/dashboard/profile'>Профіль</Link>
 						)}
 					</MenubarItem>
 					<MenubarItem onSelect={event => event.preventDefault()}>

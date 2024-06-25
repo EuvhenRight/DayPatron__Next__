@@ -13,7 +13,7 @@ export const ExtraUserForm = ({ onChange }: Props) => {
 		useState<z.infer<typeof ValidationSchema.extraUser>>()
 
 	return (
-		<div className='border p-2 border-spacing-1 rounded-md my-4'>
+		<div className='border p-2 border-spacing-1 rounded-md mt-4'>
 			<div className='flex justify-between'>
 				<h2 className='font-bold text-lg px-2 text-start lg:text-end mt-2'>
 					Додатковий отримувач (необов&apos;язково)

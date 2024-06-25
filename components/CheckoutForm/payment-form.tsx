@@ -35,7 +35,7 @@ export const PaymentForm = ({ onChange, payment, setPayment }: Props) => {
 		onChange(value)
 	}
 	return (
-		<div className='border p-2 border-spacing-1 rounded-md my-4 relative'>
+		<div className='border p-2 border-spacing-1 rounded-md my-2 lg:my-0 lg:mb-4 relative'>
 			<RadioGroup
 				value={payment}
 				onValueChange={toggleOnDelivery}
