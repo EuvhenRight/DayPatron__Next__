@@ -5,6 +5,7 @@ import { FormattedMessage } from 'react-intl';
 import {
   BankOutlined,
   UserOutlined,
+  TeamOutlined,
   ProjectOutlined,
   BlockOutlined,
   MoneyCollectOutlined,
@@ -20,6 +21,7 @@ import {
 const icons = {
   BankOutlined,
   UserOutlined,
+  TeamOutlined,
   ProjectOutlined,
   BlockOutlined,
   MoneyCollectOutlined,
@@ -53,6 +55,13 @@ const menuItems = {
           type: 'item',
           url: '/companies/my',
           icon: icons.BankOutlined
+        },
+        {
+          id: 'users',
+          title: <FormattedMessage id="users" />,
+          type: 'item',
+          url: '/users',
+          icon: icons.TeamOutlined
         }
       ]
     },

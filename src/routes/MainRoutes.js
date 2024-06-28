@@ -53,6 +53,7 @@ const BillingInfoSection = Loadable(lazy(() => import('sections/billing/BillingI
 const InvoicesBilling = Loadable(lazy(() => import('pages/billing-page')));
 
 const MissionMatchesPage = Loadable(lazy(() => import('pages/mission-matches-page')));
+const UsersPage = Loadable(lazy(() => import('pages/users-page')));
 
 const SupportPage = Loadable(lazy(() => import('pages/support-page')));
 const FastTrackPage = Loadable(lazy(() => import('pages/fast-track-page')));
@@ -91,6 +92,10 @@ const MainRoutes = {
               element: <EmployerSection />
             }
           ]
+        },
+        {
+          path: 'users',
+          element: <UsersPage />
         },
         {
           path: 'missions/orders/create',
