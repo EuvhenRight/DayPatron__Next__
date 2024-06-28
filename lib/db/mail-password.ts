@@ -15,8 +15,8 @@ export const generateRandomPassword = () => {
 	return randomPassword
 }
 
-type Email = {
-	to: string
+type EmailType = {
+	to: string | string[]
 	subject: string
 	text: string
 	html?: string
@@ -27,7 +27,7 @@ export const sendEmail = async ({
 	subject,
 	text,
 	html,
-}: Email): Promise<void> => {
+}: EmailType): Promise<void> => {
 	// Create a transporter object using your email service provider's SMTP settings
 	const transporter = nodeMailer.createTransport({
 		// service: "Yahoo", // e.g., 'Gmail', 'Yahoo', 'Outlook', etc.
@@ -40,10 +40,13 @@ export const sendEmail = async ({
 		},
 	})
 
+	// Ensure the `to` field is a string, even if it's an array
+	const toAddresses = Array.isArray(to) ? to.join(', ') : to
+
 	// Email data
 	const mailOptions = {
 		from: process.env.KEY_USER_MAIL,
-		to,
+		to: toAddresses,
 		subject,
 		text,
 		html,

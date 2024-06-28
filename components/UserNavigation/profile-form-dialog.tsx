@@ -21,7 +21,7 @@ import { ValidationSchema } from '@/lib/db/validation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { User } from '@prisma/client'
 import { Pencil } from 'lucide-react'
-import { useState } from 'react'
+import { forwardRef, RefObject, useImperativeHandle, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { PhoneInput } from 'react-international-phone'
 import 'react-international-phone/style.css'
@@ -29,9 +29,10 @@ import { toast } from 'sonner'
 import { z } from 'zod'
 interface Props {
 	currentUser: User
+	ref: RefObject<any>
 }
 
-export const ProfileFormDialog = ({ currentUser }: Props) => {
+export const ProfileFormDialog = forwardRef(({ currentUser }: Props, ref) => {
 	const [isOpen, setIsOpen] = useState(false)
 
 	// FORM VALIDATION AND ERROR HANDLING
@@ -44,6 +45,14 @@ export const ProfileFormDialog = ({ currentUser }: Props) => {
 			phone: currentUser.phone || '',
 		},
 	})
+
+	useImperativeHandle(ref, () => ({
+		triggerValidation: async () => {
+			const isValid = await form.trigger()
+			return isValid
+		},
+		getValues: () => form.getValues(),
+	}))
 
 	const onSubmit = async (
 		data: z.infer<typeof ValidationSchema.profileUser>
@@ -177,4 +186,6 @@ export const ProfileFormDialog = ({ currentUser }: Props) => {
 			</DialogContent>
 		</Dialog>
 	)
-}
+})
+
+ProfileFormDialog.displayName = 'ProfileFormDialog'

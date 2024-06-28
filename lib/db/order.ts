@@ -1,5 +1,4 @@
 import { auth } from '@/auth'
-import { Order } from '@prisma/client'
 import { OrderFormInputs, OrderWithItems } from '../types/types'
 import prisma from './client'
 
@@ -57,7 +56,7 @@ export async function createOrder(
 		return null
 	}
 
-	let order: Order | null = null
+	let order: OrderWithItems | null = null
 
 	const extraUser = {
 		firstName: data.extra_user?.firstName || '',

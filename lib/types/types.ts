@@ -42,9 +42,10 @@ export type OrderWithItems = Prisma.OrderGetPayload<{
 }>
 export type OrderForm = Prisma.OrderGetPayload<{
 	include: {
-		item: true
-		address: true
+		item: { include: { variant: true } }
+		status: true
 		user: true
+		address: true
 	}
 }>
 

@@ -1,14 +1,21 @@
 'use server'
+import { auth } from '@/auth'
 import prisma from '@/lib/db/client'
+import { createEmailHtml } from '@/lib/db/e-mail-order'
+import { sendEmail } from '@/lib/db/mail-password'
 import { createOrder } from '@/lib/db/order'
-import { OrderFormInputs } from '@/lib/types/types'
-import { revalidatePath } from 'next/cache'
+import { OrderForm, OrderFormInputs } from '@/lib/types/types'
 
 export async function addOrderItem(data: OrderFormInputs) {
 	// FIND EXISTING ORDER
 	const order = await createOrder(data)
+	const user = await auth()
 
-	prisma.$transaction(async tx => {
+	if (!order) {
+		return new Error('Error creating order')
+	}
+
+	await prisma.$transaction(async tx => {
 		const orderItem = await tx.cartItem.findMany({
 			where: {
 				cartId: data.cartId,
@@ -43,13 +50,13 @@ export async function addOrderItem(data: OrderFormInputs) {
 
 		const orderEvent = await tx.orderEvent.create({
 			data: {
-				orderId: order?.id!,
+				orderId: order.id,
 			},
 		})
 
 		// UPDATE CART
 		await tx.order.update({
-			where: { id: order?.id },
+			where: { id: order.id },
 			data: {
 				subTotal: totalPrice,
 				itemsTotal: totalItems,
@@ -67,7 +74,26 @@ export async function addOrderItem(data: OrderFormInputs) {
 			},
 		})
 
-		revalidatePath('/checkout')
-		return order
+		const lastOrder = await tx.order.findFirst({
+			where: { id: order.id },
+			include: {
+				item: {
+					include: {
+						variant: true,
+					},
+				},
+				status: true,
+				user: true,
+				address: true,
+			},
+		})
+
+		await sendEmail({
+			to: ['eu@gembird.nl', `${user?.user.email}`],
+			subject: 'Замовлення від DayPatron',
+			text: `© 2023 DayPatron Inc. Усі права захищені`,
+			html: createEmailHtml(lastOrder as OrderForm),
+		})
 	})
+	return order
 }

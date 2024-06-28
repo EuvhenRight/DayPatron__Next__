@@ -26,7 +26,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { User } from '@prisma/client'
 import { ChevronLeft } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -48,6 +48,7 @@ export const CheckoutForm = ({
 	const [payment, setPayment] = useState<string>('Карткою')
 	const [makeOrder, setMakeOrder] = useState<boolean>(false)
 	const router = useRouter()
+	const profileFormRef = useRef(null)
 
 	const form = useForm<z.infer<typeof orderItemScheme>>({
 		resolver: zodResolver(orderItemScheme),
@@ -65,10 +66,17 @@ export const CheckoutForm = ({
 		},
 	})
 
-	const onSubmit = (data: OrderFormInputs) => {
+	const onSubmit = async (data: OrderFormInputs) => {
+		const isProfileFormValid = await profileFormRef.current?.triggerValidation()
+		if (!isProfileFormValid) {
+			alert('Заповніть всі поля профілю')
+			return
+		}
 		addOrderItem(data)
 		setMakeOrder(true)
 	}
+
+	console.log(orders)
 	return (
 		<section className='xl:container xl:mx-auto lg:pt-5 relative px-2'>
 			{!makeOrder ? (
@@ -93,7 +101,11 @@ export const CheckoutForm = ({
 						>
 							<div className='row-start-2 row-span-auto lg:col-span-2 lg:row-span-2 lg:row-start-1'>
 								{/* PROFILE */}
-								<ProfileForm currentUser={currentUser!} />
+								<ProfileForm
+									profileFormRef={profileFormRef}
+									currentUser={currentUser!}
+								/>
+								<span></span>
 								{/* EXTRA USER */}
 								<FormField
 									name='extra_user'
