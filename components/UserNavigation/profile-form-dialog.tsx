@@ -29,9 +29,10 @@ import { toast } from 'sonner'
 import { z } from 'zod'
 interface Props {
 	currentUser: User
+	onChange?: (value: z.infer<typeof ValidationSchema.profileUser>) => void
 }
 
-export const ProfileFormDialog = ({ currentUser }: Props) => {
+export const ProfileFormDialog = ({ currentUser, onChange }: Props) => {
 	const [isOpen, setIsOpen] = useState(false)
 
 	// FORM VALIDATION AND ERROR HANDLING
@@ -66,6 +67,9 @@ export const ProfileFormDialog = ({ currentUser }: Props) => {
 				success: 'Ваш профіль було оновлено!',
 				error: 'Щось пішло не так, спробуйте ще раз',
 			})
+			if (onChange) {
+				onChange(data)
+			}
 
 			return setIsOpen(!isOpen)
 		} catch (error) {

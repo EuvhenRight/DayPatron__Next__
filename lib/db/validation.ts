@@ -41,6 +41,7 @@ export interface ExtraUser {
 }
 
 export interface OrderFormSchema {
+	profile: ProfileUserSchema
 	extra_user: ExtraUser
 	payment: string
 	comment: string
@@ -182,6 +183,28 @@ export const cartValidationSchema = z.object({
 })
 
 export const orderItemScheme = z.object({
+	profile: z.object({
+		email: z.any(),
+		firstName: z
+			.string({ invalid_type_error: "Це поле є обов'язковим" })
+			.regex(/^[\u0400-\u04FF]+$/, {
+				message: 'Використовуйте тільки кириличні символи',
+			})
+			.min(3, 'Має містити 3 або більше елементів')
+			.max(50, 'Має містити 50 або менше елементів')
+			.nullable(),
+		lastName: z
+			.string({ invalid_type_error: "Це поле є обов'язковим" })
+			.regex(/^[\u0400-\u04FF]+$/, {
+				message: 'Використовуйте тільки кириличні символи',
+			})
+			.min(3, 'Має містити 3 або більше елементів')
+			.max(50, 'Має містити 50 або менше елементів')
+			.nullable(),
+		phone: z
+			.string({ invalid_type_error: "Це поле є обов'язковим" })
+			.min(13, 'Невірний номер телефону'),
+	}) as ZodSchema<ProfileUserSchema>,
 	payment: z
 		.string({ required_error: "Це поле є обов'язковим" })
 		.min(1, 'Виберіть спосіб оплати'),

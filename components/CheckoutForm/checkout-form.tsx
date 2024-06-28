@@ -58,12 +58,19 @@ export const CheckoutForm = ({
 				lastName: '',
 				phone: '',
 			},
+			profile: {
+				firstName: currentUser?.firstName || '',
+				lastName: currentUser?.lastName || '',
+				email: currentUser?.email || '',
+				phone: currentUser?.phone || '',
+			},
 			payment: '',
 			comment: '',
 			address: '',
 			cartId: cart?.id,
 		},
 	})
+	console.log(form.formState)
 
 	const onSubmit = (data: OrderFormInputs) => {
 		addOrderItem(data)
@@ -93,7 +100,21 @@ export const CheckoutForm = ({
 						>
 							<div className='row-start-2 row-span-auto lg:col-span-2 lg:row-span-2 lg:row-start-1'>
 								{/* PROFILE */}
-								<ProfileForm currentUser={currentUser!} />
+								<FormField
+									control={form.control}
+									name='profile'
+									render={({ field }) => (
+										<FormItem>
+											<FormControl>
+												<ProfileForm
+													onChange={field.onChange}
+													currentUser={currentUser!}
+												/>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
 								{/* EXTRA USER */}
 								<FormField
 									name='extra_user'
