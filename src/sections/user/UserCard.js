@@ -96,16 +96,16 @@ const UserCard = ({ user, bindUsers }) => {
       return user?.email;
   }
 
-  const handleArchiveUserEmployerLink = async (userId, employerId) => {
+  const handleArchiveUserEmployerLink = async (employerUserId, employerId) => {
     try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers/user-employer-links',
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers/employer-user-links',
         {
           method: 'DELETE',
           headers: {
             'Authorization': 'Bearer ' + keycloak.idToken,
             'Content-Type': 'application/json'
           },
-          body: prepareApiBody({userId, employerId})
+          body: prepareApiBody({employerUserId, employerId})
         }
       );
 
@@ -141,7 +141,7 @@ const UserCard = ({ user, bindUsers }) => {
       console.error(error);
     }
   }
-  handleArchiveUserEmployerLink
+  
   return (
     <>
       <MainCard sx={{ height: 1, '& .MuiCardContent-root': { height: 1, display: 'flex', flexDirection: 'column' } }}>
@@ -233,7 +233,7 @@ const UserCard = ({ user, bindUsers }) => {
                         : 
                         (<Chip color={employer?.userStatus === 'Confirmed' ? 'success' : 'primary'} size="small" label={employer?.userStatus} />)
                       }
-                      <IconButton onClick={() => { handleArchiveUserEmployerLink(user?.id, employer?.id); }} size="medium" color="error">
+                      <IconButton onClick={() => { handleArchiveUserEmployerLink(user?.id, employer?.employerId); }} size="medium" color="error">
                         <UserDeleteOutlined />
                       </IconButton>
                     </Stack>
