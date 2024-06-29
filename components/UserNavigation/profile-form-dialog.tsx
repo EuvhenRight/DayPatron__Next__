@@ -21,7 +21,7 @@ import { ValidationSchema } from '@/lib/db/validation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { User } from '@prisma/client'
 import { Pencil } from 'lucide-react'
-import { forwardRef, RefObject, useImperativeHandle, useState } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { PhoneInput } from 'react-international-phone'
 import 'react-international-phone/style.css'
@@ -29,10 +29,10 @@ import { toast } from 'sonner'
 import { z } from 'zod'
 interface Props {
 	currentUser: User
-	ref: RefObject<any>
+	onChange?: (value: z.infer<typeof ValidationSchema.profileUser>) => void
 }
 
-export const ProfileFormDialog = forwardRef(({ currentUser }: Props, ref) => {
+export const ProfileFormDialog = ({ currentUser, onChange }: Props) => {
 	const [isOpen, setIsOpen] = useState(false)
 
 	// FORM VALIDATION AND ERROR HANDLING
@@ -45,14 +45,6 @@ export const ProfileFormDialog = forwardRef(({ currentUser }: Props, ref) => {
 			phone: currentUser.phone || '',
 		},
 	})
-
-	useImperativeHandle(ref, () => ({
-		triggerValidation: async () => {
-			const isValid = await form.trigger()
-			return isValid
-		},
-		getValues: () => form.getValues(),
-	}))
 
 	const onSubmit = async (
 		data: z.infer<typeof ValidationSchema.profileUser>
@@ -75,7 +67,9 @@ export const ProfileFormDialog = forwardRef(({ currentUser }: Props, ref) => {
 				success: 'Ваш профіль було оновлено!',
 				error: 'Щось пішло не так, спробуйте ще раз',
 			})
-
+			if (onChange) {
+				onChange(data)
+			}
 			return setIsOpen(!isOpen)
 		} catch (error) {
 			toast.error('Щось пішло не так, спробуйте ще раз')
@@ -186,6 +180,4 @@ export const ProfileFormDialog = forwardRef(({ currentUser }: Props, ref) => {
 			</DialogContent>
 		</Dialog>
 	)
-})
-
-ProfileFormDialog.displayName = 'ProfileFormDialog'
+}

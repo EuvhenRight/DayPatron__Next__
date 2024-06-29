@@ -99,7 +99,7 @@ export const DeliveryFormDialog = ({
 	return (
 		<Dialog open={isOpen} onOpenChange={setIsOpen}>
 			<DialogTrigger className='hover:text-green-500 text-green-700 px-2'>
-				+ Add
+				+ Додати
 			</DialogTrigger>
 			<DialogContent className='sm:max-w-[768px]'>
 				<Form {...form}>

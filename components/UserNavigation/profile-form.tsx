@@ -1,20 +1,19 @@
 'use client'
 import { Label } from '@/components/ui/label'
 import { User } from '@prisma/client'
-import { RefObject } from 'react'
 import { ProfileFormDialog } from './profile-form-dialog'
 
 interface Props {
 	currentUser: User
-	profileFormRef: RefObject<any>
+	onChange?: () => void
 }
 
-export const ProfileForm = ({ currentUser, profileFormRef }: Props) => {
+export const ProfileForm = ({ currentUser, onChange }: Props) => {
 	return (
 		<div className='border p-2 border-spacing-1 rounded-md my-2'>
 			<div className='flex justify-between'>
 				<h2 className='font-bold text-xl px-2 text-end mt-2'>Ваш профіль</h2>
-				<ProfileFormDialog ref={profileFormRef} currentUser={currentUser} />
+				<ProfileFormDialog onChange={onChange} currentUser={currentUser} />
 			</div>
 			<div className='space-y-4 pt-4'>
 				<div>
