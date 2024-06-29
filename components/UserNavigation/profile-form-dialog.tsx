@@ -70,7 +70,6 @@ export const ProfileFormDialog = ({ currentUser, onChange }: Props) => {
 			if (onChange) {
 				onChange(data)
 			}
-
 			return setIsOpen(!isOpen)
 		} catch (error) {
 			toast.error('Щось пішло не так, спробуйте ще раз')

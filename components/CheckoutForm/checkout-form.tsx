@@ -8,7 +8,6 @@ import { OrderSuccess } from '@/components/CheckoutForm/order-success'
 import { PaymentForm } from '@/components/CheckoutForm/payment-form'
 import { PaymentItem } from '@/components/CheckoutForm/payment-item'
 import {
-	Form,
 	FormControl,
 	FormField,
 	FormItem,
@@ -24,10 +23,11 @@ import {
 } from '@/lib/types/types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { User } from '@prisma/client'
+
 import { ChevronLeft } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { useEffect, useState } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 interface Props {
@@ -49,7 +49,7 @@ export const CheckoutForm = ({
 	const [makeOrder, setMakeOrder] = useState<boolean>(false)
 	const router = useRouter()
 
-	const form = useForm<z.infer<typeof orderItemScheme>>({
+	const formMethods = useForm<z.infer<typeof orderItemScheme>>({
 		resolver: zodResolver(orderItemScheme),
 		defaultValues: {
 			extra_user: {
@@ -70,7 +70,23 @@ export const CheckoutForm = ({
 			cartId: cart?.id,
 		},
 	})
-	console.log(form.formState)
+
+	const {
+		formState: { errors },
+		handleSubmit,
+		control,
+		trigger,
+		setError,
+		clearErrors,
+	} = formMethods
+
+	useEffect(() => {
+		const { firstName, lastName, phone } = formMethods.getValues('profile')
+
+		if (firstName && lastName && phone) {
+			clearErrors('profile')
+		}
+	}, [errors, formMethods, clearErrors])
 
 	const onSubmit = (data: OrderFormInputs) => {
 		addOrderItem(data)
@@ -93,15 +109,15 @@ export const CheckoutForm = ({
 						</h2>
 						<div></div>
 					</div>
-					<Form {...form}>
+					<FormProvider {...formMethods}>
 						<form
-							onSubmit={form.handleSubmit(onSubmit)}
+							onSubmit={handleSubmit(onSubmit)}
 							className='grid grid-cols-1 grid-rows-auto gap-2 lg:grid-cols-3 lg:grid-rows-2 lg:gap-4'
 						>
 							<div className='row-start-2 row-span-auto lg:col-span-2 lg:row-span-2 lg:row-start-1'>
 								{/* PROFILE */}
 								<FormField
-									control={form.control}
+									control={control}
 									name='profile'
 									render={({ field }) => (
 										<FormItem>
@@ -129,7 +145,7 @@ export const CheckoutForm = ({
 							<div className='row-start-3 row-span-auto lg:col-span-2 lg:row-span-2 lg:row-start-3'>
 								{/* PAYMENT */}
 								<FormField
-									control={form.control}
+									control={control}
 									name='payment'
 									render={({ field }) => (
 										<FormItem>
@@ -146,7 +162,7 @@ export const CheckoutForm = ({
 								/>
 								{/* DELIVERY */}
 								<FormField
-									control={form.control}
+									control={control}
 									name='address'
 									render={({ field }) => (
 										<FormItem>
@@ -162,7 +178,7 @@ export const CheckoutForm = ({
 								/>
 								{/* COMMENT */}
 								<FormField
-									control={form.control}
+									control={control}
 									name='comment'
 									render={({ field }) => (
 										<FormItem>
@@ -182,7 +198,7 @@ export const CheckoutForm = ({
 							</div>
 							<div>
 								<FormField
-									control={form.control}
+									control={control}
 									name='cartId'
 									render={({ field }) => (
 										<FormItem className='row-start-4 row-span-auto lg:col-start-3 lg:row-start-3 lg:row-span-1'>
@@ -194,12 +210,12 @@ export const CheckoutForm = ({
 									)}
 								/>
 								{/* Error Message */}
-								{Object.keys(form.formState.errors).length > 0 && (
+								{Object.keys(errors).length > 0 && (
 									<p className='text-red-500 mt-2'>* Перевірте введені дані</p>
 								)}
 							</div>
 						</form>
-					</Form>
+					</FormProvider>
 				</>
 			) : (
 				<OrderSuccess />
