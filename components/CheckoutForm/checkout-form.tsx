@@ -1,5 +1,6 @@
 'use client'
 import { addOrderItem } from '@/actions/order'
+import LoaderProductPage from '@/app/checkouts/loading'
 import { CommentForm } from '@/components/CheckoutForm/comment-form'
 import { DeliveryForm } from '@/components/CheckoutForm/delivery-form'
 import { ExtraUserForm } from '@/components/CheckoutForm/extra-user-form'
@@ -26,7 +27,7 @@ import { User } from '@prisma/client'
 
 import { ChevronLeft } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useTransition } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -48,6 +49,7 @@ export const CheckoutForm = ({
 	const [payment, setPayment] = useState<string>('Карткою')
 	const [makeOrder, setMakeOrder] = useState<boolean>(false)
 	const router = useRouter()
+	const [pending, startTransition] = useTransition()
 
 	const formMethods = useForm<z.infer<typeof orderItemScheme>>({
 		resolver: zodResolver(orderItemScheme),
@@ -89,11 +91,17 @@ export const CheckoutForm = ({
 	}, [errors, formMethods, clearErrors])
 
 	const onSubmit = (data: OrderFormInputs) => {
-		addOrderItem(data)
+		startTransition(() => {
+			addOrderItem(data)
+		})
 		setMakeOrder(true)
+		router.refresh()
 	}
 
-	console.log(orders)
+	if (pending) {
+		return <LoaderProductPage />
+	}
+
 	return (
 		<section className='xl:container xl:mx-auto lg:pt-5 relative px-2'>
 			{!makeOrder ? (

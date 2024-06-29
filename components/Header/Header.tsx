@@ -66,12 +66,10 @@ export const Header = ({ cart }: Props) => {
 											// CONDITION ACTIVE LINK
 											className={classNames(
 												{
-													'hover:border-b-2 hover:border-b-red-500 transition-colors':
-														true,
+													'transition-colors': true,
 												},
 												{
-													'border-b-2 border-b-red-500':
-														isActive === link.href || pathName === link.href,
+													'border-b-2 border-b-red-500': pathName === link.href,
 												}
 											)}
 											onClick={() => toggleActive(link.href)}

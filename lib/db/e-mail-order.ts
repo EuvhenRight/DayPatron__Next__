@@ -156,7 +156,7 @@ export const createEmailHtml = (order: OrderForm): string => {
 			<tr>
 				<td colspan="2" style="padding: 10px 0;">
 					<p style="font-size: 14px;"><strong>Коментар до замовлення:</strong> ${
-						order.comment !== null && order.comment
+						order.comment === null ? '' : order.comment
 					}</p>
 				</td>
 			</tr>
