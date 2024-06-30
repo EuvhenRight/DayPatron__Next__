@@ -2,9 +2,7 @@ import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 // material-ui
 import {
-  Button,
   Divider,
-  Fade,
   Grid,
   Link,
   List,
@@ -12,8 +10,6 @@ import {
   ListItemAvatar,
   ListItemIcon,
   ListItemText,
-  Menu,
-  MenuItem,
   Stack,
   Typography,
   Chip
@@ -25,9 +21,8 @@ import IconButton from 'components/@extended/IconButton';
 import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
-import { MailOutlined, MoreOutlined, UserDeleteOutlined } from '@ant-design/icons';
-import {prepareApiBody } from 'utils/stringUtils';
-import { useNavigate } from 'react-router-dom';
+import { MailOutlined, UserDeleteOutlined, UserAddOutlined } from '@ant-design/icons';
+import {prepareApiBody, getNoQuotesString } from 'utils/stringUtils';
 import { useKeycloak } from '@react-keycloak/web';
 import { useDispatch } from 'react-redux';
 
@@ -35,10 +30,7 @@ const avatarImage = require.context('assets/images/users', true);
 
 const UserCard = ({ user, bindUsers }) => {
   const { keycloak } = useKeycloak();
-  const navigate = useNavigate();
-  const [anchorEl, setAnchorEl] = useState(null);
   const [avatar, setAvatar] = useState(avatarImage(`./default.png`));
-  const openMenu = Boolean(anchorEl);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -53,18 +45,6 @@ const UserCard = ({ user, bindUsers }) => {
 
     })();
   }, [user, keycloak?.idToken]);
-
-  const handleClickDetails = () => {
-    navigate('/users/' + user?.id);
-  };
-
-  const handleMenuClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
 
   const getImageSrc = async (imageUrl) => {
     try {
@@ -96,24 +76,25 @@ const UserCard = ({ user, bindUsers }) => {
       return user?.email;
   }
 
-  const handleArchiveUserEmployerLink = async (employerUserId, employerId) => {
+  const handleArchiveUserEmployerLink = async (employerUserId, employerId, archivedOn) => {
     try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers/employer-user-links',
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers/employer-user-link-archivations',
         {
-          method: 'DELETE',
+          method: 'PUT',
           headers: {
             'Authorization': 'Bearer ' + keycloak.idToken,
             'Content-Type': 'application/json'
           },
-          body: prepareApiBody({employerUserId, employerId})
+          body: prepareApiBody({employerUserId, employerId, archivedOnUtc: archivedOn})
         }
       );
 
       if (!response.ok) {
+        var responseMessage = getNoQuotesString(await response.text());
         dispatch(
           openSnackbar({
             open: true,
-            message: 'Failed.',
+            message: responseMessage ?? 'Failed.',
             variant: 'alert',
             alert: {
               color: 'error'
@@ -127,7 +108,7 @@ const UserCard = ({ user, bindUsers }) => {
       dispatch(
         openSnackbar({
           open: true,
-          message: 'Archived.',
+          message: 'Updated.',
           variant: 'alert',
           alert: {
             color: 'success'
@@ -150,45 +131,19 @@ const UserCard = ({ user, bindUsers }) => {
             <List sx={{ width: 1, p: 0 }}>
               <ListItem
                 disablePadding
-                secondaryAction={
-                  <IconButton edge="end" aria-label="comments" color="secondary" onClick={handleMenuClick}>
-                    <MoreOutlined style={{ fontSize: '1.15rem' }} />
-                  </IconButton>
-                }
               >
                 <ListItemAvatar>
                   <Avatar
-                    onClick={handleClickDetails}
                     className="clickable"
                     alt={getUserTitle(user)}
                     src={avatar}
                   />
                 </ListItemAvatar>
                 <ListItemText className="list-card-title"
-                  primary={<Typography onClick={handleClickDetails} variant="subtitle1">{getUserTitle(user)}</Typography>}
+                  primary={<Typography variant="subtitle1">{getUserTitle(user)}</Typography>}
                 />
               </ListItem>
             </List>
-            <Menu
-              id="fade-menu"
-              MenuListProps={{
-                'aria-labelledby': 'fade-button'
-              }}
-              anchorEl={anchorEl}
-              open={openMenu}
-              onClose={handleMenuClose}
-              TransitionComponent={Fade}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right'
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right'
-              }}
-            >
-              <MenuItem onClick={handleClickDetails}>Details</MenuItem>
-            </Menu>
           </Grid>
           <Grid item xs={12}>
             <Divider />
@@ -218,24 +173,36 @@ const UserCard = ({ user, bindUsers }) => {
                 {user?.employers.map((employer, employerIndex) => (
                   <Stack key={employerIndex} direction="row" justifyContent="space-between" alignItems="center">
                     <Stack direction="row" spacing={1} alignItems="center">
+                      <Typography color="secondary">
+                        {employer?.roles?.map((role, roleIndex) => {return role + (roleIndex + 1 === employer.roles.length ? '' : ', ')})}
+                      </Typography>
+                      <Typography>
+                        @
+                      </Typography>
                       <Typography>
                         {employer?.employerName}
-                      </Typography>
-                      <Typography variant="caption" color="secondary">
-                        (
-                          {employer?.roles?.map((role, roleIndex) => {return role + (roleIndex + 1 === employer.roles.length ? '' : ', ')})}
-                        )
                       </Typography>
                     </Stack>
                     <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={0.5}>
                       {employer?.archivedOnUtc ?
-                        (<Chip color="error" size="small" label="Archived" />)
+                        (
+                          <>
+                            <Chip color="error" size="small" label="Archived" />
+                            <IconButton onClick={() => { handleArchiveUserEmployerLink(user?.id, employer?.employerId, null); }} size="medium" color="success">
+                              <UserAddOutlined />
+                            </IconButton>
+                          </>
+                        )
                         : 
-                        (<Chip color={employer?.userStatus === 'Confirmed' ? 'success' : 'primary'} size="small" label={employer?.userStatus} />)
+                        (
+                          <>
+                            <Chip color={employer?.userStatus === 'Confirmed' ? 'success' : 'primary'} size="small" label={employer?.userStatus} />
+                            <IconButton onClick={() => { handleArchiveUserEmployerLink(user?.id, employer?.employerId, new Date()); }} size="medium" color="error">
+                              <UserDeleteOutlined />
+                            </IconButton>
+                          </>
+                        )
                       }
-                      <IconButton onClick={() => { handleArchiveUserEmployerLink(user?.id, employer?.employerId); }} size="medium" color="error">
-                        <UserDeleteOutlined />
-                      </IconButton>
                     </Stack>
                   </Stack>
                 ))}
@@ -246,17 +213,6 @@ const UserCard = ({ user, bindUsers }) => {
           </Grid>
           
         </Grid>
-        <Stack
-          direction="row"
-          alignItems="center"
-          spacing={1}
-          justifyContent="space-between"
-          sx={{ mt: 'auto', mb: 0, pt: 2.25 }}
-        >
-          <Button variant="outlined" size="small" onClick={handleClickDetails} className="card-button-right">
-            Details
-          </Button>
-        </Stack>
       </MainCard>
     </>
   );

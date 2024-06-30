@@ -68,4 +68,13 @@ function getHtmlInnerText(htmlString) {
   return result;
 }
 
-export { normalizeInputValue, normalizeNumberInputValue, normalizeNullableInputValue, normalizeBooleanInputValue, prepareApiBody, removeEmptyOrNull, getEllipsis, compareSortValues, getCounterPartyLabel, getHtmlInnerText };
+function getNoQuotesString(inputString) {
+  if(!inputString)
+    return null;
+
+  var result = inputString.replace(/"/g, '')
+
+  return result;
+}
+
+export { normalizeInputValue, normalizeNumberInputValue, normalizeNullableInputValue, normalizeBooleanInputValue, prepareApiBody, removeEmptyOrNull, getEllipsis, compareSortValues, getCounterPartyLabel, getHtmlInnerText, getNoQuotesString };
