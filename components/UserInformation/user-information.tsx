@@ -17,6 +17,7 @@ interface Props {
 }
 export const UserInformation = ({ orders }: Props) => {
 	const getTotal = orders?.reduce((a, b) => a + b.subTotal, 0)
+	const getTotalItems = orders?.reduce((a, b) => a + b.itemsTotal, 0)
 	console.log(orders)
 	return (
 		<Table>
@@ -27,8 +28,8 @@ export const UserInformation = ({ orders }: Props) => {
 						Дата
 					</TableHead>
 					<TableHead className='text-center w-[200px]'>Спосіб оплати</TableHead>
-					<TableHead className='w-[500px] lg:w-1/3'>Товари</TableHead>
-					<TableHead className='w-1/6 lg:w-1/6'>Коментар</TableHead>
+					<TableHead className='w-[500px]'>Товари</TableHead>
+					<TableHead className='w-1/6'>Коментар</TableHead>
 					<TableHead className='text-center w-[200px]'>
 						Кількість товарів
 					</TableHead>
@@ -48,7 +49,7 @@ export const UserInformation = ({ orders }: Props) => {
 						<TableCell>
 							{order.item.map(item => {
 								return (
-									<div className='w-[500px] lg:w-1/3' key={item.id}>
+									<div className='w-[500px]' key={item.id}>
 										{item.variant.name} - {item.variant.volume} -
 										{formatPriceUa(item.variant.original_price)} -
 										{item.quantity} шт.
@@ -56,7 +57,7 @@ export const UserInformation = ({ orders }: Props) => {
 								)
 							})}
 						</TableCell>
-						<TableCell className='w-1/6 lg:w-1/6'>{order.comment}</TableCell>
+						<TableCell className='w-1/6'>{order.comment}</TableCell>
 						<TableCell className='text-center'>{order.itemsTotal}</TableCell>
 						<TableCell className='text-center'>
 							{formatPriceUa(order.subTotal)}
@@ -66,9 +67,10 @@ export const UserInformation = ({ orders }: Props) => {
 			</TableBody>
 			<TableFooter>
 				<TableRow>
-					<TableCell colSpan={5} className='text-right font-bold'>
+					<TableCell colSpan={4} className='text-right font-bold'>
 						Всього
 					</TableCell>
+					<TableCell className='text-center'>{getTotalItems} шт.</TableCell>
 					<TableCell className='text-right'>
 						{formatPriceUa(getTotal || 0)}
 					</TableCell>
