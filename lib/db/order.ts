@@ -1,5 +1,5 @@
 import { auth } from '@/auth'
-import { OrderFormInputs, OrderWithItems } from '../types/types'
+import { OrderForm, OrderFormInputs, OrderWithItems } from '../types/types'
 import prisma from './client'
 
 export async function getOrder(): Promise<OrderWithItems | null> {
@@ -27,19 +27,26 @@ export async function getOrder(): Promise<OrderWithItems | null> {
 	return order
 }
 
-export async function getManyOrders(): Promise<OrderWithItems[] | null> {
+export async function getManyOrders(): Promise<OrderForm[] | null> {
 	const session = await auth()
 
-	let orders: OrderWithItems[] | null = null
+	let orders: OrderForm[] | null = null
 
 	if (session) {
 		orders = await prisma.order.findMany({
 			where: { userId: session.user.id },
 			include: {
-				item: true,
+				item: {
+					include: {
+						variant: true,
+					},
+				},
 				status: true,
 				user: true,
 				address: true,
+			},
+			orderBy: {
+				createdAt: 'desc',
 			},
 		})
 	}

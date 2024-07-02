@@ -1,6 +1,5 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -160,7 +159,7 @@ model DeliveryItem {
   updatedAt DateTime @updatedAt
 
   deliveryId String? @db.ObjectId
-  orderId    String? @db.ObjectId
+  orderId    String? @unique @db.ObjectId
 
   order    Order?    @relation(fields: [orderId], references: [id])
   delivery Delivery? @relation(fields: [deliveryId], references: [id], onDelete: Cascade)
@@ -197,8 +196,8 @@ model Order {
   user User @relation(fields: [userId], references: [id])
 
   item    OrderItem[]
-  status  OrderEvent[]
-  address DeliveryItem[]
+  status  OrderEvent?
+  address DeliveryItem?
 
   @@map("orders")
 }
@@ -208,9 +207,9 @@ model OrderEvent {
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
   status    StatusOrder @default(PENDING)
-  orderId   String      @db.ObjectId
 
-  Order Order @relation(fields: [orderId], references: [id])
+  Order   Order  @relation(fields: [orderId], references: [id])
+  orderId String @unique @db.ObjectId
 
   @@map("order_events")
 }

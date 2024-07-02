@@ -2,37 +2,42 @@ import { ExtraUser, User } from '@prisma/client'
 import { OrderForm } from '../types/types'
 import { formatPriceUa } from './format'
 
-const createAddressSection = (address: OrderForm): string => {
-	return address.address
-		.map(item =>
-			item.typeOfDelivery === 'У відділення'
-				? `<p style="font-size: 12px;">Номер відділення: ${item.branchNumber}</p>`
-				: `
-									${item.city ? `<p style="font-size: 12px;">Місто: ${item.city}</p>` : ''}
-									${item.street ? `<p style="font-size: 12px;">Вулиця: ${item.street}</p>` : ''}
+const createAddressSection = (delivery: OrderForm): string => {
+	const { address } = delivery
+	return address?.typeOfDelivery === 'У відділення'
+		? `<p style="font-size: 12px;">Номер відділення: ${address.branchNumber}</p>`
+		: `
 									${
-										item.houseNumber
-											? `<p style="font-size: 12px;">Будинок: ${item.houseNumber}</p>`
+										address?.city
+											? `<p style="font-size: 12px;">Місто: ${address?.city}</p>`
 											: ''
 									}
 									${
-										item.apartmentNumber
-											? `<p style="font-size: 12px;">Квартира: ${item.apartmentNumber}</p>`
+										address?.street
+											? `<p style="font-size: 12px;">Вулиця: ${address?.street}</p>`
 											: ''
 									}
 									${
-										item.additionNumber
-											? `<p style="font-size: 12px;">Додатковий номер: ${item.additionNumber}</p>`
+										address?.houseNumber
+											? `<p style="font-size: 12px;">Будинок: ${address?.houseNumber}</p>`
 											: ''
 									}
 									${
-										item.zipCode
-											? `<p style="font-size: 12px;">Поштовий індекс: ${item.zipCode}</p>`
+										address?.apartmentNumber
+											? `<p style="font-size: 12px;">Квартира: ${address?.apartmentNumber}</p>`
+											: ''
+									}
+									${
+										address?.additionNumber
+											? `<p style="font-size: 12px;">Додатковий номер: ${address?.additionNumber}</p>`
+											: ''
+									}
+									${
+										address?.zipCode
+											? `<p style="font-size: 12px;">Поштовий індекс: ${address?.zipCode}</p>`
 											: ''
 									}
 							`
-		)
-		.join('')
 }
 
 const createItemsSection = (items: OrderForm): string => {

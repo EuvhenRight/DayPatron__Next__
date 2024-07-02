@@ -133,7 +133,7 @@ export const ProductForm = ({ product, cart }: Props) => {
 							{product.description}
 						</p>
 						<p className='py-2'>
-							<b>shelfLie: </b>
+							<b>строк зберігання: </b>
 							{product.shelfLife}
 						</p>
 						<p className='py-2'>

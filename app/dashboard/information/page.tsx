@@ -1,5 +1,13 @@
-const UserInformationPage = () => {
-	return <div>UserInformationPage</div>
+import { UserInformation } from '@/components/UserInformation/user-information'
+import { getManyOrders, getOrder } from '@/lib/db/order'
+
+async function UserInformationPage() {
+	const [order, orders] = await Promise.all([getOrder(), getManyOrders()])
+	return (
+		<div>
+			<UserInformation orders={orders} />
+		</div>
+	)
 }
 
 export default UserInformationPage
