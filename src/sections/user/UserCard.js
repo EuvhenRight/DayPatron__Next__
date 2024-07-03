@@ -172,7 +172,7 @@ const UserCard = ({ user, bindUsers }) => {
               <Grid item xs={12}>
                 {user?.employers.map((employer, employerIndex) => (
                   <Stack key={employerIndex} direction="row" justifyContent="space-between" alignItems="center">
-                    <Stack direction="row" spacing={1} alignItems="center">
+                    <Stack direction="row" spacing={0.5} alignItems="center">
                       <Typography color="secondary">
                         {employer?.roles?.map((role, roleIndex) => {return role + (roleIndex + 1 === employer.roles.length ? '' : ', ')})}
                       </Typography>
