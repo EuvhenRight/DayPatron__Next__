@@ -3,10 +3,12 @@ import { OrderForm } from '../types/types'
 import { formatPriceUa } from './format'
 
 const createAddressSection = (delivery: OrderForm): string => {
-	const { address } = delivery
-	return address?.typeOfDelivery === 'У відділення'
-		? `<p style="font-size: 12px;">Номер відділення: ${address.branchNumber}</p>`
-		: `
+	const address = delivery?.address
+	return address
+		.map(address => {
+			return address.typeOfDelivery === 'У відділення'
+				? `<p style="font-size: 12px;">Номер відділення: ${address.branchNumber}</p>`
+				: `
 									${
 										address?.city
 											? `<p style="font-size: 12px;">Місто: ${address?.city}</p>`
@@ -38,6 +40,8 @@ const createAddressSection = (delivery: OrderForm): string => {
 											: ''
 									}
 							`
+		})
+		.join('')
 }
 
 const createItemsSection = (items: OrderForm): string => {
@@ -94,7 +98,7 @@ export const createEmailHtml = (order: OrderForm): string => {
 	// Create order number
 	const orderNumber = order.id.slice(-4)
 	return `
-		<table style="font-size: 14px; color: #333; font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
+		<table style="font-size: 14px; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
 			<tr>
 				<td colspan="2" style="text-align: center; padding: 10px 0;">
 					<h1>Дякуємо за Ваше замовлення!</h1>
@@ -104,12 +108,12 @@ export const createEmailHtml = (order: OrderForm): string => {
 				</td>
 			</tr>
 			<tr>
-				<td style="padding: 10px; border-right: 1px solid #ddd;">
-					<h3 style="color: #333; font-size: 14px;">Замовник:</h3>
+				<td style="padding: 10px; border-right: 1px solid #ddd; width: 50%;">
+					<h3 style="color: #333; font-size: 12px;">Замовник:</h3>
 					${createUserSection(order.user)}
 				</td>
 				<td style="padding: 10px;">
-					<h3 style="color: #333; font-size: 14px;">Основний отримувач:</h3>
+					<h3 style="color: #333; font-size: 12px; width: 50%;">Основний отримувач:</h3>
 					${createExtraUserSection(order.extra_user)}
 				</td>
 			</tr>
@@ -151,7 +155,7 @@ export const createEmailHtml = (order: OrderForm): string => {
 			</tr>
 			<tr>
 				<td colspan="2" style="padding: 10px 0;">
-					<p style="font-size: 14px;"><strong>Спосіб оплати:</strong> ${
+					<p style="font-size: 12px;"><strong>Спосіб оплати:</strong> ${
 						order.payment === 'PAIMENTBYCARD'
 							? 'Оплата картою'
 							: 'Оплата при отриманні'
@@ -160,7 +164,7 @@ export const createEmailHtml = (order: OrderForm): string => {
 			</tr>
 			<tr>
 				<td colspan="2" style="padding: 10px 0;">
-					<p style="font-size: 14px;"><strong>Коментар до замовлення:</strong> ${
+					<p style="font-size: 12px;"><strong>Коментар до замовлення:</strong> ${
 						order.comment === null ? '' : order.comment
 					}</p>
 				</td>

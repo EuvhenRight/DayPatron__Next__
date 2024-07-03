@@ -16,12 +16,13 @@ interface Props {
 	orders: OrderForm[] | null
 }
 export const UserInformation = ({ orders }: Props) => {
+	// COUNTS INVOICES IN TABLE
 	const getTotal = orders?.reduce((a, b) => a + b.subTotal, 0)
 	const getTotalItems = orders?.reduce((a, b) => a + b.itemsTotal, 0)
 	console.log(orders)
 	return (
 		<Table>
-			<TableCaption>A list of your recent invoices.</TableCaption>
+			<TableCaption>Замовлення</TableCaption>
 			<TableHeader>
 				<TableRow>
 					<TableHead className='text-center w-[100px] p-1 lg:p-4'>
@@ -37,16 +38,20 @@ export const UserInformation = ({ orders }: Props) => {
 				</TableRow>
 			</TableHeader>
 			<TableBody>
+				{/* ORDERS */}
 				{orders?.map(order => (
 					<TableRow key={order.id}>
+						{/* DATE */}
 						<TableCell className='font-medium text-center'>
 							{order.createdAt.getDate()}/{order.createdAt.getMonth() + 1}/
 							{order.createdAt.getFullYear()}
 						</TableCell>
+						{/* PAYMENT */}
 						<TableCell className='text-center'>
 							{order.payment === 'PAIMENTBYCARD' ? 'Карткою' : 'Післяплатою'}
 						</TableCell>
 						<TableCell>
+							{/* ITEMS */}
 							{order.item.map(item => {
 								return (
 									<div className='w-[500px]' key={item.id}>
@@ -57,6 +62,7 @@ export const UserInformation = ({ orders }: Props) => {
 								)
 							})}
 						</TableCell>
+						{/* COUNTS */}
 						<TableCell className='w-1/6'>{order.comment}</TableCell>
 						<TableCell className='text-center'>{order.itemsTotal}</TableCell>
 						<TableCell className='text-center'>
@@ -70,8 +76,10 @@ export const UserInformation = ({ orders }: Props) => {
 					<TableCell colSpan={4} className='text-right font-bold'>
 						Всього
 					</TableCell>
+					{/* TOTAL COUNTS */}
 					<TableCell className='text-center'>{getTotalItems} шт.</TableCell>
 					<TableCell className='text-right'>
+						{/* TOTAL IN UAH */}
 						{formatPriceUa(getTotal || 0)}
 					</TableCell>
 				</TableRow>

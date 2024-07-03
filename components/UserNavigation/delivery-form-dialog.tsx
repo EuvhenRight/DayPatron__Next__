@@ -293,7 +293,11 @@ export const DeliveryFormDialog = ({
 								</Button>
 							</DialogClose>
 							{/* BUTTON SAVE */}
-							<Button type='submit' variant='office'>
+							<Button
+								type='button'
+								variant='office'
+								onClick={form.handleSubmit(onSubmit)}
+							>
 								Зберегти
 							</Button>
 						</div>

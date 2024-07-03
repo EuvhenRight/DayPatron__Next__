@@ -21,6 +21,7 @@ import { DeliveryWithItems } from '@/lib/types/types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { DeliveryItem } from '@prisma/client'
 import { Pencil } from 'lucide-react'
+import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -32,6 +33,7 @@ interface Props {
 
 export const DeliveryFormEditDialog = ({ item }: Props) => {
 	const [isOpen, setIsOpen] = useState(false)
+	const pathName = usePathname()
 	// STATE AND HANDLERS
 	const getValidationSchema = (typeOfDelivery: string) => {
 		return typeOfDelivery === 'У відділення'
@@ -278,15 +280,19 @@ export const DeliveryFormEditDialog = ({ item }: Props) => {
 						)}
 						<div className='flex items-center justify-between gap-2 relative mt-4'>
 							{/* BUTTON DELETE */}
-							<DialogClose asChild>
-								<Button
-									variant='outline'
-									type='button'
-									onClick={toggleDeleteItem}
-								>
-									Delete
-								</Button>
-							</DialogClose>
+							{pathName !== '/checkouts' ? (
+								<DialogClose asChild>
+									<Button
+										variant='outline'
+										type='button'
+										onClick={toggleDeleteItem}
+									>
+										Delete
+									</Button>
+								</DialogClose>
+							) : (
+								<div></div>
+							)}
 							<div>
 								{/* BUTTON CANCEL */}
 								<DialogClose asChild>
@@ -299,7 +305,11 @@ export const DeliveryFormEditDialog = ({ item }: Props) => {
 									</Button>
 								</DialogClose>
 								{/* BUTTON SAVE */}
-								<Button type='submit' variant='office'>
+								<Button
+									type='button'
+									variant='office'
+									onClick={form.handleSubmit(onSubmit)}
+								>
 									Зберегти
 								</Button>
 							</div>

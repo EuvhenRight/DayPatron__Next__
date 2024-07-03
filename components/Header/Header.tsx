@@ -38,6 +38,7 @@ export const Header = ({ cart }: Props) => {
 	}
 	// TOGGLE ACTIVE LINK
 	const toggleActive = (href: string) => {
+		setIsActive('')
 		setIsActive(href)
 	}
 
@@ -69,7 +70,8 @@ export const Header = ({ cart }: Props) => {
 													'transition-colors': true,
 												},
 												{
-													'border-b-2 border-b-red-500': pathName === link.href,
+													'border-b-2 border-b-red-500':
+														isActive === link.href || pathName === link.href,
 												}
 											)}
 											onClick={() => toggleActive(link.href)}

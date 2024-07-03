@@ -159,7 +159,7 @@ model DeliveryItem {
   updatedAt DateTime @updatedAt
 
   deliveryId String? @db.ObjectId
-  orderId    String? @unique @db.ObjectId
+  orderId    String? @db.ObjectId
 
   order    Order?    @relation(fields: [orderId], references: [id])
   delivery Delivery? @relation(fields: [deliveryId], references: [id], onDelete: Cascade)
@@ -197,7 +197,7 @@ model Order {
 
   item    OrderItem[]
   status  OrderEvent?
-  address DeliveryItem?
+  address DeliveryItem[]
 
   @@map("orders")
 }

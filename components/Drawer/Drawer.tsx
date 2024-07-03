@@ -9,18 +9,33 @@ import {
 	SheetTrigger,
 } from '@/components/ui/sheet'
 import { CartWithVariants } from '@/lib/types/types'
+import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { AiOutlineClose, AiOutlineShoppingCart } from 'react-icons/ai'
+import { ExternalToast, toast } from 'sonner'
 interface Props {
 	cart?: CartWithVariants | null
 }
 
 export const Drawer = ({ cart }: Props) => {
+	const session = useSession()
+	console.log(session)
 	// CART INDICATOR
 	const cartIndicate = cart ? cart.items.length > 0 : false
 	const router = useRouter()
 	// TOGGLE DRAWER
 	const toggleDrawer = () => {
+		if (session.status !== 'authenticated') {
+			toast.error('Вам необхідно авторизуватись', {
+				position: 'bottom-center',
+				action: {
+					label: 'Увійти',
+					onClick: () => {
+						router.push('/auth/register')
+					},
+				},
+			}) as ExternalToast['action']
+		}
 		router.push('/checkouts')
 	}
 

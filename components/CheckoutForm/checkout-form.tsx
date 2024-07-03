@@ -90,7 +90,7 @@ export const CheckoutForm = ({
 		}
 	}, [errors, formMethods, clearErrors])
 
-	const onSubmit = (data: OrderFormInputs) => {
+	const onSubmit = async (data: OrderFormInputs) => {
 		startTransition(() => {
 			addOrderItem(data)
 		})
@@ -219,9 +219,10 @@ export const CheckoutForm = ({
 										</FormItem>
 									)}
 								/>
-								{/* Error Message */}
 								{Object.keys(errors).length > 0 && (
-									<p className='text-red-500 mt-2'>* Перевірте введені дані</p>
+									<p className='text-sm font-medium text-red-500 dark:text-red-900 mt-2'>
+										* Заповніть всі обов&apos;язкові поля
+									</p>
 								)}
 							</div>
 						</form>
