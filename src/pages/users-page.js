@@ -129,7 +129,7 @@ const UsersPage = () => {
   }, [personalInformation?.id, keycloak?.idToken]);
 
   useEffect(() => {
-    const newUsers = users.filter((value) => {
+    const newUsers = users?.filter((value) => {
       if (globalFilter) {
         let searchText = value?.firstName + value?.lastName;
         return searchText?.toLowerCase()?.includes(globalFilter.toLowerCase());
