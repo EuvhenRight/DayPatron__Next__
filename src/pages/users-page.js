@@ -191,7 +191,7 @@ const UsersPage = () => {
         dispatch(
           openSnackbar({
             open: true,
-            message: 'Saved.',
+            message: 'Added.',
             variant: 'alert',
             alert: {
               color: 'success'
@@ -360,7 +360,7 @@ const UsersPage = () => {
                     <Grid item xs={12}>
                       <Stack spacing={2} alignItems="flex-end">
                         <Button type="submit" variant="contained" disabled={isSubmitting}>
-                          Save
+                          Add
                         </Button>
                       </Stack>
                     </Grid>
