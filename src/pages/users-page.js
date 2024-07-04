@@ -44,7 +44,7 @@ const allColumns = [
   },
   {
     id: 2,
-    header: 'Title'
+    header: 'Email'
   }
 ];
 
@@ -259,8 +259,8 @@ const UsersPage = () => {
               _DATA
                 .currentData()
                 .sort(function (a, b) {
-                  if (sortBy === 'Title') return compareSortValues(a?.title, b?.title);
-                  if (sortBy === 'Description') return compareSortValues(a?.description, b?.description);
+                  if (sortBy === 'Id') return compareSortValues(a?.id, b?.id);
+                  if (sortBy === 'Email') return compareSortValues(a?.email, b?.email);
                   return a;
                 })
                 .map((user, index) => (
