@@ -161,7 +161,7 @@ const UsersPage = () => {
     validationSchema: InvitationSchema,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers/users/invitations',
+        let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers/users',
           {
             method: 'POST',
             headers: {
@@ -176,7 +176,7 @@ const UsersPage = () => {
           dispatch(
             openSnackbar({
               open: true,
-              message: 'Invitation failed.',
+              message: 'Adding user failed.',
               variant: 'alert',
               alert: {
                 color: 'error'
@@ -290,7 +290,7 @@ const UsersPage = () => {
           </Grid>
         </Grid>
         <Grid item xs={12} md={4}>
-          <MainCard title="Invite user">
+          <MainCard title="Add user">
             
             <FormikProvider value={formik}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>

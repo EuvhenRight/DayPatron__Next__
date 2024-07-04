@@ -21,7 +21,7 @@ import IconButton from 'components/@extended/IconButton';
 import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
-import { MailOutlined, UserDeleteOutlined, UserAddOutlined } from '@ant-design/icons';
+import { MailOutlined, UserDeleteOutlined } from '@ant-design/icons';
 import {prepareApiBody, getNoQuotesString } from 'utils/stringUtils';
 import { useKeycloak } from '@react-keycloak/web';
 import { useDispatch } from 'react-redux';
@@ -78,9 +78,9 @@ const UserCard = ({ user, bindUsers }) => {
 
   const handleArchiveUserEmployerLink = async (employerUserId, employerId, archivedOn) => {
     try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers/employer-user-link-archivations',
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers/employer-user-links',
         {
-          method: 'PUT',
+          method: 'DELETE',
           headers: {
             'Authorization': 'Bearer ' + keycloak.idToken,
             'Content-Type': 'application/json'
@@ -108,7 +108,7 @@ const UserCard = ({ user, bindUsers }) => {
       dispatch(
         openSnackbar({
           open: true,
-          message: 'Updated.',
+          message: 'Archived.',
           variant: 'alert',
           alert: {
             color: 'success'
@@ -168,7 +168,9 @@ const UserCard = ({ user, bindUsers }) => {
                     </ListItem>}
                 </List>
               </Grid>
-              
+              <Grid item xs={12}>
+                <Chip color={user?.userStatus === 'Confirmed' ? 'success' : 'primary'} size="small" label={user?.userStatus} />
+              </Grid>
               <Grid item xs={12}>
                 {user?.employers.map((employer, employerIndex) => (
                   <Stack key={employerIndex} direction="row" justifyContent="space-between" alignItems="center">
@@ -184,25 +186,9 @@ const UserCard = ({ user, bindUsers }) => {
                       </Typography>
                     </Stack>
                     <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={0.5}>
-                      {employer?.archivedOnUtc ?
-                        (
-                          <>
-                            <Chip color="error" size="small" label="Archived" />
-                            <IconButton onClick={() => { handleArchiveUserEmployerLink(user?.id, employer?.employerId, null); }} size="medium" color="success">
-                              <UserAddOutlined />
-                            </IconButton>
-                          </>
-                        )
-                        : 
-                        (
-                          <>
-                            <Chip color={employer?.userStatus === 'Confirmed' ? 'success' : 'primary'} size="small" label={employer?.userStatus} />
-                            <IconButton onClick={() => { handleArchiveUserEmployerLink(user?.id, employer?.employerId, new Date()); }} size="medium" color="error">
-                              <UserDeleteOutlined />
-                            </IconButton>
-                          </>
-                        )
-                      }
+                      <IconButton onClick={() => { handleArchiveUserEmployerLink(user?.id, employer?.employerId); }} size="medium" color="error">
+                        <UserDeleteOutlined />
+                      </IconButton>
                     </Stack>
                   </Stack>
                 ))}
