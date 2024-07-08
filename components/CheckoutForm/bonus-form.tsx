@@ -13,7 +13,7 @@ const BonusForm = () => {
 				<AccordionContent>
 					<div className='flex flex-col gap-2 m-1'>
 						<Input placeholder='Промокод' className='p-2' />
-						<Button type='button' variant='default'>
+						<Button type='button' variant='default' className='mt-3'>
 							Застосувати
 						</Button>
 					</div>

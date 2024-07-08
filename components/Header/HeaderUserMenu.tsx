@@ -19,7 +19,7 @@ export const UserMenu = () => {
 	return (
 		<Menubar>
 			<MenubarMenu>
-				<MenubarTrigger>
+				<MenubarTrigger className='cursor-pointer bg-white p-0'>
 					<Avatar>
 						<AvatarImage src={session?.user?.image!} />
 						{/* NAME OF USER */}

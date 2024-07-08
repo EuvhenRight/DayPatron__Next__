@@ -28,7 +28,7 @@ async function RootLayout({ children }: { children: React.ReactNode }) {
 			<html lang='en'>
 				<body className={mulish.className}>
 					<Header cart={cart} />
-					<main>
+					<main className='mt-28'>
 						{children}
 						<Toaster richColors />
 					</main>

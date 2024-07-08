@@ -43,12 +43,12 @@ export const MenuMobile = ({
 
 	return (
 		<div
-			className={`fixed top-0 left-0 right-0 bottom-0 w-full h-full z-20 ${
+			className={`fixed top-0 left-0 right-0 bottom-0 w-full z-20 ${
 				isOpenMenu ? 'translate-x-0' : 'translate-x-full'
 			} ease-in-out duration-300`}
 		>
 			<div
-				className={`bg-neutral-700 absolute top-0 right-0 h-full w-full sm:w-96 p-4 flex flex-col font-bold overflow-auto`}
+				className={`bg-neutral-800 absolute top-0 right-0 w-full sm:w-96 p-4 flex flex-col font-bold overflow-auto`}
 			>
 				{/* MENU */}
 				<div className='gap-5 border-b-2'>

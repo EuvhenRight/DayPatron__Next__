@@ -11,37 +11,34 @@ import {
 import { CartWithVariants } from '@/lib/types/types'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import { useRef } from 'react'
 import { AiOutlineClose, AiOutlineShoppingCart } from 'react-icons/ai'
-import { ExternalToast, toast } from 'sonner'
+import { toast } from 'sonner'
 interface Props {
 	cart?: CartWithVariants | null
 }
 
 export const Drawer = ({ cart }: Props) => {
 	const session = useSession()
-	console.log(session)
+
 	// CART INDICATOR
 	const cartIndicate = cart ? cart.items.length > 0 : false
 	const router = useRouter()
+	const sheetCloseRef = useRef<HTMLButtonElement>(null)
 	// TOGGLE DRAWER
 	const toggleDrawer = () => {
 		if (session.status !== 'authenticated') {
-			toast.error('Вам необхідно авторизуватись', {
-				position: 'bottom-center',
-				action: {
-					label: 'Увійти',
-					onClick: () => {
-						router.push('/auth/register')
-					},
-				},
-			}) as ExternalToast['action']
+			if (sheetCloseRef.current) {
+				sheetCloseRef.current.click()
+			}
+			toast.warning('Вам необхідно авторизуватись!')
 		}
 		router.push('/checkouts')
 	}
 
 	return (
 		<Sheet>
-			<SheetTrigger className='w-8 h-8 cursor-pointer relative'>
+			<SheetTrigger className='w-8 h-8 cursor-pointer relative text-white'>
 				<AiOutlineShoppingCart className='w-full h-full' />
 				{/* CART INDICATOR */}
 				{cartIndicate && (
@@ -58,7 +55,10 @@ export const Drawer = ({ cart }: Props) => {
 							<h2 className='text-3xl font-bold flex items-center gap-5 text-white'>
 								КОШИК
 							</h2>
-							<SheetClose className='text-gray-300 hover:text-white'>
+							<SheetClose
+								className='text-gray-300 hover:text-white'
+								ref={sheetCloseRef}
+							>
 								<AiOutlineClose className='w-6 h-6' />
 							</SheetClose>
 						</div>
