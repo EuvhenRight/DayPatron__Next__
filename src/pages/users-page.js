@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { getAllEmployerUsers } from '_api/employerUsers';
+import { EMPLOYER_USERS_GET } from 'store/reducers/actions';
 // material-ui
 import {
   Button,
@@ -89,7 +90,7 @@ const UsersPage = () => {
 
   const bindUsers = async () => {
     try {
-      var requestUrl = process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers/users?employerUserId=' + encodeURIComponent(personalInformation.id);
+      var requestUrl = process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers/related-users?employerUserId=' + encodeURIComponent(personalInformation.id);
 
       let response = await fetch(requestUrl,
         {
@@ -204,6 +205,11 @@ const UsersPage = () => {
         setFieldValue('invitedToEmployerId', '');
         setFieldValue('invitedEmail', '');
         await bindUsers();
+
+        if (keycloak.tokenParsed.roles.includes('admin')) {
+          var allEmployerUsers = await getAllEmployerUsers(keycloak);
+          dispatch({ type: EMPLOYER_USERS_GET, payload: allEmployerUsers });
+        }
       } catch (error) {
         console.error(error);
       }

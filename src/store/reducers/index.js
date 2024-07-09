@@ -7,6 +7,7 @@ import snackbar from './snackbar';
 import personalInformation from './personalInformation';
 import invoice from './invoice';
 import loadingDetails from './loadingDetails';
+import employerUsers from './employerUsers';
 // ==============================|| COMBINE REDUCERS ||============================== //
 
 const reducers = combineReducers({
@@ -14,7 +15,8 @@ const reducers = combineReducers({
   snackbar,
   personalInformation,
   invoice,
-  loadingDetails
+  loadingDetails,
+  employerUsers
 });
 
 export default reducers;

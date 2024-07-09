@@ -10,6 +10,7 @@ import {
   ListItemAvatar,
   ListItemIcon,
   ListItemText,
+  ListItemSecondaryAction,
   Stack,
   Typography,
   Chip
@@ -21,10 +22,11 @@ import IconButton from 'components/@extended/IconButton';
 import { openSnackbar } from 'store/reducers/snackbar';
 
 // assets
-import { MailOutlined, UserDeleteOutlined } from '@ant-design/icons';
+import { AuditOutlined, MailOutlined, UserDeleteOutlined, UserOutlined, UserAddOutlined, SecurityScanOutlined, FormOutlined } from '@ant-design/icons';
 import {prepareApiBody, getNoQuotesString } from 'utils/stringUtils';
 import { useKeycloak } from '@react-keycloak/web';
 import { useDispatch } from 'react-redux';
+import { format } from 'date-fns';
 
 const avatarImage = require.context('assets/images/users', true);
 
@@ -126,7 +128,7 @@ const UserCard = ({ user, bindUsers }) => {
   return (
     <>
       <MainCard sx={{ height: 1, '& .MuiCardContent-root': { height: 1, display: 'flex', flexDirection: 'column' } }}>
-        <Grid id="print" container spacing={2.25}>
+        <Grid id="print" container spacing={3.5}>
           <Grid item xs={12}>
             <List sx={{ width: 1, p: 0 }}>
               <ListItem
@@ -145,56 +147,143 @@ const UserCard = ({ user, bindUsers }) => {
               </ListItem>
             </List>
           </Grid>
-          <Grid item xs={12}>
-            <Divider />
-          </Grid>
 
           <Grid item xs={12}>
-            <Grid container spacing={1}>
+            <Grid container spacing={2}>
               <Grid item xs={12}>
-                <List sx={{ p: 0, overflow: 'hidden', '& .MuiListItem-root': { px: 0, py: 0.5 } }}>
-                  {user?.email &&
-                    <ListItem>
-                      <ListItemIcon>
-                        <MailOutlined />
-                      </ListItemIcon>
-                      <ListItemText
-                        primary={
+                <Stack direction="column" spacing={1}>
+                    <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                      User details
+                    </Typography>
+                    <Divider />
+                    <List sx={{ p: 0, overflow: 'hidden', '& .MuiListItem-root': { px: 0, py: 0 } }}>
+                      <ListItem>
+                        <ListItemIcon>
+                          <MailOutlined />
+                        </ListItemIcon>
+                        <ListItemText>
+                          Email
+                        </ListItemText>
+                        <ListItemSecondaryAction>
                           <Link href={'mailto:' + user?.email} target="_blank" sx={{ textTransform: 'lowercase' }}>
                             {user?.email}
                           </Link>
-                        }
-                      />
-                    </ListItem>}
-                </List>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <ListItem>
+                        <ListItemIcon>
+                          <SecurityScanOutlined />
+                        </ListItemIcon>
+                        <ListItemText>
+                          Email verified
+                        </ListItemText>
+                        <ListItemSecondaryAction>
+                          <Typography>
+                            {user?.emailVerified ? 'yes' : 'no'}
+                          </Typography>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <ListItem>
+                        <ListItemIcon>
+                          <UserOutlined />
+                        </ListItemIcon>
+                        <ListItemText>
+                          Name
+                        </ListItemText>
+                        <ListItemSecondaryAction>
+                          {(user?.firstName ?? '') + ' ' + (user?.lastName ?? '')}
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <ListItem>
+                        <ListItemIcon>
+                          <AuditOutlined />
+                        </ListItemIcon>
+                        <ListItemText>
+                          Status
+                        </ListItemText>
+                        <ListItemSecondaryAction>
+                          <Chip color={user?.userStatus === 'Registered' ? 'success' : 'primary'} size="small" label={user?.userStatus} />
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <ListItem>
+                        <ListItemIcon>
+                          <UserAddOutlined />
+                        </ListItemIcon>
+                        <ListItemText>
+                          Invited on
+                        </ListItemText>
+                        <ListItemSecondaryAction>
+                          {user?.invitedOnUtc ? format(new Date(user?.invitedOnUtc), "yyyy-MM-dd hh:mm") : ''}
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <ListItem>
+                        <ListItemIcon>
+                          <FormOutlined />
+                        </ListItemIcon>
+                        <ListItemText>
+                          Registered on
+                        </ListItemText>
+                        <ListItemSecondaryAction>
+                          {user?.registeredOnUtc ? format(new Date(user?.registeredOnUtc), "yyyy-MM-dd hh:mm") : ''}
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                    </List>
+                </Stack>
               </Grid>
               <Grid item xs={12}>
-                <Chip color={user?.userStatus === 'Confirmed' ? 'success' : 'primary'} size="small" label={user?.userStatus} />
-              </Grid>
-              <Grid item xs={12}>
-                {user?.employers.map((employer, employerIndex) => (
-                  <Stack key={employerIndex} direction="row" justifyContent="space-between" alignItems="center">
-                    <Stack direction="row" spacing={0.5} alignItems="center">
-                      <Typography color="secondary">
-                        {employer?.roles?.map((role, roleIndex) => {return role + (roleIndex + 1 === employer.roles.length ? '' : ', ')})}
-                      </Typography>
-                      <Typography>
-                        @
-                      </Typography>
-                      <Typography>
-                        {employer?.employerName}
-                      </Typography>
-                    </Stack>
-                    <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={0.5}>
-                      <IconButton onClick={() => { handleArchiveUserEmployerLink(user?.id, employer?.employerId); }} size="medium" color="error">
-                        <UserDeleteOutlined />
-                      </IconButton>
-                    </Stack>
-                  </Stack>
-                ))}
-                  
-              </Grid>
+                <Stack direction="column" spacing={1}>
+                  <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                    Company roles
+                  </Typography>
+                  <Divider />
+                  <List sx={{ p: 0, overflow: 'hidden', '& .MuiListItem-root': { px: 0, py: 0 } }}>
+                    {user?.employers?.map((employer, employerIndex) => (
+                      <ListItem key={employerIndex}>
+                        <ListItemText>
+                          <Stack direction="row" spacing={0.5} alignItems="center">
+                            <Typography color="secondary">
+                              {employer?.roles?.map((role, roleIndex) => {return role + (roleIndex + 1 === employer.roles.length ? '' : ', ')})}
+                            </Typography>
+                            <Typography>
+                              @
+                            </Typography>
+                            <Typography>
+                              {employer?.employerName}
+                            </Typography>
+                          </Stack>
+                        </ListItemText>
+                        <ListItemSecondaryAction>
+                          <IconButton onClick={() => { handleArchiveUserEmployerLink(user?.id, employer?.employerId); }} size="medium" sx={{width: '24px', height: '24px'}} color="error">
+                            <UserDeleteOutlined />
+                          </IconButton>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                    ))}
 
+                    {user?.archivedEmployers?.map((employer, employerIndex) => (
+                      <ListItem key={employerIndex}>
+                        <ListItemText>
+                          <Stack direction="row" spacing={0.5} alignItems="center">
+                            <Typography color="secondary">
+                              {employer?.roles?.map((role, roleIndex) => {return role + (roleIndex + 1 === employer.roles.length ? '' : ', ')})}
+                            </Typography>
+                            <Typography>
+                              @
+                            </Typography>
+                            <Typography>
+                              {employer?.employerName}
+                            </Typography>
+                          </Stack>
+                        </ListItemText>
+                        <ListItemSecondaryAction>
+                          <Chip color="error" size="small" label="Archived" />
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                    ))}
+
+                  </List>
+                </Stack>
+              </Grid>
             </Grid>
           </Grid>
           

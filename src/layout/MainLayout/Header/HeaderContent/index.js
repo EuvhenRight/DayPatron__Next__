@@ -1,5 +1,7 @@
-import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getAllEmployerUsers } from '_api/employerUsers';
+import { EMPLOYER_USERS_GET } from 'store/reducers/actions';
 import { Autocomplete, TextField, Box, useMediaQuery } from '@mui/material';
 import { useKeycloak } from '@react-keycloak/web';
 
@@ -12,8 +14,9 @@ import MobileSection from './MobileSection';
 // ==============================|| HEADER - CONTENT ||============================== //
 
 const HeaderContent = () => {
+  const dispatch = useDispatch();
   const adminSelectedEmployerUser = useSelector(state => state.personalInformation);
-  const [employerUsers, setEmployerUsers] = useState([]);
+  const employerUsers = useSelector(state => state.employerUsers);
 
   const matchesXs = useMediaQuery((theme) => theme.breakpoints.down('md'));
   const { keycloak } = useKeycloak();
@@ -40,33 +43,27 @@ const HeaderContent = () => {
     if (user.userName === keycloak.idTokenParsed.preferred_username) {
       prefix = '<ME> ';
     }
-    let result = prefix + user?.firstName + ' ' + user?.lastName + ' (' + user?.email + ')';
+
+    let fullName = '';
+    if(user?.firstName && user?.lastName)
+      fullName = user?.firstName + ' ' + user?.lastName;
+    else if(user?.firstName)
+      fullName = user?.firstName;
+    else if(user?.lastName)
+      fullName = user?.lastName;
+
+    let emailPrefix = fullName ? ' (' : '';
+    let emailSuffix = fullName ? ')' : '';
+
+    let result = prefix + fullName + emailPrefix + user?.email + emailSuffix + ' - ' + user?.userStatus;
     return result;
   }
-
-  const bindEmployerUsers = async () => {
-    try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/employers/users',
-        {
-          method: 'GET',
-          headers: {
-            'Authorization': 'Bearer ' + keycloak.idToken
-          }
-        }
-      );
-
-      let json = await response.json();
-
-      setEmployerUsers(json.users);
-    } catch (error) {
-      return { success: false };
-    }
-  }
-
+  
   useEffect(() => {
     (async () => {
       if (keycloak.tokenParsed.roles.includes('admin')) {
-        await bindEmployerUsers();
+        var users = await getAllEmployerUsers(keycloak);
+        dispatch({ type: EMPLOYER_USERS_GET, payload: users });
       }
     })();
   }, [keycloak?.tokenParsed?.roles, keycloak?.idToken]);
