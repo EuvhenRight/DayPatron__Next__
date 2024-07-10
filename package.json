@@ -62,6 +62,8 @@
     "simplebar": "^5.3.8",
     "simplebar-react": "^2.4.1",
     "stream-browserify": "^3.0.0",
+    "stream-chat": "^8.37.0",
+    "stream-chat-react": "^11.23.2",
     "stylis-plugin-rtl": "^2.1.1",
     "util": "^0.12.4",
     "web-vitals": "^3.0.3",

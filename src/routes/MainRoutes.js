@@ -45,6 +45,8 @@ const EmployerMissionServiceOrderPage = Loadable(lazy(() => import('pages/employ
 const EmployerSubscriptionServiceOrderPage = Loadable(lazy(() => import('pages/employer-subscription-service-order-page')));
 const ContractorSubscriptionServiceOrderPage = Loadable(lazy(() => import('pages/contractor-subscription-service-order-page')));
 
+const MessagingPage = Loadable(lazy(() => import('pages/messaging-page')));
+
 const InvoicesPage = Loadable(lazy(() => import('pages/invoices-page')));
 const InvoiceSettingsPage = Loadable(lazy(() => import('pages/invoice-settings-page')));
 const SubscriptionPlanTemplatesPage = Loadable(lazy(() => import('pages/subscription-plan-templates-page')));
@@ -202,6 +204,10 @@ const MainRoutes = {
         {
           path: 'orders/subscription/:orderId/talent-service-order/:role',
           element: <ContractorSubscriptionServiceOrderPage />
+        },
+        {
+          path: 'messaging',
+          element: <MessagingPage />
         },
         {
           path: 'invoices/settings',

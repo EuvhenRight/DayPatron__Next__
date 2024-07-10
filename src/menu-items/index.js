@@ -14,7 +14,8 @@ import {
   ShoppingCartOutlined,
   QuestionCircleOutlined,
   FileOutlined,
-  CheckCircleOutlined
+  CheckCircleOutlined,
+  MessageOutlined
 } from '@ant-design/icons';
 
 // icons
@@ -30,7 +31,8 @@ const icons = {
   ShoppingCartOutlined,
   QuestionCircleOutlined,
   FileOutlined,
-  CheckCircleOutlined
+  CheckCircleOutlined,
+  MessageOutlined
 };
 
 // ==============================|| MENU ITEMS ||============================== //
@@ -118,6 +120,20 @@ const menuItems = {
           type: 'item',
           url: '/orders',
           icon: icons.ShoppingCartOutlined
+        }
+      ]
+    },
+    {
+      id: 'communication',
+      title: <FormattedMessage id="communication" />,
+      type: 'group',
+      children: [
+        {
+          id: 'messaging',
+          title: <FormattedMessage id="messaging" />,
+          type: 'item',
+          url: '/messaging',
+          icon: icons.MessageOutlined
         }
       ]
     },
