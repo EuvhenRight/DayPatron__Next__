@@ -12,6 +12,7 @@ export const publicRoutes = [
 	'/where-to-buy',
 	'/images/*',
 	'/icons/*',
+	'/videos/*',
 	'/privacy',
 ]
 
