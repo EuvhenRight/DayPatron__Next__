@@ -25,7 +25,7 @@ export const ProductsCard = ({ product }: Props) => {
 				<div className='flex flex-col items-center'>
 					<Image
 						className='w-56'
-						src={`/images/${product.image[0].url}`}
+						src={`/images/${product.image[3].url}`}
 						width={1000}
 						height={1000}
 						alt={product.name}
