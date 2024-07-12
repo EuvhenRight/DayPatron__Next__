@@ -7,7 +7,7 @@ interface Props {
 
 export const FeaturedCard = ({ item }: Props) => {
 	return (
-		<motion.div whileHover={{ scale: 1.1 }}>
+		<motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
 			<Link href={item.url} target='_blank' rel='noreferrer'>
 				<div className='hover:border-slate-400 hover:transition hover:ease-in-out hover:delay-150'>
 					<Image

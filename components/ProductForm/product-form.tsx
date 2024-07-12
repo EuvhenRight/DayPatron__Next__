@@ -115,7 +115,7 @@ export const ProductForm = ({ product, cart }: Props) => {
 					) : (
 						<Button
 							variant={'destructive'}
-							className='p-2 my-2 text-lg hover:scale-110 transition-all ease-in-out'
+							className='p-2 my-2 text-lg hover:scale-110 transition-all ease-in-out duration-300'
 							size='lg'
 							disabled={!stock}
 							onClick={() => {
