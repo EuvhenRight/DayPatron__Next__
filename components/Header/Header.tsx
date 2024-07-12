@@ -135,7 +135,7 @@ export const Header = ({ cart }: Props) => {
 										href='/auth/register'
 										onClick={() => toggleActive('/auth/register')}
 									>
-										<button className='w-8 h-8 cursor-pointer'>
+										<button className='w-8 h-8 cursor-pointer text-white'>
 											<AiOutlineUser className='w-full h-full' />
 										</button>
 									</Link>
