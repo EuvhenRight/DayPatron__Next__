@@ -3,7 +3,7 @@ import { MissionInfo } from '@/components/Mission-Info/mission'
 
 export default function Home() {
 	return (
-		<section className='container'>
+		<>
 			<div>
 				<video
 					src={`${process.env.PUBLIC_VIDEO_URL}/video2.mp4`}
@@ -11,15 +11,17 @@ export default function Home() {
 					loop
 					muted
 					playsInline
-					className='top-0 left-0 h-full w-full'
+					className='top-0 left-0 h-full w-full aspect-video object-cover'
 				/>
 			</div>
-			<div>
-				<MissionInfo />
-			</div>
-			<div>
-				<FeaturedOn />
-			</div>
-		</section>
+			<section className='container'>
+				<div>
+					<MissionInfo />
+				</div>
+				<div>
+					<FeaturedOn />
+				</div>
+			</section>
+		</>
 	)
 }

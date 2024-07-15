@@ -6,7 +6,7 @@ const Products = async () => {
 	// FETCH ALL PRODUCTS
 	const dataProducts = await getAllProducts()
 	return (
-		<div className='flex flex-col items-center justify-center'>
+		<div className='flex flex-col items-center justify-center container'>
 			<BreadcrumbProduct />
 			<CarouselMixCards dataProducts={dataProducts} />
 		</div>

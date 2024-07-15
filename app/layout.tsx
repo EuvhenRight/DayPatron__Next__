@@ -4,6 +4,7 @@ import { Header } from '@/components/Header/Header'
 import { SessionProvider } from 'next-auth/react'
 import { Mulish } from 'next/font/google'
 
+import Footer from '@/components/Footer/Footer'
 import { Toaster } from '@/components/ui/sonner'
 import { getCart } from '@/lib/db/cart'
 import type { Metadata } from 'next'
@@ -32,6 +33,7 @@ async function RootLayout({ children }: { children: React.ReactNode }) {
 						{children}
 						<Toaster richColors />
 					</main>
+					<Footer />
 				</body>
 			</html>
 		</SessionProvider>

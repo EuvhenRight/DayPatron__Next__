@@ -70,7 +70,7 @@ export const ProductForm = ({ product, cart }: Props) => {
 	}, [cart, product, currentIndex])
 
 	return (
-		<section className='xl:container xl:mx-auto lg:pt-5 relative px-2'>
+		<section className='relative'>
 			<div className='flex lg:flex-row flex-col lg:justify-center'>
 				<div className='lg:w-1/2'>
 					{/* IMAGE LIST */}
@@ -137,8 +137,8 @@ export const ProductForm = ({ product, cart }: Props) => {
 							{product.shelfLife}
 						</p>
 						<p className='py-2'>
-							<b>характеристики: </b>
-							{product.specification}
+							<b>склад: </b>
+							{product.ingredients}
 						</p>
 						<p className='py-2'>
 							<b>використання: </b>

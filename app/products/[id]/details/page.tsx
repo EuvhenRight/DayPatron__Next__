@@ -1,3 +1,4 @@
+import { AdvantagesWrapper } from '@/components/Advantages/advantages-wrapper'
 import { ProductForm } from '@/components/ProductForm/product-form'
 import { getCart } from '@/lib/db/cart'
 import { getProduct } from '@/lib/db/products'
@@ -28,7 +29,12 @@ const ProductDetails = async ({ params: { id } }: Props) => {
 	const [cart, product] = await Promise.all([getCart(), getProduct(id)])
 	return (
 		<>
-			<ProductForm product={product} cart={cart} />
+			<section className='container pt-8'>
+				<ProductForm product={product} cart={cart} />
+			</section>
+			<section className='pt-14'>
+				<AdvantagesWrapper product={product} />
+			</section>
 		</>
 	)
 }

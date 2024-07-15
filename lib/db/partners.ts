@@ -1,7 +1,7 @@
 export const partners = [
 	{
 		image: 'Rozetka.png',
-		url: 'https://hunter.rozetka.com.ua/gun_care/c232621',
+		url: 'https://hunter.rozetka.com.ua/gun_care/c232621/producer=day-patron/',
 	},
 	{
 		image: 'Epicentr.svg',
