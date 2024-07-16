@@ -50,17 +50,21 @@ export const Header = ({ cart }: Props) => {
 	useEffect(() => {
 		const handleScroll = () => {
 			const currentScrollY = window.scrollY
-			if (currentScrollY > prevScrollY) {
-				// Scrolling down
-				setShowMarquee(false)
-			} else {
-				// Scrolling up
+
+			if (currentScrollY === 0) {
+				// SCROLL TO TOP - SHOW MARQUEE
 				setShowMarquee(true)
+			} else if (currentScrollY > prevScrollY) {
+				// SCROLL DOWN - HIDE MARQUEE
+				setShowMarquee(false)
 			}
+
+			// SAVE CURRENT SCROLL POSITION
 			setPrevScrollY(currentScrollY)
 		}
 
 		window.addEventListener('scroll', handleScroll)
+
 		return () => {
 			window.removeEventListener('scroll', handleScroll)
 		}
@@ -78,7 +82,6 @@ export const Header = ({ cart }: Props) => {
 						transition={{
 							type: 'tween',
 							stiffness: 500,
-							damping: 50,
 						}}
 						className='bg-neutral-800 border-b border-white py-1'
 					>

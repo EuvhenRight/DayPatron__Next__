@@ -51,19 +51,13 @@ export const Advantages = ({ category }: Props) => {
 	return (
 		<div className='text-white flex flex-col md:flex-row justify-around items-center'>
 			<div className='lg:w-40 lg:h-40 w-20 h-20 rounded-full bg-white shadow-xl'>
-				<motion.div
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					whileHover={{ scale: 1.1 }}
-				>
-					<Image
-						src={image}
-						alt={category}
-						width={200}
-						height={200}
-						className='lg:w-40 lg:h-40 w-20 h-20'
-					/>
-				</motion.div>
+				<Image
+					src={image}
+					alt={category}
+					width={200}
+					height={200}
+					className='lg:w-40 lg:h-40 w-20 h-20'
+				/>
 			</div>
 			{items.map((item, index) => (
 				<div key={index} className='flex gap-10 pt-6 lg:pt-0'>
