@@ -38,18 +38,20 @@ const MessagingPage = () => {
   const client = useCreateChatClient({
     apiKey,
     tokenOrProvider: userToken,
-    userData: user,
+    userData: user
   });
 
   useEffect(() => {
-    if (!client) return;
-    alert(client);
-    client.channel('messaging', 'custom_channel_id', {
-      image: 'https://getstream.io/random_png/?name=react',
-      name: 'Talk about React',
-      members: [userId],
-    });
-
+    (async () => {
+      if (!client) return;
+    
+      var channel = client.channel('messaging', 'tzzzt', {
+        image: 'https://getstream.io/random_png/?name=react',
+        name: 'Talk about React',
+        members: [userId],
+      });
+      await channel.create();
+    })();
   }, [client]);
 
   if (!client) return <div>Setting up client & connection...</div>;
@@ -61,7 +63,7 @@ const MessagingPage = () => {
         <Window>
           <ChannelHeader />
           <MessageList />
-          <MessageInput />
+          <MessageInput audioRecordingEnabled />
         </Window>
         <Thread />
       </Channel>
