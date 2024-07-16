@@ -8,18 +8,20 @@ export const Marquee: React.FC = () => {
 			<div className='flex items-center animate-marquee justify-between'>
 				<Image
 					src='/images/ukraine.svg'
+					priority={true}
 					alt='Marquee'
-					width={50}
+					width={75}
 					height={50}
-					className='mx-4 h-8'
+					className='mx-4 h-8 aspect-auto'
 				/>
 				<span className='mx-4 text-white'>{phrase}</span>
 				<Image
 					src='/images/ukraine.svg'
+					priority={true}
 					alt='Marquee'
-					width={50}
+					width={75}
 					height={50}
-					className='mx-4 h-8'
+					className='mx-4 h-8 aspect-auto'
 				/>
 			</div>
 		</div>

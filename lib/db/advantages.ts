@@ -2,7 +2,7 @@ export const advantageProps = [
 	{
 		category: 'Carbon-Cleaner',
 		image: '/images/cleaner_tr.svg',
-		color: '-sky-600',
+		color: 'sky-500',
 		items: [
 			{
 				icon: '/icons/step-1.svg',
@@ -24,7 +24,7 @@ export const advantageProps = [
 	{
 		category: 'Copper-Cleaner',
 		image: '/images/cleaner_tr.svg',
-		color: '-sky-600',
+		color: 'sky-500',
 		items: [
 			{
 				icon: '/icons/step-1.svg',
@@ -46,7 +46,7 @@ export const advantageProps = [
 	{
 		category: 'CPL',
 		image: '/images/clp_tr.svg',
-		color: '-lime-600',
+		color: 'lime-500',
 		items: [
 			{
 				icon: '/icons/all-in-one.svg',
@@ -68,7 +68,7 @@ export const advantageProps = [
 	{
 		category: 'Liquidator',
 		image: '/images/liquidator_tr.svg',
-		color: '-gray-100',
+		color: 'gray-100',
 		items: [
 			{
 				icon: '/icons/step-1-2.svg',
@@ -90,7 +90,7 @@ export const advantageProps = [
 	{
 		category: 'Oil',
 		image: '/images/oil_tr.svg',
-		color: '-amber-600',
+		color: 'amber-600',
 		items: [
 			{
 				icon: '/icons/step-3.svg',
@@ -112,7 +112,7 @@ export const advantageProps = [
 	{
 		category: 'Protect-Oil',
 		image: '/images/protect_tr.svg',
-		color: '-yellow-600',
+		color: 'yellow-600',
 		items: [
 			{
 				icon: '/icons/step-3P.svg',

@@ -168,7 +168,8 @@ export const SliderWithProducts = ({
 				<div className='w-1/2 lg:w-full lg:h-auto'>
 					<Zoom>
 						<Image
-							src={imageUrl!}
+							src={imageUrl || '/images/DayLogo.svg'}
+							priority={true}
 							className={`cursor-zoom-in w-auto h-auto lg:px-24 lg:max-h-[500px] xl:max-h-[650px] object-contain ${
 								// APPLY ANIMATION CLASS
 								animate ? 'animate-slide-right' : ''

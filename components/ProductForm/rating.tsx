@@ -1,13 +1,17 @@
 'use client'
-import StarRating from 'react-star-ratings'
+import dynamic from 'next/dynamic'
 interface Props {
 	currentRating: number
 }
 
 export const RatingProducts = ({ currentRating }: Props) => {
+	const NoSSRStarRating = dynamic(() => import('react-star-ratings'), {
+		ssr: false,
+	})
+
 	return (
 		<div>
-			<StarRating
+			<NoSSRStarRating
 				rating={currentRating}
 				starRatedColor='orange'
 				starDimension='26px'

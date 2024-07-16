@@ -16,7 +16,7 @@ export const AdvantagesWrapper = ({ product }: Props) => {
 	const { color } = properties(category)!
 	return (
 		<div
-			className={`bg-[url('/images/carbon.jpg')] bg-no-repeat relative bg-cover bg-center h-[400px] border${color} border-y-4 flex items-center`}
+			className={`bg-[url('/images/carbon.jpg')] bg-no-repeat relative bg-cover bg-center h-auto py-4 md:py-10 border-${color} border-y-4 flex items-center`}
 		>
 			<div className='inset-0 opacity-85 w-full'>
 				<Advantages category={category} />

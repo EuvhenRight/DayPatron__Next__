@@ -26,7 +26,7 @@ export const Advantages = ({ category }: Props) => {
 	}
 	// DESTRUCTURE PROPERTIES
 	const { image, items, color } = properties(category)!
-	console.log(color)
+
 	if (!properties) {
 		console.error(`Properties not found for category: ${category}`)
 		return null
@@ -49,8 +49,8 @@ export const Advantages = ({ category }: Props) => {
 	}
 
 	return (
-		<div className='text-white flex justify-around items-center'>
-			<div className='w-20 h-20 md:w-64 md:h-64 rounded-full bg-white shadow-xl'>
+		<div className='text-white flex flex-col md:flex-row justify-around items-center'>
+			<div className='lg:w-40 lg:h-40 w-20 h-20 rounded-full bg-white shadow-xl'>
 				<motion.div
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
@@ -61,32 +61,34 @@ export const Advantages = ({ category }: Props) => {
 						alt={category}
 						width={200}
 						height={200}
-						className='md:w-64 md:h-64 w-20 h-20'
+						className='lg:w-40 lg:h-40 w-20 h-20'
 					/>
 				</motion.div>
 			</div>
 			{items.map((item, index) => (
-				<div key={index} className='flex gap-10'>
+				<div key={index} className='flex gap-10 pt-6 lg:pt-0'>
 					<motion.div
 						initial='offscreen'
 						whileInView='onscreen'
 						variants={cardVariants}
 						viewport={{ once: true, amount: 0.15 }}
 						whileHover={{ scale: 1.1 }}
-						className='flex flex-col items-center w-[300px] text-center'
+						className='flex flex-col items-center w-[140px] lg:w-[280px] text-center'
 					>
 						<Image
 							src={item.icon}
 							alt={item.title}
 							width={150}
 							height={150}
-							className='mr-2'
+							className='mr-2 lg:w-36 lg:h-36 w-16 h-16'
 						/>
 						<div>
-							<h2 className={`text-xl uppercase font-bold text${color} py-4`}>
+							<h2
+								className={`text-${color} text-sm lg:text-xl uppercase font-bold py-4`}
+							>
 								{item.title}
 							</h2>
-							<p className='font-light text-lg'>{item.text}</p>
+							<p className='font-light text-sm lg:text-lg'>{item.text}</p>
 						</div>
 					</motion.div>
 				</div>

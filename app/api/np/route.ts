@@ -2,16 +2,17 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest) {
 	const jwtToken =
-		'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJucCIsImlhdCI6MTcxODM2MjE3NSwiZXhwIjoxNzE4MzY1Nzc1LCJzcmMiOiJhcGkyIiwicmVmIjoiMTlmZGQ1ZTAtZWQ4Yi0xMWU3LWJlY2YtMDA1MDU2ODgxYzZiIiwiY2lkIjoiIiwic3ViIjoiZXlKcGRpSTZJblZEU2tseFNrNDVUalZwZW5sYVduWm1NV05EUzNjOVBTSXNJblpoYkhWbElqb2lSR3h4TVdkTmFWQktha0l5VWl0cU1uaFFVbmhvWlRKSmIzbE9aRU5NTDNKSU5rbDBPUzl6VDJaMFdWQnViVGx1Wm1OSVZXWkNURVJoUlVaalRVNTBTQ0lzSW0xaFl5STZJamhpWTJOaU1XRmlOR1V6TURrNE5ESmpaV1UzWkROa01HSXdNamcxTVRFeE16ZGlOV0UyTWpBMk1EWm1aV00yTnpZMll6WXhNV1JrWmpSaU9HWTJaVEVpTENKMFlXY2lPaUlpZlE9PSJ9.nVpqdVSJSNZfMrphcRmd9SN4zyWrxDeQyTujTOSpSY4'
+		'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJucCIsImlhdCI6MTcyMTEzOTEyNCwiZXhwIjoxNzIxMTQyNzI0LCJzcmMiOiJhcGkyIiwicmVmIjoiMTlmZGQ1ZTAtZWQ4Yi0xMWU3LWJlY2YtMDA1MDU2ODgxYzZiIiwiY2lkIjoiIiwic3ViIjoiZXlKcGRpSTZJbFI2YTFSclZqZFhjWE5OY3podldrSkhSMWhFVUhjOVBTSXNJblpoYkhWbElqb2lWSEphWmpCVmRtUkJMMDFDWjB0bGFrZDFTRkZUU3k5dVlXNU5ORTlJWlc1RVVtaHlSa3BEWkRSYVRYTlVSalJQU0hwb1ZtVk1Temg0TlhscFdHeHhSaUlzSW0xaFl5STZJbUU1WWpoa1pUVTBaVGRqTmpkalpUVmxPRFJqTWpaaE1tTTFaamt3WkRKbVpETmpPREExTm1OaFlqa3lZMlJqWVRFME16aGxNalF5WVdaaFlXSTRPR1FpTENKMFlXY2lPaUlpZlE9PSJ9.nteh2NUqL4xadX4AM91UmcpJ6GmOmFaQeGWu0784DWI'
 
-	const url = 'https://api.novapost.com/v.1.0/divisions?limit=1&page=1'
+	const url =
+		'https://api.novapost.com/v.1.0/divisions?countryCodes%5B%5D=UA&limit=10&page=1'
 
 	try {
 		const response = await fetch(url, {
 			method: 'GET',
 			headers: {
 				Accept: 'application/json',
-				Authorization: `Bearer ${jwtToken}`,
+				Authorization: jwtToken,
 			},
 		})
 
@@ -20,7 +21,7 @@ export async function GET(request: NextRequest) {
 		}
 
 		const data = await response.json()
-		NextResponse.json(data)
+		return NextResponse.json(data)
 	} catch (error) {
 		// Handle errors and return an appropriate response
 		return NextResponse.json(
