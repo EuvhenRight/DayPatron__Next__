@@ -351,6 +351,54 @@ const ProfilePersonal = () => {
                 <Button disabled={isSubmitting || Object.keys(errors).length !== 0} type="submit" variant="contained">
                   Save
                 </Button>
+                {keycloak.tokenParsed.roles.includes('admin') &&
+                  <Button variant="contained" onClick={async () => {
+                    try {
+                      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/cdn-images/' + encodeURIComponent(state.id),
+                        {
+                          method: 'PUT',
+                          headers: {
+                            'Authorization': 'Bearer ' + keycloak.idToken,
+                            'Content-Type': 'application/json'
+                          }
+                        }
+                      );
+          
+                      if (!response.ok) {
+                        dispatch(
+                          openSnackbar({
+                            open: true,
+                            message: 'CDN failed.',
+                            variant: 'alert',
+                            alert: {
+                              color: 'error'
+                            },
+                            close: false
+                          })
+                        );
+          
+                        return;
+                      }
+                
+                      dispatch(
+                        openSnackbar({
+                          open: true,
+                          message: 'CDN success.',
+                          variant: 'alert',
+                          alert: {
+                            color: 'success'
+                          },
+                          close: false
+                        })
+                      );
+          
+                    } catch (err) {
+                      console.log(err);
+                    }
+                  }}>
+                    CDN
+                  </Button>
+                }
               </Stack>
             </Box>
           </form>
