@@ -892,7 +892,7 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                               {format(new Date(professionalExperience?.startDateUtc), 'MMM y')}&nbsp;-&nbsp;{professionalExperience?.endDateUtc ? format(new Date(professionalExperience?.endDateUtc), 'MMM y') : 'Present'}
                             </Typography>
                             <Typography align="left" variant="body1">
-                              {professionalExperience?.description}
+                              <SanitizedHTML html={professionalExperience?.description} />
                             </Typography>
                           </Grid>
                         </Grid>
@@ -943,7 +943,7 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                               {format(new Date(education?.startDateUtc), 'MMM y')}&nbsp;-&nbsp;{education?.endDateUtc ? format(new Date(education?.endDateUtc), 'MMM y') : 'Present'}
                             </Typography>
                             <Typography align="left" variant="body1">
-                              {education?.description}
+                              <SanitizedHTML html={education?.description} />
                             </Typography>
                           </Grid>
                         </Grid>
