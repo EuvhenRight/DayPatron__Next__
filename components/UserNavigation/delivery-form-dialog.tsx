@@ -20,7 +20,7 @@ import { ValidationSchema } from '@/lib/db/validation'
 import { DeliveryWithItems } from '@/lib/types/types'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
@@ -47,6 +47,7 @@ export const DeliveryFormDialog = ({
 			? {
 					typeOfDelivery: '',
 					branchNumber: '',
+					city: '',
 			  }
 			: {
 					typeOfDelivery: '',
@@ -95,6 +96,13 @@ export const DeliveryFormDialog = ({
 			console.error(error, 'Щось пішло не так, спробуйте ще раз')
 		}
 	}
+	// EFFECT AND HANDLERS
+	useEffect(() => {
+		if (isOpen) {
+			setTypeOfDelivery('')
+			form.reset(getDefaultValues(''))
+		}
+	}, [isOpen, setTypeOfDelivery, form])
 
 	return (
 		<Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -135,6 +143,24 @@ export const DeliveryFormDialog = ({
 													type='text'
 													{...field}
 													placeholder='Вкажи номер відділення'
+												/>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								{/* CITY */}
+								<FormField
+									control={form.control}
+									name='city'
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Населений пункт</FormLabel>
+											<FormControl>
+												<Input
+													type='text'
+													{...field}
+													placeholder='Вкажи назву населеного пункту'
 												/>
 											</FormControl>
 											<FormMessage />

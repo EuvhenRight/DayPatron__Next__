@@ -85,6 +85,10 @@ export const DeliveryForm = ({ onChange, currentDelivery }: Props) => {
 													Номер відділення:
 												</Label>
 												{item.branchNumber}
+												<Label className='px-3 font-bold'>
+													Населений пункт:
+												</Label>
+												{item.city}
 											</div>
 										) : (
 											<>

@@ -62,18 +62,6 @@ type OrderItem = {
 	quantity: number
 }
 
-// export type DeliveryItem = {
-// 	typeOfDelivery: string
-// 	branchNumber?: string
-// 	city?: string
-// 	street?: string
-// 	houseNumber?: number
-// 	additionNumber?: string
-// 	apartmentNumber?: number
-// 	zipCode?: string
-// 	deliveryId: string
-// }
-
 export type OrderFormTest = Prisma.OrderCreateInput & {
 	extra_user: ExtraUser
 	payment: string

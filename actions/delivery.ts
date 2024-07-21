@@ -1,10 +1,13 @@
 'use server'
 import prisma from '@/lib/db/client'
 import { createDelivery, getDelivery } from '@/lib/db/delivery'
+import { DeliveryWithItems } from '@/lib/types/types'
 import { DeliveryItem } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
 
-export async function addItemDelivery(data: DeliveryItem) {
+export async function addItemDelivery(
+	data: DeliveryItem
+): Promise<DeliveryWithItems> {
 	// FIND EXISTING CART
 	const delivery = (await getDelivery()) ?? (await createDelivery())
 
@@ -28,13 +31,7 @@ export async function addItemDelivery(data: DeliveryItem) {
 
 	revalidatePath('/dashboard/profile')
 
-	return {
-		id: delivery?.id!,
-		createdAt: delivery?.createdAt!,
-		updatedAt: delivery?.updatedAt!,
-		userId: delivery?.userId!,
-		items: delivery?.items!,
-	}
+	return { ...delivery }
 }
 
 export async function editItemDelivery(itemId: string, data: DeliveryItem) {
@@ -55,13 +52,7 @@ export async function editItemDelivery(itemId: string, data: DeliveryItem) {
 	revalidatePath('/dashboard/profile')
 
 	// Construct and return the response object with default values
-	return {
-		id: delivery?.id!,
-		createdAt: delivery?.createdAt!,
-		updatedAt: delivery?.updatedAt!,
-		userId: delivery?.userId!,
-		items: delivery?.items!,
-	}
+	return { ...delivery }
 }
 
 export async function deleteItemDelivery(itemId: string) {

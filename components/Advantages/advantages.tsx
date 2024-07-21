@@ -2,18 +2,6 @@
 import { advantageProps } from '@/lib/db/advantages'
 import { motion, Variants } from 'framer-motion'
 import Image from 'next/image'
-interface AdvantageItem {
-	icon: string
-	title: string
-	text: string
-}
-
-interface AdvantageProps {
-	category: string
-	color: string
-	image: string
-	items: AdvantageItem[]
-}
 
 interface Props {
 	category: string
@@ -31,6 +19,16 @@ export const Advantages = ({ category }: Props) => {
 		console.error(`Properties not found for category: ${category}`)
 		return null
 	}
+
+	const colorVariants = {
+		oil: 'text-amber-600',
+		copper: 'text-sky-500',
+		clp: 'text-lime-500',
+		protect: 'text-yellow-500',
+		carbon: 'text-sky-500',
+		liquidator: 'text-gray-100',
+	}
+
 	// ANIMATION
 	const cardVariants: Variants = {
 		offscreen: {
@@ -78,7 +76,7 @@ export const Advantages = ({ category }: Props) => {
 						/>
 						<div>
 							<h2
-								className={`text-${color} text-sm lg:text-xl uppercase font-bold py-4`}
+								className={`${color} text-sm lg:text-xl uppercase font-bold py-4`}
 							>
 								{item.title}
 							</h2>

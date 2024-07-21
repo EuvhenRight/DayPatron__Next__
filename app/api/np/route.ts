@@ -1,29 +1,54 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-export async function GET(request: NextRequest) {
-	const jwtToken =
-		'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJucCIsImlhdCI6MTcyMTEzOTEyNCwiZXhwIjoxNzIxMTQyNzI0LCJzcmMiOiJhcGkyIiwicmVmIjoiMTlmZGQ1ZTAtZWQ4Yi0xMWU3LWJlY2YtMDA1MDU2ODgxYzZiIiwiY2lkIjoiIiwic3ViIjoiZXlKcGRpSTZJbFI2YTFSclZqZFhjWE5OY3podldrSkhSMWhFVUhjOVBTSXNJblpoYkhWbElqb2lWSEphWmpCVmRtUkJMMDFDWjB0bGFrZDFTRkZUU3k5dVlXNU5ORTlJWlc1RVVtaHlSa3BEWkRSYVRYTlVSalJQU0hwb1ZtVk1Temg0TlhscFdHeHhSaUlzSW0xaFl5STZJbUU1WWpoa1pUVTBaVGRqTmpkalpUVmxPRFJqTWpaaE1tTTFaamt3WkRKbVpETmpPREExTm1OaFlqa3lZMlJqWVRFME16aGxNalF5WVdaaFlXSTRPR1FpTENKMFlXY2lPaUlpZlE9PSJ9.nteh2NUqL4xadX4AM91UmcpJ6GmOmFaQeGWu0784DWI'
+export async function POST(request: NextRequest) {
+	const url = new URL(request.url)
+	const city = url.searchParams.get('city')
+	const divisionNumber = url.searchParams.get('divisionNumber')
 
-	const url =
-		'https://api.novapost.com/v.1.0/divisions?countryCodes%5B%5D=UA&limit=10&page=1'
+	console.log(city, 'city')
+	console.log(divisionNumber, 'divisionNumber')
+
+	if (!city || !divisionNumber) {
+		return NextResponse.json(
+			{
+				error:
+					'Missing one or more search parameters: city, divisionNumber, address',
+			},
+			{ status: 400 }
+		)
+	}
+
+	const apiKey =
+		'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJucCIsImlhdCI6MTcyMTM5NTY4OCwiZXhwIjoxNzIxMzk5Mjg4LCJzcmMiOiJhcGkyIiwicmVmIjoiMTlmZGQ1ZTAtZWQ4Yi0xMWU3LWJlY2YtMDA1MDU2ODgxYzZiIiwiY2lkIjoiIiwic3ViIjoiZXlKcGRpSTZJbEpLWlZKblFYZFhTRlJtU1dacWQyUjRMMjlpVFdjOVBTSXNJblpoYkhWbElqb2lTRFZ0YkRGbE5DOHJVbE51VmxSWllYQktjWGhpZWs4cmVIcE9UbVJ0VlVKbVdFSXhTRVZTUmtzMmNsVnVZVkZCUXpVMWQxcGFlalJQZWtzckwwRkpjQ0lzSW0xaFl5STZJalU0WXpVeU4ySTVOamd5TnpaallUUmhZbU5tWlRnNVl6QXhOR1V4WVRaalpERTVabU0xWlRVeE9USTFZemMyWVdJMk56SXpPR0V3WmpnMU5ETXdZMk1pTENKMFlXY2lPaUlpZlE9PSJ9.a-LjBgjXH0IZZ7jf9Zx1hXkSgg9HTd-3nwHxF-39kvw'
+
+	const apiUrl = 'https://api.novaposhta.ua/v2.0/json/'
+
+	const requestBody = {
+		apiKey: apiKey,
+		modelName: 'AddressGeneral',
+		calledMethod: 'getWarehouses',
+		methodProperties: {
+			CityName: city,
+			WarehouseId: divisionNumber,
+		},
+	}
 
 	try {
-		const response = await fetch(url, {
-			method: 'GET',
+		const response = await fetch(apiUrl, {
+			method: 'POST',
 			headers: {
-				Accept: 'application/json',
-				Authorization: jwtToken,
+				'Content-Type': 'application/json',
 			},
+			body: JSON.stringify(requestBody),
 		})
 
 		if (!response.ok) {
-			throw new Error(response.statusText)
+			throw new Error(`HTTP error! Status: ${response.status}`)
 		}
 
 		const data = await response.json()
 		return NextResponse.json(data)
 	} catch (error) {
-		// Handle errors and return an appropriate response
 		return NextResponse.json(
 			{ error: (error as Error).message },
 			{ status: 500 }

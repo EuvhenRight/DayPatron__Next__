@@ -18,6 +18,7 @@ export const CarouselMixCards = ({ dataProducts }: Props) => {
 		<Carousel
 			opts={{
 				align: 'start',
+				loop: true,
 			}}
 			className='w-full flex justify-center items-center'
 		>

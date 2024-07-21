@@ -46,10 +46,11 @@ export const DeliveryFormEditDialog = ({ item }: Props) => {
 			? {
 					typeOfDelivery: item?.typeOfDelivery,
 					branchNumber: item?.branchNumber,
+					city: item?.city || undefined,
 			  }
 			: {
 					typeOfDelivery: item?.typeOfDelivery,
-					city: item?.city,
+					city: item?.city || undefined,
 					street: item?.street,
 					houseNumber: item?.houseNumber,
 					apartmentNumber: item?.apartmentNumber,
@@ -79,7 +80,12 @@ export const DeliveryFormEditDialog = ({ item }: Props) => {
 		deleteItemDelivery(item.id)
 	}
 
-	const onSubmit = async (formConfig: any) => {
+	const onSubmit = async (
+		formConfig: z.infer<
+			| typeof ValidationSchema.deliveryBranch
+			| typeof ValidationSchema.deliveryAddress
+		>
+	) => {
 		let deliveryItem: Promise<DeliveryWithItems>
 		try {
 			// CREATE DELIVERY
@@ -135,6 +141,24 @@ export const DeliveryFormEditDialog = ({ item }: Props) => {
 													type='text'
 													{...field}
 													placeholder='Вкажи номер відділення'
+												/>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								{/* CITY */}
+								<FormField
+									control={form.control}
+									name='city'
+									render={({ field }) => (
+										<FormItem>
+											<FormLabel>Населений пункт</FormLabel>
+											<FormControl>
+												<Input
+													type='text'
+													{...field}
+													placeholder='Вкажи населений пункт'
 												/>
 											</FormControl>
 											<FormMessage />

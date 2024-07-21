@@ -7,7 +7,8 @@ const createAddressSection = (delivery: OrderForm): string => {
 	return address
 		.map(address => {
 			return address.typeOfDelivery === 'У відділення'
-				? `<p style="font-size: 12px;">Номер відділення: ${address.branchNumber}</p>`
+				? `<p style="font-size: 12px;">Номер відділення: ${address?.branchNumber}</p>
+					<p style="font-size: 12px;">Назва відділення: ${address?.city}</p>`
 				: `
 									${
 										address?.city
