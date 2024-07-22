@@ -45,6 +45,7 @@
     "react-dnd-html5-backend": "^16.0.1",
     "react-dnd-scrolling": "^1.2.4",
     "react-dom": "^18.2.0",
+    "react-file-utils": "^1.2.0",
     "react-intl": "^6.2.0",
     "react-number-format": "^4.9.3",
     "react-pdf-html": "^2.0.4",
