@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useChatContext } from 'stream-chat-react';
+import { openSnackbar } from 'store/reducers/snackbar';
 
 import './EditChannel.css';
 
 import { UserList } from '../CreateChannel/UserList';
 
 import { CloseCreateChannel } from 'assets/images/streamio';
+import { prepareApiBody } from 'utils/stringUtils';
 
 const ChannelNameInput = (props) => {
   const { channelName = '', setChannelName } = props;
@@ -25,6 +28,7 @@ const ChannelNameInput = (props) => {
 };
 
 export const EditChannel = (props) => {
+  const dispatch = useDispatch();
   const { filters, setIsEditing } = props;
   const { channel } = useChatContext();
 
@@ -32,24 +36,55 @@ export const EditChannel = (props) => {
   const [selectedUsers, setSelectedUsers] = useState([]);
 
   const updateChannel = async (event) => {
-    event.preventDefault();
+    try
+    {
+      event.preventDefault();
 
-    const nameChanged = channelName !== (channel.data.name || channel.data.id);
-
-    if (nameChanged) {
-      await channel.update(
-        { name: channelName },
-        { text: `Channel name changed to ${channelName}` },
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/messages/groups',
+        {
+          method: 'PUT',
+          headers: {
+            'Authorization': 'Bearer ' + keycloak.idToken
+          },
+          body: prepareApiBody({groupId: channel.data.id, groupName: channel.data.name, messagingProviderUserIds: selectedUsers})
+        }
       );
-    }
 
-    if (selectedUsers.length) {
-      await channel.addMembers(selectedUsers);
-    }
+      if (!response.ok) {
+        dispatch(
+          openSnackbar({
+            open: true,
+            message: 'Failed.',
+            variant: 'alert',
+            alert: {
+              color: 'error'
+            },
+            close: false
+          })
+        );
+        return;
+      }
 
-    setChannelName(null);
-    setIsEditing(false);
-    setSelectedUsers([]);
+      let json = await response.json();
+
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: 'Saved.',
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
+        })
+      );
+
+      setChannelName(json.groupName);
+      setIsEditing(false);
+      setSelectedUsers(json.messagingProviderUserIds);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

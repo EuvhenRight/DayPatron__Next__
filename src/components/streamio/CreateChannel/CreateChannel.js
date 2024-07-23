@@ -41,12 +41,31 @@ export const CreateChannel = (props) => {
     event.preventDefault();
 
     try {
-      const newChannel = await client.channel('messaging', channelName, {
-        name: channelName,
-        members: selectedUsers
-      });
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/messages/groups',
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + keycloak.idToken
+          },
+          body: prepareApiBody({groupName: channel.data.name, messagingProviderUserIds: selectedUsers})
+        }
+      );
 
-      await newChannel.watch();
+      if (!response.ok) {
+        dispatch(openSnackbar({open: true, message: 'Failed.', variant: 'alert', alert: { color: 'error' }, close: false }));
+        return;
+      }
+
+      let json = await response.json();
+
+      if (!json?.groupId) {
+        dispatch(openSnackbar({open: true, message: 'Failed.', variant: 'alert', alert: { color: 'error' }, close: false }));
+        return;
+      }
+
+      dispatch(openSnackbar({open: true, message: 'Saved.', variant: 'alert', alert: { color: 'success' }, close: false}));
+
+      await client.queryChannels({id: json.groupId});
 
       setChannelName('');
       setIsCreating(false);
