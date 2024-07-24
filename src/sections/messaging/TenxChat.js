@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useKeycloak } from '@react-keycloak/web';
 import { useSelector } from 'react-redux';
 import { Chat, useCreateChatClient, enTranslations, Streami18n } from 'stream-chat-react';
+import { prepareApiBody } from 'utils/stringUtils';
 
 import 'stream-chat-react/dist/css/index.css';
 import 'assets/css/streamio.css';
@@ -28,36 +29,49 @@ const filters = [
 const options = { state: true, watch: true, presence: true, limit: 3 };
 const sort = { last_message_at: -1, updated_at: -1 };
 
+let keycloakParent = null;
+const getToken = async () => {
+  let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/messages/auth-tokens',
+    {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + keycloakParent?.idToken,
+        'Content-Type': 'application/json'
+      },
+      body: prepareApiBody({})
+    }
+  );
+
+  let json = await response.json();
+  return json.token;
+};
+
 const TenxChat = () => {
 
   const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  useChecklist(client, targetOrigin);
-
+  const [connectAsAdmin/*, setConnectAsAdmin*/] = useState(true);
   const { keycloak } = useKeycloak();
+  keycloakParent = keycloak;
   const personalInformation = useSelector(state => state.personalInformation);
 
   const client = useCreateChatClient({
     apiKey,
-    tokenOrProvider: async () => {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/messages/auth-tokens',
-        {
-          method: 'GET',
-          headers: {
-            'Authorization': 'Bearer ' + keycloak.idToken
-          }
-        }
-      );
-  
-      let json = await response.json();
-      return json.token;
-    },
+    tokenOrProvider: getToken,
     userData: { 
-      id: personalInformation?.messagingProviderUserId, 
-      name: personalInformation?.firstName + ' ' + personalInformation?.lastName, 
+      id: connectAsAdmin ? personalInformation?.messagingProviderAdminUserId : personalInformation?.messagingProviderUserId, 
+      name: connectAsAdmin ? personalInformation?.messagingProviderAdminUserFullName : personalInformation?.firstName + ' ' + personalInformation?.lastName, 
       image: getRandomImage() 
     }
   });
+
+  useChecklist(client, targetOrigin);
+
+  useEffect(() => {
+    if (!client) return;
+  }, [client]);
+
+  if (!client) return <div>Setting up client & connection...</div>;
 
   return (
     <>

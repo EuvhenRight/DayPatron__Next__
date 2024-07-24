@@ -18,6 +18,7 @@ const SearchResult = (props) => {
           ? 'channel-search__result-container__focused'
           : 'channel-search__result-container'
       }
+      role="presentation"
     >
       <div className='channel-search__result-user'>
         <Avatar image={channel.image || undefined} name={channel.name || channel.id} size={24} />

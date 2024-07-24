@@ -52,7 +52,7 @@ const UserItem = (props) => {
   };
 
   return (
-    <div className='user-item__wrapper' onClick={handleClick}>
+    <div className='user-item__wrapper' onClick={handleClick} role="presentation">
       <div className='user-item__name-wrapper'>
         <Avatar image={user.image} name={user.name || user.messagingProviderUserId} size={32} />
         <p className='user-item__name'>{user.name || user.messagingProviderUserId}</p>

@@ -40,7 +40,7 @@ export const TeamChannelHeader = ({ setIsEditing, setPinsOpen }) => {
               <p className='team-channel-header__name user'>
                 {user.name || user.id || '#'}
               </p>
-              <span style={{ display: 'flex' }} onClick={() => setIsEditing(true)}>
+              <span style={{ display: 'flex' }} onClick={() => setIsEditing(true)} role="presentation">
                 <ChannelInfo />
               </span>
             </div>
@@ -70,6 +70,7 @@ export const TeamChannelHeader = ({ setIsEditing, setPinsOpen }) => {
             closeThread(e);
             setPinsOpen((prevState) => !prevState);
           }}
+          role="presentation"
         >
           <PinIcon />
           <p className='team-channel-header__right-text'>Pins</p>

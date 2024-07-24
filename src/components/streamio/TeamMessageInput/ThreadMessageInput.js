@@ -1,5 +1,6 @@
 import React, { useCallback, useContext } from 'react';
-import { ChatAutoComplete, EmojiPicker, useMessageInputContext } from 'stream-chat-react';
+import { ChatAutoComplete, useMessageInputContext } from 'stream-chat-react';
+import { EmojiPicker } from 'stream-chat-react/emojis';
 
 import './ThreadMessageInput.css';
 
@@ -11,7 +12,7 @@ import {
   SmileyFace,
 } from 'assets/images/streamio';
 
-export const ThreadMessageInput = (props) => {
+export const ThreadMessageInput = () => {
   const { giphyState, setGiphyState } = useContext(GiphyContext)
 
   const messageInput = useMessageInputContext();
@@ -56,6 +57,8 @@ export const ThreadMessageInput = (props) => {
           role='button'
           aria-roledescription='button'
           onClick={messageInput.handleSubmit}
+          tabIndex={0}
+          onKeyDown={() => {}}
         >
           <SendButton />
         </div>

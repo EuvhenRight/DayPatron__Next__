@@ -95,7 +95,7 @@ export const EditChannel = (props) => {
       </div>
       <ChannelNameInput {...{ channelName, setChannelName }} />
       <UserList {...{ filters, setSelectedUsers }} />
-      <div className='edit-channel__button-wrapper' onClick={updateChannel}>
+      <div className='edit-channel__button-wrapper' onClick={updateChannel} role="presentation">
         <p>Save Changes</p>
       </div>
     </div>

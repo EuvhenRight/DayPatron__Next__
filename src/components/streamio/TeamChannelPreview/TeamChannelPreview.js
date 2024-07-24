@@ -64,6 +64,7 @@ export const TeamChannelPreview = (props) => {
         setIsEditing(false);
         setActiveChannel(channel);
       }}
+      role="presentation"
     >
       <GroupPreview />
     </div>

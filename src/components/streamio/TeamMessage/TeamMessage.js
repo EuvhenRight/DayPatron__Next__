@@ -1,5 +1,5 @@
 import React from 'react';
-import { MessageTeam, useMessageContext } from 'stream-chat-react';
+import { MessageSimple, useMessageContext } from 'stream-chat-react';
 
 import './TeamMessage.css';
 
@@ -18,7 +18,7 @@ export const TeamMessage = (props) => {
 
   return (
     <div className={message.isPinned ? 'pinned-message' : 'unpinned-message'}>
-      <MessageTeam {...props} message={message} handleOpenThread={handleOpenThreadOverride} />
+      <MessageSimple {...props} message={message} handleOpenThread={handleOpenThreadOverride} />
       {/** potentially add replies component here */}
     </div>
   );

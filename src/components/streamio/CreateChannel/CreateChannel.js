@@ -84,7 +84,7 @@ export const CreateChannel = (props) => {
       </div>
       <ChannelNameInput {...{ channelName, setChannelName }} />
       <UserList {...{ filters, setSelectedUsers }} />
-      <div className='create-channel__button-wrapper' onClick={createChannel}>
+      <div className='create-channel__button-wrapper' onClick={createChannel} role="presentation">
         <p>Create Message Group</p>
       </div>
     </div>

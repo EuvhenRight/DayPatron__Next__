@@ -2,12 +2,12 @@ import React, { useCallback, useContext, useState } from 'react';
 import { ImageDropzone } from 'react-file-utils';
 import {
   ChatAutoComplete,
-  EmojiPicker,
   UploadsPreview,
   useChannelStateContext,
   useChatContext,
   useMessageInputContext,
 } from 'stream-chat-react';
+import { EmojiPicker } from 'stream-chat-react/emojis';
 
 import './TeamMessageInput.css';
 
@@ -140,6 +140,8 @@ export const TeamMessageInput = (props) => {
               role='button'
               aria-roledescription='button'
               onClick={messageInput.handleSubmit}
+              tabIndex={0}
+              onKeyDown={() => {}}
             >
               <SendButton />
             </div>
