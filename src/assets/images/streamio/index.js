@@ -37,8 +37,6 @@ export { LightningBoltSmall } from './LightningBoltSmall';
 export { PinIcon } from './PinIcon';
 export { SearchIcon } from './SearchIcon';
 export { SendButton } from './SendButton';
-export { SideBarFlag } from './SideBarFlag';
-export { SideBarLogo } from './SideBarLogo';
 export { SmileyFace } from './SmileyFace';
 export { StrikeThroughIcon } from './StrikeThroughIcon';
 

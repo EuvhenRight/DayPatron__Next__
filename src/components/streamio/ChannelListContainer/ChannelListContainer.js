@@ -1,34 +1,27 @@
 import React from 'react';
 import { ChannelList } from 'stream-chat-react';
-
-import './ChannelListContainer.css';
-
-import { ChannelSearch } from '../ChannelSearch/ChannelSearch';
+import { useTheme } from '@mui/material/styles';
 import { TeamChannelList } from '../TeamChannelList/TeamChannelList';
 import { TeamChannelPreview } from '../TeamChannelPreview/TeamChannelPreview';
+import { AddChannel } from 'assets/images/streamio';
+import { 
+  Typography, 
+  Stack, 
+  Box, 
+  InputAdornment, 
+  OutlinedInput, 
+  Chip,
+  useMediaQuery 
+} from '@mui/material';
 
-import { SideBarFlag, SideBarLogo } from 'assets/images/streamio';
+import SimpleBar from 'components/third-party/SimpleBar';
+import {
+  SearchOutlined
+} from '@ant-design/icons';
 
-const SideBar = () => (
-  <div className='channel-list__sidebar'>
-    <div className='channel-list__sidebar__icon1'>
-      <div className='icon1__inner'>
-        <SideBarLogo />
-      </div>
-    </div>
-    <div className='channel-list__sidebar__icon2'>
-      <div className='icon2__inner'>
-        <SideBarFlag />
-      </div>
-    </div>
-  </div>
-);
-
-const CompanyHeader = () => (
-  <div className='channel-list__header'>
-    <p className='channel-list__header__text'>10x</p>
-  </div>
-);
+// project import
+import MainCard from 'components/MainCard';
+import './ChannelListContainer.css';
 
 const customChannelMessagingFilter = (channels) => {
   return channels.filter((channel) => channel.type === 'messaging');
@@ -36,35 +29,95 @@ const customChannelMessagingFilter = (channels) => {
 
 export const ChannelListContainer = (props) => {
   const { filters, options, setIsCreating, setIsEditing, sort } = props;
+  const theme = useTheme();
+  const matchDownLG = useMediaQuery(theme.breakpoints.down('lg'));
 
   return (
-    <div className='channel-list__container'>
-      <SideBar />
-      <div className='channel-list__list__wrapper'>
-        <CompanyHeader />
-        <ChannelSearch />
-        <ChannelList
-          channelRenderFilterFn={customChannelMessagingFilter}
-          filters={filters[1]}
-          options={options}
-          setActiveChannelOnMount={false}
-          sort={sort}
-          List={(listProps) => (
-            <TeamChannelList
-              {...listProps}
-              {...{ setIsCreating, setIsEditing }}
-              type='messaging'
+    <MainCard
+      sx={{
+        bgcolor: matchDownLG ? 'transparent' : 'white',
+        borderRadius: '4px 0 0 4px',
+        borderRight: 'none'
+      }}
+      border={!matchDownLG}
+      content={false}
+    >
+      <Box sx={{ p: 3, pb: 1 }}>
+        <Stack spacing={2}>
+          <Stack direction="row" spacing={0.5} alignItems="center">
+            <Typography variant="h5" color="inherit">
+              Groups
+            </Typography>
+            <Chip
+              label="9"
+              component="span"
+              color="secondary"
+              sx={{
+                width: 20,
+                height: 20,
+                borderRadius: '50%',
+                '& .MuiChip-label': {
+                  px: 0.5
+                }
+              }}
             />
-          )}
-          Preview={(previewProps) => (
-            <TeamChannelPreview
-              {...previewProps}
-              {...{ setIsCreating, setIsEditing }}
-              type='messaging'
-            />
-          )}
-        />
-      </div>
-    </div>
+          </Stack>
+
+          <OutlinedInput
+            fullWidth
+            id="input-search-header"
+            placeholder="Search"
+            value={""}
+            onChange={() => {}}
+            sx={{
+              '& .MuiOutlinedInput-input': {
+                p: '10.5px 0px 12px'
+              }
+            }}
+            startAdornment={
+              <InputAdornment position="start">
+                <SearchOutlined style={{ fontSize: 'small' }} />
+              </InputAdornment>
+            }
+          />
+          <AddChannel
+            {...{ setIsCreating, setIsEditing }}
+            type='messaging'
+          />
+        </Stack>
+      </Box>
+
+      <SimpleBar
+        sx={{
+          overflowX: 'hidden',
+          height: matchDownLG ? 'calc(100vh - 120px)' : 'calc(100vh - 428px)',
+          minHeight: matchDownLG ? 0 : 420
+        }}
+      >
+        <Box sx={{ p: 3, pt: 0 }}>
+          <ChannelList
+            channelRenderFilterFn={customChannelMessagingFilter}
+            filters={filters[1]}
+            options={options}
+            setActiveChannelOnMount={false}
+            sort={sort}
+            List={(listProps) => (
+              <TeamChannelList
+                {...listProps}
+                {...{ setIsCreating, setIsEditing }}
+                type='messaging'
+              />
+            )}
+            Preview={(previewProps) => (
+              <TeamChannelPreview
+                {...previewProps}
+                {...{ setIsCreating, setIsEditing }}
+                type='messaging'
+              />
+            )}
+          />
+        </Box>
+      </SimpleBar>
+    </MainCard>
   );
 };

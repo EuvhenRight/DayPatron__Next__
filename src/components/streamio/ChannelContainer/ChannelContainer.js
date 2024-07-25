@@ -9,9 +9,9 @@ import { ChannelEmptyState } from '../ChannelEmptyState/ChannelEmptyState';
 import { CreateChannel } from '../CreateChannel/CreateChannel';
 import { EditChannel } from '../EditChannel/EditChannel';
 import { TeamMessage } from '../TeamMessage/TeamMessage';
-import { TeamMessageInput } from '../TeamMessageInput/TeamMessageInput';
 
 import { CloseThreadIcon } from 'assets/images/streamio';
+import MainCard from 'components/MainCard';
 
 const ThreadHeader = (props) => {
   const { closeThread, setPinsOpen, thread } = props;
@@ -68,10 +68,9 @@ export const ChannelContainer = (props) => {
   }
 
   return (
-    <div className='channel__container'>
+    <MainCard content={false}>
       <Channel
         EmptyStateIndicator={ChannelEmptyState}
-        Input={TeamMessageInput}
         Message={(messageProps, i) => (
           <TeamMessage
             key={i}
@@ -90,6 +89,6 @@ export const ChannelContainer = (props) => {
           }}
         />
       </Channel>
-    </div>
+    </MainCard>
   );
 };

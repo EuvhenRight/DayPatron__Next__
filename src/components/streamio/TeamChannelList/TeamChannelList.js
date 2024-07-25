@@ -1,16 +1,13 @@
 import React from 'react';
 
+import { List, Typography } from '@mui/material';
 import './TeamChannelList.css';
-
-import { AddChannel } from 'assets/images/streamio';
 
 const ChannelList = (props) => {
   const {
     children,
     error = false,
     loading,
-    setIsCreating,
-    setIsEditing
   } = props;
 
   if (error) {
@@ -19,27 +16,16 @@ const ChannelList = (props) => {
 
   if (loading) {
     return (
-      <div className='team-channel-list'>
-        <p className='team-channel-list__message loading'>
-          Groups loading....
-        </p>
-      </div>
+      <Typography>
+        Groups loading....
+      </Typography>
     );
   }
 
   return (
-    <div className='team-channel-list'>
-      <div className='team-channel-list__header'>
-        <p className='team-channel-list__header__title'>
-          Groups
-        </p>
-        <AddChannel
-          {...{ setIsCreating, setIsEditing }}
-          type='messaging'
-        />
-      </div>
+    <List component="nav">
       {children}
-    </div>
+    </List>
   );
 };
 

@@ -4,13 +4,16 @@ import { useSelector } from 'react-redux';
 import { Chat, useCreateChatClient, enTranslations, Streami18n } from 'stream-chat-react';
 import { prepareApiBody } from 'utils/stringUtils';
 
-import 'stream-chat-react/dist/css/index.css';
+import 'stream-chat-react/dist/css/v2/index.css';
 import 'assets/css/streamio.css';
 
 import { getRandomImage } from 'assets/images/streamio';
 import { useChecklist } from './ChecklistTasks';
 import { ChannelContainer } from 'components/streamio/ChannelContainer/ChannelContainer';
 import { ChannelListContainer } from 'components/streamio/ChannelListContainer/ChannelListContainer';
+import { 
+  Grid
+} from '@mui/material';
 
 const apiKey = process.env.REACT_APP_STREAM_KEY;
 const urlParams = new URLSearchParams(window.location.search);
@@ -74,9 +77,10 @@ const TenxChat = () => {
   if (!client) return <div>Setting up client & connection...</div>;
 
   return (
-    <>
-      <div className='app__wrapper'>
-        <Chat {...{ client, i18nInstance }}>
+    <Chat {...{ client, i18nInstance }}>
+
+      <Grid container spacing={2}>
+        <Grid item xs={3}>
           <ChannelListContainer
             {...{
               isCreating,
@@ -87,6 +91,8 @@ const TenxChat = () => {
               sort,
             }}
           />
+        </Grid>
+        <Grid item xs={9}>
           <ChannelContainer
             {...{
               isCreating,
@@ -95,9 +101,9 @@ const TenxChat = () => {
               setIsEditing,
             }}
           />
-        </Chat>
-      </div>
-    </>
+        </Grid>
+      </Grid>
+    </Chat>
   );
 
 };
