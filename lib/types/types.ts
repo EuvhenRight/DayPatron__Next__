@@ -69,3 +69,10 @@ export type OrderFormTest = Prisma.OrderCreateInput & {
 	address: string
 	user: User
 }
+
+export type Division = {
+	SiteKey: string
+	Number: string
+	CityDescription: string
+	Description: string
+}

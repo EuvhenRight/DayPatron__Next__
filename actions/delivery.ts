@@ -34,7 +34,10 @@ export async function addItemDelivery(
 	return { ...delivery }
 }
 
-export async function editItemDelivery(itemId: string, data: DeliveryItem) {
+export async function editItemDelivery(
+	itemId: string,
+	data: DeliveryItem
+): Promise<DeliveryWithItems> {
 	// FIND EXISTING CART
 	const delivery = await getDelivery()
 
@@ -52,7 +55,13 @@ export async function editItemDelivery(itemId: string, data: DeliveryItem) {
 	revalidatePath('/dashboard/profile')
 
 	// Construct and return the response object with default values
-	return { ...delivery }
+	return {
+		id: delivery?.id!,
+		createdAt: delivery?.createdAt!,
+		updatedAt: delivery?.updatedAt!,
+		userId: delivery?.userId!,
+		items: delivery?.items ?? [], // Ensure items is always an array
+	}
 }
 
 export async function deleteItemDelivery(itemId: string) {

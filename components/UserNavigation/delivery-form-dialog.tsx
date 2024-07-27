@@ -24,6 +24,7 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
+import { Combobox } from './delivery-nova-poshta-data'
 
 interface Props {
 	setTypeOfDelivery: React.Dispatch<React.SetStateAction<string>>
@@ -35,6 +36,14 @@ export const DeliveryFormDialog = ({
 	setTypeOfDelivery,
 }: Props) => {
 	const [isOpen, setIsOpen] = useState(false)
+	const [autoCityData, setAutoCityData] = useState<string>('')
+
+	// USE EFFECT ADD CITY DATA TO FORM
+	useEffect(() => {
+		form.setValue('city', autoCityData)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [autoCityData])
+
 	// STATE AND HANDLERS
 	const getValidationSchema = (typeOfDelivery: string) => {
 		return typeOfDelivery === 'У відділення'
@@ -96,6 +105,7 @@ export const DeliveryFormDialog = ({
 			console.error(error, 'Щось пішло не так, спробуйте ще раз')
 		}
 	}
+
 	// EFFECT AND HANDLERS
 	useEffect(() => {
 		if (isOpen) {
@@ -109,9 +119,9 @@ export const DeliveryFormDialog = ({
 			<DialogTrigger className='hover:text-green-500 text-green-700 px-2'>
 				+ Додати
 			</DialogTrigger>
-			<DialogContent className='sm:max-w-[768px]'>
+			<DialogContent className='w-full sm:max-w-[768px] z-40'>
 				<Form {...form}>
-					<form onSubmit={form.handleSubmit(onSubmit)}>
+					<form onSubmit={form.handleSubmit(onSubmit)} id='combobox'>
 						{typeOfDelivery === 'У відділення' ? (
 							<>
 								{/* TYPE OF DELIVERY */}
@@ -136,13 +146,13 @@ export const DeliveryFormDialog = ({
 									control={form.control}
 									name='branchNumber'
 									render={({ field }) => (
-										<FormItem>
+										<FormItem className='w-full'>
 											<FormLabel>Номер відділення</FormLabel>
 											<FormControl>
-												<Input
-													type='text'
+												<Combobox
 													{...field}
-													placeholder='Вкажи номер відділення'
+													setAutoCityData={setAutoCityData} // SET CITY DATA
+													onChange={field.onChange}
 												/>
 											</FormControl>
 											<FormMessage />
@@ -154,12 +164,13 @@ export const DeliveryFormDialog = ({
 									control={form.control}
 									name='city'
 									render={({ field }) => (
-										<FormItem>
+										<FormItem className='mt-10'>
 											<FormLabel>Населений пункт</FormLabel>
 											<FormControl>
 												<Input
 													type='text'
 													{...field}
+													value={autoCityData} // GET CITY DATA
 													placeholder='Вкажи назву населеного пункту'
 												/>
 											</FormControl>

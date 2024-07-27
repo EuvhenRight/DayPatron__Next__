@@ -71,7 +71,7 @@ export const Header = ({ cart }: Props) => {
 	}, [prevScrollY])
 
 	return (
-		<header className='shadow-md bg-neutral-800 fixed w-full top-0 left-0 z-50'>
+		<header className='shadow-md bg-neutral-800 fixed w-full top-0 left-0 z-40'>
 			<AnimatePresence>
 				{showMarquee && (
 					<motion.div

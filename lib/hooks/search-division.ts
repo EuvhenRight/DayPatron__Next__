@@ -1,8 +1,9 @@
 'use client'
 import { useEffect, useState } from 'react'
+import { Division } from '../types/types'
 
-export function useSearchData(searchData: string) {
-	const [data, setData] = useState()
+export function useSearchData(number: string | '') {
+	const [data, setData] = useState<Division[]>()
 	// LOADING STATE
 	const [loading, setLoading] = useState<boolean>(false)
 
@@ -11,12 +12,19 @@ export function useSearchData(searchData: string) {
 			try {
 				setLoading(true)
 				// GET DATA FROM API DIFFERENT ENDPOINTS
-				const response = searchData
-					? await fetch(`api/np/${searchData}`)
-					: await fetch('api/np/')
+				const response = await fetch(
+					`http://localhost:3000/api/np/search?divisionNumber=${number}`,
+					{
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+					}
+				)
 
-				const posts = await response.json()
-				return setData(posts?.data) // SET DATA WITH .data
+				const divisions = await response.json()
+				console.log(divisions, 'divisions')
+				return setData(divisions?.data) // SET DATA WITH .data
 			} catch (error) {
 				console.log(error)
 			} finally {
@@ -24,7 +32,7 @@ export function useSearchData(searchData: string) {
 			}
 		}
 		dataDivision()
-	}, [searchData])
+	}, [number])
 
 	return { data, loading }
 }

@@ -65,12 +65,12 @@ export const DeliveryForm = ({ currentDelivery }: Props) => {
 									</div>
 									{/* SHOW DELIVERY CURRENT INFO */}
 									{item.typeOfDelivery === 'У відділення' ? (
-										<div>
-											<Label className='px-3 font-bold'>
+										<div className='flex flex-col px-3'>
+											<Label className='py-3 font-bold'>
 												Номер відділення:
 											</Label>
 											{item.branchNumber}
-											<Label className='px-3 font-bold'>Населений пункт:</Label>
+											<Label className='py-3 font-bold'>Населений пункт:</Label>
 											{item.city}
 										</div>
 									) : (

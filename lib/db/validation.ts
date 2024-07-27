@@ -147,15 +147,8 @@ export const ValidationSchema = {
 		branchNumber: z
 			.string({ required_error: "Поле номер відділення є обов'язковим" })
 			.min(1, 'Має містити 1 або більше елементів')
-			.max(20, 'Має містити 20 або менше елементів')
 			.nullable(),
-		city: z
-			.string({ required_error: "Поле місто є обов'язковим" })
-			.regex(/^[\u0400-\u04FF]+$/, {
-				message: 'Використовуйте тільки кириличні символи',
-			})
-			.min(3, 'Має містити 3 або більше елементів')
-			.max(20, 'Має містити 20 або менше елементів'),
+		city: z.string({ required_error: "Поле місто є обов'язковим" }),
 	}) as ZodSchema<DeliveryBranch>,
 	// PRODUCT
 	newProductSchema: z.object({

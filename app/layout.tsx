@@ -28,8 +28,8 @@ async function RootLayout({ children }: { children: React.ReactNode }) {
 		<SessionProvider session={session}>
 			<html lang='en'>
 				<body className={mulish.className}>
-					<Header cart={cart} />
-					<main className='mt-28'>
+					<main className='mt-28 min-h-screen'>
+						<Header cart={cart} />
 						{children}
 						<Toaster richColors />
 					</main>

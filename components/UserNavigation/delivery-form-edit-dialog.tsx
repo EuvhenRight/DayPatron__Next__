@@ -22,10 +22,11 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { DeliveryItem } from '@prisma/client'
 import { Pencil } from 'lucide-react'
 import { usePathname } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
+import { TooltipInfo } from './tooltip'
 
 interface Props {
 	item: DeliveryItem
@@ -33,6 +34,7 @@ interface Props {
 
 export const DeliveryFormEditDialog = ({ item }: Props) => {
 	const [isOpen, setIsOpen] = useState(false)
+	const [autoCityData, setAutoCityData] = useState<string>(item?.city!)
 	const pathName = usePathname()
 	// STATE AND HANDLERS
 	const getValidationSchema = (typeOfDelivery: string) => {
@@ -44,18 +46,18 @@ export const DeliveryFormEditDialog = ({ item }: Props) => {
 	const getDefaultValues = (item: DeliveryItem) => {
 		return item.typeOfDelivery === 'У відділення'
 			? {
-					typeOfDelivery: item?.typeOfDelivery,
-					branchNumber: item?.branchNumber,
-					city: item?.city || undefined,
+					typeOfDelivery: item?.typeOfDelivery || '',
+					branchNumber: item?.branchNumber || '',
+					city: item?.city || '',
 			  }
 			: {
-					typeOfDelivery: item?.typeOfDelivery,
-					city: item?.city || undefined,
-					street: item?.street,
-					houseNumber: item?.houseNumber,
-					apartmentNumber: item?.apartmentNumber,
-					additionNumber: item?.additionNumber,
-					zipCode: item?.zipCode,
+					typeOfDelivery: item?.typeOfDelivery || '',
+					city: item?.city || '',
+					street: item?.street || '',
+					houseNumber: item?.houseNumber || '',
+					apartmentNumber: item?.apartmentNumber || '',
+					additionNumber: item?.additionNumber || '',
+					zipCode: item?.zipCode || '',
 			  }
 	}
 
@@ -80,12 +82,7 @@ export const DeliveryFormEditDialog = ({ item }: Props) => {
 		deleteItemDelivery(item.id)
 	}
 
-	const onSubmit = async (
-		formConfig: z.infer<
-			| typeof ValidationSchema.deliveryBranch
-			| typeof ValidationSchema.deliveryAddress
-		>
-	) => {
+	const onSubmit = async (formConfig: any) => {
 		let deliveryItem: Promise<DeliveryWithItems>
 		try {
 			// CREATE DELIVERY
@@ -94,6 +91,7 @@ export const DeliveryFormEditDialog = ({ item }: Props) => {
 			})
 			// UPDATE DELIVERY
 			await toast.promise(deliveryItem, {
+				// TOAST LOADING
 				loading: 'Зачекаємо...',
 				success: 'Вашу інформацію оновлено!',
 				error: 'Щось пішло не так, спробуйте ще раз',
@@ -105,6 +103,15 @@ export const DeliveryFormEditDialog = ({ item }: Props) => {
 		}
 	}
 
+	// USE EFFECT ADD CITY DATA TO FORM
+	useEffect(() => {
+		form.setValue('city', autoCityData)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [autoCityData])
+
+	const blockInformation =
+		'Не можна змінювати дані у цьому діалозі. Ви можете видалити цей тип доставки та створити новий.'
+
 	return (
 		<Dialog open={isOpen} onOpenChange={setIsOpen}>
 			<DialogTrigger className='hover:text-green-500 text-green-700 px-2'>
@@ -112,7 +119,7 @@ export const DeliveryFormEditDialog = ({ item }: Props) => {
 			</DialogTrigger>
 			<DialogContent className='sm:max-w-[768px]'>
 				<Form {...form}>
-					<form onSubmit={form.handleSubmit(onSubmit)}>
+					<form onSubmit={form.handleSubmit(onSubmit)} id='combobox'>
 						{item.typeOfDelivery === 'У відділення' ? (
 							<>
 								{/* TYPE OF DELIVERY */}
@@ -121,7 +128,10 @@ export const DeliveryFormEditDialog = ({ item }: Props) => {
 									name='typeOfDelivery'
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>Тип доставки</FormLabel>
+											<FormLabel className='flex justify-start items-center'>
+												Тип доставки
+												<TooltipInfo text={blockInformation} />
+											</FormLabel>
 											<FormControl>
 												<Input type='text' {...field} disabled />
 											</FormControl>
@@ -137,11 +147,7 @@ export const DeliveryFormEditDialog = ({ item }: Props) => {
 										<FormItem>
 											<FormLabel>Номер відділення</FormLabel>
 											<FormControl>
-												<Input
-													type='text'
-													{...field}
-													placeholder='Вкажи номер відділення'
-												/>
+												<Input type='text' {...field} disabled />
 											</FormControl>
 											<FormMessage />
 										</FormItem>
@@ -158,7 +164,8 @@ export const DeliveryFormEditDialog = ({ item }: Props) => {
 												<Input
 													type='text'
 													{...field}
-													placeholder='Вкажи населений пункт'
+													placeholder='Вкажи назву населеного пункту'
+													disabled
 												/>
 											</FormControl>
 											<FormMessage />
@@ -307,7 +314,7 @@ export const DeliveryFormEditDialog = ({ item }: Props) => {
 							{pathName !== '/checkouts' ? (
 								<DialogClose asChild>
 									<Button
-										variant='outline'
+										variant='outlineRed'
 										type='button'
 										onClick={toggleDeleteItem}
 									>
