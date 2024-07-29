@@ -67,6 +67,10 @@ export const ChannelContainer = (props) => {
     );
   }
 
+  if(!channel) {
+    return (<></>);
+  }
+
   return (
     <MainCard content={false}>
       <Channel
@@ -81,13 +85,13 @@ export const ChannelContainer = (props) => {
         ThreadHeader={(threadProps) => <ThreadHeader {...threadProps} {...{ setPinsOpen }} />}
         TypingIndicator={() => null}
       >
-        <ChannelInner
-          {...{
-            pinsOpen,
-            setIsEditing,
-            setPinsOpen,
-          }}
-        />
+          <ChannelInner
+            {...{
+              pinsOpen,
+              setIsEditing,
+              setPinsOpen,
+            }}
+          />
       </Channel>
     </MainCard>
   );

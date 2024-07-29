@@ -12,7 +12,7 @@ export const TeamChannelPreview = (props) => {
   const theme = useTheme();
   const { channel, setActiveChannel, setIsCreating, setIsEditing } = props;
 
-  const { client } = useChatContext();
+  const { channel: activeChannel, client } = useChatContext();
 
   const members = Object.values(channel.state.members).filter(
     ({ user }) => user.id !== client.userID,
@@ -28,6 +28,7 @@ export const TeamChannelPreview = (props) => {
           setIsEditing(false);
           setActiveChannel(channel);
         }}
+        selected={channel?.id === activeChannel?.id}
       >
         <ListItemAvatar>
           {members?.length > 1 ? 

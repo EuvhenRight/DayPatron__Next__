@@ -61,13 +61,13 @@ export const ChannelInner = (props) => {
 
   return (
     <GiphyContext.Provider value={giphyStateObj}>
-        <Window>
-          <TeamChannelHeader {...{ setIsEditing, setPinsOpen }} />
-          <MessageList disableQuotedMessages pinPermissions={pinnedPermissions} />
-          <MessageInput audioRecordingEnabled overrideSubmitHandler={overrideSubmitHandler}  />
-        </Window>
-        <Thread />
-        {pinsOpen && <PinnedMessageList setPinsOpen={setPinsOpen} />}
+      <Window>
+        <TeamChannelHeader {...{ setIsEditing, setPinsOpen }} />
+        <MessageList disableQuotedMessages pinPermissions={pinnedPermissions} />
+        <MessageInput audioRecordingEnabled overrideSubmitHandler={overrideSubmitHandler}  />
+      </Window>
+      <Thread />
+      {pinsOpen && <PinnedMessageList setPinsOpen={setPinsOpen} />}
     </GiphyContext.Provider>
   );
 };

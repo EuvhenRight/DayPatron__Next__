@@ -10,7 +10,6 @@ import {
   Box, 
   InputAdornment, 
   OutlinedInput, 
-  Chip,
   useMediaQuery 
 } from '@mui/material';
 
@@ -35,9 +34,7 @@ export const ChannelListContainer = (props) => {
   return (
     <MainCard
       sx={{
-        bgcolor: matchDownLG ? 'transparent' : 'white',
-        borderRadius: '4px 0 0 4px',
-        borderRight: 'none'
+        bgcolor: matchDownLG ? 'transparent' : 'white'
       }}
       border={!matchDownLG}
       content={false}
@@ -48,19 +45,6 @@ export const ChannelListContainer = (props) => {
             <Typography variant="h5" color="inherit">
               Groups
             </Typography>
-            <Chip
-              label="9"
-              component="span"
-              color="secondary"
-              sx={{
-                width: 20,
-                height: 20,
-                borderRadius: '50%',
-                '& .MuiChip-label': {
-                  px: 0.5
-                }
-              }}
-            />
           </Stack>
 
           <OutlinedInput
@@ -99,7 +83,6 @@ export const ChannelListContainer = (props) => {
             channelRenderFilterFn={customChannelMessagingFilter}
             filters={filters[1]}
             options={options}
-            setActiveChannelOnMount={false}
             sort={sort}
             List={(listProps) => (
               <TeamChannelList
