@@ -41,10 +41,15 @@ export const ChannelListContainer = (props) => {
     >
       <Box sx={{ p: 3, pb: 1 }}>
         <Stack spacing={2}>
-          <Stack direction="row" spacing={0.5} alignItems="center">
+          <Stack direction="row" spacing={0.5} alignItems="center" justifyContent="space-between">
             <Typography variant="h5" color="inherit">
               Groups
             </Typography>
+            
+            <AddChannel
+              {...{ setIsCreating, setIsEditing }}
+              type='messaging'
+            />
           </Stack>
 
           <OutlinedInput
@@ -63,10 +68,6 @@ export const ChannelListContainer = (props) => {
                 <SearchOutlined style={{ fontSize: 'small' }} />
               </InputAdornment>
             }
-          />
-          <AddChannel
-            {...{ setIsCreating, setIsEditing }}
-            type='messaging'
           />
         </Stack>
       </Box>

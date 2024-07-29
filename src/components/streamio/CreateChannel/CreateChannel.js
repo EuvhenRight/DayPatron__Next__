@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
+import { useKeycloak } from '@react-keycloak/web';
 import { useChatContext } from 'stream-chat-react';
+import { prepareApiBody } from 'utils/stringUtils';
+import { useDispatch } from 'react-redux';
+import { openSnackbar } from 'store/reducers/snackbar';
 
 import './CreateChannel.css';
 
@@ -30,6 +34,8 @@ const ChannelNameInput = (props) => {
 };
 
 export const CreateChannel = (props) => {
+  const { keycloak } = useKeycloak();
+  const dispatch = useDispatch();
   const { filters, setIsCreating } = props;
 
   const { client, setActiveChannel } = useChatContext();
@@ -45,9 +51,10 @@ export const CreateChannel = (props) => {
         {
           method: 'POST',
           headers: {
-            'Authorization': 'Bearer ' + keycloak.idToken
+            'Authorization': 'Bearer ' + keycloak.idToken,
+            'Content-Type': 'application/json'
           },
-          body: prepareApiBody({groupName: channel.data.name, messagingProviderUserIds: selectedUsers})
+          body: prepareApiBody({groupName: channelName, messagingProviderUserIds: selectedUsers})
         }
       );
 

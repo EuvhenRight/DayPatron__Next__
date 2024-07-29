@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
+import { useKeycloak } from '@react-keycloak/web';
 import { useDispatch } from 'react-redux';
 import { useChatContext } from 'stream-chat-react';
 import { openSnackbar } from 'store/reducers/snackbar';
+import { prepareApiBody } from 'utils/stringUtils';
 
 import './EditChannel.css';
 
 import { UserList } from '../CreateChannel/UserList';
 
 import { CloseCreateChannel } from 'assets/images/streamio';
-import { prepareApiBody } from 'utils/stringUtils';
 
 const ChannelNameInput = (props) => {
   const { channelName = '', setChannelName } = props;
@@ -28,6 +29,7 @@ const ChannelNameInput = (props) => {
 };
 
 export const EditChannel = (props) => {
+  const { keycloak } = useKeycloak();
   const dispatch = useDispatch();
   const { filters, setIsEditing } = props;
   const { channel } = useChatContext();
@@ -44,7 +46,8 @@ export const EditChannel = (props) => {
         {
           method: 'PUT',
           headers: {
-            'Authorization': 'Bearer ' + keycloak.idToken
+            'Authorization': 'Bearer ' + keycloak.idToken,
+            'Content-Type': 'application/json'
           },
           body: prepareApiBody({groupId: channel.data.id, groupName: channel.data.name, messagingProviderUserIds: selectedUsers})
         }
