@@ -35,14 +35,14 @@ export const PaymentForm = ({ onChange, payment, setPayment }: Props) => {
 		onChange(value)
 	}
 	return (
-		<div className='border p-2 border-spacing-1 rounded-md my-2 lg:my-0 lg:mb-4 relative'>
+		<div className='border shadow-lg p-4 border-spacing-1 rounded-md my-2 lg:my-0 lg:mb-4 relative'>
 			<RadioGroup
 				value={payment}
 				onValueChange={toggleOnDelivery}
 				className='mb-2 flex flex-col gap-1'
 			>
 				<div className='flex items-center'>
-					<h2 className='font-bold text-lg px-2 mt-2 text-end'>Оплата</h2>
+					<h2 className='font-bold text-lg text-end'>Оплата</h2>
 					<Asterisk size={16} className='text-red-500' />
 				</div>
 				{paymentArray.map((item, index) => (
@@ -57,7 +57,7 @@ export const PaymentForm = ({ onChange, payment, setPayment }: Props) => {
 							<AccordionItem
 								key={index}
 								value={item.type}
-								className='w-full bg-zinc-100 rounded-md px-2 mt-2'
+								className='w-full bg-zinc-100 rounded-md px-2'
 							>
 								<AccordionTrigger>
 									<div className='font-bold flex flex-row text-left gap-2 '>

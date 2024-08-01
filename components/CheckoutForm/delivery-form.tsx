@@ -28,14 +28,14 @@ export const DeliveryForm = ({ onChange, currentDelivery }: Props) => {
 		}
 	}
 	return (
-		<div className='border p-2 border-spacing-1 rounded-md my-4 relative overflow-auto max-h-96'>
+		<div className='border shadow-lg p-4 border-spacing-1 rounded-md my-4 relative overflow-auto max-h-96'>
 			<RadioGroup
 				onValueChange={toggleOnDelivery}
 				className='mb-2 flex flex-col gap-1'
 			>
 				<div className='flex justify-between'>
 					<div className='flex items-center'>
-						<h2 className='font-bold text-lg px-2 mt-2 text-end'>Доставка</h2>
+						<h2 className='font-bold text-lg p-2 text-end'>Доставка</h2>
 						<Asterisk size={16} className='text-red-500' />
 					</div>
 					{/* CREATE DELIVERY */}
@@ -56,7 +56,7 @@ export const DeliveryForm = ({ onChange, currentDelivery }: Props) => {
 							<Accordion type='single' collapsible className='p-2 w-full'>
 								<AccordionItem
 									value={item.id}
-									className='bg-zinc-100 rounded-md px-2 mt-2'
+									className='bg-zinc-100 rounded-md px-2'
 								>
 									<AccordionTrigger>
 										<div className='font-bold'>
@@ -80,14 +80,10 @@ export const DeliveryForm = ({ onChange, currentDelivery }: Props) => {
 										</div>
 										{/* SHOW DELIVERY CURRENT INFO */}
 										{item.typeOfDelivery === 'У відділення' ? (
-											<div>
-												<Label className='px-3 font-bold'>
-													Номер відділення:
-												</Label>
+											<div className='flex flex-col px-3'>
+												<Label className='font-bold'>Номер відділення:</Label>
 												{item.branchNumber}
-												<Label className='px-3 font-bold'>
-													Населений пункт:
-												</Label>
+												<Label className='font-bold'>Населений пункт:</Label>
 												{item.city}
 											</div>
 										) : (

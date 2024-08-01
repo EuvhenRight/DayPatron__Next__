@@ -33,11 +33,11 @@ export const CommentForm = ({ onChangeText }: Props) => {
 	}
 
 	return (
-		<div className='border p-2 border-spacing-1 rounded-md my-4 relative'>
+		<div className='border shadow-lg p-4 border-spacing-1 rounded-md my-4 relative'>
 			<Accordion type='single' collapsible className='p-2'>
 				<AccordionItem
 					value='comment'
-					className='w-full bg-zinc-100 rounded-md px-2 mt-2'
+					className='w-full bg-zinc-100 rounded-md px-2'
 				>
 					<AccordionTrigger onClick={toggleAccordion}>
 						<div className='font-bold flex flex-col text-left'>

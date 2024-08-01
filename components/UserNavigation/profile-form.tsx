@@ -13,10 +13,10 @@ interface Props {
 export const ProfileForm = ({ currentUser, onChange }: Props) => {
 	const pathName = usePathname()
 	return (
-		<div className='border p-2 border-spacing-1 rounded-md my-2'>
+		<div className='border p-4 border-spacing-1 rounded-md my-2 shadow-lg'>
 			<div className='flex justify-between'>
 				<div className='flex items-center'>
-					<h2 className='font-bold text-lg px-2 mt-2 text-end'>Ваш профіль</h2>
+					<h2 className='font-bold text-lg text-end p-2'>Ваш профіль</h2>
 					{pathName === '/checkouts' && (
 						<Asterisk size={16} className='text-red-500' />
 					)}

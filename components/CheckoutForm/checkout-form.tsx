@@ -201,7 +201,7 @@ export const CheckoutForm = ({
 								/>
 							</div>
 							{/* CART */}
-							<div className='bg-zinc-100 rounded-md p-4 mt-2 overflow-auto max-h-[446px] sm:max-h-[446px] row-start-1 row-span-auto lg:row-span-2 lg:col-start-3 lg:row-start-1'>
+							<div className='bg-zinc-100 shadow-lg rounded-md p-4 mt-2 overflow-auto max-h-[446px] sm:max-h-[446px] row-start-1 row-span-auto lg:row-span-2 lg:col-start-3 lg:row-start-1'>
 								{cart?.items.map((item, index) => (
 									<PaymentItem key={index} item={item} />
 								))}

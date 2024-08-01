@@ -20,9 +20,9 @@ export const DeliveryForm = ({ currentDelivery }: Props) => {
 	const [typeOfDelivery, setTypeOfDelivery] = useState<string>('')
 
 	return (
-		<div className='border p-2 border-spacing-1 rounded-md my-2'>
+		<div className='border shadow-lg p-4 border-spacing-1 rounded-md my-4'>
 			<div className='flex justify-between'>
-				<h2 className='font-bold text-xl px-2 mt-2 text-end'>Доставка</h2>
+				<h2 className='font-bold text-xl p-2 text-end'>Доставка</h2>
 				{/* CREATE DELIVERY */}
 				<DeliveryFormDialog
 					setTypeOfDelivery={setTypeOfDelivery}
@@ -31,7 +31,7 @@ export const DeliveryForm = ({ currentDelivery }: Props) => {
 			</div>
 			{/* SHOW DELIVERY FORM */}
 			{currentDelivery?.items.length! > 0 ? (
-				<div>
+				<div className='space-x-2'>
 					<Accordion
 						type='single'
 						collapsible
@@ -41,7 +41,7 @@ export const DeliveryForm = ({ currentDelivery }: Props) => {
 							<AccordionItem
 								key={item.id}
 								value={item.id}
-								className='w-full bg-zinc-100 rounded-md px-2 mt-2'
+								className='w-full bg-zinc-100 rounded-md p-2 my-4'
 							>
 								<AccordionTrigger>
 									<div className='font-bold'>

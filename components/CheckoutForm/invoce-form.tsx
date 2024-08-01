@@ -12,7 +12,7 @@ export const InvoiceForm = ({ cart }: Props) => {
 			{/* SECOND PART CHECKOUT */}
 			<div className='relative'>
 				{/* SUBTOTAL AND DISCOUNT */}
-				<div className='flex flex-col p-4 mb-4 bg-zinc-100 rounded-md'>
+				<div className='flex flex-col p-4 mb-4 bg-zinc-100 rounded-md shadow-lg'>
 					<div className='flex justify-between'>
 						<h2>До оплати без доставки:</h2>
 						<h2>{<PriceTag price={cart?.subTotal!} />}</h2>
@@ -24,10 +24,10 @@ export const InvoiceForm = ({ cart }: Props) => {
 						</h2>
 					</div>
 				</div>
-				<div className='flex flex-col p-2 mb-4 bg-zinc-100 rounded-md'>
+				<div className='flex flex-col p-2 mb-4 bg-zinc-100 rounded-md shadow-lg'>
 					<BonusForm />
 				</div>
-				<Button className='w-full' type='submit' variant='office'>
+				<Button className='w-full shadow-lg' type='submit' variant='office'>
 					Оформити замовлення
 				</Button>
 			</div>
