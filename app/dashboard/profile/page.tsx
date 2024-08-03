@@ -1,6 +1,6 @@
 import { getCurrentUser } from '@/actions/user'
 import { UserProfile } from '@/components/UserNavigation/user-profile'
-import { getDelivery } from '@/lib/db/delivery'
+import { getDelivery } from '@/lib/services/delivery'
 import { NextResponse } from 'next/server'
 
 const UserProfilePage = async () => {

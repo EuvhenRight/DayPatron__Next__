@@ -1,4 +1,4 @@
-import { ProductsWithVariants } from '../types/types'
+import { ProductsWithVariants } from '@/lib/types/types'
 
 export async function getAllProducts(): Promise<ProductsWithVariants[]> {
 	const products = await prisma?.product.findMany({

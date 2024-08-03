@@ -1,4 +1,4 @@
-import { formatPriceUa } from '@/lib/db/format'
+import { formatPriceUa } from '@/lib/services/format'
 
 interface Props {
 	price: number

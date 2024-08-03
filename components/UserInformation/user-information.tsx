@@ -9,7 +9,7 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table'
-import { formatPriceUa } from '@/lib/db/format'
+import { formatPriceUa } from '@/lib/services/format'
 import { OrderForm } from '@/lib/types/types'
 
 interface Props {

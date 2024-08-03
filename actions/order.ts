@@ -1,9 +1,9 @@
 'use server'
 import { auth } from '@/auth'
 import prisma from '@/lib/db/client'
-import { createEmailHtml } from '@/lib/db/e-mail-order'
-import { sendEmail } from '@/lib/db/mail-password'
-import { createOrder } from '@/lib/db/order'
+import { createEmailHtml } from '@/lib/services/e-mail-order'
+import { sendEmail } from '@/lib/services/mail-password'
+import { createOrder } from '@/lib/services/order'
 import { OrderForm, OrderFormInputs } from '@/lib/types/types'
 
 export async function addOrderItem(data: OrderFormInputs) {

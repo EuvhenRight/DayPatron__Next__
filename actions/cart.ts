@@ -1,7 +1,7 @@
 'use server'
 // pages/api/cart/[cartId]/items.ts
-import { createCart, getCart } from '@/lib/db/cart'
 import prisma from '@/lib/db/client'
+import { createCart, getCart } from '@/lib/services/cart'
 import { revalidatePath } from 'next/cache'
 
 export async function addItem(variantId: string) {

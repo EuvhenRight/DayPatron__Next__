@@ -6,7 +6,7 @@ export default function Home() {
 		<>
 			<div>
 				<video
-					src={`${process.env.PUBLIC_VIDEO_URL}/video2.mp4`}
+					src={`${process.env.PUBLIC_VIDEO_URL}/video2.mp4`} // PUBLIC URL NEXT FETCHERS
 					autoPlay
 					loop
 					muted

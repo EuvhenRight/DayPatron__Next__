@@ -1,6 +1,6 @@
 import authConfig from '@/auth.config'
 import prisma from '@/lib/db/client'
-import { getUserById } from '@/lib/db/user'
+import { getUserById } from '@/lib/services/user'
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import NextAuth from 'next-auth'
 

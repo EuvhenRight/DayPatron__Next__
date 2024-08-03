@@ -1,7 +1,7 @@
 import { AdvantagesWrapper } from '@/components/Advantages/advantages-wrapper'
 import { ProductForm } from '@/components/ProductForm/product-form'
-import { getCart } from '@/lib/db/cart'
-import { getProduct } from '@/lib/db/products'
+import { getCart } from '@/lib/services/cart'
+import { getProduct } from '@/lib/services/products'
 import { Metadata } from 'next'
 
 interface Props {

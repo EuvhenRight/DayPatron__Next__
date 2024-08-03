@@ -1,6 +1,6 @@
 'use client'
 import { FeaturedCard } from '@/components/FeaturedOn/featured-card'
-import { partners } from '@/lib/db/partners'
+import { partners } from '@/lib/services/partners'
 
 export const FeaturedOn = () => {
 	return (

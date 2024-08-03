@@ -13,7 +13,7 @@ export function useSearchData(number: string | '') {
 				setLoading(true)
 				// GET DATA FROM API DIFFERENT ENDPOINTS
 				const response = await fetch(
-					`http://localhost:3000/api/np/search?divisionNumber=${number}`,
+					`${process.env.NEXT_PUBLIC_API_URL}/np/search?divisionNumber=${number}`,
 					{
 						method: 'POST',
 						headers: {
@@ -23,7 +23,6 @@ export function useSearchData(number: string | '') {
 				)
 
 				const divisions = await response.json()
-				console.log(divisions, 'divisions')
 				return setData(divisions?.data) // SET DATA WITH .data
 			} catch (error) {
 				console.log(error)

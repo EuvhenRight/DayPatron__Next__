@@ -1,8 +1,8 @@
 import { getCurrentUser } from '@/actions/user'
 import { CheckoutForm } from '@/components/CheckoutForm/checkout-form'
-import { getCart } from '@/lib/db/cart'
-import { getDelivery } from '@/lib/db/delivery'
-import { getManyOrders, getOrder } from '@/lib/db/order'
+import { getCart } from '@/lib/services/cart'
+import { getDelivery } from '@/lib/services/delivery'
+import { getManyOrders, getOrder } from '@/lib/services/order'
 
 export default async function Checkouts() {
 	const [currentDelivery, cart, currentUser, order, orders] = await Promise.all(

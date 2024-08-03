@@ -1,6 +1,6 @@
+import { formatPriceUa } from '@/lib/services/format'
+import { OrderForm } from '@/lib/types/types'
 import { ExtraUser, User } from '@prisma/client'
-import { OrderForm } from '../types/types'
-import { formatPriceUa } from './format'
 
 const createAddressSection = (delivery: OrderForm): string => {
 	const address = delivery?.address

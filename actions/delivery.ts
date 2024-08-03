@@ -1,6 +1,6 @@
 'use server'
 import prisma from '@/lib/db/client'
-import { createDelivery, getDelivery } from '@/lib/db/delivery'
+import { createDelivery, getDelivery } from '@/lib/services/delivery'
 import { DeliveryWithItems } from '@/lib/types/types'
 import { DeliveryItem } from '@prisma/client'
 import { revalidatePath } from 'next/cache'

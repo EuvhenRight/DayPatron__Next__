@@ -6,7 +6,7 @@ import { Mulish } from 'next/font/google'
 
 import Footer from '@/components/Footer/Footer'
 import { Toaster } from '@/components/ui/sonner'
-import { getCart } from '@/lib/db/cart'
+import { getCart } from '@/lib/services/cart'
 import type { Metadata } from 'next'
 import './globals.css'
 

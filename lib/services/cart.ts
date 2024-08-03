@@ -1,8 +1,8 @@
 import { auth } from '@/auth'
 import prisma from '@/lib/db/client'
+import { CartWithVariants } from '@/lib/types/types'
 import { Cart } from '@prisma/client'
 import { cookies } from 'next/headers'
-import { CartWithVariants } from '../types/types'
 
 export async function getCart(): Promise<CartWithVariants | null> {
 	const session = await auth()

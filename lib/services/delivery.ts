@@ -1,7 +1,7 @@
 import { auth } from '@/auth'
 import prisma from '@/lib/db/client'
+import { DeliveryWithItems } from '@/lib/types/types'
 import { Delivery } from '@prisma/client'
-import { DeliveryWithItems } from './../types/types'
 
 export async function getDelivery(): Promise<DeliveryWithItems | null> {
 	const session = await auth()

@@ -1,6 +1,6 @@
 import { auth } from '@/auth'
+import prisma from '@/lib/db/client'
 import { OrderForm, OrderFormInputs, OrderWithItems } from '../types/types'
-import prisma from './client'
 
 export async function getOrder(): Promise<OrderWithItems | null> {
 	const session = await auth()
