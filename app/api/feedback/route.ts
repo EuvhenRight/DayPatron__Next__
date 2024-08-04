@@ -27,15 +27,14 @@ export async function POST(request: NextRequest) {
 					<p>Дякуємо за ваше повідомлення:</p>
 					<blockquote style="font-size: 14px; font-style: italic; color: #555;">"${requestData.message}"</blockquote>
 					<p>Ми високо цінуємо ваш інтерес до наших послуг. Наша команда підтримки уважно розгляне ваш запит і зв'яжеться з вами найближчим часом.</p>
-					<p>З повагою,<br>Команда підтримки DayPatron</p>
+					<p>З повагою,<br>Команда підтримки DayPatron<br>
+					<img src="http://localhost:3000/images/DayLogo_black.svg" alt="DayPatron Logo" style="display: block; width: 150px; height: 50px;">
+					</p> 
 					<hr style="border: none; border-top: 1px solid #eee;">
-					<p style="font-size: 14px; color: #666;">Контактні дані: ${requestData.name}<br>
+					<p style="font-size: 14px; color: #666;">Контактні дані користувача <br>Їм'я: ${requestData.name}<br>
 					Електронна пошта: ${requestData.email}<br>
 					Телефон: ${requestData.phone}</p>
-					<div style="display: flex; align-items: center;" >
 					<p style="font-size: 12px; color: #999; text-align: center;">© 2023 DayPatron Inc. Усі права захищені</p>
-					<img src="http://localhost:3000/images/DayLogo_black.svg" alt="DayPatron Logo" style="display: block; margin-left: 20px; width: 200px; height: 50px;">
-					</div>
 				</div>
 			`,
 		})
