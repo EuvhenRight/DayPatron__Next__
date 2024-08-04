@@ -38,9 +38,12 @@ export const RegisterForm = () => {
 		setIsButtonDisabled(true)
 		const { email } = data
 		try {
-			const { data } = await axios.post('http://localhost:3000/api/register', {
-				email,
-			})
+			const { data } = await axios.post(
+				process.env.NEXT_PUBLIC_API_URL + '/register',
+				{
+					email,
+				}
+			)
 			console.log(data)
 			data
 			if (data?.id) {

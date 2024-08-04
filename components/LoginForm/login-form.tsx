@@ -49,10 +49,13 @@ export const LoginForm = () => {
 		setSuccess('')
 
 		try {
-			const response = await axios.post('http://localhost:3000/api/login', {
-				email,
-				password,
-			})
+			const response = await axios.post(
+				process.env.NEXT_PUBLIC_API_URL + '/login',
+				{
+					email,
+					password,
+				}
+			)
 
 			// HANDLE AXIOS ERROR
 			if (response.data?.error) {

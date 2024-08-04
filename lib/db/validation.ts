@@ -50,6 +50,13 @@ export interface OrderFormSchema {
 	cartId: string
 }
 
+export interface FeedbackFormSchema {
+	name: string
+	email: string
+	phone: string
+	message: string
+}
+
 export const ValidationSchema = {
 	// AUTH
 	authUser: z.object({
@@ -65,7 +72,7 @@ export const ValidationSchema = {
 		email: z.any(),
 		firstName: z
 			.string({ invalid_type_error: "Поле 'Ім'я є обов'язковим" })
-			.regex(/^[\u0400-\u04FF]+$/, {
+			.regex(/^[\u0400-\u04FF0-9]+$/, {
 				message: 'Використовуйте тільки кириличні символи',
 			})
 			.min(3, 'Має містити 3 або більше елементів')
@@ -73,7 +80,7 @@ export const ValidationSchema = {
 			.nullable(),
 		lastName: z
 			.string({ invalid_type_error: "Поле Прізвище є обов'язковим" })
-			.regex(/^[\u0400-\u04FF]+$/, {
+			.regex(/^[\u0400-\u04FF0-9]+$/, {
 				message: 'Використовуйте тільки кириличні символи',
 			})
 			.min(3, 'Має містити 3 або більше елементів')
@@ -88,7 +95,7 @@ export const ValidationSchema = {
 		email: z.string().email({ message: 'Невірна адреса електронної пошти' }),
 		firstName: z
 			.string({ invalid_type_error: "Поле 'Ім'я є обов'язковим" })
-			.regex(/^[\u0400-\u04FF]+$/, {
+			.regex(/^[\u0400-\u04FF0-9]+$/, {
 				message: 'Використовуйте тільки кириличні символи',
 			})
 			.min(3, 'Має містити 3 або більше елементів')
@@ -96,7 +103,7 @@ export const ValidationSchema = {
 			.nullable(),
 		lastName: z
 			.string({ invalid_type_error: "Поле Прізвище є обов'язковим" })
-			.regex(/^[\u0400-\u04FF]+$/, {
+			.regex(/^[\u0400-\u04FF0-9]+$/, {
 				message: 'Використовуйте тільки кириличні символи',
 			})
 			.min(3, 'Має містити 3 або більше елементів')
@@ -113,14 +120,14 @@ export const ValidationSchema = {
 			.min(3, 'Виберіть тип доставки'),
 		city: z
 			.string({ invalid_type_error: "Поле місто є обов'язковим" })
-			.regex(/^[\u0400-\u04FF]+$/, {
+			.regex(/^[\u0400-\u04FF0-9]+$/, {
 				message: 'Використовуйте тільки кириличні символи',
 			})
 			.min(3, 'Має містити 3 або більше елементів')
 			.max(20, 'Має містити 20 або менше елементів'),
 		street: z
 			.string({ invalid_type_error: "Поле вулиця є обов'язковим" })
-			.regex(/^[\u0400-\u04FF]+$/, {
+			.regex(/^[\u0400-\u04FF0-9]+$/, {
 				message: 'Використовуйте тільки кириличні символи',
 			})
 			.min(3, 'Має містити 3 або більше елементів')
@@ -139,6 +146,20 @@ export const ValidationSchema = {
 			.min(3, 'Має містити 3 або більше елементів')
 			.max(10, 'Має містити 10 або менше елементів'),
 	}) as ZodSchema<DeliveryAddress>,
+	// FEEDBACK FORM
+	feedbackForm: z.object({
+		name: z.string({ invalid_type_error: "Поле 'Ім'я є обов'язковим" }),
+		email: z.string().email({ message: 'Невірна адреса електронної пошти' }),
+		phone: z
+			.string({ invalid_type_error: "Поле телефон є обов'язковим" })
+			.min(13, 'Невірний номер телефону')
+			.optional(),
+		message: z
+			.string({ invalid_type_error: "Поле повідомлення є обов'язковим" })
+			.regex(/^[\u0400-\u04FF0-9]+$/, {
+				message: 'Використовуйте тільки кириличні символи',
+			}),
+	}) as ZodSchema<FeedbackFormSchema>,
 	// DELIVERY BRANCH
 	deliveryBranch: z.object({
 		typeOfDelivery: z
@@ -192,7 +213,7 @@ export const orderItemScheme = z.object({
 			email: z.any(),
 			firstName: z
 				.string({ invalid_type_error: "Це поле є обов'язковим" })
-				.regex(/^[\u0400-\u04FF]+$/, {
+				.regex(/^[\u0400-\u04FF0-9]+$/, {
 					message: 'Використовуйте тільки кириличні символи',
 				})
 				.min(3, 'Має містити 3 або більше елементів')
@@ -200,7 +221,7 @@ export const orderItemScheme = z.object({
 				.nullable(),
 			lastName: z
 				.string({ invalid_type_error: "Це поле є обов'язковим" })
-				.regex(/^[\u0400-\u04FF]+$/, {
+				.regex(/^[\u0400-\u04FF0-9]+$/, {
 					message: 'Використовуйте тільки кириличні символи',
 				})
 				.min(3, 'Має містити 3 або більше елементів')

@@ -106,6 +106,8 @@ export const ExtraUserDialog = ({ onChange, setExtraUser }: Props) => {
 										<FormLabel>Номер телефону</FormLabel>
 										<FormControl>
 											<PhoneInput
+												hideDropdown={true}
+												defaultCountry='ua'
 												placeholder='введіть номер телефону'
 												inputStyle={{
 													width: '100%',

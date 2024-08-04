@@ -1,7 +1,7 @@
 'use client'
 import { BreadcrumbProduct } from '@/components/ProductForm/breadcrumb'
 import { Variants } from '@/components/ProductForm/variants'
-import currentUser from '@/lib/hooks/currentUser'
+import { CurrentUser } from '@/lib/hooks/currentUser'
 import type {
 	CartItemWithVariants,
 	CartWithVariants,
@@ -30,7 +30,7 @@ export const ProductForm = ({ product, cart }: Props) => {
 	const [imageIndex, setImageIndex] = useState<number | null>(null)
 	const [animate, setAnimate] = useState<boolean>(false)
 	// CHECK ITEM IN CART
-	const user = currentUser() as User | null
+	const user = CurrentUser() as User | null
 	const userId = user?.id
 	const [itemInCart, setItemInCart] = useState<CartItemWithVariants | null>(
 		null

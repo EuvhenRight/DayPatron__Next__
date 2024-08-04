@@ -133,6 +133,8 @@ export const ProfileFormDialog = ({ currentUser, onChange }: Props) => {
 										<FormLabel>номер телефону</FormLabel>
 										<FormControl>
 											<PhoneInput
+												hideDropdown={true}
+												defaultCountry='ua'
 												placeholder='введіть номер телефону'
 												inputStyle={{
 													width: '100%',
