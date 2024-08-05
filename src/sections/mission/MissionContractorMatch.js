@@ -595,6 +595,17 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                   <Divider />
                 </Grid>
                 <Grid item xs={12}>
+
+                  <List
+                    component="nav"
+                    sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32, color: theme.palette.grey[500] } }}>
+                      <ListItemButton selected={tabGroupId === notesTabGroup} onClick={() => handleTabClick(notesTabGroup)}>
+                        <ListItemText primary="Notes" />
+                          <ListItemIcon>
+                            <RightOutlined />
+                          </ListItemIcon>
+                      </ListItemButton>
+                  </List>
                   {missionContractorMatch?.contractorPeraSurveyResponse &&
                     <List
                       component="nav"
@@ -645,22 +656,6 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                       </ListItemButton>
                       <ListItemButton selected={tabGroupId === certificationsTabGroup} onClick={() => handleTabClick(certificationsTabGroup)}>
                         <ListItemText primary="Certification" />
-                          <ListItemIcon>
-                            <RightOutlined />
-                          </ListItemIcon>
-                      </ListItemButton>
-                  </List>
-
-                  <List
-                    component="nav"
-                    sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32, color: theme.palette.grey[500] } }}
-                    subheader={
-                      <Typography variant="subtitle1" color="text.primary" sx={{ pl: 2, mb: 1, mt: 2 }}>
-                        Feedback
-                      </Typography>
-                    }>
-                      <ListItemButton selected={tabGroupId === notesTabGroup} onClick={() => handleTabClick(notesTabGroup)}>
-                        <ListItemText primary="Notes" />
                           <ListItemIcon>
                             <RightOutlined />
                           </ListItemIcon>
