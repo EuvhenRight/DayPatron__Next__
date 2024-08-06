@@ -48,9 +48,9 @@ const avatarImage = require.context('assets/images/users', true);
 
 const MissionContractorMatch = ({ missionId, contractorId }) => {
   const personalInformation = useSelector(state => state.personalInformation);
+  const notesTabGroup = 'notes';
   const peraResponseResultTabGroup = 'ai-results';
   const peraQuestionsAndAnswersTabGroup = 'ai-qa';
-  const notesTabGroup = 'notes';
   const professionalExperiencesTabGroup = 'professionalExperiences';
   const educationsTabGroup = 'educations';
   const certificationsTabGroup = 'certifications';
@@ -410,12 +410,7 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
   };
 
   if (!tabGroupId) {
-    if (missionContractorMatch?.contractorPeraSurveyResponse) {
-      tabGroupId = peraResponseResultTabGroup;
-      tabGroupItemIndex = 0;
-    } else {
-      tabGroupId = notesTabGroup;
-    }
+    tabGroupId = notesTabGroup;
   }
 
   let selectedPeraAssessment = null;
@@ -427,7 +422,7 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
 
   return (
     <Grid container spacing={3}>
-      <Grid item xs={12} sm={5} md={4} xl={3}>
+      <Grid item xs={12} lg={4}>
 
         <Grid container spacing={3}>
           <Grid item xs={12}>
@@ -439,8 +434,16 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                       alt={missionContractorMatch?.contractor?.firstName + ' ' + missionContractorMatch?.contractor?.lastName}
                       sx={{ width: 124, height: 124, border: '1px dashed' }}
                       src={missionContractorMatch?.contractor?.mainImageSrc} />
-                    <Stack spacing={0.5} alignItems="center">
-                      <Typography variant="h5">{missionContractorMatch?.contractor?.firstName + ' ' + missionContractorMatch?.contractor?.lastName}</Typography>
+                    <Stack spacing={1} alignItems="center">
+                      <Stack spacing={0.3} alignItems="center">
+                        <Typography variant="h5">{missionContractorMatch?.contractor?.firstName + ' ' + missionContractorMatch?.contractor?.lastName}</Typography>
+                        {missionContractorMatch?.contractor?.headline &&
+                          <Typography variant="caption" color="secondary">{missionContractorMatch?.contractor?.headline}</Typography>
+                        }
+                      </Stack>
+                      {missionContractorMatch?.contractor?.summary &&
+                        <Typography variant="caption">{missionContractorMatch?.contractor?.summary}</Typography>
+                      }
                     </Stack>
 
                     <Stack spacing={0.5} alignItems="center">
@@ -476,42 +479,41 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                         }
                       </Box>
                     </Stack>
+                    <Stack direction="row" spacing={1}>
+                      {missionContractorMatch?.invitation ?
+                        (
+                          <Button variant="outlined" onClick={handleUninviteButtonClick} disabled={isDeletingInvitation}>
+                            Uninvite
+                          </Button>
+                        )
+                        :
+                        (
+                          <Button variant="contained" onClick={handleInviteButtonClick} disabled={isCreatingInvitation}>
+                            Invite
+                          </Button>
+                        )
+                      }
 
-                    {missionContractorMatch?.invitation ?
-                      (<Stack spacing={0.5} alignItems="center">
-                        <Button variant="outlined" onClick={handleUninviteButtonClick} disabled={isDeletingInvitation}>
-                          Uninvite
-                        </Button>
-                      </Stack>)
-                      :
-                      (<Stack spacing={0.5} alignItems="center">
-                        <Button variant="contained" onClick={handleInviteButtonClick} disabled={isCreatingInvitation}>
-                          Invite
-                        </Button>
-                      </Stack>)
-                    }
+                      {missionContractorMatch?.approval ?
+                        (
+                          <Button color="success" variant="outlined" onClick={handleUnapproveButtonClick} disabled={isDeletingApproval}>
+                            Unapprove
+                          </Button>
+                        )
+                        :
+                        (
+                          <Button color="success" variant="contained" onClick={handleApproveButtonClick} disabled={isCreatingApproval}>
+                            Approve
+                          </Button>
+                        )
+                      }
 
-                    {missionContractorMatch?.approval ?
-                      (<Stack spacing={0.5} alignItems="center">
-                        <Button color="success" variant="outlined" onClick={handleUnapproveButtonClick} disabled={isDeletingApproval}>
-                          Unapprove
-                        </Button>
-                      </Stack>)
-                      :
-                      (<Stack spacing={0.5} alignItems="center">
-                        <Button color="success" variant="contained" onClick={handleApproveButtonClick} disabled={isCreatingApproval}>
-                          Approve
-                        </Button>
-                      </Stack>)
-                    }
-
-                    {keycloak.tokenParsed.roles.includes('admin') &&
-                      <Stack spacing={0.5} alignItems="center">
+                      {keycloak.tokenParsed.roles.includes('admin') &&
                         <Button color="primary" variant="outlined" onClick={handleToggleMatchButtonClick} disabled={isTogglingMatch}>
                           {missionContractorMatch?.isMatch ? "Unmatch" : "Match"}
                         </Button>
-                      </Stack>
-                    }
+                      }
+                    </Stack>
 
                     {missionContractorMatch?.contractor?.calendlyUrl &&
                       <Stack spacing={0.5} alignItems="center">
@@ -595,6 +597,17 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                   <Divider />
                 </Grid>
                 <Grid item xs={12}>
+
+                  <List
+                    component="nav"
+                    sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32, color: theme.palette.grey[500] } }}>
+                      <ListItemButton selected={tabGroupId === notesTabGroup} onClick={() => handleTabClick(notesTabGroup)}>
+                        <ListItemText primary="Notes" />
+                          <ListItemIcon>
+                            <RightOutlined />
+                          </ListItemIcon>
+                      </ListItemButton>
+                  </List>
                   {missionContractorMatch?.contractorPeraSurveyResponse &&
                     <List
                       component="nav"
@@ -651,22 +664,6 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                       </ListItemButton>
                   </List>
 
-                  <List
-                    component="nav"
-                    sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32, color: theme.palette.grey[500] } }}
-                    subheader={
-                      <Typography variant="subtitle1" color="text.primary" sx={{ pl: 2, mb: 1, mt: 2 }}>
-                        Feedback
-                      </Typography>
-                    }>
-                      <ListItemButton selected={tabGroupId === notesTabGroup} onClick={() => handleTabClick(notesTabGroup)}>
-                        <ListItemText primary="Notes" />
-                          <ListItemIcon>
-                            <RightOutlined />
-                          </ListItemIcon>
-                      </ListItemButton>
-                  </List>
-
                 </Grid>
 
               </Grid>
@@ -676,7 +673,8 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
         </Grid>
 
       </Grid>
-      <Grid item xs={12} sm={7} md={8} xl={9}>
+      <Grid item xs={12} lg={8}>
+
         <Grid container spacing={3}>
           <Grid item xs={12}>
             {tabGroupId === peraResponseResultTabGroup && selectedPeraAssessment &&
@@ -811,6 +809,7 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                 </Grid>
               </MainCard>
             }
+
             {tabGroupId === notesTabGroup &&
               <Grid container spacing={3}>
                 
@@ -999,6 +998,7 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
             }
           </Grid>
         </Grid>
+
       </Grid>
 
       <Dialog
