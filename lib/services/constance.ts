@@ -11,3 +11,4 @@ export const SUCCESS_MESSAGE_LOGIN =
 
 // UNIVERSAL ERRORS
 export const ERROR_MESSAGE = 'Виникла помилка, спробуйте ще раз'
+// TODO: ADD constance's to JSON File

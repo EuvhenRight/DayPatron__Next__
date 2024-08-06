@@ -17,7 +17,7 @@ function AboutPage() {
 	const { contentAboutPage } = data
 
 	return (
-		<section className='xl:container xl:mx-auto lg:pt-5 relative px-2 flex flex-col'>
+		<section className='container lg:pt-5 relative flex flex-col'>
 			<div className='my-10'>
 				<h1 className='text-4xl font-black mb-10'>
 					{contentAboutPage.aboutUs.title}

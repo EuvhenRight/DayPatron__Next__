@@ -22,15 +22,18 @@ import { useForm } from 'react-hook-form'
 import { PhoneInput } from 'react-international-phone'
 import 'react-international-phone/style.css'
 import { z } from 'zod'
+import data from '../../lib/db/content.json'
 
 interface Props {
 	currentUser?: User | null
 }
 
 export const FeedBackForm = ({ currentUser: user }: Props) => {
+	// DATA CONTENT
+	const { ContentContactsPage } = data
 	const [loading, setLoading] = useState<boolean>(false)
 	const [pending, startTransition] = useTransition()
-
+	// FORM VALIDATION
 	const form = useForm<z.infer<typeof ValidationSchema.feedbackForm>>({
 		resolver: zodResolver(ValidationSchema.feedbackForm),
 		defaultValues: {
@@ -61,19 +64,22 @@ export const FeedBackForm = ({ currentUser: user }: Props) => {
 
 	return (
 		<div>
+			{/* LOADER */}
 			{pending && <ComponentLoader />}
+			{/* FEEDBACK SENT */}
 			{loading ? (
 				<div className='text-center text-2xl my-4'>
-					<p>Ваш відгук надіслано, дякуємо!</p>
+					<p>{ContentContactsPage.form.feedback_sent_message}</p>
 					<Button
 						className='my-4'
 						variant='default'
 						onClick={() => startTransition(() => setLoading(false))}
 					>
-						Надіслати ще один відгук?
+						{ContentContactsPage.form.send_another_feedback_button}
 					</Button>
 				</div>
 			) : (
+				// FEEDBACK FORM
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)}>
 						{/* FIRST NAME */}
@@ -82,14 +88,15 @@ export const FeedBackForm = ({ currentUser: user }: Props) => {
 							name='name'
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel className='flex items-center my-2'>
-										Прізвище <Asterisk size={12} className='text-red-500' />
+									<FormLabel className='flex items-center my-4'>
+										{ContentContactsPage.form.surname_label}
+										<Asterisk size={12} className='text-red-500' />
 									</FormLabel>
 									<FormControl>
 										<Input
 											type='text'
 											{...field}
-											placeholder='введіть повне прізвище'
+											placeholder={ContentContactsPage.form.surname_placeholder}
 										/>
 									</FormControl>
 									<FormMessage />
@@ -103,15 +110,15 @@ export const FeedBackForm = ({ currentUser: user }: Props) => {
 								name='phone'
 								render={({ field }) => (
 									<FormItem className='w-full'>
-										<FormLabel className='flex items-center my-2'>
-											Номер телефону
+										<FormLabel className='flex items-center my-4'>
+											{ContentContactsPage.form.phone_label}
 											<Asterisk size={12} className='text-red-500' />
 										</FormLabel>
 										<FormControl>
 											<PhoneInput
 												hideDropdown={true}
 												defaultCountry='ua'
-												placeholder='введіть номер телефону'
+												placeholder={ContentContactsPage.form.phone_placeholder}
 												{...field}
 											/>
 										</FormControl>
@@ -125,15 +132,15 @@ export const FeedBackForm = ({ currentUser: user }: Props) => {
 								name='email'
 								render={({ field }) => (
 									<FormItem className='w-full'>
-										<FormLabel className='flex items-center my-2'>
-											Електронна пошта
+										<FormLabel className='flex items-center my-4'>
+											{ContentContactsPage.form.email_label}
 											<Asterisk size={12} className='text-red-500' />
 										</FormLabel>
 										<FormControl>
 											<Input
 												type='email'
 												{...field}
-												placeholder='введіть електронну пошту'
+												placeholder={ContentContactsPage.form.email_placeholder}
 											/>
 										</FormControl>
 										<FormMessage />
@@ -147,11 +154,15 @@ export const FeedBackForm = ({ currentUser: user }: Props) => {
 							name='message'
 							render={({ field }) => (
 								<FormItem>
-									<FormLabel className='flex items-center my-2'>
-										Повідомлення <Asterisk size={12} className='text-red-500' />
+									<FormLabel className='flex items-center my-4'>
+										{ContentContactsPage.form.message_label}
+										<Asterisk size={12} className='text-red-500' />
 									</FormLabel>
 									<FormControl>
-										<Textarea {...field} placeholder='введіть повідомлення' />
+										<Textarea
+											{...field}
+											placeholder={ContentContactsPage.form.message_placeholder}
+										/>
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -166,7 +177,7 @@ export const FeedBackForm = ({ currentUser: user }: Props) => {
 							variant='office'
 							className='my-4'
 						>
-							Надіслати
+							{ContentContactsPage.form.submit_button}
 						</Button>
 					</form>
 				</Form>
