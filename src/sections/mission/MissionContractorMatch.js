@@ -434,11 +434,13 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
                       alt={missionContractorMatch?.contractor?.firstName + ' ' + missionContractorMatch?.contractor?.lastName}
                       sx={{ width: 124, height: 124, border: '1px dashed' }}
                       src={missionContractorMatch?.contractor?.mainImageSrc} />
-                    <Stack spacing={0.3} alignItems="center">
-                      <Typography variant="h5">{missionContractorMatch?.contractor?.firstName + ' ' + missionContractorMatch?.contractor?.lastName}</Typography>
-                      {missionContractorMatch?.contractor?.headline &&
-                        <Typography variant="caption" color="secondary">{missionContractorMatch?.contractor?.headline}</Typography>
-                      }
+                    <Stack spacing={1} alignItems="center">
+                      <Stack spacing={0.3} alignItems="center">
+                        <Typography variant="h5">{missionContractorMatch?.contractor?.firstName + ' ' + missionContractorMatch?.contractor?.lastName}</Typography>
+                        {missionContractorMatch?.contractor?.headline &&
+                          <Typography variant="caption" color="secondary">{missionContractorMatch?.contractor?.headline}</Typography>
+                        }
+                      </Stack>
                       {missionContractorMatch?.contractor?.summary &&
                         <Typography variant="caption">{missionContractorMatch?.contractor?.summary}</Typography>
                       }
