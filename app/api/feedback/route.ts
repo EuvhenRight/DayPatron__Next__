@@ -7,7 +7,7 @@ export async function POST(request: NextRequest) {
 		const requestData = await request.json()
 
 		await sendEmail({
-			to: requestData.email,
+			to: requestData.email, // TODO: add array of emails
 			subject: 'Повідомлення до підтримки клієнтів DayPatron',
 			text: `Шановний(а) ${requestData.name},
 		

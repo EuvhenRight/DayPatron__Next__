@@ -19,6 +19,11 @@ import {
 	InputOTPSlot,
 } from '@/components/ui/input-otp'
 import { ValidationSchema } from '@/lib/db/validation'
+import {
+	API_URL,
+	ERROR_MESSAGE,
+	SUCCESS_MESSAGE_LOGIN,
+} from '@/lib/services/constance'
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios, { AxiosError } from 'axios'
 import { signIn } from 'next-auth/react'
@@ -49,17 +54,14 @@ export const LoginForm = () => {
 		setSuccess('')
 
 		try {
-			const response = await axios.post(
-				process.env.NEXT_PUBLIC_API_URL + '/login',
-				{
-					email,
-					password,
-				}
-			)
+			const response = await axios.post(API_URL + '/login', {
+				email,
+				password,
+			})
 
 			// HANDLE AXIOS ERROR
 			if (response.data?.error) {
-				setErrorMessage('Invalid email or password, please try again')
+				setErrorMessage(SUCCESS_MESSAGE_LOGIN)
 			} else {
 				// SING IN CREDENTIALS
 				await signIn('credentials', {
@@ -74,7 +76,7 @@ export const LoginForm = () => {
 			// HANDLE AXIOS ERROR
 			if (axios.isAxiosError(error)) {
 				const err = error as AxiosError<{ error: string }>
-				setErrorMessage(err.response?.data?.error || 'Something went wrong')
+				setErrorMessage(err.response?.data?.error || ERROR_MESSAGE)
 			}
 		} finally {
 			setIsButtonDisabled(false)

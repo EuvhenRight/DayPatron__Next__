@@ -14,6 +14,11 @@ import { FormError } from '@/components/ui/form-error'
 import { FormSuccess } from '@/components/ui/form-success'
 import { Input } from '@/components/ui/input'
 import { ValidationSchema } from '@/lib/db/validation'
+import {
+	API_URL,
+	ERROR_MESSAGE,
+	SUCCESS_MESSAGE_REGISTER,
+} from '@/lib/services/constance'
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios, { AxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
@@ -38,16 +43,13 @@ export const RegisterForm = () => {
 		setIsButtonDisabled(true)
 		const { email } = data
 		try {
-			const { data } = await axios.post(
-				process.env.NEXT_PUBLIC_API_URL + '/register',
-				{
-					email,
-				}
-			)
+			const { data } = await axios.post(API_URL + '/register', {
+				email,
+			})
 			console.log(data)
 			data
 			if (data?.id) {
-				setSuccess('Check your email')
+				setSuccess(SUCCESS_MESSAGE_REGISTER)
 			}
 			router.push('/auth/login')
 		} catch (error) {
@@ -55,7 +57,7 @@ export const RegisterForm = () => {
 				const err = (await error) as AxiosError<{ error: string }>
 				setErrorMessage(err.response?.data?.error)
 			} else {
-				setErrorMessage('An error occurred')
+				setErrorMessage(ERROR_MESSAGE)
 			}
 			console.log(error)
 		} finally {
