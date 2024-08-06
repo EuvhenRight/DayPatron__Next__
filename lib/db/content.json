@@ -61,7 +61,15 @@
 			"submit_button": "Надіслати"
 		},
 		"page": {
-			"title": "Контактна інформація"
+			"title": "Контактна інформація",
+			"manufacturer": "Виробник: ТОВ 'Екокеміка Трейдінг",
+			"manufacturer_address": "Адреса: вул. Предславинська, 34Б, Київ, 03150, Україна",
+			"manufacturer_link": "www.ekokemika.ua",
+			"distributor": "Постачальник та компанія для претензій: TOB 'Деззе'",
+			"email": "Email: info@dezze.com.ua",
+			"phone": "Телефон: +38 (050) 123-45-67",
+			"email_daypatron": "Email: daypatronteam@gmail.com",
+			"web_daypatron": "www.daypatron.com.ua"
 		}
 	}
 }

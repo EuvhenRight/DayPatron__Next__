@@ -169,16 +169,18 @@ export const FeedBackForm = ({ currentUser: user }: Props) => {
 							)}
 						/>
 						{/* BUTTON SAVE */}
-						<Button
-							type='button'
-							onClick={() =>
-								startTransition(() => form.handleSubmit(onSubmit)())
-							}
-							variant='office'
-							className='my-4'
-						>
-							{ContentContactsPage.form.submit_button}
-						</Button>
+						<div className='text-end'>
+							<Button
+								type='button'
+								onClick={() =>
+									startTransition(() => form.handleSubmit(onSubmit)())
+								}
+								variant='office'
+								className='my-4'
+							>
+								{ContentContactsPage.form.submit_button}
+							</Button>
+						</div>
 					</form>
 				</Form>
 			)}
