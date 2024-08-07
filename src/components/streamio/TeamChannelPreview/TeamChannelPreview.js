@@ -79,9 +79,11 @@ export const TeamChannelPreview = (props) => {
                   )
                 }
               </Typography>
-              <Typography component="span" color="textSecondary" variant="caption">
-                {format(channel.state.last_message_at, 'yyyy-MM-dd hh:mm')}
-              </Typography>
+              {channel?.state?.last_message_at && 
+                <Typography component="span" color="textSecondary" variant="caption">
+                  {format(channel.state.last_message_at, 'yyyy-MM-dd hh:mm')}
+                </Typography>
+              }
             </Stack>
           }
           secondary={
