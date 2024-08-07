@@ -3,7 +3,21 @@ import { ContactsComponent } from '@/components/Contacts/contacts-component'
 import { GoogleMap } from '@/components/Contacts/googleMap'
 import { FeedBackForm } from '@/components/FeedbackForm/feedback-form'
 import data from '@/lib/db/content.json'
-import { Earth, Factory, Forklift, Mail, MapPin, Send } from 'lucide-react'
+import {
+	Earth,
+	Factory,
+	Forklift,
+	Mail,
+	MapPin,
+	Phone,
+	Send,
+} from 'lucide-react'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+	title: 'DayPatron__Контакти',
+	description: 'Приєднуйтесь до нас',
+}
 
 export default async function ContactsPage() {
 	const [currentUser] = await Promise.all([getCurrentUser()])
@@ -27,6 +41,7 @@ export default async function ContactsPage() {
 			icon: <Forklift size={28} />,
 			text: ContentContactsPage.page.distributor,
 		},
+		{ icon: <Phone size={28} />, text: ContentContactsPage.page.phone },
 		{
 			icon: <Mail size={28} />,
 			text: ContentContactsPage.page.email_daypatron,

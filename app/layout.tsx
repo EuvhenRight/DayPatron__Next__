@@ -7,6 +7,7 @@ import { Mulish } from 'next/font/google'
 import Footer from '@/components/Footer/Footer'
 import { Toaster } from '@/components/ui/sonner'
 import { getCart } from '@/lib/services/cart'
+import { getAllProducts } from '@/lib/services/products'
 import type { Metadata } from 'next'
 import './globals.css'
 
@@ -22,18 +23,22 @@ export const metadata: Metadata = {
 
 async function RootLayout({ children }: { children: React.ReactNode }) {
 	// FETCH USER
-	const [session, cart] = await Promise.all([auth(), getCart()])
+	const [session, cart, products] = await Promise.all([
+		auth(),
+		getCart(),
+		getAllProducts(),
+	])
 
 	return (
 		<SessionProvider session={session}>
 			<html lang='en'>
 				<body className={mulish.className}>
+					<Header cart={cart} />
 					<main className='mt-28 min-h-screen'>
-						<Header cart={cart} />
 						{children}
 						<Toaster richColors />
 					</main>
-					<Footer />
+					<Footer products={products} />
 				</body>
 			</html>
 		</SessionProvider>

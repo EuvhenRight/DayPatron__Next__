@@ -148,7 +148,9 @@ export const ValidationSchema = {
 	}) as ZodSchema<DeliveryAddress>,
 	// FEEDBACK FORM
 	feedbackForm: z.object({
-		name: z.string({ invalid_type_error: "Поле 'Ім'я є обов'язковим" }),
+		name: z
+			.string({ required_error: "Поле 'Ім'я є обов'язковим" })
+			.min(3, 'Має містити 3 або більше елементів'),
 		email: z.string().email({ message: 'Невірна адреса електронної пошти' }),
 		phone: z
 			.string({ invalid_type_error: "Поле телефон є обов'язковим" })
