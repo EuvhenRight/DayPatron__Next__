@@ -22,9 +22,9 @@ const ListContainer = (props) => {
 };
 
 const UserItem = (props) => {
-  const { index, setSelectedUsers, user } = props;
+  const { index, setSelectedUsers, user, initiallySelected } = props;
 
-  const [selected, setSelected] = useState(false);
+  const [selected, setSelected] = useState(initiallySelected);
 
   const getLastActive = (i) => {
     switch (i) {
@@ -66,7 +66,7 @@ const UserItem = (props) => {
 
 export const UserList = (props) => {
   const { keycloak } = useKeycloak();
-  const { filters, setSelectedUsers } = props;
+  const { filters, setSelectedUsers, selectedUsers } = props;
 
   const { client } = useChatContext();
 
@@ -130,7 +130,13 @@ export const UserList = (props) => {
       ) : (
         users?.length &&
         users.map((user, i) => (
-          <UserItem index={i} key={user.messagingProviderUserId} setSelectedUsers={setSelectedUsers} user={user} />
+          <UserItem 
+            index={i} 
+            key={user.messagingProviderUserId} 
+            setSelectedUsers={setSelectedUsers} 
+            user={user} 
+            initiallySelected={selectedUsers?.includes(user?.messagingProviderUserId) === true} 
+          />
         ))
       )}
     </ListContainer>

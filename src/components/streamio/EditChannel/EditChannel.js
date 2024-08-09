@@ -33,15 +33,14 @@ export const EditChannel = (props) => {
   const dispatch = useDispatch();
   const { filters, setIsEditing } = props;
   const { channel } = useChatContext();
-
   const [channelName, setChannelName] = useState(channel?.data.name || channel?.data.id);
-  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [selectedUsers, setSelectedUsers] = useState(Object.keys(channel.state.members));
 
   const updateChannel = async (event) => {
     try
     {
       event.preventDefault();
-
+      
       let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/messages/groups',
         {
           method: 'PUT',
@@ -97,7 +96,7 @@ export const EditChannel = (props) => {
         <CloseCreateChannel {...{ setIsEditing }} />
       </div>
       <ChannelNameInput {...{ channelName, setChannelName }} />
-      <UserList {...{ filters, setSelectedUsers }} />
+      <UserList {...{ filters, setSelectedUsers, selectedUsers }} />
       <div className='edit-channel__button-wrapper' onClick={updateChannel} role="presentation">
         <p>Save Changes</p>
       </div>
