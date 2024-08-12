@@ -72,12 +72,13 @@ export const CreateChannel = (props) => {
 
       dispatch(openSnackbar({open: true, message: 'Saved.', variant: 'alert', alert: { color: 'success' }, close: false}));
 
-      await client.queryChannels({id: json.groupId});
-
       setChannelName('');
       setIsCreating(false);
       setSelectedUsers([client.userID]);
-      setActiveChannel(newChannel);
+
+      let newChannelQueryResponse = await client.queryChannels({id: json.groupId});
+      if(newChannelQueryResponse.length === 1)
+        setActiveChannel(newChannelQueryResponse[0]);
     } catch (err) {
       console.log(err);
     }

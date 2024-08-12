@@ -1,5 +1,10 @@
-import React from 'react';
-import { ChannelList } from 'stream-chat-react';
+import React, { useEffect } from 'react';
+import { useKeycloak } from '@react-keycloak/web';
+import { useDispatch } from 'react-redux';
+import { openSnackbar } from 'store/reducers/snackbar';
+import { prepareApiBody } from 'utils/stringUtils';
+
+import { ChannelList, useChatContext } from 'stream-chat-react';
 import { useTheme } from '@mui/material/styles';
 import { TeamChannelList } from '../TeamChannelList/TeamChannelList';
 import { TeamChannelPreview } from '../TeamChannelPreview/TeamChannelPreview';
@@ -27,9 +32,52 @@ const customChannelMessagingFilter = (channels) => {
 };
 
 export const ChannelListContainer = (props) => {
-  const { filters, options, setIsCreating, setIsEditing, sort } = props;
+  const dispatch = useDispatch();
+  const { keycloak } = useKeycloak();
+  const { client, setActiveChannel } = useChatContext();
+  const { filters, options, setIsCreating, setIsEditing, sort, targetUserId } = props;
   const theme = useTheme();
   const matchDownLG = useMediaQuery(theme.breakpoints.down('lg'));
+
+  useEffect(() => {
+    (async () => {
+      if(targetUserId && client && setActiveChannel) {
+        try {
+          
+          let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/messages/groups',
+            {
+              method: 'POST',
+              headers: {
+                'Authorization': 'Bearer ' + keycloak.idToken,
+                'Content-Type': 'application/json'
+              },
+              body: prepareApiBody({groupName: null, messagingProviderUserIds: [targetUserId], returnExisting: true})
+            }
+          );
+    
+          if (!response.ok) {
+            dispatch(openSnackbar({open: true, message: 'Failed.', variant: 'alert', alert: { color: 'error' }, close: false }));
+            return;
+          }
+    
+          let json = await response.json();
+    
+          if (!json?.groupId) {
+            dispatch(openSnackbar({open: true, message: 'Failed.', variant: 'alert', alert: { color: 'error' }, close: false }));
+            return;
+          }
+    
+          dispatch(openSnackbar({open: true, message: 'Saved.', variant: 'alert', alert: { color: 'success' }, close: false}));
+    
+          var newChannelQueryResponse = await client.queryChannels({id: json.groupId});
+          if(newChannelQueryResponse.length === 1)
+            setActiveChannel(newChannelQueryResponse[0]);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    })();
+  }, [targetUserId, client, setActiveChannel]);
 
   return (
     <MainCard

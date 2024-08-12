@@ -49,7 +49,7 @@ const getToken = async () => {
   return json.token;
 };
 
-const TenxChat = () => {
+const TenxChat = ({targetUserId}) => {
 
   const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -67,7 +67,6 @@ const TenxChat = () => {
       image: getRandomImage() 
     }
   });
-
   useChecklist(client, targetOrigin);
 
   useEffect(() => {
@@ -89,6 +88,7 @@ const TenxChat = () => {
               setIsCreating,
               setIsEditing,
               sort,
+              targetUserId
             }}
           />
         </Grid>
