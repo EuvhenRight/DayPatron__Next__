@@ -71,5 +71,25 @@
 			"email_daypatron": "Email: daypatronteam@gmail.com",
 			"web_daypatron": "www.daypatron.com.ua"
 		}
+	},
+	"ContentFooter": {
+		"links": {
+			"companyTitle": "Компанія",
+			"productsTitle": "Продукти",
+			"infoTitle": "Інформація",
+			"account": "Маєте аккаунт?",
+			"profile": "Профіль",
+			"orders": "Замовлення",
+			"privacy": "Політика конфіденційності",
+			"warranty": "Гарантія та повернення",
+			"delivery": "Умови доставки та оплати",
+			"aboutUs": "Про нас",
+			"contacts": "Контакти",
+			"whereToBuy": "Де купити?"
+		},
+		"footer": {
+			"copyright": "© 2023 DayPatron Inc. Усі права захищені"
+		},
+		"slogan": "Сила в кожному з нас!"
 	}
 }

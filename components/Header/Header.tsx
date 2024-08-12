@@ -89,7 +89,7 @@ export const Header = ({ cart }: Props) => {
 					</motion.div>
 				)}
 			</AnimatePresence>
-			<nav className='flex justify-between py-3 px-3 items-center container'>
+			<nav className='flex justify-between p-3 items-center container'>
 				{/* LOGO */}
 				<Link href='/' onClick={() => toggleActive('/')}>
 					<Image
