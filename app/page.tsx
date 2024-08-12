@@ -1,7 +1,10 @@
 import { FeaturedOn } from '@/components/FeaturedOn/featured-on'
 import { MissionInfo } from '@/components/Mission-Info/mission'
+import { CarouselMixCards } from '@/components/Slider/carousel'
+import { getAllProducts } from '@/lib/services/products'
 
-export default function Home() {
+export default async function Home() {
+	const dataProducts = await getAllProducts()
 	return (
 		<>
 			<div>
@@ -21,6 +24,9 @@ export default function Home() {
 				<div>
 					<FeaturedOn />
 				</div>
+			</section>
+			<section>
+				<CarouselMixCards dataProducts={dataProducts} />
 			</section>
 		</>
 	)
