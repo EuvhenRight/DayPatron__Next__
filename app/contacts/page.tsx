@@ -22,6 +22,7 @@ export const metadata: Metadata = {
 export default async function ContactsPage() {
 	const [currentUser] = await Promise.all([getCurrentUser()])
 	const { ContentContactsPage } = data
+
 	const contactData = [
 		{
 			icon: <Factory size={28} />,
@@ -68,9 +69,6 @@ export default async function ContactsPage() {
 					</ul>
 				</div>
 				<div className='w-1/2'>
-					<h1 className='text-2xl font-bold text-center pb-10'>
-						{ContentContactsPage.form.title}
-					</h1>
 					<FeedBackForm currentUser={currentUser} />
 				</div>
 			</section>

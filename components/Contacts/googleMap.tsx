@@ -6,11 +6,12 @@ export const GoogleMap = () => {
 	return (
 		<APIProvider apiKey={apiKey}>
 			<Map
+				reuseMaps={true}
 				style={{ width: '100vw', height: '500px' }}
 				defaultCenter={{ lat: 50.42015, lng: 30.5201551 }}
-				defaultZoom={12}
+				defaultZoom={14}
 				gestureHandling={'greedy'}
-				disableDefaultUI={true}
+				disableDefaultUI={false}
 			>
 				<Marker position={{ lat: 50.42015, lng: 30.5201551 }} />
 			</Map>
