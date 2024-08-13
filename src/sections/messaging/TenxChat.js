@@ -29,7 +29,7 @@ const i18nInstance = new Streami18n({
 const filters = [
   { type: 'messaging' }
 ];
-const options = { state: true, watch: true, presence: true, limit: 3 };
+const options = { state: true, watch: true, presence: true, limit: 100 };
 const sort = { last_message_at: -1, updated_at: -1 };
 
 let keycloakParent = null;
