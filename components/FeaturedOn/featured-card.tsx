@@ -3,11 +3,16 @@ import Image from 'next/image'
 import Link from 'next/link'
 interface Props {
 	item: { image: string; url: string }
+	variants: any
 }
 
-export const FeaturedCard = ({ item }: Props) => {
+export const FeaturedCard = ({ item, variants }: Props) => {
 	return (
-		<motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+		<motion.div
+			whileHover={{ scale: 1.1 }}
+			whileTap={{ scale: 0.9 }}
+			variants={variants}
+		>
 			<Link href={item.url} target='_blank' rel='noreferrer'>
 				<div className='hover:border-slate-400 hover:transition hover:ease-in-out hover:delay-150'>
 					<Image

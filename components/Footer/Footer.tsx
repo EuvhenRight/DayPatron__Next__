@@ -1,16 +1,16 @@
 'use client'
-import data from '@/lib/db/content.json'
-import { Product } from '@prisma/client'
-import { Facebook, Instagram, Send } from 'lucide-react'
-import Image from 'next/image'
-import Link from 'next/link'
 import {
 	Accordion,
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
-} from '../ui/accordion'
-import { Button } from '../ui/button'
+} from '@/components/ui/accordion'
+import { Button } from '@/components/ui/button'
+import data from '@/lib/db/content.json'
+import { Product } from '@prisma/client'
+import { Facebook, Instagram, Send } from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
 import { CompanyFooterInfo } from './company-info'
 import { FooterInformation } from './footer-information'
 import { LinkFooterProducts } from './link-footer-products'

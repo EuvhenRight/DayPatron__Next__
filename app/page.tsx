@@ -1,10 +1,17 @@
 import { FeaturedOn } from '@/components/FeaturedOn/featured-on'
 import { MissionInfo } from '@/components/Mission-Info/mission'
-import { CarouselMixCards } from '@/components/Slider/carousel'
+import { ProductsCard } from '@/components/Slider/products-card'
 import { getAllProducts } from '@/lib/services/products'
+import { Product } from '@prisma/client'
 
 export default async function Home() {
-	const dataProducts = await getAllProducts()
+	const dataProducts: Product[] = await getAllProducts()
+	//  FILTER PRODUCTS
+	const matchingProducts = dataProducts.filter(
+		product => product.category === 'CPL' || product.category === 'Liquidator'
+	)
+	//  GET FIRST TWO PRODUCTS
+	const firstTwoProducts = matchingProducts.slice(0, 2)
 	return (
 		<>
 			<div>
@@ -25,8 +32,14 @@ export default async function Home() {
 					<FeaturedOn />
 				</div>
 			</section>
-			<section>
-				<CarouselMixCards dataProducts={dataProducts} />
+			<section className='container'>
+				<ul className='grid grid-cols-1 md:grid-cols-2 gap-2 justify-items-center'>
+					{firstTwoProducts.map(product => (
+						<li key={product.id}>
+							<ProductsCard product={product} />
+						</li>
+					))}
+				</ul>
 			</section>
 		</>
 	)

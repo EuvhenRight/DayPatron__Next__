@@ -11,15 +11,15 @@ interface Props {
 export const ProductsCard = ({ product }: Props) => {
 	return (
 		<Link href={`/products/${product.id}/details`}>
-			<div className='group relative cursor-pointer xl:w-80 h-[600px]'>
+			<div className='group relative cursor-pointer xl:w-80 h-[600px] hover:transform hover:scale-105 transition-all'>
 				{product.NEW && (
 					<div className='animate-pulse absolute rounded-md top-20 right-10 bg-green-800 text-white py-2 px-1'>
-						NEW
+						НОВИНКА
 					</div>
 				)}
 				{product.HIT && (
 					<div className='animate-pulse absolute rounded-md top-20 right-10 bg-red-500 text-white py-2 px-1'>
-						HIT
+						ХИТ ПРОДАЖ
 					</div>
 				)}
 				<div className='flex flex-col items-center'>

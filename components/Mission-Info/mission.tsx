@@ -11,7 +11,7 @@ export const MissionInfo = () => {
 		<div className='w-full flex flex-col items-center justify-center'>
 			<div>
 				<h1 className='text-3xl font-bold px-4 bg-neutral-700 rounded-t-lg w-full sm:w-64 h-10 text-center text-white rounded-b--lg'>
-					Наша місія
+					[ Наша місія ]
 				</h1>
 				<p className='text-center text-lg rounded-b-lg bg-neutral-700 sm:rounded-r-lg  p-4 text-white'>
 					DAY Patron – ідеальний супутник для тих, хто цінує бездоганність та
