@@ -429,6 +429,9 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
             <MainCard>
               <Grid container spacing={3}>
                 <Grid item xs={12}>
+                  <Button variant="outlined" sx={{position: 'absolute', right: '20px'}} onClick={() => {navigate('/messaging?tuid=' + missionContractorMatch?.contractor?.messagingProviderUserId)}}>
+                    Message
+                  </Button>
                   <Stack spacing={2.5} alignItems="center">
                     <Avatar
                       alt={missionContractorMatch?.contractor?.firstName + ' ' + missionContractorMatch?.contractor?.lastName}

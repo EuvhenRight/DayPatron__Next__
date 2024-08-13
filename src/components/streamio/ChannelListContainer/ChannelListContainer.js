@@ -13,16 +13,10 @@ import {
   Typography, 
   Stack, 
   Box, 
-  InputAdornment, 
-  OutlinedInput, 
   useMediaQuery 
 } from '@mui/material';
 
 import SimpleBar from 'components/third-party/SimpleBar';
-import {
-  SearchOutlined
-} from '@ant-design/icons';
-
 // project import
 import MainCard from 'components/MainCard';
 import './ChannelListContainer.css';
@@ -91,7 +85,7 @@ export const ChannelListContainer = (props) => {
         <Stack spacing={2}>
           <Stack direction="row" spacing={0.5} alignItems="center" justifyContent="space-between">
             <Typography variant="h5" color="inherit">
-              Groups
+              Chats
             </Typography>
             
             <AddChannel
@@ -99,24 +93,6 @@ export const ChannelListContainer = (props) => {
               type='messaging'
             />
           </Stack>
-
-          <OutlinedInput
-            fullWidth
-            id="input-search-header"
-            placeholder="Search"
-            value={""}
-            onChange={() => {}}
-            sx={{
-              '& .MuiOutlinedInput-input': {
-                p: '10.5px 0px 12px'
-              }
-            }}
-            startAdornment={
-              <InputAdornment position="start">
-                <SearchOutlined style={{ fontSize: 'small' }} />
-              </InputAdornment>
-            }
-          />
         </Stack>
       </Box>
 

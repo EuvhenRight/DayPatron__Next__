@@ -87,7 +87,7 @@ export const CreateChannel = (props) => {
   return (
     <div className='create-channel__container'>
       <div className='create-channel__header'>
-        <p>Create a New Group</p>
+        <p>Create a New Chat</p>
         <CloseCreateChannel {...{ setIsCreating }} />
       </div>
       <ChannelNameInput {...{ channelName, setChannelName }} />
