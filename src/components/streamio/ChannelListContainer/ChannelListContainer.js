@@ -5,19 +5,18 @@ import { openSnackbar } from 'store/reducers/snackbar';
 import { prepareApiBody } from 'utils/stringUtils';
 
 import { ChannelList, useChatContext } from 'stream-chat-react';
-import { useTheme } from '@mui/material/styles';
+//import { useTheme } from '@mui/material/styles';
 import { TeamChannelList } from '../TeamChannelList/TeamChannelList';
 import { TeamChannelPreview } from '../TeamChannelPreview/TeamChannelPreview';
 import { AddChannel } from 'assets/images/streamio';
 import { 
   Typography, 
   Stack, 
-  Box, 
-  useMediaQuery 
+  Box,
+  Divider, 
+  //useMediaQuery 
 } from '@mui/material';
 
-import SimpleBar from 'components/third-party/SimpleBar';
-// project import
 import MainCard from 'components/MainCard';
 import './ChannelListContainer.css';
 
@@ -30,8 +29,8 @@ export const ChannelListContainer = (props) => {
   const { keycloak } = useKeycloak();
   const { client, setActiveChannel } = useChatContext();
   const { filters, options, setIsCreating, setIsEditing, sort, targetUserId } = props;
-  const theme = useTheme();
-  const matchDownLG = useMediaQuery(theme.breakpoints.down('lg'));
+  //const theme = useTheme();
+  //const matchDownLG = useMediaQuery(theme.breakpoints.down('lg'));
 
   useEffect(() => {
     (async () => {
@@ -75,13 +74,10 @@ export const ChannelListContainer = (props) => {
 
   return (
     <MainCard
-      sx={{
-        bgcolor: matchDownLG ? 'transparent' : 'white'
-      }}
-      border={!matchDownLG}
       content={false}
+      className='tenx-channels-container'
     >
-      <Box sx={{ p: 3, pb: 1 }}>
+      <Box className='tenx-channels-header'>
         <Stack spacing={2}>
           <Stack direction="row" spacing={0.5} alignItems="center" justifyContent="space-between">
             <Typography variant="h5" color="inherit">
@@ -95,37 +91,29 @@ export const ChannelListContainer = (props) => {
           </Stack>
         </Stack>
       </Box>
-
-      <SimpleBar
-        sx={{
-          overflowX: 'hidden',
-          height: matchDownLG ? 'calc(100vh - 120px)' : 'calc(100vh - 428px)',
-          minHeight: matchDownLG ? 0 : 420
-        }}
-      >
-        <Box sx={{ p: 3, pt: 0 }}>
-          <ChannelList
-            channelRenderFilterFn={customChannelMessagingFilter}
-            filters={filters[1]}
-            options={options}
-            sort={sort}
-            List={(listProps) => (
-              <TeamChannelList
-                {...listProps}
-                {...{ setIsCreating, setIsEditing }}
-                type='messaging'
-              />
-            )}
-            Preview={(previewProps) => (
-              <TeamChannelPreview
-                {...previewProps}
-                {...{ setIsCreating, setIsEditing }}
-                type='messaging'
-              />
-            )}
-          />
-        </Box>
-      </SimpleBar>
+      <Divider />
+      <Box sx={{ p: 3, pt: 0 }} className='tenx-channels-list'>
+        <ChannelList
+          channelRenderFilterFn={customChannelMessagingFilter}
+          filters={filters[1]}
+          options={options}
+          sort={sort}
+          List={(listProps) => (
+            <TeamChannelList
+              {...listProps}
+              {...{ setIsCreating, setIsEditing }}
+              type='messaging'
+            />
+          )}
+          Preview={(previewProps) => (
+            <TeamChannelPreview
+              {...previewProps}
+              {...{ setIsCreating, setIsEditing }}
+              type='messaging'
+            />
+          )}
+        />
+      </Box>
     </MainCard>
   );
 };

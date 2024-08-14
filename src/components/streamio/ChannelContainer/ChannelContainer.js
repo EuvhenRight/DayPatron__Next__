@@ -72,7 +72,7 @@ export const ChannelContainer = (props) => {
   }
 
   return (
-    <MainCard content={false}>
+    <MainCard content={false} className='tenx-messages-container'>
       <Channel
         EmptyStateIndicator={ChannelEmptyState}
         Message={(messageProps, i) => (

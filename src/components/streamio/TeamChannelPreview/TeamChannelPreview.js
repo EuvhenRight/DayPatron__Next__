@@ -24,6 +24,7 @@ export const TeamChannelPreview = (props) => {
       <ListItemButton
         sx={{ pl: 1 }}
         onClick={() => {
+          alert(1233);
           setIsCreating(false);
           setIsEditing(false);
           setActiveChannel(channel);

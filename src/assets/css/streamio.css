@@ -66,3 +66,22 @@ body {
 .str-chat-channel-list {
   border:none;
 }
+.tenx-channels-container {
+  height: calc(100vh - 270px);
+  display: flex;
+  flex-flow: column;
+}
+.tenx-channels-list {
+  flex: 1;
+  scrollbar-width: thin;
+  overflow-y: auto;
+}
+.tenx-messages-container {
+  height: calc(100vh - 270px);
+}
+.str-chat__list {
+  scrollbar-width: thin;
+}
+.tenx-channels-header {
+  padding: 4px 5px 3px 25px;
+}
