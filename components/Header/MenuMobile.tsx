@@ -34,7 +34,7 @@ export const MenuMobile = ({
 		{ label: 'Головна', href: '/' },
 		{ label: 'Продукти', href: '/products' },
 		{ label: 'Про нас', href: '/about' },
-		{ label: 'Де купити?', href: '/where-to-buy' },
+		{ label: 'Партнери', href: '/partners' },
 		{ label: 'Контакти', href: '/contacts' },
 		session
 			? { label: currentName, href: currenRole, special: true }
@@ -64,8 +64,7 @@ export const MenuMobile = ({
 								>
 									<Link
 										className={classNames({
-											'border-b-2 border-b-red-500':
-												isActive === link.href || pathName === link.href,
+											'border-b-2 border-b-red-500': pathName === link.href,
 										})}
 										onClick={() => toggleActive(link.href)}
 										href={link.href}

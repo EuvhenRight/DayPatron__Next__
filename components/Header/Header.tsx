@@ -29,11 +29,12 @@ export const Header = ({ cart }: Props) => {
 	const { status } = useSession()
 	const [prevScrollY, setPrevScrollY] = useState(0)
 	const [showMarquee, setShowMarquee] = useState(true)
-
+	console.log(isActive, 'isActive')
+	console.log(pathName, 'pathName')
 	const links = [
 		{ label: 'Продукти', href: '/products' },
 		{ label: 'Про нас', href: '/about' },
-		{ label: 'Де купити', href: '/where-to-buy' },
+		{ label: 'Партнери', href: '/partners' },
 		{ label: 'Контакти', href: '/contacts' },
 	]
 
@@ -116,8 +117,8 @@ export const Header = ({ cart }: Props) => {
 												'transition-colors': true,
 											},
 											{
-												'border-b-2 border-b-red-500':
-													isActive === link.href || pathName === link.href,
+												// ACTIVE LINK
+												'border-b-2 border-b-red-500': pathName === link.href,
 											}
 										)}
 										onClick={() => toggleActive(link.href)}

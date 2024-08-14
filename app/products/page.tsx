@@ -5,6 +5,7 @@ import { getAllProducts } from '@/lib/services/products'
 const Products = async () => {
 	// FETCH ALL PRODUCTS
 	const dataProducts = await getAllProducts()
+
 	return (
 		<section className='flex flex-col items-center justify-center container'>
 			{/* BREADCRUMB */}

@@ -9,7 +9,9 @@ export const ContactsComponent = ({ icon, text, link }: Props) => {
 		<div className={`flex items-center justify-start gap-4 ${link && 'pb-8'}`}>
 			{icon}
 			{link ? (
-				<a href={link}>{text}</a>
+				<a href={link} className='hover:underline'>
+					{text}
+				</a>
 			) : (
 				<p className='flex items-end justify-start gap-2'>{text}</p>
 			)}

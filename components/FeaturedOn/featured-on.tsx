@@ -3,12 +3,14 @@ import { FeaturedCard } from '@/components/FeaturedOn/featured-card'
 import data from '@/lib/db/content.json'
 import { partners } from '@/lib/services/partners'
 import { motion, useAnimation, useInView } from 'framer-motion'
+import { usePathname } from 'next/navigation'
 import { useEffect, useRef } from 'react'
 export const FeaturedOn = () => {
-	const { FiguredOn } = data
+	const { FiguredOn, Partners } = data
 	const controls = useAnimation()
 	const ref = useRef(null)
 	const isInView = useInView(ref)
+	const path = usePathname()
 
 	useEffect(() => {
 		if (isInView) {
@@ -33,9 +35,16 @@ export const FeaturedOn = () => {
 
 	return (
 		<div className='w-full flex flex-col items-center justify-center'>
-			<h1 className='text-3xl font-black py-14 text-center  uppercase '>
-				{FiguredOn}
-			</h1>
+			{/* DIFFERENCE TITLE */}
+			{path === '/' ? (
+				<h1 className='text-3xl font-black py-14 text-center  uppercase '>
+					{FiguredOn}
+				</h1>
+			) : (
+				<h1 className='text-3xl font-black py-14 text-center  uppercase '>
+					{Partners}
+				</h1>
+			)}
 			<motion.div
 				className='w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 items-center justify-items-center'
 				ref={ref}
