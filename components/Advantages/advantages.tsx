@@ -1,5 +1,7 @@
 'use client'
 import { advantageProps } from '@/lib/db/advantages'
+import { rubikGlitch } from '@/lib/utils/font'
+import { cn } from '@/lib/utils/utils'
 import { motion, Variants } from 'framer-motion'
 import Image from 'next/image'
 
@@ -65,7 +67,7 @@ export const Advantages = ({ category }: Props) => {
 						variants={cardVariants}
 						viewport={{ once: true, amount: 0.15 }}
 						whileHover={{ scale: 1.1 }}
-						className='flex flex-col items-center w-[140px] lg:w-[280px] text-center'
+						className='flex flex-col items-center w-[280px] text-center'
 					>
 						<Image
 							src={item.icon}
@@ -76,7 +78,10 @@ export const Advantages = ({ category }: Props) => {
 						/>
 						<div>
 							<h2
-								className={`${color} text-sm lg:text-xl uppercase font-bold py-4`}
+								className={cn(
+									rubikGlitch.className,
+									`${color} 'text-sm lg:text-xl uppercase font-bold py-4`
+								)}
 							>
 								{item.title}
 							</h2>

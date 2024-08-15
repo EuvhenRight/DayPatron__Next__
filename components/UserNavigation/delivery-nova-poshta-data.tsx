@@ -14,7 +14,7 @@ import {
 	PopoverTrigger,
 } from '@/components/ui/popover'
 import { useSearchData } from '@/lib/hooks/search-division'
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils/utils'
 import { Check, ChevronsUpDown } from 'lucide-react'
 import { useEffect, useState } from 'react'
 

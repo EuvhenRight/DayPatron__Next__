@@ -1,5 +1,7 @@
 'use client'
 import { PriceTag } from '@/components/PriceTag'
+import { rubikGlitch } from '@/lib/utils/font'
+import { cn } from '@/lib/utils/utils'
 import { Product } from '@prisma/client'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -34,8 +36,15 @@ export const ProductsCard = ({ product }: Props) => {
 						Докладніше
 					</button>
 					<div className='text-center px-5 pb-5'>
-						<h2 className='text-lg uppercase -tracking-2'>{product.name}</h2>
-						<h3 className='text-md -tracking-0 mt-1 uppercase opacity-65'>
+						<h2 className='text-lg font-bold uppercase -tracking-2'>
+							{product.name}
+						</h2>
+						<h3
+							className={cn(
+								rubikGlitch.className,
+								'text-md -tracking-0 mt-1 uppercase opacity-65'
+							)}
+						>
 							{product.UTP}
 						</h3>
 						{/* @ts-ignore */}

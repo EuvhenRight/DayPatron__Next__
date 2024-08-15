@@ -1,17 +1,65 @@
 'use client'
+import { Button } from '@/components/ui/button'
+import { rubikGlitch } from '@/lib/utils/font'
+import { cn } from '@/lib/utils/utils'
+import { motion, useAnimation, useInView } from 'framer-motion'
 import { useRouter } from 'next/navigation'
-import { Button } from '../ui/button'
+import { useEffect, useRef } from 'react'
 
 export const MissionInfo = () => {
 	const router = useRouter()
+
+	const ref = useRef(null)
+	const controls = useAnimation()
+	const isInView = useInView(ref, { once: true, amount: 0.1 })
+
+	useEffect(() => {
+		if (isInView) {
+			controls.start({
+				x: 0, // Move to center
+				transition: {
+					type: 'spring', // Smooth spring animation
+					stiffness: 100,
+					damping: 20,
+				},
+			})
+		}
+	}, [controls, isInView])
 	const toggleButton = () => {
 		router.push('/about')
 	}
 	return (
-		<div className='w-full flex flex-col items-center justify-center'>
+		<div className='w-full flex flex-col items-center justify-center my-28'>
 			<div>
-				<h1 className='text-3xl font-bold px-4 bg-neutral-700 rounded-t-lg w-full sm:w-64 h-10 text-center text-white rounded-b--lg'>
-					[ Наша місія ]
+				<h1
+					ref={ref}
+					className={cn(
+						rubikGlitch.className,
+						'text-6xl',
+						'px-4',
+						'text-start',
+						'text-neutral-800',
+						'flex',
+						'items-center',
+						'justify-start',
+						'my-10'
+					)}
+				>
+					<motion.span
+						className='text-red-600'
+						initial={{ x: -200 }} // Start off-screen to the left
+						animate={controls}
+					>
+						[{' '}
+					</motion.span>
+					<span className='mx-2'>Наша місія</span>
+					<motion.span
+						className='text-red-600'
+						initial={{ x: 200 }} // Start off-screen to the right
+						animate={controls}
+					>
+						]{' '}
+					</motion.span>
 				</h1>
 				<p className='text-center text-lg rounded-b-lg bg-neutral-700 sm:rounded-r-lg  p-4 text-white'>
 					DAY Patron – ідеальний супутник для тих, хто цінує бездоганність та

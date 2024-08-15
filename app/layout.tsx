@@ -1,20 +1,13 @@
 import { auth } from '@/auth'
-import { Header } from '@/components/Header/Header'
-
-import { SessionProvider } from 'next-auth/react'
-import { Mulish } from 'next/font/google'
-
 import Footer from '@/components/Footer/Footer'
+import { Header } from '@/components/Header/Header'
 import { Toaster } from '@/components/ui/sonner'
 import { getCart } from '@/lib/services/cart'
 import { getAllProducts } from '@/lib/services/products'
+import { mulish } from '@/lib/utils/font'
 import type { Metadata } from 'next'
+import { SessionProvider } from 'next-auth/react'
 import './globals.css'
-
-const mulish = Mulish({
-	weight: ['200', '300', '400', '500', '600', '700', '800', '900'],
-	subsets: ['latin'],
-})
 
 export const metadata: Metadata = {
 	title: 'DayPatron',

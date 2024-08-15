@@ -29,8 +29,7 @@ export const Header = ({ cart }: Props) => {
 	const { status } = useSession()
 	const [prevScrollY, setPrevScrollY] = useState(0)
 	const [showMarquee, setShowMarquee] = useState(true)
-	console.log(isActive, 'isActive')
-	console.log(pathName, 'pathName')
+
 	const links = [
 		{ label: 'Продукти', href: '/products' },
 		{ label: 'Про нас', href: '/about' },
@@ -72,7 +71,7 @@ export const Header = ({ cart }: Props) => {
 	}, [prevScrollY])
 
 	return (
-		<header className='shadow-md bg-neutral-800 fixed w-full top-0 left-0 z-40'>
+		<header className='shadow-md bg-neutral-800 border-b border-white fixed w-full top-0 left-0 z-40'>
 			<AnimatePresence>
 				{showMarquee && (
 					<motion.div
@@ -84,7 +83,7 @@ export const Header = ({ cart }: Props) => {
 							type: 'tween',
 							stiffness: 500,
 						}}
-						className='bg-neutral-800 border-b border-white py-1'
+						className='bg-neutral-800 border-b border-neutral-700 py-1'
 					>
 						<Marquee />
 					</motion.div>

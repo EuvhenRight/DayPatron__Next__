@@ -42,7 +42,9 @@ export const CommentForm = ({ onChangeText }: Props) => {
 					<AccordionTrigger onClick={toggleAccordion}>
 						<div className='font-bold flex flex-col text-left'>
 							Коментар до замовлення
-							<span>{isOpen ? <Label>{comment}</Label> : null}</span>
+							<span className='break-words'>
+								{isOpen ? <Label>{comment}</Label> : null}
+							</span>
 						</div>
 					</AccordionTrigger>
 					<AccordionContent className='p-2'>

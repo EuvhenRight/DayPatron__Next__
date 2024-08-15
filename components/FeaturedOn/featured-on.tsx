@@ -2,6 +2,8 @@
 import { FeaturedCard } from '@/components/FeaturedOn/featured-card'
 import data from '@/lib/db/content.json'
 import { partners } from '@/lib/services/partners'
+import { rubikGlitch } from '@/lib/utils/font'
+import { cn } from '@/lib/utils/utils'
 import { motion, useAnimation, useInView } from 'framer-motion'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef } from 'react'
@@ -37,11 +39,21 @@ export const FeaturedOn = () => {
 		<div className='w-full flex flex-col items-center justify-center'>
 			{/* DIFFERENCE TITLE */}
 			{path === '/' ? (
-				<h1 className='text-3xl font-black py-14 text-center  uppercase '>
+				<h1
+					className={cn(
+						rubikGlitch.className,
+						'text-3xl font-black py-14 text-center  uppercase'
+					)}
+				>
 					{FiguredOn}
 				</h1>
 			) : (
-				<h1 className='text-3xl font-black py-14 text-center  uppercase '>
+				<h1
+					className={cn(
+						rubikGlitch.className,
+						'text-3xl font-black py-14 text-center  uppercase'
+					)}
+				>
 					{Partners}
 				</h1>
 			)}

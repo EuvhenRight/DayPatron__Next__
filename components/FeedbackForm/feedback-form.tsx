@@ -14,6 +14,8 @@ import { Textarea } from '@/components/ui/textarea'
 import data from '@/lib/db/content.json'
 import { ValidationSchema } from '@/lib/db/validation'
 import { API_URL } from '@/lib/services/constance'
+import { rubikGlitch } from '@/lib/utils/font'
+import { cn } from '@/lib/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { User } from '@prisma/client'
 import axios from 'axios'
@@ -77,8 +79,10 @@ export const FeedBackForm = ({ currentUser: user }: Props) => {
 		<div>
 			{/* FEEDBACK SENT */}
 			{loading && !success ? (
-				<div className='text-center text-2xl my-4'>
-					<p>{ContentContactsPage.form.feedback_sent_message}</p>
+				<div className='text-center text-2xl'>
+					<p className={cn(rubikGlitch.className, 'text-2xl')}>
+						{ContentContactsPage.form.feedback_sent_message}
+					</p>
 					<Button
 						className='my-4'
 						variant='default'
@@ -90,7 +94,12 @@ export const FeedBackForm = ({ currentUser: user }: Props) => {
 			) : (
 				// FEEDBACK FORM
 				<>
-					<h1 className='text-2xl font-bold text-center pb-10'>
+					<h1
+						className={cn(
+							rubikGlitch.className,
+							'text-2xl font-bold text-center pb-10'
+						)}
+					>
 						{ContentContactsPage.form.title}
 					</h1>
 					<Form {...form}>

@@ -1,4 +1,6 @@
 import { ContentData } from '@/lib/types/contentTypes'
+import { rubikGlitch } from '@/lib/utils/font'
+import { cn } from '@/lib/utils/utils'
 import { Move3D } from 'lucide-react'
 import Image from 'next/image'
 
@@ -12,7 +14,9 @@ export const AboutBlockContent = ({ data, year }: Props) => {
 			{/* 2024 */}
 			<div className='w-full flex flex-row justify-between items-center my-7'>
 				<div className='w-2 h-12 mr-4 bg-red-500'></div>
-				<h1 className='text-3xl font-black'>{year}</h1>
+				<h1 className={cn(rubikGlitch.className, 'text-3xl font-black')}>
+					{year}
+				</h1>
 				<div className='bg-gray-400 max-w-full w-full ml-4 h-[1px]'></div>
 			</div>
 			<div className='grid grid-cols-1 md:grid-cols-3 gap-4 justify-items-center '>

@@ -3,6 +3,8 @@ import { ContactsComponent } from '@/components/Contacts/contacts-component'
 import { GoogleMap } from '@/components/Contacts/googleMap'
 import { FeedBackForm } from '@/components/FeedbackForm/feedback-form'
 import data from '@/lib/db/content.json'
+import { rubikGlitch } from '@/lib/utils/font'
+import { cn } from '@/lib/utils/utils'
 import {
 	Earth,
 	Factory,
@@ -57,7 +59,7 @@ export default async function ContactsPage() {
 		<>
 			<section className='container lg:pt-10 relative flex flex-row w-full pt-2 mb-4'>
 				<div className='w-1/2 text-start'>
-					<h1 className='text-2xl font-bold'>
+					<h1 className={cn(rubikGlitch.className, 'text-2xl font-bold')}>
 						{ContentContactsPage.page.title}
 					</h1>
 					<ul className='my-2 pt-4 *:my-4'>

@@ -1,6 +1,8 @@
 'use client'
 
 import { PriceTag } from '@/components/PriceTag'
+import { rubikGlitch } from '@/lib/utils/font'
+import { cn } from '@/lib/utils/utils'
 import { Variant } from '@prisma/client'
 import React from 'react'
 
@@ -59,7 +61,10 @@ export const Variants = ({
 					return (
 						<li
 							// FOCUS VOLUME BUTTON
-							className='cursor-pointer rounded-md border border-gray-600 px-2 py-1 snap-center text-lg focus:ring-2 focus:ring-current focus:outline-none'
+							className={cn(
+								rubikGlitch.className,
+								'cursor-pointer rounded-md border border-gray-600 px-2 py-1 snap-center text-lg focus:ring-2 focus:ring-current focus:outline-none'
+							)}
 							key={index}
 							tabIndex={0}
 							onClick={() => handleVolumeClick(index)}

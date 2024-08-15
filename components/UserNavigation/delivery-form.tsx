@@ -20,7 +20,7 @@ export const DeliveryForm = ({ currentDelivery }: Props) => {
 	const [typeOfDelivery, setTypeOfDelivery] = useState<string>('')
 
 	return (
-		<div className='border shadow-lg p-4 border-spacing-1 rounded-md my-4'>
+		<div className='border shadow-lg p-4 border-spacing-1 rounded-md my-2'>
 			<div className='flex justify-between'>
 				<h2 className='font-bold text-xl p-2 text-end'>Доставка</h2>
 				{/* CREATE DELIVERY */}

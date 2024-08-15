@@ -15,6 +15,8 @@ import { addItem } from '@/actions/cart'
 import { RatingProducts } from '@/components/ProductForm/rating'
 import { SliderWithProducts } from '@/components/ProductForm/slider-with-products'
 import { Button } from '@/components/ui/button'
+import { rubikGlitch } from '@/lib/utils/font'
+import { cn } from '@/lib/utils/utils'
 import { AiOutlineCheckSquare } from 'react-icons/ai'
 import { toast } from 'sonner'
 
@@ -90,7 +92,12 @@ export const ProductForm = ({ product, cart }: Props) => {
 					<div className='hidden lg:block'>
 						<BreadcrumbProduct product={product} />
 					</div>
-					<h1 className='text-xl md:text-2xl lg:text-3xl font-bold uppercase space-y-2 line-height-[1.5] text-center lg:text-end my-1 lg:my-5 mt-0'>
+					<h1
+						className={cn(
+							rubikGlitch.className,
+							'text-xl md:text-2xl lg:text-3xl font-bold uppercase space-y-2 line-height-[1.5] text-center lg:text-end my-1 lg:my-5 mt-0'
+						)}
+					>
 						{product.name}
 					</h1>
 					<p className='font-bold italic my-2 text-center'>{product.UTP}</p>

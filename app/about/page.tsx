@@ -1,5 +1,7 @@
 import { AboutBlockContent } from '@/components/About/about-block-content'
 import data from '@/lib/db/content.json'
+import { rubikGlitch } from '@/lib/utils/font'
+import { cn } from '@/lib/utils/utils'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -19,7 +21,7 @@ function AboutPage() {
 	return (
 		<section className='container lg:pt-5 relative flex flex-col'>
 			<div className='my-10'>
-				<h1 className='text-4xl font-black mb-10'>
+				<h1 className={cn(rubikGlitch.className, 'text-4xl font-black mb-10')}>
 					{contentAboutPage.aboutUs.title}
 				</h1>
 				<p>{contentAboutPage.aboutUs.description}</p>
