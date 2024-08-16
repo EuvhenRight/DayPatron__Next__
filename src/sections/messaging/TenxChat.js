@@ -119,8 +119,7 @@ const TenxChat = ({targetUserId}) => {
               sort,
               targetUserId,
               onChannelSelected,
-              headerPlaceholder: 
-              keycloak.tokenParsed.roles.includes('admin') ?
+              headerPlaceholder: keycloak.tokenParsed.roles.includes('admin') ?
                 <Stack direction="row" alignItems="center" spacing={1}>
                   <Typography>Connect as admin</Typography>
                   <Switch
