@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import { rubikGlitch } from '@/lib/utils/font'
 import { cn } from '@/lib/utils/utils'
 import { motion, useAnimation, useInView } from 'framer-motion'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef } from 'react'
 
@@ -10,21 +11,32 @@ export const MissionInfo = () => {
 	const router = useRouter()
 
 	const ref = useRef(null)
-	const controls = useAnimation()
+	const controlsRoundBrackets = useAnimation()
+	const controlsTriangle = useAnimation()
 	const isInView = useInView(ref, { once: true, amount: 0.1 })
 
 	useEffect(() => {
 		if (isInView) {
-			controls.start({
-				x: 0, // Move to center
+			controlsRoundBrackets.start({
+				x: 0,
 				transition: {
 					type: 'spring', // Smooth spring animation
-					stiffness: 100,
+					stiffness: 75,
 					damping: 20,
 				},
 			})
+			controlsTriangle.start({
+				x: 0, // Move to center
+				y: 0, // Move to center
+				transition: {
+					type: 'spring',
+					stiffness: 75,
+					damping: 20,
+					delay: 0.5,
+				},
+			})
 		}
-	}, [controls, isInView])
+	}, [controlsTriangle, controlsRoundBrackets, isInView])
 	const toggleButton = () => {
 		router.push('/about')
 	}
@@ -35,20 +47,13 @@ export const MissionInfo = () => {
 					ref={ref}
 					className={cn(
 						rubikGlitch.className,
-						'text-6xl',
-						'px-4',
-						'text-start',
-						'text-neutral-800',
-						'flex',
-						'items-center',
-						'justify-start',
-						'my-10'
+						'text-6xl px-4 text-start text-neutral-800 flex items-center justify-start my-10'
 					)}
 				>
 					<motion.span
 						className='text-red-600'
 						initial={{ x: -200 }} // Start off-screen to the left
-						animate={controls}
+						animate={controlsRoundBrackets}
 					>
 						[{' '}
 					</motion.span>
@@ -56,16 +61,51 @@ export const MissionInfo = () => {
 					<motion.span
 						className='text-red-600'
 						initial={{ x: 200 }} // Start off-screen to the right
-						animate={controls}
+						animate={controlsRoundBrackets}
 					>
 						]{' '}
 					</motion.span>
 				</h1>
-				<p className='text-center text-lg rounded-b-lg bg-neutral-700 sm:rounded-r-lg  p-4 text-white'>
-					DAY Patron – ідеальний супутник для тих, хто цінує бездоганність та
-					догляд за своєю зброєю. Ми віримо, що кожен заслуговує використовувати
-					продукти вищого класу, і наша ціль – зробити це доступним для всіх.
-				</p>
+				<div
+					ref={ref}
+					className='bg-slate-500 grid justify-items-center relative w-full'
+				>
+					<motion.span
+						initial={{ x: -200 }} // Start off-screen to the right
+						animate={controlsTriangle}
+						className='absolute'
+					>
+						<Image
+							src={`${process.env.PUBLIC_IMAGE_URL}/clean.svg`}
+							width={500}
+							height={500}
+							alt='mission'
+						/>
+					</motion.span>
+					<motion.span
+						initial={{ x: 200 }} // Start off-screen to the right
+						animate={controlsTriangle}
+						className='absolute'
+					>
+						<Image
+							src={`${process.env.PUBLIC_IMAGE_URL}/protect.svg`}
+							width={500}
+							height={500}
+							alt='mission'
+						/>
+					</motion.span>
+					<motion.span
+						initial={{ y: 200 }} // Start off-screen to the right
+						animate={controlsTriangle}
+					>
+						<Image
+							src={`${process.env.PUBLIC_IMAGE_URL}/lube.svg`}
+							width={500}
+							height={500}
+							alt='mission'
+						/>
+					</motion.span>
+				</div>
 			</div>
 			<Button
 				variant={'destructive'}
