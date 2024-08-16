@@ -150,6 +150,14 @@ const MissionOrderCard = ({ order, onClose, handleApproveClick }) => {
     var contractor = await getContractor(contractorId);
     setScheduleContractor(contractor);
   }
+
+  const handleMessage = async (contractorId) => {
+    if (!contractorId)
+      return;
+
+    var contractor = await getContractor(contractorId);
+    navigate('/messaging?tuid=' + contractor?.messagingProviderUserId)
+  }
   
   const handleProjectOrderTermsClick = async () => {
     try {
@@ -227,9 +235,14 @@ const MissionOrderCard = ({ order, onClose, handleApproveClick }) => {
               </ListItem>
 
               <ListItem disablePadding>
-                <Button variant="outlined" onClick={() => { handleScheduleMeeting(order?.contractorId); }} style={{ textTransform: 'none' }}>
-                  Schedule a Meeting
-                </Button>
+                <Stack direction="row" spacing={1}>
+                  <Button variant="outlined" onClick={() => { handleScheduleMeeting(order?.contractorId); }} style={{ textTransform: 'none' }}>
+                    Schedule a Meeting
+                  </Button>
+                  <Button variant="outlined"  onClick={() => { handleMessage(order?.contractorId); }}>
+                    Message
+                  </Button>
+                </Stack>
               </ListItem>
 
             </List>

@@ -56,7 +56,7 @@ export const TeamChannelHeader = ({ setIsEditing, setPinsOpen, onShowChannelSele
     <div className='team-channel-header__container'>
       {getMessagingHeader()}
       <div className='team-channel-header__right'>
-        <IconButton sx={{ width: 22, height: 22, mr: 1.5 }}
+        <IconButton sx={{ mr: 1.5 }}
           onClick={() => setIsEditing(true)}
           color="secondary">
           <EditOutlined />

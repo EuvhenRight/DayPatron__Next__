@@ -12,6 +12,9 @@ import { ChannelContainer } from 'components/streamio/ChannelContainer/ChannelCo
 import { ChannelListContainer } from 'components/streamio/ChannelListContainer/ChannelListContainer';
 import { 
   Grid, 
+  Stack,
+  Typography,
+  Switch,
   useMediaQuery 
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -27,13 +30,11 @@ const i18nInstance = new Streami18n({
   },
 });
 
-const filters = [
-  { type: 'messaging' }
-];
 const options = { state: true, watch: true, presence: true, limit: 100 };
 const sort = { last_message_at: -1, updated_at: -1 };
 
 let keycloakParent = null;
+let employerUserIdParent = null;
 const getToken = async () => {
   let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/messages/auth-tokens',
     {
@@ -42,7 +43,7 @@ const getToken = async () => {
         'Authorization': 'Bearer ' + keycloakParent?.idToken,
         'Content-Type': 'application/json'
       },
-      body: prepareApiBody({})
+      body: prepareApiBody({employerUserId: employerUserIdParent})
     }
   );
 
@@ -55,23 +56,23 @@ const TenxChat = ({targetUserId}) => {
   const matchDownMD = useMediaQuery(theme.breakpoints.down('md'));
   const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [connectAsAdmin/*, setConnectAsAdmin*/] = useState(true);
+  const [connectAsAdmin, setConnectAsAdmin] = useState(true);
   const [isChannelSelectorVisible, setIsChannelSelectorVisible] = useState(true);
   const [isMessagesContainerVisible, setIsMessagesContainerVisible] = useState(true);
 
   const { keycloak } = useKeycloak();
-  keycloakParent = keycloak;
   const personalInformation = useSelector(state => state.personalInformation);
+  keycloakParent = keycloak;
+  employerUserIdParent = connectAsAdmin ? null : personalInformation?.id;
 
   const client = useCreateChatClient({
     apiKey,
     tokenOrProvider: getToken,
     userData: { 
-      id: connectAsAdmin ? personalInformation?.messagingProviderAdminUserId : personalInformation?.messagingProviderUserId, 
-      name: connectAsAdmin ? personalInformation?.messagingProviderAdminUserFullName : personalInformation?.firstName + ' ' + personalInformation?.lastName
+      id: connectAsAdmin ? personalInformation?.messagingProviderAdminUserId : personalInformation?.messagingProviderUserId
     }
   });
-
+  
   const onChannelSelected = () => {
     if(matchDownMD) {
       setIsChannelSelectorVisible(false);
@@ -107,19 +108,27 @@ const TenxChat = ({targetUserId}) => {
   return (
     <Chat {...{ client, i18nInstance }}>
 
-      <Grid container spacing={2}>
-        
+      <Grid container spacing={1}>
         <Grid item xs={12} md={4} className={isChannelSelectorVisible ? '' : 'tenx-hidden'}>
           <ChannelListContainer
             {...{
               isCreating,
-              filters,
               options,
               setIsCreating,
               setIsEditing,
               sort,
               targetUserId,
-              onChannelSelected
+              onChannelSelected,
+              headerPlaceholder: 
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <Typography>Connect as admin</Typography>
+                <Switch
+                  checked={connectAsAdmin}
+                  onChange={(event, checked) => {
+                    setConnectAsAdmin(checked);
+                  }}
+                />
+              </Stack>
             }}
           />
         </Grid>

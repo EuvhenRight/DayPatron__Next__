@@ -69,7 +69,7 @@
   cursor: pointer;
 }
 
-.team-channel-header__right svg {
+.team-channel-header__right svg.streamio-svg {
   margin-left: 16px;
   margin-right: 4px;
 }

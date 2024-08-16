@@ -18,15 +18,11 @@ import {
 import MainCard from 'components/MainCard';
 import './ChannelListContainer.css';
 
-const customChannelMessagingFilter = (channels) => {
-  return channels.filter((channel) => channel.type === 'messaging');
-};
-
 export const ChannelListContainer = (props) => {
   const dispatch = useDispatch();
   const { keycloak } = useKeycloak();
   const { client, setActiveChannel } = useChatContext();
-  const { filters, options, setIsCreating, setIsEditing, sort, targetUserId, onChannelSelected } = props;
+  const { options, setIsCreating, setIsEditing, sort, targetUserId, onChannelSelected, headerPlaceholder } = props;
 
   useEffect(() => {
     (async () => {
@@ -56,8 +52,6 @@ export const ChannelListContainer = (props) => {
             return;
           }
     
-          dispatch(openSnackbar({open: true, message: 'Saved.', variant: 'alert', alert: { color: 'success' }, close: false}));
-    
           var newChannelQueryResponse = await client.queryChannels({id: json.groupId});
           if(newChannelQueryResponse.length === 1)
             setActiveChannel(newChannelQueryResponse[0]);
@@ -76,22 +70,23 @@ export const ChannelListContainer = (props) => {
       <Box className='tenx-channels-header'>
         <Stack spacing={2}>
           <Stack direction="row" spacing={0.5} alignItems="center" justifyContent="space-between">
-            <Typography variant="h5" color="inherit">
+            <Typography variant="h5">
               Chats
             </Typography>
-            
-            <AddChannel
-              {...{ setIsCreating, setIsEditing, onChannelSelected }}
-              type='messaging'
-            />
+            <Stack direction="row" spacing={2} alignItems="center" >
+              {headerPlaceholder}
+              <AddChannel
+                {...{ setIsCreating, setIsEditing, onChannelSelected }}
+                type='messaging'
+              />
+            </Stack>
           </Stack>
         </Stack>
       </Box>
       <Divider />
       <Box sx={{ p: 3, pt: 0 }} className='tenx-channels-list'>
         <ChannelList
-          channelRenderFilterFn={customChannelMessagingFilter}
-          filters={filters[1]}
+          filters={ { type: 'messaging', members: { $in: [client.userID]}} }
           options={options}
           sort={sort}
           List={(listProps) => (
