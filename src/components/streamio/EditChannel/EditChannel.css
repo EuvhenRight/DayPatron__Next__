@@ -47,7 +47,8 @@
   font-size: 18px;
   color: rgba(0, 0, 0);
   height: 50px;
-  width: 540px;
+  max-width: 540px;
+  width: 100%;
   background: #f7f6f8;
   border: 1px solid rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
@@ -63,25 +64,4 @@
 .channel-name-input__wrapper input::placeholder {
   font-weight: 300;
   color: rgba(0, 0, 0, 0.5);
-}
-
-.edit-channel__button-wrapper {
-  height: 82px;
-  background: #f7f6f8;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  border-bottom-right-radius: 16px;
-}
-
-.edit-channel__button-wrapper p {
-  background: var(--primary-color);
-  font-family: Helvetica Neue, sans-serif;
-  font-weight: bold;
-  font-size: 18px;
-  padding: 10px 20px;
-  color: #ffffff;
-  margin-right: 30px;
-  border-radius: 8px;
-  cursor: pointer;
 }

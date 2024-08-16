@@ -5,7 +5,6 @@ import { openSnackbar } from 'store/reducers/snackbar';
 import { prepareApiBody } from 'utils/stringUtils';
 
 import { ChannelList, useChatContext } from 'stream-chat-react';
-//import { useTheme } from '@mui/material/styles';
 import { TeamChannelList } from '../TeamChannelList/TeamChannelList';
 import { TeamChannelPreview } from '../TeamChannelPreview/TeamChannelPreview';
 import { AddChannel } from 'assets/images/streamio';
@@ -13,8 +12,7 @@ import {
   Typography, 
   Stack, 
   Box,
-  Divider, 
-  //useMediaQuery 
+  Divider
 } from '@mui/material';
 
 import MainCard from 'components/MainCard';
@@ -28,9 +26,7 @@ export const ChannelListContainer = (props) => {
   const dispatch = useDispatch();
   const { keycloak } = useKeycloak();
   const { client, setActiveChannel } = useChatContext();
-  const { filters, options, setIsCreating, setIsEditing, sort, targetUserId } = props;
-  //const theme = useTheme();
-  //const matchDownLG = useMediaQuery(theme.breakpoints.down('lg'));
+  const { filters, options, setIsCreating, setIsEditing, sort, targetUserId, onChannelSelected } = props;
 
   useEffect(() => {
     (async () => {
@@ -85,7 +81,7 @@ export const ChannelListContainer = (props) => {
             </Typography>
             
             <AddChannel
-              {...{ setIsCreating, setIsEditing }}
+              {...{ setIsCreating, setIsEditing, onChannelSelected }}
               type='messaging'
             />
           </Stack>
@@ -108,7 +104,7 @@ export const ChannelListContainer = (props) => {
           Preview={(previewProps) => (
             <TeamChannelPreview
               {...previewProps}
-              {...{ setIsCreating, setIsEditing }}
+              {...{ setIsCreating, setIsEditing, onChannelSelected }}
               type='messaging'
             />
           )}

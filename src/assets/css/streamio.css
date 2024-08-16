@@ -85,3 +85,12 @@ body {
 .tenx-channels-header {
   padding: 4px 5px 3px 25px;
 }
+.tenx-messaging-channels-menu-button {
+  margin: 0 12px 0 0;
+}
+.tenx-hidden {
+  display: none;
+}
+.str-chat__container {
+  padding-bottom: 5px;
+}

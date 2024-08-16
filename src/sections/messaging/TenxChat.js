@@ -7,13 +7,14 @@ import { prepareApiBody } from 'utils/stringUtils';
 import 'stream-chat-react/dist/css/v2/index.css';
 import 'assets/css/streamio.css';
 
-import { getRandomImage } from 'assets/images/streamio';
 import { useChecklist } from './ChecklistTasks';
 import { ChannelContainer } from 'components/streamio/ChannelContainer/ChannelContainer';
 import { ChannelListContainer } from 'components/streamio/ChannelListContainer/ChannelListContainer';
 import { 
-  Grid
+  Grid, 
+  useMediaQuery 
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 const apiKey = process.env.REACT_APP_STREAM_KEY;
 const urlParams = new URLSearchParams(window.location.search);
@@ -50,10 +51,14 @@ const getToken = async () => {
 };
 
 const TenxChat = ({targetUserId}) => {
-
+  const theme = useTheme();
+  const matchDownMD = useMediaQuery(theme.breakpoints.down('md'));
   const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [connectAsAdmin/*, setConnectAsAdmin*/] = useState(true);
+  const [isChannelSelectorVisible, setIsChannelSelectorVisible] = useState(true);
+  const [isMessagesContainerVisible, setIsMessagesContainerVisible] = useState(true);
+
   const { keycloak } = useKeycloak();
   keycloakParent = keycloak;
   const personalInformation = useSelector(state => state.personalInformation);
@@ -63,15 +68,39 @@ const TenxChat = ({targetUserId}) => {
     tokenOrProvider: getToken,
     userData: { 
       id: connectAsAdmin ? personalInformation?.messagingProviderAdminUserId : personalInformation?.messagingProviderUserId, 
-      name: connectAsAdmin ? personalInformation?.messagingProviderAdminUserFullName : personalInformation?.firstName + ' ' + personalInformation?.lastName, 
-      image: getRandomImage() 
+      name: connectAsAdmin ? personalInformation?.messagingProviderAdminUserFullName : personalInformation?.firstName + ' ' + personalInformation?.lastName
     }
   });
+
+  const onChannelSelected = () => {
+    if(matchDownMD) {
+      setIsChannelSelectorVisible(false);
+      setIsMessagesContainerVisible(true);
+    }
+  }
+
+  const onShowChannelSelector = () => {
+    if(matchDownMD) {
+      setIsChannelSelectorVisible(true);
+      setIsMessagesContainerVisible(false);
+    }
+  }
+  
   useChecklist(client, targetOrigin);
 
   useEffect(() => {
     if (!client) return;
   }, [client]);
+
+  useEffect(() => {
+    if(matchDownMD) {
+      setIsChannelSelectorVisible(false);
+      setIsMessagesContainerVisible(true);
+    } else {
+      setIsChannelSelectorVisible(true);
+      setIsMessagesContainerVisible(true);
+    }
+  }, [matchDownMD]);
 
   if (!client) return <div>Setting up client & connection...</div>;
 
@@ -79,7 +108,8 @@ const TenxChat = ({targetUserId}) => {
     <Chat {...{ client, i18nInstance }}>
 
       <Grid container spacing={2}>
-        <Grid item xs={12} md={3}>
+        
+        <Grid item xs={12} md={4} className={isChannelSelectorVisible ? '' : 'tenx-hidden'}>
           <ChannelListContainer
             {...{
               isCreating,
@@ -88,20 +118,25 @@ const TenxChat = ({targetUserId}) => {
               setIsCreating,
               setIsEditing,
               sort,
-              targetUserId
+              targetUserId,
+              onChannelSelected
             }}
           />
         </Grid>
-        <Grid item xs={12} md={9}>
+      
+        <Grid item xs={12} md={8} className={isMessagesContainerVisible ? '' : 'tenx-hidden'}>
           <ChannelContainer
             {...{
               isCreating,
               isEditing,
               setIsCreating,
               setIsEditing,
+              onShowChannelSelector,
+              isChannelSelectorVisible
             }}
           />
         </Grid>
+      
       </Grid>
     </Chat>
   );

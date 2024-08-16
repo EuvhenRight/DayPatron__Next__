@@ -23,7 +23,7 @@
 }
 
 .user-list__header p:nth-child(2) {
-  width: 30%;
+  width: 34%;
 }
 
 .user-list__message {
@@ -63,7 +63,7 @@
 
 .user-item__last-active {
   font-weight: 400;
-  width: 30%;
+  width: 34%;
 }
 
 .user-item__invite-empty {

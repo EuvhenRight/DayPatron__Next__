@@ -4,14 +4,15 @@ import {
 } from '@ant-design/icons';
 import IconButton from 'components/@extended/IconButton';
 
-export const AddChannel = ({ setIsCreating, setIsEditing }) => (
+export const AddChannel = ({ setIsCreating, setIsEditing, onChannelSelected }) => (
   <IconButton 
   onClick={() => {
     setIsCreating((prevState) => !prevState);
     setIsEditing(false);
+    onChannelSelected();
   }} 
   size="large" 
-  color="error">
+  color="primary">
     <PlusCircleFilled />
   </IconButton>
 );

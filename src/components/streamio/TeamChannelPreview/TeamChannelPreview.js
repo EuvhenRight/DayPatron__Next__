@@ -10,21 +10,73 @@ import './TeamChannelPreview.css';
 
 export const TeamChannelPreview = (props) => {
   const theme = useTheme();
-  const { channel, setActiveChannel, setIsCreating, setIsEditing } = props;
+  const { channel, setActiveChannel, setIsCreating, setIsEditing, onChannelSelected } = props;
 
   const { channel: activeChannel, client } = useChatContext();
 
-  const members = Object.values(channel.state.members).filter(
+  const allMembers = Object.values(channel.state.members);
+
+  const otherMembers = allMembers.filter(
     ({ user }) => user.id !== client.userID,
   );
-  const defaultName = '#';
 
+  const defaultName = '#';
+  
+  const getAvatar = () => {
+    if(channel?.data?.name) {
+      return <Avatar
+        image={undefined}
+        name={channel?.data?.name}
+        size={36}
+      />;
+    }
+
+    if(otherMembers?.length === 1) {
+      return <Avatar
+        image={otherMembers[0]?.user.image || undefined}
+        name={otherMembers[0]?.user.name || otherMembers[0]?.user.id}
+        size={36}
+      />;
+    }
+
+    return <Avatar
+      image={undefined}
+      name={undefined}
+      size={36}
+    />;
+  };
+  
+  const getChannelName = () => {
+    if(channel?.data?.name) {
+      return <>
+        {channel?.data?.name}
+      </>;
+    }
+
+    if(otherMembers?.length === 1) {
+      return <>{otherMembers[0]?.user.name || otherMembers[0]?.user.id}</>;
+    }
+
+    if(allMembers?.length === 1 && allMembers[0]?.user.id === client.userID) {
+      return <>{allMembers[0]?.user.name || allMembers[0]?.user.id} (Me)</>;
+    }
+
+    if(otherMembers?.length > 1) {
+      return <>
+        {otherMembers[0]?.user.name || otherMembers[0]?.user.id},{' '}
+        {otherMembers[1]?.user.name || otherMembers[1]?.user.id}
+      </>;
+    }
+
+    return <>{defaultName}</>;
+  };
+  
   return (
     <Fragment>
       <ListItemButton
         sx={{ pl: 1 }}
         onClick={() => {
-          alert(1233);
+          onChannelSelected();
           setIsCreating(false);
           setIsEditing(false);
           setActiveChannel(channel);
@@ -32,29 +84,7 @@ export const TeamChannelPreview = (props) => {
         selected={channel?.id === activeChannel?.id}
       >
         <ListItemAvatar>
-          {members?.length > 1 ? 
-            (
-              <>
-                <Avatar
-                  image={members[0]?.user.image || undefined}
-                  name={members[0]?.user.name || members[0]?.user.id}
-                  size={18}
-                />
-                <Avatar
-                  image={members[1]?.user.image || undefined}
-                  name={members[1]?.user.name || members[1]?.user.id}
-                  size={18}
-                />
-              </>
-            ) : 
-            (
-              <Avatar
-                image={members[0]?.user.image || undefined}
-                name={members[0]?.user.name || members[0]?.user.id}
-                size={24}
-              />
-            )
-          }
+          {getAvatar()}
         </ListItemAvatar>
         <ListItemText
           primary={
@@ -68,17 +98,7 @@ export const TeamChannelPreview = (props) => {
                   whiteSpace: 'nowrap'
                 }}
               >
-                {members?.length > 1 ? 
-                  (
-                    <>
-                      {members[0]?.user.name || members[0]?.user.id || defaultName},{' '}
-                      {members[1]?.user.name || members[1]?.user.id || defaultName}
-                    </>
-                  ) : 
-                  (
-                    <p>{members[0]?.user.name || members[0]?.user.id || defaultName}</p>
-                  )
-                }
+                {getChannelName()}
               </Typography>
               {channel?.state?.last_message_at && 
                 <Typography component="span" color="textSecondary" variant="caption">

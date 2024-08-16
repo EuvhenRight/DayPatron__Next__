@@ -5,6 +5,7 @@ import { prepareApiBody } from 'utils/stringUtils';
 import { useDispatch } from 'react-redux';
 import { openSnackbar } from 'store/reducers/snackbar';
 
+import { Button, Stack } from '@mui/material';
 import './CreateChannel.css';
 
 import { UserList } from './UserList';
@@ -92,9 +93,11 @@ export const CreateChannel = (props) => {
       </div>
       <ChannelNameInput {...{ channelName, setChannelName }} />
       <UserList {...{ filters, setSelectedUsers }} />
-      <div className='create-channel__button-wrapper' onClick={createChannel} role="presentation">
-        <p>Create Message Group</p>
-      </div>
+      <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 2.5, mr: 3 }}>
+        <Button onClick={createChannel} variant="contained">
+          Save
+        </Button>
+      </Stack>
     </div>
   );
 };

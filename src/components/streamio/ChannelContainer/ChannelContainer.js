@@ -34,7 +34,7 @@ const ThreadHeader = (props) => {
 };
 
 export const ChannelContainer = (props) => {
-  const { isCreating, isEditing, setIsCreating, setIsEditing } = props;
+  const { isCreating, isEditing, setIsCreating, setIsEditing, onShowChannelSelector, isChannelSelectorVisible } = props;
 
   const { channel } = useChatContext();
 
@@ -90,6 +90,8 @@ export const ChannelContainer = (props) => {
               pinsOpen,
               setIsEditing,
               setPinsOpen,
+              onShowChannelSelector,
+              isChannelSelectorVisible
             }}
           />
       </Channel>

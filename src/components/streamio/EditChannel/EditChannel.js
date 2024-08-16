@@ -5,6 +5,7 @@ import { useChatContext } from 'stream-chat-react';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { prepareApiBody } from 'utils/stringUtils';
 
+import { Button, Stack } from '@mui/material';
 import './EditChannel.css';
 
 import { UserList } from '../CreateChannel/UserList';
@@ -92,14 +93,16 @@ export const EditChannel = (props) => {
   return (
     <div className='edit-channel__container'>
       <div className='edit-channel__header'>
-        <p>Edit Channel</p>
+        <p>Edit Chat</p>
         <CloseCreateChannel {...{ setIsEditing }} />
       </div>
       <ChannelNameInput {...{ channelName, setChannelName }} />
       <UserList {...{ filters, setSelectedUsers, selectedUsers }} />
-      <div className='edit-channel__button-wrapper' onClick={updateChannel} role="presentation">
-        <p>Save Changes</p>
-      </div>
+      <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 2.5, mr: 3 }}>
+        <Button onClick={updateChannel} variant="contained">
+          Save
+        </Button>
+      </Stack>
     </div>
   );
 };

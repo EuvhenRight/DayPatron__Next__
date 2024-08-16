@@ -4,12 +4,15 @@ import {
   useChannelActionContext,
   useChannelStateContext,
 } from 'stream-chat-react';
+import { MenuOutlined, EditOutlined } from '@ant-design/icons';
+import IconButton from 'components/@extended/IconButton';
+import { Typography } from '@mui/material';
 
 import './TeamChannelHeader.css';
 
-import { ChannelInfo, PinIcon } from 'assets/images/streamio';
+import { PinIcon } from 'assets/images/streamio';
 
-export const TeamChannelHeader = ({ setIsEditing, setPinsOpen }) => {
+export const TeamChannelHeader = ({ setIsEditing, setPinsOpen, onShowChannelSelector, isChannelSelectorVisible }) => {
   const { closeThread } = useChannelActionContext();
   const { channel, watcher_count } = useChannelStateContext();
 
@@ -18,16 +21,24 @@ export const TeamChannelHeader = ({ setIsEditing, setPinsOpen }) => {
 
     return (
       <div className='team-channel-header__name-wrapper'>
+        {!isChannelSelectorVisible && 
+          <IconButton sx={{ width: 22, height: 22, mr: 1.5 }}
+            onClick={() => {onShowChannelSelector();}} 
+            size="large" 
+            className="tenx-messaging-channels-menu-button">
+            <MenuOutlined />
+          </IconButton>
+        }
+        {channel?.data?.name &&
+          <Typography variant='h4' sx={{mr: 2}}>{channel?.data?.name}</Typography>
+        }
         {members.map(({ user }, i) => {
           return (
             <div key={i} className='team-channel-header__name-multi'>
-              <Avatar image={user?.image} name={user?.name || user?.id} size={32} />
+              <Avatar image={null} name={user?.name || user?.id} size={24} />
               <p className='team-channel-header__name user'>
                 {user?.name || user?.id || '#'}
               </p>
-              <span style={{ display: 'flex' }} onClick={() => setIsEditing(true)} role="presentation">
-                <ChannelInfo />
-              </span>
             </div>
           );
         })}
@@ -45,6 +56,11 @@ export const TeamChannelHeader = ({ setIsEditing, setPinsOpen }) => {
     <div className='team-channel-header__container'>
       {getMessagingHeader()}
       <div className='team-channel-header__right'>
+        <IconButton sx={{ width: 22, height: 22, mr: 1.5 }}
+          onClick={() => setIsEditing(true)}
+          color="secondary">
+          <EditOutlined />
+        </IconButton>
         <p className='team-channel-header__right-text'>{getWatcherText(watcher_count)}</p>
         <div
           className='team-channel-header__right-pin-wrapper'
