@@ -7,8 +7,10 @@ export default async function WhereToBuyPage() {
 	const dataProducts = await getAllProducts()
 	return (
 		<>
-			<FeaturedOn />
-			<Guide />
+			<section className='container'>
+				<FeaturedOn />
+				<Guide />
+			</section>
 		</>
 	)
 }

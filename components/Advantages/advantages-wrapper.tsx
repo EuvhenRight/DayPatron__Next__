@@ -1,5 +1,4 @@
 'use client'
-import { advantageProps } from '@/lib/db/advantages'
 import { ProductsWithVariants } from '@/lib/types/types'
 import { Advantages } from './advantages'
 
@@ -9,11 +8,7 @@ interface Props {
 
 export const AdvantagesWrapper = ({ product }: Props) => {
 	const { category } = product
-	const properties = (category: string) => {
-		return advantageProps.find(advantage => advantage.category === category)
-	}
-	// DESTRUCTURE PROPERTIES
-	const { color } = properties(category)!
+
 	return (
 		<div
 			className={`bg-[url('/images/carbon.jpg')] bg-no-repeat relative bg-cover bg-center h-auto py-4 md:py-10 shadow-2xl flex items-center`}

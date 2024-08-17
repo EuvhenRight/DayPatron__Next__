@@ -256,6 +256,35 @@ model Product {
 
   image   Image[]
   variant Variant[]
+  review  Reviews   @relation(fields: [id], references: [id])
 
   @@map("products")
+}
+
+model Reviews {
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  messageTotal Int
+  ratingTotal  Float
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  messages ReviewItem[]
+  product  Product?
+}
+
+model ReviewItem {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  rating    Float
+  verefied  Float
+  reviewsId String @db.ObjectId
+  fullName  String
+  email     String
+  title     String
+  text      String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  reviews Reviews @relation(fields: [reviewsId], references: [id])
 }

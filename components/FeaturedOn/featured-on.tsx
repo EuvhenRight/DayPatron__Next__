@@ -36,13 +36,13 @@ export const FeaturedOn = () => {
 	}
 
 	return (
-		<div className='w-full flex flex-col items-center justify-center'>
+		<div className='w-full flex flex-col items-center mb-20 justify-center text-neutral-800'>
 			{/* DIFFERENCE TITLE */}
 			{path === '/' ? (
 				<h1
 					className={cn(
 						rubikGlitch.className,
-						'text-3xl font-black py-14 text-center  uppercase'
+						'text-3xl font-black my-20 text-center  uppercase'
 					)}
 				>
 					{FiguredOn}
@@ -51,7 +51,7 @@ export const FeaturedOn = () => {
 				<h1
 					className={cn(
 						rubikGlitch.className,
-						'text-3xl font-black py-14 text-center  uppercase'
+						'text-3xl font-black my-14 text-center  uppercase text-neutral-800'
 					)}
 				>
 					{Partners}

@@ -21,7 +21,7 @@ export const ProductsCard = ({ product }: Props) => {
 				)}
 				{product.HIT && (
 					<div className='animate-pulse absolute rounded-md top-20 right-10 bg-red-500 text-white py-2 px-1'>
-						ХИТ ПРОДАЖ
+						ХИТ
 					</div>
 				)}
 				<div className='flex flex-col items-center'>
@@ -42,7 +42,7 @@ export const ProductsCard = ({ product }: Props) => {
 						<h3
 							className={cn(
 								rubikGlitch.className,
-								'text-md -tracking-0 mt-1 uppercase opacity-65'
+								'text-base tracking-tight mt-1 uppercase opacity-65'
 							)}
 						>
 							{product.UTP}
