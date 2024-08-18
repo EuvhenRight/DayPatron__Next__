@@ -80,7 +80,24 @@ export const TriangleAnimation = () => {
 				initial={{ scale: 0.1 }}
 				className={cn(
 					rubikGlitch.className,
-					'text-2xl font-bold absolute top-[23%] left-[43%] rounded-full border-[20px] border-neutral-800  text-neutral-800 hover:text-white hover:bg-neutral-800 hover:scale-105 transition-all ease-in-out duration-300 w-48 h-48 flex text-center items-center'
+					// base screen styling
+					`text-lg font-bold absolute top-[20%] left-[29%] 
+					rounded-full hover:scale-105 transition-all ease-in-out duration-300 w-36 h-36 text-center items-center justify-center flex text-white bg-neutral-800 p-2`,
+					// mobile screen styling
+					`min-[412px]:left-[29%] min-[412px]:top-[20%] min-[412px]:w-40 min-[412px]:h-40`,
+					// mobile screen styling
+					`min-[475px]:left-[31%] min-[475px]:top-[22%] min-[475px]:w-44 min-[475px]:h-44`,
+					`min-[600px]:left-[33%] min-[600px]:top-[22%] min-[600px]:w-48 min-[600px]:h-48`,
+					// small screen styling
+					`sm:top-[22%] sm:left-[35%]`,
+					// medium screen styling
+					`md:top-[22%] md:text-2xl md:left-[39%]`,
+					// manual screen styling
+					`min-[925px]:left-[39%] min-[925px]:top-[23%] min-[925px]:w-48 min-[925px]:h-48`,
+					// large screen styling
+					`lg:top-[22%] lg:left-[41%]`,
+					// extra large screen styling
+					`xl:top-[22%] xl:left-[43%] xl:text-white xl:hover:text-neutral-800 xl:hover:bg-white xl:hover:border-[10px] xl:hover:border-neutral-800`
 				)}
 			>
 				<Link href='/guide'>Як це працює?</Link>
