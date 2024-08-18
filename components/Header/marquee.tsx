@@ -12,7 +12,7 @@ export const Marquee: React.FC = () => {
 	// Effect to update isMobile based on screen size
 	useEffect(() => {
 		const updateMedia = () => {
-			setIsMobile(window.innerWidth < 768) // Assuming 768px as the breakpoint for mobile
+			setIsMobile(window.innerWidth < 640) // Assuming 768px as the breakpoint for mobile
 		}
 
 		updateMedia()
@@ -24,7 +24,7 @@ export const Marquee: React.FC = () => {
 	const marqueeVariants = {
 		animate: {
 			x: isMobile
-				? ['100vw', '50vw', '50vw', '-100vw']
+				? ['100vw', '10vw', '10vw', '-100vw']
 				: ['100vw', '40vw', '40vw', '-100vw'],
 			transition: {
 				duration: 8,

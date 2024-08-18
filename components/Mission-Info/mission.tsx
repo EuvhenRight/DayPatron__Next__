@@ -17,14 +17,14 @@ export const MissionInfo = () => {
 				<h1
 					className={cn(
 						rubikGlitch.className,
-						'text-5xl px-4 text-start text-neutral-800 flex items-center justify-start mb-10 ml-20'
+						'text-3xl md:text-5xl px-4 text-start text-neutral-800 flex items-center justify-start mb-10 ml-2 md:ml-20'
 					)}
 				>
 					<span className='text-red-600'>[ </span>
 					<span className='mx-2 text-neutral-800'>Наша місія</span>
 					<span className='text-red-600'>] </span>
 				</h1>
-				<p className='text-xl italic text-end mt-10 mb-14'>
+				<p className='text-lg md:text-xl italic text-end mt-10 mb-14'>
 					"Зробіть свою зброю непереможною: ми захищаємо її, щоб ви могли
 					захищати себе!"
 				</p>

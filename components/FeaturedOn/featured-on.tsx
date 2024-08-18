@@ -42,7 +42,7 @@ export const FeaturedOn = () => {
 				<h1
 					className={cn(
 						rubikGlitch.className,
-						'text-2xl md:text-3xl font-black my-14 md:my-20 text-center uppercase'
+						'text-xl md:text-3xl font-black my-14 md:my-20 text-center uppercase'
 					)}
 				>
 					{FiguredOn}
@@ -51,7 +51,7 @@ export const FeaturedOn = () => {
 				<h1
 					className={cn(
 						rubikGlitch.className,
-						'text-2xl md:text-3xl font-black my-14 text-center  uppercase text-neutral-800'
+						'text-xl md:text-3xl font-black my-14 text-center  uppercase text-neutral-800'
 					)}
 				>
 					{Partners}

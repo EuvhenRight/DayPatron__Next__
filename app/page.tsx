@@ -2,13 +2,13 @@ import { FeaturedOn } from '@/components/FeaturedOn/featured-on'
 import { MissionInfo } from '@/components/Mission-Info/mission'
 import { ProductsCard } from '@/components/Slider/products-card'
 import { getAllProducts } from '@/lib/services/products'
+import { ProductsWithVariants } from '@/lib/types/types'
 import { rubikGlitch } from '@/lib/utils/font'
 import { cn } from '@/lib/utils/utils'
-import { Product } from '@prisma/client'
 import Link from 'next/link'
 
 export default async function Home() {
-	const dataProducts: Product[] = await getAllProducts()
+	const dataProducts: ProductsWithVariants[] = await getAllProducts()
 	//  FILTER PRODUCTS
 	const matchingProducts = dataProducts.filter(
 		product => product.category === 'CPL' || product.category === 'Liquidator'
@@ -34,7 +34,7 @@ export default async function Home() {
 				<h1
 					className={cn(
 						rubikGlitch.className,
-						'text-4xl uppercase text-neutral-800 text-center my-10'
+						'text-4xl uppercase text-neutral-800 text-center my-0 md:my-10'
 					)}
 				>
 					Лідери продажів

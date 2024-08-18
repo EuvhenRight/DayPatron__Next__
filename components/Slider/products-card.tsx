@@ -1,13 +1,13 @@
 'use client'
 import { PriceTag } from '@/components/PriceTag'
+import { ProductsWithVariants } from '@/lib/types/types'
 import { rubikGlitch } from '@/lib/utils/font'
 import { cn } from '@/lib/utils/utils'
-import { Product } from '@prisma/client'
 import Image from 'next/image'
 import Link from 'next/link'
 
 interface Props {
-	product: Product
+	product: ProductsWithVariants
 }
 
 export const ProductsCard = ({ product }: Props) => {
@@ -36,7 +36,7 @@ export const ProductsCard = ({ product }: Props) => {
 						Докладніше
 					</button>
 					<div className='text-center px-5 pb-5'>
-						<h2 className='text-lg font-bold uppercase -tracking-2'>
+						<h2 className='text-lg font-bold uppercase -tracking-2 my-3'>
 							{product.name}
 						</h2>
 						<h3
@@ -47,8 +47,12 @@ export const ProductsCard = ({ product }: Props) => {
 						>
 							{product.UTP}
 						</h3>
-						{/* @ts-ignore */}
-						{<PriceTag price={product.variant[0].original_price!} />}
+						<p className={cn(rubikGlitch.className, 'my-3 text-xl')}>
+							від
+							<span className='ml-2'>
+								{<PriceTag price={product.variant[0].original_price!} />}
+							</span>
+						</p>
 					</div>
 				</div>
 			</div>
