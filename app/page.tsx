@@ -17,16 +17,14 @@ export default async function Home() {
 	const bestSellers = matchingProducts.slice(0, 2)
 	return (
 		<>
-			<div>
-				<video
-					src={`${process.env.PUBLIC_VIDEO_URL}/video2.mp4`} // PUBLIC URL NEXT FETCHERS
-					autoPlay
-					loop
-					muted
-					playsInline
-					className='top-0 left-0 h-full w-full aspect-video object-cover'
-				/>
-			</div>
+			<video
+				src={`${process.env.PUBLIC_VIDEO_URL}/video2.mp4`}
+				autoPlay
+				loop
+				muted
+				playsInline
+				className='top-0 left-0 h-full w-full aspect-video object-cover'
+			/>
 			<section className='container'>
 				<FeaturedOn />
 				<MissionInfo />

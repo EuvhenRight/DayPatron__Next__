@@ -42,7 +42,7 @@ export const FeaturedOn = () => {
 				<h1
 					className={cn(
 						rubikGlitch.className,
-						'text-3xl font-black my-20 text-center  uppercase'
+						'text-2xl md:text-3xl font-black my-14 md:my-20 text-center uppercase'
 					)}
 				>
 					{FiguredOn}
@@ -51,21 +51,21 @@ export const FeaturedOn = () => {
 				<h1
 					className={cn(
 						rubikGlitch.className,
-						'text-3xl font-black my-14 text-center  uppercase text-neutral-800'
+						'text-2xl md:text-3xl font-black my-14 text-center  uppercase text-neutral-800'
 					)}
 				>
 					{Partners}
 				</h1>
 			)}
 			<motion.div
-				className='w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 items-center justify-items-center'
+				className='w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 items-center justify-items-center'
 				ref={ref}
 				variants={containerVariants}
 				initial='hidden'
 				animate={controls}
 			>
 				{partners.map((item, index) => (
-					<motion.div key={index}>
+					<motion.div key={index} className='my-2'>
 						<FeaturedCard item={item} variants={itemVariants} />
 					</motion.div>
 				))}
