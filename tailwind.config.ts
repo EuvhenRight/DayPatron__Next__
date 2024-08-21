@@ -44,6 +44,23 @@ const config = {
 						opacity: '1',
 					},
 				},
+				'slide-left': {
+					'0%': {
+						transform:
+							'translateX(100%) scale(0.5) perspective(1000px) rotateY(90deg);',
+						opacity: '0',
+					},
+					'33%': {
+						opacity: '0',
+					},
+					'66%': {
+						opacity: '1',
+					},
+					'100%': {
+						transform: 'translateX(0) scale(1) perspective(1000px) rotateY(0)',
+						opacity: '1',
+					},
+				},
 				marquee: {
 					'0%': { transform: 'translateX(100%)' },
 					'100%': { transform: 'translateX(-100%)' },
@@ -55,6 +72,8 @@ const config = {
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'slide-right':
 					'slide-right 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both',
+				'slide-left':
+					'slide-left 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both',
 			},
 		},
 	},

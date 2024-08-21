@@ -29,6 +29,9 @@ export const SliderWithProducts = ({
 	currentIndex,
 }: Props) => {
 	const [arrowToggle, setArrowToggle] = useState<number>(1)
+	const [slideDirection, setSlideDirection] = useState<'left' | 'right'>(
+		'right'
+	)
 	// ON/OFF ANIMATION
 	const countImages = product.image.length
 	// REF TO IMAGE LIST
@@ -40,6 +43,7 @@ export const SliderWithProducts = ({
 			setArrowToggle(arrowToggle + 1)
 			setImageIndex(arrowToggle + 1)
 			setAnimate(true)
+			setSlideDirection('left')
 			if (imagesRef.current) {
 				const children = imagesRef.current
 					.children as HTMLCollectionOf<HTMLLIElement>
@@ -56,6 +60,7 @@ export const SliderWithProducts = ({
 			setArrowToggle(arrowToggle - 1)
 			setImageIndex(arrowToggle - 1)
 			setAnimate(true)
+			setSlideDirection('right')
 			if (imagesRef.current) {
 				const children = imagesRef.current
 					.children as HTMLCollectionOf<HTMLLIElement>
@@ -70,8 +75,9 @@ export const SliderWithProducts = ({
 			setAnimate(true)
 			setImageIndex(index)
 			setArrowToggle(index)
+			setSlideDirection(index > arrowToggle ? 'left' : 'right') // Determine direction based on index
 		},
-		[setAnimate, setImageIndex, setArrowToggle]
+		[setAnimate, setImageIndex, setArrowToggle, setSlideDirection, arrowToggle]
 	)
 
 	// SET CURRENT IMAGE
@@ -207,7 +213,11 @@ export const SliderWithProducts = ({
 							priority={true}
 							className={`cursor-zoom-in w-auto h-auto lg:px-24 lg:max-h-[500px] xl:max-h-[650px] object-contain ${
 								// APPLY ANIMATION CLASS
-								animate ? 'animate-slide-right' : ''
+								animate
+									? slideDirection === 'left'
+										? 'animate-slide-left'
+										: 'animate-slide-right'
+									: ''
 							}`}
 							alt={product.name}
 							width={650}
