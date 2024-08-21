@@ -135,10 +135,7 @@ export const ProductForm = ({ product, cart }: Props) => {
 
 					{/* INFO BLOCK INFORMATION */}
 					<div className='text-justify'>
-						<p className='py-2'>
-							<b>опис: </b>
-							{product.description}
-						</p>
+						<p className='py-2'>{product.description}</p>
 						<p className='py-2'>
 							<b>строк зберігання: </b>
 							{product.shelfLife}

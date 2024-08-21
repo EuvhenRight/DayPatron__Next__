@@ -1,5 +1,4 @@
 import { FeaturedOn } from '@/components/FeaturedOn/featured-on'
-import { Guide } from '@/components/Guide/guide'
 import { getAllProducts } from '@/lib/services/products'
 
 export default async function WhereToBuyPage() {
@@ -9,7 +8,6 @@ export default async function WhereToBuyPage() {
 		<>
 			<section className='container'>
 				<FeaturedOn />
-				<Guide />
 			</section>
 		</>
 	)

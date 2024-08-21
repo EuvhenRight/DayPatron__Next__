@@ -99,6 +99,36 @@ export const SliderWithProducts = ({
 		setImageUrl,
 	])
 
+	const [touchStart, setTouchStart] = useState<number | null>(null)
+	const [touchEnd, setTouchEnd] = useState<number | null>(null)
+
+	const handleTouchStart = (e: React.TouchEvent) => {
+		setTouchStart(e.targetTouches[0].clientX)
+	}
+
+	const handleTouchMove = (e: React.TouchEvent) => {
+		setTouchEnd(e.targetTouches[0].clientX)
+	}
+
+	const handleTouchEnd = () => {
+		if (!touchStart || !touchEnd) return
+
+		const swipeDistance = touchStart - touchEnd
+		const swipeThreshold = 100 // Minimum distance to consider a swipe
+
+		if (swipeDistance > -swipeThreshold) {
+			handlePrevClick() // Swipe left (next image)
+		}
+
+		if (swipeDistance < -swipeThreshold) {
+			handleNextClick() // Swipe right (previous image)
+		}
+
+		// Reset touch positions
+		setTouchStart(null)
+		setTouchEnd(null)
+	}
+
 	return (
 		<div className='flex lg:flex-row flex-col-reverse lg:sticky lg:top-5 lg:mt-3 items-center'>
 			<div className='lg:w-24 z-10 lg:flex lg:justify-center lg:items-center lg:flex-col'>
@@ -165,7 +195,12 @@ export const SliderWithProducts = ({
 				>
 					<AiOutlineLeft />
 				</button>
-				<div className='w-1/2 lg:w-full lg:h-auto'>
+				<div
+					className='w-1/2 lg:w-full lg:h-auto'
+					onTouchStart={handleTouchStart}
+					onTouchMove={handleTouchMove}
+					onTouchEnd={handleTouchEnd}
+				>
 					<Zoom>
 						<Image
 							src={imageUrl || '/images/DayLogo.svg'}
