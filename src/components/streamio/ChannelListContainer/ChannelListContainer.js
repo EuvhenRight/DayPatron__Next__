@@ -86,7 +86,7 @@ export const ChannelListContainer = (props) => {
       </Box>
       <Divider />
       <Box sx={{ p: 3, pt: 0 }} className='tenx-channels-list'>
-        <ChannelList
+        {client?.userID && <ChannelList
           filters={ { type: 'messaging', members: { $in: [client.userID]}} }
           options={options}
           sort={sort}
@@ -104,7 +104,7 @@ export const ChannelListContainer = (props) => {
               type='messaging'
             />
           )}
-        />
+        />}
       </Box>
     </MainCard>
   );
