@@ -1,8 +1,9 @@
+import { MoveHorizontal, MoveVertical } from 'lucide-react'
 import Image from 'next/image'
 export const AboutOfProduct = () => {
 	return (
 		<>
-			<div className='flex gap-4 items-center justify-between'>
+			<div className='flex gap-4'>
 				<Image
 					src='/images/CLP-500ml.png'
 					width={200}
@@ -17,7 +18,7 @@ export const AboutOfProduct = () => {
 						height={200}
 					/>
 				</div>
-				<div className='flex gap-4 *:bg-neutral-100'>
+				<div className='flex gap-4 *:bg-neutral-100 items-center'>
 					<Image
 						src='/images/container-100ml.png'
 						alt='guide'
@@ -30,18 +31,18 @@ export const AboutOfProduct = () => {
 						width={200}
 						height={200}
 					/>
-					<Image
-						src='/images/container-500ml.png'
-						alt='guide'
-						width={200}
-						height={200}
-					/>
-					<Image
-						src={'/icons/black-arrow.svg'}
-						alt='guide'
-						width={200}
-						height={20}
-					/>
+					<div>
+						<Image
+							src='/images/container-500ml.png'
+							alt='guide'
+							width={100}
+							height={100}
+						/>
+						<div className='flex items-center justify-center my-4'>
+							<MoveHorizontal size={24} strokeWidth={0.5} />
+							<MoveVertical size={24} strokeWidth={0.5} />
+						</div>
+					</div>
 				</div>
 			</div>
 		</>

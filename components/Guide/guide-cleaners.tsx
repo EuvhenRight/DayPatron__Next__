@@ -8,11 +8,26 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table'
+import { Product } from '@prisma/client'
 import { Droplet } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { GuideTooltip } from './guide-tooltip'
 
-export const TableCleanerProducts = () => {
+interface Props {
+	products: Product[]
+}
+export const TableCleanerProducts = ({ products }: Props) => {
 	const route = useRouter()
+	const carbon = products.filter(
+		product => product.category === 'Carbon-Cleaner'
+	)
+	const copper = products.filter(
+		product => product.category === 'Copper-Cleaner'
+	)
+	const liquidator = products.filter(
+		product => product.category === 'Liquidator'
+	)
+
 	return (
 		<>
 			<Table className='*:text-center lg:w-full w-[1000px] overflow-x-auto bg-slate-100 rounded my-20'>
@@ -38,7 +53,9 @@ export const TableCleanerProducts = () => {
 							route.push('/products/6623b9b8783a5052f3ce52f8/details')
 						}}
 					>
-						<TableCell className='uppercase'>Видаляч нагара</TableCell>
+						<TableCell className='uppercase'>
+							<GuideTooltip product={carbon} />
+						</TableCell>
 						<TableCell>
 							<Droplet className='absolute top-[40%] lg:top-[20%] text-zinc-400 left-[40%]' />
 						</TableCell>
@@ -67,7 +84,9 @@ export const TableCleanerProducts = () => {
 							route.push('/products/6623b9b8783a5052f3ce52f9/details')
 						}}
 					>
-						<TableCell className='uppercase'>Видаляч міді</TableCell>
+						<TableCell className='uppercase'>
+							<GuideTooltip product={copper} />
+						</TableCell>
 						<TableCell></TableCell>
 						<TableCell>
 							<Droplet className='absolute top-[40%] lg:top-[20%] text-zinc-400 left-[40%]' />
@@ -92,7 +111,9 @@ export const TableCleanerProducts = () => {
 						}}
 						className='*:relative  *:p-2 hover:text-neutral-500 cursor-pointer'
 					>
-						<TableCell>ОЧИСНИК СТВОЛА</TableCell>
+						<TableCell className='uppercase'>
+							<GuideTooltip product={liquidator} />
+						</TableCell>
 						<TableCell>
 							<Droplet className='absolute top-[40%] lg:top-[20%] text-zinc-400 left-[40%]' />
 						</TableCell>

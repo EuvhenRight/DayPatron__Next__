@@ -8,11 +8,19 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table'
+import { Product } from '@prisma/client'
 import { Droplet } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { GuideTooltip } from './guide-tooltip'
 
-export const TableOilsProducts = () => {
+interface Props {
+	products: Product[]
+}
+export const TableOilsProducts = ({ products }: Props) => {
 	const route = useRouter()
+	const neutral = products.filter(product => product.category === 'Oil')
+	const CLP = products.filter(product => product.category === 'CLP')
+	const protect = products.filter(product => product.category === 'Protect-Oil')
 	return (
 		<div className='container'>
 			<Table className='*:text-center lg:w-full w-[1400px] overflow-x-auto bg-slate-100 rounded'>
@@ -42,7 +50,7 @@ export const TableOilsProducts = () => {
 						}
 					>
 						<TableCell className='uppercase'>
-							Нейтральне, синтетичне мастило
+							<GuideTooltip product={neutral} />
 						</TableCell>
 						<TableCell>
 							<Droplet className='absolute  text-orange-600 top-[40%] left-[40%]' />
@@ -74,7 +82,10 @@ export const TableOilsProducts = () => {
 						}
 						className='*:relative *:p-2 hover:text-yellow-600 cursor-pointer'
 					>
-						<TableCell className='uppercase'>Консерваційне мастило</TableCell>
+						<TableCell className='uppercase'>
+							{' '}
+							<GuideTooltip product={protect} />
+						</TableCell>
 						<TableCell></TableCell>
 						<TableCell></TableCell>
 						<TableCell></TableCell>
@@ -106,7 +117,7 @@ export const TableOilsProducts = () => {
 						className='*:relative  *:p-2 cursor-pointer hover:text-green-600'
 					>
 						<TableCell className='uppercase'>
-							Універсальне мастило CLP 3 в 1
+							<GuideTooltip product={CLP} />
 						</TableCell>
 						<TableCell>
 							<Droplet className='absolute  text-orange-600 top-[40%] left-[40%]' />
