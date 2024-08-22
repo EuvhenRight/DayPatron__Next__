@@ -140,7 +140,8 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
       return;
 
     var contractor = await getContractor(contractorId);
-    navigate('/messaging?tuid=' + contractor?.messagingProviderUserId)
+    
+    navigate('/messaging', { state: { targetUserId: contractor?.messagingProviderUserId} });
   }
 
   return (

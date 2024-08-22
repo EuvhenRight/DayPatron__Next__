@@ -19,14 +19,14 @@ import MainCard from 'components/MainCard';
 import './ChannelListContainer.css';
 
 export const ChannelListContainer = (props) => {
+  const { options, setIsCreating, setIsEditing, sort, targetUserId, setTargetUserId, onChannelSelected, headerPlaceholder } = props;
   const dispatch = useDispatch();
   const { keycloak } = useKeycloak();
   const { client, setActiveChannel } = useChatContext();
-  const { options, setIsCreating, setIsEditing, sort, targetUserId, onChannelSelected, headerPlaceholder } = props;
-
+  
   useEffect(() => {
     (async () => {
-      if(targetUserId && client && setActiveChannel) {
+      if(targetUserId && client && setActiveChannel && keycloak.idToken) {
         try {
           
           let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/messages/groups',
@@ -58,9 +58,10 @@ export const ChannelListContainer = (props) => {
         } catch (err) {
           console.log(err);
         }
+        setTargetUserId(null);
       }
     })();
-  }, [targetUserId, client, setActiveChannel]);
+  }, [targetUserId, client, setActiveChannel, keycloak.idToken]);
 
   return (
     <MainCard
