@@ -86,25 +86,27 @@ export const ChannelListContainer = (props) => {
       </Box>
       <Divider />
       <Box sx={{ p: 3, pt: 0 }} className='tenx-channels-list'>
-        {client?.userID && <ChannelList
-          filters={ { type: 'messaging', members: { $in: [client.userID]}} }
-          options={options}
-          sort={sort}
-          List={(listProps) => (
-            <TeamChannelList
-              {...listProps}
-              {...{ setIsCreating, setIsEditing }}
-              type='messaging'
-            />
-          )}
-          Preview={(previewProps) => (
-            <TeamChannelPreview
-              {...previewProps}
-              {...{ setIsCreating, setIsEditing, onChannelSelected }}
-              type='messaging'
-            />
-          )}
-        />}
+        {client?.userID && 
+          <ChannelList
+            filters={ { type: 'messaging', members: { $in: [client.userID]}} }
+            options={options}
+            sort={sort}
+            List={(listProps) => (
+              <TeamChannelList
+                {...listProps}
+                {...{ setIsCreating, setIsEditing }}
+                type='messaging'
+              />
+            )}
+            Preview={(previewProps) => (
+              <TeamChannelPreview
+                {...previewProps}
+                {...{ setIsCreating, setIsEditing, onChannelSelected }}
+                type='messaging'
+              />
+            )}
+          />
+        }
       </Box>
     </MainCard>
   );
