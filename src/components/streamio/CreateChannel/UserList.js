@@ -5,6 +5,7 @@ import { useKeycloak } from '@react-keycloak/web';
 import './UserList.css';
 
 import { InviteIcon } from 'assets/images/streamio';
+import userTypes from 'data/userTypes';
 
 const ListContainer = (props) => {
   const { children } = props;
@@ -52,11 +53,16 @@ const UserItem = (props) => {
     setSelected(!selected);
   };
 
+  const getUserLabel = (user) => {
+    let result = (user.name || user.messagingProviderUserId) + ' (' + userTypes.find(item => item.code === user.userType)?.label + ')';
+    return result;
+  };
+
   return (
     <div className='user-item__wrapper' onClick={handleClick} role="presentation">
       <div className='user-item__name-wrapper'>
-        <Avatar image={user.image} name={user.name || user.messagingProviderUserId} size={32} />
-        <p className='user-item__name'>{user.name || user.messagingProviderUserId}</p>
+        <Avatar image={user.image} name={getUserLabel(user)} size={32} />
+        <p className='user-item__name'>{getUserLabel(user)}</p>
       </div>
       <p className='user-item__last-active'>{getLastActive(index)}</p>
       {selected ? <InviteIcon /> : <div className='user-item__invite-empty' />}
