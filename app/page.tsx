@@ -11,9 +11,9 @@ export default async function Home() {
 	const dataProducts: ProductsWithVariants[] = await getAllProducts()
 	//  FILTER PRODUCTS
 	const matchingProducts = dataProducts.filter(
-		product => product.category === 'CPL' || product.category === 'Liquidator'
+		product => product.category === 'CLP' || product.category === 'Liquidator'
 	)
-	//  GET BEST TWO PRODUCTS
+	//  GET BEST TWO PRODUCT
 	const bestSellers = matchingProducts.slice(0, 2)
 	return (
 		<>
