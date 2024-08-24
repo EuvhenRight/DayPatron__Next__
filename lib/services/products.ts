@@ -1,9 +1,12 @@
-import { ProductsWithVariants } from '@/lib/types/types'
+import { ProductsWithVariantsWithReviews } from '@/lib/types/types'
 
-export async function getAllProducts(): Promise<ProductsWithVariants[]> {
+export async function getAllProducts(): Promise<
+	ProductsWithVariantsWithReviews[]
+> {
 	const products = await prisma?.product.findMany({
 		include: {
 			variant: true,
+			reviews: true,
 		},
 	})
 	if (!products) {
@@ -13,13 +16,16 @@ export async function getAllProducts(): Promise<ProductsWithVariants[]> {
 	return products
 }
 
-export async function getProduct(id: string): Promise<ProductsWithVariants> {
+export async function getProduct(
+	id: string
+): Promise<ProductsWithVariantsWithReviews> {
 	const product = await prisma?.product.findUnique({
 		where: {
 			id,
 		},
 		include: {
 			variant: true,
+			reviews: true,
 		},
 	})
 

@@ -23,7 +23,7 @@ import {
 	OrderWithItems,
 } from '@/lib/types/types'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { User } from '@prisma/client'
+import { Payment, User } from '@prisma/client'
 
 import { ChevronLeft } from 'lucide-react'
 import { useRouter } from 'next/navigation'
@@ -46,7 +46,9 @@ export const CheckoutForm = ({
 	order,
 	orders,
 }: Props) => {
-	const [payment, setPayment] = useState<string>('Карткою')
+	const [payment, setPayment] = useState<Payment>(
+		Payment.POSTPAID || Payment.PAIMENTBYCARD
+	)
 	const [makeOrder, setMakeOrder] = useState<boolean>(false)
 	const router = useRouter()
 	const [pending, startTransition] = useTransition()
@@ -66,7 +68,7 @@ export const CheckoutForm = ({
 				email: currentUser?.email || '',
 				phone: currentUser?.phone || '',
 			},
-			payment: '',
+			payment: payment,
 			comment: '',
 			address: '',
 			cartId: cart?.id,

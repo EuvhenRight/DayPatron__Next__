@@ -5,6 +5,7 @@ import {
 	AccordionTrigger,
 } from '@/components/ui/accordion'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { Payment } from '@prisma/client'
 import { Asterisk, CreditCard, Wallet } from 'lucide-react'
 import React from 'react'
 
@@ -13,24 +14,24 @@ const paymentArray = [
 		title: 'Карткою',
 		logo: <CreditCard />,
 		text: `• Без переплат\n• Захист від шахрайства\n• Повернемо гроші, якщо відмовитесь від посилки`,
-		type: 'PAIMENTBYCARD',
+		type: Payment.PAIMENTBYCARD,
 	},
 	{
 		title: 'Післяплатою',
 		logo: <Wallet />,
 		text: '20₴ + 2% комісії',
-		type: 'POSTPAID',
+		type: Payment.POSTPAID,
 	},
 ]
 
 interface Props {
-	onChange: (value: string) => void
-	payment: string
-	setPayment: React.Dispatch<React.SetStateAction<string>>
+	onChange: (value: Payment) => void
+	payment: Payment
+	setPayment: React.Dispatch<React.SetStateAction<Payment>>
 }
 
 export const PaymentForm = ({ onChange, payment, setPayment }: Props) => {
-	const toggleOnDelivery = (value: string) => {
+	const toggleOnDelivery = (value: Payment) => {
 		setPayment(value)
 		onChange(value)
 	}

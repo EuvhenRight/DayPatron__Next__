@@ -1,3 +1,4 @@
+import { Payment } from '@prisma/client'
 import { ZodSchema, any, z } from 'zod'
 
 export interface AuthUserSchema {
@@ -44,7 +45,7 @@ export interface ExtraUser {
 export interface OrderFormSchema {
 	profile: ProfileUserSchema
 	extra_user: ExtraUser
-	payment: string
+	payment: Payment
 	comment: string
 	address: string
 	cartId: string
@@ -241,9 +242,7 @@ export const orderItemScheme = z.object({
 				message: 'Будь ласка, заповніть усі поля профілю',
 			}
 		) as ZodSchema<ProfileUserSchema>,
-	payment: z
-		.string({ required_error: "Це поле є обов'язковим" })
-		.min(1, 'Виберіть спосіб оплати'),
+	payment: z.enum([Payment.POSTPAID, Payment.PAIMENTBYCARD]),
 	comment: z.string().nullable().optional(),
 	cartId: z.any(),
 	extra_user: any(),

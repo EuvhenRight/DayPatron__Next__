@@ -60,6 +60,7 @@ model User {
   address  Delivery[]
   accounts Account[]
   sessions Session[]
+  reviews  ReviewItem[]
 
   @@map("users")
 }
@@ -161,7 +162,7 @@ model DeliveryItem {
   deliveryId String? @db.ObjectId
   orderId    String? @db.ObjectId
 
-  order    Order?    @relation(fields: [orderId], references: [id])
+  order    Order[]
   delivery Delivery? @relation(fields: [deliveryId], references: [id], onDelete: Cascade)
 
   @@map("deliveryItems")
@@ -180,15 +181,16 @@ model OrderItem {
 }
 
 model Order {
-  id         String     @id @default(auto()) @map("_id") @db.ObjectId
-  itemsTotal Float
-  subTotal   Float
-  bonus      String?
-  payment    Payment    @default(PAIMENTBYCARD)
-  comment    String?
-  extra_user ExtraUser?
-  userId     String     @db.ObjectId
-  cartId     String     @db.ObjectId
+  id             String     @id @default(auto()) @map("_id") @db.ObjectId
+  itemsTotal     Float
+  subTotal       Float
+  bonus          String?
+  payment        Payment
+  comment        String?
+  extra_user     ExtraUser?
+  userId         String     @db.ObjectId
+  cartId         String     @db.ObjectId
+  deliveryItemId String     @db.ObjectId
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -197,7 +199,7 @@ model Order {
 
   item    OrderItem[]
   status  OrderEvent?
-  address DeliveryItem[]
+  address DeliveryItem @relation(fields: [deliveryItemId], references: [id])
 
   @@map("orders")
 }
@@ -254,37 +256,44 @@ model Product {
   volume         String[]
   exlusive_size  String[]
 
-  image   Image[]
-  variant Variant[]
-  review  Reviews   @relation(fields: [id], references: [id])
+  image     Image[]
+  variant   Variant[]
+  reviews   Reviews   @relation(fields: [reviewsId], references: [id])
+  reviewsId String    @db.ObjectId
 
   @@map("products")
 }
 
 model Reviews {
   id           String @id @default(auto()) @map("_id") @db.ObjectId
-  messageTotal Int
-  ratingTotal  Float
+  messageTotal Int    @default(0)
+  ratingTotal  Float  @default(0)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   messages ReviewItem[]
-  product  Product?
+  product  Product[]
+
+  @@map("reviews")
 }
 
 model ReviewItem {
-  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
   rating    Float
   verefied  Float
-  reviewsId String @db.ObjectId
+  reviewsId String  @db.ObjectId
   fullName  String
   email     String
   title     String
   text      String
+  userId    String? @db.ObjectId
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   reviews Reviews @relation(fields: [reviewsId], references: [id])
+  User    User?   @relation(fields: [userId], references: [id])
+
+  @@map("reviewsItem")
 }

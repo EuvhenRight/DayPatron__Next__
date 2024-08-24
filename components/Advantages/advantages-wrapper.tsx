@@ -1,9 +1,9 @@
 'use client'
-import { ProductsWithVariants } from '@/lib/types/types'
+import { ProductsWithVariantsWithReviews } from '@/lib/types/types'
 import { Advantages } from './advantages'
 
 interface Props {
-	product: ProductsWithVariants
+	product: ProductsWithVariantsWithReviews
 }
 
 export const AdvantagesWrapper = ({ product }: Props) => {

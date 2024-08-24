@@ -44,7 +44,7 @@ export const advantageProps = [
 		],
 	},
 	{
-		category: 'CPL',
+		category: 'CLP',
 		image: '/images/clp_tr.svg',
 		color: 'text-lime-500',
 		items: [
@@ -89,7 +89,7 @@ export const advantageProps = [
 	},
 	{
 		category: 'Oil',
-		image: '/images/oil_tr.svg',
+		image: '/images/lube_tr.svg',
 		color: 'text-amber-600',
 		items: [
 			{

@@ -1,4 +1,4 @@
-import { Prisma, User } from '@prisma/client'
+import { Payment, Prisma, User } from '@prisma/client'
 
 export type SafeUser = Omit<User, 'createdAt' | 'updatedAt' | 'email'> & {
 	createdAt: string
@@ -15,6 +15,10 @@ export type ExtraUser = {
 
 export type ProductsWithVariants = Prisma.ProductGetPayload<{
 	include: { variant: true }
+}>
+
+export type ProductsWithVariantsWithReviews = Prisma.ProductGetPayload<{
+	include: { variant: true; reviews: true }
 }>
 
 export type CartWithVariants = Prisma.CartGetPayload<{
@@ -51,7 +55,7 @@ export type OrderForm = Prisma.OrderGetPayload<{
 
 export type OrderFormInputs = {
 	extra_user: ExtraUser
-	payment: string
+	payment: Payment
 	comment: string
 	address: string
 	cartId: string
@@ -64,7 +68,7 @@ type OrderItem = {
 
 export type OrderFormTest = Prisma.OrderCreateInput & {
 	extra_user: ExtraUser
-	payment: string
+	payment: Payment
 	items: OrderItem[]
 	address: string
 	user: User

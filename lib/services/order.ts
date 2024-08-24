@@ -82,14 +82,12 @@ export async function createOrder(
 				item: { create: [] },
 				userId: session.user.id,
 				cartId: data.cartId,
-				address: {
-					connect: { id: deliveryItem?.id },
-				},
+				deliveryItemId: deliveryItem?.id!,
 				itemsTotal: 0,
 				subTotal: 0,
-				payment: 'PAIMENTBYCARD' || 'PAIMENTBYCASH',
+				payment: data.payment,
 				comment: data.comment || null,
-				bonus: '' || null,
+				bonus: '',
 				extra_user: extraUser || null,
 			},
 
