@@ -12,60 +12,12 @@ import {
 import Image from 'next/image'
 import { useEffect, useRef } from 'react'
 
-const specifications = [
-	{
-		image: {
-			src: '/images/container-250ml.png',
-			alt: 'specification',
-			width: 200,
-			height: 200,
-		},
-		details: [
-			{
-				icon: Droplet,
-				size: 20,
-				label: '250 мл',
-				className: 'ml-2 font-light',
-			},
-			{
-				icon: MoveVertical,
-				size: 20,
-				label: '131 мм',
-				className: 'ml-2 font-light',
-			},
-			{
-				icon: MoveHorizontal,
-				size: 20,
-				label: '70 мм',
-				className: 'ml-2 font-light',
-			},
-			{
-				containerClass:
-					'border border-gray-500 rounded-lg *:flex *:items-center *:my-2 flex-col',
-				items: [
-					{
-						icon: Box,
-						size: 20,
-						label: '6 шт',
-						className: 'ml-2 font-light',
-					},
-					{
-						icon: Dumbbell,
-						size: 20,
-						label: '1.6 кг',
-						className: 'ml-2 font-light',
-					},
-				],
-			},
-		],
-	},
-]
-
 export const SpecificationCard = () => {
 	const controls = useAnimation()
 	const ref = useRef(null)
 	const isInView = useInView(ref)
 
+	// ANIMATION VARIANTS
 	useEffect(() => {
 		if (isInView) {
 			controls.start('visible')
