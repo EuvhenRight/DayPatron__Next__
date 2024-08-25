@@ -12,6 +12,9 @@ import './globals.css'
 export const metadata: Metadata = {
 	title: 'DayPatron',
 	description: 'Догляд, що перевершує очікування',
+	openGraph: {
+		images: [{ url: '/images/DayLogo_black.svg' }],
+	},
 }
 
 async function RootLayout({ children }: { children: React.ReactNode }) {

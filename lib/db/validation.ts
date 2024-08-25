@@ -58,6 +58,12 @@ export interface FeedbackFormSchema {
 	message: string
 }
 
+export interface ReviewsFormSchema {
+	name: string
+	email: string
+	message: string
+}
+
 export const ValidationSchema = {
 	// AUTH
 	authUser: z.object({
@@ -91,6 +97,24 @@ export const ValidationSchema = {
 			.string({ invalid_type_error: "Поле телефон є обов'язковим" })
 			.min(13, 'Невірний номер телефону'),
 	}) as ZodSchema<ProfileUserSchema>,
+	// REVIEWS
+	reviews: z.object({
+		name: z
+			.string({ invalid_type_error: "Поле 'Ім'я є обов'язковим" })
+			.regex(/^[\u0400-\u04FF0-9]+$/, {
+				message: 'Використовуйте тільки кириличні символи',
+			})
+			.min(3, 'Має містити 3 або більше елементів')
+			.max(20, 'Має містити 20 або менше елементів'),
+		email: z.string().email({ message: 'Невірна адреса електронної пошти' }),
+		message: z
+			.string({ invalid_type_error: "Поле повідомлення є обов'язковим" })
+			.regex(/^[\u0400-\u04FF0-9]+$/, {
+				message: 'Використовуйте тільки кириличні символи',
+			})
+			.min(3, 'Має містити 3 або більше елементів')
+			.max(450, 'Має містити 450 або менше елементів'),
+	}) as ZodSchema<ReviewsFormSchema>,
 	// EXTRA USER
 	extraUser: z.object({
 		email: z.string().email({ message: 'Невірна адреса електронної пошти' }),

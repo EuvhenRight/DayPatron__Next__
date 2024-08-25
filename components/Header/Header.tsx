@@ -93,12 +93,12 @@ export const Header = ({ cart }: Props) => {
 				{/* LOGO */}
 				<Link href='/' onClick={() => toggleActive('/')}>
 					<Image
-						className='w-32 lg:w-48'
+						className='w-32 h-auto md:w-48'
 						src='/images/DayLogo.svg'
 						alt='logo'
 						priority={true}
-						width={300}
-						height={100}
+						width={0}
+						height={0}
 					/>
 				</Link>
 				{pathName !== '/checkouts' && (

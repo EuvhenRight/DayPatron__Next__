@@ -47,9 +47,10 @@ export const TriangleAnimation = () => {
 			>
 				<Image
 					src={`${process.env.PUBLIC_IMAGE_URL}/clean.svg`}
-					width={500}
-					height={500}
-					alt='mission'
+					width={0}
+					height={0}
+					alt='clean'
+					className='w-[500px] h-auto'
 				/>
 			</motion.span>
 			<motion.span
@@ -59,9 +60,10 @@ export const TriangleAnimation = () => {
 			>
 				<Image
 					src={`${process.env.PUBLIC_IMAGE_URL}/protect.svg`}
-					width={500}
-					height={500}
-					alt='mission'
+					width={0}
+					height={0}
+					alt='protect'
+					className='w-[500px] h-auto'
 				/>
 			</motion.span>
 			<motion.span
@@ -70,9 +72,10 @@ export const TriangleAnimation = () => {
 			>
 				<Image
 					src={`${process.env.PUBLIC_IMAGE_URL}/lube.svg`}
-					width={500}
-					height={500}
-					alt='mission'
+					width={0}
+					height={0}
+					alt='lube'
+					className='w-[500px] h-auto'
 				/>
 			</motion.span>
 			<motion.div

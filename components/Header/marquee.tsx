@@ -49,9 +49,9 @@ export const Marquee: React.FC = () => {
 					src='/images/ukraine.svg'
 					priority={true}
 					alt='Marquee'
-					width={75}
-					height={50}
-					className='mx-4 h-8 aspect-auto'
+					width={0}
+					height={0}
+					className='mx-4 aspect-auto w-8 h-auto'
 				/>
 			</motion.div>
 		</div>

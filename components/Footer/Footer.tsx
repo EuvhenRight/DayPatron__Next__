@@ -29,8 +29,9 @@ const Footer = ({ products }: Props) => {
 						src='/images/DayLogo_footer.svg'
 						alt='logo'
 						priority={true}
-						width={200}
-						height={50}
+						width={0}
+						height={0}
+						className='h-auto w-48'
 					/>
 					<p className='text-white text-ld py-2 italic ml-6'>
 						{ContentFooter.slogan}

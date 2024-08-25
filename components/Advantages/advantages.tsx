@@ -1,5 +1,5 @@
 'use client'
-import { advantageProps } from '@/lib/db/advantages'
+import { advantageProps } from '@/lib/services/advantages'
 import { rubikGlitch } from '@/lib/utils/font'
 import { cn } from '@/lib/utils/utils'
 import { motion, Variants } from 'framer-motion'
@@ -20,15 +20,6 @@ export const Advantages = ({ category }: Props) => {
 	if (!properties) {
 		console.error(`Properties not found for category: ${category}`)
 		return null
-	}
-
-	const colorVariants = {
-		oil: 'text-amber-600',
-		copper: 'text-sky-500',
-		clp: 'text-lime-500',
-		protect: 'text-yellow-500',
-		carbon: 'text-sky-500',
-		liquidator: 'text-gray-100',
 	}
 
 	// ANIMATION

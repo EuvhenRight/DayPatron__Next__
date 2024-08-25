@@ -47,7 +47,7 @@
     "postcss": "8.4.33",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-hook-form": "^7.51.2",
+    "react-hook-form": "^7.53.0",
     "react-icons": "^5.0.1",
     "react-international-phone": "^4.3.0",
     "react-intersection-observer": "^9.13.0",

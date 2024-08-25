@@ -1,5 +1,6 @@
 import { AdvantagesWrapper } from '@/components/Advantages/advantages-wrapper'
 import { ProductForm } from '@/components/ProductForm/product-form'
+import { Reviews } from '@/components/Reviews/reviews'
 import { getCart } from '@/lib/services/cart'
 import { getProduct } from '@/lib/services/products'
 import { Metadata } from 'next'
@@ -32,8 +33,11 @@ const ProductDetails = async ({ params: { id } }: Props) => {
 			<section className='container pt-8'>
 				<ProductForm product={product} cart={cart} />
 			</section>
-			<section className='pt-14'>
+			<section className='py-14'>
 				<AdvantagesWrapper product={product} />
+			</section>
+			<section className='container '>
+				<Reviews />
 			</section>
 		</>
 	)

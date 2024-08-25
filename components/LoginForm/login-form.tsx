@@ -109,7 +109,7 @@ export const LoginForm = () => {
 										<Input
 											type='email'
 											{...field}
-											placeholder='введіть електронну пошт'
+											placeholder='введіть електронну пошту'
 										/>
 									</FormControl>
 									<FormMessage />

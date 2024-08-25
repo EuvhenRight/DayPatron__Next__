@@ -25,8 +25,8 @@ export const MissionInfo = () => {
 					<span className='text-red-600'>] </span>
 				</h1>
 				<p className='text-lg md:text-xl italic text-end mt-10 mb-14'>
-					"Зробіть свою зброю непереможною: ми захищаємо її, щоб ви могли
-					захищати себе!"
+					&ldquo;Зробіть свою зброю непереможною: ми захищаємо її, щоб ви могли
+					захищати себе!&rdquo;
 				</p>
 				{/* TRIANGLE Animation */}
 				<TriangleAnimation />
