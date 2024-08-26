@@ -119,7 +119,7 @@ export const ReviewsForm = ({ reviews, product }: Props) => {
 									totalStars={5}
 									size={32}
 									variant='yellow'
-									className='h-1 pb-8'
+									className='h-1 pb-8 cursor-pointer'
 									showText={false}
 									disabled={false}
 									onRatingChange={field.onChange}
