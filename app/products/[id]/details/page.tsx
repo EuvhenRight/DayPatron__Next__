@@ -1,8 +1,9 @@
 import { AdvantagesWrapper } from '@/components/Advantages/advantages-wrapper'
 import { ProductForm } from '@/components/ProductForm/product-form'
-import { Reviews } from '@/components/Reviews/reviews'
+import { ReviewsComponent } from '@/components/Reviews/reviews'
 import { getCart } from '@/lib/services/cart'
 import { getProduct } from '@/lib/services/products'
+import { getReviewsWithItem } from '@/lib/services/reviews'
 import { Metadata } from 'next'
 
 interface Props {
@@ -27,7 +28,11 @@ export const generateMetadata = async ({
 }
 
 const ProductDetails = async ({ params: { id } }: Props) => {
-	const [cart, product] = await Promise.all([getCart(), getProduct(id)])
+	const [cart, product, reviews] = await Promise.all([
+		getCart(),
+		getProduct(id),
+		getReviewsWithItem(id),
+	])
 	return (
 		<>
 			<section className='container pt-8'>
@@ -37,7 +42,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
 				<AdvantagesWrapper product={product} />
 			</section>
 			<section className='container '>
-				<Reviews />
+				<ReviewsComponent reviews={reviews} product={product} />
 			</section>
 		</>
 	)

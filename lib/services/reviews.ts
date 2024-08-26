@@ -1,5 +1,6 @@
 import prisma from '@/lib/db/client'
 import { Reviews } from '@prisma/client'
+import { ReviewsWithItems } from '../types/types'
 
 export async function createReview(productId: string): Promise<Reviews> {
 	// Step 1: CREATE THE REVIEW
@@ -19,4 +20,28 @@ export async function createReview(productId: string): Promise<Reviews> {
 	})
 
 	return reviews
+}
+
+export async function getReviewsWithItem(
+	productId: string
+): Promise<ReviewsWithItems> {
+	const product = await prisma.product.findFirst({
+		where: { id: productId },
+		include: {
+			reviews: true,
+		},
+	})
+
+	if (!product) {
+		throw new Error('Product not found')
+	}
+	const reviews = await prisma.reviews.findUnique({
+		where: {
+			id: product.reviewsId,
+		},
+		include: {
+			messages: true,
+		},
+	})
+	return reviews!
 }

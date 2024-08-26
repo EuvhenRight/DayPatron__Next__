@@ -21,6 +21,14 @@ export type ProductsWithVariantsWithReviews = Prisma.ProductGetPayload<{
 	include: { variant: true; reviews: true }
 }>
 
+export type ProductWithVariantsWithReviews = Prisma.ProductGetPayload<{
+	include: { variant: true; reviews: { include: { messages: true } } }
+}>
+
+export type ReviewsWithItems = Prisma.ReviewsGetPayload<{
+	include: { messages: true }
+}>
+
 export type CartWithVariants = Prisma.CartGetPayload<{
 	include: { items: { include: { variant: true } } }
 }>
@@ -79,4 +87,11 @@ export type Division = {
 	Number: string
 	CityDescription: string
 	Description: string
+}
+
+export type ReviewItemInputs = {
+	message: string
+	email: string
+	fullName: string
+	rating: number
 }

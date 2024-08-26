@@ -1,4 +1,7 @@
-import { ProductsWithVariantsWithReviews } from '@/lib/types/types'
+import {
+	ProductsWithVariantsWithReviews,
+	ProductWithVariantsWithReviews,
+} from '@/lib/types/types'
 
 export async function getAllProducts(): Promise<
 	ProductsWithVariantsWithReviews[]
@@ -18,14 +21,18 @@ export async function getAllProducts(): Promise<
 
 export async function getProduct(
 	id: string
-): Promise<ProductsWithVariantsWithReviews> {
+): Promise<ProductWithVariantsWithReviews> {
 	const product = await prisma?.product.findUnique({
 		where: {
 			id,
 		},
 		include: {
 			variant: true,
-			reviews: true,
+			reviews: {
+				include: {
+					messages: true,
+				},
+			},
 		},
 	})
 

@@ -1,15 +1,30 @@
 'use client'
 import { ReviewsWrapper } from '@/components/Reviews/reviews-wrapper'
+import {
+	ProductsWithVariantsWithReviews,
+	ReviewsWithItems,
+} from '@/lib/types/types'
+import { ReviewsForm } from './reviews-form'
+import { ReviewsItem } from './reviews-item'
 
-export const Reviews = () => {
+interface Props {
+	reviews: ReviewsWithItems
+	product: ProductsWithVariantsWithReviews
+}
+export const ReviewsComponent = ({ reviews, product }: Props) => {
 	return (
 		<ReviewsWrapper
-			reviewsCount={10}
-			reviewsRating={10}
+			reviewsCount={reviews?.messageTotal}
+			reviewsRating={reviews?.ratingTotal}
 			messageButton='Написати відгук'
 		>
 			<>
-				<p>Reviews</p>
+				{reviews?.messages.map(message => (
+					<ReviewsItem key={message.id} message={message} />
+				))}
+				<div>
+					<ReviewsForm reviews={reviews} product={product} />
+				</div>
 			</>
 		</ReviewsWrapper>
 	)

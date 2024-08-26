@@ -5,23 +5,23 @@ import { CurrentUser } from '@/lib/hooks/currentUser'
 import type {
 	CartItemWithVariants,
 	CartWithVariants,
-	ProductsWithVariants,
+	ProductWithVariantsWithReviews,
 } from '@/lib/types/types'
 import { User } from '@prisma/client'
 import { useEffect, useState } from 'react'
 import 'react-medium-image-zoom/dist/styles.css'
 
 import { addItem } from '@/actions/cart'
-import { RatingProducts } from '@/components/ProductForm/rating'
 import { SliderWithProducts } from '@/components/ProductForm/slider-with-products'
 import { Button } from '@/components/ui/button'
 import { rubikGlitch } from '@/lib/utils/font'
 import { cn } from '@/lib/utils/utils'
 import { AiOutlineCheckSquare } from 'react-icons/ai'
 import { toast } from 'sonner'
+import { Rating } from '../ui/rating'
 
 interface Props {
-	product: ProductsWithVariants
+	product: ProductWithVariantsWithReviews
 	cart: CartWithVariants | null
 }
 export const ProductForm = ({ product, cart }: Props) => {
@@ -37,6 +37,8 @@ export const ProductForm = ({ product, cart }: Props) => {
 	const [itemInCart, setItemInCart] = useState<CartItemWithVariants | null>(
 		null
 	)
+	console.log(product, 'PRODUCT')
+
 	//SERVER ACTION ADD TO CART
 	const addItemToCart = async (variantId: string) => {
 		let itemInCart: Promise<CartWithVariants>
@@ -100,8 +102,16 @@ export const ProductForm = ({ product, cart }: Props) => {
 				</h1>
 				<p className='font-bold italic my-2 text-center'>{product.UTP}</p>
 				<div className='my-2 flex justify-end gap-2 mt-6'>
-					<RatingProducts currentRating={product.current_rating} />
-					<p>{product.current_rating} відгуків</p>
+					<Rating
+						rating={product.current_rating}
+						totalStars={5}
+						size={32}
+						variant='yellow'
+						className='h-1 my-4'
+						showText={false}
+						disabled={true}
+						totalReviews={product.reviews.messageTotal}
+					/>
 				</div>
 				{/* VARIANTS */}
 				<Variants

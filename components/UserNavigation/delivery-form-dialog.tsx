@@ -86,6 +86,7 @@ export const DeliveryFormDialog = ({
 		>(formConfig)
 
 	const onSubmit = async (formConfig: any) => {
+		// TODO: Add type
 		let deliveryItem: Promise<DeliveryWithItems>
 		try {
 			// CREATE DELIVERY

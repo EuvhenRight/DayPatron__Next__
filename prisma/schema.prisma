@@ -280,13 +280,12 @@ model Reviews {
 
 model ReviewItem {
   id        String  @id @default(auto()) @map("_id") @db.ObjectId
-  rating    Float
-  verefied  Float
+  rating    Int
+  verified  Boolean
   reviewsId String  @db.ObjectId
   fullName  String
   email     String
-  title     String
-  text      String
+  message   String
   userId    String? @db.ObjectId
 
   createdAt DateTime @default(now())
