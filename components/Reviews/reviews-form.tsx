@@ -11,11 +11,13 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { ValidationSchema } from '@/lib/db/validation'
+import { CurrentUser } from '@/lib/hooks/currentUser'
 import {
 	ProductsWithVariantsWithReviews,
 	ReviewsWithItems,
 } from '@/lib/types/types'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { User } from '@prisma/client'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import * as z from 'zod'
@@ -28,11 +30,13 @@ interface Props {
 }
 
 export const ReviewsForm = ({ reviews, product }: Props) => {
+	const user = CurrentUser() as User | null
+	console.log(user, 'USER')
 	const form = useForm<z.infer<typeof ValidationSchema.reviews>>({
 		resolver: zodResolver(ValidationSchema.reviews),
 		defaultValues: {
-			fullName: 'аиарира',
-			email: 'WW@gmail.com',
+			fullName: user?.name || '',
+			email: user?.email || '',
 			message: 'аиіиіви',
 			rating: 0,
 		},
@@ -44,7 +48,7 @@ export const ReviewsForm = ({ reviews, product }: Props) => {
 		try {
 			// CREATE DELIVERY
 			reviewItem = new Promise<ReviewsWithItems>(resolve => {
-				resolve(addItem(product.id, data))
+				resolve(addItem(product.id, data, user?.id))
 			})
 
 			// UPDATE DELIVERY
@@ -115,7 +119,7 @@ export const ReviewsForm = ({ reviews, product }: Props) => {
 									totalStars={5}
 									size={32}
 									variant='yellow'
-									className='h-1 my-4'
+									className='h-1 pb-8'
 									showText={false}
 									disabled={false}
 									onRatingChange={field.onChange}

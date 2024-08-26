@@ -3,17 +3,9 @@ import { ContactsComponent } from '@/components/Contacts/contacts-component'
 import { GoogleMap } from '@/components/Contacts/googleMap'
 import { FeedBackForm } from '@/components/FeedbackForm/feedback-form'
 import data from '@/lib/db/content.json'
+import { contactData } from '@/lib/services/contacts'
 import { rubikGlitch } from '@/lib/utils/font'
 import { cn } from '@/lib/utils/utils'
-import {
-	Earth,
-	Factory,
-	Forklift,
-	Mail,
-	MapPin,
-	Phone,
-	Send,
-} from 'lucide-react'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -25,36 +17,6 @@ export default async function ContactsPage() {
 	const [currentUser] = await Promise.all([getCurrentUser()])
 	const { ContentContactsPage } = data
 
-	const contactData = [
-		{
-			icon: <Factory size={28} />,
-			text: ContentContactsPage.page.manufacturer,
-		},
-		{
-			icon: <MapPin size={28} />,
-			text: ContentContactsPage.page.manufacturer_address,
-		},
-		{ icon: <Send size={28} />, text: ContentContactsPage.page.email },
-		{
-			icon: <Earth size={28} />,
-			text: ContentContactsPage.page.manufacturer_link,
-			link: 'https://ekokemika.ua/',
-		},
-		{
-			icon: <Forklift size={28} />,
-			text: ContentContactsPage.page.distributor,
-		},
-		{ icon: <Phone size={28} />, text: ContentContactsPage.page.phone },
-		{
-			icon: <Mail size={28} />,
-			text: ContentContactsPage.page.email_daypatron,
-		},
-		{
-			icon: <Earth size={28} />,
-			text: ContentContactsPage.page.web_daypatron,
-			link: 'https://daypatron.com.ua',
-		},
-	]
 	return (
 		<>
 			<section className='container lg:pt-10 relative flex flex-row w-full pt-2 mb-4'>

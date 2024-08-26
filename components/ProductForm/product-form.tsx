@@ -32,12 +32,11 @@ export const ProductForm = ({ product, cart }: Props) => {
 	const [imageIndex, setImageIndex] = useState<number | null>(null)
 	const [animate, setAnimate] = useState<boolean>(false)
 	// CHECK ITEM IN CART
-	const user = CurrentUser() as User | null
+	const user = CurrentUser() as User | null // TODO: why we call user here?
 	const userId = user?.id
 	const [itemInCart, setItemInCart] = useState<CartItemWithVariants | null>(
 		null
 	)
-	console.log(product, 'PRODUCT')
 
 	//SERVER ACTION ADD TO CART
 	const addItemToCart = async (variantId: string) => {
