@@ -37,7 +37,7 @@ const ChannelNameInput = (props) => {
 export const CreateChannel = (props) => {
   const { keycloak } = useKeycloak();
   const dispatch = useDispatch();
-  const { filters, setIsCreating } = props;
+  const { filters, setIsCreating, connectAsAdmin } = props;
 
   const { client, setActiveChannel } = useChatContext();
 
@@ -92,7 +92,7 @@ export const CreateChannel = (props) => {
         <CloseCreateChannel {...{ setIsCreating }} />
       </div>
       <ChannelNameInput {...{ channelName, setChannelName }} />
-      <UserList {...{ filters, setSelectedUsers }} />
+      <UserList {...{ filters, setSelectedUsers, connectAsAdmin }} />
       <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 2.5, mr: 3 }}>
         <Button onClick={createChannel} variant="contained">
           Save

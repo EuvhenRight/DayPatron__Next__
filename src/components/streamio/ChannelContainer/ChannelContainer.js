@@ -34,7 +34,7 @@ const ThreadHeader = (props) => {
 };
 
 export const ChannelContainer = (props) => {
-  const { isCreating, isEditing, setIsCreating, setIsEditing, onShowChannelSelector, isChannelSelectorVisible } = props;
+  const { isCreating, isEditing, setIsCreating, setIsEditing, onShowChannelSelector, isChannelSelectorVisible, connectAsAdmin } = props;
 
   const { channel } = useChatContext();
 
@@ -45,7 +45,7 @@ export const ChannelContainer = (props) => {
 
     return (
       <div className='channel__container'>
-        <CreateChannel {...{ filters, setIsCreating }} />
+        <CreateChannel {...{ filters, setIsCreating, connectAsAdmin }} />
       </div>
     );
   }
@@ -62,7 +62,7 @@ export const ChannelContainer = (props) => {
 
     return (
       <div className='channel__container'>
-        <EditChannel {...{ filters, setIsEditing }} />
+        <EditChannel {...{ filters, setIsEditing, connectAsAdmin }} />
       </div>
     );
   }

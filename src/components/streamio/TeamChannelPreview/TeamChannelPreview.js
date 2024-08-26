@@ -5,6 +5,7 @@ import Dot from 'components/@extended/Dot';
 import { CheckOutlined } from '@ant-design/icons';
 import { useTheme } from '@mui/material/styles';
 import { format } from 'date-fns'
+import userTypes from 'data/userTypes';
 
 import './TeamChannelPreview.css';
 

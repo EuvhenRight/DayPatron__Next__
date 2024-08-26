@@ -17,7 +17,7 @@ const ChannelList = (props) => {
   if (loading) {
     return (
       <Typography>
-        Groups loading....
+        Loading....
       </Typography>
     );
   }

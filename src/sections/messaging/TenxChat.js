@@ -144,7 +144,8 @@ const TenxChat = ({targetUserId, setTargetUserId}) => {
               setIsCreating,
               setIsEditing,
               onShowChannelSelector,
-              isChannelSelectorVisible
+              isChannelSelectorVisible,
+              connectAsAdmin
             }}
           />
         </Grid>

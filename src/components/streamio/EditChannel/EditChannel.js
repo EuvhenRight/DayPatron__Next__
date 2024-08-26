@@ -32,7 +32,7 @@ const ChannelNameInput = (props) => {
 export const EditChannel = (props) => {
   const { keycloak } = useKeycloak();
   const dispatch = useDispatch();
-  const { filters, setIsEditing } = props;
+  const { filters, setIsEditing, connectAsAdmin } = props;
   const { channel } = useChatContext();
   const [channelName, setChannelName] = useState(channel?.data.name || channel?.data.id);
   const [selectedUsers, setSelectedUsers] = useState(Object.keys(channel.state.members));
@@ -97,7 +97,7 @@ export const EditChannel = (props) => {
         <CloseCreateChannel {...{ setIsEditing }} />
       </div>
       <ChannelNameInput {...{ channelName, setChannelName }} />
-      <UserList {...{ filters, setSelectedUsers, selectedUsers }} />
+      <UserList {...{ filters, setSelectedUsers, selectedUsers, connectAsAdmin }} />
       <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 2.5, mr: 3 }}>
         <Button onClick={updateChannel} variant="contained">
           Save

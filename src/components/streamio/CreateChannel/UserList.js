@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Avatar, useChatContext } from 'stream-chat-react';
 import { useKeycloak } from '@react-keycloak/web';
+import { useSelector } from 'react-redux';
 
 import './UserList.css';
 
@@ -72,7 +73,8 @@ const UserItem = (props) => {
 
 export const UserList = (props) => {
   const { keycloak } = useKeycloak();
-  const { filters, setSelectedUsers, selectedUsers } = props;
+  const personalInformation = useSelector(state => state.personalInformation);
+  const { filters, setSelectedUsers, selectedUsers, connectAsAdmin } = props;
 
   const { client } = useChatContext();
 
@@ -86,7 +88,8 @@ export const UserList = (props) => {
       if (loading) return;
       setLoading(true);
       try {
-        let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/messages/messageable-users',
+        let queryString = connectAsAdmin ? '' : '?employerUserId=' + personalInformation?.id;
+        let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/messages/messageable-users' + queryString,
           {
             method: 'GET',
             headers: {
