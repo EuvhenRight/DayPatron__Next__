@@ -46,7 +46,6 @@ export const TeamChannelPreview = (props) => {
       size={36}
     />;
   };
-  
 
   const getUserLabel = (user) => {
     let result = (user.name || user.id) + ' (' + userTypes.find(item => item.code === user.tenxUserType)?.label + ')';

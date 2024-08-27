@@ -3,6 +3,7 @@ import { useKeycloak } from '@react-keycloak/web';
 import { useDispatch, useSelector } from 'react-redux';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { prepareApiBody } from 'utils/stringUtils';
+import userTypes from 'data/userTypes';
 
 import { ChannelList, useChatContext } from 'stream-chat-react';
 import { TeamChannelList } from '../TeamChannelList/TeamChannelList';
@@ -64,43 +65,55 @@ export const ChannelListContainer = (props) => {
 
   useEffect(() => {
     (async () => {
-      try {
-        
-        let queryString = connectAsAdmin ? '' : '?employerUserId=' + personalInformation?.id;
-        let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/messages/groupless-users' + queryString,
-          {
-            method: 'GET',
-            headers: {
-              'Authorization': 'Bearer ' + keycloak.idToken,
-              'Content-Type': 'application/json'
-            }
-          }
-        );
-  
-        if (!response.ok) {
-          dispatch(openSnackbar({open: true, message: 'Failed.', variant: 'alert', alert: { color: 'error' }, close: false }));
-          return;
-        }
-  
-        let json = await response.json();
-  
-        if (!json?.users) {
-          dispatch(openSnackbar({open: true, message: 'Failed.', variant: 'alert', alert: { color: 'error' }, close: false }));
-          return;
-        }
-  
-        setGrouplessUsers(json?.users);
-      } catch (err) {
-        console.log(err);
-      }
+      await bindGrouplessUsers();
     })();
   }, [connectAsAdmin, personalInformation?.id, keycloak.idToken]);
   
-  const onGrouplessUserSelected = (grouplessUser) => {
-    console.log(grouplessUser);
+  const bindGrouplessUsers = async () => {
+    try {
+        
+      let queryString = connectAsAdmin ? '' : '?employerUserId=' + personalInformation?.id;
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/messages/groupless-users' + queryString,
+        {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + keycloak.idToken,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+
+      if (!response.ok) {
+        dispatch(openSnackbar({open: true, message: 'Failed.', variant: 'alert', alert: { color: 'error' }, close: false }));
+        return;
+      }
+
+      let json = await response.json();
+
+      if (!json?.users) {
+        dispatch(openSnackbar({open: true, message: 'Failed.', variant: 'alert', alert: { color: 'error' }, close: false }));
+        return;
+      }
+
+      setGrouplessUsers(json?.users);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  
+  const onGrouplessUserSelected = async (grouplessUser) => {
     setIsCreating(false);
     setIsEditing(false);
+    setTargetUserId(grouplessUser?.messagingProviderUserId);
+    await bindGrouplessUsers();
   }
+
+  const getUserLabel = (user) => {
+    if(!user)
+      return 'Unknown';
+    let result = (user.name || user.messagingProviderUserId) + ' (' + userTypes.find(item => item.code === user.userType)?.label + ')';
+    return result;
+  };
 
   return (
     <MainCard
@@ -152,8 +165,8 @@ export const ChannelListContainer = (props) => {
                 <Fragment key={grouplessUserIndex}>
                   <ListItemButton
                     sx={{ pl: 1 }}
-                    onClick={() => {
-                      onGrouplessUserSelected(grouplessUser);
+                    onClick={async () => {
+                      await onGrouplessUserSelected(grouplessUser);
                     }}
                   >
                     <ListItemAvatar>
@@ -175,7 +188,7 @@ export const ChannelListContainer = (props) => {
                               whiteSpace: 'nowrap'
                             }}
                           >
-                            {grouplessUser?.name}
+                            {getUserLabel(grouplessUser)}
                           </Typography>
                         </Stack>
                       }
