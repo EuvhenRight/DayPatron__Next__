@@ -1,13 +1,12 @@
 import React from 'react';
-
-import { List, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import './TeamChannelList.css';
 
 const ChannelList = (props) => {
   const {
     children,
     error = false,
-    loading,
+    loading
   } = props;
 
   if (error) {
@@ -23,9 +22,9 @@ const ChannelList = (props) => {
   }
 
   return (
-    <List component="nav">
+    <>
       {children}
-    </List>
+    </>
   );
 };
 

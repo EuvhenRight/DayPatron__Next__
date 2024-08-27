@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect, Fragment  } from 'react';
 import { useKeycloak } from '@react-keycloak/web';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { prepareApiBody } from 'utils/stringUtils';
 
@@ -8,21 +8,20 @@ import { ChannelList, useChatContext } from 'stream-chat-react';
 import { TeamChannelList } from '../TeamChannelList/TeamChannelList';
 import { TeamChannelPreview } from '../TeamChannelPreview/TeamChannelPreview';
 import { AddChannel } from 'assets/images/streamio';
-import { 
-  Typography, 
-  Stack, 
-  Box,
-  Divider
-} from '@mui/material';
+import { Avatar } from 'stream-chat-react';
+import { Divider, List, ListItemAvatar, ListItemButton, ListItemText, Stack, Typography, Box } from '@mui/material';
+import { PlusOutlined } from '@ant-design/icons';
 
 import MainCard from 'components/MainCard';
 import './ChannelListContainer.css';
 
 export const ChannelListContainer = (props) => {
-  const { options, setIsCreating, setIsEditing, sort, targetUserId, setTargetUserId, onChannelSelected, headerPlaceholder } = props;
+  const { options, setIsCreating, setIsEditing, sort, targetUserId, setTargetUserId, onChannelSelected, headerPlaceholder, connectAsAdmin } = props;
   const dispatch = useDispatch();
   const { keycloak } = useKeycloak();
   const { client, setActiveChannel } = useChatContext();
+  const [grouplessUsers, setGrouplessUsers] = useState([]);
+  const personalInformation = useSelector(state => state.personalInformation);
   
   useEffect(() => {
     (async () => {
@@ -63,6 +62,46 @@ export const ChannelListContainer = (props) => {
     })();
   }, [targetUserId, client, setActiveChannel, keycloak.idToken]);
 
+  useEffect(() => {
+    (async () => {
+      try {
+        
+        let queryString = connectAsAdmin ? '' : '?employerUserId=' + personalInformation?.id;
+        let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/messages/groupless-users' + queryString,
+          {
+            method: 'GET',
+            headers: {
+              'Authorization': 'Bearer ' + keycloak.idToken,
+              'Content-Type': 'application/json'
+            }
+          }
+        );
+  
+        if (!response.ok) {
+          dispatch(openSnackbar({open: true, message: 'Failed.', variant: 'alert', alert: { color: 'error' }, close: false }));
+          return;
+        }
+  
+        let json = await response.json();
+  
+        if (!json?.users) {
+          dispatch(openSnackbar({open: true, message: 'Failed.', variant: 'alert', alert: { color: 'error' }, close: false }));
+          return;
+        }
+  
+        setGrouplessUsers(json?.users);
+      } catch (err) {
+        console.log(err);
+      }
+    })();
+  }, [connectAsAdmin, personalInformation?.id, keycloak.idToken]);
+  
+  const onGrouplessUserSelected = (grouplessUser) => {
+    console.log(grouplessUser);
+    setIsCreating(false);
+    setIsEditing(false);
+  }
+
   return (
     <MainCard
       content={false}
@@ -87,25 +126,73 @@ export const ChannelListContainer = (props) => {
       <Divider />
       <Box sx={{ p: 3, pt: 0 }} className='tenx-channels-list'>
         {client?.userID && 
-          <ChannelList
-            filters={ { type: 'messaging', members: { $in: [client.userID]}} }
-            options={options}
-            sort={sort}
-            List={(listProps) => (
-              <TeamChannelList
-                {...listProps}
-                {...{ setIsCreating, setIsEditing }}
-                type='messaging'
-              />
-            )}
-            Preview={(previewProps) => (
-              <TeamChannelPreview
-                {...previewProps}
-                {...{ setIsCreating, setIsEditing, onChannelSelected }}
-                type='messaging'
-              />
-            )}
-          />
+          
+          <List component="nav">
+            <ChannelList
+              filters={ { type: 'messaging', members: { $in: [client.userID]}} }
+              options={options}
+              sort={sort}
+              List={(listProps) => (
+                <TeamChannelList
+                  {...listProps}
+                  {...{ setIsCreating, setIsEditing }}
+                  type='messaging'
+                />
+              )}
+              Preview={(previewProps) => (
+                <TeamChannelPreview
+                  {...previewProps}
+                  {...{ setIsCreating, setIsEditing, onChannelSelected }}
+                  type='messaging'
+                />
+              )}
+            />
+            <div className="str-chat">
+              {grouplessUsers?.map((grouplessUser, grouplessUserIndex) => 
+                <Fragment key={grouplessUserIndex}>
+                  <ListItemButton
+                    sx={{ pl: 1 }}
+                    onClick={() => {
+                      onGrouplessUserSelected(grouplessUser);
+                    }}
+                  >
+                    <ListItemAvatar>
+                      <Avatar
+                        image={undefined}
+                        name={grouplessUser?.name}
+                        size={36}
+                      />
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={
+                        <Stack component="span" direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
+                          <Typography
+                            variant="h5"
+                            color="inherit"
+                            sx={{
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap'
+                            }}
+                          >
+                            {grouplessUser?.name}
+                          </Typography>
+                        </Stack>
+                      }
+                      secondary={
+                        <Stack component="span" direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
+                          <Typography>
+                          </Typography>
+                          <PlusOutlined />
+                        </Stack>
+                      }
+                    />
+                  </ListItemButton>
+                  <Divider />
+                </Fragment>
+              )}
+            </div>
+          </List>
         }
       </Box>
     </MainCard>
