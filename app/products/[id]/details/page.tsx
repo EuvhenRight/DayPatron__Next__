@@ -38,10 +38,10 @@ const ProductDetails = async ({ params: { id } }: Props) => {
 			<section className='container pt-8'>
 				<ProductForm product={product} cart={cart} />
 			</section>
-			<section className='py-14'>
+			<section className='py-10'>
 				<AdvantagesWrapper product={product} />
 			</section>
-			<section className='container '>
+			<section className='container'>
 				<ReviewsComponent reviews={reviews} product={product} />
 			</section>
 		</>

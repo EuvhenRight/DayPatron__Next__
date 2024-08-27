@@ -90,13 +90,18 @@ export const Rating = ({
 
 	return (
 		<div
-			className={cn('flex w-fit flex-col gap-2', {
+			className={cn('flex w-fit flex-col gap-2 relative', {
 				'pointer-events-none': disabled,
 			})}
 			onMouseLeave={handleMouseLeave}
 			{...props}
 		>
 			<div className='flex items-center' onMouseEnter={handleMouseEnter}>
+				{showText && (
+					<>
+						<span className='mr-3 text-5xl'>{initialRating}</span>
+					</>
+				)}
 				{[...Array(fullStars)].map((_, i) =>
 					React.cloneElement(Icon, {
 						key: i,
@@ -126,11 +131,9 @@ export const Rating = ({
 			</div>
 			{showText && (
 				<>
-					<span className='text-xs text-muted-foreground font-semibold'>
-						{`${currentRating}`}
+					<span className='my-1'>
+						на основі <b className='mx-1'>{totalReviews}</b>відгуків
 					</span>
-					{/* TODO: Add total reviews layout */}
-					<span> на основі {totalReviews} відгуків</span>
 				</>
 			)}
 		</div>

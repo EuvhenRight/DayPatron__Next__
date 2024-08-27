@@ -129,7 +129,7 @@ export const ProductForm = ({ product, cart }: Props) => {
 				) : (
 					<Button
 						variant={'destructive'}
-						className='p-2 my-2 text-lg hover:scale-110 transition-all ease-in-out duration-300'
+						className='p-2 my-2 text-lg hover:scale-105 transition-all ease-in-out duration-300 shadow-lg'
 						size='lg'
 						disabled={!stock}
 						onClick={() => {
@@ -142,19 +142,19 @@ export const ProductForm = ({ product, cart }: Props) => {
 
 				{/* INFO BLOCK INFORMATION */}
 				<div className='text-justify'>
-					<p className='py-2'>{product.description}</p>
-					<p className='py-2'>
+					<article className='py-2'>{product.description}</article>
+					<article className='py-2'>
 						<b>строк зберігання: </b>
 						{product.shelfLife}
-					</p>
-					<p className='py-2'>
+					</article>
+					<article className='py-2'>
 						<b>склад: </b>
 						{product.ingredients}
-					</p>
-					<p className='py-2'>
+					</article>
+					<article className='py-2'>
 						<b>використання: </b>
 						{product.useTo}
-					</p>
+					</article>
 				</div>
 			</div>
 		</div>

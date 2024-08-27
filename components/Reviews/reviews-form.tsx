@@ -1,6 +1,5 @@
 'use client'
 import { addItem } from '@/actions/reviews'
-import { Button } from '@/components/ui/button'
 import {
 	Form,
 	FormControl,
@@ -23,6 +22,7 @@ import { toast } from 'sonner'
 import * as z from 'zod'
 import { Rating } from '../ui/rating'
 import { Textarea } from '../ui/textarea'
+import { ReviewsSubmitMessageButton } from './reviews-submit-message-button'
 
 interface Props {
 	reviews: ReviewsWithItems
@@ -70,42 +70,44 @@ export const ReviewsForm = ({ reviews, product }: Props) => {
 				className='flex flex-col w-full gap-5'
 				onSubmit={form.handleSubmit(onSubmit)}
 			>
-				{/* NAME */}
-				<FormField
-					control={form.control}
-					name='fullName'
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Повне Ім&rsquo;я</FormLabel>
-							<FormControl>
-								<Input
-									type='text'
-									{...field}
-									placeholder='введіть повне Ім&rsquo;я'
-								/>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-				{/* EMAIL */}
-				<FormField
-					control={form.control}
-					name='email'
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Email</FormLabel>
-							<FormControl>
-								<Input
-									type='email'
-									{...field}
-									placeholder='john.doe@example.com'
-								/>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
+				<div className='flex gap-5 w-1/2 *:w-full'>
+					{/* NAME */}
+					<FormField
+						control={form.control}
+						name='fullName'
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Повне Ім&rsquo;я</FormLabel>
+								<FormControl>
+									<Input
+										type='text'
+										{...field}
+										placeholder='введіть повне Ім&rsquo;я'
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					{/* EMAIL */}
+					<FormField
+						control={form.control}
+						name='email'
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Email</FormLabel>
+								<FormControl>
+									<Input
+										type='email'
+										{...field}
+										placeholder='john.doe@example.com'
+									/>
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+				</div>
 				{/* RATING */}
 				<FormField
 					control={form.control}
@@ -142,10 +144,9 @@ export const ReviewsForm = ({ reviews, product }: Props) => {
 						</FormItem>
 					)}
 				/>
-				<Button type='submit' className='w-full' variant='office'>
-					{/* CONDITION LOADING */}
-					Залишити відгук
-				</Button>
+				<div className='flex justify-end'>
+					<ReviewsSubmitMessageButton labelSubmit='Відправити' />
+				</div>
 			</form>
 		</Form>
 	)

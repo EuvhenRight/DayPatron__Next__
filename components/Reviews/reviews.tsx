@@ -4,26 +4,43 @@ import {
 	ProductsWithVariantsWithReviews,
 	ReviewsWithItems,
 } from '@/lib/types/types'
+import { cn } from '@/lib/utils/utils'
+import { motion } from 'framer-motion'
+import { useState } from 'react'
 import { ReviewsForm } from './reviews-form'
 import { ReviewsItem } from './reviews-item'
-
 interface Props {
 	reviews: ReviewsWithItems
 	product: ProductsWithVariantsWithReviews
 }
 export const ReviewsComponent = ({ reviews, product }: Props) => {
+	const [open, setOpen] = useState(false)
+
 	return (
 		<ReviewsWrapper
 			reviewsCount={reviews?.messageTotal}
 			reviewsRating={reviews?.ratingTotal}
-			messageButton='Написати відгук'
+			labelOpen='Написати відгук'
+			open={open}
+			setOpen={setOpen}
+			labelClose='Закрити'
 		>
 			<>
-				{reviews?.messages.map(message => (
-					<ReviewsItem key={message.id} message={message} />
-				))}
-				<div>
-					<ReviewsForm reviews={reviews} product={product} />
+				{open && (
+					<motion.div
+						initial={{ opacity: 0, y: -20 }}
+						animate={{ opacity: 1, y: 0 }}
+						exit={{ opacity: 0, y: -20 }}
+						transition={{ duration: 0.5, ease: 'easeInOut' }}
+						className='my-5 px-4'
+					>
+						<ReviewsForm reviews={reviews} product={product} />
+					</motion.div>
+				)}
+				<div className={cn(open && 'border-t-2 border-gray-200', 'p-4')}>
+					{reviews?.messages.map(message => (
+						<ReviewsItem key={message.id} message={message} />
+					))}
 				</div>
 			</>
 		</ReviewsWrapper>
