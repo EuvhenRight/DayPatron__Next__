@@ -40,7 +40,11 @@ export async function getReviewsWithItem(
 			id: product.reviewsId,
 		},
 		include: {
-			messages: true,
+			messages: {
+				orderBy: {
+					updatedAt: 'desc',
+				},
+			},
 		},
 	})
 	return reviews!

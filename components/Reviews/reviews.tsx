@@ -38,6 +38,11 @@ export const ReviewsComponent = ({ reviews, product }: Props) => {
 					</motion.div>
 				)}
 				<div className={cn(open && 'border-t-2 border-gray-200', 'p-4')}>
+					{reviews.messages.length === 0 && (
+						<div className='text-center text-neutral-500'>
+							Немає відгуків, будьте першим
+						</div>
+					)}
 					{reviews?.messages.map(message => (
 						<ReviewsItem key={message.id} message={message} />
 					))}

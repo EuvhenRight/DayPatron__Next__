@@ -9,7 +9,7 @@ interface Props {
 export const ReviewsItem = ({ message }: Props) => {
 	const name = message.fullName.charAt(0)
 	return (
-		<div className='flex flex-col gap-4 my-4'>
+		<div className='flex flex-col gap-4 my-4 border-b-2 border-neutral-200 pb-4 px-2'>
 			<div className='flex flex-col gap-2'>
 				<div className='flex gap-2 relative justify-between'>
 					<div className='flex gap-2'>
@@ -44,7 +44,7 @@ export const ReviewsItem = ({ message }: Props) => {
 						</div>
 					</div>
 					{/* DATE */}
-					<p className='text-sm'>
+					<p className='text-[12px]'>
 						{message.createdAt.toLocaleDateString('uk-UA', {
 							year: 'numeric',
 							month: 'numeric',
@@ -53,7 +53,7 @@ export const ReviewsItem = ({ message }: Props) => {
 					</p>
 				</div>
 				{/* MESSAGE */}
-				<p className='text-sm ml-14'>{message.message}</p>
+				<p className='text-sm ml-14 py-4 break-words'>{message.message}</p>
 			</div>
 		</div>
 	)

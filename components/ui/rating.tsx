@@ -97,7 +97,7 @@ export const Rating = ({
 			{...props}
 		>
 			<div className='flex items-center' onMouseEnter={handleMouseEnter}>
-				{showText && (
+				{showText && initialRating !== 0 && (
 					<>
 						<span className='mr-3 text-5xl'>{initialRating}</span>
 					</>

@@ -41,7 +41,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
 			<section className='py-10'>
 				<AdvantagesWrapper product={product} />
 			</section>
-			<section className='container'>
+			<section className='max-w-screen-xl mx-auto'>
 				<ReviewsComponent reviews={reviews} product={product} />
 			</section>
 		</>
