@@ -1,13 +1,22 @@
+import { CurrentUser } from '@/lib/hooks/currentUser'
+import { ProductsWithVariantsWithReviews } from '@/lib/types/types'
 import { ReviewItem } from '@prisma/client'
 import { ShieldCheck } from 'lucide-react'
+import { User } from 'next-auth'
 import { Avatar, AvatarFallback } from '../ui/avatar'
 import { Rating } from '../ui/rating'
+import { DeleteButtonMessage } from './delete-button-message'
+import { EditButtonMessage } from './edit-button-message'
 
 interface Props {
 	message: ReviewItem
+	product: ProductsWithVariantsWithReviews
 }
-export const ReviewsItem = ({ message }: Props) => {
+export const ReviewsItem = ({ message, product }: Props) => {
 	const name = message.fullName.charAt(0)
+
+	const user = CurrentUser() as User | null
+
 	return (
 		<div className='flex flex-col gap-4 my-4 border-b-2 border-neutral-200 pb-4 px-2'>
 			<div className='flex flex-col gap-2'>
@@ -44,13 +53,23 @@ export const ReviewsItem = ({ message }: Props) => {
 						</div>
 					</div>
 					{/* DATE */}
-					<p className='text-[12px]'>
-						{message.createdAt.toLocaleDateString('uk-UA', {
-							year: 'numeric',
-							month: 'numeric',
-							day: 'numeric',
-						})}
-					</p>
+					<div className='flex flex-col justify-between items-end'>
+						<p className='text-[12px]'>
+							{message.createdAt.toLocaleDateString('uk-UA', {
+								year: 'numeric',
+								month: 'numeric',
+								day: 'numeric',
+							})}
+						</p>
+						{message.email === user?.email && (
+							<div className='flex w-full justify-between'>
+								{/* EDIT MESSAGE */}
+								<EditButtonMessage />
+								{/* DELETE MESSAGE */}
+								<DeleteButtonMessage message={message} product={product} />
+							</div>
+						)}
+					</div>
 				</div>
 				{/* MESSAGE */}
 				<p className='text-sm ml-14 py-4 break-words'>{message.message}</p>

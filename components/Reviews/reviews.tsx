@@ -48,7 +48,7 @@ export const ReviewsComponent = ({ reviews, product }: Props) => {
 						</div>
 					)}
 					{reviews?.messages.map(message => (
-						<ReviewsItem key={message.id} message={message} />
+						<ReviewsItem key={message.id} message={message} product={product} />
 					))}
 				</div>
 			</>

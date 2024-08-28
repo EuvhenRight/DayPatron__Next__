@@ -1,6 +1,8 @@
 'use server'
 import prisma from '@/lib/db/client'
 import { ValidationSchema } from '@/lib/db/validation'
+import { createReviewEmailHtml } from '@/lib/services/e-mail-new-user'
+import { sendEmail } from '@/lib/services/mail-password'
 import { getReviewsWithItem } from '@/lib/services/reviews'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
@@ -16,16 +18,8 @@ export async function addItem(
 	if (!reviews) {
 		throw new Error('Reviews not found')
 	}
-	// // FIND EXISTING CART ITEM
-	// const findItem = reviews.messages.find(item => item.userId === userId)
 
-	// // UPDATE CART ITEM
-	// if (findItem) {
-	// 	await prisma?.reviewItem.update({
-	// 		where: { id: findItem.id },
-	// 		data: { ...data },
-	// 	})
-	// } else { // CREATE NEW CART ITEM TODO: implement this login to update message
+	// CREATE REVIEW ITEM
 	await prisma?.reviewItem.create({
 		data: {
 			message: data.message,
@@ -36,6 +30,70 @@ export async function addItem(
 			reviewsId: reviews.id,
 			userId: userId!,
 		},
+	})
+	const checkUser = await prisma?.user.findUnique({
+		where: {
+			email: data.email,
+		},
+	})
+	// SEND EMAIL IF USER DOES NOT EXIST
+	if (!checkUser) {
+		await sendEmail({
+			to: ['eu@gembird.nl', `${data.email}`],
+			subject: `Дякуємо ${data.fullName}, за відгук на сайті DayPatron`,
+			text: `© 2023 DayPatron Inc. Усі права захищені`,
+			html: createReviewEmailHtml({ message: data }),
+		})
+	}
+
+	// UPDATE REVIEW
+	const updateReviews = await getReviewsWithItem(productId)
+
+	// RECALCULATE TOTALS
+	await prisma.$transaction(async tx => {
+		// CALCULATE TOTAL RATING AND NUMBER OF RATINGS
+		const totalItems = updateReviews.messages.length
+		const totalRatings = updateReviews.messages.reduce(
+			(acc, item) => acc + item.rating,
+			0
+		)
+		const numberOfRatings = updateReviews.messages.length
+		// CALCULATE AVERAGE RATING
+		const averageRating =
+			numberOfRatings > 0
+				? parseFloat((totalRatings / numberOfRatings).toFixed(1)) // NUMBER OF RATINGS
+				: 0
+
+		await tx.reviews.update({
+			where: { id: reviews.id },
+			data: {
+				messageTotal: totalItems,
+				ratingTotal: averageRating,
+			},
+		})
+	})
+
+	// ADD TYPE REVALIDATE CACHE
+	revalidatePath('/product/[slug]/details', 'page')
+
+	return { ...reviews }
+}
+
+export async function deleteItem(productId: string, userEmail: string) {
+	const reviews = await getReviewsWithItem(productId)
+
+	if (!reviews) {
+		throw new Error('Reviews not found')
+	}
+	// // FIND EXISTING CART ITEM
+	const findItem = reviews.messages.find(item => item.email === userEmail)
+
+	if (!findItem) {
+		throw new Error('Cart item not found')
+	}
+
+	await prisma?.reviewItem.delete({
+		where: { id: findItem.id },
 	})
 
 	// UPDATE REVIEW
@@ -70,14 +128,3 @@ export async function addItem(
 
 	return { ...reviews }
 }
-// // Re-fetch the cart to get the updated version
-// const updatedCart = await getCart()
-
-// // RECALCULATE TOTALS
-// const totalPrice = updatedCart?.items.reduce((acc, item) => {
-// 	const price =
-// 		item.variant.discount_price !== 0
-// 			? item.variant.discount_price
-// 			: item.variant.original_price
-// 	return acc + price * item.quantity
-// }, 0)

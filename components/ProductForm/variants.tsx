@@ -63,7 +63,7 @@ export const Variants = ({
 							// FOCUS VOLUME BUTTON
 							className={cn(
 								rubikGlitch.className,
-								'cursor-pointer rounded-md border border-gray-600 px-2 py-1 snap-center text-lg focus:ring-2 focus:ring-current focus:outline-none'
+								'cursor-pointer rounded-md border border-gray-600 px-2 py-1 snap-center text-lg focus:ring-2 focus:ring-current focus:outline-none shadow-lg'
 							)}
 							key={index}
 							tabIndex={0}
