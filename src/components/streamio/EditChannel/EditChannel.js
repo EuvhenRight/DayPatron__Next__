@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useKeycloak } from '@react-keycloak/web';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useChatContext } from 'stream-chat-react';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { prepareApiBody } from 'utils/stringUtils';
@@ -32,6 +32,7 @@ const ChannelNameInput = (props) => {
 export const EditChannel = (props) => {
   const { keycloak } = useKeycloak();
   const dispatch = useDispatch();
+  const personalInformation = useSelector(state => state.personalInformation);
   const { filters, setIsEditing, connectAsAdmin } = props;
   const { channel } = useChatContext();
   const [channelName, setChannelName] = useState(channel?.data.name || channel?.data.id);
@@ -41,7 +42,6 @@ export const EditChannel = (props) => {
     try
     {
       event.preventDefault();
-      
       let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/messages/groups',
         {
           method: 'PUT',
@@ -49,7 +49,7 @@ export const EditChannel = (props) => {
             'Authorization': 'Bearer ' + keycloak.idToken,
             'Content-Type': 'application/json'
           },
-          body: prepareApiBody({groupId: channel.data.id, groupName: channel.data.name, messagingProviderUserIds: selectedUsers})
+          body: prepareApiBody({groupId: channel.data.id, groupName: channelName, messagingProviderUserIds: selectedUsers, employerUserId: connectAsAdmin ? null : personalInformation?.id})
         }
       );
 

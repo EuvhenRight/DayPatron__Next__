@@ -27,41 +27,12 @@ export const ChannelListContainer = (props) => {
   useEffect(() => {
     (async () => {
       if(targetUserId && client && setActiveChannel && keycloak.idToken) {
-        try {
-          
-          let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/messages/groups',
-            {
-              method: 'POST',
-              headers: {
-                'Authorization': 'Bearer ' + keycloak.idToken,
-                'Content-Type': 'application/json'
-              },
-              body: prepareApiBody({groupName: null, messagingProviderUserIds: [targetUserId], returnExisting: true})
-            }
-          );
-    
-          if (!response.ok) {
-            dispatch(openSnackbar({open: true, message: 'Failed.', variant: 'alert', alert: { color: 'error' }, close: false }));
-            return;
-          }
-    
-          let json = await response.json();
-    
-          if (!json?.groupId) {
-            dispatch(openSnackbar({open: true, message: 'Failed.', variant: 'alert', alert: { color: 'error' }, close: false }));
-            return;
-          }
-    
-          var newChannelQueryResponse = await client.queryChannels({id: json.groupId});
-          if(newChannelQueryResponse.length === 1)
-            setActiveChannel(newChannelQueryResponse[0]);
-        } catch (err) {
-          console.log(err);
-        }
+        var newChannelId = await createChannelForUser(targetUserId);
+        await activateChannelById(newChannelId);
         setTargetUserId(null);
       }
     })();
-  }, [targetUserId, client, setActiveChannel, keycloak.idToken]);
+  }, [connectAsAdmin, targetUserId, client, setActiveChannel, keycloak.idToken]);
 
   useEffect(() => {
     (async () => {
@@ -69,6 +40,43 @@ export const ChannelListContainer = (props) => {
     })();
   }, [connectAsAdmin, personalInformation?.id, keycloak.idToken]);
   
+  const createChannelForUser = async (userId) => {
+    try {
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/messages/groups',
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + keycloak.idToken,
+            'Content-Type': 'application/json'
+          },
+          body: prepareApiBody({groupName: null, messagingProviderUserIds: [userId], returnExisting: true, employerUserId: connectAsAdmin ? null : personalInformation?.id})
+        }
+      );
+
+      if (!response.ok) {
+        dispatch(openSnackbar({open: true, message: 'Failed.', variant: 'alert', alert: { color: 'error' }, close: false }));
+        return;
+      }
+
+      let json = await response.json();
+
+      if (!json?.groupId) {
+        dispatch(openSnackbar({open: true, message: 'Failed.', variant: 'alert', alert: { color: 'error' }, close: false }));
+        return;
+      }
+
+      return json.groupId;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const activateChannelById = async (channelId) => {
+    var newChannelQueryResponse = await client.queryChannels({id: channelId});
+    if(newChannelQueryResponse.length === 1)
+      setActiveChannel(newChannelQueryResponse[0]);
+  }
+
   const bindGrouplessUsers = async () => {
     try {
         
@@ -104,14 +112,17 @@ export const ChannelListContainer = (props) => {
   const onGrouplessUserSelected = async (grouplessUser) => {
     setIsCreating(false);
     setIsEditing(false);
-    setTargetUserId(grouplessUser?.messagingProviderUserId);
+    let newChannelId = await createChannelForUser(grouplessUser?.messagingProviderUserId);
     await bindGrouplessUsers();
+    await activateChannelById(newChannelId);
   }
 
   const getUserLabel = (user) => {
     if(!user)
       return 'Unknown';
     let result = (user.name || user.messagingProviderUserId) + ' (' + userTypes.find(item => item.code === user.userType)?.label + ')';
+    let suffix = client?.userID === user.messagingProviderUserId ? ' (Me)' : '';
+    result += suffix;
     return result;
   };
 
@@ -159,6 +170,7 @@ export const ChannelListContainer = (props) => {
                   type='messaging'
                 />
               )}
+              EmptyStateIndicator={() => {<></>}}
             />
             <div className="str-chat">
               {grouplessUsers?.map((grouplessUser, grouplessUserIndex) => 

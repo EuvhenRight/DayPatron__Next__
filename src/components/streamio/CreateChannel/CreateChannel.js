@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useKeycloak } from '@react-keycloak/web';
 import { useChatContext } from 'stream-chat-react';
 import { prepareApiBody } from 'utils/stringUtils';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { openSnackbar } from 'store/reducers/snackbar';
 
 import { Button, Stack } from '@mui/material';
@@ -37,6 +37,7 @@ const ChannelNameInput = (props) => {
 export const CreateChannel = (props) => {
   const { keycloak } = useKeycloak();
   const dispatch = useDispatch();
+  const personalInformation = useSelector(state => state.personalInformation);
   const { filters, setIsCreating, connectAsAdmin } = props;
 
   const { client, setActiveChannel } = useChatContext();
@@ -55,7 +56,7 @@ export const CreateChannel = (props) => {
             'Authorization': 'Bearer ' + keycloak.idToken,
             'Content-Type': 'application/json'
           },
-          body: prepareApiBody({groupName: channelName, messagingProviderUserIds: selectedUsers})
+          body: prepareApiBody({groupName: channelName, messagingProviderUserIds: selectedUsers, employerUserId: connectAsAdmin ? null : personalInformation?.id})
         }
       );
 
