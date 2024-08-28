@@ -11,8 +11,9 @@ import { EditButtonMessage } from './edit-button-message'
 interface Props {
 	message: ReviewItem
 	product: ProductsWithVariantsWithReviews
+	setEdit: React.Dispatch<React.SetStateAction<boolean>>
 }
-export const ReviewsItem = ({ message, product }: Props) => {
+export const ReviewsItem = ({ message, product, setEdit }: Props) => {
 	const name = message.fullName.charAt(0)
 
 	const user = CurrentUser() as User | null
@@ -64,7 +65,11 @@ export const ReviewsItem = ({ message, product }: Props) => {
 						{message.email === user?.email && (
 							<div className='flex w-full justify-between'>
 								{/* EDIT MESSAGE */}
-								<EditButtonMessage />
+								<EditButtonMessage
+									message={message}
+									setEdit={setEdit}
+									product={product}
+								/>
 								{/* DELETE MESSAGE */}
 								<DeleteButtonMessage message={message} product={product} />
 							</div>

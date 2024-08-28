@@ -11,6 +11,8 @@ interface Props {
 	open: boolean
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>
 	labelClose: string
+	edit: boolean
+	setEdit: React.Dispatch<React.SetStateAction<boolean>>
 }
 export const ReviewsWrapper = ({
 	children,
@@ -20,6 +22,8 @@ export const ReviewsWrapper = ({
 	open,
 	setOpen,
 	labelClose,
+	edit,
+	setEdit,
 }: Props) => {
 	return (
 		<div className='w-full'>
@@ -32,6 +36,8 @@ export const ReviewsWrapper = ({
 					open={open}
 					setOpen={setOpen}
 					labelClose={labelClose}
+					edit={edit}
+					setEdit={setEdit}
 				/>
 			</div>
 			{children}

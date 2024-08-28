@@ -46,6 +46,7 @@ export const CheckoutForm = ({
 	order,
 	orders,
 }: Props) => {
+	//TODO:  Add comments and toast
 	const [payment, setPayment] = useState<Payment>(
 		Payment.POSTPAID || Payment.PAIMENTBYCARD
 	)

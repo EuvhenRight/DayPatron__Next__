@@ -19,11 +19,9 @@ export const DeleteButtonMessage = ({ message, product }: Props) => {
 	const handleDelete = async () => {
 		try {
 			// DELETE REVIEW
-
 			const deleteItemToast = new Promise<ReviewsWithItems>(resolve => {
-				resolve(deleteItem(product.id, message.email))
+				resolve(deleteItem(product.id, message.id))
 			})
-
 			// UPDATE DELIVERY
 			await toast.promise(deleteItemToast, {
 				loading: 'Зачекаємо...',

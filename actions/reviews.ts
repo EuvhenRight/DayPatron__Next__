@@ -79,14 +79,14 @@ export async function addItem(
 	return { ...reviews }
 }
 
-export async function deleteItem(productId: string, userEmail: string) {
+export async function deleteItem(productId: string, itemId: string) {
 	const reviews = await getReviewsWithItem(productId)
 
 	if (!reviews) {
 		throw new Error('Reviews not found')
 	}
-	// // FIND EXISTING CART ITEM
-	const findItem = reviews.messages.find(item => item.email === userEmail)
+	// FIND EXISTING REVIEW ITEM
+	const findItem = reviews.messages.find(item => item.id === itemId)
 
 	if (!findItem) {
 		throw new Error('Cart item not found')
@@ -94,6 +94,67 @@ export async function deleteItem(productId: string, userEmail: string) {
 
 	await prisma?.reviewItem.delete({
 		where: { id: findItem.id },
+	})
+
+	// UPDATE REVIEW
+	const updateReviews = await getReviewsWithItem(productId)
+
+	// RECALCULATE TOTALS
+	await prisma.$transaction(async tx => {
+		// CALCULATE TOTAL RATING AND NUMBER OF RATINGS
+		const totalItems = updateReviews.messages.length
+		const totalRatings = updateReviews.messages.reduce(
+			(acc, item) => acc + item.rating,
+			0
+		)
+		const numberOfRatings = updateReviews.messages.length
+		// CALCULATE AVERAGE RATING
+		const averageRating =
+			numberOfRatings > 0
+				? parseFloat((totalRatings / numberOfRatings).toFixed(1)) // NUMBER OF RATINGS
+				: 0
+
+		await tx.reviews.update({
+			where: { id: reviews.id },
+			data: {
+				messageTotal: totalItems,
+				ratingTotal: averageRating,
+			},
+		})
+	})
+
+	// ADD TYPE REVALIDATE CACHE
+	revalidatePath('/product/[slug]/details', 'page')
+
+	return { ...reviews }
+}
+// EDIT REVIEW
+export async function editItem(
+	productId: string,
+	newData: z.infer<typeof ValidationSchema.reviews>,
+	userEmail: string
+) {
+	const reviews = await getReviewsWithItem(productId)
+
+	if (!reviews) {
+		throw new Error('Reviews not found')
+	}
+
+	// FIND EXISTING REVIEW ITEM
+	const findItem = reviews.messages.find(item => item.email === userEmail)
+
+	if (!findItem) {
+		throw new Error('Review item not found')
+	}
+
+	await prisma?.reviewItem.update({
+		where: { id: findItem.id },
+		data: {
+			fullName: newData.fullName,
+			rating: newData.rating,
+			message: newData.message,
+			email: findItem.email,
+		},
 	})
 
 	// UPDATE REVIEW

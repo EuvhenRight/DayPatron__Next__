@@ -9,7 +9,11 @@ export async function getAllProducts(): Promise<
 	const products = await prisma?.product.findMany({
 		include: {
 			variant: true,
-			reviews: true,
+			reviews: {
+				include: {
+					messages: true,
+				},
+			},
 		},
 	})
 	if (!products) {

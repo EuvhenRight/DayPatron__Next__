@@ -7,6 +7,7 @@ import {
 import { cn } from '@/lib/utils/utils'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
+import { ReviewsEditForm } from './reviews-edit-form'
 import { ReviewsForm } from './reviews-form'
 import { ReviewsItem } from './reviews-item'
 interface Props {
@@ -15,6 +16,7 @@ interface Props {
 }
 export const ReviewsComponent = ({ reviews, product }: Props) => {
 	const [open, setOpen] = useState(false)
+	const [edit, setEdit] = useState(false)
 
 	return (
 		<ReviewsWrapper
@@ -24,6 +26,8 @@ export const ReviewsComponent = ({ reviews, product }: Props) => {
 			open={open}
 			setOpen={setOpen}
 			labelClose='Закрити'
+			edit={edit}
+			setEdit={setEdit}
 		>
 			<>
 				{open && (
@@ -41,6 +45,21 @@ export const ReviewsComponent = ({ reviews, product }: Props) => {
 						/>
 					</motion.div>
 				)}
+				{edit && (
+					<motion.div
+						initial={{ opacity: 0, y: -20 }}
+						animate={{ opacity: 1, y: 0 }}
+						exit={{ opacity: 0, y: -20 }}
+						transition={{ duration: 0.5, ease: 'easeInOut' }}
+						className='my-5 px-4'
+					>
+						<ReviewsEditForm
+							reviews={reviews}
+							product={product}
+							setEdit={setEdit}
+						/>
+					</motion.div>
+				)}
 				<div className={cn(open && 'border-t-2 border-gray-200', 'p-4')}>
 					{reviews.messages.length === 0 && (
 						<div className='text-center text-neutral-500'>
@@ -48,7 +67,12 @@ export const ReviewsComponent = ({ reviews, product }: Props) => {
 						</div>
 					)}
 					{reviews?.messages.map(message => (
-						<ReviewsItem key={message.id} message={message} product={product} />
+						<ReviewsItem
+							key={message.id}
+							message={message}
+							product={product}
+							setEdit={setEdit}
+						/>
 					))}
 				</div>
 			</>
