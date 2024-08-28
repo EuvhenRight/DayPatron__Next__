@@ -25,6 +25,7 @@ export async function createReview(productId: string): Promise<Reviews> {
 export async function getReviewsWithItem(
 	productId: string
 ): Promise<ReviewsWithItems> {
+	// FIND PRODUCT WITH REVIEW
 	const product = await prisma.product.findFirst({
 		where: { id: productId },
 		include: {
@@ -35,6 +36,8 @@ export async function getReviewsWithItem(
 	if (!product) {
 		throw new Error('Product not found')
 	}
+
+	// FIND MESSAGES
 	const reviews = await prisma.reviews.findUnique({
 		where: {
 			id: product.reviewsId,

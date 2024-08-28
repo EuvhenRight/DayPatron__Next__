@@ -34,7 +34,11 @@ export const ReviewsComponent = ({ reviews, product }: Props) => {
 						transition={{ duration: 0.5, ease: 'easeInOut' }}
 						className='my-5 px-4'
 					>
-						<ReviewsForm reviews={reviews} product={product} />
+						<ReviewsForm
+							reviews={reviews}
+							product={product}
+							setOpen={setOpen}
+						/>
 					</motion.div>
 				)}
 				<div className={cn(open && 'border-t-2 border-gray-200', 'p-4')}>

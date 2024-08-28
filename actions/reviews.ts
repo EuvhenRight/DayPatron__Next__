@@ -13,6 +13,9 @@ export async function addItem(
 	// FIND EXISTING REVIEW
 	const reviews = await getReviewsWithItem(productId)
 
+	if (!reviews) {
+		throw new Error('Reviews not found')
+	}
 	// // FIND EXISTING CART ITEM
 	// const findItem = reviews.messages.find(item => item.userId === userId)
 
@@ -34,6 +37,34 @@ export async function addItem(
 			userId: userId!,
 		},
 	})
+
+	// UPDATE REVIEW
+	const updateReviews = await getReviewsWithItem(productId)
+
+	// RECALCULATE TOTALS
+	await prisma.$transaction(async tx => {
+		// CALCULATE TOTAL RATING AND NUMBER OF RATINGS
+		const totalItems = updateReviews.messages.length
+		const totalRatings = updateReviews.messages.reduce(
+			(acc, item) => acc + item.rating,
+			0
+		)
+		const numberOfRatings = updateReviews.messages.length
+		// CALCULATE AVERAGE RATING
+		const averageRating =
+			numberOfRatings > 0
+				? parseFloat((totalRatings / numberOfRatings).toFixed(1)) // NUMBER OF RATINGS
+				: 0
+
+		await tx.reviews.update({
+			where: { id: reviews.id },
+			data: {
+				messageTotal: totalItems,
+				ratingTotal: averageRating,
+			},
+		})
+	})
+
 	// ADD TYPE REVALIDATE CACHE
 	revalidatePath('/product/[slug]/details', 'page')
 

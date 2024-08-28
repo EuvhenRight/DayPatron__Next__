@@ -27,11 +27,12 @@ import { ReviewsSubmitMessageButton } from './reviews-submit-message-button'
 interface Props {
 	reviews: ReviewsWithItems
 	product: ProductsWithVariantsWithReviews
+	setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const ReviewsForm = ({ reviews, product }: Props) => {
+export const ReviewsForm = ({ reviews, product, setOpen }: Props) => {
 	const user = CurrentUser() as User | null
-	console.log(user, 'USER')
+
 	const form = useForm<z.infer<typeof ValidationSchema.reviews>>({
 		resolver: zodResolver(ValidationSchema.reviews),
 		defaultValues: {
@@ -58,6 +59,8 @@ export const ReviewsForm = ({ reviews, product }: Props) => {
 				error: 'Щось пішло не так, спробуйте ще раз',
 			})
 			form.reset()
+			// CLOSE FORM
+			setOpen(false)
 			return { ...reviewItem }
 		} catch (error) {
 			console.error(error, 'Щось пішло не так, спробуйте ще раз')
