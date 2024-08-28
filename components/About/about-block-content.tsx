@@ -86,7 +86,7 @@ export const AboutBlockContent = ({ data, year }: Props) => {
 							<h2 className='text-xl font-extrabold text-center'>
 								{data[2023].AboutImageBlock.titleH1?.toUpperCase()}
 							</h2>
-							<p className='text-center font-bold'>
+							<p className='text-center font-bold pt-2'>
 								{data[2023].AboutImageBlock.title}
 							</p>
 						</motion.div>
