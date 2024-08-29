@@ -2,6 +2,9 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  scrollbar-width: thin;
+  overflow-y: auto;
+  border-bottom: 1px solid var(--str-chat__surface-color);
 }
 
 .user-list__header {
@@ -37,6 +40,7 @@
   display: flex;
   align-items: center;
   margin-left: 20px;
+  margin-bottom: 10px;
 }
 
 .user-item__wrapper:hover {
@@ -59,6 +63,7 @@
 
 .user-item__name {
   font-weight: 500;
+  margin: 0 0 0 5px;
 }
 
 .user-item__last-active {
@@ -67,8 +72,8 @@
 }
 
 .user-item__invite-empty {
-  height: 28px;
-  width: 28px;
+  height: 20px;
+  width: 20px;
   background: #f7f6f8;
   border: 1px solid #dedddf;
   border-radius: 14px;

@@ -24,7 +24,7 @@ const ChannelNameInput = (props) => {
     <div className='channel-name-input__wrapper'>
       <p>Name</p>
       <input onChange={handleChange} placeholder='channel-name' type='text' value={channelName} />
-      <p>Add Members</p>
+      <p>Members</p>
     </div>
   );
 };
@@ -36,7 +36,7 @@ export const EditChannel = (props) => {
   const { filters, setIsEditing, connectAsAdmin } = props;
   const { channel } = useChatContext();
   const [channelName, setChannelName] = useState(channel?.data.name || channel?.data.id);
-  const [selectedUsers, setSelectedUsers] = useState(Object.keys(channel.state.members));
+  const [selectedUsers, setSelectedUsers] = useState(Object.keys(channel?.state?.members));
 
   const updateChannel = async (event) => {
     try
@@ -98,7 +98,7 @@ export const EditChannel = (props) => {
       </div>
       <ChannelNameInput {...{ channelName, setChannelName }} />
       <UserList {...{ filters, setSelectedUsers, selectedUsers, connectAsAdmin }} />
-      <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 2.5, mr: 3 }}>
+      <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 2, mr: 2, mb: 2 }}>
         <Button onClick={updateChannel} variant="contained">
           Save
         </Button>

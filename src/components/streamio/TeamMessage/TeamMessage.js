@@ -1,6 +1,5 @@
 import React from 'react';
 import { MessageSimple, useMessageContext } from 'stream-chat-react';
-
 import './TeamMessage.css';
 
 export const TeamMessage = (props) => {

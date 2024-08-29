@@ -44,9 +44,9 @@ export const ChannelContainer = (props) => {
     const filters = {};
 
     return (
-      <div className='channel__container'>
+      <MainCard content={false} className='str-chat tenx-messages-container'>
         <CreateChannel {...{ filters, setIsCreating, connectAsAdmin }} />
-      </div>
+      </MainCard>
     );
   }
 
@@ -61,9 +61,9 @@ export const ChannelContainer = (props) => {
     }
 
     return (
-      <div className='channel__container'>
+      <MainCard content={false} className='str-chat tenx-messages-container'>
         <EditChannel {...{ filters, setIsEditing, connectAsAdmin }} />
-      </div>
+      </MainCard>
     );
   }
 

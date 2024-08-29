@@ -4,6 +4,9 @@
 }
 .str-chat {
   --str-chat__primary-color: var(--primary-color);
+  --str-chat__primary-surface-color: #FACFC1;
+  --str-chat__secondary-surface-color: #f5f5f5;
+  --str-chat__surface-color: #f0f0f0;
 }
 html,
 body {
@@ -75,7 +78,8 @@ body {
   scrollbar-width: thin;
   overflow-y: auto;
 }
-.tenx-messages-container {
+.tenx-messages-container,
+.upsert-channel__container {
   height: calc(100vh - 270px);
 }
 .str-chat__list {

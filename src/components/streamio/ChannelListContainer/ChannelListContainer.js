@@ -115,6 +115,7 @@ export const ChannelListContainer = (props) => {
     let newChannelId = await createChannelForUser(grouplessUser?.messagingProviderUserId);
     await bindGrouplessUsers();
     await activateChannelById(newChannelId);
+    document.getElementById('tenx-messaging-channels-list').scrollTop = 0;
   }
 
   const getUserLabel = (user) => {
@@ -148,7 +149,7 @@ export const ChannelListContainer = (props) => {
         </Stack>
       </Box>
       <Divider />
-      <Box sx={{ p: 3, pt: 0 }} className='tenx-channels-list'>
+      <Box id="tenx-messaging-channels-list" sx={{ p: 3, pt: 0 }} className="tenx-channels-list">
         {client?.userID && 
           
           <List component="nav">

@@ -29,7 +29,7 @@ const ChannelNameInput = (props) => {
         type='text'
         value={channelName}
       />
-      <p>Add Members</p>
+      <p>Members</p>
     </div>
   );
 };
@@ -94,7 +94,7 @@ export const CreateChannel = (props) => {
       </div>
       <ChannelNameInput {...{ channelName, setChannelName }} />
       <UserList {...{ filters, setSelectedUsers, connectAsAdmin }} />
-      <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 2.5, mr: 3 }}>
+      <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 2, mr: 2, mb: 2 }}>
         <Button onClick={createChannel} variant="contained">
           Save
         </Button>

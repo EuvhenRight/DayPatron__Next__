@@ -15,7 +15,7 @@ const ListContainer = (props) => {
     <div className='user-list__container'>
       <div className='user-list__header'>
         <p>User</p>
-        <p>Last Active</p>
+        <p></p>
         <p>Invite</p>
       </div>
       {children}
@@ -24,26 +24,9 @@ const ListContainer = (props) => {
 };
 
 const UserItem = (props) => {
-  const { index, setSelectedUsers, user, initiallySelected } = props;
+  const { setSelectedUsers, user, initiallySelected } = props;
 
   const [selected, setSelected] = useState(initiallySelected);
-
-  const getLastActive = (i) => {
-    switch (i) {
-      case 0:
-        return '12 min ago';
-      case 1:
-        return '27 min ago';
-      case 2:
-        return '6 hours ago';
-      case 3:
-        return '14 hours ago';
-      case 4:
-        return 'Yesterday';
-      default:
-        return 'Yesterday';
-    }
-  };
 
   const handleClick = () => {
     if (selected) {
@@ -65,7 +48,7 @@ const UserItem = (props) => {
         <Avatar image={user.image} name={getUserLabel(user)} size={32} />
         <p className='user-item__name'>{getUserLabel(user)}</p>
       </div>
-      <p className='user-item__last-active'>{getLastActive(index)}</p>
+      <p className='user-item__last-active'></p>
       {selected ? <InviteIcon /> : <div className='user-item__invite-empty' />}
     </div>
   );
