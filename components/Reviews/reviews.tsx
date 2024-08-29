@@ -42,6 +42,7 @@ export const ReviewsComponent = ({ reviews, product }: Props) => {
 							reviews={reviews}
 							product={product}
 							setOpen={setOpen}
+							setEdit={setEdit}
 						/>
 					</motion.div>
 				)}
@@ -57,6 +58,7 @@ export const ReviewsComponent = ({ reviews, product }: Props) => {
 							reviews={reviews}
 							product={product}
 							setEdit={setEdit}
+							setOpen={setOpen}
 						/>
 					</motion.div>
 				)}

@@ -10,41 +10,41 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { ValidationSchema } from '@/lib/db/validation'
-import { CurrentUser } from '@/lib/hooks/currentUser'
 import {
 	ProductsWithVariantsWithReviews,
 	ReviewsWithItems,
 } from '@/lib/types/types'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { User } from '@prisma/client'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import * as z from 'zod'
 import { Rating } from '../ui/rating'
 import { Textarea } from '../ui/textarea'
+import { ReviewCancelButton } from './review-cancel-button'
 import { ReviewsSubmitMessageButton } from './reviews-submit-message-button'
 
 interface Props {
 	reviews: ReviewsWithItems
 	product: ProductsWithVariantsWithReviews
 	setEdit: React.Dispatch<React.SetStateAction<boolean>>
+	setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const ReviewsEditForm = ({ reviews, product, setEdit }: Props) => {
+export const ReviewsEditForm = ({
+	reviews,
+	product,
+	setEdit,
+	setOpen,
+}: Props) => {
 	// FIND MESSAGE
-	const messageItem = reviews.messages.find(
-		item => item.email === CurrentUser()?.email
-	)
-
-	const user = CurrentUser() as User | null
 
 	const form = useForm<z.infer<typeof ValidationSchema.reviews>>({
 		resolver: zodResolver(ValidationSchema.reviews),
 		defaultValues: {
-			fullName: messageItem?.fullName,
-			email: messageItem?.email,
-			message: messageItem?.message,
-			rating: messageItem?.rating,
+			fullName: '',
+			email: '',
+			message: '',
+			rating: 0,
 		},
 	})
 
@@ -54,7 +54,7 @@ export const ReviewsEditForm = ({ reviews, product, setEdit }: Props) => {
 		try {
 			// CREATE DELIVERY
 			reviewItem = new Promise<ReviewsWithItems>(resolve => {
-				resolve(editItem(product.id, data, user?.id!))
+				resolve(editItem(product.id, data, reviews.id)) //TODO: fix problem
 			})
 
 			// UPDATE DELIVERY
@@ -153,7 +153,12 @@ export const ReviewsEditForm = ({ reviews, product, setEdit }: Props) => {
 						</FormItem>
 					)}
 				/>
-				<div className='flex justify-end'>
+				<div className='flex justify-end gap-2'>
+					<ReviewCancelButton
+						labelCancel='Відмінити'
+						setEdit={setEdit}
+						setOpen={setOpen}
+					/>
 					<ReviewsSubmitMessageButton labelSubmit='Зберегти' />
 				</div>
 			</form>

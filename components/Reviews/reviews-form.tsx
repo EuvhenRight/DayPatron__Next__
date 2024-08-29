@@ -22,15 +22,17 @@ import { toast } from 'sonner'
 import * as z from 'zod'
 import { Rating } from '../ui/rating'
 import { Textarea } from '../ui/textarea'
+import { ReviewCancelButton } from './review-cancel-button'
 import { ReviewsSubmitMessageButton } from './reviews-submit-message-button'
 
 interface Props {
 	reviews: ReviewsWithItems
 	product: ProductsWithVariantsWithReviews
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>
+	setEdit: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const ReviewsForm = ({ reviews, product, setOpen }: Props) => {
+export const ReviewsForm = ({ reviews, product, setOpen, setEdit }: Props) => {
 	const user = CurrentUser() as User | null
 
 	const form = useForm<z.infer<typeof ValidationSchema.reviews>>({
@@ -148,6 +150,11 @@ export const ReviewsForm = ({ reviews, product, setOpen }: Props) => {
 					)}
 				/>
 				<div className='flex justify-end'>
+					<ReviewCancelButton
+						labelCancel='Відмінити'
+						setEdit={setEdit}
+						setOpen={setOpen}
+					/>
 					<ReviewsSubmitMessageButton labelSubmit='Відправити' />
 				</div>
 			</form>

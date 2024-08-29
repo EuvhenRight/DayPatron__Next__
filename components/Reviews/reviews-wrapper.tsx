@@ -31,14 +31,15 @@ export const ReviewsWrapper = ({
 				<div className='my-4 ml-10'>
 					<ReviewsRating rating={reviewsRating} count={reviewsCount} />
 				</div>
-				<ReviewsNewMessageButton
-					labelOpen={labelOpen}
-					open={open}
-					setOpen={setOpen}
-					labelClose={labelClose}
-					edit={edit}
-					setEdit={setEdit}
-				/>
+				{!edit && !open && (
+					<ReviewsNewMessageButton
+						labelOpen={labelOpen}
+						open={open}
+						setOpen={setOpen}
+						labelClose={labelClose}
+						edit={edit}
+					/>
+				)}
 			</div>
 			{children}
 		</div>

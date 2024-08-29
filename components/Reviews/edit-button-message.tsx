@@ -11,7 +11,9 @@ interface Props {
 	product: ProductsWithVariantsWithReviews
 }
 export const EditButtonMessage = ({ setEdit, message, product }: Props) => {
-	const handleEdit = () => {}
+	const handleEdit = () => {
+		setEdit(true)
+	}
 	return (
 		<TooltipProvider>
 			<Tooltip>
