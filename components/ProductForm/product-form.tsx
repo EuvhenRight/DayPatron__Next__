@@ -100,14 +100,23 @@ export const ProductForm = ({ product, cart }: Props) => {
 					{product.name}
 				</h1>
 				<p className='font-bold italic my-2 text-center'>{product.UTP}</p>
-				<div className='my-2 flex justify-end gap-2 mt-6'>
+				<div
+					className='my-4 flex justify-end gap-2 mt-6 cursor-pointer'
+					onClick={() => {
+						document.getElementById(`reviews`)?.scrollIntoView({
+							behavior: 'smooth',
+							block: 'start',
+							inline: 'nearest',
+						})
+					}}
+				>
 					<Rating
-						rating={product.current_rating}
+						rating={product.reviews.ratingTotal}
 						totalStars={5}
 						size={32}
+						className='flex flex-col justify-center items-end'
 						variant='yellow'
-						className='h-1 my-4'
-						showText={false}
+						showText={true}
 						disabled={true}
 						totalReviews={product.reviews.messageTotal}
 					/>

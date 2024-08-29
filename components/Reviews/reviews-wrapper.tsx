@@ -26,7 +26,7 @@ export const ReviewsWrapper = ({
 	setEdit,
 }: Props) => {
 	return (
-		<div className='w-full'>
+		<div className='w-full' id='reviews'>
 			<div className='flex justify-between items-center border-b-2 border-gray-200 flex-col sm:flex-row'>
 				<div className='my-4 ml-10'>
 					<ReviewsRating rating={reviewsRating} count={reviewsCount} />
