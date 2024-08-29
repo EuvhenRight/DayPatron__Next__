@@ -99,3 +99,30 @@ export async function createOrder(
 
 	return { ...order, item: [] }
 }
+// FIND EXISTING PRODUCTS IN ORDERS
+export async function findProductsInOrderItems(
+	userId: string,
+	productId: string
+) {
+	const verifiedOrders = await prisma?.order.findMany({
+		where: {
+			userId: userId,
+			item: {
+				some: {
+					variant: {
+						productId: productId,
+					},
+				},
+			},
+		},
+		include: {
+			item: {
+				include: {
+					variant: true,
+				},
+			},
+		},
+	})
+
+	return verifiedOrders
+}

@@ -51,7 +51,7 @@ export const ReviewsForm = ({ reviews, product, setOpen, setEdit }: Props) => {
 		try {
 			// CREATE DELIVERY
 			reviewItem = new Promise<ReviewsWithItems>(resolve => {
-				resolve(addItem(product.id, data, user?.id))
+				resolve(addItem(product.id, data, user?.id!))
 			})
 
 			// UPDATE DELIVERY

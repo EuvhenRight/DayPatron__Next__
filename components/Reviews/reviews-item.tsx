@@ -12,8 +12,14 @@ interface Props {
 	message: ReviewItem
 	product: ProductsWithVariantsWithReviews
 	setEdit: React.Dispatch<React.SetStateAction<boolean>>
+	setCurrentItem: React.Dispatch<React.SetStateAction<string>>
 }
-export const ReviewsItem = ({ message, product, setEdit }: Props) => {
+export const ReviewsItem = ({
+	message,
+	product,
+	setEdit,
+	setCurrentItem,
+}: Props) => {
 	const name = message.fullName.charAt(0)
 
 	const user = CurrentUser() as User | null
@@ -69,6 +75,7 @@ export const ReviewsItem = ({ message, product, setEdit }: Props) => {
 									message={message}
 									setEdit={setEdit}
 									product={product}
+									setCurrentItem={setCurrentItem}
 								/>
 								{/* DELETE MESSAGE */}
 								<DeleteButtonMessage message={message} product={product} />

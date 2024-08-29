@@ -52,6 +52,9 @@ export type CartItemWithVariants = Prisma.CartItemGetPayload<{
 export type OrderWithItems = Prisma.OrderGetPayload<{
 	include: { item: true }
 }>
+export type OrderWithItemsWithVariants = Prisma.OrderGetPayload<{
+	include: { item: { include: { variant: true } } }
+}>
 export type OrderForm = Prisma.OrderGetPayload<{
 	include: {
 		item: { include: { variant: true } }

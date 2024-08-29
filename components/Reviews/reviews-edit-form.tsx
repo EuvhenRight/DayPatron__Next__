@@ -28,6 +28,7 @@ interface Props {
 	product: ProductsWithVariantsWithReviews
 	setEdit: React.Dispatch<React.SetStateAction<boolean>>
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>
+	currentItem: string
 }
 
 export const ReviewsEditForm = ({
@@ -35,16 +36,18 @@ export const ReviewsEditForm = ({
 	product,
 	setEdit,
 	setOpen,
+	currentItem,
 }: Props) => {
 	// FIND MESSAGE
+	const findItem = reviews.messages.find(message => message.id === currentItem)
 
 	const form = useForm<z.infer<typeof ValidationSchema.reviews>>({
 		resolver: zodResolver(ValidationSchema.reviews),
 		defaultValues: {
-			fullName: '',
-			email: '',
-			message: '',
-			rating: 0,
+			fullName: findItem?.fullName,
+			email: findItem?.email,
+			message: findItem?.message,
+			rating: findItem?.rating,
 		},
 	})
 
@@ -54,13 +57,13 @@ export const ReviewsEditForm = ({
 		try {
 			// CREATE DELIVERY
 			reviewItem = new Promise<ReviewsWithItems>(resolve => {
-				resolve(editItem(product.id, data, reviews.id)) //TODO: fix problem
+				resolve(editItem(product.id, data, currentItem)) //TODO: fix problem
 			})
 
 			// UPDATE DELIVERY
 			await toast.promise(reviewItem, {
 				loading: 'Зачекаємо...',
-				success: 'Ваш відгук додано!',
+				success: 'Ваш відгук змінено!',
 				error: 'Щось пішло не так, спробуйте ще раз',
 			})
 			form.reset()

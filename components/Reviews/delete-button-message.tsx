@@ -1,14 +1,21 @@
 import { deleteItem } from '@/actions/reviews'
 import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuGroup,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import {
 	ProductsWithVariantsWithReviews,
 	ReviewsWithItems,
 } from '@/lib/types/types'
 import { ReviewItem } from '@prisma/client'
-import { Tooltip } from '@radix-ui/react-tooltip'
 import { SquareX } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '../ui/button'
-import { TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip'
 
 interface Props {
 	message: ReviewItem
@@ -33,19 +40,20 @@ export const DeleteButtonMessage = ({ message, product }: Props) => {
 		}
 	}
 	return (
-		<TooltipProvider>
-			<Tooltip>
-				<TooltipTrigger asChild>
-					<Button
-						variant='destructive'
-						onClick={handleDelete}
-						className='p-0 h-6 w-6 border-none'
-					>
-						<SquareX size={28} />
-					</Button>
-				</TooltipTrigger>
-				<TooltipContent>Видалити відгук</TooltipContent>
-			</Tooltip>
-		</TooltipProvider>
+		<DropdownMenu>
+			<DropdownMenuTrigger asChild>
+				<Button variant='destructive' className='p-0 h-6 w-6 border-none'>
+					<SquareX size={28} />
+				</Button>
+			</DropdownMenuTrigger>
+			<DropdownMenuContent className='w-56'>
+				<DropdownMenuLabel>Видалити відгук?</DropdownMenuLabel>
+				<DropdownMenuSeparator />
+				<DropdownMenuGroup>
+					<DropdownMenuItem onClick={handleDelete}>Так</DropdownMenuItem>
+					<DropdownMenuItem>Ні</DropdownMenuItem>
+				</DropdownMenuGroup>
+			</DropdownMenuContent>
+		</DropdownMenu>
 	)
 }

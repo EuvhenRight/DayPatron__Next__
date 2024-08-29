@@ -17,7 +17,7 @@ interface Props {
 export const ReviewsComponent = ({ reviews, product }: Props) => {
 	const [open, setOpen] = useState(false)
 	const [edit, setEdit] = useState(false)
-
+	const [currentItem, setCurrentItem] = useState<string>('')
 	return (
 		<ReviewsWrapper
 			reviewsCount={reviews?.messageTotal}
@@ -59,10 +59,17 @@ export const ReviewsComponent = ({ reviews, product }: Props) => {
 							product={product}
 							setEdit={setEdit}
 							setOpen={setOpen}
+							currentItem={currentItem}
 						/>
 					</motion.div>
 				)}
-				<div className={cn(open && 'border-t-2 border-gray-200', 'p-4')}>
+				{/* ADD BORDER TO OPEN FORM REVIEW */}
+				<div
+					className={cn(
+						open || edit ? 'border-t-2 border-gray-200' : '',
+						'p-4'
+					)}
+				>
 					{reviews.messages.length === 0 && (
 						<div className='text-center text-neutral-500'>
 							Немає відгуків, будьте першим
@@ -74,6 +81,7 @@ export const ReviewsComponent = ({ reviews, product }: Props) => {
 							message={message}
 							product={product}
 							setEdit={setEdit}
+							setCurrentItem={setCurrentItem}
 						/>
 					))}
 				</div>

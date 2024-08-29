@@ -31,6 +31,7 @@ export const ReviewsWrapper = ({
 				<div className='my-4 ml-10'>
 					<ReviewsRating rating={reviewsRating} count={reviewsCount} />
 				</div>
+				{/* CLOSE BUTTON CONDITION */}
 				{!edit && !open && (
 					<ReviewsNewMessageButton
 						labelOpen={labelOpen}

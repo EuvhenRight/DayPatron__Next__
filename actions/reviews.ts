@@ -3,6 +3,7 @@ import prisma from '@/lib/db/client'
 import { ValidationSchema } from '@/lib/db/validation'
 import { createReviewEmailHtml } from '@/lib/services/e-mail-new-user'
 import { sendEmail } from '@/lib/services/mail-password'
+import { findProductsInOrderItems } from '@/lib/services/order'
 import { getReviewsWithItem } from '@/lib/services/reviews'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
@@ -19,6 +20,9 @@ export async function addItem(
 		throw new Error('Reviews not found')
 	}
 
+	// CHECK VERIFIED USER
+	const verifiedOrders = await findProductsInOrderItems(userId!, productId)
+
 	// CREATE REVIEW ITEM
 	await prisma?.reviewItem.create({
 		data: {
@@ -26,7 +30,7 @@ export async function addItem(
 			email: data.email,
 			fullName: data.fullName,
 			rating: data.rating,
-			verified: true,
+			verified: verifiedOrders.length > 0,
 			reviewsId: reviews.id,
 			userId: userId!,
 		},
@@ -132,7 +136,7 @@ export async function deleteItem(productId: string, itemId: string) {
 export async function editItem(
 	productId: string,
 	newData: z.infer<typeof ValidationSchema.reviews>,
-	userEmail: string
+	messageId: string
 ) {
 	const reviews = await getReviewsWithItem(productId)
 
@@ -141,7 +145,7 @@ export async function editItem(
 	}
 
 	// FIND EXISTING REVIEW ITEM
-	const findItem = reviews.messages.find(item => item.email === userEmail)
+	const findItem = reviews.messages.find(item => item.id === messageId)
 
 	if (!findItem) {
 		throw new Error('Review item not found')

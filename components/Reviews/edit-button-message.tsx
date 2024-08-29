@@ -9,10 +9,17 @@ interface Props {
 	setEdit: React.Dispatch<React.SetStateAction<boolean>>
 	message: ReviewItem
 	product: ProductsWithVariantsWithReviews
+	setCurrentItem: React.Dispatch<React.SetStateAction<string>>
 }
-export const EditButtonMessage = ({ setEdit, message, product }: Props) => {
+export const EditButtonMessage = ({
+	setEdit,
+	message,
+	product,
+	setCurrentItem,
+}: Props) => {
 	const handleEdit = () => {
 		setEdit(true)
+		setCurrentItem(message.id)
 	}
 	return (
 		<TooltipProvider>
