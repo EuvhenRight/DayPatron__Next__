@@ -98,7 +98,7 @@ export const EditChannel = (props) => {
       </div>
       <ChannelNameInput {...{ channelName, setChannelName }} />
       <UserList {...{ filters, setSelectedUsers, selectedUsers, connectAsAdmin }} />
-      <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 2, mr: 2, mb: 2 }}>
+      <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 1.5, mr: 1.5, mb: 1.5 }}>
         <Button onClick={updateChannel} variant="contained">
           Save
         </Button>
