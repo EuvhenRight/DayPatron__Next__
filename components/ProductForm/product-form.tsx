@@ -1,13 +1,11 @@
 'use client'
 import { BreadcrumbProduct } from '@/components/ProductForm/breadcrumb'
 import { Variants } from '@/components/ProductForm/variants'
-import { CurrentUser } from '@/lib/hooks/currentUser'
 import type {
 	CartItemWithVariants,
 	CartWithVariants,
 	ProductWithVariantsWithReviews,
 } from '@/lib/types/types'
-import { User } from '@prisma/client'
 import { useEffect, useState } from 'react'
 import 'react-medium-image-zoom/dist/styles.css'
 
@@ -32,8 +30,6 @@ export const ProductForm = ({ product, cart }: Props) => {
 	const [imageIndex, setImageIndex] = useState<number | null>(null)
 	const [animate, setAnimate] = useState<boolean>(false)
 	// CHECK ITEM IN CART
-	const user = CurrentUser() as User | null // TODO: why we call user here?
-	const userId = user?.id
 	const [itemInCart, setItemInCart] = useState<CartItemWithVariants | null>(
 		null
 	)
@@ -102,6 +98,7 @@ export const ProductForm = ({ product, cart }: Props) => {
 				<p className='font-bold italic my-2 text-center'>{product.UTP}</p>
 				<div
 					className='my-4 flex justify-end gap-2 mt-6 cursor-pointer'
+					// NAVIGATE TO REVIEWS
 					onClick={() => {
 						document.getElementById(`reviews`)?.scrollIntoView({
 							behavior: 'smooth',
