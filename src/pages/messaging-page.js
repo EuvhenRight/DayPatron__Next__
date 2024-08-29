@@ -1,11 +1,12 @@
+import React, { useState } from 'react';
 import TenxChat from 'sections/messaging/TenxChat';
-import { useSearchParams } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
 
 const MessagingPage = () => {
-  let [searchParams] = useSearchParams();
-  
+  const location = useLocation();
+  const [targetUserId, setTargetUserId] = useState(location.state?.targetUserId);
   return (
-    <TenxChat targetUserId={searchParams.get("tuid")} />
+    <TenxChat {...{targetUserId, setTargetUserId}} />
   );
 };
 

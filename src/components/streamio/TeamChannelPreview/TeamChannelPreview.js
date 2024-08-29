@@ -5,6 +5,7 @@ import Dot from 'components/@extended/Dot';
 import { CheckOutlined } from '@ant-design/icons';
 import { useTheme } from '@mui/material/styles';
 import { format } from 'date-fns'
+import userTypes from 'data/userTypes';
 
 import './TeamChannelPreview.css';
 
@@ -45,7 +46,12 @@ export const TeamChannelPreview = (props) => {
       size={36}
     />;
   };
-  
+
+  const getUserLabel = (user) => {
+    let result = (user.name || user.id) + ' (' + userTypes.find(item => item.code === user.tenxUserType)?.label + ')';
+    return result;
+  };
+
   const getChannelName = () => {
     if(channel?.data?.name) {
       return <>
@@ -54,17 +60,17 @@ export const TeamChannelPreview = (props) => {
     }
 
     if(otherMembers?.length === 1) {
-      return <>{otherMembers[0]?.user.name || otherMembers[0]?.user.id}</>;
+      return <>{getUserLabel(otherMembers[0]?.user)}</>;
     }
 
     if(allMembers?.length === 1 && allMembers[0]?.user.id === client.userID) {
-      return <>{allMembers[0]?.user.name || allMembers[0]?.user.id} (Me)</>;
+      return <>{getUserLabel(allMembers[0]?.user)} (Me)</>;
     }
 
     if(otherMembers?.length > 1) {
       return <>
-        {otherMembers[0]?.user.name || otherMembers[0]?.user.id},{' '}
-        {otherMembers[1]?.user.name || otherMembers[1]?.user.id}
+        {getUserLabel(otherMembers[0]?.user)},{' '}
+        {getUserLabel(otherMembers[1]?.user)}
       </>;
     }
 

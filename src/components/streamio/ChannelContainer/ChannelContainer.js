@@ -34,7 +34,7 @@ const ThreadHeader = (props) => {
 };
 
 export const ChannelContainer = (props) => {
-  const { isCreating, isEditing, setIsCreating, setIsEditing, onShowChannelSelector, isChannelSelectorVisible } = props;
+  const { isCreating, isEditing, setIsCreating, setIsEditing, onShowChannelSelector, isChannelSelectorVisible, connectAsAdmin } = props;
 
   const { channel } = useChatContext();
 
@@ -44,9 +44,9 @@ export const ChannelContainer = (props) => {
     const filters = {};
 
     return (
-      <div className='channel__container'>
-        <CreateChannel {...{ filters, setIsCreating }} />
-      </div>
+      <MainCard content={false} className='str-chat tenx-messages-container'>
+        <CreateChannel {...{ filters, setIsCreating, connectAsAdmin }} />
+      </MainCard>
     );
   }
 
@@ -61,9 +61,9 @@ export const ChannelContainer = (props) => {
     }
 
     return (
-      <div className='channel__container'>
-        <EditChannel {...{ filters, setIsEditing }} />
-      </div>
+      <MainCard content={false} className='str-chat tenx-messages-container'>
+        <EditChannel {...{ filters, setIsEditing, connectAsAdmin }} />
+      </MainCard>
     );
   }
 

@@ -239,12 +239,20 @@ ul.str-chat__simple-reactions-list:hover {
   color: var(--primary-color);
 }
 
-.pinned-message {
-  background: #e6efff;
-}
-
-.unpinned-message {
-  background: #fff;
+.str-chat__message--pinned .str-chat__message-bubble::before {
+  content: '📌';
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  color: var(--primary-color);
+  font-size: 0.6rem;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 9999px;
+  z-index: 1;
+  top: -7px;
+  right: -7px;
 }
 
 .str-chat__message-team-pin-indicator {

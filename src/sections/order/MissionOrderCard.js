@@ -156,7 +156,8 @@ const MissionOrderCard = ({ order, onClose, handleApproveClick }) => {
       return;
 
     var contractor = await getContractor(contractorId);
-    navigate('/messaging?tuid=' + contractor?.messagingProviderUserId)
+    
+    navigate('/messaging', { state: { targetUserId: contractor?.messagingProviderUserId} });
   }
   
   const handleProjectOrderTermsClick = async () => {

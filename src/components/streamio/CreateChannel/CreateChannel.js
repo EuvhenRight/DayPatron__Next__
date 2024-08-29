@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useKeycloak } from '@react-keycloak/web';
 import { useChatContext } from 'stream-chat-react';
 import { prepareApiBody } from 'utils/stringUtils';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { openSnackbar } from 'store/reducers/snackbar';
 
 import { Button, Stack } from '@mui/material';
@@ -29,7 +29,7 @@ const ChannelNameInput = (props) => {
         type='text'
         value={channelName}
       />
-      <p>Add Members</p>
+      <p>Members</p>
     </div>
   );
 };
@@ -37,7 +37,8 @@ const ChannelNameInput = (props) => {
 export const CreateChannel = (props) => {
   const { keycloak } = useKeycloak();
   const dispatch = useDispatch();
-  const { filters, setIsCreating } = props;
+  const personalInformation = useSelector(state => state.personalInformation);
+  const { filters, setIsCreating, connectAsAdmin } = props;
 
   const { client, setActiveChannel } = useChatContext();
 
@@ -55,7 +56,7 @@ export const CreateChannel = (props) => {
             'Authorization': 'Bearer ' + keycloak.idToken,
             'Content-Type': 'application/json'
           },
-          body: prepareApiBody({groupName: channelName, messagingProviderUserIds: selectedUsers})
+          body: prepareApiBody({groupName: channelName, messagingProviderUserIds: selectedUsers, employerUserId: connectAsAdmin ? null : personalInformation?.id})
         }
       );
 
@@ -92,8 +93,8 @@ export const CreateChannel = (props) => {
         <CloseCreateChannel {...{ setIsCreating }} />
       </div>
       <ChannelNameInput {...{ channelName, setChannelName }} />
-      <UserList {...{ filters, setSelectedUsers }} />
-      <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 2.5, mr: 3 }}>
+      <UserList {...{ filters, setSelectedUsers, connectAsAdmin }} />
+      <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 1.5, mr: 1.5, mb: 1.5 }}>
         <Button onClick={createChannel} variant="contained">
           Save
         </Button>

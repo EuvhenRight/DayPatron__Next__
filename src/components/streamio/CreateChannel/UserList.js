@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Avatar, useChatContext } from 'stream-chat-react';
 import { useKeycloak } from '@react-keycloak/web';
+import { useSelector } from 'react-redux';
 
 import './UserList.css';
 
 import { InviteIcon } from 'assets/images/streamio';
+import userTypes from 'data/userTypes';
 
 const ListContainer = (props) => {
   const { children } = props;
@@ -13,7 +15,7 @@ const ListContainer = (props) => {
     <div className='user-list__container'>
       <div className='user-list__header'>
         <p>User</p>
-        <p>Last Active</p>
+        <p></p>
         <p>Invite</p>
       </div>
       {children}
@@ -22,26 +24,9 @@ const ListContainer = (props) => {
 };
 
 const UserItem = (props) => {
-  const { index, setSelectedUsers, user, initiallySelected } = props;
+  const { setSelectedUsers, user, initiallySelected } = props;
 
   const [selected, setSelected] = useState(initiallySelected);
-
-  const getLastActive = (i) => {
-    switch (i) {
-      case 0:
-        return '12 min ago';
-      case 1:
-        return '27 min ago';
-      case 2:
-        return '6 hours ago';
-      case 3:
-        return '14 hours ago';
-      case 4:
-        return 'Yesterday';
-      default:
-        return 'Yesterday';
-    }
-  };
 
   const handleClick = () => {
     if (selected) {
@@ -52,13 +37,18 @@ const UserItem = (props) => {
     setSelected(!selected);
   };
 
+  const getUserLabel = (user) => {
+    let result = (user.name || user.messagingProviderUserId) + ' (' + userTypes.find(item => item.code === user.userType)?.label + ')';
+    return result;
+  };
+
   return (
     <div className='user-item__wrapper' onClick={handleClick} role="presentation">
       <div className='user-item__name-wrapper'>
-        <Avatar image={user.image} name={user.name || user.messagingProviderUserId} size={32} />
-        <p className='user-item__name'>{user.name || user.messagingProviderUserId}</p>
+        <Avatar image={user.image} name={getUserLabel(user)} size={32} />
+        <p className='user-item__name'>{getUserLabel(user)}</p>
       </div>
-      <p className='user-item__last-active'>{getLastActive(index)}</p>
+      <p className='user-item__last-active'></p>
       {selected ? <InviteIcon /> : <div className='user-item__invite-empty' />}
     </div>
   );
@@ -66,7 +56,8 @@ const UserItem = (props) => {
 
 export const UserList = (props) => {
   const { keycloak } = useKeycloak();
-  const { filters, setSelectedUsers, selectedUsers } = props;
+  const personalInformation = useSelector(state => state.personalInformation);
+  const { filters, setSelectedUsers, selectedUsers, connectAsAdmin } = props;
 
   const { client } = useChatContext();
 
@@ -80,7 +71,8 @@ export const UserList = (props) => {
       if (loading) return;
       setLoading(true);
       try {
-        let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/messages/messageable-users',
+        let queryString = connectAsAdmin ? '' : '?employerUserId=' + personalInformation?.id;
+        let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/messages/messageable-users' + queryString,
           {
             method: 'GET',
             headers: {
