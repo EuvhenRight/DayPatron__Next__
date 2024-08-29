@@ -115,6 +115,7 @@ export const ChannelListContainer = (props) => {
     let newChannelId = await createChannelForUser(grouplessUser?.messagingProviderUserId);
     await bindGrouplessUsers();
     await activateChannelById(newChannelId);
+    onChannelSelected();
     document.getElementById('tenx-messaging-channels-list').scrollTop = 0;
   }
 

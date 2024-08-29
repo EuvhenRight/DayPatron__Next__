@@ -95,8 +95,8 @@ const TenxChat = ({targetUserId, setTargetUserId}) => {
 
   useEffect(() => {
     if(matchDownMD) {
-      setIsChannelSelectorVisible(false);
-      setIsMessagesContainerVisible(true);
+      setIsChannelSelectorVisible(true);
+      setIsMessagesContainerVisible(false);
     } else {
       setIsChannelSelectorVisible(true);
       setIsMessagesContainerVisible(true);
