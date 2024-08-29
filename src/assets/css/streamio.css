@@ -1,0 +1,99 @@
+:root {
+  --primary-color: #EB5A21;
+  --primary-color-alpha: #EB5A211a;
+}
+.str-chat {
+  --str-chat__primary-color: var(--primary-color);
+  --str-chat__primary-surface-color: #FACFC1;
+  --str-chat__secondary-surface-color: #f5f5f5;
+  --str-chat__surface-color: #f0f0f0;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+#root {
+  height: 100%;
+}
+
+.app__wrapper {
+  display: flex;
+  flex: 1;
+  /* height: 800px; */
+  height: 100%;
+  /* border-radius: 16px; */
+  box-shadow: rgba(0, 0, 0, 0.33) 0px 1px 4px 0px;
+}
+
+.str-chat-channel-list {
+  height: fit-content;
+}
+
+.str-chat-channel {
+  height: 100%;
+}
+
+.str-chat__load-more-button {
+  display: none;
+}
+
+.str-chat__input-footer {
+  display: none;
+}
+
+.str-chat__date-separator {
+  margin: 16px 24px;
+}
+
+.str-chat__message-notification {
+  background: var(--primary-color);
+  cursor: pointer;
+}
+
+@media screen and (max-width: 960px) {
+  .str-chat-channel-list.team {
+    position: unset;
+    left: unset;
+    top: unset;
+    z-index: unset;
+    min-height: unset;
+    overflow-y: unset;
+    box-shadow: unset;
+    transition: unset;
+  }
+}
+.str-chat-channel-list {
+  border:none;
+}
+.tenx-channels-container {
+  height: calc(100vh - 270px);
+  display: flex;
+  flex-flow: column;
+}
+.tenx-channels-list {
+  flex: 1;
+  scrollbar-width: thin;
+  overflow-y: auto;
+}
+.tenx-messages-container,
+.upsert-channel__container {
+  height: calc(100vh - 270px);
+}
+.str-chat__list {
+  scrollbar-width: thin;
+}
+.tenx-channels-header {
+  padding: 4px 5px 3px 25px;
+}
+.tenx-messaging-channels-menu-button {
+  margin: 0 12px 0 0;
+}
+.tenx-hidden {
+  display: none;
+}
+.str-chat__container {
+  padding-bottom: 5px;
+}

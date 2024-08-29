@@ -3,29 +3,29 @@ import { FormattedMessage } from 'react-intl';
 
 // assets
 import {
-  ShoppingCartOutlined
+  MessageOutlined
 } from '@ant-design/icons';
 
 // icons
 const icons = {
-  ShoppingCartOutlined
+  MessageOutlined
 };
 
 // ==============================|| MENU ITEMS - ORDER ||============================== //
 
-const order = {
-  id: 'orders',
-  title: <FormattedMessage id="orders" />,
+const communication = {
+  id: 'communication',
+  title: <FormattedMessage id="communication" />,
   type: 'group',
   children: [
     {
-      id: 'my-orders',
-      title: <FormattedMessage id="my-orders" />,
+      id: 'messaging',
+      title: <FormattedMessage id="messaging" />,
       type: 'item',
-      url: '/orders',
-      icon: icons.ShoppingCartOutlined
+      url: '/messaging',
+      icon: icons.MessageOutlined
     }
   ]
 };
 
-export default order;
+export default communication;
