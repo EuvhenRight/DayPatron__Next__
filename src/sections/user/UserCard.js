@@ -73,7 +73,7 @@ const UserCard = ({ user, bindUsers }) => {
 
   const getUserTitle = (user) => {
     if(user?.firstName || user?.lastName)
-      return user?.firstName + user?.lastName;
+      return user?.firstName + ' ' + user?.lastName;
 
       return user?.email;
   }
