@@ -15,8 +15,11 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { ValidationSchema } from '@/lib/db/validation'
-import { DeliveryWithItems } from '@/lib/types/types'
+import {
+	DeliveryAddress,
+	DeliveryBranch,
+	ValidationSchema,
+} from '@/lib/db/validation'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { DeliveryItem } from '@prisma/client'
@@ -78,28 +81,40 @@ export const DeliveryFormEditDialog = ({ item }: Props) => {
 		>(formConfig)
 
 	// DELIVERY DELETE ITEM
-	const toggleDeleteItem = () => {
-		deleteItemDelivery(item.id)
+	const toggleDeleteItem = async () => {
+		try {
+			const deleteItem = deleteItemDelivery(item.id)
+			await toast.promise(deleteItem, {
+				loading: 'Зачекаємо...',
+				success: 'Вашу інформацію видалено!',
+				error: 'Щось пішло не так, спробуйте ще раз',
+			})
+		} catch (error) {
+			console.error('Щось пішло не так, спробуйте ще раз', error)
+		}
 	}
 
-	const onSubmit = async (formConfig: any) => {
-		let deliveryItem: Promise<DeliveryWithItems>
+	const onSubmit = async (formConfig: DeliveryAddress | DeliveryBranch) => {
 		try {
 			// CREATE DELIVERY
-			deliveryItem = new Promise<DeliveryWithItems>(resolve => {
-				resolve(editItemDelivery(item.id, formConfig))
-			})
+			const deliveryItem = editItemDelivery(item.id, formConfig)
+
 			// UPDATE DELIVERY
 			await toast.promise(deliveryItem, {
-				// TOAST LOADING
 				loading: 'Зачекаємо...',
 				success: 'Вашу інформацію оновлено!',
 				error: 'Щось пішло не так, спробуйте ще раз',
 			})
-			// TOAST SUCCESS CLOSE MODAL
-			return setIsOpen(!isOpen)
+
+			// RESET FORM
+			form.reset()
+
+			// CLOSE FORM
+			setIsOpen(!isOpen)
+
+			return await deliveryItem
 		} catch (error) {
-			console.error(error, 'Щось пішло не так, спробуйте ще раз')
+			console.error('Щось пішло не так, спробуйте ще раз', error)
 		}
 	}
 
