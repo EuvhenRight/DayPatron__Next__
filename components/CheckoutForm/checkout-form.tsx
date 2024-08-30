@@ -1,6 +1,5 @@
 'use client'
 import { addOrderItem } from '@/actions/order'
-import LoaderProductPage from '@/app/checkouts/loading'
 import { CommentForm } from '@/components/CheckoutForm/comment-form'
 import { DeliveryForm } from '@/components/CheckoutForm/delivery-form'
 import { ExtraUserForm } from '@/components/CheckoutForm/extra-user-form'
@@ -19,7 +18,6 @@ import { orderItemScheme } from '@/lib/db/validation'
 import {
 	CartWithVariants,
 	DeliveryWithItems,
-	OrderFormInputs,
 	OrderWithItems,
 } from '@/lib/types/types'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -27,8 +25,9 @@ import { Payment, User } from '@prisma/client'
 
 import { ChevronLeft } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState, useTransition } from 'react'
+import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 interface Props {
@@ -52,7 +51,6 @@ export const CheckoutForm = ({
 	)
 	const [makeOrder, setMakeOrder] = useState<boolean>(false)
 	const router = useRouter()
-	const [pending, startTransition] = useTransition()
 
 	const formMethods = useForm<z.infer<typeof orderItemScheme>>({
 		resolver: zodResolver(orderItemScheme),
@@ -80,8 +78,6 @@ export const CheckoutForm = ({
 		formState: { errors },
 		handleSubmit,
 		control,
-		trigger,
-		setError,
 		clearErrors,
 	} = formMethods
 
@@ -93,16 +89,26 @@ export const CheckoutForm = ({
 		}
 	}, [errors, formMethods, clearErrors])
 
-	const onSubmit = async (data: OrderFormInputs) => {
-		startTransition(() => {
-			addOrderItem(data)
-		})
-		setMakeOrder(true)
-		router.refresh()
-	}
+	const onSubmit = async (data: z.infer<typeof orderItemScheme>) => {
+		try {
+			// CREATE ORDER
+			const newOrder = addOrderItem(data)
 
-	if (pending) {
-		return <LoaderProductPage />
+			// INDICATE ORDER PROCESSING
+			setMakeOrder(true)
+			router.refresh()
+
+			// UPDATE DELIVERY STATUS
+			await toast.promise(newOrder, {
+				loading: 'Зачекаємо...',
+				success: 'Ваш відгук додано!',
+				error: 'Щось пішло не так, спробуйте ще раз',
+			})
+
+			return await newOrder
+		} catch (err) {
+			console.error('Error processing order', err)
+		}
 	}
 
 	return (

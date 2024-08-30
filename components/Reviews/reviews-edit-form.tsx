@@ -52,26 +52,26 @@ export const ReviewsEditForm = ({
 	})
 
 	const onSubmit = async (data: z.infer<typeof ValidationSchema.reviews>) => {
-		let reviewItem: Promise<ReviewsWithItems>
-
 		try {
 			// CREATE DELIVERY
-			reviewItem = new Promise<ReviewsWithItems>(resolve => {
-				resolve(editItem(product.id, data, currentItem)) //TODO: fix problem
-			})
+			const reviewItem = editItem(product.id, data, currentItem)
 
 			// UPDATE DELIVERY
 			await toast.promise(reviewItem, {
 				loading: 'Зачекаємо...',
-				success: 'Ваш відгук змінено!',
+				success: 'Ваш відгук додано!',
 				error: 'Щось пішло не так, спробуйте ще раз',
 			})
+
+			// RESET FORM
 			form.reset()
+
 			// CLOSE FORM
-			setEdit(false)
-			return { ...reviewItem }
+			setOpen(false)
+
+			return await reviewItem
 		} catch (error) {
-			console.error(error, 'Щось пішло не так, спробуйте ще раз')
+			console.error('Щось пішло не так, спробуйте ще раз', error)
 		}
 	}
 

@@ -1,12 +1,14 @@
 'use server'
 import { auth } from '@/auth'
 import prisma from '@/lib/db/client'
+import { orderItemScheme } from '@/lib/db/validation'
 import { createEmailHtml } from '@/lib/services/e-mail-order'
 import { sendEmail } from '@/lib/services/mail-password'
 import { createOrder } from '@/lib/services/order'
-import { OrderForm, OrderFormInputs } from '@/lib/types/types'
+import { OrderForm } from '@/lib/types/types'
+import { z } from 'zod'
 
-export async function addOrderItem(data: OrderFormInputs) {
+export async function addOrderItem(data: z.infer<typeof orderItemScheme>) {
 	// FIND EXISTING ORDER
 	const order = await createOrder(data)
 	const user = await auth()
