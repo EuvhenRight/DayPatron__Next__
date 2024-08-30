@@ -38,17 +38,9 @@ interface Props {
 	orders: OrderWithItems[] | null
 }
 
-export const CheckoutForm = ({
-	cart,
-	currentDelivery,
-	currentUser,
-	order,
-	orders,
-}: Props) => {
+export const CheckoutForm = ({ cart, currentDelivery, currentUser }: Props) => {
 	//TODO:  Add comments and toast
-	const [payment, setPayment] = useState<Payment>(
-		Payment.POSTPAID || Payment.PAIMENTBYCARD
-	)
+	const [payment, setPayment] = useState<Payment | undefined>()
 	const [makeOrder, setMakeOrder] = useState<boolean>(false)
 	const router = useRouter()
 
@@ -171,7 +163,7 @@ export const CheckoutForm = ({
 											<FormControl>
 												<PaymentForm
 													onChange={field.onChange}
-													payment={payment}
+													payment={payment!}
 													setPayment={setPayment}
 												/>
 											</FormControl>

@@ -10,16 +10,16 @@ import {
 	TableRow,
 } from '@/components/ui/table'
 import { formatPriceUa } from '@/lib/services/format'
-import { OrderForm } from '@/lib/types/types'
+import { OrderWithItemsWithVariants } from '@/lib/types/types'
 
 interface Props {
-	orders: OrderForm[] | null
+	orders?: OrderWithItemsWithVariants[]
 }
 export const UserInformation = ({ orders }: Props) => {
 	// COUNTS INVOICES IN TABLE
 	const getTotal = orders?.reduce((a, b) => a + b.subTotal, 0)
 	const getTotalItems = orders?.reduce((a, b) => a + b.itemsTotal, 0)
-	console.log(orders)
+
 	return (
 		<Table>
 			<TableCaption>Замовлення</TableCaption>

@@ -1,12 +1,13 @@
 'use server'
 import prisma from '@/lib/db/client'
+import { DeliveryAddress, DeliveryBranch } from '@/lib/db/validation'
 import { createDelivery, getDelivery } from '@/lib/services/delivery'
 import { DeliveryWithItems } from '@/lib/types/types'
 import { DeliveryItem } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
 
 export async function addItemDelivery(
-	data: DeliveryItem
+	data: DeliveryAddress | DeliveryBranch
 ): Promise<DeliveryWithItems> {
 	// FIND EXISTING CART
 	const delivery = (await getDelivery()) ?? (await createDelivery())

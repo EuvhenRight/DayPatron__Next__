@@ -1,11 +1,13 @@
 import { auth } from '@/auth'
 import prisma from '@/lib/db/client'
-import { OrderForm, OrderFormInputs, OrderWithItems } from '../types/types'
+import { z } from 'zod'
+import { orderItemScheme } from '../db/validation'
+import { OrderWithItems, OrderWithItemsWithVariants } from '../types/types'
 
-export async function getOrder(): Promise<OrderWithItems | null> {
+export async function getOrder(): Promise<OrderWithItemsWithVariants | null> {
 	const session = await auth()
 
-	let order: OrderWithItems | null = null
+	let order: OrderWithItemsWithVariants | null = null
 
 	if (session) {
 		order = await prisma.order.findFirst({
@@ -27,10 +29,12 @@ export async function getOrder(): Promise<OrderWithItems | null> {
 	return order
 }
 
-export async function getManyOrders(): Promise<OrderForm[] | null> {
+export async function getManyOrders(): Promise<
+	OrderWithItemsWithVariants[] | null
+> {
 	const session = await auth()
 
-	let orders: OrderForm[] | null = null
+	let orders: OrderWithItemsWithVariants[] | null = null
 
 	if (session) {
 		orders = await prisma.order.findMany({
@@ -55,7 +59,7 @@ export async function getManyOrders(): Promise<OrderForm[] | null> {
 }
 
 export async function createOrder(
-	data: OrderFormInputs
+	data: z.infer<typeof orderItemScheme>
 ): Promise<OrderWithItems | null> {
 	const session = await auth()
 

@@ -26,8 +26,8 @@ const paymentArray = [
 
 interface Props {
 	onChange: (value: Payment) => void
-	payment: Payment
-	setPayment: React.Dispatch<React.SetStateAction<Payment>>
+	payment?: Payment
+	setPayment: React.Dispatch<React.SetStateAction<Payment | undefined>>
 }
 
 export const PaymentForm = ({ onChange, payment, setPayment }: Props) => {

@@ -16,8 +16,11 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { RadioTypesOfDelivery } from '@/components/UserNavigation/radio-types-of-delivery'
-import { ValidationSchema } from '@/lib/db/validation'
-import { DeliveryWithItems } from '@/lib/types/types'
+import {
+	DeliveryAddress,
+	DeliveryBranch,
+	ValidationSchema,
+} from '@/lib/db/validation'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
@@ -77,6 +80,7 @@ export const DeliveryFormDialog = ({
 	}
 
 	const formConfig = getFormConfig(typeOfDelivery)
+
 	const form =
 		useForm<
 			z.infer<
@@ -85,14 +89,10 @@ export const DeliveryFormDialog = ({
 			>
 		>(formConfig)
 
-	const onSubmit = async (formConfig: any) => {
-		// TODO: Add type
-		let deliveryItem: Promise<DeliveryWithItems>
+	const onSubmit = async (formConfig: DeliveryAddress | DeliveryBranch) => {
 		try {
 			// CREATE DELIVERY
-			deliveryItem = new Promise<DeliveryWithItems>(resolve => {
-				resolve(addItemDelivery(formConfig))
-			})
+			const deliveryItem = addItemDelivery(formConfig)
 
 			// UPDATE DELIVERY
 			await toast.promise(deliveryItem, {
@@ -100,10 +100,16 @@ export const DeliveryFormDialog = ({
 				success: 'Вашу інформацію оновлено!',
 				error: 'Щось пішло не так, спробуйте ще раз',
 			})
+
+			// RESET FORM
 			form.reset()
-			return setIsOpen(!isOpen)
+
+			// CLOSE FORM
+			setIsOpen(!isOpen)
+
+			return await deliveryItem
 		} catch (error) {
-			console.error(error, 'Щось пішло не так, спробуйте ще раз')
+			console.error('Щось пішло не так, спробуйте ще раз', error)
 		}
 	}
 
