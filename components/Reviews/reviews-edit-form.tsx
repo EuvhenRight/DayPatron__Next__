@@ -59,7 +59,7 @@ export const ReviewsEditForm = ({
 			// UPDATE DELIVERY
 			await toast.promise(reviewItem, {
 				loading: 'Зачекаємо...',
-				success: 'Ваш відгук додано!',
+				success: 'Ваш відгук оновлено!',
 				error: 'Щось пішло не так, спробуйте ще раз',
 			})
 
@@ -67,7 +67,7 @@ export const ReviewsEditForm = ({
 			form.reset()
 
 			// CLOSE FORM
-			setOpen(false)
+			setEdit(false)
 
 			return await reviewItem
 		} catch (error) {

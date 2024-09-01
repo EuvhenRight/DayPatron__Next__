@@ -267,6 +267,7 @@ model Product {
 model Reviews {
   id           String @id @default(auto()) @map("_id") @db.ObjectId
   messageTotal Int    @default(0)
+  pageTotal    Int    @default(1)
   ratingTotal  Float  @default(0)
 
   createdAt DateTime @default(now())

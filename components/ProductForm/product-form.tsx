@@ -34,6 +34,8 @@ export const ProductForm = ({ product, cart }: Props) => {
 		null
 	)
 
+	console.log(product)
+
 	//SERVER ACTION ADD TO CART
 	const addItemToCart = async (variantId: string) => {
 		let itemInCart: Promise<CartWithVariants>

@@ -1,6 +1,8 @@
 import { CurrentUser } from '@/lib/hooks/currentUser'
 import { ProductsWithVariantsWithReviews } from '@/lib/types/types'
 import { ReviewItem } from '@prisma/client'
+import { format } from 'date-fns'
+import { enUS } from 'date-fns/locale' // Import your preferred locale
 import { ShieldCheck } from 'lucide-react'
 import { User } from 'next-auth'
 import { Avatar, AvatarFallback } from '../ui/avatar'
@@ -14,6 +16,7 @@ interface Props {
 	setEdit: React.Dispatch<React.SetStateAction<boolean>>
 	setCurrentItem: React.Dispatch<React.SetStateAction<string>>
 }
+
 export const ReviewsItem = ({
 	message,
 	product,
@@ -21,8 +24,10 @@ export const ReviewsItem = ({
 	setCurrentItem,
 }: Props) => {
 	const name = message.fullName.charAt(0)
-
 	const user = CurrentUser() as User | null
+	const formattedDate = format(new Date(message.createdAt), 'dd.MM.yyyy', {
+		locale: enUS,
+	})
 
 	return (
 		<div className='flex flex-col gap-4 my-4 border-b-2 border-neutral-200 pb-4 px-2'>
@@ -61,15 +66,9 @@ export const ReviewsItem = ({
 					</div>
 					{/* DATE */}
 					<div className='flex flex-col justify-between items-end'>
-						<p className='text-[12px]'>
-							{message.createdAt.toLocaleDateString('uk-UA', {
-								year: 'numeric',
-								month: 'numeric',
-								day: 'numeric',
-							})}
-						</p>
+						<p className='text-[12px]'>{formattedDate}</p>
 						{message.email === user?.email && (
-							<div className='flex w-full justify-between'>
+							<div className='flex w-full justify-between gap-2'>
 								{/* EDIT MESSAGE */}
 								<EditButtonMessage
 									message={message}

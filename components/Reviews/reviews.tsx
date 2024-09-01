@@ -9,7 +9,7 @@ import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { ReviewsEditForm } from './reviews-edit-form'
 import { ReviewsForm } from './reviews-form'
-import { ReviewsItem } from './reviews-item'
+import { ReviewsPage } from './reviewsPage'
 interface Props {
 	reviews: ReviewsWithItems
 	product: ProductsWithVariantsWithReviews
@@ -17,7 +17,9 @@ interface Props {
 export const ReviewsComponent = ({ reviews, product }: Props) => {
 	const [open, setOpen] = useState(false)
 	const [edit, setEdit] = useState(false)
+	// MESSAGE ID FOR EDIT
 	const [currentItem, setCurrentItem] = useState<string>('')
+
 	return (
 		<ReviewsWrapper
 			reviewsCount={reviews?.messageTotal}
@@ -70,20 +72,13 @@ export const ReviewsComponent = ({ reviews, product }: Props) => {
 						'p-4'
 					)}
 				>
-					{reviews.messages.length === 0 && (
-						<div className='text-center text-neutral-500'>
-							Немає відгуків, будьте першим
-						</div>
-					)}
-					{reviews?.messages.map(message => (
-						<ReviewsItem
-							key={message.id}
-							message={message}
-							product={product}
-							setEdit={setEdit}
-							setCurrentItem={setCurrentItem}
-						/>
-					))}
+					<ReviewsPage
+						reviewsFromPage={reviews}
+						pageTotal={reviews?.pageTotal}
+						product={product}
+						setEdit={setEdit}
+						setCurrentItem={setCurrentItem}
+					/>
 				</div>
 			</>
 		</ReviewsWrapper>

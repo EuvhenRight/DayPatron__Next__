@@ -1,13 +1,13 @@
 'use client'
 import { PriceTag } from '@/components/PriceTag'
-import { ProductsWithVariantsWithReviews } from '@/lib/types/types'
+import { ProductsWithVariants } from '@/lib/types/types'
 import { rubikGlitch } from '@/lib/utils/font'
 import { cn } from '@/lib/utils/utils'
 import Image from 'next/image'
 import Link from 'next/link'
 
 interface Props {
-	product: ProductsWithVariantsWithReviews
+	product: ProductsWithVariants
 }
 
 export const ProductsCard = ({ product }: Props) => {

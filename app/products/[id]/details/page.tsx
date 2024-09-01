@@ -31,7 +31,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
 	const [cart, product, reviews] = await Promise.all([
 		getCart(),
 		getProduct(id),
-		getReviewsWithItem(id),
+		getReviewsWithItem(id, 1),
 	])
 	return (
 		<>
@@ -42,7 +42,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
 				<AdvantagesWrapper product={product} />
 			</section>
 			<section className='max-w-screen-xl mx-auto'>
-				<ReviewsComponent reviews={reviews} product={product} />
+				<ReviewsComponent reviews={reviews!} product={product} />
 			</section>
 		</>
 	)

@@ -1,4 +1,5 @@
 import { deleteItem } from '@/actions/reviews'
+import { Button } from '@/components/ui/button'
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -15,7 +16,6 @@ import {
 import { ReviewItem } from '@prisma/client'
 import { SquareX } from 'lucide-react'
 import { toast } from 'sonner'
-import { Button } from '../ui/button'
 
 interface Props {
 	message: ReviewItem
@@ -46,8 +46,10 @@ export const DeleteButtonMessage = ({ message, product }: Props) => {
 					<SquareX size={28} />
 				</Button>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent className='w-56'>
-				<DropdownMenuLabel>Видалити відгук?</DropdownMenuLabel>
+			<DropdownMenuContent className='w-40'>
+				<DropdownMenuLabel className='text-center'>
+					Видалити відгук?
+				</DropdownMenuLabel>
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup>
 					<DropdownMenuItem onClick={handleDelete}>Так</DropdownMenuItem>

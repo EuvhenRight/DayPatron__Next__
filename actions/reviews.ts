@@ -14,7 +14,7 @@ export async function addItem(
 	userId?: string
 ) {
 	// FIND EXISTING REVIEW
-	const reviews = await getReviewsWithItem(productId)
+	const reviews = await getReviewsWithItem(productId, 1)
 
 	if (!reviews) {
 		throw new Error('Reviews not found')
@@ -51,28 +51,35 @@ export async function addItem(
 	}
 
 	// UPDATE REVIEW
-	const updateReviews = await getReviewsWithItem(productId)
+	const updateReviews = await getReviewsWithItem(productId, 1)
 
 	// RECALCULATE TOTALS
 	await prisma.$transaction(async tx => {
 		// CALCULATE TOTAL RATING AND NUMBER OF RATINGS
-		const totalItems = updateReviews.messages.length
-		const totalRatings = updateReviews.messages.reduce(
-			(acc, item) => acc + item.rating,
-			0
-		)
-		const numberOfRatings = updateReviews.messages.length
+		const totalItems = await prisma.reviewItem.count({
+			where: { reviewsId: updateReviews?.id },
+		})
+		const totalRatings = await prisma.reviewItem.aggregate({
+			where: { reviewsId: updateReviews?.id },
+			_sum: { rating: true },
+		})
+		const totalRatingsSum = totalRatings._sum.rating || 0
+		const numberOfRatings = totalItems
 		// CALCULATE AVERAGE RATING
 		const averageRating =
 			numberOfRatings > 0
-				? parseFloat((totalRatings / numberOfRatings).toFixed(1)) // NUMBER OF RATINGS
+				? parseFloat((totalRatingsSum / numberOfRatings).toFixed(1))
 				: 0
 
+		// TRANSACT REVIEWS PAGE'S
+		const totalPages = Math.ceil(totalItems / 5)
+
 		await tx.reviews.update({
-			where: { id: reviews.id },
+			where: { id: updateReviews?.id },
 			data: {
 				messageTotal: totalItems,
 				ratingTotal: averageRating,
+				pageTotal: totalPages,
 			},
 		})
 	})
@@ -84,7 +91,7 @@ export async function addItem(
 }
 
 export async function deleteItem(productId: string, itemId: string) {
-	const reviews = await getReviewsWithItem(productId)
+	const reviews = await getReviewsWithItem(productId, 1)
 
 	if (!reviews) {
 		throw new Error('Reviews not found')
@@ -101,28 +108,35 @@ export async function deleteItem(productId: string, itemId: string) {
 	})
 
 	// UPDATE REVIEW
-	const updateReviews = await getReviewsWithItem(productId)
+	const updateReviews = await getReviewsWithItem(productId, 1)
 
 	// RECALCULATE TOTALS
 	await prisma.$transaction(async tx => {
 		// CALCULATE TOTAL RATING AND NUMBER OF RATINGS
-		const totalItems = updateReviews.messages.length
-		const totalRatings = updateReviews.messages.reduce(
-			(acc, item) => acc + item.rating,
-			0
-		)
-		const numberOfRatings = updateReviews.messages.length
+		const totalItems = await prisma.reviewItem.count({
+			where: { reviewsId: updateReviews?.id },
+		})
+		const totalRatings = await prisma.reviewItem.aggregate({
+			where: { reviewsId: updateReviews?.id },
+			_sum: { rating: true },
+		})
+		const totalRatingsSum = totalRatings._sum.rating || 0
+		const numberOfRatings = totalItems
 		// CALCULATE AVERAGE RATING
 		const averageRating =
 			numberOfRatings > 0
-				? parseFloat((totalRatings / numberOfRatings).toFixed(1)) // NUMBER OF RATINGS
+				? parseFloat((totalRatingsSum / numberOfRatings).toFixed(1))
 				: 0
 
+		// TRANSACT REVIEWS PAGE'S
+		const totalPages = Math.ceil(totalItems / 5)
+
 		await tx.reviews.update({
-			where: { id: reviews.id },
+			where: { id: updateReviews?.id },
 			data: {
 				messageTotal: totalItems,
 				ratingTotal: averageRating,
+				pageTotal: totalPages,
 			},
 		})
 	})
@@ -138,7 +152,7 @@ export async function editItem(
 	newData: z.infer<typeof ValidationSchema.reviews>,
 	messageId: string
 ) {
-	const reviews = await getReviewsWithItem(productId)
+	const reviews = await getReviewsWithItem(productId as string, 1)
 
 	if (!reviews) {
 		throw new Error('Reviews not found')
@@ -162,28 +176,35 @@ export async function editItem(
 	})
 
 	// UPDATE REVIEW
-	const updateReviews = await getReviewsWithItem(productId)
+	const updateReviews = await getReviewsWithItem(productId, 1)
 
 	// RECALCULATE TOTALS
 	await prisma.$transaction(async tx => {
 		// CALCULATE TOTAL RATING AND NUMBER OF RATINGS
-		const totalItems = updateReviews.messages.length
-		const totalRatings = updateReviews.messages.reduce(
-			(acc, item) => acc + item.rating,
-			0
-		)
-		const numberOfRatings = updateReviews.messages.length
+		const totalItems = await prisma.reviewItem.count({
+			where: { reviewsId: updateReviews?.id },
+		})
+		const totalRatings = await prisma.reviewItem.aggregate({
+			where: { reviewsId: updateReviews?.id },
+			_sum: { rating: true },
+		})
+		const totalRatingsSum = totalRatings._sum.rating || 0
+		const numberOfRatings = totalItems
 		// CALCULATE AVERAGE RATING
 		const averageRating =
 			numberOfRatings > 0
-				? parseFloat((totalRatings / numberOfRatings).toFixed(1)) // NUMBER OF RATINGS
+				? parseFloat((totalRatingsSum / numberOfRatings).toFixed(1))
 				: 0
 
+		// TRANSACT REVIEWS PAGE'S
+		const totalPages = Math.ceil(totalItems / 5)
+
 		await tx.reviews.update({
-			where: { id: reviews.id },
+			where: { id: updateReviews?.id },
 			data: {
 				messageTotal: totalItems,
 				ratingTotal: averageRating,
+				pageTotal: totalPages,
 			},
 		})
 	})
