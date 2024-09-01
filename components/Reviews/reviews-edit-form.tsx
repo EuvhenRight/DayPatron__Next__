@@ -1,5 +1,7 @@
 'use client'
 import { editItem } from '@/actions/reviews'
+import { ReviewCancelButton } from '@/components/Reviews/review-cancel-button'
+import { ReviewsSubmitMessageButton } from '@/components/Reviews/reviews-submit-message-button'
 import {
 	Form,
 	FormControl,
@@ -9,6 +11,8 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { Rating } from '@/components/ui/rating'
+import { Textarea } from '@/components/ui/textarea'
 import { ValidationSchema } from '@/lib/db/validation'
 import {
 	ProductsWithVariantsWithReviews,
@@ -18,10 +22,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import * as z from 'zod'
-import { Rating } from '../ui/rating'
-import { Textarea } from '../ui/textarea'
-import { ReviewCancelButton } from './review-cancel-button'
-import { ReviewsSubmitMessageButton } from './reviews-submit-message-button'
 
 interface Props {
 	reviews: ReviewsWithItems
@@ -40,7 +40,7 @@ export const ReviewsEditForm = ({
 }: Props) => {
 	// FIND MESSAGE
 	const findItem = reviews.messages.find(message => message.id === currentItem)
-
+	// FORM SETUP AND VALIDATION
 	const form = useForm<z.infer<typeof ValidationSchema.reviews>>({
 		resolver: zodResolver(ValidationSchema.reviews),
 		defaultValues: {

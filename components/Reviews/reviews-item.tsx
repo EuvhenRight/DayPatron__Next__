@@ -25,12 +25,13 @@ export const ReviewsItem = ({
 }: Props) => {
 	const name = message.fullName.charAt(0)
 	const user = CurrentUser() as User | null
+	// DATE FORMAT
 	const formattedDate = format(new Date(message.createdAt), 'dd.MM.yyyy', {
 		locale: enUS,
 	})
 
 	return (
-		<div className='flex flex-col gap-4 my-4 border-b-2 border-neutral-200 pb-4 px-2'>
+		<div className='flex flex-col gap-4 my-4 border-b-2 border-neutral-200 px-2'>
 			<div className='flex flex-col gap-2'>
 				<div className='flex gap-2 relative justify-between'>
 					<div className='flex gap-2'>
@@ -67,13 +68,13 @@ export const ReviewsItem = ({
 					{/* DATE */}
 					<div className='flex flex-col justify-between items-end'>
 						<p className='text-[12px]'>{formattedDate}</p>
+						{/* EDIT AND DELETE ONLY FOR AUTHOR */}
 						{message.email === user?.email && (
 							<div className='flex w-full justify-between gap-2'>
 								{/* EDIT MESSAGE */}
 								<EditButtonMessage
 									message={message}
 									setEdit={setEdit}
-									product={product}
 									setCurrentItem={setCurrentItem}
 								/>
 								{/* DELETE MESSAGE */}
@@ -83,7 +84,7 @@ export const ReviewsItem = ({
 					</div>
 				</div>
 				{/* MESSAGE */}
-				<p className='text-sm ml-14 py-4 break-words'>{message.message}</p>
+				<p className='text-sm ml-14 pb-4 break-words'>{message.message}</p>
 			</div>
 		</div>
 	)

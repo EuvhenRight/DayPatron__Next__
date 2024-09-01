@@ -1,4 +1,3 @@
-import { ProductsWithVariantsWithReviews } from '@/lib/types/types'
 import { ReviewItem } from '@prisma/client'
 import { Tooltip } from '@radix-ui/react-tooltip'
 import { Pencil } from 'lucide-react'
@@ -8,13 +7,11 @@ import { TooltipContent, TooltipProvider, TooltipTrigger } from '../ui/tooltip'
 interface Props {
 	setEdit: React.Dispatch<React.SetStateAction<boolean>>
 	message: ReviewItem
-	product: ProductsWithVariantsWithReviews
 	setCurrentItem: React.Dispatch<React.SetStateAction<string>>
 }
 export const EditButtonMessage = ({
 	setEdit,
 	message,
-	product,
 	setCurrentItem,
 }: Props) => {
 	const handleEdit = () => {

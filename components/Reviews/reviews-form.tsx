@@ -11,10 +11,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { ValidationSchema } from '@/lib/db/validation'
 import { CurrentUser } from '@/lib/hooks/currentUser'
-import {
-	ProductsWithVariantsWithReviews,
-	ReviewsWithItems,
-} from '@/lib/types/types'
+import { ProductsWithVariantsWithReviews } from '@/lib/types/types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { User } from '@prisma/client'
 import { useForm } from 'react-hook-form'
@@ -26,21 +23,20 @@ import { ReviewCancelButton } from './review-cancel-button'
 import { ReviewsSubmitMessageButton } from './reviews-submit-message-button'
 
 interface Props {
-	reviews: ReviewsWithItems
 	product: ProductsWithVariantsWithReviews
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>
 	setEdit: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const ReviewsForm = ({ reviews, product, setOpen, setEdit }: Props) => {
+export const ReviewsForm = ({ product, setOpen, setEdit }: Props) => {
 	const user = CurrentUser() as User | null
-
+	// FORM SETUP AND VALIDATION
 	const form = useForm<z.infer<typeof ValidationSchema.reviews>>({
 		resolver: zodResolver(ValidationSchema.reviews),
 		defaultValues: {
 			fullName: user?.name || '',
 			email: user?.email || '',
-			message: 'аиіиіви',
+			message: '',
 			rating: 0,
 		},
 	})

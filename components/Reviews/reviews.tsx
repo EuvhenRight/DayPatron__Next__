@@ -32,6 +32,7 @@ export const ReviewsComponent = ({ reviews, product }: Props) => {
 			setEdit={setEdit}
 		>
 			<>
+				{/* OPEN FORM REVIEW */}
 				{open && (
 					<motion.div
 						initial={{ opacity: 0, y: -20 }}
@@ -41,13 +42,13 @@ export const ReviewsComponent = ({ reviews, product }: Props) => {
 						className='my-5 px-4'
 					>
 						<ReviewsForm
-							reviews={reviews}
 							product={product}
 							setOpen={setOpen}
 							setEdit={setEdit}
 						/>
 					</motion.div>
 				)}
+				{/* EDIT FORM REVIEW */}
 				{edit && (
 					<motion.div
 						initial={{ opacity: 0, y: -20 }}

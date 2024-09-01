@@ -4,7 +4,7 @@ import {
 	ReviewsWithItems,
 } from '@/lib/types/types'
 import React, { useEffect, useState } from 'react'
-import { PaginationC } from './pagination-c'
+import { PaginationComponent } from './pagination-c'
 import { ReviewsItem } from './reviews-item'
 
 interface Props {
@@ -26,6 +26,7 @@ export const ReviewsPage = ({
 	const [page, setPage] = useState<number>(1)
 	const [pageSize, setPageSize] = useState<number>(5)
 
+	// LOGIC FOR PAGINATION PAGES
 	useEffect(() => {
 		const fetchReviews = async () => {
 			try {
@@ -44,16 +45,16 @@ export const ReviewsPage = ({
 		fetchReviews()
 	}, [product.id, page, pageSize])
 
-	console.log(reviews, 'reviews', page, 'page')
-
 	return (
 		<>
+			{/* IF THERE ARE NO REVIEWS */}
 			{reviewsFromPage?.messages.length === 0 ? (
 				<div className='text-center text-neutral-500'>
 					Немає відгуків, будьте першим
 				</div>
 			) : (
 				<>
+					{/* IF THERE ARE REVIEWS ONLY ON FIRST PAGE */}
 					{page === 1 ? (
 						<ul>
 							{reviewsFromPage?.messages.map(message => (
@@ -68,6 +69,7 @@ export const ReviewsPage = ({
 							))}
 						</ul>
 					) : (
+						// IF THERE ARE REVIEWS ON OTHER PAGES
 						<ul>
 							{reviews?.messages.map(message => (
 								<li key={message.id}>
@@ -81,7 +83,11 @@ export const ReviewsPage = ({
 							))}
 						</ul>
 					)}
-					<PaginationC pageTotal={pageTotal} setPage={setPage} page={page} />
+					<PaginationComponent
+						pageTotal={pageTotal}
+						setPage={setPage}
+						page={page}
+					/>
 				</>
 			)}
 		</>

@@ -85,7 +85,7 @@ export async function addItem(
 	})
 
 	// ADD TYPE REVALIDATE CACHE
-	revalidatePath('/product/[slug]/details', 'page')
+	revalidatePath('/product/[slug]/details', 'layout')
 
 	return { ...reviews }
 }
@@ -142,7 +142,7 @@ export async function deleteItem(productId: string, itemId: string) {
 	})
 
 	// ADD TYPE REVALIDATE CACHE
-	revalidatePath('/product/[slug]/details', 'page')
+	revalidatePath('/product/[slug]/details', 'layout')
 
 	return { ...reviews }
 }
@@ -210,7 +210,7 @@ export async function editItem(
 	})
 
 	// ADD TYPE REVALIDATE CACHE
-	revalidatePath('/product/[slug]/details', 'page')
+	revalidatePath('/product/[slug]/details', 'layout')
 
 	return { ...reviews }
 }

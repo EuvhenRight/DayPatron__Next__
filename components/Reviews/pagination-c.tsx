@@ -14,7 +14,7 @@ interface Props {
 	page: number
 }
 
-export const PaginationC = ({ setPage, page, pageTotal }: Props) => {
+export const PaginationComponent = ({ setPage, page, pageTotal }: Props) => {
 	// LOGIC FOR PAGINATION PAGES
 	const handlePageChange = (newPage: number) => {
 		if (newPage < 1) {
@@ -23,6 +23,12 @@ export const PaginationC = ({ setPage, page, pageTotal }: Props) => {
 			return setPage(pageTotal)
 		}
 		setPage(newPage)
+		// SCROLL TO REVEIWS
+		document.getElementById(`reviews`)?.scrollIntoView({
+			behavior: 'smooth',
+			block: 'start',
+			inline: 'nearest',
+		})
 	}
 	return (
 		<Pagination>
