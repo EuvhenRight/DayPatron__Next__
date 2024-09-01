@@ -40,8 +40,8 @@ export const Advantages = ({ category }: Props) => {
 	}
 
 	return (
-		<div className='text-white flex flex-col md:flex-row justify-around items-center'>
-			<div className='lg:w-40 lg:h-40 w-20 h-20 rounded-full bg-white shadow-xl'>
+		<div className='text-white flex flex-col lg:flex-row w-full sm:w-1/2 lg:w-full justify-around items-center'>
+			<div className='rounded-full bg-white shadow-xl'>
 				<Image
 					src={image}
 					alt={category}
@@ -58,7 +58,7 @@ export const Advantages = ({ category }: Props) => {
 						variants={cardVariants}
 						viewport={{ once: true, amount: 0.15 }}
 						whileHover={{ scale: 1.1 }}
-						className='flex flex-col items-center w-[280px] text-center'
+						className='flex flex-col items-center lg:w-[280px] sm:w-140 w-full text-center'
 					>
 						<Image
 							src={item.icon}
@@ -76,7 +76,7 @@ export const Advantages = ({ category }: Props) => {
 							>
 								{item.title}
 							</h2>
-							<p className='font-light text-sm lg:text-lg'>{item.text}</p>
+							<p className='font-light text-lg'>{item.text}</p>
 						</div>
 					</motion.div>
 				</div>

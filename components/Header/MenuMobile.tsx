@@ -4,8 +4,6 @@ import { LogOut } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { AiOutlineFacebook } from 'react-icons/ai'
-import { BiLogoTelegram } from 'react-icons/bi'
 import { LogOutModal } from '../SignOut/sign-out'
 
 interface Props {
@@ -48,7 +46,7 @@ export const MenuMobile = ({
 			} ease-in-out duration-300`}
 		>
 			<div
-				className={`bg-neutral-800 absolute top-0 right-0 w-full sm:w-96 p-4 flex flex-col font-bold overflow-auto`}
+				className={`bg-neutral-800 absolute top-0 right-0 w-full h-full sm:w-96 p-4 flex flex-col font-bold overflow-auto`}
 			>
 				{/* MENU */}
 				<div className='gap-5 border-b-2'>
@@ -81,15 +79,6 @@ export const MenuMobile = ({
 						<LogOut className='w-8 h-8 m-4' /> <LogOutModal />
 					</div>
 				)}
-				{/* ICONS MENU */}
-				<div className='flex flex-row text-white py-4 justify-end'>
-					<button onClick={toggleHamburger}>
-						<BiLogoTelegram className='w-8 h-8 m-4' />
-					</button>
-					<button onClick={toggleHamburger}>
-						<AiOutlineFacebook className='w-8 h-8 m-4' />
-					</button>
-				</div>
 			</div>
 		</div>
 	)

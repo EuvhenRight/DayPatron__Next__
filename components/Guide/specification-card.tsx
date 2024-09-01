@@ -10,12 +10,29 @@ import {
 	MoveVertical,
 } from 'lucide-react'
 import Image from 'next/image'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export const SpecificationCard = () => {
+	const [isMobile, setIsMobile] = useState(false)
 	const controls = useAnimation()
 	const ref = useRef(null)
 	const isInView = useInView(ref)
+
+	// Update screen size state on window resize TODO: fix animation
+	useEffect(() => {
+		const handleResize = () => {
+			setIsMobile(window.innerWidth <= 768)
+		}
+
+		// Set initial screen size
+		handleResize()
+
+		// Add event listener for resize
+		window.addEventListener('resize', handleResize)
+
+		// Cleanup event listener on component unmount
+		return () => window.removeEventListener('resize', handleResize)
+	}, [])
 
 	// ANIMATION VARIANTS
 	useEffect(() => {
@@ -25,7 +42,7 @@ export const SpecificationCard = () => {
 	}, [controls, isInView])
 
 	const containerVariants = {
-		hidden: { opacity: 0, y: 150 },
+		hidden: { opacity: 0, y: 50 },
 		visible: {
 			opacity: 1,
 			y: 0,
@@ -33,18 +50,38 @@ export const SpecificationCard = () => {
 				staggerChildren: 0.2, // Delay between each child animation
 			},
 		},
+		mobile: {
+			hidden: { opacity: 0, y: 0 },
+			visible: {
+				opacity: 1,
+				y: 0,
+				transition: {
+					staggerChildren: 0.2, // Delay between each child animation
+				},
+			},
+		},
 	}
 
 	const itemVariants = {
 		hidden: { opacity: 0, y: 50 },
 		visible: { opacity: 1, y: 0 },
+		mobile: {
+			hidden: { opacity: 0, y: 50 },
+			visible: { opacity: 1, y: 0 },
+		},
 	}
+	console.log(isMobile, 'isMobile')
+	// Use the appropriate variants based on screen size
+	const containerVariant = isMobile
+		? containerVariants.mobile
+		: containerVariants
+	const itemVariant = isMobile ? itemVariants.mobile : itemVariants
 
 	return (
 		<div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-center justify-items-center gap-4 lg:gap-0'>
 			{/* SPECIFICATION 100ml */}
 			<motion.div
-				variants={containerVariants}
+				variants={containerVariant}
 				className='flex items-center justify-center bg-slate-100 p-4 rounded-lg'
 			>
 				<Image
@@ -56,26 +93,26 @@ export const SpecificationCard = () => {
 				<motion.div
 					className='*:flex *:items-center *:my-4'
 					ref={ref}
-					variants={containerVariants}
+					variants={containerVariant}
 					initial='hidden'
 					animate={controls}
 				>
-					<motion.div variants={itemVariants}>
+					<motion.div variants={itemVariant}>
 						<Droplet size={20} />
 						<span className={cn(rubikGlitch.className, 'ml-2 font-light')}>
 							100 мл
 						</span>
 					</motion.div>
-					<motion.div variants={itemVariants}>
+					<motion.div variants={itemVariant}>
 						<MoveVertical size={20} />
 						<span className='ml-2 font-light'>86 мм</span>
 					</motion.div>
-					<motion.div variants={itemVariants}>
+					<motion.div variants={itemVariant}>
 						<MoveHorizontal size={20} />
 						<span className='ml-2 font-light'>50 мм</span>
 					</motion.div>
 					<motion.div
-						variants={itemVariants}
+						variants={itemVariant}
 						className='border border-gray-500 rounded-lg *:flex *:items-center *:my-2 flex-col'
 					>
 						<div>
@@ -91,7 +128,7 @@ export const SpecificationCard = () => {
 			</motion.div>
 			{/* SPECIFICATION 250ml */}
 			<motion.div
-				variants={containerVariants}
+				variants={containerVariant}
 				className='flex items-center justify-center bg-slate-100 p-4 rounded-lg'
 			>
 				<Image
@@ -103,26 +140,26 @@ export const SpecificationCard = () => {
 				<motion.div
 					className='*:flex *:items-center *:my-4'
 					ref={ref}
-					variants={containerVariants}
+					variants={containerVariant}
 					initial='hidden'
 					animate={controls}
 				>
-					<motion.div variants={itemVariants}>
+					<motion.div variants={itemVariant}>
 						<Droplet size={20} />
 						<span className={cn(rubikGlitch.className, 'ml-2 font-light')}>
 							250 мл
 						</span>
 					</motion.div>
-					<motion.div variants={itemVariants}>
+					<motion.div variants={itemVariant}>
 						<MoveVertical size={20} />
 						<span className='ml-2 font-light'>131 мм</span>
 					</motion.div>
-					<motion.div variants={itemVariants}>
+					<motion.div variants={itemVariant}>
 						<MoveHorizontal size={20} />
 						<span className='ml-2 font-light'>70 мм</span>
 					</motion.div>
 					<motion.div
-						variants={itemVariants}
+						variants={itemVariant}
 						className='border border-gray-500 rounded-lg *:flex *:items-center *:my-2 flex-col'
 					>
 						<div>
@@ -138,7 +175,7 @@ export const SpecificationCard = () => {
 			</motion.div>
 			{/* SPECIFICATION 500ml */}
 			<motion.div
-				variants={containerVariants}
+				variants={containerVariant}
 				className='flex items-center justify-center bg-slate-100 p-4 rounded-lg'
 			>
 				<Image
@@ -150,26 +187,26 @@ export const SpecificationCard = () => {
 				<motion.div
 					className='*:flex *:items-center *:my-4'
 					ref={ref}
-					variants={containerVariants}
+					variants={containerVariant}
 					initial='hidden'
 					animate={controls}
 				>
-					<motion.div variants={itemVariants}>
+					<motion.div variants={itemVariant}>
 						<Droplet size={20} />
 						<span className={cn(rubikGlitch.className, 'ml-2 font-light')}>
 							500 мл
 						</span>
 					</motion.div>
-					<motion.div variants={itemVariants}>
+					<motion.div variants={itemVariant}>
 						<MoveVertical size={20} />
 						<span className='ml-2 font-light'>154 мм</span>
 					</motion.div>
-					<motion.div variants={itemVariants}>
+					<motion.div variants={itemVariant}>
 						<MoveHorizontal size={20} />
 						<span className='ml-2 font-light'>86 мм</span>
 					</motion.div>
 					<motion.div
-						variants={itemVariants}
+						variants={itemVariant}
 						className='border border-gray-500 rounded-lg *:flex *:items-center *:my-2 flex-col'
 					>
 						<div>

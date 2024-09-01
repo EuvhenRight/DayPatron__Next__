@@ -56,7 +56,7 @@ export const ReviewsPage = ({
 				<>
 					{/* IF THERE ARE REVIEWS ONLY ON FIRST PAGE */}
 					{page === 1 ? (
-						<ul>
+						<ul className='px-4'>
 							{reviewsFromPage?.messages.map(message => (
 								<li key={message.id}>
 									<ReviewsItem
@@ -70,7 +70,7 @@ export const ReviewsPage = ({
 						</ul>
 					) : (
 						// IF THERE ARE REVIEWS ON OTHER PAGES
-						<ul>
+						<ul className='px-4'>
 							{reviews?.messages.map(message => (
 								<li key={message.id}>
 									<ReviewsItem

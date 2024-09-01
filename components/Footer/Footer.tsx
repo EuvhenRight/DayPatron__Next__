@@ -22,7 +22,7 @@ const Footer = ({ products }: Props) => {
 	const { ContentFooter } = data
 	return (
 		<footer className='bg-neutral-800 z-40 mt-10'>
-			<div className='flex flex-col-reverse md:flex-row justify-between md:gap-4 px-3 container items-center'>
+			<div className='flex flex-col-reverse md:flex-row justify-between md:gap-4 px-8 container items-center'>
 				{/* LOGO AND SLOGAN */}
 				<div className='relative flex flex-col -center py-4 md:pt-10'>
 					<Image

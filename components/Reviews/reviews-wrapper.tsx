@@ -1,6 +1,7 @@
 'use client'
 import { ReviewsNewMessageButton } from '@/components/Reviews/reviews-new-message-button'
 import { ReviewsRating } from '@/components/Reviews/reviews-rating'
+import { cn } from '@/lib/utils/utils'
 import React from 'react'
 
 interface Props {
@@ -23,12 +24,15 @@ export const ReviewsWrapper = ({
 	setOpen,
 	labelClose,
 	edit,
-	setEdit,
 }: Props) => {
 	return (
 		<div className='w-full' id='reviews'>
-			<div className='flex justify-between items-center border-b-2 border-gray-200 flex-col sm:flex-row'>
-				<div className='my-4 ml-10'>
+			<div
+				className={cn(
+					'flex justify-between items-center border-b-2 border-gray-200 flex-col sm:flex-row sm:mx-2 *:my-4'
+				)}
+			>
+				<div className='sm:ml-10'>
 					<ReviewsRating rating={reviewsRating} count={reviewsCount} />
 				</div>
 				{/* CLOSE BUTTON CONDITION */}
