@@ -5,6 +5,7 @@
   scrollbar-width: thin;
   overflow-y: auto;
   border-bottom: 1px solid var(--str-chat__surface-color);
+  padding-right: 8px;
 }
 
 .user-list__header {

@@ -14,8 +14,8 @@ import { PinIcon } from 'assets/images/streamio';
 
 export const TeamChannelHeader = ({ setIsEditing, setPinsOpen, onShowChannelSelector, isChannelSelectorVisible }) => {
   const { closeThread } = useChannelActionContext();
-  const { channel, watcher_count } = useChannelStateContext();
-
+  const { channel } = useChannelStateContext();
+  
   const getMessagingHeader = () => {
     const members = Object.values(channel.state.members);
 
@@ -46,12 +46,6 @@ export const TeamChannelHeader = ({ setIsEditing, setPinsOpen, onShowChannelSele
     );
   };
 
-  const getWatcherText = (watchers) => {
-    if (!watchers) return 'No users online';
-    if (watchers === 1) return '1 user online';
-    return `${watchers} users online`;
-  };
-
   return (
     <div className='team-channel-header__container'>
       {getMessagingHeader()}
@@ -61,7 +55,6 @@ export const TeamChannelHeader = ({ setIsEditing, setPinsOpen, onShowChannelSele
           color="secondary">
           <EditOutlined />
         </IconButton>
-        <p className='team-channel-header__right-text'>{getWatcherText(watcher_count)}</p>
         <div
           className='team-channel-header__right-pin-wrapper'
           onClick={(e) => {
