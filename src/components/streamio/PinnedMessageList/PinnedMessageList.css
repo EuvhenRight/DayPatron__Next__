@@ -1,6 +1,6 @@
 .pinned-messages__container {
   height: 100%;
-  width: 300px;
+  width: 100%;
   box-shadow: inset 1px 0px 0px rgba(0, 0, 0, 0.1);
   z-index: 1;
   background: #ffffff;
@@ -25,6 +25,8 @@
 
 .pinned-messages__list {
   padding-top: 20px;
+  padding-left: min(var(--str-chat__spacing-10), 4%);
+  padding-right: min(var(--str-chat__spacing-10), 4%);
 }
 
 .pinned-messages__list .pinned-message {

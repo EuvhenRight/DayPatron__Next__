@@ -8,6 +8,7 @@ import {
   Thread,
   Window,
   useChannelActionContext,
+  useChannelStateContext
 } from 'stream-chat-react';
 
 import { PinnedMessageList } from '../PinnedMessageList/PinnedMessageList';
@@ -26,6 +27,7 @@ export const ChannelInner = (props) => {
   };
 
   const { sendMessage } = useChannelActionContext();
+  const { thread } = useChannelStateContext();
 
   const teamPermissions = { ...defaultPinPermissions.team, user: true };
   const messagingPermissions = {
@@ -61,11 +63,13 @@ export const ChannelInner = (props) => {
 
   return (
     <GiphyContext.Provider value={giphyStateObj}>
-      <Window>
-        <TeamChannelHeader {...{ setIsEditing, setPinsOpen, onShowChannelSelector, isChannelSelectorVisible }} />
-        <MessageList disableQuotedMessages pinPermissions={pinnedPermissions} />
-        <MessageInput audioRecordingEnabled overrideSubmitHandler={overrideSubmitHandler}  />
-      </Window>
+      {!thread && !pinsOpen && 
+        <Window>
+          <TeamChannelHeader {...{ setIsEditing, setPinsOpen, onShowChannelSelector, isChannelSelectorVisible }} />
+          <MessageList disableQuotedMessages pinPermissions={pinnedPermissions} />
+          <MessageInput audioRecordingEnabled overrideSubmitHandler={overrideSubmitHandler}  />
+        </Window>
+      }
       <Thread />
       {pinsOpen && <PinnedMessageList setPinsOpen={setPinsOpen} />}
     </GiphyContext.Provider>
