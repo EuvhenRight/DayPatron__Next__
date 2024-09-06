@@ -1,10 +1,10 @@
 'use client'
+import { LogOutModal } from '@/components/SignOut/sign-out'
 import classNames from 'classnames'
 import { LogOut } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LogOutModal } from '../SignOut/sign-out'
 
 interface Props {
 	isActive: string

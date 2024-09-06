@@ -5,7 +5,7 @@ async function UserInformationPage() {
 	const [order, orders] = await Promise.all([getOrder(), getManyOrders()])
 	return (
 		<div>
-			<UserInformation orders={orders} />
+			<UserInformation orders={orders!} />
 		</div>
 	)
 }

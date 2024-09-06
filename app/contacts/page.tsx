@@ -32,7 +32,7 @@ export default async function ContactsPage() {
 						))}
 					</ul>
 				</div>
-				<div className='w-1/2'>
+				<div className='w-1/2 flex flex-col justify-center'>
 					<FeedBackForm currentUser={currentUser} />
 				</div>
 			</section>

@@ -7,13 +7,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import {
-	AiOutlineClose,
-	AiOutlineMenu,
-	AiOutlineSearch,
-	AiOutlineUser,
-} from 'react-icons/ai'
+import { AiOutlineClose, AiOutlineMenu, AiOutlineUser } from 'react-icons/ai'
 import { Drawer } from '../Drawer/Drawer'
+import { SearchDialog } from '../Search/Search'
 import { UserMenu } from './HeaderUserMenu'
 import { Marquee } from './marquee'
 import { MenuMobile } from './MenuMobile'
@@ -146,12 +142,7 @@ export const Header = ({ cart }: Props) => {
 							</li>
 							<li>
 								{/* SEARCH ICON */}
-								<button
-									className='w-8 h-8 cursor-pointer hidden md:block text-white'
-									onClick={() => toggleActive('/search')}
-								>
-									<AiOutlineSearch className='w-full h-full' />
-								</button>
+								<SearchDialog />
 							</li>
 							<li>
 								{/* SHOPPING CART ICON */}

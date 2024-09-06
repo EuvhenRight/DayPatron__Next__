@@ -93,7 +93,7 @@ export const CheckoutForm = ({ cart, currentDelivery, currentUser }: Props) => {
 			// UPDATE DELIVERY STATUS
 			await toast.promise(newOrder, {
 				loading: 'Зачекаємо...',
-				success: 'Ваш відгук додано!',
+				success: 'Ваше замовлення оформлено!',
 				error: 'Щось пішло не так, спробуйте ще раз',
 			})
 

@@ -45,7 +45,8 @@ export const Drawer = ({ cart }: Props) => {
 					<span className='inline-flex rounded-full h-4 w-4 bg-red-500 absolute top-0 right-0 border border-white'></span>
 				)}
 			</SheetTrigger>
-			<SheetContent>
+			{/* DRAWER FULL SCREEN IN MOBILE */}
+			<SheetContent className='w-full'>
 				<div
 					className={`bg-neutral-700 absolute top-0 right-0 h-full w-full sm:w-96 z-50 p-4 flex flex-col overflow-auto`}
 				>

@@ -119,15 +119,15 @@ export const ValidationSchema = {
 		})
 		.refine(
 			data => {
-				if (data.rating <= 2 && data.message.length < 250) {
-					return false // If rating is 1 or 2 and message is less than 250 chars, validation fails
+				if (data.rating <= 2 && data.message.length < 200) {
+					return false
 				}
 				return true
 			},
 			{
 				message:
-					'If rating is 1 or 2, the message must be at least 250 characters long',
-				path: ['message'], // Set path to message field
+					'Якщо ваша оцінка становить 1 або 2 зірочки, повідомлення має бути не менше 200 символів, оскільки ми дуже стурбовані якістю нашої роботи і хочемо глибше зрозуміти, що саме не так.',
+				path: ['message'],
 			}
 		) as ZodSchema<ReviewsFormSchema>,
 	// EXTRA USER

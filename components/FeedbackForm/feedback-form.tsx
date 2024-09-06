@@ -1,5 +1,5 @@
 'use client'
-import ComponentLoader from '@/app/contacts/loading'
+import ContactsLoader from '@/components/FeedbackForm/loading'
 import { Button } from '@/components/ui/button'
 import {
 	Form,
@@ -72,7 +72,7 @@ export const FeedBackForm = ({ currentUser: user }: Props) => {
 
 	// LOADER
 	if (success) {
-		return <ComponentLoader />
+		return <ContactsLoader />
 	}
 
 	return (

@@ -4,7 +4,7 @@ import { ExtraUser, User } from '@prisma/client'
 
 const createAddressSection = (delivery: OrderForm): string => {
 	const address = delivery?.address
-	return address.typeOfDelivery === 'У відділення'
+	return address?.typeOfDelivery === 'У відділення'
 		? `<p style="font-size: 12px;">Номер відділення: ${address?.branchNumber}</p>
 					<p style="font-size: 12px;">Назва відділення: ${address?.city}</p>`
 		: `
@@ -42,7 +42,7 @@ const createAddressSection = (delivery: OrderForm): string => {
 }
 
 const createItemsSection = (items: OrderForm): string => {
-	return items.item
+	return items?.item
 		.map(
 			item => `
 					<tr>

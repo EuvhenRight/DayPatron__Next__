@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils/utils'
 async function Guide() {
 	// FETCH ALL PRODUCTS
 	const dataProducts = await getAllProducts()
+	// TODO: ADD VIDEO FROM YOUTUBE
 	return (
 		<section className='container'>
 			<div className='text-center pt-1'>

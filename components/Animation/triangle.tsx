@@ -100,7 +100,7 @@ export const TriangleAnimation = () => {
 					// large screen styling
 					`lg:top-[22%] lg:left-[41%]`,
 					// extra large screen styling
-					`xl:top-[22%] xl:left-[43%] xl:text-white xl:hover:text-neutral-800 xl:hover:bg-white xl:hover:border-[10px] xl:hover:border-neutral-800`
+					`xl:top-[22%] xl:left-[43%] xl:text-white xl:hover:text-neutral-800 xl:hover:bg-white xl:hover:border-[10px] xl:hover:border-neutral-800 xl:hover:scale-105 xl:hover:shadow-neutral-800`
 				)}
 			>
 				<Link href='/guide'>Як це працює?</Link>
