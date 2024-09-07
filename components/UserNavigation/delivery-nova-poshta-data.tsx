@@ -13,7 +13,7 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from '@/components/ui/popover'
-import { useSearchData } from '@/lib/hooks/search-division'
+import { useSearchDataDivision } from '@/lib/hooks/search'
 import { cn } from '@/lib/utils/utils'
 import { Check, ChevronsUpDown } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -27,7 +27,7 @@ export const Combobox = ({ onChange, setAutoCityData }: Props) => {
 	const [currentData, setCurrentData] = useState<string>('')
 	const [searchNumber, setSearchNumber] = useState('')
 	// GET DATA FROM API
-	const { data, loading } = useSearchData(searchNumber)
+	const { data, loading } = useSearchDataDivision(searchNumber)
 
 	const handleOnChange = (value: string) => {
 		setSearchNumber(value)

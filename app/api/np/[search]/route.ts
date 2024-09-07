@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
 	const url = new URL(request.url)
-	const city = url.searchParams.get('city')
+
 	const divisionNumber = url.searchParams.get('divisionNumber')
 
 	const apiKey = process.env.NOVA_POSHTA_TOKEN

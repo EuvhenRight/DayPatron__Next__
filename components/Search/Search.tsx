@@ -6,12 +6,14 @@ import {
 	SheetContent,
 	SheetTrigger,
 } from '@/components/ui/sheet'
+import { useSearchMainData } from '@/lib/hooks/search'
 import { useState } from 'react'
 import { AiOutlineClose, AiOutlineSearch } from 'react-icons/ai'
 
 export const SearchDialog = () => {
-	const [open, setOpen] = useState(false)
-	const [name, setName] = useState('')
+	const [open, setOpen] = useState<boolean>(false)
+	const [name, setName] = useState<string>('')
+	const { data, loading } = useSearchMainData(name)
 
 	const handleSearch = () => {
 		setOpen(true)
@@ -42,11 +44,22 @@ export const SearchDialog = () => {
 						Будь ласка, введіть назву товару що ви шукаєте...
 						<Input
 							type='text'
-							value={name}
-							onChange={e => setName(e.target.value)}
 							placeholder='Введіть назву...'
 							className='mt-2'
+							value={name}
+							onChange={e => setName(e.target.value)}
 						/>
+					</div>
+					<div>
+						<>
+							<ul>
+								{data?.map((item, index) => (
+									<li key={index} className='py-2'>
+										{item.name}
+									</li>
+								))}
+							</ul>
+						</>
 					</div>
 				</SheetContent>
 			</Sheet>

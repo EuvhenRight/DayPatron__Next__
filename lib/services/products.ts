@@ -1,3 +1,4 @@
+import prisma from '@/lib/db/client'
 import {
 	ProductsWithVariantsWithReviews,
 	ProductWithVariantsWithReviews,
@@ -45,4 +46,50 @@ export async function getProduct(
 	}
 
 	return product
+}
+
+export async function getSearchProducts(searchQuery = '') {
+	// Search products by name or other fields
+	return await prisma.product.findMany({
+		where: {
+			OR: [
+				{
+					name: {
+						contains: searchQuery,
+						mode: 'insensitive',
+					},
+				},
+				{
+					description: {
+						contains: searchQuery,
+						mode: 'insensitive',
+					},
+				},
+				{
+					category: {
+						contains: searchQuery,
+						mode: 'insensitive',
+					},
+				},
+				{
+					ingredients: {
+						contains: searchQuery,
+						mode: 'insensitive',
+					},
+				},
+				{
+					specification: {
+						contains: searchQuery,
+						mode: 'insensitive',
+					},
+				},
+				{
+					useTo: {
+						contains: searchQuery,
+						mode: 'insensitive',
+					},
+				},
+			],
+		},
+	})
 }
