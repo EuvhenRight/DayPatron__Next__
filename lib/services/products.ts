@@ -47,10 +47,9 @@ export async function getProduct(
 
 	return product
 }
-
-export async function getSearchProducts(searchQuery = '') {
-	// Search products by name or other fields
-	return await prisma.product.findMany({
+export async function getSearchProducts(searchQuery: string) {
+	// Search products by name
+	const search = await prisma.product.findMany({
 		where: {
 			OR: [
 				{
@@ -65,31 +64,10 @@ export async function getSearchProducts(searchQuery = '') {
 						mode: 'insensitive',
 					},
 				},
-				{
-					category: {
-						contains: searchQuery,
-						mode: 'insensitive',
-					},
-				},
-				{
-					ingredients: {
-						contains: searchQuery,
-						mode: 'insensitive',
-					},
-				},
-				{
-					specification: {
-						contains: searchQuery,
-						mode: 'insensitive',
-					},
-				},
-				{
-					useTo: {
-						contains: searchQuery,
-						mode: 'insensitive',
-					},
-				},
 			],
 		},
 	})
+
+	// Search products by name or other fields
+	return search
 }

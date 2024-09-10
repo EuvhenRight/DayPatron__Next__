@@ -52,13 +52,17 @@ export const SearchDialog = () => {
 					</div>
 					<div>
 						<>
-							<ul>
-								{data?.map((item, index) => (
-									<li key={index} className='py-2'>
-										{item.name}
-									</li>
-								))}
-							</ul>
+							{loading ? (
+								<p>Loading...</p>
+							) : (
+								<ul>
+									{data?.map((item, index) => (
+										<li key={index} className='py-2'>
+											{item.description}
+										</li>
+									))}
+								</ul>
+							)}
 						</>
 					</div>
 				</SheetContent>

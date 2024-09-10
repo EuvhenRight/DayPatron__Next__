@@ -36,11 +36,11 @@ export function useSearchDataDivision(number: string | '') {
 	return { data, loading }
 }
 
-export function useSearchMainData(searchWords: string | undefined) {
+export function useSearchMainData(searchWords: string | null) {
 	const [data, setData] = useState<ProductWithVariantsWithReviews[]>()
 	// LOADING STATE
 	const [loading, setLoading] = useState<boolean>(false)
-
+	console.log(searchWords, 'searchWords')
 	useEffect(() => {
 		const mainData = async () => {
 			if (!searchWords) return
@@ -54,7 +54,7 @@ export function useSearchMainData(searchWords: string | undefined) {
 				)
 				const searchResult = await response.json()
 
-				return setData(searchResult?.data) // SET DATA WITH .data
+				return setData(searchResult) // SET DATA WITH .data
 			} catch (error) {
 				console.log(error)
 			} finally {

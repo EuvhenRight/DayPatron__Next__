@@ -2,10 +2,7 @@ import { getSearchProducts } from '@/lib/services/products'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest) {
-	const url = new URL(request.url)
-	const searchQuery = url.searchParams.get('searchQuery') || ''
-
-	console.log(searchQuery, 'searchParams')
+	const searchQuery = request.nextUrl.searchParams.get('searchQuery') || ''
 
 	if (!searchQuery || typeof searchQuery !== 'string') {
 		return NextResponse.json(
