@@ -6,6 +6,7 @@ import {
 	Sheet,
 	SheetClose,
 	SheetContent,
+	SheetOverlay,
 	SheetTrigger,
 } from '@/components/ui/sheet'
 import { CartWithVariants } from '@/lib/types/types'
@@ -45,6 +46,7 @@ export const Drawer = ({ cart }: Props) => {
 					<span className='inline-flex rounded-full h-4 w-4 bg-red-500 absolute top-0 right-0 border border-white'></span>
 				)}
 			</SheetTrigger>
+			<SheetOverlay className='z-50 bg-black/50' />
 			{/* DRAWER FULL SCREEN IN MOBILE */}
 			<SheetContent className='w-full'>
 				<div

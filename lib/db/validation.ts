@@ -65,6 +65,10 @@ export interface ReviewsFormSchema {
 	rating: number
 }
 
+export interface SearchInputSchema {
+	inputData: string
+}
+
 export const ValidationSchema = {
 	// AUTH
 	authUser: z.object({
@@ -213,6 +217,13 @@ export const ValidationSchema = {
 			.nullable(),
 		city: z.string({ required_error: "Поле місто є обов'язковим" }),
 	}) as ZodSchema<DeliveryBranch>,
+	// SEARCH
+	searchInput: z.object({
+		inputData: z
+			.string({ required_error: "Поле пошук є обов'язковим" })
+			.min(3, 'Має містити 3 або більше елементів')
+			.max(50, 'Має містити 50 або менше елементів'),
+	}) as ZodSchema<SearchInputSchema>,
 	// PRODUCT
 	newProductSchema: z.object({
 		linkName: z.string(),
