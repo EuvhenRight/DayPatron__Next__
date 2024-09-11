@@ -1,72 +1,104 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Avatar,
   useChannelActionContext,
   useChannelStateContext,
+  //useChatContext
 } from 'stream-chat-react';
-import { MenuOutlined, EditOutlined } from '@ant-design/icons';
+import { MoreOutlined, MenuOutlined } from '@ant-design/icons';
+
 import IconButton from 'components/@extended/IconButton';
-import { Typography } from '@mui/material';
+import { 
+  Stack, 
+  Typography,
+  Menu,
+  MenuItem,
+  Fade, 
+  Divider
+} from '@mui/material';
 
 import './TeamChannelHeader.css';
-
-import { PinIcon } from 'assets/images/streamio';
 
 export const TeamChannelHeader = ({ setIsEditing, setPinsOpen, onShowChannelSelector, isChannelSelectorVisible }) => {
   const { closeThread } = useChannelActionContext();
   const { channel } = useChannelStateContext();
+  //const { client } = useChatContext();
+  const members = Object.values(channel.state.members);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const openMenu = Boolean(anchorEl);
 
-  const getMessagingHeader = () => {
-    const members = Object.values(channel.state.members);
-
-    return (
-      <div className='team-channel-header__name-wrapper'>
-        {!isChannelSelectorVisible && 
-          <IconButton sx={{ width: 22, height: 22, mr: 1.5 }}
-            onClick={() => {onShowChannelSelector();}} 
-            size="large" 
-            className="tenx-messaging-channels-menu-button">
-            <MenuOutlined />
-          </IconButton>
-        }
-        {channel?.data?.name &&
-          <Typography variant='h4' sx={{mr: 2}}>{channel?.data?.name}</Typography>
-        }
-        {members.map(({ user }, i) => {
-          return (
-            <div key={i} className='team-channel-header__name-multi'>
-              <Avatar image={null} name={user?.name || user?.id} size={24} />
-              <p className='team-channel-header__name user'>
-                {user?.name || user?.id || '#'}
-              </p>
-            </div>
-          );
-        })}
-      </div>
-    );
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
   };
 
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+  
+
   return (
-    <div className='team-channel-header__container'>
-      {getMessagingHeader()}
-      <div className='team-channel-header__right'>
-        <IconButton sx={{ mr: 1.5 }}
-          onClick={() => setIsEditing(true)}
-          color="secondary">
-          <EditOutlined />
+    <>
+      <Stack direction="row" justifyContent="space-between" sx={{ padding: "10px 20px 10px 20px" }} alignItems="center">
+        <Stack direction="row" alignItems="center">
+          {!isChannelSelectorVisible && 
+            <IconButton sx={{ width: 22, height: 22, mr: 1.5 }}
+              onClick={() => {onShowChannelSelector();}} 
+              size="large" 
+              className="tenx-messaging-channels-menu-button">
+              <MenuOutlined />
+            </IconButton>
+          }
+          
+          <Stack direction="row" spacing={2} alignItems="center">
+            {members.map(({ user }, i) => {
+              return (
+                <Stack direction="row" key={i} spacing={1} alignItems="center">
+                  <Avatar image={null} name={user?.name || user?.id} size={24} />
+                  <Typography>
+                    {user?.name || user?.id || '#'}
+                  </Typography>
+                </Stack>
+              );
+            })}
+          </Stack>
+        </Stack>
+        <IconButton edge="end" aria-label="comments" color="secondary" onClick={handleMenuClick}>
+          <MoreOutlined style={{ fontSize: '1.15rem' }} />
         </IconButton>
-        <div
-          className='team-channel-header__right-pin-wrapper'
-          onClick={(e) => {
-            closeThread(e);
-            setPinsOpen((prevState) => !prevState);
+        <Menu
+          id="fade-menu"
+          MenuListProps={{
+            'aria-labelledby': 'fade-button'
           }}
-          role="presentation"
+          anchorEl={anchorEl}
+          open={openMenu}
+          onClose={handleMenuClose}
+          TransitionComponent={Fade}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right'
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right'
+          }}
         >
-          <PinIcon />
-          <p className='team-channel-header__right-text'>Pins</p>
-        </div>
-      </div>
-    </div>
+          <MenuItem 
+            onClick={() => 
+              setIsEditing(true)
+            }>
+            Edit
+          </MenuItem>
+          <MenuItem 
+            onClick={(e) => {
+              closeThread(e);
+              setPinsOpen((prevState) => !prevState);
+            }}>
+            Pins
+          </MenuItem>
+        </Menu>
+      </Stack>
+      <Divider />
+    </>
   );
 };
