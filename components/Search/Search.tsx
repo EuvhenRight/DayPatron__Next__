@@ -1,4 +1,5 @@
 'use client'
+import { getSearch } from '@/actions/search'
 import { Input } from '@/components/ui/input'
 import {
 	Sheet,
@@ -6,18 +7,31 @@ import {
 	SheetContent,
 	SheetTrigger,
 } from '@/components/ui/sheet'
-import { useSearchMainData } from '@/lib/hooks/search'
+import { ProductWithVariantsWithReviews } from '@/lib/types/types'
+import { Search } from 'lucide-react'
 import { useState } from 'react'
 import { AiOutlineClose, AiOutlineSearch } from 'react-icons/ai'
+import { Button } from '../ui/button'
 
 export const SearchDialog = () => {
 	const [open, setOpen] = useState<boolean>(false)
 	const [name, setName] = useState<string>('')
-	const { data, loading } = useSearchMainData(name)
+	const [data, setData] = useState<ProductWithVariantsWithReviews[]>()
 
 	const handleSearch = () => {
 		setOpen(true)
 	}
+
+	const handleSubmit = async () => {
+		try {
+			const search = (await getSearch(name)) as ProductWithVariantsWithReviews[]
+			setData(search)
+		} catch (error) {
+			console.log(error)
+		}
+	}
+
+	console.log(data, 'data')
 
 	return (
 		<div>
@@ -42,27 +56,28 @@ export const SearchDialog = () => {
 					</div>
 					<div className='mt-4'>
 						Будь ласка, введіть назву товару що ви шукаєте...
-						<Input
-							type='text'
-							placeholder='Введіть назву...'
-							className='mt-2'
-							value={name}
-							onChange={e => setName(e.target.value)}
-						/>
+						<div className='mt-4 flex gap-2 items-center justify-center'>
+							<Input
+								type='text'
+								placeholder='Введіть назву...'
+								className='mt-2'
+								value={name}
+								onChange={e => setName(e.target.value)}
+							/>
+							<Button onClick={handleSubmit} variant={'outline'}>
+								<Search />
+							</Button>
+						</div>
 					</div>
 					<div>
 						<>
-							{loading ? (
-								<p>Loading...</p>
-							) : (
-								<ul>
-									{data?.map((item, index) => (
-										<li key={index} className='py-2'>
-											{item.description}
-										</li>
-									))}
-								</ul>
-							)}
+							<ul>
+								{data?.map((item, index) => (
+									<li key={index} className='py-2'>
+										{item.name}
+									</li>
+								))}
+							</ul>
 						</>
 					</div>
 				</SheetContent>

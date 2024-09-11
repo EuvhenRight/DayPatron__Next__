@@ -47,6 +47,7 @@ export async function getProduct(
 
 	return product
 }
+
 export async function getSearchProducts(searchQuery: string) {
 	// Search products by name
 	const search = await prisma.product.findMany({
