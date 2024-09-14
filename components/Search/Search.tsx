@@ -37,7 +37,7 @@ export const SearchDialog = () => {
 	useEffect(() => {
 		window.scrollTo({
 			top: 0,
-			behavior: 'smooth', // Optional: for smooth scrolling
+			behavior: 'smooth', // OPTIONAL "auto" | "smooth"
 		})
 	}, [open])
 
@@ -47,6 +47,7 @@ export const SearchDialog = () => {
 			inputData: '',
 		},
 	})
+	// HIGHLIGHT SEARCH TERM
 	const highlightSearchTerm = (text: string, searchTerm: string) => {
 		if (!searchTerm) return text
 		const regex = new RegExp(`(${searchTerm})`, 'gi')
@@ -56,7 +57,7 @@ export const SearchDialog = () => {
 	const onSubmit = async (
 		value: z.infer<typeof ValidationSchema.searchInput>
 	) => {
-		setSearchTerm(value.inputData) // Save the search term
+		setSearchTerm(value.inputData) // SAFE VALUE FOR SEARCH
 		try {
 			const search = (await getSearch(
 				value.inputData
@@ -80,9 +81,9 @@ export const SearchDialog = () => {
 				</SheetTrigger>
 				<SheetContent
 					side='top'
-					className='h-full max-w-full w-full bg-neutral-200 absolute z-10 p-3'
+					className='h-full max-w-full w-full bg-neutral-200 absolute z-10 p-3 overflow-auto text-justify'
 				>
-					<div className='flex flex-row items-center justify-between my-8 container'>
+					<div className='flex flex-row items-center justify-between my-8 container max-w-screen-lg'>
 						<h1 className='text-2xl font-bold'>Пошук</h1>
 						<SheetClose
 							asChild
@@ -94,7 +95,7 @@ export const SearchDialog = () => {
 					<Form {...form}>
 						<form
 							onSubmit={form.handleSubmit(onSubmit)}
-							className='md:w-2/3 flex gap-2 justify-start container'
+							className='lg:w-2/3 flex gap-2 justify-start container max-w-screen-xl'
 						>
 							<FormField
 								control={form.control}
@@ -121,21 +122,33 @@ export const SearchDialog = () => {
 							</Button>
 						</form>
 					</Form>
-					<div className='container'>
+					<div className='container max-w-screen-lg'>
 						{data?.length! > 0 ? (
-							<ul>
+							<ul className='pb-24'>
+								<p className='text-sm my-4'>
+									Результати пошуку: <b>{data?.length}</b>
+								</p>
 								{data?.map((item, index) => (
-									<li key={index} className='py-2'>
+									<li key={index} className='py-4'>
 										<Link
 											href={`/products/${item.id}/details`}
-											onClick={() => setOpen(false)}
+											onClick={() => {
+												// CLOSE AND CLEAR DATA
+												setOpen(false)
+												form.reset()
+												setData(undefined)
+											}}
 										>
+											<p className='text-sm font-bold pb-2'>Назва</p>
 											<div
+												className='hover:bg-neutral-50 hover:rounded-md p-2'
 												dangerouslySetInnerHTML={{
 													__html: highlightSearchTerm(item.name, searchTerm),
 												}}
 											/>
+											<p className='text-sm font-bold pt-4 pb-2'>Опис</p>
 											<div
+												className='hover:bg-neutral-50 hover:rounded-md p-2'
 												dangerouslySetInnerHTML={{
 													__html: highlightSearchTerm(
 														item.description,
