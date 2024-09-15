@@ -4,12 +4,34 @@ import { rubikGlitch } from '@/lib/utils/font'
 import { cn } from '@/lib/utils/utils'
 import { Metadata } from 'next'
 
+// METADATA GENERATOR
 export const metadata: Metadata = {
 	title: 'Хто ми?',
 	description:
 		'Наша місія полягає в тому, щоб зробити найкращі засоби для догляду за зброєю стандартом індустрії.',
 	openGraph: {
-		images: [{ url: '/images/ukraine.svg' }],
+		title: 'DayPatron',
+		description:
+			'Наша місія полягає в тому, щоб зробити найкращі засоби для догляду за зброєю стандартом індустрії.',
+		url: `https://daypatron.com/about`,
+		type: 'website',
+		images: [
+			{
+				url: `${process.env.PUBLIC_IMAGE_URL}/DayLogo_ukraine.svg`,
+				width: 800,
+				height: 600,
+				alt: 'Ukraine',
+			},
+		],
+	},
+	twitter: {
+		card: 'summary_large_image',
+		title: 'Хто ми?',
+		description:
+			'Наша місія полягає в тому, щоб зробити найкращі засоби для догляду за зброєю стандартом індустрії.',
+		site: 'https://daypatron.com',
+		creator: 'daypatronteam',
+		images: `${process.env.PUBLIC_IMAGE_URL}/DayLogo_ukraine.svg`,
 	},
 }
 

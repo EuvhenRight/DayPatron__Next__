@@ -11,19 +11,48 @@ interface Props {
 		id: string
 	}
 }
-
+// METADATA GENERATOR
 export const generateMetadata = async ({
 	params: { id },
 }: Props): Promise<Metadata> => {
 	const product = await getProduct(id)
 
 	return {
-		title: product?.name,
-		description: product?.UTP,
-		// openGraph: {
-		// 	images: [{ url: product?.variant[0].image }],
-		// },
-		// TODO: ADD TWITTER METADATA, ADD PHOTO
+		title: `${product.name} - DayPatron`,
+		description: product.UTP,
+		openGraph: {
+			title: `${product.name} - DayPatron`,
+			locale: 'uk-UA',
+			description: product.UTP,
+			url: `${process.env.PUBLIC_IMAGE_URL}/${product?.image[5].url}`,
+			type: 'website',
+			images: [
+				{
+					url: `${process.env.PUBLIC_IMAGE_URL}/${product?.image[5].url}`,
+					width: 1200,
+					height: 630,
+					alt: product.name,
+				},
+				{
+					url: `${process.env.PUBLIC_IMAGE_URL}/${product?.image[5].url}`,
+					width: 800,
+					height: 418,
+					alt: product.name,
+				},
+				{
+					url: `${process.env.PUBLIC_IMAGE_URL}/${product?.image[5].url}`,
+					width: 600,
+					height: 315,
+					alt: product.name,
+				},
+			],
+		},
+		twitter: {
+			card: 'summary_large_image',
+			title: `${product.name} - DayPatron`,
+			description: product.UTP,
+			images: `${process.env.PUBLIC_IMAGE_URL}/${product?.image[5].url}`,
+		},
 	}
 }
 

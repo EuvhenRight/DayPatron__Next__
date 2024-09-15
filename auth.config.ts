@@ -35,4 +35,5 @@ export default {
 			},
 		}),
 	],
+	trustHost: true, // NEXTAUTH_URL
 } satisfies NextAuthConfig

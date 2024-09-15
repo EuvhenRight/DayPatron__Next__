@@ -1,11 +1,6 @@
 import { getCurrentUser } from '@/actions/user'
 import { AdminNav } from '@/components/AdminNav/admin-nav'
 
-export const metadata = {
-	title: 'DayPatron Admin',
-	description: 'Admin Dashboard',
-}
-
 const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
 	const currentUser = await getCurrentUser()
 	if (currentUser?.role !== 'ADMIN')

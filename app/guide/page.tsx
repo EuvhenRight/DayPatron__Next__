@@ -4,7 +4,36 @@ import { SpecificationCard } from '@/components/Guide/specification-card'
 import { getAllProducts } from '@/lib/services/products'
 import { rubikGlitch } from '@/lib/utils/font'
 import { cn } from '@/lib/utils/utils'
+import { Metadata } from 'next'
 
+// METADATA GENERATOR
+export const metadata: Metadata = {
+	title: 'Посібник для покупців',
+	description: 'Не впевнені, які саме продукти вам потрібні?',
+	openGraph: {
+		title: 'Посібник для покупців',
+		locale: 'uk-UA',
+		description: 'Не впевнені, які саме продукти вам потрібні?',
+		url: `https://daypatron.com/guide`,
+		type: 'website',
+		images: [
+			{
+				url: `${process.env.PUBLIC_IMAGE_URL}/DayLogo_black.svg`,
+				width: 800,
+				height: 600,
+				alt: 'Ukraine',
+			},
+		],
+	},
+	twitter: {
+		card: 'summary_large_image',
+		title: 'Посібник для покупців',
+		description: 'Не впевнені, які саме продукти вам потрібні?',
+		site: 'https://daypatron.com',
+		creator: 'daypatronteam',
+		images: `${process.env.PUBLIC_IMAGE_URL}/DayLogo_black.svg`,
+	},
+}
 async function Guide() {
 	// FETCH ALL PRODUCTS
 	const dataProducts = await getAllProducts()
