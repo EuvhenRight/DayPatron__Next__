@@ -8,8 +8,8 @@ export const createReviewEmailHtml = ({ message }: Props) => {
 	return `
 		<table style="font-size: 14px; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
 			<tr>
-				<td colspan="2" style="text-align: center; padding: 10px 0;">
-					<h1>Дякуємо ${message.fullName} за Ваш відгук!</h1>
+				<td colspan="2" style="text-align: start; padding: 10px 0;">
+					<p style="font-size: 14px; color: #666;">Дякуємо ${message.fullName} за Ваш відгук!</p>
 					<p>Ми вдячні за те, що Ви поділилися своїми думками про наш продукт на сайті DayPatron.</p>
 					<p>Ваш відгук: "${message.message}"</p>
 				</td>
@@ -25,8 +25,11 @@ export const createReviewEmailHtml = ({ message }: Props) => {
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2" style="padding: 10px 0; text-align: center;">
-					<p style="font-size: 14px;">З повагою, команда DayPatron</p>
+				<td colspan="2" style="padding: 10px 0; text-align: start;">
+							<p>З повагою,<br>Команда підтримки DayPatron<br>
+			<img src="http://localhost:3000/images/DayLogo_black.svg" alt="DayPatron Logo" style="display: block; width: 150px; height: 50px;">
+			</p> 
+					<p style="font-size: 12px; color: #999;">телефон:  +38 (099) 730-21-26 <br>ел.пошта: daypatronteam@gmail.com <br>cайт: http://www.daypatron.com</p>
 				</td>
 			</tr>
 		</table>

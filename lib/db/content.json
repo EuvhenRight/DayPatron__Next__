@@ -48,8 +48,8 @@
 	"ContentContactsPage": {
 		"form": {
 			"title": "Задати нам питання",
-			"feedback_sent_message": "Ваш відгук надіслано, дякуємо!",
-			"send_another_feedback_button": "Надіслати ще один відгук?",
+			"feedback_sent_message": "Ваш запит надіслано, дякуємо!",
+			"send_another_feedback_button": "Надіслати ще один запит?",
 			"surname_label": "Прізвище",
 			"surname_placeholder": "введіть повне прізвище",
 			"phone_label": "Номер телефону",

@@ -23,6 +23,10 @@ export async function POST(request: NextRequest) {
 			© 2023 DayPatron Inc. Усі права захищені`,
 			html: `<p style="font-size: 14px; color: #666;">Ваш 6-значний пароль: <strong>${generatedPassword}</strong></p>
 			<p style="font-size: 14px; color: #666;">Цей код може бути використаний лише один раз. Він закінчується через 15 хвилин.</p>
+					<p>З повагою,<br>Команда підтримки DayPatron<br>
+			<img src="http://localhost:3000/images/DayLogo_black.svg" alt="DayPatron Logo" style="display: block; width: 150px; height: 50px;">
+			</p> 
+					<p style="font-size: 12px; color: #999;">телефон:  +38 (099) 730-21-26 <br>ел.пошта: daypatronteam@gmail.com <br>cайт: http://www.daypatron.com</p>
 			<p style="font-size: 12px; color: #999; text-align: center">© 2023 DayPatron Inc. Усі права захищені</p>`,
 		})
 
