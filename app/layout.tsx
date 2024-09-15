@@ -54,7 +54,7 @@ async function RootLayout({ children }: { children: React.ReactNode }) {
 			<html lang='en'>
 				<body className={mulish.className}>
 					<Header cart={cart} />
-					<main className='mt-28 min-h-screen'>
+					<main className='mt-28 sm:min-h-screen'>
 						{children}
 						<Toaster richColors />
 					</main>

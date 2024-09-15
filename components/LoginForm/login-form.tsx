@@ -94,10 +94,10 @@ export const LoginForm = () => {
 		>
 			<Form {...form}>
 				<form
-					className='flex flex-col w-full gap-5'
+					className='flex flex-col w-full gap-1 sm:gap-5'
 					onSubmit={form.handleSubmit(onSubmit)}
 				>
-					<div className='space-y-4'>
+					<div>
 						{/* FORM FIELDS */}
 						<FormField
 							control={form.control}
@@ -120,26 +120,50 @@ export const LoginForm = () => {
 							control={form.control}
 							name='password'
 							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Password</FormLabel>
-									<FormControl>
-										<InputOTP {...field} maxLength={6}>
-											<InputOTPGroup>
-												<InputOTPSlot index={0} />
-												<InputOTPSeparator />
-												<InputOTPSlot index={1} />
-												<InputOTPSeparator />
-												<InputOTPSlot index={2} />
-												<InputOTPSeparator />
-												<InputOTPSlot index={3} />
-												<InputOTPSeparator />
-												<InputOTPSlot index={4} />
-												<InputOTPSeparator />
-												<InputOTPSlot index={5} />
+								<FormItem className='my-4'>
+									<FormLabel className='block text-gray-700 text-sm font-bold mb-2'>
+										Password
+									</FormLabel>
+									<FormControl className='mb-2'>
+										<InputOTP
+											{...field}
+											maxLength={6}
+											className='flex justify-between'
+										>
+											<InputOTPGroup className='w-full flex justify-center'>
+												<InputOTPSlot
+													index={0}
+													className='sm:w-10 w-8 h-10 text-center border border-gray-300 rounded-md focus:ring focus:ring-blue-500'
+												/>
+												<InputOTPSeparator className='mx-0 sm:mx-1' />
+												<InputOTPSlot
+													index={1}
+													className='sm:w-10 w-8 h-10 text-center border border-gray-300 rounded-md focus:ring focus:ring-blue-500'
+												/>
+												<InputOTPSeparator className='mx-0 sm:mx-1' />
+												<InputOTPSlot
+													index={2}
+													className='sm:w-10 w-8 h-10 text-center border border-gray-300 rounded-md focus:ring focus:ring-blue-500'
+												/>
+												<InputOTPSeparator className='mx-0 sm:mx-1' />
+												<InputOTPSlot
+													index={3}
+													className='sm:w-10 w-8 h-10 text-center border border-gray-300 rounded-md focus:ring focus:ring-blue-500'
+												/>
+												<InputOTPSeparator className='mx-0 sm:mx-1' />
+												<InputOTPSlot
+													index={4}
+													className='sm:w-10 w-8 h-10 text-center border border-gray-300 rounded-md focus:ring focus:ring-blue-500'
+												/>
+												<InputOTPSeparator className='mx-0 sm:mx-1' />
+												<InputOTPSlot
+													index={5}
+													className='sm:w-10 w-8 h-10 text-center border border-gray-300 rounded-md focus:ring focus:ring-blue-500'
+												/>
 											</InputOTPGroup>
 										</InputOTP>
 									</FormControl>
-									<FormMessage />
+									<FormMessage className='text-red-500' />
 								</FormItem>
 							)}
 						/>

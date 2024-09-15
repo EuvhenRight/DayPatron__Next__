@@ -77,7 +77,7 @@ export const ValidationSchema = {
 	// LOGIN
 	loginUser: z.object({
 		email: z.string().email({ message: 'Невірна адреса електронної пошти' }),
-		password: z.string().length(6),
+		password: z.string().length(6, { message: 'Невірний пароль' }),
 	}) as ZodSchema<LoginUserSchema>,
 	// PROFILE
 	profileUser: z.object({
