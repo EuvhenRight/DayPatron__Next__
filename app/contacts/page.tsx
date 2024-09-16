@@ -1,6 +1,6 @@
 import { getCurrentUser } from '@/actions/user'
 import { ContactsComponent } from '@/components/Contacts/contacts-component'
-import { GoogleMap } from '@/components/Contacts/googleMap'
+import { GoogleMapComponent } from '@/components/Contacts/googleMap'
 import { FeedBackForm } from '@/components/FeedbackForm/feedback-form'
 import data from '@/lib/db/content.json'
 import { contactData } from '@/lib/services/contacts'
@@ -61,7 +61,7 @@ export default async function ContactsPage() {
 				</div>
 			</section>
 			<section>
-				<GoogleMap />
+				<GoogleMapComponent />
 			</section>
 		</>
 	)

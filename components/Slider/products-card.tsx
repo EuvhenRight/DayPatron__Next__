@@ -36,7 +36,7 @@ export const ProductsCard = ({ product }: Props) => {
 						Докладніше
 					</button>
 					<div className='text-center px-5 pb-5'>
-						<h2 className='text-lg font-bold uppercase -tracking-2 my-3'>
+						<h2 className='text-lg font-bold uppercase -tracking-2 mb-3'>
 							{product.name}
 						</h2>
 						<h3
