@@ -1,47 +1,73 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import {
-  Avatar,
-  useChannelActionContext,
   useChannelStateContext,
-  //useChatContext
+  useChatContext
 } from 'stream-chat-react';
-import { MoreOutlined, MenuOutlined } from '@ant-design/icons';
+import {  MenuOutlined, UsergroupAddOutlined } from '@ant-design/icons';
 
 import IconButton from 'components/@extended/IconButton';
 import { 
+  Avatar, 
+  AvatarGroup, 
   Stack, 
   Typography,
-  Menu,
-  MenuItem,
-  Fade, 
   Divider
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 import './TeamChannelHeader.css';
 
-export const TeamChannelHeader = ({ setIsEditing, setPinsOpen, onShowChannelSelector, isChannelSelectorVisible }) => {
-  const { closeThread } = useChannelActionContext();
+export const TeamChannelHeader = ({ setIsEditing, onShowChannelSelector, isChannelSelectorVisible }) => {
+  const personalInformation = useSelector(state => state.personalInformation);
   const { channel } = useChannelStateContext();
-  //const { client } = useChatContext();
-  const members = Object.values(channel.state.members);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const openMenu = Boolean(anchorEl);
+  const { client } = useChatContext();
+  const theme = useTheme();
 
-  const handleMenuClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const allMembers = Object.values(channel.state.members);
+  const otherMembers = allMembers.filter(({ user }) => user.id !== client.userID && user.id !== personalInformation.messagingProviderAdminUserId);
+  const meAndAdminMembers = allMembers.filter(({ user }) => user.id === client.userID || user.id === personalInformation.messagingProviderAdminUserId);
+  const allMembersSorted = otherMembers.concat(meAndAdminMembers);
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
+  const handleMembersClick = () => {
+    setIsEditing(true);
   };
-  
+ 
+  const getChannelTitle = () => {
+    let titleText = allMembersSorted?.map(x => 
+      {
+        let result = x?.user?.name || x?.user?.id;
+        if(x.user.id === client.userID)
+          result += ' (Me)';
+        return result;
+      }
+    ).join(', ');
+
+    return <>
+      <AvatarGroup max={3} spacing={9}>
+        {allMembersSorted.map((member, memberIndex) => 
+          <Avatar
+            key={memberIndex}
+            src={undefined}
+            alt={member?.user?.name || member?.user?.id}
+            sx={{ bgcolor: theme.palette.primary.main, width: '26px', height: '26px' }}
+          >
+            {member?.user?.name?.[0]}
+          </Avatar>
+        )}
+      </AvatarGroup>
+      <Typography sx={{textWrap: 'nowrap', fontWeight: 'bold', marginLeft: '5px !important', overflowX: 'hidden', textOverflow: 'ellipsis'}}>
+        {titleText}
+      </Typography>
+    </>;
+  };
 
   return (
     <>
       <Stack direction="row" justifyContent="space-between" sx={{ padding: "10px 20px 10px 20px" }} alignItems="center">
-        <Stack direction="row" alignItems="center">
+        <Stack direction="row" alignItems="center" spacing={1} sx={{overflowX: 'hidden'}} className="channel-header-avatar-group">
           {!isChannelSelectorVisible && 
-            <IconButton sx={{ width: 22, height: 22, mr: 1.5 }}
+            <IconButton sx={{ width: 22, height: 22 }}
               onClick={() => {onShowChannelSelector();}} 
               size="large" 
               className="tenx-messaging-channels-menu-button">
@@ -49,54 +75,16 @@ export const TeamChannelHeader = ({ setIsEditing, setPinsOpen, onShowChannelSele
             </IconButton>
           }
           
-          <Stack direction="row" spacing={2} alignItems="center">
-            {members.map(({ user }, i) => {
-              return (
-                <Stack direction="row" key={i} spacing={1} alignItems="center">
-                  <Avatar image={null} name={user?.name || user?.id} size={24} />
-                  <Typography>
-                    {user?.name || user?.id || '#'}
-                  </Typography>
-                </Stack>
-              );
-            })}
-          </Stack>
+          {getChannelTitle()}
         </Stack>
-        <IconButton edge="end" aria-label="comments" color="secondary" onClick={handleMenuClick}>
-          <MoreOutlined style={{ fontSize: '1.15rem' }} />
-        </IconButton>
-        <Menu
-          id="fade-menu"
-          MenuListProps={{
-            'aria-labelledby': 'fade-button'
-          }}
-          anchorEl={anchorEl}
-          open={openMenu}
-          onClose={handleMenuClose}
-          TransitionComponent={Fade}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right'
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right'
-          }}
-        >
-          <MenuItem 
-            onClick={() => 
-              setIsEditing(true)
-            }>
-            Edit
-          </MenuItem>
-          <MenuItem 
-            onClick={(e) => {
-              closeThread(e);
-              setPinsOpen((prevState) => !prevState);
-            }}>
-            Pins
-          </MenuItem>
-        </Menu>
+        <Stack direction="row" spacing={1} alignItems="center">
+          <IconButton edge="end" aria-label="comments" color="secondary" onClick={handleMembersClick}>
+            <UsergroupAddOutlined style={{ fontSize: '1.15rem' }} />
+            <Typography>
+              {allMembersSorted?.length}
+            </Typography>
+          </IconButton>
+        </Stack>
       </Stack>
       <Divider />
     </>
