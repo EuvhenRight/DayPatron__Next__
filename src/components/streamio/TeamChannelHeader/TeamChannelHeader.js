@@ -1,72 +1,98 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import {
-  Avatar,
-  useChannelActionContext,
   useChannelStateContext,
+  useChatContext
 } from 'stream-chat-react';
-import { MenuOutlined, EditOutlined } from '@ant-design/icons';
+import {  MenuOutlined, UsergroupAddOutlined } from '@ant-design/icons';
+
 import IconButton from 'components/@extended/IconButton';
-import { Typography } from '@mui/material';
+import { 
+  Avatar, 
+  AvatarGroup, 
+  Stack, 
+  Typography,
+  Divider
+} from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 import './TeamChannelHeader.css';
 
-import { PinIcon } from 'assets/images/streamio';
-
-export const TeamChannelHeader = ({ setIsEditing, setPinsOpen, onShowChannelSelector, isChannelSelectorVisible }) => {
-  const { closeThread } = useChannelActionContext();
+export const TeamChannelHeader = ({ setIsEditing, onShowChannelSelector, isChannelSelectorVisible }) => {
+  const personalInformation = useSelector(state => state.personalInformation);
   const { channel } = useChannelStateContext();
-  
-  const getMessagingHeader = () => {
-    const members = Object.values(channel.state.members);
+  const { client } = useChatContext();
+  const theme = useTheme();
 
-    return (
-      <div className='team-channel-header__name-wrapper'>
-        {!isChannelSelectorVisible && 
-          <IconButton sx={{ width: 22, height: 22, mr: 1.5 }}
-            onClick={() => {onShowChannelSelector();}} 
-            size="large" 
-            className="tenx-messaging-channels-menu-button">
-            <MenuOutlined />
-          </IconButton>
-        }
-        {channel?.data?.name &&
-          <Typography variant='h4' sx={{mr: 2}}>{channel?.data?.name}</Typography>
-        }
-        {members.map(({ user }, i) => {
-          return (
-            <div key={i} className='team-channel-header__name-multi'>
-              <Avatar image={null} name={user?.name || user?.id} size={24} />
-              <p className='team-channel-header__name user'>
-                {user?.name || user?.id || '#'}
-              </p>
-            </div>
-          );
-        })}
-      </div>
-    );
+  const allMembers = Object.values(channel.state.members);
+  const otherMembers = allMembers.filter(({ user }) => user.id !== client.userID);
+  const otherMembersNoAdmin = otherMembers.filter(({ user }) => user.id !== personalInformation.messagingProviderAdminUserId);
+  const adminMembers = otherMembers.filter(({ user }) => user.id === personalInformation.messagingProviderAdminUserId);
+  const otherMembersSorted = otherMembersNoAdmin.concat(adminMembers);
+
+  const handleMembersClick = () => {
+    setIsEditing(true);
+  };
+ 
+  const getChannelTitle = () => {
+    let members = otherMembersSorted;
+
+    if(allMembers.length === 1)
+      members = allMembers;
+
+    let titleText = members?.map(x => 
+      {
+        let result = x?.user?.name || x?.user?.id;
+        if(x.user.id === client.userID)
+          result += ' (Me)';
+        return result;
+      }
+    ).join(', ');
+
+    return <>
+      <AvatarGroup max={3} spacing={6}>
+        {members.map((member, memberIndex) => 
+          <Avatar
+            key={memberIndex}
+            src={member?.user?.image}
+            alt={member?.user?.name || member?.user?.id}
+            sx={{ bgcolor: theme.palette.primary.main, width: '26px', height: '26px' }}
+          >
+            {member?.user?.name?.[0]}
+          </Avatar>
+        )}
+      </AvatarGroup>
+      <Typography sx={{textWrap: 'nowrap', fontWeight: 'bold', marginLeft: '5px !important', overflowX: 'hidden', textOverflow: 'ellipsis'}}>
+        {titleText}
+      </Typography>
+    </>;
   };
 
   return (
-    <div className='team-channel-header__container'>
-      {getMessagingHeader()}
-      <div className='team-channel-header__right'>
-        <IconButton sx={{ mr: 1.5 }}
-          onClick={() => setIsEditing(true)}
-          color="secondary">
-          <EditOutlined />
-        </IconButton>
-        <div
-          className='team-channel-header__right-pin-wrapper'
-          onClick={(e) => {
-            closeThread(e);
-            setPinsOpen((prevState) => !prevState);
-          }}
-          role="presentation"
-        >
-          <PinIcon />
-          <p className='team-channel-header__right-text'>Pins</p>
-        </div>
-      </div>
-    </div>
+    <>
+      <Stack direction="row" justifyContent="space-between" sx={{ padding: "10px 20px 10px 20px" }} alignItems="center">
+        <Stack direction="row" alignItems="center" spacing={1} sx={{overflowX: 'hidden'}} className="channel-header-avatar-group">
+          {!isChannelSelectorVisible && 
+            <IconButton sx={{ width: 22, height: 22 }}
+              onClick={() => {onShowChannelSelector();}} 
+              size="large" 
+              className="tenx-messaging-channels-menu-button">
+              <MenuOutlined />
+            </IconButton>
+          }
+          
+          {getChannelTitle()}
+        </Stack>
+        <Stack direction="row" spacing={1} alignItems="center">
+          <IconButton edge="end" aria-label="comments" color="secondary" onClick={handleMembersClick}>
+            <UsergroupAddOutlined style={{ fontSize: '1.15rem' }} />
+            <Typography>
+              {allMembers?.length}
+            </Typography>
+          </IconButton>
+        </Stack>
+      </Stack>
+      <Divider />
+    </>
   );
 };

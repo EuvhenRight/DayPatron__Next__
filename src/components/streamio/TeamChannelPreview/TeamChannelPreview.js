@@ -1,50 +1,54 @@
 import React, {Fragment} from 'react';
-import { Avatar, useChatContext } from 'stream-chat-react';
-import { Divider, ListItemAvatar, ListItemButton, ListItemText, Stack, Typography } from '@mui/material';
+import { useSelector } from 'react-redux';
+import { useChatContext } from 'stream-chat-react';
+import { Avatar, Divider, ListItemAvatar, ListItemButton, ListItemText, Stack, Typography } from '@mui/material';
 import Dot from 'components/@extended/Dot';
-import { CheckOutlined } from '@ant-design/icons';
+import { CheckOutlined, TeamOutlined } from '@ant-design/icons';
 import { useTheme } from '@mui/material/styles';
-import { format } from 'date-fns'
+import * as dayjs from 'dayjs';
+import dayJsRelativeTime from 'dayjs/plugin/relativeTime';
 import userTypes from 'data/userTypes';
 
 import './TeamChannelPreview.css';
 
+dayjs.extend(dayJsRelativeTime);
+
 export const TeamChannelPreview = (props) => {
   const theme = useTheme();
+  const personalInformation = useSelector(state => state.personalInformation);
   const { channel, setActiveChannel, setIsCreating, setIsEditing, onChannelSelected } = props;
 
   const { channel: activeChannel, client } = useChatContext();
 
   const allMembers = Object.values(channel.state.members);
-
-  const otherMembers = allMembers.filter(
-    ({ user }) => user.id !== client.userID,
-  );
-
-  const defaultName = '#';
+  const otherMembers = allMembers.filter(({ user }) => user.id !== client.userID);
+  const otherMembersNoAdmin = otherMembers.filter(({ user }) => user.id !== personalInformation.messagingProviderAdminUserId);
   
-  const getAvatar = () => {
-    if(channel?.data?.name) {
-      return <Avatar
-        image={undefined}
-        name={channel?.data?.name}
-        size={36}
-      />;
-    }
-
-    if(otherMembers?.length === 1) {
-      return <Avatar
-        image={otherMembers[0]?.user.image || undefined}
-        name={otherMembers[0]?.user.name || otherMembers[0]?.user.id}
-        size={36}
-      />;
-    }
-
+  const getAvatarByMember = (member) => {
     return <Avatar
-      image={undefined}
-      name={undefined}
-      size={36}
-    />;
+      src={member?.user?.image}
+      alt={member?.user?.name || member?.user?.id}
+      sx={{ bgcolor: theme.palette.primary.main }}
+    >
+      {member?.user?.name?.[0]}
+    </Avatar>;
+  }
+
+  const getAvatar = () => {
+    if(allMembers.length === 1) {
+      return getAvatarByMember(allMembers[0]);
+    } else if(otherMembers.length === 1) {
+      return getAvatarByMember(otherMembers[0]);
+    } else if(otherMembersNoAdmin.length === 1) {
+      return getAvatarByMember(otherMembersNoAdmin[0]);
+    } else if(otherMembersNoAdmin.length >= 1) {
+      return <Avatar
+        src={undefined}
+        sx={{ bgcolor: theme.palette.primary.main }}
+      >
+        <TeamOutlined />
+      </Avatar>;
+    }
   };
 
   const getUserLabel = (user) => {
@@ -53,34 +57,26 @@ export const TeamChannelPreview = (props) => {
   };
 
   const getChannelName = () => {
-    if(channel?.data?.name) {
-      return <>
-        {channel?.data?.name}
-      </>;
-    }
-
-    if(otherMembers?.length === 1) {
+    if(allMembers.length === 1) {
+      let result = getUserLabel(allMembers[0]?.user);
+      if(allMembers[0]?.user.id === client.userID)
+        result += " (Me)";
+      return <>{result}</>;
+    } else if(otherMembers.length === 1) {
       return <>{getUserLabel(otherMembers[0]?.user)}</>;
-    }
-
-    if(allMembers?.length === 1 && allMembers[0]?.user.id === client.userID) {
-      return <>{getUserLabel(allMembers[0]?.user)} (Me)</>;
-    }
-
-    if(otherMembers?.length > 1) {
+    } else if(otherMembersNoAdmin.length === 1) {
+      return <>{getUserLabel(otherMembersNoAdmin[0]?.user)}</>;
+    } else if(otherMembersNoAdmin.length >= 1) {
       return <>
-        {getUserLabel(otherMembers[0]?.user)},{' '}
-        {getUserLabel(otherMembers[1]?.user)}
-      </>;
+        {otherMembersNoAdmin?.map(x => x?.user?.name || x?.user?.id).join(', ')}
+      </>  
     }
-
-    return <>{defaultName}</>;
   };
   
   return (
     <Fragment>
       <ListItemButton
-        sx={{ pl: 1 }}
+        sx={{ pl: 1, pr: 1 }}
         onClick={() => {
           onChannelSelected();
           setIsCreating(false);
@@ -89,7 +85,7 @@ export const TeamChannelPreview = (props) => {
         }}
         selected={channel?.id === activeChannel?.id}
       >
-        <ListItemAvatar>
+        <ListItemAvatar sx={{width: '40px'}}>
           {getAvatar()}
         </ListItemAvatar>
         <ListItemText
@@ -101,14 +97,15 @@ export const TeamChannelPreview = (props) => {
                 sx={{
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap'
+                  whiteSpace: 'nowrap',
+                  fontSize: '14px'
                 }}
               >
                 {getChannelName()}
               </Typography>
               {channel?.state?.last_message_at && 
-                <Typography component="span" color="textSecondary" variant="caption">
-                  {format(channel.state.last_message_at, 'yyyy-MM-dd hh:mm')}
+                <Typography component="span" color="textSecondary" variant="caption" sx={{textWrap: 'nowrap'}}>
+                  {dayjs(channel.state.last_message_at).fromNow(true)}
                 </Typography>
               }
             </Stack>

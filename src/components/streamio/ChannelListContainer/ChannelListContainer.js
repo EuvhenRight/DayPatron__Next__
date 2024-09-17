@@ -4,13 +4,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { prepareApiBody } from 'utils/stringUtils';
 import userTypes from 'data/userTypes';
+import { useTheme } from '@mui/material/styles';
 
 import { ChannelList, useChatContext } from 'stream-chat-react';
 import { TeamChannelList } from '../TeamChannelList/TeamChannelList';
 import { TeamChannelPreview } from '../TeamChannelPreview/TeamChannelPreview';
-import { AddChannel } from 'assets/images/streamio';
-import { Avatar } from 'stream-chat-react';
-import { Divider, List, ListItemAvatar, ListItemButton, ListItemText, Stack, Typography, Box } from '@mui/material';
+//import { AddChannel } from 'assets/images/streamio';
+import { Avatar, Divider, List, ListItemAvatar, ListItemButton, ListItemText, Stack, Typography, Box } from '@mui/material';
 import { PlusOutlined } from '@ant-design/icons';
 
 import MainCard from 'components/MainCard';
@@ -23,6 +23,7 @@ export const ChannelListContainer = (props) => {
   const { client, setActiveChannel } = useChatContext();
   const [grouplessUsers, setGrouplessUsers] = useState([]);
   const personalInformation = useSelector(state => state.personalInformation);
+  const theme = useTheme();
   
   useEffect(() => {
     (async () => {
@@ -49,7 +50,7 @@ export const ChannelListContainer = (props) => {
             'Authorization': 'Bearer ' + keycloak.idToken,
             'Content-Type': 'application/json'
           },
-          body: prepareApiBody({groupName: null, messagingProviderUserIds: [userId], returnExisting: true, employerUserId: connectAsAdmin ? null : personalInformation?.id})
+          body: prepareApiBody({groupName: null, messagingProviderUserIds: [userId], returnExisting: true, employeruserId: connectAsAdmin ? null : personalInformation?.id})
         }
       );
 
@@ -80,7 +81,7 @@ export const ChannelListContainer = (props) => {
   const bindGrouplessUsers = async () => {
     try {
         
-      let queryString = connectAsAdmin ? '' : '?employerUserId=' + personalInformation?.id;
+      let queryString = connectAsAdmin ? '' : '?employeruserId=' + personalInformation?.id;
       let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/messages/groupless-users' + queryString,
         {
           method: 'GET',
@@ -141,16 +142,18 @@ export const ChannelListContainer = (props) => {
             </Typography>
             <Stack direction="row" spacing={2} alignItems="center" >
               {headerPlaceholder}
-              <AddChannel
-                {...{ setIsCreating, setIsEditing, onChannelSelected }}
-                type='messaging'
-              />
+              {/*
+                <AddChannel
+                  {...{ setIsCreating, setIsEditing, onChannelSelected }}
+                  type='messaging'
+                />
+              */}
             </Stack>
           </Stack>
         </Stack>
       </Box>
       <Divider />
-      <Box id="tenx-messaging-channels-list" sx={{ p: 3, pt: 0 }} className="tenx-channels-list">
+      <Box id="tenx-messaging-channels-list" sx={{ p: 1.7, pt: 0 }} className="tenx-channels-list">
         {client?.userID && 
           
           <List component="nav">
@@ -178,17 +181,19 @@ export const ChannelListContainer = (props) => {
               {grouplessUsers?.map((grouplessUser, grouplessUserIndex) => 
                 <Fragment key={grouplessUserIndex}>
                   <ListItemButton
-                    sx={{ pl: 1 }}
+                    sx={{ pl: 1, pr: 1 }}
                     onClick={async () => {
                       await onGrouplessUserSelected(grouplessUser);
                     }}
                   >
-                    <ListItemAvatar>
+                    <ListItemAvatar sx={{width: '40px'}}>
                       <Avatar
-                        image={undefined}
-                        name={grouplessUser?.name}
-                        size={36}
-                      />
+                        src={grouplessUser?.imageUrl}
+                        alt={grouplessUser?.name}
+                        sx={{ bgcolor: theme.palette.primary.main }}
+                      >
+                        {grouplessUser?.name?.[0]}
+                      </Avatar>
                     </ListItemAvatar>
                     <ListItemText
                       primary={
@@ -199,7 +204,8 @@ export const ChannelListContainer = (props) => {
                             sx={{
                               overflow: 'hidden',
                               textOverflow: 'ellipsis',
-                              whiteSpace: 'nowrap'
+                              whiteSpace: 'nowrap',
+                              fontSize: '14px'
                             }}
                           >
                             {getUserLabel(grouplessUser)}
