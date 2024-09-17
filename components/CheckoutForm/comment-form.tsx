@@ -40,7 +40,7 @@ export const CommentForm = ({ onChangeText }: Props) => {
 					className='w-full bg-zinc-100 rounded-md px-2'
 				>
 					<AccordionTrigger onClick={toggleAccordion}>
-						<div className='font-bold flex flex-col text-left'>
+						<div className='font-bold flex flex-col text-left relative'>
 							Коментар до замовлення
 							<span className='break-words'>
 								{isOpen ? <Label>{comment}</Label> : null}

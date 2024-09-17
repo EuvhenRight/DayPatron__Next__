@@ -6,6 +6,7 @@ import { createEmailHtml } from '@/lib/services/e-mail-order'
 import { sendEmail } from '@/lib/services/mail-password'
 import { createOrder } from '@/lib/services/order'
 import { OrderForm } from '@/lib/types/types'
+import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
 export async function addOrderItem(data: z.infer<typeof orderItemScheme>) {
@@ -49,6 +50,8 @@ export async function addOrderItem(data: z.infer<typeof orderItemScheme>) {
 		await tx.cart.delete({
 			where: { id: data.cartId },
 		})
+
+		revalidatePath('/checkouts')
 
 		const orderEvent = await tx.orderEvent.create({
 			data: {

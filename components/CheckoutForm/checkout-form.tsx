@@ -4,7 +4,6 @@ import { CommentForm } from '@/components/CheckoutForm/comment-form'
 import { DeliveryForm } from '@/components/CheckoutForm/delivery-form'
 import { ExtraUserForm } from '@/components/CheckoutForm/extra-user-form'
 import { InvoiceForm } from '@/components/CheckoutForm/invoce-form'
-import { OrderSuccess } from '@/components/CheckoutForm/order-success'
 import { PaymentForm } from '@/components/CheckoutForm/payment-form'
 import { PaymentItem } from '@/components/CheckoutForm/payment-item'
 import {
@@ -39,9 +38,7 @@ interface Props {
 }
 
 export const CheckoutForm = ({ cart, currentDelivery, currentUser }: Props) => {
-	//TODO:  Add comments and toast
 	const [payment, setPayment] = useState<Payment | undefined>()
-	const [makeOrder, setMakeOrder] = useState<boolean>(false)
 	const router = useRouter()
 
 	const formMethods = useForm<z.infer<typeof orderItemScheme>>({
@@ -79,16 +76,19 @@ export const CheckoutForm = ({ cart, currentDelivery, currentUser }: Props) => {
 		if (firstName && lastName && phone) {
 			clearErrors('profile')
 		}
-	}, [errors, formMethods, clearErrors])
+	}, [errors, formMethods.getValues('profile'), clearErrors])
 
+	useEffect(() => {
+		if (!errors) {
+			formMethods.formState.isValid === true &&
+				formMethods.formState.isSubmitSuccessful === true
+		}
+	}, [errors, formMethods])
+	console.log('errors', formMethods)
 	const onSubmit = async (data: z.infer<typeof orderItemScheme>) => {
 		try {
 			// CREATE ORDER
 			const newOrder = addOrderItem(data)
-
-			// INDICATE ORDER PROCESSING
-			setMakeOrder(true)
-			router.refresh()
 
 			// UPDATE DELIVERY STATUS
 			await toast.promise(newOrder, {
@@ -97,7 +97,9 @@ export const CheckoutForm = ({ cart, currentDelivery, currentUser }: Props) => {
 				error: 'Щось пішло не так, спробуйте ще раз',
 			})
 
-			return await newOrder
+			await newOrder
+			router.refresh()
+			return router.push('/checkouts/order-success')
 		} catch (err) {
 			console.error('Error processing order', err)
 		}
@@ -105,133 +107,127 @@ export const CheckoutForm = ({ cart, currentDelivery, currentUser }: Props) => {
 
 	return (
 		<section className='xl:container xl:mx-auto lg:pt-5 relative px-2'>
-			{!makeOrder ? (
-				<>
-					<div className='flex justify-between items-center'>
-						<button
-							type='button'
-							onClick={() => router.back()}
-							className='hover:-translate-x-1 transition cursor-pointer'
-						>
-							<ChevronLeft size={30} />
-						</button>
-						<h2 className='text-xl text-center font-bold my-2'>
-							Оформлення замовлення
-						</h2>
-						<div></div>
+			<div className='flex justify-between items-center'>
+				<button
+					type='button'
+					onClick={() => router.back()}
+					className='hover:-translate-x-1 transition cursor-pointer'
+				>
+					<ChevronLeft size={30} />
+				</button>
+				<h2 className='text-xl text-center font-bold my-2'>
+					Оформлення замовлення
+				</h2>
+				<div></div>
+			</div>
+			<FormProvider {...formMethods}>
+				<form
+					onSubmit={handleSubmit(onSubmit)}
+					className='grid grid-cols-1 grid-rows-auto gap-2 lg:grid-cols-3 lg:grid-rows-2 lg:gap-4'
+				>
+					<div className='row-start-2 row-span-auto lg:col-span-2 lg:row-span-2 lg:row-start-1'>
+						{/* PROFILE */}
+						<FormField
+							control={control}
+							name='profile'
+							render={({ field }) => (
+								<FormItem>
+									<FormControl>
+										<ProfileForm
+											onChange={field.onChange}
+											currentUser={currentUser!}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						{/* EXTRA USER */}
+						<FormField
+							name='extra_user'
+							render={({ field }) => (
+								<FormItem>
+									<ExtraUserForm onChange={field.onChange} />
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
 					</div>
-					<FormProvider {...formMethods}>
-						<form
-							onSubmit={handleSubmit(onSubmit)}
-							className='grid grid-cols-1 grid-rows-auto gap-2 lg:grid-cols-3 lg:grid-rows-2 lg:gap-4'
-						>
-							<div className='row-start-2 row-span-auto lg:col-span-2 lg:row-span-2 lg:row-start-1'>
-								{/* PROFILE */}
-								<FormField
-									control={control}
-									name='profile'
-									render={({ field }) => (
-										<FormItem>
-											<FormControl>
-												<ProfileForm
-													onChange={field.onChange}
-													currentUser={currentUser!}
-												/>
-											</FormControl>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-								{/* EXTRA USER */}
-								<FormField
-									name='extra_user'
-									render={({ field }) => (
-										<FormItem>
-											<ExtraUserForm onChange={field.onChange} />
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-							</div>
-							<div className='row-start-3 row-span-auto lg:col-span-2 lg:row-span-2 lg:row-start-3'>
-								{/* PAYMENT */}
-								<FormField
-									control={control}
-									name='payment'
-									render={({ field }) => (
-										<FormItem>
-											<FormControl>
-												<PaymentForm
-													onChange={field.onChange}
-													payment={payment!}
-													setPayment={setPayment}
-												/>
-											</FormControl>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-								{/* DELIVERY */}
-								<FormField
-									control={control}
-									name='address'
-									render={({ field }) => (
-										<FormItem>
-											<FormControl>
-												<DeliveryForm
-													onChange={field.onChange}
-													currentDelivery={currentDelivery!}
-												/>
-											</FormControl>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-								{/* COMMENT */}
-								<FormField
-									control={control}
-									name='comment'
-									render={({ field }) => (
-										<FormItem>
-											<FormControl>
-												<CommentForm onChangeText={field.onChange} />
-											</FormControl>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-							</div>
-							{/* CART */}
-							<div className='bg-zinc-100 shadow-lg rounded-md p-4 mt-2 overflow-auto max-h-[446px] sm:max-h-[446px] row-start-1 row-span-auto lg:row-span-2 lg:col-start-3 lg:row-start-1'>
-								{cart?.items.map((item, index) => (
-									<PaymentItem key={index} item={item} />
-								))}
-							</div>
-							<div>
-								<FormField
-									control={control}
-									name='cartId'
-									render={({ field }) => (
-										<FormItem className='row-start-4 row-span-auto lg:col-start-3 lg:row-start-3 lg:row-span-1'>
-											<FormControl>
-												<InvoiceForm cart={cart} />
-											</FormControl>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-								{Object.keys(errors).length > 0 && (
-									<p className='text-sm font-medium text-red-500 dark:text-red-900 mt-2'>
-										* Заповніть всі обов&apos;язкові поля
-									</p>
-								)}
-							</div>
-						</form>
-					</FormProvider>
-				</>
-			) : (
-				<OrderSuccess />
-			)}
+					<div className='row-start-3 row-span-auto lg:col-span-2 lg:row-span-2 lg:row-start-3'>
+						{/* PAYMENT */}
+						<FormField
+							control={control}
+							name='payment'
+							render={({ field }) => (
+								<FormItem>
+									<FormControl>
+										<PaymentForm
+											onChange={field.onChange}
+											payment={payment!}
+											setPayment={setPayment}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						{/* DELIVERY */}
+						<FormField
+							control={control}
+							name='address'
+							render={({ field }) => (
+								<FormItem>
+									<FormControl>
+										<DeliveryForm
+											onChange={field.onChange}
+											currentDelivery={currentDelivery!}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						{/* COMMENT */}
+						<FormField
+							control={control}
+							name='comment'
+							render={({ field }) => (
+								<FormItem>
+									<FormControl>
+										<CommentForm onChangeText={field.onChange} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</div>
+					{/* CART */}
+					<div className='bg-zinc-100 shadow-lg rounded-md p-4 mt-2 overflow-auto max-h-[446px] sm:max-h-[446px] row-start-1 row-span-auto lg:row-span-2 lg:col-start-3 lg:row-start-1'>
+						{cart?.items.map((item, index) => (
+							<PaymentItem key={index} item={item} />
+						))}
+					</div>
+					<div>
+						<FormField
+							control={control}
+							name='cartId'
+							render={({ field }) => (
+								<FormItem className='row-start-4 row-span-auto lg:col-start-3 lg:row-start-3 lg:row-span-1'>
+									<FormControl>
+										<InvoiceForm cart={cart} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						{Object.keys(errors).length > 0 && (
+							<p className='text-sm font-medium text-red-500 dark:text-red-900 mt-2'>
+								* Заповніть всі обов&apos;язкові поля
+							</p>
+						)}
+					</div>
+				</form>
+			</FormProvider>
 		</section>
 	)
 }

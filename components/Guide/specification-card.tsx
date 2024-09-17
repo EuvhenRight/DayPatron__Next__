@@ -70,7 +70,7 @@ export const SpecificationCard = () => {
 			visible: { opacity: 1, y: 0 },
 		},
 	}
-	console.log(isMobile, 'isMobile')
+
 	// Use the appropriate variants based on screen size
 	const containerVariant = isMobile
 		? containerVariants.mobile

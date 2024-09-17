@@ -292,7 +292,9 @@ export const orderItemScheme = z.object({
 				message: 'Будь ласка, заповніть усі поля профілю',
 			}
 		) as ZodSchema<ProfileUserSchema>,
-	payment: z.enum([Payment.POSTPAID, Payment.PAIMENTBYCARD]),
+	payment: z.enum([Payment.POSTPAID, Payment.PAIMENTBYCARD], {
+		required_error: 'Виберіть спосіб оплати',
+	}),
 	comment: z.string().nullable().optional(),
 	cartId: z.any(),
 	extra_user: any(),

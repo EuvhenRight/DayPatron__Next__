@@ -56,7 +56,7 @@ export const GoogleMapComponent = () => {
 		}
 
 		loadMap()
-	}, [apiKey])
+	}, [apiKey, center])
 
 	// RENDER SIZE GOOGLE MAP
 	const containerStyle = {
