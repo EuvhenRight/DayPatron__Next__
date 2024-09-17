@@ -26,7 +26,7 @@ export const TeamChannelPreview = (props) => {
   
   const getAvatarByMember = (member) => {
     return <Avatar
-      src={undefined}
+      src={member?.user?.image}
       alt={member?.user?.name || member?.user?.id}
       sx={{ bgcolor: theme.palette.primary.main }}
     >

@@ -12,6 +12,7 @@ import { TeamMessage } from '../TeamMessage/TeamMessage';
 
 import { CloseThreadIcon } from 'assets/images/streamio';
 import MainCard from 'components/MainCard';
+import { Divider } from '@mui/material';
 
 const ThreadHeader = (props) => {
   const { closeThread, setPinsOpen, thread } = props;
@@ -23,6 +24,7 @@ const ThreadHeader = (props) => {
   };
 
   return (
+    <>
     <div className='custom-thread-header'>
       <div className='custom-thread-header__left'>
         <p className='custom-thread-header__left-title'>Thread</p>
@@ -30,6 +32,8 @@ const ThreadHeader = (props) => {
       </div>
       <CloseThreadIcon {...{ closeThread, setPinsOpen }} />
     </div>
+    <Divider />
+    </>
   );
 };
 

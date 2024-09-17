@@ -28,7 +28,7 @@
 }
 
 .custom-thread-header {
-  height: 62px;
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -67,4 +67,7 @@
   left: initial;
   right: 100%;
   border-radius: var(--border-radius-md);
+}
+.str-chat__thread-container {
+  border-inline-start: none;
 }

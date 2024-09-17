@@ -188,7 +188,7 @@ export const ChannelListContainer = (props) => {
                   >
                     <ListItemAvatar sx={{width: '40px'}}>
                       <Avatar
-                        src={undefined}
+                        src={grouplessUser?.imageUrl}
                         alt={grouplessUser?.name}
                         sx={{ bgcolor: theme.palette.primary.main }}
                       >

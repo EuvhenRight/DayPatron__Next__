@@ -25,16 +25,22 @@ export const TeamChannelHeader = ({ setIsEditing, onShowChannelSelector, isChann
   const theme = useTheme();
 
   const allMembers = Object.values(channel.state.members);
-  const otherMembers = allMembers.filter(({ user }) => user.id !== client.userID && user.id !== personalInformation.messagingProviderAdminUserId);
-  const meAndAdminMembers = allMembers.filter(({ user }) => user.id === client.userID || user.id === personalInformation.messagingProviderAdminUserId);
-  const allMembersSorted = otherMembers.concat(meAndAdminMembers);
+  const otherMembers = allMembers.filter(({ user }) => user.id !== client.userID);
+  const otherMembersNoAdmin = otherMembers.filter(({ user }) => user.id !== personalInformation.messagingProviderAdminUserId);
+  const adminMembers = otherMembers.filter(({ user }) => user.id === personalInformation.messagingProviderAdminUserId);
+  const otherMembersSorted = otherMembersNoAdmin.concat(adminMembers);
 
   const handleMembersClick = () => {
     setIsEditing(true);
   };
  
   const getChannelTitle = () => {
-    let titleText = allMembersSorted?.map(x => 
+    let members = otherMembersSorted;
+
+    if(allMembers.length === 1)
+      members = allMembers;
+
+    let titleText = members?.map(x => 
       {
         let result = x?.user?.name || x?.user?.id;
         if(x.user.id === client.userID)
@@ -44,11 +50,11 @@ export const TeamChannelHeader = ({ setIsEditing, onShowChannelSelector, isChann
     ).join(', ');
 
     return <>
-      <AvatarGroup max={3} spacing={9}>
-        {allMembersSorted.map((member, memberIndex) => 
+      <AvatarGroup max={3} spacing={6}>
+        {members.map((member, memberIndex) => 
           <Avatar
             key={memberIndex}
-            src={undefined}
+            src={member?.user?.image}
             alt={member?.user?.name || member?.user?.id}
             sx={{ bgcolor: theme.palette.primary.main, width: '26px', height: '26px' }}
           >
@@ -81,7 +87,7 @@ export const TeamChannelHeader = ({ setIsEditing, onShowChannelSelector, isChann
           <IconButton edge="end" aria-label="comments" color="secondary" onClick={handleMembersClick}>
             <UsergroupAddOutlined style={{ fontSize: '1.15rem' }} />
             <Typography>
-              {allMembersSorted?.length}
+              {allMembers?.length}
             </Typography>
           </IconButton>
         </Stack>

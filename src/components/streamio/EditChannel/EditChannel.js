@@ -5,7 +5,7 @@ import { useChatContext } from 'stream-chat-react';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { prepareApiBody } from 'utils/stringUtils';
 
-import { Button, Stack } from '@mui/material';
+import { Button, Divider, Stack } from '@mui/material';
 import './EditChannel.css';
 
 import { UserList } from '../CreateChannel/UserList';
@@ -77,6 +77,7 @@ export const EditChannel = (props) => {
         <p>Edit Chat</p>
         <CloseCreateChannel {...{ setIsEditing }} />
       </div>
+      <Divider />
       <UserList {...{ filters, setSelectedUsers, selectedUsers, connectAsAdmin }} />
       <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 1.5, mr: 1.5, mb: 1.5 }}>
         <Button onClick={updateChannel} variant="contained">
