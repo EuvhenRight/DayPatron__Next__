@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Avatar, useChatContext } from 'stream-chat-react';
+import { useChatContext } from 'stream-chat-react';
 import { useKeycloak } from '@react-keycloak/web';
 import { useSelector } from 'react-redux';
+import { useTheme } from '@mui/material/styles';
+import { Avatar } from '@mui/material';
 
 import './UserList.css';
 
@@ -25,6 +27,7 @@ const ListContainer = (props) => {
 
 const UserItem = (props) => {
   const { setSelectedUsers, user, initiallySelected } = props;
+  const theme = useTheme();
 
   const [selected, setSelected] = useState(initiallySelected);
 
@@ -45,7 +48,13 @@ const UserItem = (props) => {
   return (
     <div className='user-item__wrapper' onClick={handleClick} role="presentation">
       <div className='user-item__name-wrapper'>
-        <Avatar image={user.image} name={getUserLabel(user)} size={32} />
+        <Avatar
+          src={user?.imageUrl}
+          alt={user?.name || user?.messagingProviderUserId}
+          sx={{ bgcolor: theme.palette.primary.main, width: '32px', height: '32px' }}
+        >
+          {user?.name?.[0]}
+        </Avatar>
         <p className='user-item__name'>{getUserLabel(user)}</p>
       </div>
       <p className='user-item__last-active'></p>
