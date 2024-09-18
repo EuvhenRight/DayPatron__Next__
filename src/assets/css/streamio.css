@@ -69,7 +69,7 @@ body {
   border:none;
 }
 .tenx-channels-container {
-  height: calc(100vh - 270px);
+  height: calc(100vh - 250px);
   display: flex;
   flex-flow: column;
 }
@@ -80,7 +80,7 @@ body {
 }
 .tenx-messages-container,
 .upsert-channel__container {
-  height: calc(100vh - 270px);
+  height: calc(100vh - 250px);
 }
 .str-chat__list {
   scrollbar-width: thin;
