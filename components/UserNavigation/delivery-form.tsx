@@ -41,7 +41,7 @@ export const DeliveryForm = ({ currentDelivery }: Props) => {
 							<AccordionItem
 								key={item.id}
 								value={item.id}
-								className='w-full bg-zinc-100 rounded-md p-2 my-4'
+								className='w-full bg-zinc-100 rounded-md p-2 my-4 py-0'
 							>
 								<AccordionTrigger>
 									<div className='font-bold'>

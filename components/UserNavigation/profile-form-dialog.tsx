@@ -21,7 +21,7 @@ import { ValidationSchema } from '@/lib/db/validation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { User } from '@prisma/client'
 import { Pencil } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { PhoneInput } from 'react-international-phone'
 import 'react-international-phone/style.css'
@@ -30,10 +30,23 @@ import { z } from 'zod'
 interface Props {
 	currentUser: User
 	onChange?: (value: z.infer<typeof ValidationSchema.profileUser>) => void
+	openProfileDialog: boolean
+	setOpenProfileDialog: (value: boolean) => void
 }
 
-export const ProfileFormDialog = ({ currentUser, onChange }: Props) => {
+export const ProfileFormDialog = ({
+	currentUser,
+	onChange,
+	openProfileDialog,
+	setOpenProfileDialog,
+}: Props) => {
 	const [isOpen, setIsOpen] = useState(false)
+
+	useEffect(() => {
+		if (openProfileDialog) {
+			setIsOpen(true)
+		}
+	}, [openProfileDialog, isOpen, setIsOpen])
 
 	// FORM VALIDATION AND ERROR HANDLING
 	const form = useForm<z.infer<typeof ValidationSchema.profileUser>>({
@@ -70,6 +83,7 @@ export const ProfileFormDialog = ({ currentUser, onChange }: Props) => {
 			if (onChange) {
 				onChange(data)
 			}
+			setOpenProfileDialog(false)
 			return setIsOpen(!isOpen)
 		} catch (error) {
 			toast.error('Щось пішло не так, спробуйте ще раз')
@@ -163,7 +177,11 @@ export const ProfileFormDialog = ({ currentUser, onChange }: Props) => {
 							<div className='flex items-center justify-end relative mt-4'>
 								{/* BUTTON CLOSE */}
 								<DialogClose asChild>
-									<Button variant='link' type='button'>
+									<Button
+										variant='link'
+										type='button'
+										disabled={openProfileDialog}
+									>
 										Скасувати
 									</Button>
 								</DialogClose>

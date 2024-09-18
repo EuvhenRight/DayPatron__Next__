@@ -8,9 +8,16 @@ import { ProfileFormDialog } from './profile-form-dialog'
 interface Props {
 	currentUser: User
 	onChange?: () => void
+	openProfileDialog?: boolean
+	setOpenProfileDialog: (value: boolean) => void
 }
 
-export const ProfileForm = ({ currentUser, onChange }: Props) => {
+export const ProfileForm = ({
+	currentUser,
+	onChange,
+	openProfileDialog,
+	setOpenProfileDialog,
+}: Props) => {
 	const pathName = usePathname()
 	return (
 		<div className='border p-4 border-spacing-1 rounded-md my-2 shadow-lg'>
@@ -21,7 +28,12 @@ export const ProfileForm = ({ currentUser, onChange }: Props) => {
 						<Asterisk size={16} className='text-red-500' />
 					)}
 				</div>
-				<ProfileFormDialog onChange={onChange} currentUser={currentUser} />
+				<ProfileFormDialog
+					openProfileDialog={openProfileDialog!}
+					onChange={onChange}
+					currentUser={currentUser}
+					setOpenProfileDialog={setOpenProfileDialog}
+				/>
 			</div>
 			<div className='space-y-4 pt-4'>
 				<div>

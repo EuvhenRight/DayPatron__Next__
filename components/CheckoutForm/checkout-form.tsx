@@ -24,7 +24,7 @@ import { Payment, User } from '@prisma/client'
 
 import { ChevronLeft } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
@@ -67,24 +67,8 @@ export const CheckoutForm = ({ cart, currentDelivery, currentUser }: Props) => {
 		formState: { errors },
 		handleSubmit,
 		control,
-		clearErrors,
 	} = formMethods
 
-	useEffect(() => {
-		const { firstName, lastName, phone } = formMethods.getValues('profile')
-
-		if (firstName && lastName && phone) {
-			clearErrors('profile')
-		}
-	}, [errors, formMethods.getValues('profile'), clearErrors])
-
-	useEffect(() => {
-		if (!errors) {
-			formMethods.formState.isValid === true &&
-				formMethods.formState.isSubmitSuccessful === true
-		}
-	}, [errors, formMethods])
-	console.log('errors', formMethods)
 	const onSubmit = async (data: z.infer<typeof orderItemScheme>) => {
 		try {
 			// CREATE ORDER
@@ -98,6 +82,7 @@ export const CheckoutForm = ({ cart, currentDelivery, currentUser }: Props) => {
 			})
 
 			await newOrder
+			// UPDATE CART CACHE
 			router.refresh()
 			return router.push('/checkouts/order-success')
 		} catch (err) {
@@ -136,6 +121,8 @@ export const CheckoutForm = ({ cart, currentDelivery, currentUser }: Props) => {
 										<ProfileForm
 											onChange={field.onChange}
 											currentUser={currentUser!}
+											openProfileDialog={false}
+											setOpenProfileDialog={() => {}}
 										/>
 									</FormControl>
 									<FormMessage />
@@ -221,8 +208,10 @@ export const CheckoutForm = ({ cart, currentDelivery, currentUser }: Props) => {
 							)}
 						/>
 						{Object.keys(errors).length > 0 && (
-							<p className='text-sm font-medium text-red-500 dark:text-red-900 mt-2'>
-								* Заповніть всі обов&apos;язкові поля
+							<p className='text-sm font-medium text-center text-red-500 dark:text-red-900 mt-2'>
+								* Заповніть всі обов&apos;язкові поля <br />
+								Якщо ви не можетне зробити замовлення, перезавантажте сторінку
+								<br /> Вибачте за незручності
 							</p>
 						)}
 					</div>
