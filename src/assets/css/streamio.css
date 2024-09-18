@@ -97,9 +97,14 @@ body {
 .str-chat__container {
   padding-bottom: 5px;
 }
-
 .channel-header-avatar-group .MuiAvatarGroup-avatar {
   width:26px;
   height:26px;
   font-size: 14px;
+}
+.str-chat__message-action-icon {
+  transform: scale(1.2);
+}
+.str-chat__message-simple__actions__action {
+  margin-left: 12px;
 }
