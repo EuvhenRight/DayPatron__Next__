@@ -209,9 +209,7 @@ export const CheckoutForm = ({ cart, currentDelivery, currentUser }: Props) => {
 						/>
 						{Object.keys(errors).length > 0 && (
 							<p className='text-sm font-medium text-center text-red-500 dark:text-red-900 mt-2'>
-								* Заповніть всі обов&apos;язкові поля <br />
-								Якщо ви не можетне зробити замовлення, перезавантажте сторінку
-								<br /> Вибачте за незручності
+								* Заповніть всі обов&apos;язкові поля
 							</p>
 						)}
 					</div>

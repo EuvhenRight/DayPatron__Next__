@@ -25,7 +25,7 @@ export const InvoiceForm = ({ cart }: Props) => {
 					</div>
 				</div>
 				<div className='flex flex-col p-2 mb-4 bg-zinc-100 rounded-md shadow-lg'>
-					<BonusForm />
+					<BonusForm cart={cart} />
 				</div>
 				<Button className='w-full shadow-lg' variant='office'>
 					Оформити замовлення
