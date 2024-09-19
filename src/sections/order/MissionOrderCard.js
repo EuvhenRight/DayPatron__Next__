@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import {
+  Button,
   Link,
   Divider,
   Grid,
@@ -28,6 +30,7 @@ import { useKeycloak } from '@react-keycloak/web';
 
 const MissionOrderCard = ({ order, handleApproveClick }) => {
   const { keycloak } = useKeycloak();
+  const navigate = useNavigate();
   const theme = useTheme();
   const [downloadingContractorServiceOrderId, setDownloadingContractorServiceOrderId] = useState(null);
 
@@ -100,6 +103,17 @@ const MissionOrderCard = ({ order, handleApproveClick }) => {
                   }
                 />
               </ListItem>
+
+              <ListItem disablePadding>
+                <Stack direction="row" spacing={1}>
+                  <Button variant="outlined"  onClick={() => { 
+                    navigate('/messaging', { state: { targetEmployerId: order?.employerId} });
+                  }}>
+                    Message
+                  </Button>
+                </Stack>
+              </ListItem>
+
             </List>
 
           </Grid>

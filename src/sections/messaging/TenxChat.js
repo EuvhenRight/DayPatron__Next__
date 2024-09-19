@@ -51,7 +51,7 @@ const getToken = async () => {
   return json.token;
 };
 
-const TenxChat = ({targetUserId, setTargetUserId}) => {
+const TenxChat = ({targetEntity, setTargetEntity}) => {
   const theme = useTheme();
   const matchDownMD = useMediaQuery(theme.breakpoints.down('md'));
   const [isCreating, setIsCreating] = useState(false);
@@ -117,8 +117,8 @@ const TenxChat = ({targetUserId, setTargetUserId}) => {
               setIsCreating,
               setIsEditing,
               sort,
-              targetUserId,
-              setTargetUserId,
+              targetEntity, 
+              setTargetEntity,
               onChannelSelected,
               connectAsAdmin,
               headerPlaceholder: keycloak.tokenParsed.roles.includes('admin') ?

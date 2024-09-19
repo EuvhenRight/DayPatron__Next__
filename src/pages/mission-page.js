@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useKeycloak } from '@react-keycloak/web';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import {
   Autocomplete,
   TextField,
@@ -40,6 +41,7 @@ const avatarImage = require.context('assets/images/missions', true);
 const MissionPage = () => {
   const dispatch = useDispatch();
   const { keycloak } = useKeycloak();
+  const navigate = useNavigate();
   const { missionId } = useParams();
   const [mission, setMission] = useState(null);
   const [missionContractor, setMissionContractor] = useState(null);
@@ -513,6 +515,11 @@ const MissionPage = () => {
                   </Grid>
                   <Grid item xs={12}>
                     <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2} sx={{ mt: 2.5 }}>
+                      <Button variant="outlined"  onClick={() => { 
+                        navigate('/messaging', { state: { targetEmployerId: mission?.employerId} });
+                      }}>
+                        Message
+                      </Button>
                       {!missionContractor?.application && !mission?.closedOnUtc &&
                         <Button variant="contained" onClick={handleApplyButtonClick} disabled={isCreatingApplication}>
                           Apply

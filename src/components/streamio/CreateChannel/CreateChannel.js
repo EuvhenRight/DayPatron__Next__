@@ -33,7 +33,7 @@ export const CreateChannel = (props) => {
             'Authorization': 'Bearer ' + keycloak.idToken,
             'Content-Type': 'application/json'
           },
-          body: prepareApiBody({messagingProviderUserIds: selectedUsers, contractorId: connectAsAdmin ? null : personalInformation?.id})
+          body: prepareApiBody({targetMessagingProviderUserIds: selectedUsers, sourceContractorId: connectAsAdmin ? null : personalInformation?.id})
         }
       );
 

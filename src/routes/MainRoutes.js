@@ -26,7 +26,6 @@ const ProfileAiPage = Loadable(lazy(() => import('pages/profile-ai-page')));
 
 const MissionPage = Loadable(lazy(() => import('pages/mission-page')));
 const MissionsPage = Loadable(lazy(() => import('pages/missions-page')));
-const MissionChatPage = Loadable(lazy(() => import('pages/mission-chat-page')));
 const MissionTimeTrackingPage = Loadable(lazy(() => import('pages/mission-time-tracking-page')));
 
 const MyProductsPage = Loadable(lazy(() => import('pages/my-products-page')));
@@ -118,10 +117,6 @@ const MainRoutes = {
         {
           path: 'missions/:missionId',
           element: <MissionPage />
-        },
-        {
-          path: 'missions/chat',
-          element: <MissionChatPage />
         },
         {
           path: 'missions/time-tracking',
