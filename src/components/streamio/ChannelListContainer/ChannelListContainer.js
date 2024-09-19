@@ -17,7 +17,7 @@ import MainCard from 'components/MainCard';
 import './ChannelListContainer.css';
 
 export const ChannelListContainer = (props) => {
-  const { options, setIsCreating, setIsEditing, sort, targetUserId, setTargetUserId, onChannelSelected, headerPlaceholder, connectAsAdmin } = props;
+  const { options, setIsCreating, setIsEditing, sort, targetEntity, setTargetEntity, onChannelSelected, headerPlaceholder, connectAsAdmin } = props;
   const dispatch = useDispatch();
   const { keycloak } = useKeycloak();
   const { client, setActiveChannel } = useChatContext();
@@ -27,13 +27,13 @@ export const ChannelListContainer = (props) => {
   
   useEffect(() => {
     (async () => {
-      if(targetUserId && client && setActiveChannel && keycloak.idToken) {
-        var newChannelId = await createChannelForUser(targetUserId);
+      if((targetEntity?.targetUserId || targetEntity?.targetEmployerId) && client && setActiveChannel && keycloak.idToken) {
+        var newChannelId = await createChannelForUser(targetEntity);
         await activateChannelById(newChannelId);
-        setTargetUserId(null);
+        setTargetEntity(null);
       }
     })();
-  }, [connectAsAdmin, targetUserId, client, setActiveChannel, keycloak.idToken]);
+  }, [connectAsAdmin, targetEntity, client, setActiveChannel, keycloak.idToken]);
 
   useEffect(() => {
     (async () => {
@@ -41,7 +41,7 @@ export const ChannelListContainer = (props) => {
     })();
   }, [connectAsAdmin, personalInformation?.id, keycloak.idToken]);
   
-  const createChannelForUser = async (userId) => {
+  const createChannelForUser = async (targetEntity) => {
     try {
       let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/messages/groups',
         {
@@ -50,7 +50,7 @@ export const ChannelListContainer = (props) => {
             'Authorization': 'Bearer ' + keycloak.idToken,
             'Content-Type': 'application/json'
           },
-          body: prepareApiBody({groupName: null, messagingProviderUserIds: [userId], returnExisting: true, employeruserId: connectAsAdmin ? null : personalInformation?.id})
+          body: prepareApiBody({groupName: null, targetMessagingProviderUserIds: targetEntity?.targetUserId ? [targetEntity.targetUserId] : null, targetEmployerIds: targetEntity?.targetEmployerId ? [targetEntity.targetEmployerId] : null, returnExisting: true, sourceEmployeruserId: connectAsAdmin ? null : personalInformation?.id})
         }
       );
 

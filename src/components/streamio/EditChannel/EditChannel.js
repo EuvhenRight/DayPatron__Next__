@@ -31,7 +31,7 @@ export const EditChannel = (props) => {
             'Authorization': 'Bearer ' + keycloak.idToken,
             'Content-Type': 'application/json'
           },
-          body: prepareApiBody({groupId: channel.data.id, messagingProviderUserIds: selectedUsers, employeruserId: connectAsAdmin ? null : personalInformation?.id})
+          body: prepareApiBody({groupId: channel.data.id, targetMessagingProviderUserIds: selectedUsers, sourceEmployeruserId: connectAsAdmin ? null : personalInformation?.id})
         }
       );
 

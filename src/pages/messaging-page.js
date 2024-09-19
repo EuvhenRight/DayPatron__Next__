@@ -4,9 +4,9 @@ import { useLocation } from 'react-router-dom';
 
 const MessagingPage = () => {
   const location = useLocation();
-  const [targetUserId, setTargetUserId] = useState(location.state?.targetUserId);
+  const [targetEntity, setTargetEntity] = useState({targetUserId: location.state?.targetUserId, targetEmployerId: location.state?.targetEmployerId});
   return (
-    <TenxChat {...{targetUserId, setTargetUserId}} />
+    <TenxChat {...{targetEntity, setTargetEntity}} />
   );
 };
 
