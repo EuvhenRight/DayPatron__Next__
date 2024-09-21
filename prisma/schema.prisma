@@ -55,12 +55,13 @@ model User {
   updatedAt         DateTime  @updatedAt
   role              Role      @default(USER)
 
-  cart     Cart[]
-  order    Order[]
-  address  Delivery[]
-  accounts Account[]
-  sessions Session[]
-  reviews  ReviewItem[]
+  cart           Cart[]
+  order          Order[]
+  address        Delivery[]
+  accounts       Account[]
+  sessions       Session[]
+  reviews        ReviewItem[]
+  bonusCodeUsage BonusCodeUsage[]
 
   @@map("users")
 }
@@ -134,15 +135,30 @@ model Cart {
 
 // Bonus-Code
 model BonusCode {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  code          String    @unique
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  code          String   @unique
   discountValue Float
-  used          Boolean   @default(false)
-  usedAt        DateTime? // Optional, only set when used
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
-  carts Cart[] @relation
+  carts          Cart[]
+  BonusCodeUsage BonusCodeUsage[]
 
   @@map("bonusCode")
+}
+
+// Bones-Code Usage
+model BonusCodeUsage {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  bonusCodeId String   @db.ObjectId
+  userId      String   @db.ObjectId
+  usedAt      DateTime @default(now())
+
+  bonusCode BonusCode @relation(fields: [bonusCodeId], references: [id])
+  user      User      @relation(fields: [userId], references: [id])
+
+  @@unique([bonusCodeId, userId])
+  @@map("bonusCodeUsage")
 }
 
 //Delivery

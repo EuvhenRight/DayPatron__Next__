@@ -25,7 +25,7 @@ const BonusForm = ({ cart }: Props) => {
 	}
 	const handleSubmit = async () => {
 		try {
-			const response = await applyBonusCode('test', cart?.id!)
+			const response = await applyBonusCode('test', cart?.id!, cart?.userId!)
 
 			if (!response.success) {
 				setError(response.message)

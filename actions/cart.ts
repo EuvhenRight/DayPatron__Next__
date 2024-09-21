@@ -1,5 +1,6 @@
 'use server'
 // pages/api/cart/[cartId]/items.ts
+import { calculateTotalDiscount } from '@/actions/calculateTotalDiscount'
 import prisma from '@/lib/db/client'
 import { createCart, getCart } from '@/lib/services/cart'
 import { revalidatePath } from 'next/cache'
@@ -62,8 +63,17 @@ export async function addItem(variantId: string) {
 	})
 
 	revalidatePath('/products')
-
-	return { ...cart }
+	// RECALCULATE TOTALS WITH BONUS CODE
+	if (cart?.bonusCodeId) {
+		// GET UPDATED CART
+		const updatedCart = await getCart()
+		// CALCULATE BONUS CODE
+		const cartWithBonusDiscount = await calculateTotalDiscount(updatedCart)
+		return cartWithBonusDiscount
+	} else {
+		// GET NOT UPDATED CART
+		return { ...cart }
+	}
 }
 
 // DELETE CART ITEM
@@ -119,8 +129,17 @@ export async function deleteItem(itemId: string) {
 	})
 
 	revalidatePath('/products')
-
-	return { ...cart }
+	// RECALCULATE TOTALS WITH BONUS CODE
+	if (cart?.bonusCodeId) {
+		// GET UPDATED CART
+		const updatedCart = await getCart()
+		// CALCULATE BONUS CODE
+		const cartWithBonusDiscount = await calculateTotalDiscount(updatedCart)
+		return cartWithBonusDiscount
+	} else {
+		// GET NOT UPDATED CART
+		return { ...cart }
+	}
 }
 // EDIT CART ITEM
 export async function editItem(itemId: string, quantity: number) {
@@ -185,6 +204,15 @@ export async function editItem(itemId: string, quantity: number) {
 	})
 
 	revalidatePath('/products')
-
-	return { ...cart }
+	// RECALCULATE TOTALS WITH BONUS CODE
+	if (cart?.bonusCodeId) {
+		// GET UPDATED CART
+		const updatedCart = await getCart()
+		// CALCULATE BONUS CODE
+		const cartWithBonusDiscount = await calculateTotalDiscount(updatedCart)
+		return cartWithBonusDiscount
+	} else {
+		// GET NOT UPDATED CART
+		return { ...cart }
+	}
 }
