@@ -1,6 +1,7 @@
 'use server'
 import prisma from '@/lib/db/client'
 import { CartWithVariants } from '@/lib/types/types'
+import { format } from 'date-fns'
 import { revalidatePath } from 'next/cache'
 
 export async function applyBonusCode(
@@ -14,7 +15,7 @@ export async function applyBonusCode(
 	})
 
 	if (!validBonusCode) {
-		return { success: false, message: 'Invalid bonus code' }
+		return { success: false, message: 'Такого промокода не існує' }
 	}
 
 	// Check if the bonus code has already been used by this user
@@ -27,11 +28,15 @@ export async function applyBonusCode(
 		},
 	})
 
+	const formattedDate = bonusCodeUsage?.usedAt
+		? format(new Date(bonusCodeUsage.usedAt), 'yyyy-MM-dd HH:mm:ss')
+		: 'Date not available' // Fallback if usedAt is not defined
+
 	// Check if the bonus code has already been used
 	if (bonusCodeUsage) {
 		return {
 			success: false,
-			message: `Bonus code has already been used. Used at: ${bonusCodeUsage.usedAt}`,
+			message: `Промокод був використаний раніше: ${formattedDate}`,
 		}
 	}
 

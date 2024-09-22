@@ -11,6 +11,10 @@ export async function calculateTotalDiscount(cart: CartWithVariants | null) {
 		where: { id: cart.bonusCodeId! },
 	})
 
+	if (!validBonusCode) {
+		return 'Invalid bonus code'
+	}
+
 	const discountValue = validBonusCode?.discountValue
 
 	// Calculate the discount amount based on percentage

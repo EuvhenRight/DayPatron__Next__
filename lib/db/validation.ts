@@ -69,6 +69,10 @@ export interface SearchInputSchema {
 	inputData: string
 }
 
+export interface BonusCodeFormSchema {
+	bonusCodeInput: string
+}
+
 export const ValidationSchema = {
 	// AUTH
 	authUser: z.object({
@@ -224,31 +228,16 @@ export const ValidationSchema = {
 			.min(3, 'Має містити 3 або більше елементів')
 			.max(50, 'Має містити 50 або менше елементів'),
 	}) as ZodSchema<SearchInputSchema>,
-	// PRODUCT
-	newProductSchema: z.object({
-		linkName: z.string(),
-		name: z.string(),
-		UTP: z.string(),
-		description: z.string(),
-		useTo: z.string(),
-		image: z.array(z.object({ url: z.string() })),
-		ingredients: z.string(),
-		shelfLife: z.string(),
-		category: z.string(),
-		variants: z.array(
-			z.object({
-				name: z.string(),
-				price: z.number(),
-				specification: z.string(),
-				stock: z.boolean(),
-				current_rating: z.number().optional(),
+	// BONUS-CODE
+	bonusCode: z.object({
+		bonusCodeInput: z
+			.string({ required_error: "Поле код бонусного набору є обов'язковим" })
+			.regex(/^[\u0400-\u04FF0-9!.,",?;:() -]+$/, {
+				message: 'Використовуйте тільки кириличні символи',
 			})
-		),
-		price: z.number(),
-		specification: z.string(),
-		current_rating: z.number().optional(),
-		mim_price: z.number(),
-	}),
+			.min(12, 'Має містити 12 елементів')
+			.max(12, 'Має містити 12 елементів'),
+	}) as ZodSchema<BonusCodeFormSchema>,
 }
 
 // CART VALIDATION

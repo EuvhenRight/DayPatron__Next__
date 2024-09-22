@@ -1,7 +1,7 @@
 import { PriceTag } from '@/components/PriceTag'
 import { CartWithVariants } from '@/lib/types/types'
 import { Button } from '../ui/button'
-import BonusForm from './bonus-form'
+import { BonusForm } from './bonus-form'
 
 interface Props {
 	cart?: CartWithVariants | null

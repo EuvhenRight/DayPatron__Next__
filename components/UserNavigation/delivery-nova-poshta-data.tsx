@@ -22,6 +22,7 @@ interface Props {
 	onChange: (value: string) => void
 	setAutoCityData: (value: string) => void
 }
+
 export const Combobox = ({ onChange, setAutoCityData }: Props) => {
 	const [open, setOpen] = useState<boolean>(false)
 	const [currentData, setCurrentData] = useState<string>('')
@@ -66,7 +67,10 @@ export const Combobox = ({ onChange, setAutoCityData }: Props) => {
 				</PopoverTrigger>
 				<PopoverContent className='p-0 md:w-[700px] w-min-full'>
 					<Command className='bg-gray-200'>
-						<CommandInput value={searchNumber} onValueChange={handleOnChange} />
+						<CommandInput
+							value={searchNumber || ''}
+							onValueChange={handleOnChange}
+						/>
 						<CommandList>
 							<CommandEmpty>Нічого не знайдено</CommandEmpty>
 							<CommandGroup>
