@@ -83,7 +83,6 @@ export const TableOilsProducts = ({ products }: Props) => {
 						className='*:relative *:p-2 hover:text-yellow-600 cursor-pointer'
 					>
 						<TableCell className='uppercase'>
-							{' '}
 							<GuideTooltip product={protect} />
 						</TableCell>
 						<TableCell></TableCell>

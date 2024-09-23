@@ -51,7 +51,7 @@ export const SpecificationCard = () => {
 			},
 		},
 		mobile: {
-			hidden: { opacity: 0, y: 0 },
+			hidden: { opacity: 1, y: 0 },
 			visible: {
 				opacity: 1,
 				y: 0,
@@ -66,7 +66,7 @@ export const SpecificationCard = () => {
 		hidden: { opacity: 0, y: 50 },
 		visible: { opacity: 1, y: 0 },
 		mobile: {
-			hidden: { opacity: 0, y: 50 },
+			hidden: { opacity: 1, y: 50 },
 			visible: { opacity: 1, y: 0 },
 		},
 	}
@@ -82,7 +82,7 @@ export const SpecificationCard = () => {
 			{/* SPECIFICATION 100ml */}
 			<motion.div
 				variants={containerVariant}
-				className='flex items-center justify-center bg-slate-100 p-4 rounded-lg'
+				className='flex items-center justify-center bg-slate-100 p-8 rounded-lg'
 			>
 				<Image
 					src='/images/container-100ml.png'
@@ -129,7 +129,7 @@ export const SpecificationCard = () => {
 			{/* SPECIFICATION 250ml */}
 			<motion.div
 				variants={containerVariant}
-				className='flex items-center justify-center bg-slate-100 p-4 rounded-lg'
+				className='flex items-center justify-center bg-slate-100 p-8 rounded-lg'
 			>
 				<Image
 					src='/images/container-250ml.png'
@@ -176,7 +176,7 @@ export const SpecificationCard = () => {
 			{/* SPECIFICATION 500ml */}
 			<motion.div
 				variants={containerVariant}
-				className='flex items-center justify-center bg-slate-100 p-4 rounded-lg'
+				className='flex items-center justify-center bg-slate-100 p-8 rounded-lg'
 			>
 				<Image
 					src='/images/container-500ml.png'

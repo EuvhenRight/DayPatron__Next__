@@ -1,4 +1,4 @@
-export const advantageProps = [
+export const advantageLibrary = [
 	{
 		category: 'Carbon-Cleaner',
 		image: '/images/cleaner_tr.svg',
@@ -130,5 +130,42 @@ export const advantageProps = [
 				text: 'Зберігає свої властивості при тривалому зберіганні зброї, навіть в екстремальних умовах',
 			},
 		],
+	},
+]
+
+export const videoLibrary = [
+	{
+		title:
+			'Чистка та змащення нарізної зброї. DAY Patron ▶ Майстерня №172 ▶ Трофей',
+		description:
+			'Перед кожним стрільцем і не тільки стрільцем, і не тільки спортсменами, а і мисливцям постає дилема - чищення зброї. Друзі знають, що ми не дуже любимо чистити зброю, що ми любимо стріляти. Ну, а догляд за зброєю - це основне питання, для того щоб вона ніколи вас не підводила. Ну, а дуже гарно і швидко почистити зброю, ми з вами сьогодні спробуємо за допомогою DAY Patron.',
+		videoId: 'V6KhwcCIMd8',
+	},
+	{
+		title:
+			'Чистка та змащення гладкоствольної зброї. DAY Patron ▶ Майстерня №173 ▶ Трофей',
+		description:
+			'Перед кожним стрільцем і не тільки стрільцем, і не тільки спортсменами, а і мисливцям постає дилема - чищення зброї. Друзі знають, що ми не дуже любимо чистити зброю, що ми любимо стріляти. Ну, а догляд за зброєю - це основне питання, для того щоб вона ніколи вас не підводила. Ну, а дуже гарно і швидко почистити зброю, ми з вами сьогодні спробуємо за допомогою DAY Patron.',
+		videoId: 'W9jip0sceN8',
+	},
+]
+
+export const partnersLibrary = [
+	{
+		image: 'Rozetka.png',
+		url: 'https://hunter.rozetka.com.ua/gun_care/c232621/producer=day-patron/',
+	},
+	{
+		image: 'Epicentr.svg',
+		url: 'https://epicentrk.ua/ua/search/?q=daypatron',
+	},
+	{
+		image: 'Motorsport.png',
+		url: 'https://motorsport.com.ua/index.php?match=all&pcode_from_q=Y&pshort=Y&pfull=Y&pname=Y&pkeywords=Y&search_performed=Y&q=&dispatch=products.search&security_hash=577899a94e1535a213ecbdaf7bb39696&features_hash=316-10608',
+	},
+	{ image: 'Stvol.png', url: 'https://stvol.ua/catalog/day-patron/b942' },
+	{
+		image: 'Ibis.svg',
+		url: 'https://ibis.net.ua/ua/products/sredstva/search/day-patron/',
 	},
 ]

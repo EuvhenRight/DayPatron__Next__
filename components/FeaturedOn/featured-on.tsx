@@ -1,8 +1,8 @@
 'use client'
 import { FeaturedCard } from '@/components/FeaturedOn/featured-card'
 import data from '@/lib/db/content.json'
-import { partners } from '@/lib/services/partners'
 import { rubikGlitch } from '@/lib/utils/font'
+import { partnersLibrary } from '@/lib/utils/library'
 import { cn } from '@/lib/utils/utils'
 import { motion, useAnimation, useInView } from 'framer-motion'
 import { usePathname } from 'next/navigation'
@@ -64,7 +64,7 @@ export const FeaturedOn = () => {
 				initial='hidden'
 				animate={controls}
 			>
-				{partners.map((item, index) => (
+				{partnersLibrary.map((item, index) => (
 					<motion.div key={index} className='my-2'>
 						<FeaturedCard item={item} variants={itemVariants} />
 					</motion.div>

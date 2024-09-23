@@ -1,6 +1,6 @@
 'use client'
-import { advantageProps } from '@/lib/services/advantages'
 import { rubikGlitch } from '@/lib/utils/font'
+import { advantageLibrary } from '@/lib/utils/library'
 import { cn } from '@/lib/utils/utils'
 import { motion, Variants } from 'framer-motion'
 import Image from 'next/image'
@@ -12,7 +12,7 @@ interface Props {
 export const Advantages = ({ category }: Props) => {
 	// FIND PROPERTIES
 	const properties = (category: string) => {
-		return advantageProps.find(advantage => advantage.category === category)
+		return advantageLibrary.find(advantage => advantage.category === category)
 	}
 	// DESTRUCTURE PROPERTIES
 	const { image, items, color } = properties(category)!

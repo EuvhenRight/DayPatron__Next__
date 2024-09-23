@@ -1,7 +1,7 @@
 import { TableCleanerProducts } from '@/components/Guide/guide-cleaners'
 import { TableOilsProducts } from '@/components/Guide/guide-oils'
 import { SpecificationCard } from '@/components/Guide/specification-card'
-import { YouTube } from '@/components/Slider/video-card'
+import { VideoLibrary } from '@/components/Guide/video-lybrary'
 import { getAllProducts } from '@/lib/services/products'
 import { rubikGlitch } from '@/lib/utils/font'
 import { cn } from '@/lib/utils/utils'
@@ -65,8 +65,8 @@ async function Guide() {
 				</div>
 				<TableOilsProducts products={dataProducts} />
 				<TableCleanerProducts products={dataProducts} />
-				<YouTube />
 			</section>
+			<VideoLibrary />
 		</>
 	)
 }
