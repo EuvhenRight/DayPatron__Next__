@@ -27,7 +27,7 @@ interface Props {
 }
 export const BonusForm = ({ cart }: Props) => {
 	const [error, setError] = useState<string | null>(null)
-
+	// VALIDATION SCHEMA
 	const form = useForm<z.infer<typeof ValidationSchema.bonusCode>>({
 		resolver: zodResolver(ValidationSchema.bonusCode),
 		defaultValues: {
@@ -36,6 +36,7 @@ export const BonusForm = ({ cart }: Props) => {
 	})
 	const onSubmit = async (data: z.infer<typeof ValidationSchema.bonusCode>) => {
 		try {
+			// APPLY BONUS CODE
 			const response = await toast.promise(
 				applyBonusCode(data.bonusCodeInput, cart?.id!, cart?.userId!),
 				{
@@ -43,6 +44,7 @@ export const BonusForm = ({ cart }: Props) => {
 					success: data => {
 						if (data.success) {
 							setError(null)
+							form.reset()
 							return 'Ваш промокод успішно додано!'
 						} else {
 							setError(data.message)
@@ -51,6 +53,7 @@ export const BonusForm = ({ cart }: Props) => {
 					},
 					error: error => {
 						console.error(error)
+						// ERROR HANDLING
 						return (error as Error).message
 					},
 				}
