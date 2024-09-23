@@ -18,6 +18,8 @@ export async function applyBonusCode(
 		return { success: false, message: 'Такого промокода не існує' }
 	}
 
+	// TODO: add constance's to JSON File
+
 	// Check if the bonus code has already been used by this user
 	const bonusCodeUsage = await prisma.bonusCodeUsage.findUnique({
 		where: {
