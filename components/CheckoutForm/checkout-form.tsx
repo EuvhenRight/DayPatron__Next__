@@ -19,10 +19,13 @@ import {
 	DeliveryWithItems,
 	OrderWithItems,
 } from '@/lib/types/types'
+import { rubikGlitch } from '@/lib/utils/font'
+import { cn } from '@/lib/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Payment, User } from '@prisma/client'
 
 import { ChevronLeft } from 'lucide-react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -100,7 +103,12 @@ export const CheckoutForm = ({ cart, currentDelivery, currentUser }: Props) => {
 				>
 					<ChevronLeft size={30} />
 				</button>
-				<h2 className='text-xl text-center font-bold my-2'>
+				<h2
+					className={cn(
+						rubikGlitch.className,
+						'text-xl text-center font-bold my-2'
+					)}
+				>
 					Оформлення замовлення
 				</h2>
 				<div></div>
@@ -189,10 +197,23 @@ export const CheckoutForm = ({ cart, currentDelivery, currentUser }: Props) => {
 						/>
 					</div>
 					{/* CART */}
-					<div className='bg-zinc-100 shadow-lg rounded-md p-4 mt-2 overflow-auto max-h-[446px] sm:max-h-[446px] row-start-1 row-span-auto lg:row-span-2 lg:col-start-3 lg:row-start-1'>
-						{cart?.items.map((item, index) => (
-							<PaymentItem key={index} item={item} />
-						))}
+					<div>
+						<div className='flex justify-between'>
+							<h2 className='text-sm'>
+								Товари: <b>{cart?.itemsTotal} шт.</b>
+							</h2>
+							<Link
+								className='text-blue-500 hover:underline text-sm'
+								href='/products'
+							>
+								Всі товари
+							</Link>
+						</div>
+						<div className='bg-zinc-100 shadow-lg rounded-md p-4 mt-2 overflow-auto max-h-[446px] sm:max-h-[446px] row-start-1 row-span-auto lg:row-span-2 lg:col-start-3 lg:row-start-1'>
+							{cart?.items.map((item, index) => (
+								<PaymentItem key={index} item={item} />
+							))}
+						</div>
 					</div>
 					<div>
 						<FormField
