@@ -82,6 +82,6 @@ export async function applyBonusCode(
 	return {
 		success: true,
 		...cart,
-		message: 'Bonus code applied successfully!',
+		message: 'Промокод успішно застосовано!',
 	}
 }

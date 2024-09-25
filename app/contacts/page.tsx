@@ -43,8 +43,8 @@ export default async function ContactsPage() {
 
 	return (
 		<>
-			<section className='container lg:pt-10 relative flex flex-row w-full pt-2 mb-4'>
-				<div className='w-1/2 text-start'>
+			<section className='container lg:pt-10 relative flex flex-col md:flex-row w-full pt-2 mb-4'>
+				<div className='w-full md:w-1/2 text-start'>
 					<h1 className={cn(rubikGlitch.className, 'text-2xl font-bold')}>
 						{ContentContactsPage.page.title}
 					</h1>
@@ -56,7 +56,7 @@ export default async function ContactsPage() {
 						))}
 					</ul>
 				</div>
-				<div className='w-1/2 flex flex-col justify-center'>
+				<div className='w-full md:w-1/2 flex flex-col justify-start'>
 					<FeedBackForm currentUser={currentUser} />
 				</div>
 			</section>

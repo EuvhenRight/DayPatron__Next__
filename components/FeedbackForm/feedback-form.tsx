@@ -1,7 +1,6 @@
 'use client'
 import ContactsLoader from '@/components/FeedbackForm/loading'
 import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
 import {
 	Form,
 	FormControl,
@@ -26,6 +25,7 @@ import { useForm } from 'react-hook-form'
 import { PhoneInput } from 'react-international-phone'
 import 'react-international-phone/style.css'
 import { z } from 'zod'
+import { PrivacyPolicyInfo } from './privacy-policy'
 
 interface Props {
 	currentUser?: User | null
@@ -199,25 +199,9 @@ export const FeedBackForm = ({ currentUser: user }: Props) => {
 									</FormItem>
 								)}
 							/>
-							{/* MESSAGE */}
-							<FormField
-								control={form.control}
-								name='message'
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel className='flex items-center my-4'>
-											{ContentContactsPage.form.message_label}
-											<Asterisk size={12} className='text-red-500' />
-										</FormLabel>
-										<FormControl>
-											<Checkbox {...field} />
-										</FormControl>
-										<FormMessage />
-									</FormItem>
-								)}
-							/>
 							{/* BUTTON SAVE */}
 							<div className='text-end'>
+								<PrivacyPolicyInfo label='Надіслати' />
 								<Button type='submit' variant='office' className='my-4'>
 									{ContentContactsPage.form.submit_button}
 								</Button>

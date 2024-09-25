@@ -1,5 +1,6 @@
 import { PriceTag } from '@/components/PriceTag'
 import { CartWithVariants } from '@/lib/types/types'
+import { PrivacyPolicyInfo } from '../FeedbackForm/privacy-policy'
 import { Button } from '../ui/button'
 import { BonusForm } from './bonus-form'
 
@@ -30,6 +31,7 @@ export const InvoiceForm = ({ cart }: Props) => {
 				<Button className='w-full shadow-lg' variant='office'>
 					Оформити замовлення
 				</Button>
+				<PrivacyPolicyInfo label='Оформити замовлення' />
 			</div>
 		</>
 	)
