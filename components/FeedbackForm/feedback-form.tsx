@@ -10,6 +10,7 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { PrivacyPolicyInfo } from '@/components/ui/privacy-policy'
 import { Textarea } from '@/components/ui/textarea'
 import data from '@/lib/db/content.json'
 import { ValidationSchema } from '@/lib/db/validation'
@@ -25,7 +26,6 @@ import { useForm } from 'react-hook-form'
 import { PhoneInput } from 'react-international-phone'
 import 'react-international-phone/style.css'
 import { z } from 'zod'
-import { PrivacyPolicyInfo } from './privacy-policy'
 
 interface Props {
 	currentUser?: User | null
@@ -201,7 +201,7 @@ export const FeedBackForm = ({ currentUser: user }: Props) => {
 							/>
 							{/* BUTTON SAVE */}
 							<div className='text-end'>
-								<PrivacyPolicyInfo label='Надіслати' />
+								<PrivacyPolicyInfo label='"Надіслати"' />
 								<Button type='submit' variant='office' className='my-4'>
 									{ContentContactsPage.form.submit_button}
 								</Button>

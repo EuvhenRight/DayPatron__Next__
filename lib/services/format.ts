@@ -4,12 +4,11 @@ export function formatPrice(price: number) {
 		currency: 'USD',
 	})
 }
-
 export function formatPriceUa(price: number) {
 	const formattedPrice = (price / 100).toLocaleString('uk-UA', {
 		minimumFractionDigits: 2,
 		maximumFractionDigits: 2,
 	})
 
-	return `${formattedPrice} грн`
+	return `${formattedPrice} ₴`
 }

@@ -57,6 +57,7 @@ export async function addItem(variantId: string) {
 		where: { id: cart.id },
 		data: {
 			subTotal: totalPrice,
+			originalTotal: original,
 			itemsTotal: totalItems,
 			discountTotal: total_discount,
 		},
@@ -123,6 +124,7 @@ export async function deleteItem(itemId: string) {
 		where: { id: cart.id },
 		data: {
 			subTotal: totalPrice,
+			originalTotal: original,
 			itemsTotal: totalItems,
 			discountTotal: total_discount,
 		},
@@ -198,6 +200,7 @@ export async function editItem(itemId: string, quantity: number) {
 		where: { id: cart.id },
 		data: {
 			subTotal: totalPrice,
+			originalTotal: original,
 			itemsTotal: totalItems,
 			discountTotal: total_discount,
 		},

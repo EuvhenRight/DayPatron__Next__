@@ -122,7 +122,10 @@ export const CartItemComponent = ({
 					{/* PRICE */}
 					{/* DISCOUNT ON/OFF */}
 					{product.discount_price! > 0 ? (
-						<p className='text-green-500 font-bold'>
+						<p className='font-bold gap-2 text-green-500'>
+							<span className='line-through pr-4 text-neutral-200'>
+								{<PriceTag price={product.original_price} />}
+							</span>
 							{<PriceTag price={product.discount_price!} />}
 						</p>
 					) : (

@@ -118,6 +118,7 @@ model CartItem {
 model Cart {
   id            String   @id @default(auto()) @map("_id") @db.ObjectId
   itemsTotal    Float
+  originalTotal Float
   subTotal      Float
   discountTotal Float
   createdAt     DateTime @default(now())

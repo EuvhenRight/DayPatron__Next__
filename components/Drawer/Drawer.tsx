@@ -80,16 +80,26 @@ export const Drawer = ({ cart }: Props) => {
 								{/* SECOND PART CHECKOUT */}
 								<div className='relative'>
 									{/* SUBTOTAL AND DISCOUNT */}
-									<div className='flex flex-col text-white py-4 mb-4'>
-										<div className='flex justify-between'>
-											<h2>СУМА</h2>
-											<h2>{<PriceTag price={cart?.subTotal!} />}</h2>
+									<div className='flex flex-col text-white py-4 mb-2'>
+										<div className='flex justify-between py-4'>
+											<h2>Сума замовлення</h2>
+											<h2
+												className={
+													cart?.discountTotal! > 0 ? 'line-through' : ''
+												}
+											>
+												<PriceTag price={cart?.originalTotal!} />
+											</h2>
 										</div>
 										<div className='flex justify-between'>
-											<h2>ЗНИЖКА</h2>
+											<h2>Знижка</h2>
 											<h2 className='text-green-500'>
 												-{<PriceTag price={cart?.discountTotal!} />}
 											</h2>
+										</div>
+										<div className='flex justify-between py-2'>
+											<h2>До оплати без доставки:</h2>
+											<h2>{<PriceTag price={cart?.subTotal!} />}</h2>
 										</div>
 									</div>
 									{/* CHECKOUT */}
