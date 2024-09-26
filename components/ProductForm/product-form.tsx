@@ -36,13 +36,13 @@ export const ProductForm = ({ product, cart }: Props) => {
 
 	//SERVER ACTION ADD TO CART
 	const addItemToCart = async (variantId: string) => {
-		let itemInCart: Promise<CartWithVariants>
+		let itemInCart: Promise<CartWithVariants | string>
 		if (!variantId) {
 			// TOAST ERROR
 			return toast.error('Щось пішло не так, спробуйте ще раз')
 		}
 
-		itemInCart = new Promise<CartWithVariants>(resolve => {
+		itemInCart = new Promise<CartWithVariants | string>(resolve => {
 			// ADD TO CART
 			resolve(addItem(variantId!))
 		})

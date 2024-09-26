@@ -1,13 +1,16 @@
 'use client'
 import { Loader } from '@googlemaps/js-api-loader'
-import { useEffect, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 
 export const GoogleMapComponent = () => {
 	// GOOGLE MAPS CENTER
-	const center = {
-		lat: 50.42015,
-		lng: 30.5201551,
-	}
+	const center = useMemo(
+		() => ({
+			lat: 50.42015,
+			lng: 30.5201551,
+		}),
+		[]
+	)
 	// GOOGLE MAPS API KEY
 	const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!
 	const mapRef = useRef<google.maps.Map | null>(null)

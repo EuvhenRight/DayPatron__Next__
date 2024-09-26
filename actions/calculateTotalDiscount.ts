@@ -12,7 +12,7 @@ export async function calculateTotalDiscount(cart: CartWithVariants | null) {
 	})
 
 	if (!validBonusCode) {
-		return 'Invalid bonus code'
+		return 'Не знайдено дійсного бонусного коду'
 	}
 
 	const discountValue = validBonusCode?.discountValue
@@ -32,5 +32,5 @@ export async function calculateTotalDiscount(cart: CartWithVariants | null) {
 		},
 	})
 
-	return { ...cart }
+	return cart
 }

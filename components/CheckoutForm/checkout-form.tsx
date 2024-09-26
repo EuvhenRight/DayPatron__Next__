@@ -116,9 +116,9 @@ export const CheckoutForm = ({ cart, currentDelivery, currentUser }: Props) => {
 			<FormProvider {...formMethods}>
 				<form
 					onSubmit={handleSubmit(onSubmit)}
-					className='grid grid-cols-1 grid-rows-auto gap-2 lg:grid-cols-3 lg:grid-rows-2 lg:gap-4'
+					className='flex flex-col lg:flex-row  gap-4 relative'
 				>
-					<div className='row-start-2 row-span-auto lg:col-span-2 lg:row-span-2 lg:row-start-1'>
+					<div className='w-full lg:w-2/3'>
 						{/* PROFILE */}
 						<FormField
 							control={control}
@@ -147,8 +147,6 @@ export const CheckoutForm = ({ cart, currentDelivery, currentUser }: Props) => {
 								</FormItem>
 							)}
 						/>
-					</div>
-					<div className='row-start-3 row-span-auto lg:col-span-2 lg:row-span-2 lg:row-start-3'>
 						{/* PAYMENT */}
 						<FormField
 							control={control}
@@ -197,30 +195,30 @@ export const CheckoutForm = ({ cart, currentDelivery, currentUser }: Props) => {
 						/>
 					</div>
 					{/* CART */}
-					<div>
-						<div className='flex justify-between'>
-							<h2 className='text-sm'>
-								Товари: <b>{cart?.itemsTotal} шт.</b>
-							</h2>
-							<Link
-								className='text-blue-500 hover:underline text-sm'
-								href='/products'
-							>
-								Всі товари
-							</Link>
+					<div className='w-full lg:w-1/3'>
+						<div className='bg-zinc-100 shadow-lg rounded-md p-4 mt-2'>
+							<div className='flex justify-between pb-1'>
+								<h2 className='text-sm'>
+									Товари: <b>{cart?.itemsTotal} шт.</b>
+								</h2>
+								<Link
+									className='text-blue-500 hover:underline text-sm'
+									href='/products'
+								>
+									Всі товари
+								</Link>
+							</div>
+							<div className='overflow-auto max-h-[446px] sm:max-h-[446px] row-start-1 row-span-auto lg:row-span-2 lg:col-start-3 lg:row-start-1'>
+								{cart?.items.map((item, index) => (
+									<PaymentItem key={index} item={item} />
+								))}
+							</div>
 						</div>
-						<div className='bg-zinc-100 shadow-lg rounded-md p-4 mt-2 overflow-auto max-h-[446px] sm:max-h-[446px] row-start-1 row-span-auto lg:row-span-2 lg:col-start-3 lg:row-start-1'>
-							{cart?.items.map((item, index) => (
-								<PaymentItem key={index} item={item} />
-							))}
-						</div>
-					</div>
-					<div>
 						<FormField
 							control={control}
 							name='cartId'
 							render={({ field }) => (
-								<FormItem className='row-start-4 row-span-auto lg:col-start-3 lg:row-start-3 lg:row-span-1'>
+								<FormItem className=''>
 									<FormControl>
 										<InvoiceForm cart={cart} />
 									</FormControl>
