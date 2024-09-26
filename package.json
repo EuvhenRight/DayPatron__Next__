@@ -72,6 +72,7 @@
     "@types/node-cron": "^3.0.11",
     "@types/nodemailer": "^6.4.14",
     "@types/react-star-ratings": "^2.3.3",
+    "eslint-plugin-react-hooks": "^4.6.2",
     "node-cron": "^3.0.3",
     "nodemailer": "^6.9.8",
     "prisma": "^5.16.1"
