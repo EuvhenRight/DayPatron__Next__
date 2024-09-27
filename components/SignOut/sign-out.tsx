@@ -12,13 +12,21 @@ import {
 } from '@/components/ui/alert-dialog'
 import { buttonVariants } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
 export const LogOutModal = () => {
 	const router = useRouter()
+	const [error, setError] = useState<string | null>(null)
 
-	const handleSignOut = () => {
-		logOut()
-		router.push('/')
+	const handleSignOut = async () => {
+		try {
+			await logOut()
+			router.push('/')
+		} catch (err) {
+			setError(
+				'Виникла помилка при виxоді з системи. Будь ласка, спробуйте ще раз.'
+			)
+		}
 	}
 
 	return (
@@ -26,6 +34,7 @@ export const LogOutModal = () => {
 			<AlertDialogTrigger>Вийти з системи</AlertDialogTrigger>
 			<AlertDialogContent>
 				<AlertDialogHeader>
+					{error && <p style={{ color: 'red' }}>{error}</p>}
 					<AlertDialogTitle>Ви дійсно хочете вийти?</AlertDialogTitle>
 					<AlertDialogDescription>
 						Ви вийдете зі свого облікового запису.
