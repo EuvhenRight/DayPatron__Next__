@@ -13,7 +13,7 @@ export default function Error({
 			<pre>{error.message}</pre>
 			<button
 				onClick={
-					// Attempt to recover by trying to re-render the segment
+					// ATTENTION: do not use async function here
 					() => reset()
 				}
 			>
