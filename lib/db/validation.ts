@@ -239,7 +239,6 @@ export const ValidationSchema = {
 			.max(12, 'Має містити 12 елементів'),
 	}) as ZodSchema<BonusCodeFormSchema>,
 }
-
 // CART VALIDATION
 export const cartValidationSchema = z.object({
 	quantity: z
@@ -247,7 +246,6 @@ export const cartValidationSchema = z.object({
 		.min(1, 'Кількість має бути більше або дорівнювати 1')
 		.max(99, 'Кількість має бути менше або дорівнювати 99'),
 })
-
 // ORDER VALIDATION
 export const orderItemScheme = z.object({
 	profile: z
