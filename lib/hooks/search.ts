@@ -40,7 +40,7 @@ export function useSearchMainData(searchWords: string | null) {
 	const [data, setData] = useState<ProductWithVariantsWithReviews[]>()
 	// LOADING STATE
 	const [loading, setLoading] = useState<boolean>(false)
-	console.log(searchWords, 'searchWords')
+
 	useEffect(() => {
 		const mainData = async () => {
 			if (!searchWords) return

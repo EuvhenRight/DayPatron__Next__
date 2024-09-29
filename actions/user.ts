@@ -19,7 +19,7 @@ export const getCurrentSession = async () => {
 		const session = await auth()
 		return session
 	} catch (err) {
-		console.log(err, 'Something went wrong')
+		console.log(err, 'Щось пішло не так. Будь ласка, спробуйте знову пізніше')
 	}
 }
 
@@ -39,7 +39,10 @@ export const getCurrentUser = async () => {
 
 		return currentUser
 	} catch (error) {
-		console.log(error, 'Something went wrong')
+		console.log(
+			error,
+			'SЩось пішло не так. Будь ласка, спробуйте знову пізніше'
+		)
 	}
 }
 
@@ -52,7 +55,10 @@ export const getCurrentUserById = async ({ id }: { id: string }) => {
 		})
 		return currentUser
 	} catch (error) {
-		console.log(error, 'Something went wrong')
+		console.log(
+			error,
+			'SЩось пішло не так. Будь ласка, спробуйте знову пізніше'
+		)
 	}
 }
 
@@ -62,7 +68,7 @@ export const getCurrentRole = async () => {
 
 		return session?.user?.role
 	} catch (error) {
-		console.log(error, 'Something went wrong')
+		console.log(error, 'Щось пішло не так. Будь ласка, спробуйте знову пізніше')
 	}
 }
 

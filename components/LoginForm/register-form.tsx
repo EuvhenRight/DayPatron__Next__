@@ -48,7 +48,6 @@ export const RegisterForm = () => {
 					email,
 				}
 			)
-			console.log(data)
 			data
 			if (data?.id) {
 				setSuccess(SUCCESS_MESSAGE_REGISTER)
