@@ -24,7 +24,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import axios, { AxiosError } from 'axios'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 
@@ -42,6 +42,14 @@ export const LoginForm = () => {
 			password: '',
 		},
 	})
+
+	useEffect(() => {
+		const urlParams = new URLSearchParams(window.location.search)
+		const email = urlParams.get('email')
+		if (email) {
+			form.setValue('email', email)
+		}
+	}, [form])
 
 	const onSubmit = async (data: z.infer<typeof ValidationSchema.loginUser>) => {
 		const { email, password } = data

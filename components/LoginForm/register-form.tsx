@@ -52,7 +52,7 @@ export const RegisterForm = () => {
 			if (data?.id) {
 				setSuccess(SUCCESS_MESSAGE_REGISTER)
 			}
-			router.push('/auth/login')
+			router.push(`/auth/login?email=${encodeURIComponent(email)}`)
 		} catch (error) {
 			if (axios.isAxiosError(error)) {
 				const err = (await error) as AxiosError<{ error: string }>
