@@ -34,7 +34,7 @@ export const RegisterForm = () => {
 	const form = useForm<z.infer<typeof ValidationSchema.authUser>>({
 		resolver: zodResolver(ValidationSchema.authUser),
 		defaultValues: {
-			email: 'ugnivenko.ea@gmail.com',
+			email: '',
 		},
 	})
 
@@ -43,7 +43,7 @@ export const RegisterForm = () => {
 		const { email } = data
 		try {
 			const { data } = await axios.post(
-				process.env.NEXT_PUBLIC_API_URL + '/register',
+				process.env.NEXT_PUBLIC_API_URL + '/api/register',
 				{
 					email,
 				}

@@ -56,7 +56,7 @@ export const FeedBackForm = ({ currentUser: user }: Props) => {
 			setLoading(true)
 			setSuccess(true)
 			const response = await axios.post(
-				process.env.NEXT_PUBLIC_API_URL + '/feedback',
+				process.env.NEXT_PUBLIC_API_URL + '/api/feedback',
 				data
 			)
 
