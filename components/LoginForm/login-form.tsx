@@ -19,11 +19,7 @@ import {
 	InputOTPSlot,
 } from '@/components/ui/input-otp'
 import { ValidationSchema } from '@/lib/db/validation'
-import {
-	API_URL,
-	ERROR_MESSAGE,
-	SUCCESS_MESSAGE_LOGIN,
-} from '@/lib/services/constance'
+import { ERROR_MESSAGE, SUCCESS_MESSAGE_LOGIN } from '@/lib/services/constance'
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios, { AxiosError } from 'axios'
 import { signIn } from 'next-auth/react'
@@ -54,10 +50,13 @@ export const LoginForm = () => {
 		setSuccess('')
 
 		try {
-			const response = await axios.post(API_URL + '/login', {
-				email,
-				password,
-			})
+			const response = await axios.post(
+				process.env.NEXT_PUBLIC_API_URL + '/login',
+				{
+					email,
+					password,
+				}
+			)
 
 			// HANDLE AXIOS ERROR
 			if (response.data?.error) {

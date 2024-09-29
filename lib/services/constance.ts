@@ -1,6 +1,3 @@
-// API URL
-export const API_URL = process.env.NEXT_PUBLIC_API_URL
-
 // FEEDBACK
 export const SUCCESS_MESSAGE_FEEDBACK = 'Ваш відгук надіслано, дякуємо!'
 

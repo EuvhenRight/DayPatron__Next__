@@ -13,7 +13,7 @@ export function useSearchDataDivision(number: string | '') {
 				setLoading(true)
 				// GET DATA FROM API DIFFERENT ENDPOINTS
 				const response = await fetch(
-					`${process.env.NEXT_PUBLIC_API_URL}/np/search?divisionNumber=${number}`,
+					`${process.env.NEXT_PUBLIC_API_URL}/api/np/search?divisionNumber=${number}`,
 					{
 						method: 'POST',
 						headers: {
@@ -49,7 +49,7 @@ export function useSearchMainData(searchWords: string | null) {
 				setLoading(true)
 				// GET DATA FROM API DIFFERENT ENDPOINTS
 				const response = await fetch(
-					`${process.env.NEXT_PUBLIC_API_URL}/search/query?searchQuery=${searchWords}`,
+					`${process.env.NEXT_PUBLIC_API_URL}/api/search/query?searchQuery=${searchWords}`,
 					{ next: { revalidate: 30 } }
 				)
 				const searchResult = await response.json()

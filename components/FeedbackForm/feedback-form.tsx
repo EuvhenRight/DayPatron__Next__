@@ -14,7 +14,6 @@ import { PrivacyPolicyInfo } from '@/components/ui/privacy-policy'
 import { Textarea } from '@/components/ui/textarea'
 import data from '@/lib/db/content.json'
 import { ValidationSchema } from '@/lib/db/validation'
-import { API_URL } from '@/lib/services/constance'
 import { rubikGlitch } from '@/lib/utils/font'
 import { cn } from '@/lib/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -56,7 +55,10 @@ export const FeedBackForm = ({ currentUser: user }: Props) => {
 		try {
 			setLoading(true)
 			setSuccess(true)
-			const response = await axios.post(API_URL + '/feedback', data)
+			const response = await axios.post(
+				process.env.NEXT_PUBLIC_API_URL + '/feedback',
+				data
+			)
 
 			if (response.status !== 200) {
 				return new Error('Something went wrong')

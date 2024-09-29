@@ -15,7 +15,6 @@ import { FormSuccess } from '@/components/ui/form-success'
 import { Input } from '@/components/ui/input'
 import { ValidationSchema } from '@/lib/db/validation'
 import {
-	API_URL,
 	ERROR_MESSAGE,
 	SUCCESS_MESSAGE_REGISTER,
 } from '@/lib/services/constance'
@@ -43,9 +42,12 @@ export const RegisterForm = () => {
 		setIsButtonDisabled(true)
 		const { email } = data
 		try {
-			const { data } = await axios.post(API_URL + '/register', {
-				email,
-			})
+			const { data } = await axios.post(
+				process.env.NEXT_PUBLIC_API_URL + '/register',
+				{
+					email,
+				}
+			)
 			console.log(data)
 			data
 			if (data?.id) {
