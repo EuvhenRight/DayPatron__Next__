@@ -16,7 +16,7 @@ export const createReviewEmailHtml = ({ message }: Props) => {
 			</tr>
 			<tr>
 				<td colspan="2" style="padding: 10px 0;">
-					<p style="font-size: 14px;">Ви ще не зареєстровані на нашому сайті, але Ви можете увійти на наш сайт за посиланням <a href="http://localhost:3000/auth/register" style="color: #007bff;">Вхід</a>, щоб зареєструватися та отримати можливість видалити або редагувати свій відгук.</p>
+					<p style="font-size: 14px;">Ви ще не зареєстровані на нашому сайті, але Ви можете увійти на наш сайт за посиланням <a href="process.env.NEXT_PUBLIC_APP_URL/auth/register" style="color: #007bff;">Вхід</a>, щоб зареєструватися та отримати можливість видалити або редагувати свій відгук.</p>
 				</td>
 			</tr>
 			<tr>
@@ -27,7 +27,7 @@ export const createReviewEmailHtml = ({ message }: Props) => {
 			<tr>
 				<td colspan="2" style="padding: 10px 0; text-align: start;">
 							<p>З повагою,<br>Команда підтримки DayPatron<br>
-			<img src="http://localhost:3000/images/DayLogo_black.svg" alt="DayPatron Logo" style="display: block; width: 150px; height: 50px;">
+			<img src="pros/images/DayLogo_black.svg" alt="DayPatron Logo" style="display: block; width: 150px; height: 50px;">
 			</p> 
 					<p style="font-size: 12px; color: #999;">телефон:  +38 (099) 730-21-26 <br>ел.пошта: daypatronteam@gmail.com <br>cайт: http://www.daypatron.com</p>
 				</td>
