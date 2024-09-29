@@ -38,7 +38,7 @@ export const LoginForm = () => {
 	const form = useForm<z.infer<typeof ValidationSchema.loginUser>>({
 		resolver: zodResolver(ValidationSchema.loginUser),
 		defaultValues: {
-			email: 'ugnivenko.ea@gmail.com',
+			email: '',
 			password: '',
 		},
 	})
