@@ -43,7 +43,7 @@ export const RegisterForm = () => {
 		const { email } = data
 		try {
 			const { data } = await axios.post(
-				process.env.NEXT_PUBLIC_API_URL + '/api/register/',
+				process.env.NEXT_PUBLIC_API_URL + '/api/register',
 				{
 					email,
 				}

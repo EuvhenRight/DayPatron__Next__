@@ -6,9 +6,10 @@ import { NextRequest, NextResponse } from 'next/server'
 import cron from 'node-cron'
 
 export async function POST(request: NextRequest) {
+	console.log(request, 'click1')
 	const generatedPassword: string = generateRandomPassword()
 	const requestData = await request.json()
-	console.log('click')
+
 	try {
 		// Validate the request body
 		const validatedBody = ValidationSchema.authUser.safeParse(requestData)
