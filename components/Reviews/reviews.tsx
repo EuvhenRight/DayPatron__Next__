@@ -31,57 +31,48 @@ export const ReviewsComponent = ({ reviews, product }: Props) => {
 			edit={edit}
 			setEdit={setEdit}
 		>
-			<>
-				{/* OPEN FORM REVIEW */}
-				{open && (
-					<motion.div
-						initial={{ opacity: 0, y: -20 }}
-						animate={{ opacity: 1, y: 0 }}
-						exit={{ opacity: 0, y: -20 }}
-						transition={{ duration: 0.5, ease: 'easeInOut' }}
-						className='my-5 px-4'
-					>
-						<ReviewsForm
-							product={product}
-							setOpen={setOpen}
-							setEdit={setEdit}
-						/>
-					</motion.div>
-				)}
-				{/* EDIT FORM REVIEW */}
-				{edit && (
-					<motion.div
-						initial={{ opacity: 0, y: -20 }}
-						animate={{ opacity: 1, y: 0 }}
-						exit={{ opacity: 0, y: -20 }}
-						transition={{ duration: 0.5, ease: 'easeInOut' }}
-						className='my-5 px-4'
-					>
-						<ReviewsEditForm
-							reviews={reviews}
-							product={product}
-							setEdit={setEdit}
-							setOpen={setOpen}
-							currentItem={currentItem}
-						/>
-					</motion.div>
-				)}
-				{/* ADD BORDER TO OPEN FORM REVIEW */}
-				<div
-					className={cn(
-						open || edit ? 'border-t-2 border-gray-200' : '',
-						'p-4'
-					)}
+			{/* OPEN FORM REVIEW */}
+			{open && (
+				<motion.div
+					initial={{ opacity: 0, y: -20 }}
+					animate={{ opacity: 1, y: 0 }}
+					exit={{ opacity: 0, y: -20 }}
+					transition={{ duration: 0.5, ease: 'easeInOut' }}
+					className='my-5 px-4'
 				>
-					<ReviewsPage
-						reviewsFromPage={reviews}
-						pageTotal={reviews?.pageTotal}
+					<ReviewsForm product={product} setOpen={setOpen} setEdit={setEdit} />
+				</motion.div>
+			)}
+			{/* EDIT FORM REVIEW */}
+			{edit && (
+				<motion.div
+					initial={{ opacity: 0, y: -20 }}
+					animate={{ opacity: 1, y: 0 }}
+					exit={{ opacity: 0, y: -20 }}
+					transition={{ duration: 0.5, ease: 'easeInOut' }}
+					className='my-5 px-4'
+				>
+					<ReviewsEditForm
+						reviews={reviews}
 						product={product}
 						setEdit={setEdit}
-						setCurrentItem={setCurrentItem}
+						setOpen={setOpen}
+						currentItem={currentItem}
 					/>
-				</div>
-			</>
+				</motion.div>
+			)}
+			{/* ADD BORDER TO OPEN FORM REVIEW */}
+			<div
+				className={cn(open || edit ? 'border-t-2 border-gray-200' : '', 'p-4')}
+			>
+				<ReviewsPage
+					reviewsFromPage={reviews}
+					pageTotal={reviews?.pageTotal}
+					product={product}
+					setEdit={setEdit}
+					setCurrentItem={setCurrentItem}
+				/>
+			</div>
 		</ReviewsWrapper>
 	)
 }

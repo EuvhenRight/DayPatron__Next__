@@ -8,17 +8,15 @@ interface Props {
 }
 export const ReviewsRating = ({ rating, count }: Props) => {
 	return (
-		<>
-			<Rating
-				rating={rating}
-				totalStars={5}
-				size={32}
-				variant='yellow'
-				className='flex flex-col justify-center items-end'
-				showText={true}
-				disabled={true}
-				totalReviews={count}
-			/>
-		</>
+		<Rating
+			rating={rating}
+			totalStars={5}
+			size={32}
+			variant='yellow'
+			className='flex flex-col justify-center items-end'
+			showText={true}
+			disabled={true}
+			totalReviews={count}
+		/>
 	)
 }

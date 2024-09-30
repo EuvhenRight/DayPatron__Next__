@@ -40,6 +40,7 @@ export async function addItem(
 			email: data.email,
 		},
 	})
+	console.log(checkUser, 'checkUser')
 	// SEND EMAIL IF USER DOES NOT EXIST
 	if (!checkUser) {
 		await sendEmail({
