@@ -8,13 +8,14 @@ import cron from 'node-cron'
 export async function POST(request: NextRequest) {
 	const generatedPassword: string = generateRandomPassword()
 	const requestData = await request.json()
-
+	console.log('click')
 	try {
 		// Validate the request body
 		const validatedBody = ValidationSchema.authUser.safeParse(requestData)
 		if (!validatedBody.success) {
 			return NextResponse.json(validatedBody.error.errors, { status: 400 })
 		}
+		console.log('click2')
 		// Send email with the new password
 		await sendEmail({
 			to: requestData.email,
@@ -36,7 +37,7 @@ export async function POST(request: NextRequest) {
 				email: requestData.email,
 			},
 		})
-
+		console.log('click3')
 		if (existingUser) {
 			// If the user exists, update the password
 			const updatedUser = await prisma.user.update({
@@ -56,7 +57,7 @@ export async function POST(request: NextRequest) {
 			// Schedule a task to delete the password after 15 minutes
 			schedulePasswordDeletion(updatedUser.id, 15)
 			// Generate token for the new user
-
+			console.log('click4')
 			return NextResponse.json({ ...updatedUser }, { status: 201 })
 		} else {
 			// If the user doesn't exist, create a new user
