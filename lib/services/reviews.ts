@@ -1,5 +1,6 @@
 import prisma from '@/lib/db/client'
 import { Reviews } from '@prisma/client'
+import { ReviewsWithItems } from '../types/types'
 
 export async function createReview(productId: string): Promise<Reviews> {
 	// Step 1: CREATE THE REVIEW
@@ -23,7 +24,7 @@ export async function createReview(productId: string): Promise<Reviews> {
 export async function getReviewsWithItem(
 	productId: string,
 	currentPage: number
-) {
+): Promise<ReviewsWithItems | null> {
 	// SETUP PAGE SIZE
 	const pageSize = 5
 	const page = currentPage

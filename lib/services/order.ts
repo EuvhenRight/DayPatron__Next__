@@ -1,8 +1,9 @@
 import { auth } from '@/auth'
 import prisma from '@/lib/db/client'
+import { OrderWithItemsWithVariants } from '@/lib/types/types'
 import { z } from 'zod'
 import { orderItemScheme } from '../db/validation'
-import { OrderWithItems, OrderWithItemsWithVariants } from '../types/types'
+import { OrderWithItems } from '../types/types'
 
 export async function getOrder(): Promise<OrderWithItemsWithVariants | null> {
 	const session = await auth()
@@ -107,7 +108,7 @@ export async function createOrder(
 export async function findProductsInOrderItems(
 	userId: string,
 	productId: string
-) {
+): Promise<OrderWithItemsWithVariants[] | null> {
 	const verifiedOrders = await prisma?.order.findMany({
 		where: {
 			userId: userId,

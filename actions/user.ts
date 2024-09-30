@@ -18,8 +18,8 @@ export const getCurrentSession = async () => {
 	try {
 		const session = await auth()
 		return session
-	} catch (err) {
-		console.log(err, 'Щось пішло не так. Будь ласка, спробуйте знову пізніше')
+	} catch (error) {
+		console.log(error, 'Щось пішло не так. Будь ласка, спробуйте знову пізніше')
 	}
 }
 
@@ -39,10 +39,7 @@ export const getCurrentUser = async () => {
 
 		return currentUser
 	} catch (error) {
-		console.log(
-			error,
-			'SЩось пішло не так. Будь ласка, спробуйте знову пізніше'
-		)
+		console.log(error, 'Щось пішло не так. Будь ласка, спробуйте знову пізніше')
 	}
 }
 
@@ -78,17 +75,21 @@ export const editInfoUser = async (
 	lastName: string,
 	phone: string
 ) => {
-	const user = await prisma.user.update({
-		where: {
-			id,
-		},
-		data: {
-			firstName: firstName,
-			lastName: lastName,
-			phone: phone,
-		},
-	})
+	try {
+		const user = await prisma.user.update({
+			where: {
+				id,
+			},
+			data: {
+				firstName: firstName,
+				lastName: lastName,
+				phone: phone,
+			},
+		})
 
-	revalidatePath('/dashboard/profile')
-	return user
+		revalidatePath('/dashboard/profile')
+		return user
+	} catch (error) {
+		console.log(error, 'Щось пішло не так. Будь ласка, спробуйте знову пізніше')
+	}
 }

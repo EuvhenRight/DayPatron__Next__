@@ -12,6 +12,7 @@ import {
 import { CartWithVariants } from '@/lib/types/types'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import * as React from 'react'
 import { useRef } from 'react'
 import { AiOutlineClose, AiOutlineShoppingCart } from 'react-icons/ai'
 import { toast } from 'sonner'
@@ -19,7 +20,7 @@ interface Props {
 	cart?: CartWithVariants | null
 }
 
-export const Drawer = ({ cart }: Props) => {
+export const Drawer: React.FC<Props> = ({ cart }) => {
 	const session = useSession()
 
 	// CART INDICATOR

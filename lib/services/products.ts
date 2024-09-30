@@ -3,6 +3,7 @@ import {
 	ProductsWithVariantsWithReviews,
 	ProductWithVariantsWithReviews,
 } from '@/lib/types/types'
+import { Product } from '@prisma/client'
 
 export async function getAllProducts(): Promise<
 	ProductsWithVariantsWithReviews[]
@@ -48,7 +49,9 @@ export async function getProduct(
 	return product
 }
 
-export async function getSearchProducts(searchQuery: string) {
+export async function getSearchProducts(
+	searchQuery: string
+): Promise<Product[]> {
 	// Search products by name
 	const search = await prisma.product.findMany({
 		where: {

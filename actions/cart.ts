@@ -6,216 +6,228 @@ import { createCart, getCart } from '@/lib/services/cart'
 import { revalidatePath } from 'next/cache'
 
 export async function addItem(variantId: string) {
-	// FIND EXISTING CART
-	const cart = (await getCart()) ?? (await createCart())
+	try {
+		// FIND EXISTING CART
+		const cart = (await getCart()) ?? (await createCart())
 
-	// FIND EXISTING CART ITEM
-	const findItem = cart.items.find(item => item.variantId === variantId)
+		// FIND EXISTING CART ITEM
+		const findItem = cart.items.find(item => item.variantId === variantId)
 
-	// UPDATE CART ITEM
-	if (findItem) {
-		await prisma.cartItem.update({
-			where: { id: findItem.id },
-			data: { quantity: { increment: 1 } },
-		})
-	} else {
-		await prisma.cartItem.create({
+		// UPDATE CART ITEM
+		if (findItem) {
+			await prisma.cartItem.update({
+				where: { id: findItem.id },
+				data: { quantity: { increment: 1 } },
+			})
+		} else {
+			await prisma.cartItem.create({
+				data: {
+					variantId,
+					quantity: 1,
+					cartId: cart.id,
+				},
+			})
+		}
+
+		// Re-fetch the cart to get the updated version
+		const updatedCart = await getCart()
+
+		const totalItems = updatedCart?.items.reduce(
+			(acc, item) => acc + item.quantity,
+			0
+		)
+
+		// RECALCULATE TOTALS
+		const originalPrice = updatedCart?.items.reduce((acc, item) => {
+			const price = item.variant.original_price
+			return acc + price * item.quantity
+		}, 0)
+
+		// RECALCULATE TOTALS
+		const totalCartPrice = updatedCart?.items.reduce((acc, item) => {
+			const price =
+				item.variant.discount_price !== 0
+					? item.variant.discount_price
+					: item.variant.original_price
+			return acc + price * item.quantity
+		}, 0)
+
+		// TOTAL DISCOUNT
+		const total_discount = originalPrice! - totalCartPrice!
+
+		await prisma.cart.update({
+			where: { id: cart.id },
 			data: {
-				variantId,
-				quantity: 1,
-				cartId: cart.id,
+				subTotal: totalCartPrice,
+				originalTotal: originalPrice,
+				itemsTotal: totalItems,
+				discountTotal: total_discount,
 			},
 		})
-	}
-	// Re-fetch the cart to get the updated version
-	const updatedCart = await getCart()
 
-	// RECALCULATE TOTALS
-	const totalPrice = updatedCart?.items.reduce((acc, item) => {
-		const price =
-			item.variant.discount_price !== 0
-				? item.variant.discount_price
-				: item.variant.original_price
-		return acc + price * item.quantity
-	}, 0)
-
-	const original = updatedCart?.items.reduce((acc, item) => {
-		const price = item.variant.original_price
-		return acc + price * item.quantity
-	}, 0)
-
-	// TOTAL DISCOUNT
-	const total_discount = original! - totalPrice!
-
-	const totalItems = updatedCart?.items.reduce(
-		(acc, item) => acc + item.quantity,
-		0
-	)
-
-	// UPDATE CART
-	await prisma.cart.update({
-		where: { id: cart.id },
-		data: {
-			subTotal: totalPrice,
-			originalTotal: original,
-			itemsTotal: totalItems,
-			discountTotal: total_discount,
-		},
-	})
-
-	revalidatePath('/products')
-	// RECALCULATE TOTALS WITH BONUS CODE
-	if (cart?.bonusCodeId) {
-		// GET UPDATED CART
-		const updatedCart = await getCart()
-		// CALCULATE BONUS CODE
-		const cartWithBonusDiscount = await calculateTotalDiscount(updatedCart)
-		return cartWithBonusDiscount
-	} else {
-		// GET NOT UPDATED CART
-		return { ...cart }
+		revalidatePath('/products')
+		// RECALCULATE TOTALS WITH BONUS CODE
+		if (cart?.bonusCodeId) {
+			// GET UPDATED CART
+			const updatedCart = await getCart()
+			// CALCULATE BONUS CODE
+			const cartWithBonusDiscount = await calculateTotalDiscount(updatedCart)
+			return cartWithBonusDiscount
+		} else {
+			// GET NOT UPDATED CART
+			return { ...cart }
+		}
+	} catch (error) {
+		console.error('Error editing item in cart:', error)
+		throw new Error('Помилка додавання елемента в кошик')
 	}
 }
 
 // DELETE CART ITEM
 export async function deleteItem(itemId: string) {
-	const cart = await getCart()
+	try {
+		const cart = await getCart()
 
-	if (!cart) {
-		throw new Error('Cart not found')
-	}
+		if (!cart) {
+			throw new Error('Cart not found')
+		}
 
-	const findItem = cart.items.find(item => item.variantId === itemId)
+		const findItem = cart.items.find(item => item.variantId === itemId)
 
-	if (!findItem) {
-		throw new Error('Cart item not found')
-	}
+		if (!findItem) {
+			throw new Error('Cart item not found')
+		}
 
-	await prisma.cartItem.delete({
-		where: { id: findItem.id },
-	})
+		await prisma.cartItem.delete({
+			where: { id: findItem.id },
+		})
 
-	// Re-fetch the cart to get the updated version
-	const updatedCart = await getCart()
-
-	const totalPrice = updatedCart?.items.reduce((acc, item) => {
-		const price =
-			item.variant.discount_price !== 0
-				? item.variant.discount_price
-				: item.variant.original_price
-		return acc + price * item.quantity
-	}, 0)
-
-	const totalItems = updatedCart?.items.reduce(
-		(acc, item) => acc + item.quantity,
-		0
-	)
-
-	// RECALCULATE TOTALS
-	const original = updatedCart?.items.reduce((acc, item) => {
-		const price = item.variant.original_price
-		return acc + price * item.quantity
-	}, 0)
-
-	// TOTAL DISCOUNT
-	const total_discount = original! - totalPrice!
-
-	await prisma.cart.update({
-		where: { id: cart.id },
-		data: {
-			subTotal: totalPrice,
-			originalTotal: original,
-			itemsTotal: totalItems,
-			discountTotal: total_discount,
-		},
-	})
-
-	revalidatePath('/products')
-	// RECALCULATE TOTALS WITH BONUS CODE
-	if (cart?.bonusCodeId) {
-		// GET UPDATED CART
+		// Re-fetch the cart to get the updated version
 		const updatedCart = await getCart()
-		// CALCULATE BONUS CODE
-		const cartWithBonusDiscount = await calculateTotalDiscount(updatedCart)
-		return cartWithBonusDiscount
-	} else {
-		// GET NOT UPDATED CART
-		return { ...cart }
+
+		const totalItems = updatedCart?.items.reduce(
+			(acc, item) => acc + item.quantity,
+			0
+		)
+		// RECALCULATE TOTALS
+		const originalPrice = updatedCart?.items.reduce((acc, item) => {
+			const price = item.variant.original_price
+			return acc + price * item.quantity
+		}, 0)
+
+		// RECALCULATE TOTALS
+		const totalCartPrice = updatedCart?.items.reduce((acc, item) => {
+			const price =
+				item.variant.discount_price !== 0
+					? item.variant.discount_price
+					: item.variant.original_price
+			return acc + price * item.quantity
+		}, 0)
+
+		// TOTAL DISCOUNT
+		const total_discount = originalPrice! - totalCartPrice!
+
+		await prisma.cart.update({
+			where: { id: cart.id },
+			data: {
+				subTotal: totalCartPrice,
+				originalTotal: originalPrice,
+				itemsTotal: totalItems,
+				discountTotal: total_discount,
+			},
+		})
+
+		revalidatePath('/products')
+		// RECALCULATE TOTALS WITH BONUS CODE
+		if (cart?.bonusCodeId) {
+			// GET UPDATED CART
+			const updatedCart = await getCart()
+			// CALCULATE BONUS CODE
+			const cartWithBonusDiscount = await calculateTotalDiscount(updatedCart)
+			return cartWithBonusDiscount
+		} else {
+			// GET NOT UPDATED CART
+			return { ...cart }
+		}
+	} catch (error) {
+		console.error('Error editing item in cart:', error)
+		throw new Error('Помилка видалення елемента в кошик')
 	}
 }
 // EDIT CART ITEM
 export async function editItem(itemId: string, quantity: number) {
-	const cart = await getCart()
+	try {
+		const cart = await getCart()
 
-	if (!cart) {
-		throw new Error('Cart not found')
-	}
+		if (!cart) {
+			throw new Error('Cart not found')
+		}
 
-	const findItem = cart.items.find(item => item.variantId === itemId)
+		const findItem = cart.items.find(item => item.variantId === itemId)
 
-	if (!findItem) {
-		throw new Error('Cart item not found')
-	}
+		if (!findItem) {
+			throw new Error('Cart item not found')
+		}
 
-	if (quantity <= 0 || quantity >= 99) {
-		// UPDATE CART IF QUANTITY IS 0
-		await prisma.cartItem.delete({
-			where: { id: findItem.id },
-		})
-	} else {
-		// UPDATE CART ITEM
-		await prisma.cartItem.update({
-			where: { id: findItem.id },
-			data: { quantity: quantity },
-		})
-	}
+		if (quantity <= 0 || quantity >= 99) {
+			// UPDATE CART IF QUANTITY IS 0
+			await prisma.cartItem.delete({
+				where: { id: findItem.id },
+			})
+		} else {
+			// UPDATE CART ITEM
+			await prisma.cartItem.update({
+				where: { id: findItem.id },
+				data: { quantity: quantity },
+			})
+		}
 
-	// Re-fetch the cart to get the updated version
-	const updatedCart = await getCart()
-
-	const totalPrice = updatedCart?.items.reduce((acc, item) => {
-		const price =
-			item.variant.discount_price !== 0
-				? item.variant.discount_price
-				: item.variant.original_price
-		return acc + price * item.quantity
-	}, 0)
-
-	const totalItems = updatedCart?.items.reduce(
-		(acc, item) => acc + item.quantity,
-		0
-	)
-
-	// RECALCULATE TOTALS
-	const original = updatedCart?.items.reduce((acc, item) => {
-		const price = item.variant.original_price
-		return acc + price * item.quantity
-	}, 0)
-
-	// TOTAL DISCOUNT
-	const total_discount = original! - totalPrice!
-
-	// UPDATE CART TOTAL
-	await prisma.cart.update({
-		where: { id: cart.id },
-		data: {
-			subTotal: totalPrice,
-			originalTotal: original,
-			itemsTotal: totalItems,
-			discountTotal: total_discount,
-		},
-	})
-
-	revalidatePath('/products')
-	// RECALCULATE TOTALS WITH BONUS CODE
-	if (cart?.bonusCodeId) {
-		// GET UPDATED CART
+		// Re-fetch the cart to get the updated version
 		const updatedCart = await getCart()
-		// CALCULATE BONUS CODE
-		const cartWithBonusDiscount = await calculateTotalDiscount(updatedCart)
-		return cartWithBonusDiscount
-	} else {
-		// GET NOT UPDATED CART
-		return { ...cart }
+
+		const totalItems = updatedCart?.items.reduce(
+			(acc, item) => acc + item.quantity,
+			0
+		)
+		// RECALCULATE TOTALS
+		const originalPrice = updatedCart?.items.reduce((acc, item) => {
+			const price = item.variant.original_price
+			return acc + price * item.quantity
+		}, 0)
+		// RECALCULATE TOTALS
+		const totalCartPrice = updatedCart?.items.reduce((acc, item) => {
+			const price =
+				item.variant.discount_price !== 0
+					? item.variant.discount_price
+					: item.variant.original_price
+			return acc + price * item.quantity
+		}, 0)
+		// TOTAL DISCOUNT
+		const total_discount = originalPrice! - totalCartPrice!
+
+		await prisma.cart.update({
+			where: { id: cart.id },
+			data: {
+				subTotal: totalCartPrice,
+				originalTotal: originalPrice,
+				itemsTotal: totalItems,
+				discountTotal: total_discount,
+			},
+		})
+		revalidatePath('/products')
+		// RECALCULATE TOTALS WITH BONUS CODE
+		if (cart?.bonusCodeId) {
+			// GET UPDATED CART
+			const updatedCart = await getCart()
+			// CALCULATE BONUS CODE
+			const cartWithBonusDiscount = await calculateTotalDiscount(updatedCart)
+			return cartWithBonusDiscount
+		} else {
+			// GET NOT UPDATED CART
+			return { ...cart }
+		}
+	} catch (error) {
+		console.error('Error editing item in cart:', error)
+		throw new Error('Помилка редагування елемента в кошик')
 	}
 }
