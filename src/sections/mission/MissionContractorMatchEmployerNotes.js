@@ -110,7 +110,7 @@ const MissionContractorMatchEmployerNotes = ({ missionId, contractorId, employer
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <Typography variant="h3">Company Notes</Typography>
+            <Typography variant="h5">Company Notes</Typography>
           </Grid>
           <Grid item xs={12}>
             <Stack spacing={1.25}>

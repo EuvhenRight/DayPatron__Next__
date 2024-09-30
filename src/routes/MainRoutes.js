@@ -26,6 +26,9 @@ const MissionSection = Loadable(lazy(() => import('sections/mission/MissionSecti
 const MissionOverviewTabContent = Loadable(lazy(() => import('sections/mission/MissionOverviewTabContent')));
 const MissionContractorMatchesTabContent = Loadable(lazy(() => import('sections/mission/MissionContractorMatchesTabContent')));
 
+const ContractorExperienceSection = Loadable(lazy(() => import('sections/contractor/ContractorExperience')));
+const AiScreeningResultSection = Loadable(lazy(() => import('sections/contractor/AiScreeningResult')));
+
 const SubscriptionOfferPage = Loadable(lazy(() => import('pages/subscription-offer-page')));
 const SubscriptionOffersPage = Loadable(lazy(() => import('pages/subscription-offers-page')));
 
@@ -55,6 +58,7 @@ const BillingInfoSection = Loadable(lazy(() => import('sections/billing/BillingI
 const InvoicesBilling = Loadable(lazy(() => import('pages/billing-page')));
 
 const MissionMatchesPage = Loadable(lazy(() => import('pages/mission-matches-page')));
+const MissionContractorMatchPage = Loadable(lazy(() => import('pages/mission-contractor-match-page')));
 const UsersPage = Loadable(lazy(() => import('pages/users-page')));
 
 const SupportPage = Loadable(lazy(() => import('pages/support-page')));
@@ -129,23 +133,24 @@ const MainRoutes = {
                 },
                 {
                   path: 'matches',
-                  element: <MissionContractorMatchesTabContent />,
+                  element: <MissionContractorMatchesTabContent />
+                }
+              ]
+            },
+            {
+              path: ':missionId',
+              children: [
+                {
+                  path: 'matches/:contractorId',
+                  element: <MissionContractorMatchPage />,
                   children: [
                     {
-                      path: ':contractorId',
-                      element: <></>,
-                      children: [
-                        {
-                          path: ':tabGroupId',
-                          element: <></>,
-                          children: [
-                            {
-                              path: ':tabGroupItemIndex',
-                              element: <></>
-                            }
-                          ]
-                        }
-                      ]
+                      path: 'experience',
+                      element: <ContractorExperienceSection />
+                    },
+                    {
+                      path: 'ai-screening',
+                      element: <AiScreeningResultSection />
                     }
                   ]
                 }
