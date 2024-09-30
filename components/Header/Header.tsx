@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { AiOutlineClose, AiOutlineMenu, AiOutlineUser } from 'react-icons/ai'
 import { Drawer } from '../Drawer/Drawer'
@@ -13,12 +14,11 @@ import { SearchDialog } from '../Search/Search'
 import { UserMenu } from './HeaderUserMenu'
 import { Marquee } from './marquee'
 import { MenuMobile } from './MenuMobile'
-
 interface Props {
 	cart: CartWithVariants | null
 }
 
-export const Header = ({ cart }: Props) => {
+export const Header: React.FC<Props> = ({ cart }) => {
 	const [isOpenMenu, setIsOpenMenu] = useState(false)
 	const [isActive, setIsActive] = useState('')
 	const pathName = usePathname()

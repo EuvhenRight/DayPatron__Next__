@@ -30,7 +30,7 @@ export const UserMenu = () => {
 					<MenubarItem asChild className='cursor-pointer'>
 						{/* CONDITION IF USER IS ADMIN */}
 						{role === 'ADMIN' ? (
-							<Link href='/admin'>Адмін</Link>
+							<Link href='/admin/dashboard'>Адмін</Link>
 						) : (
 							<Link href='/dashboard/profile'>
 								Профіль: {session?.user?.name}

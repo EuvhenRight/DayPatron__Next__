@@ -40,7 +40,7 @@ async function Guide() {
 	const dataProducts = await getAllProducts()
 	// TODO: ADD VIDEO FROM YOUTUBE
 	return (
-		<>
+		<div>
 			<section className='container'>
 				<div className='text-center pt-1'>
 					<h1
@@ -67,7 +67,7 @@ async function Guide() {
 				<TableCleanerProducts products={dataProducts} />
 			</section>
 			<VideoLibrary />
-		</>
+		</div>
 	)
 }
 

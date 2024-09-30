@@ -63,7 +63,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
 		getReviewsWithItem(id, 1),
 	])
 	return (
-		<>
+		<div>
 			<section className='container pt-8'>
 				<ProductForm product={product} cart={cart} />
 			</section>
@@ -73,7 +73,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
 			<section className='max-w-screen-xl mx-auto'>
 				<ReviewsComponent reviews={reviews!} product={product} />
 			</section>
-		</>
+		</div>
 	)
 }
 
