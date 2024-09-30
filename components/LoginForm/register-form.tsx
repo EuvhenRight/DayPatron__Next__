@@ -37,6 +37,7 @@ export const RegisterForm = () => {
 			email: '',
 		},
 	})
+	console.log('form', form)
 
 	const onSubmit = async (data: z.infer<typeof ValidationSchema.authUser>) => {
 		setIsButtonDisabled(true)
@@ -48,7 +49,7 @@ export const RegisterForm = () => {
 					email,
 				}
 			)
-			data
+			console.log(data)
 			if (data?.id) {
 				setSuccess(SUCCESS_MESSAGE_REGISTER)
 			}
