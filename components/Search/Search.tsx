@@ -13,6 +13,8 @@ import {
 	Sheet,
 	SheetClose,
 	SheetContent,
+	SheetDescription,
+	SheetTitle,
 	SheetTrigger,
 } from '@/components/ui/sheet'
 import { ValidationSchema } from '@/lib/db/validation'
@@ -83,8 +85,9 @@ export const SearchDialog = () => {
 					side='top'
 					className='h-full max-w-full w-full bg-neutral-200 absolute z-10 p-3 overflow-auto text-justify'
 				>
+					<SheetDescription> </SheetDescription>
 					<div className='flex flex-row items-center justify-between my-8 container max-w-screen-lg'>
-						<h1 className='text-2xl font-bold'>Пошук</h1>
+						<SheetTitle className='text-2xl font-bold'>Пошук</SheetTitle>
 						<SheetClose
 							asChild
 							className='w-6 h-6 cursor-pointer hover:text-neutral-500'
