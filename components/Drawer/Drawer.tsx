@@ -6,7 +6,9 @@ import {
 	Sheet,
 	SheetClose,
 	SheetContent,
+	SheetDescription,
 	SheetOverlay,
+	SheetTitle,
 	SheetTrigger,
 } from '@/components/ui/sheet'
 import { CartWithVariants } from '@/lib/types/types'
@@ -50,15 +52,16 @@ export const Drawer: React.FC<Props> = ({ cart }) => {
 			<SheetOverlay className='z-50 bg-black/50' />
 			{/* DRAWER FULL SCREEN IN MOBILE */}
 			<SheetContent className='w-full'>
+				<SheetDescription> </SheetDescription>
 				<div
 					className={`bg-neutral-700 absolute top-0 right-0 h-full w-full sm:w-96 z-50 p-4 flex flex-col overflow-auto`}
 				>
 					{/* FIRST PART CART */}
 					<div>
 						<div className='flex gap-5 justify-between items-center border-b-2 border-white pb-4 mb-1'>
-							<h2 className='text-3xl font-bold flex items-center gap-5 text-white'>
+							<SheetTitle className='text-3xl font-bold flex items-center gap-5 text-white'>
 								КОШИК
-							</h2>
+							</SheetTitle>
 							<SheetClose
 								className='text-gray-300 hover:text-white'
 								ref={sheetCloseRef}
