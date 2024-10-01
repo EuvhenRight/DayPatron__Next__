@@ -1,3 +1,4 @@
+import { getCurrentUser } from '@/actions/user'
 import { Metadata } from 'next'
 
 //METADATA GENERATOR
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
 }
 
 export default async function ContactsPage() {
-	// const [currentUser] = await Promise.all([getCurrentUser()])
+	const [currentUser] = await Promise.all([getCurrentUser()])
 	// const { ContentContactsPage } = data
 
 	return (
