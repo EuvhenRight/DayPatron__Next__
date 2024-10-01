@@ -1,4 +1,3 @@
-'use client'
 import { GoogleMapsEmbed } from '@next/third-parties/google'
 export const GoogleMapComponent = () => {
 	// // GOOGLE MAPS CENTER

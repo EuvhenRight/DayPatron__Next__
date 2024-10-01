@@ -1,3 +1,4 @@
+'use client'
 interface Props {
 	icon: JSX.Element
 	text?: string
