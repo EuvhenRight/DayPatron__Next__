@@ -55,7 +55,6 @@ export const getCurrentUserById = async ({ id }: { id: string }) => {
 		return currentUser
 	} catch (error) {
 		console.log(error, 'Щось пішло не так. Будь ласка, спробуйте знову пізніше')
-		throw error // Throw the error to propagate it to the caller
 	}
 }
 

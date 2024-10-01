@@ -1,7 +1,6 @@
 import prisma from '@/lib/db/client'
-import { User } from 'next-auth'
 
-export const getUserByEmail = async (email: string): Promise<User | null> => {
+export const getUserByEmail = async (email: string) => {
 	try {
 		const user = await prisma.user.findUnique({
 			where: {
@@ -14,7 +13,7 @@ export const getUserByEmail = async (email: string): Promise<User | null> => {
 	}
 }
 
-export const getUserById = async (id: string): Promise<User | null> => {
+export const getUserById = async (id: string) => {
 	try {
 		const user = await prisma.user.findUnique({
 			where: {
@@ -22,7 +21,8 @@ export const getUserById = async (id: string): Promise<User | null> => {
 			},
 		})
 		return user
-	} catch {
-		return null
+	} catch (error) {
+		console.log(error)
+		throw error
 	}
 }
