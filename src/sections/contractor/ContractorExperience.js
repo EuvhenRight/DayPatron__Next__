@@ -92,7 +92,7 @@ const ContractorExperience = () => {
             </Grid>
             <Grid item xs={12}>
                 <MainCard>
-                    <Grid container spacing={3}>
+                    <Grid container spacing={2.5}>
                         <Grid item xs={12}>
                             <Typography variant="h4">Work</Typography>
                         </Grid>
@@ -141,7 +141,7 @@ const ContractorExperience = () => {
             <Grid item xs={12}>
                 <MainCard>
 
-                    <Grid container spacing={3}>
+                    <Grid container spacing={2.5}>
                         <Grid item xs={12}>
                             <Typography variant="h4">Education</Typography>
                         </Grid>
@@ -191,7 +191,7 @@ const ContractorExperience = () => {
             <Grid item xs={12}>
                 <MainCard>
                             
-                    <Grid container spacing={3}>
+                    <Grid container spacing={2.5}>
                         <Grid item xs={12}>
                             <Typography variant="h4">Certification</Typography>
                         </Grid>
@@ -230,7 +230,7 @@ const ContractorExperience = () => {
             <Grid item xs={12}>
                 <MainCard>
                             
-                    <Grid container spacing={3}>
+                    <Grid container spacing={2.5}>
                         <Grid item xs={12}>
                             <Typography variant="h4">Recommendations</Typography>
                         </Grid>

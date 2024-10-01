@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useKeycloak } from '@react-keycloak/web';
+import { useTheme } from '@mui/material/styles';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { prepareApiBody } from 'utils/stringUtils';
 
@@ -12,23 +13,28 @@ import {
   Box,
   Grid,
   Typography,
-  Collapse
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  useMediaQuery
 } from '@mui/material';
 
 import SanitizedHTML from 'react-sanitized-html';
 import MissionContractorMatchEmployerNotes from 'sections/mission/MissionContractorMatchEmployerNotes';
 import MissionContractorMatchAdminNotes from 'sections/mission/MissionContractorMatchAdminNotes';
-import { DownOutlined, FileOutlined, UpOutlined } from '@ant-design/icons';
+import { FileOutlined } from '@ant-design/icons';
 
 const MissionContractorMatchDetails = ({ missionContractorMatch, setMissionContractorMatch, missionId, contractorId, missionContractor, setMissionContractor }) => {
   const { keycloak } = useKeycloak();
   const dispatch = useDispatch();
+  const theme = useTheme();
+  const matchDownSm = useMediaQuery(theme.breakpoints.down('sm'));
   const [isCreatingInvitation, setIsCreatingInvitation] = useState(false);
   const [isDeletingInvitation, setIsDeletingInvitation] = useState(false);
   const [isCreatingApproval, setIsCreatingApproval] = useState(false);
   const [isDeletingApproval, setIsDeletingApproval] = useState(false);
   const [isTogglingMatch, setIsTogglingMatch] = useState(false);
-  const [isExpandNotes, setIsExpandNotes] = useState(false);
+  const [isExpandNotes, setIsExpandNotes] = useState(!matchDownSm);
 
   const handleInviteButtonClick = async () => {
     try {
@@ -269,7 +275,7 @@ const MissionContractorMatchDetails = ({ missionContractorMatch, setMissionContr
     <Grid container spacing={3}>
       <Grid item xs={12}>
         <Stack alignItems="center">
-          <Typography variant="h5">&quot;{missionContractorMatch?.mission?.title}&quot; match</Typography>
+          <Typography variant="h5">{missionContractorMatch?.contractor?.firstName} matches mission &quot;{missionContractorMatch?.mission?.title}&quot;</Typography>
         </Stack>
       </Grid>
       <Grid item xs={12}>
@@ -347,57 +353,69 @@ const MissionContractorMatchDetails = ({ missionContractorMatch, setMissionContr
         </Stack>
       </Grid>
       <Grid item xs={12}>
-        <Button 
-          fullWidth
-          sx={{mt: '10px'}}
-          color="secondary"
-          variant={isExpandNotes ? "outlined" : "contained"} 
-          startIcon={<Stack direction="row" spacing={0.5} alignItems="center">
-            <FileOutlined />
-            <Typography>Notes</Typography>
-          </Stack>}
-          endIcon={isExpandNotes ? <UpOutlined /> : <DownOutlined />}
-          onClick={() => {setIsExpandNotes(!isExpandNotes);}}>
-          </Button>
-      </Grid>
-      <Grid item xs={12}>
-        <Collapse in={isExpandNotes} timeout="auto" unmountOnExit>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <MissionContractorMatchEmployerNotes
-                missionId={missionId}
-                contractorId={contractorId}
-                employerNotes={missionContractor?.employerNotes}
-                setEmployerNotes={setEmployerNotes}>
-              </MissionContractorMatchEmployerNotes>
-            </Grid>
+        <Box
+          sx={{
+            '& .MuiAccordion-root': {
+              borderColor: theme.palette.divider,
+              '& .MuiAccordionSummary-root': {
+                bgcolor: 'transparent',
+                flexDirection: 'row'
+              },
+              '& .MuiAccordionDetails-root': {
+                borderColor: theme.palette.divider
+              },
+              '& .Mui-expanded': {
+                color: theme.palette.primary.main
+              }
+            }
+          }}
+        >
+          <Accordion expanded={isExpandNotes} onChange={() => {setIsExpandNotes(!isExpandNotes)}}>
+            <AccordionSummary>
+              <Stack direction="row" spacing={1.5} alignItems="center">
+                <FileOutlined />
+                <Typography variant="h6">Notes</Typography>
+              </Stack>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Grid container spacing={3}>
+                <Grid item xs={12}>
+                  <MissionContractorMatchEmployerNotes
+                    missionId={missionId}
+                    contractorId={contractorId}
+                    employerNotes={missionContractor?.employerNotes}
+                    setEmployerNotes={setEmployerNotes}>
+                  </MissionContractorMatchEmployerNotes>
+                </Grid>
 
-            {missionContractor?.contractorNotes?.showContractorNotesToEmployer &&
-              <Grid item xs={12}>
-                <Grid container spacing={3}>
+                {missionContractor?.contractorNotes?.showContractorNotesToEmployer &&
                   <Grid item xs={12}>
-                    <Typography variant="h5">Talent Notes</Typography>
+                    <Grid container spacing={3}>
+                      <Grid item xs={12}>
+                        <Typography variant="h5">Talent Notes</Typography>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Stack spacing={0.5}>
+                          <Typography color="secondary">Talent Notes About the Mission</Typography>
+                          <SanitizedHTML html={missionContractor?.contractorNotes?.missionNotes} />
+                        </Stack>
+                      </Grid>
+                    </Grid>
                   </Grid>
-                  <Grid item xs={12}>
-                    <Stack spacing={0.5}>
-                      <Typography color="secondary">Talent Notes About the Mission</Typography>
-                      <SanitizedHTML html={missionContractor?.contractorNotes?.missionNotes} />
-                    </Stack>
-                  </Grid>
+                }
+
+                <Grid item xs={12}>
+                  <MissionContractorMatchAdminNotes
+                    missionId={missionId}
+                    contractorId={contractorId}
+                    adminNotes={missionContractor?.adminNotes}
+                    setAdminNotes={setAdminNotes}>
+                  </MissionContractorMatchAdminNotes>
                 </Grid>
               </Grid>
-            }
-
-            <Grid item xs={12}>
-              <MissionContractorMatchAdminNotes
-                missionId={missionId}
-                contractorId={contractorId}
-                adminNotes={missionContractor?.adminNotes}
-                setAdminNotes={setAdminNotes}>
-              </MissionContractorMatchAdminNotes>
-            </Grid>
-          </Grid>
-        </Collapse>
+            </AccordionDetails>
+          </Accordion>
+        </Box>
       </Grid>
       
     </Grid>
