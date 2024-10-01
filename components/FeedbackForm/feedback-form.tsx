@@ -18,19 +18,18 @@ import { rubikGlitch } from '@/lib/utils/font'
 import { cn } from '@/lib/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { User } from '@prisma/client'
-import axios from 'axios'
 import { Asterisk } from 'lucide-react'
+import * as React from 'react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { PhoneInput } from 'react-international-phone'
 import 'react-international-phone/style.css'
 import { z } from 'zod'
-
 interface Props {
 	currentUser?: User | null
 }
 
-export const FeedBackForm = ({ currentUser: user }: Props) => {
+export const FeedBackForm: React.FC = ({ currentUser: user }: Props) => {
 	// DATA CONTENT
 	const { ContentContactsPage } = data
 	// STATE CHANGE FORMS
@@ -48,28 +47,35 @@ export const FeedBackForm = ({ currentUser: user }: Props) => {
 			message: '',
 		},
 	})
-
 	const onSubmit = async (
 		data: z.infer<typeof ValidationSchema.feedbackForm>
 	) => {
 		try {
 			setLoading(true)
 			setSuccess(true)
-			const response = await axios.post(
-				process.env.NEXT_PUBLIC_API_URL + '/api/feedback',
-				data
+
+			const response = await fetch(
+				`${process.env.NEXT_PUBLIC_API_URL}/api/feedback`,
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(data),
+				}
 			)
 
-			if (response.status !== 200) {
-				return new Error('Something went wrong')
+			if (!response.ok) {
+				throw new Error('Something went wrong')
 			}
 
 			form.reset()
 			return response.status
 		} catch (err) {
-			console.log(err)
+			console.error(err) // Change to console.error for better error logging
 		} finally {
 			setSuccess(false)
+			setLoading(false) // Ensure loading state is reset
 		}
 	}
 

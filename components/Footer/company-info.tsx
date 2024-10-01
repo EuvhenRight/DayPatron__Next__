@@ -11,7 +11,7 @@ export const CompanyFooterInfo = () => {
 		{ label: ContentFooter.links.aboutUs, href: '/about', alwaysVisible: true },
 		{
 			label: ContentFooter.links.whereToBuy,
-			href: '/where-to-buy',
+			href: '/partners',
 			alwaysVisible: true,
 		},
 		{

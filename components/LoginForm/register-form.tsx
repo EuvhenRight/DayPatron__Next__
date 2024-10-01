@@ -19,7 +19,6 @@ import {
 	SUCCESS_MESSAGE_REGISTER,
 } from '@/lib/services/constance'
 import { zodResolver } from '@hookform/resolvers/zod'
-import axios, { AxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -41,29 +40,40 @@ export const RegisterForm = () => {
 	const onSubmit = async (data: z.infer<typeof ValidationSchema.authUser>) => {
 		setIsButtonDisabled(true)
 		const { email } = data
+
 		try {
-			const { data } = await axios.post(
-				process.env.NEXT_PUBLIC_API_URL + '/api/register',
+			const response = await fetch(
+				`${process.env.NEXT_PUBLIC_API_URL}/api/register`,
 				{
-					email,
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({ email }),
 				}
 			)
-			if (data?.id) {
+
+			const responseData = await response.json()
+
+			if (!response.ok) {
+				throw new Error(responseData.error || 'An error occurred')
+			}
+
+			if (responseData?.id) {
 				setSuccess(SUCCESS_MESSAGE_REGISTER)
 			}
+
 			router.push(`/auth/login?email=${encodeURIComponent(email)}`)
 		} catch (error) {
-			if (axios.isAxiosError(error)) {
-				const err = (await error) as AxiosError<{ error: string }>
-				setErrorMessage(err.response?.data?.error)
-			} else {
-				setErrorMessage(ERROR_MESSAGE)
-			}
-			console.log(error)
+			const errorMessage =
+				error instanceof Error ? error.message : ERROR_MESSAGE
+			setErrorMessage(errorMessage)
+			console.error(error)
 		} finally {
 			setIsButtonDisabled(false)
 		}
 	}
+
 	return (
 		<CardWrapper
 			headerLabel='Введіть свою електронну адресу, і ми надішлемо вам код входу'

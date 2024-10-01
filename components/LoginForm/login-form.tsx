@@ -19,9 +19,8 @@ import {
 	InputOTPSlot,
 } from '@/components/ui/input-otp'
 import { ValidationSchema } from '@/lib/db/validation'
-import { ERROR_MESSAGE, SUCCESS_MESSAGE_LOGIN } from '@/lib/services/constance'
+import { ERROR_MESSAGE } from '@/lib/services/constance'
 import { zodResolver } from '@hookform/resolvers/zod'
-import axios, { AxiosError } from 'axios'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -58,33 +57,40 @@ export const LoginForm = () => {
 		setSuccess('')
 
 		try {
-			const response = await axios.post(
-				process.env.NEXT_PUBLIC_API_URL + '/api/login',
+			const response = await fetch(
+				`${process.env.NEXT_PUBLIC_API_URL}/api/login`,
 				{
-					email,
-					password,
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({
+						email,
+						password,
+					}),
 				}
 			)
 
-			// HANDLE AXIOS ERROR
-			if (response.data?.error) {
-				setErrorMessage(SUCCESS_MESSAGE_LOGIN)
-			} else {
-				// SING IN CREDENTIALS
-				await signIn('credentials', {
-					...data,
-					redirect: false,
-				})
+			const responseData = await response.json()
 
-				// REDIRECT TO DASHBOARD PAGE
-				router.push('/dashboard/profile')
+			// HANDLE ERROR RESPONSE
+			if (!response.ok) {
+				setErrorMessage(responseData.error || ERROR_MESSAGE)
+				return
 			}
+
+			// SIGN IN CREDENTIALS
+			await signIn('credentials', {
+				...data,
+				redirect: false,
+			})
+
+			// REDIRECT TO DASHBOARD PAGE
+			router.push('/dashboard/profile')
 		} catch (error) {
-			// HANDLE AXIOS ERROR
-			if (axios.isAxiosError(error)) {
-				const err = error as AxiosError<{ error: string }>
-				setErrorMessage(err.response?.data?.error || ERROR_MESSAGE)
-			}
+			const errorMessage =
+				error instanceof Error ? error.message : ERROR_MESSAGE
+			setErrorMessage(errorMessage)
 		} finally {
 			setIsButtonDisabled(false)
 		}
