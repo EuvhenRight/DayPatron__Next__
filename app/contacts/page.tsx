@@ -1,6 +1,5 @@
 import { getCurrentUser } from '@/actions/user'
 import { ContactsComponent } from '@/components/Contacts/contacts-component'
-import { FeedBackForm } from '@/components/FeedbackForm/feedback-form'
 import data from '@/lib/db/content.json'
 import { contactData } from '@/lib/services/contacts'
 import { rubikGlitch } from '@/lib/utils/font'
@@ -55,9 +54,9 @@ export default async function ContactsPage() {
 						))}
 					</ul>
 				</div>
-				<div className='w-full md:w-1/2 flex flex-col justify-start'>
+				{/* <div className='w-full md:w-1/2 flex flex-col justify-start'>
 					<FeedBackForm currentUser={currentUser} />
-				</div>
+				</div> */}
 			</section>
 			{/* <section>
 				<GoogleMapComponent />
