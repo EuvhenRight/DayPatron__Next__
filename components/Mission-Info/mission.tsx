@@ -1,15 +1,9 @@
 'use client'
 import { rubikGlitch } from '@/lib/utils/font'
 import { cn } from '@/lib/utils/utils'
-import { useRouter } from 'next/navigation'
 import { TriangleAnimation } from '../Animation/triangle'
 
 export const MissionInfo = () => {
-	const router = useRouter()
-
-	const toggleButton = () => {
-		router.push('/about')
-	}
 	return (
 		<div className='w-full flex flex-col items-center justify-center my-10'>
 			<div className='w-full relative'>

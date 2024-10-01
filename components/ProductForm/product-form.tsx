@@ -35,27 +35,29 @@ export const ProductForm = ({ product, cart }: Props) => {
 	)
 
 	//SERVER ACTION ADD TO CART
-	const addItemToCart = async (variantId: string) => {
-		let itemInCart: Promise<CartWithVariants | string>
+	const addItemToCart = async (variantId: string): Promise<boolean> => {
 		if (!variantId) {
-			// TOAST ERROR
-			return toast.error('Щось пішло не так, спробуйте ще раз')
+			toast.error('Щось пішло не так, спробуйте ще раз')
+			return false
 		}
 
-		itemInCart = new Promise<CartWithVariants | string>(resolve => {
-			// ADD TO CART
-			resolve(addItem(variantId!))
-		})
-
-		// TOAST SUCCESS
-		await toast.promise(itemInCart, {
-			loading: 'Зачекаємо...',
-			success: 'Товар додано до кошика',
-			error: 'Щось пішло не так, спробуйте ще раз',
-		})
-
-		return true
+		try {
+			await toast.promise(addItem(variantId), {
+				loading: 'Зачекаємо...',
+				success: 'Товар додано до кошика',
+				error: 'Щось пішло не так, спробуйте ще раз',
+			})
+			return true
+		} catch (error) {
+			const errorMessage =
+				error instanceof Error
+					? error.message
+					: 'Щось пішло не так, спробуйте ще раз'
+			toast.error(errorMessage)
+			return false
+		}
 	}
+
 	// CHECK STOCK
 	const stock = currentIndex !== null && product?.variant[currentIndex].stock
 	// CHECK PRODUCTS IN CART
