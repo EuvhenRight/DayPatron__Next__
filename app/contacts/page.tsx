@@ -1,4 +1,11 @@
 import { getCurrentUser } from '@/actions/user'
+import { ContactsComponent } from '@/components/Contacts/contacts-component'
+import { GoogleMapComponent } from '@/components/Contacts/googleMap'
+import { FeedBackForm } from '@/components/FeedbackForm/feedback-form'
+import data from '@/lib/db/content.json'
+import { contactData } from '@/lib/services/contacts'
+import { rubikGlitch } from '@/lib/utils/font'
+import { cn } from '@/lib/utils/utils'
 import { Metadata } from 'next'
 
 //METADATA GENERATOR
@@ -31,16 +38,16 @@ export const metadata: Metadata = {
 }
 
 export default async function ContactsPage() {
-	const [currentUser] = await Promise.all([getCurrentUser()])
-	// const { ContentContactsPage } = data
+	const currentUser = await getCurrentUser()
+	const { ContentContactsPage } = data
 
 	return (
 		<div>
-			{/* <section className='container lg:pt-10 relative flex flex-col md:flex-row w-full pt-2 mb-4'>
+			<section className='container lg:pt-10 relative flex flex-col md:flex-row w-full pt-2 mb-4'>
 				<div className='w-full md:w-1/2 text-start'>
 					<h1 className={cn(rubikGlitch.className, 'text-2xl font-bold')}>
 						{ContentContactsPage.page.title}
-					</h1> 
+					</h1>
 					<ul className='my-2 pt-4 *:my-4'>
 						{contactData.map(({ icon, text, link }, index) => (
 							<li key={index} className='flex items-center justify-start gap-2'>
@@ -53,9 +60,9 @@ export default async function ContactsPage() {
 					<FeedBackForm currentUser={currentUser} />
 				</div>
 			</section>
-			 <section>
+			<section>
 				<GoogleMapComponent />
-			</section> */}
+			</section>
 		</div>
 	)
 }
