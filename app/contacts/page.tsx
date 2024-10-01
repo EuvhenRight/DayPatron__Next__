@@ -42,7 +42,7 @@ export default async function ContactsPage() {
 	const { ContentContactsPage } = data
 
 	return (
-		<>
+		<div>
 			<section className='container lg:pt-10 relative flex flex-col md:flex-row w-full pt-2 mb-4'>
 				<div className='w-full md:w-1/2 text-start'>
 					<h1 className={cn(rubikGlitch.className, 'text-2xl font-bold')}>
@@ -63,6 +63,6 @@ export default async function ContactsPage() {
 			<section>
 				<GoogleMapComponent />
 			</section>
-		</>
+		</div>
 	)
 }
