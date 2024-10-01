@@ -37,6 +37,7 @@ const MissionContractorMatchPage = () => {
   let { missionId, contractorId } = useParams();
   const { pathname } = useLocation();
   const matchDownSm = useMediaQuery(theme.breakpoints.down('sm'));
+  const matchDownMd = useMediaQuery(theme.breakpoints.down('md'));
 
   let selectedTab = 0;
   if (pathname.endsWith('/ai-screening')) {
@@ -91,7 +92,7 @@ const MissionContractorMatchPage = () => {
   return (
     <Grid container spacing={3}>
 
-      <Grid item xs={12} lg={8}>
+      <Grid item xs={12} md={7} lg={8}>
 
         <Grid container spacing={2.5} sx={{position: 'relative'}}>
           
@@ -186,7 +187,7 @@ const MissionContractorMatchPage = () => {
               {missionContractorMatch?.contractor?.summary}
             </Typography>
           </Grid>
-          {matchDownSm &&
+          {matchDownMd &&
             <Grid item xs={12}>
               <MainCard>
                 <MissionContractorMatchDetails 
@@ -213,8 +214,8 @@ const MissionContractorMatchPage = () => {
           </Grid>
         </Grid>
       </Grid>
-      {!matchDownSm &&
-        <Grid item xs={12} lg={4}>
+      {!matchDownMd &&
+        <Grid item xs={12} md={5} lg={4}>
           <MainCard>
             <MissionContractorMatchDetails 
               missionContractorMatch={missionContractorMatch} 

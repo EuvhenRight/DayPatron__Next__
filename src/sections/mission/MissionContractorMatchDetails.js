@@ -358,7 +358,7 @@ const MissionContractorMatchDetails = ({ missionContractorMatch, setMissionContr
             '& .MuiAccordion-root': {
               borderColor: theme.palette.divider,
               '& .MuiAccordionSummary-root': {
-                bgcolor: 'transparent',
+                bgcolor: 'secondary',
                 flexDirection: 'row'
               },
               '& .MuiAccordionDetails-root': {
