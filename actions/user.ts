@@ -20,6 +20,7 @@ export const getCurrentSession = async () => {
 		return session
 	} catch (error) {
 		console.log(error, 'Щось пішло не так. Будь ласка, спробуйте знову пізніше')
+		throw error // Throw the error to propagate it to the caller
 	}
 }
 
@@ -40,6 +41,7 @@ export const getCurrentUser = async () => {
 		return currentUser
 	} catch (error) {
 		console.log(error, 'Щось пішло не так. Будь ласка, спробуйте знову пізніше')
+		throw error // Throw the error to propagate it to the caller
 	}
 }
 
@@ -52,10 +54,8 @@ export const getCurrentUserById = async ({ id }: { id: string }) => {
 		})
 		return currentUser
 	} catch (error) {
-		console.log(
-			error,
-			'SЩось пішло не так. Будь ласка, спробуйте знову пізніше'
-		)
+		console.log(error, 'Щось пішло не так. Будь ласка, спробуйте знову пізніше')
+		throw error // Throw the error to propagate it to the caller
 	}
 }
 
@@ -66,6 +66,7 @@ export const getCurrentRole = async () => {
 		return session?.user?.role
 	} catch (error) {
 		console.log(error, 'Щось пішло не так. Будь ласка, спробуйте знову пізніше')
+		throw error // Throw the error to propagate it to the caller
 	}
 }
 
@@ -91,5 +92,6 @@ export const editInfoUser = async (
 		return user
 	} catch (error) {
 		console.log(error, 'Щось пішло не так. Будь ласка, спробуйте знову пізніше')
+		throw error // Throw the error to propagate it to the caller
 	}
 }

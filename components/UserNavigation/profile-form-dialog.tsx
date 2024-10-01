@@ -4,6 +4,7 @@ import {
 	Dialog,
 	DialogClose,
 	DialogContent,
+	DialogDescription,
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
@@ -98,6 +99,7 @@ export const ProfileFormDialog = ({
 			<DialogContent>
 				<DialogHeader>
 					<DialogTitle>Змінити інформацію профілю</DialogTitle>
+					<DialogDescription></DialogDescription>
 				</DialogHeader>
 				<div>
 					<Form {...form}>

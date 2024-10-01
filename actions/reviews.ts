@@ -31,7 +31,7 @@ export async function addItem(
 				email: data.email,
 				fullName: data.fullName,
 				rating: data.rating,
-				verified: verifiedOrders.length > 0,
+				verified: verifiedOrders?.length ?? 0 > 0 ? true : false,
 				reviewsId: reviews.id,
 				userId: userId!,
 			},
