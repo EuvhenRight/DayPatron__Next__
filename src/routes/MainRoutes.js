@@ -145,6 +145,10 @@ const MainRoutes = {
                   element: <MissionContractorMatchPage />,
                   children: [
                     {
+                      index: true,
+                      element: <ContractorExperienceSection />
+                    },
+                    {
                       path: 'experience',
                       element: <ContractorExperienceSection />
                     },

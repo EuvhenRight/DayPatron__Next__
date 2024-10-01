@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import { useKeycloak } from '@react-keycloak/web';
 import { useLocation, useParams, Link, Outlet  } from 'react-router-dom';
 import countries from 'data/countries';
-import jobRoles from 'data/jobRoles';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import {
   Button,
@@ -14,16 +14,17 @@ import {
   Box, 
   Tab, 
   Tabs,
-  Chip,
   useMediaQuery
 } from '@mui/material';
+
 import MissionContractorMatchDetails from 'sections/mission/MissionContractorMatchDetails';
 
 import MainCard from 'components/MainCard';
 
-import { EnvironmentOutlined, EuroOutlined, FileTextOutlined, MessageOutlined, RobotOutlined } from '@ant-design/icons';
+import { EnvironmentOutlined, EuroOutlined, FileTextOutlined, MessageOutlined, RobotOutlined, CalendarOutlined, FileDoneOutlined } from '@ant-design/icons';
 
 import Avatar from 'components/@extended/Avatar';
+import { PopupModal } from "react-calendly";
 
 const MissionContractorMatchPage = () => {
   const { keycloak } = useKeycloak();
@@ -31,6 +32,8 @@ const MissionContractorMatchPage = () => {
   const navigate = useNavigate();
   const [missionContractorMatch, setMissionContractorMatch] = useState({});
   const [missionContractor, setMissionContractor] = useState(null);
+  const [isCalendlyOpen, setIsCalendlyOpen] = useState(false);
+  const personalInformation = useSelector(state => state.personalInformation);
   let { missionId, contractorId } = useParams();
   const { pathname } = useLocation();
   const matchDownSm = useMediaQuery(theme.breakpoints.down('sm'));
@@ -88,50 +91,94 @@ const MissionContractorMatchPage = () => {
   return (
     <Grid container spacing={3}>
 
-      <Grid item xs={12} md={9}>
+      <Grid item xs={12} lg={8}>
 
-        <Grid container spacing={3} sx={{position: 'relative'}}>
+        <Grid container spacing={2.5} sx={{position: 'relative'}}>
           
           <Grid item xs={matchDownSm ? 12 : null}>
             <Stack direction="row" justifyContent="center">
               <Avatar src={missionContractorMatch?.contractor?.mainImageUrl} size={matchDownSm ? 'xxxxl' : 'xxxl'} />
-              
-              <Button 
-                startIcon={<MessageOutlined />}
-                variant="contained" 
-                sx={{position: 'absolute',  right: '3px', top: '24px'}} 
-                onClick={() => {navigate('/messaging', { state: { targetUserId: missionContractorMatch?.contractor?.messagingProviderUserId} })}}>
-                Message
-              </Button>
             </Stack>
           </Grid>
           <Grid item xs zeroMinWidth>
-            <Stack alignItems={matchDownSm ? 'center' : 'default'}>
+            <Stack alignItems={matchDownSm ? 'center' : 'default'} spacing={0.2}>
               <Typography variant='h3'>{missionContractorMatch?.contractor?.firstName + ' ' + missionContractorMatch?.contractor?.lastName}</Typography>
               <Typography variant="h6">{missionContractorMatch?.contractor?.headline}</Typography>
-              <Stack direction="row" spacing={2} alignItems="center">
-                <Stack direction="row" spacing={0.5} alignItems="center">
-                  <EnvironmentOutlined />
-                  <Typography color="secondary">
-                    {countries.find(x => x.code === missionContractorMatch?.contractor?.country)?.label}
-                  </Typography>
-                </Stack>
-                <Stack direction="row" spacing={0.5} alignItems="center">
-                  <EuroOutlined />
-                  <Typography color="secondary">
-                    {missionContractorMatch?.contractor?.preferences?.rate?.lowerLimitWithMargin} - {missionContractorMatch?.contractor?.preferences?.rate?.upperLimitWithMargin}
-                  </Typography>
-                </Stack>
+              <Grid container sx={{ justifyContent: {xs: "center", sm: "flex-start"}, alignItems: "center"}}>
+                {missionContractorMatch?.contractor?.country && 
+                  <Grid item sx={{mr: 1.5}}>
+                    <Stack direction="row" spacing={0.5} alignItems="center">
+                      <EnvironmentOutlined />
+                      <Typography color="secondary">
+                        {countries.find(x => x.code === missionContractorMatch?.contractor?.country)?.label}
+                      </Typography>
+                    </Stack>
+                  </Grid>
+                }
+                {missionContractorMatch?.contractor?.preferences?.rate?.lowerLimitWithMargin && 
+                  <Grid item sx={{mr: 1.5}}>
+                    <Stack direction="row" spacing={0.5} alignItems="center">
+                      <EuroOutlined />
+                      <Typography color="secondary">
+                        {missionContractorMatch?.contractor?.preferences?.rate?.lowerLimitWithMargin} - {missionContractorMatch?.contractor?.preferences?.rate?.upperLimitWithMargin} / hour
+                      </Typography>
+                    </Stack>
+                  </Grid>
+                }
+                {missionContractorMatch?.contractor?.expertise?.startYear && 
+                  <Grid item sx={{mr: 1.5}}>
+                    <Stack direction="row" spacing={0.5} alignItems="center">
+                      <FileDoneOutlined />
+                      <Typography color="secondary">
+                        {new Date().getFullYear() - missionContractorMatch?.contractor?.expertise?.startYear + ' year(s) experience'}
+                      </Typography>
+                    </Stack>
+                  </Grid>
+                }
+              </Grid>
+              
+              <Stack direction="row">
+                <Button 
+                  sx={{ marginTop: '5px', marginRight: '5px', width: '100px', height: '27px'}}
+                  startIcon={<MessageOutlined />}
+                  variant="contained" 
+                  onClick={() => {navigate('/messaging', { state: { targetUserId: missionContractorMatch?.contractor?.messagingProviderUserId} })}}>
+                  Message
+                </Button>
+                {missionContractorMatch?.contractor?.calendlyUrl &&
+                  <>
+                    <Button 
+                      color="secondary"
+                      variant="contained" 
+                      startIcon={<CalendarOutlined />}
+                      onClick={() => { setIsCalendlyOpen(true); }} 
+                      sx={{ marginTop: '5px', width: '182px', height: '27px'}}>
+                      Schedule a Meeting
+                    </Button>
+                    <PopupModal
+                      url={missionContractorMatch?.contractor?.calendlyUrl}
+                      onModalClose={() => { setIsCalendlyOpen(false); }}
+                      open={isCalendlyOpen}
+                      rootElement={document.getElementById("root")}
+                      prefill={{
+                        email: personalInformation?.email,
+                        firstName: personalInformation?.firstName,
+                        lastName: personalInformation?.lastName,
+                        name: personalInformation?.firstName + ' ' + personalInformation?.lastName,
+                        date: new Date(Date.now() + 86400000)
+                      }}
+                      pageSettings={{
+                        backgroundColor: theme.palette.common.white,
+                        hideEventTypeDetails: false,
+                        hideLandingPageDetails: false,
+                        primaryColor: theme.palette.primary.main,
+                        textColor: theme.palette.text.primary
+                      }}
+                    />
+                  </>
+                }
               </Stack>
-              <div>
-                {missionContractorMatch?.contractor?.expertise?.jobRoles?.map((jobRole, jobRoleIndex) => 
-                  {
-                    return (
-                      <Chip sx={{float: 'left', marginTop: '5px', marginRight: '5px'}} key={jobRoleIndex} color="primary" variant="outlined" size="small" label={jobRoles.find(x => x.code === jobRole)?.shortLabel} />
-                    );
-                  }
-                )}
-              </div>
+              
             </Stack>
           </Grid>
           <Grid item xs={12}>
@@ -139,6 +186,19 @@ const MissionContractorMatchPage = () => {
               {missionContractorMatch?.contractor?.summary}
             </Typography>
           </Grid>
+          {matchDownSm &&
+            <Grid item xs={12}>
+              <MainCard>
+                <MissionContractorMatchDetails 
+                  missionContractorMatch={missionContractorMatch} 
+                  setMissionContractorMatch={setMissionContractorMatch} 
+                  missionId={missionId} 
+                  contractorId={contractorId} 
+                  missionContractor={missionContractor}
+                  setMissionContractor={setMissionContractor} />
+              </MainCard>
+            </Grid>
+          }
           <Grid item xs={12}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%' }}>
               <Tabs value={selectedTab} variant="scrollable" scrollButtons="auto" aria-label="mission tabs">
@@ -153,17 +213,19 @@ const MissionContractorMatchPage = () => {
           </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={12} md={3}>
-        <MainCard>
-          <MissionContractorMatchDetails 
-            missionContractorMatch={missionContractorMatch} 
-            setMissionContractorMatch={setMissionContractorMatch} 
-            missionId={missionId} 
-            contractorId={contractorId} 
-            missionContractor={missionContractor}
-            setMissionContractor={setMissionContractor} />
-        </MainCard>
-      </Grid>
+      {!matchDownSm &&
+        <Grid item xs={12} lg={4}>
+          <MainCard>
+            <MissionContractorMatchDetails 
+              missionContractorMatch={missionContractorMatch} 
+              setMissionContractorMatch={setMissionContractorMatch} 
+              missionId={missionId} 
+              contractorId={contractorId} 
+              missionContractor={missionContractor}
+              setMissionContractor={setMissionContractor} />
+          </MainCard>
+        </Grid>
+      }
     </Grid>
   );
 };

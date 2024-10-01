@@ -12,17 +12,13 @@ import {
   Box,
   Grid,
   Typography,
-  List, 
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
   Collapse
 } from '@mui/material';
 
 import SanitizedHTML from 'react-sanitized-html';
 import MissionContractorMatchEmployerNotes from 'sections/mission/MissionContractorMatchEmployerNotes';
 import MissionContractorMatchAdminNotes from 'sections/mission/MissionContractorMatchAdminNotes';
-import { DownOutlined, FileOutlined, SwapOutlined, UpOutlined } from '@ant-design/icons';
+import { DownOutlined, FileOutlined, UpOutlined } from '@ant-design/icons';
 
 const MissionContractorMatchDetails = ({ missionContractorMatch, setMissionContractorMatch, missionId, contractorId, missionContractor, setMissionContractor }) => {
   const { keycloak } = useKeycloak();
@@ -273,9 +269,7 @@ const MissionContractorMatchDetails = ({ missionContractorMatch, setMissionContr
     <Grid container spacing={3}>
       <Grid item xs={12}>
         <Stack alignItems="center">
-          <Typography variant="h4">{missionContractorMatch?.contractor?.firstName + " " + missionContractorMatch?.contractor?.lastName}</Typography>
-          <SwapOutlined />
-          <Typography variant="h4">{missionContractorMatch?.mission?.title}</Typography>
+          <Typography variant="h5">&quot;{missionContractorMatch?.mission?.title}&quot; match</Typography>
         </Stack>
       </Grid>
       <Grid item xs={12}>
@@ -294,22 +288,22 @@ const MissionContractorMatchDetails = ({ missionContractorMatch, setMissionContr
             >
               {missionContractorMatch?.isMatch &&
                 <ListItem disablePadding sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
-                  <Chip color="primary" size="small" label="Matched" />
+                  <Chip variant="outlined" color="success" size="small" label="Matched" />
                 </ListItem>
               }
               {missionContractorMatch?.invitation &&
                 <ListItem disablePadding sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
-                  <Chip color="primary" size="small" label="Invited" />
+                  <Chip variant="outlined" color="success" size="small" label="Invited" />
                 </ListItem>
               }
               {missionContractorMatch?.application &&
                 <ListItem disablePadding sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
-                  <Chip color="primary" size="small" label="Applied" />
+                  <Chip variant="outlined" color="success" size="small" label="Applied" />
                 </ListItem>
               }
               {missionContractorMatch?.approval &&
                 <ListItem disablePadding sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
-                  <Chip color="success" size="small" label="Approved" />
+                  <Chip variant="outlined" color="success" size="small" label="Approved" />
                 </ListItem>
               }
             </Box>
@@ -317,13 +311,13 @@ const MissionContractorMatchDetails = ({ missionContractorMatch, setMissionContr
           <Stack direction="row" spacing={1}>
             {missionContractorMatch?.invitation ?
               (
-                <Button variant="outlined" onClick={handleUninviteButtonClick} disabled={isDeletingInvitation}>
+                <Button color="primary" variant="contained" onClick={handleUninviteButtonClick} disabled={isDeletingInvitation}>
                   Uninvite
                 </Button>
               )
               :
               (
-                <Button variant="contained" onClick={handleInviteButtonClick} disabled={isCreatingInvitation}>
+                <Button color="success" variant="contained" onClick={handleInviteButtonClick} disabled={isCreatingInvitation}>
                   Invite
                 </Button>
               )
@@ -331,7 +325,7 @@ const MissionContractorMatchDetails = ({ missionContractorMatch, setMissionContr
 
             {missionContractorMatch?.approval ?
               (
-                <Button color="success" variant="outlined" onClick={handleUnapproveButtonClick} disabled={isDeletingApproval}>
+                <Button color="primary" variant="contained" onClick={handleUnapproveButtonClick} disabled={isDeletingApproval}>
                   Unapprove
                 </Button>
               )
@@ -344,7 +338,7 @@ const MissionContractorMatchDetails = ({ missionContractorMatch, setMissionContr
             }
 
             {keycloak.tokenParsed.roles.includes('admin') &&
-              <Button color="primary" variant="outlined" onClick={handleToggleMatchButtonClick} disabled={isTogglingMatch}>
+              <Button color={missionContractorMatch?.isMatch ? "primary" : "success"} variant="contained" onClick={handleToggleMatchButtonClick} disabled={isTogglingMatch}>
                 {missionContractorMatch?.isMatch ? "Unmatch" : "Match"}
               </Button>
             }
@@ -353,15 +347,18 @@ const MissionContractorMatchDetails = ({ missionContractorMatch, setMissionContr
         </Stack>
       </Grid>
       <Grid item xs={12}>
-        <List>
-          <ListItemButton onClick={() => {setIsExpandNotes(!isExpandNotes);}}>
-            <ListItemIcon>
-              <FileOutlined />
-            </ListItemIcon>
-            <ListItemText primary="Notes" />
-            {isExpandNotes ? <UpOutlined /> : <DownOutlined />}
-          </ListItemButton>
-        </List>
+        <Button 
+          fullWidth
+          sx={{mt: '10px'}}
+          color="secondary"
+          variant={isExpandNotes ? "outlined" : "contained"} 
+          startIcon={<Stack direction="row" spacing={0.5} alignItems="center">
+            <FileOutlined />
+            <Typography>Notes</Typography>
+          </Stack>}
+          endIcon={isExpandNotes ? <UpOutlined /> : <DownOutlined />}
+          onClick={() => {setIsExpandNotes(!isExpandNotes);}}>
+          </Button>
       </Grid>
       <Grid item xs={12}>
         <Collapse in={isExpandNotes} timeout="auto" unmountOnExit>

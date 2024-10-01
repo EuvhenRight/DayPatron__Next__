@@ -4,7 +4,8 @@ import {
   Grid,
   Typography,
   Chip,
-  Stack
+  Stack,
+  Box
 } from '@mui/material';
 
 import MainCard from 'components/MainCard';
@@ -12,6 +13,9 @@ import SanitizedHTML from 'react-sanitized-html';
 
 import { ShopOutlined, FileDoneOutlined } from '@ant-design/icons';
 import languages from 'data/languages';
+import jobRoles from 'data/jobRoles';
+import industries from 'data/industries';
+import jobClusters from 'data/jobClusters';
 
 const ContractorExperience = () => {
     const [missionContractorMatch] = useOutletContext();
@@ -21,18 +25,66 @@ const ContractorExperience = () => {
             <Grid item xs={12}>
                 <MainCard>
                             
-                    <Grid container spacing={3}>
+                    <Grid container spacing={2.5}>
                         <Grid item xs={12}>
-                            <Typography variant="h4">Languages</Typography>
+                            <Stack spacing={0.3}>
+                                <Typography variant="h4">Roles</Typography>
+                                <Box>
+                                    {missionContractorMatch?.contractor?.expertise?.jobRoles?.length > 0 ? 
+                                        missionContractorMatch?.contractor?.expertise?.jobRoles?.map((jobRole, jobRoleIndex) => {
+                                        return (                            
+                                            <Chip sx={{float: 'left', marginTop: '5px', marginRight: '5px'}} key={jobRoleIndex} color="success" variant="outlined" size="small" label={jobRoles.find(x => x.code === jobRole)?.label} />);
+                                        }) :
+                                        (<Typography>No data.</Typography>)
+                                    }
+                                </Box>
+                            </Stack>
+                            
                         </Grid>
                         <Grid item xs={12}>
-                            {missionContractorMatch?.contractor?.expertise?.languages?.length > 0 ? 
-                                missionContractorMatch?.contractor?.expertise?.languages?.map((language, languageIndex) => {
-                                return (                            
-                                    <Chip sx={{float: 'left', marginTop: '5px', marginRight: '5px'}} key={languageIndex} color="secondary" variant="outlined" size="small" label={languages.find(x => x.code === language)?.label} />);
-                                }) :
-                                (<Typography>No data.</Typography>)
-                            }
+                            <Stack spacing={0.3}>
+                                <Typography variant="h4">Clusters</Typography>
+                                <Box>
+                                    {missionContractorMatch?.contractor?.expertise?.jobClusters?.length > 0 ? 
+                                        missionContractorMatch?.contractor?.expertise?.jobClusters?.map((jobCluster, jobClusterIndex) => {
+                                        return (                            
+                                            <Chip sx={{float: 'left', marginTop: '5px', marginRight: '5px'}} key={jobClusterIndex} color="success" variant="outlined" size="small" label={jobClusters.find(x => x.code === jobCluster)?.label} />);
+                                        }) :
+                                        (<Typography>No data.</Typography>)
+                                    }
+                                </Box>
+                            </Stack>
+                            
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Stack spacing={0.3}>
+                                <Typography variant="h4">Industries</Typography>
+                                <Box>
+                                    {missionContractorMatch?.contractor?.expertise?.industries?.length > 0 ? 
+                                        missionContractorMatch?.contractor?.expertise?.industries?.map((industry, industryIndex) => {
+                                        return (                            
+                                            <Chip sx={{float: 'left', marginTop: '5px', marginRight: '5px'}} key={industryIndex} color="success" variant="outlined" size="small" label={industries.find(x => x.code === industry)?.label} />);
+                                        }) :
+                                        (<Typography>No data.</Typography>)
+                                    }
+                                </Box>
+                            </Stack>
+                            
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Stack spacing={0.3}>
+                                <Typography variant="h4">Languages</Typography>
+                                <Box>
+                                    {missionContractorMatch?.contractor?.expertise?.languages?.length > 0 ? 
+                                        missionContractorMatch?.contractor?.expertise?.languages?.map((language, languageIndex) => {
+                                        return (                            
+                                            <Chip sx={{float: 'left', marginTop: '5px', marginRight: '5px'}} key={languageIndex} color="success" variant="outlined" size="small" label={languages.find(x => x.code === language)?.label} />);
+                                        }) :
+                                        (<Typography>No data.</Typography>)
+                                    }
+                                </Box>
+                            </Stack>
+                            
                         </Grid>
                     </Grid>
 
@@ -42,7 +94,7 @@ const ContractorExperience = () => {
                 <MainCard>
                     <Grid container spacing={3}>
                         <Grid item xs={12}>
-                            <Typography variant="h4">Career</Typography>
+                            <Typography variant="h4">Work</Typography>
                         </Grid>
                         {missionContractorMatch?.contractor?.professionalExperiences?.length > 0 ?
                             missionContractorMatch?.contractor?.professionalExperiences?.map((professionalExperience, professionalExperienceIndex) => {

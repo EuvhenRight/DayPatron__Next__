@@ -87,8 +87,8 @@ function getSizeStyle(size) {
           return {
             border: '3px solid',
             fontSize: '1.5rem',
-            width: 110,
-            height: 110
+            width: 120,
+            height: 120
           };
       case 'xxxxl':
         return {

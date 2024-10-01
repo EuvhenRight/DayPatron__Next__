@@ -51,10 +51,10 @@ const AiScreeningResult = () => {
                             <MainCard>
                                 <Grid container spacing={3}>
                                     <Grid item xs={12}>
-                                        <Typography variant="h3">{selectedPeraAssessment?.linkedAssessment?.assessment?.name}</Typography>
+                                        <Typography variant="h4">{selectedPeraAssessment?.linkedAssessment?.assessment?.name}</Typography>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <Typography variant="h4">{selectedPeraAssessment?.linkedAssessment?.assessment?.hrPage?.subtitle?.replace('{candidateName}', missionContractorMatch?.contractor?.firstName + ' ' + missionContractorMatch?.contractor?.lastName)}</Typography>
+                                        <Typography variant="h5">{selectedPeraAssessment?.linkedAssessment?.assessment?.hrPage?.subtitle?.replace('{candidateName}', missionContractorMatch?.contractor?.firstName + ' ' + missionContractorMatch?.contractor?.lastName)}</Typography>
                                     </Grid>
                                     <Grid item xs={12}>
                                         <Sectioned value={selectedPeraAssessment?.percentile * 100} />
@@ -145,40 +145,41 @@ const AiScreeningResult = () => {
                     <MainCard>
                         <Grid container spacing={3}>
                             <Grid item xs={12}>
-                                <Typography variant="h3">Questions & Answers</Typography>
+                                <Typography variant="h4">Questions & Answers</Typography>
                             </Grid>
-                            {missionContractorMatch?.contractorPeraSurveyResponse?.surveyAnswers.map((surveyAnswer, surveyAnswerIndex) => {
-                            return (
-                                <Grid key={surveyAnswerIndex} item xs={12}>
-                                    <Grid container spacing={3} alignItems="center">
-                                        <Grid item xs={12}>
-                                        <Typography variant="h4">{surveyAnswer?.survey?.name}</Typography>
+                            {missionContractorMatch?.contractorPeraSurveyResponse?.surveyAnswers ?
+                             missionContractorMatch?.contractorPeraSurveyResponse?.surveyAnswers.map((surveyAnswer, surveyAnswerIndex) => {
+                                return (
+                                    <Grid key={surveyAnswerIndex} item xs={12}>
+                                        <Grid container spacing={3} alignItems="center">
+                                            <Grid item xs={12}>
+                                            <Typography variant="h5">{surveyAnswer?.survey?.name}</Typography>
+                                            </Grid>
+                                            {surveyAnswer?.answers?.map((answer, answerIndex) => {
+                                            return (
+                                                <Grid key={answerIndex} item xs={12}>
+                                                <Grid container spacing={2}>
+                                                    <Grid item>
+                                                    <Avatar>
+                                                        <FileTextOutlined />
+                                                    </Avatar>
+                                                    </Grid>
+                                                    <Grid item xs zeroMinWidth>
+                                                    <Typography align="left" variant="h6">
+                                                        {answer?.question?.page?.title}
+                                                    </Typography>
+                                                    <Typography align="left" variant="body1" color="secondary">
+                                                        {answer?.body}
+                                                    </Typography>
+                                                    </Grid>
+                                                </Grid>
+                                                </Grid>
+                                            );
+                                            })}
                                         </Grid>
-                                        {surveyAnswer?.answers?.map((answer, answerIndex) => {
-                                        return (
-                                            <Grid key={answerIndex} item xs={12}>
-                                            <Grid container spacing={2}>
-                                                <Grid item>
-                                                <Avatar>
-                                                    <FileTextOutlined />
-                                                </Avatar>
-                                                </Grid>
-                                                <Grid item xs zeroMinWidth>
-                                                <Typography align="left" variant="h5">
-                                                    {answer?.question?.page?.title}
-                                                </Typography>
-                                                <Typography align="left" variant="body1" color="secondary">
-                                                    {answer?.body}
-                                                </Typography>
-                                                </Grid>
-                                            </Grid>
-                                            </Grid>
-                                        );
-                                        })}
                                     </Grid>
-                                </Grid>
-                            );
-                            })}
+                                );
+                            }) : <Grid item xs={12}><Typography>No data.</Typography></Grid>}
                         </Grid>
                     </MainCard>
                 </Grid>
