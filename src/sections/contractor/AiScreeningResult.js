@@ -42,146 +42,153 @@ const AiScreeningResult = () => {
     return (
         <>
             <Grid container spacing={3}>
-                {missionContractorMatch?.contractorPeraSurveyResponse?.responseResultsTree?.map((selectedPeraAssessment, selectedPeraAssessmentIndex) => {
-                    let strengthTraitResults = selectedPeraAssessment?.traitResults?.filter(x => x.isStrength);
-                    let growthOpportunityTraitResults = selectedPeraAssessment?.traitResults?.filter(x => x.isGrowthOpportunity);
+                <Grid item xs={12} lg={8}> 
+                    <Grid container spacing={3}>
+                        {missionContractorMatch?.contractorPeraSurveyResponse?.responseResultsTree?.map((selectedPeraAssessment, selectedPeraAssessmentIndex) => {
+                            let strengthTraitResults = selectedPeraAssessment?.traitResults?.filter(x => x.isStrength);
+                            let growthOpportunityTraitResults = selectedPeraAssessment?.traitResults?.filter(x => x.isGrowthOpportunity);
 
-                    return (
-                        <Grid key={selectedPeraAssessmentIndex} item xs={12}>
+                            return (
+                                <Grid key={selectedPeraAssessmentIndex} item xs={12}>
+                                    <MainCard>
+                                        <Grid container spacing={3}>
+                                            <Grid item xs={12}>
+                                                <Typography variant="h4">{selectedPeraAssessment?.linkedAssessment?.assessment?.name}</Typography>
+                                            </Grid>
+                                            <Grid item xs={12}>
+                                                <Typography variant="h5">{selectedPeraAssessment?.linkedAssessment?.assessment?.hrPage?.subtitle?.replace('{candidateName}', missionContractorMatch?.contractor?.firstName + ' ' + missionContractorMatch?.contractor?.lastName)}</Typography>
+                                            </Grid>
+                                            <Grid item xs={12}>
+                                                <Sectioned value={selectedPeraAssessment?.percentile * 100} />
+                                            </Grid>
+                                            <Grid item xs={12}>
+                                                <Grid container spacing={2}>
+
+                                                {strengthTraitResults?.length > 0 &&
+                                                    <Grid item xs={12} md={6}>
+                                                    <Grid container spacing={1}>
+                                                        <Grid item xs={12}>
+                                                        <Chip label="STRENGTH" size="small" color="success" className="small-chip" />
+                                                        </Grid>
+                                                        {strengthTraitResults?.map((traitResult, traitResultIndex) => {
+                                                        return (
+                                                            <Grid key={traitResultIndex} item xs={12}>
+                                                            <ButtonBase component={Link} onClick={() => { handleOpenTraitDetails(traitResult); }} underline="none">
+                                                                <Typography variant="h5" sx={{ mr: 1.25 }} >{traitResult?.trait?.hrPage?.title}</Typography>
+                                                                <RightOutlined />
+                                                            </ButtonBase>
+                                                            </Grid>
+                                                        );
+                                                        })}
+                                                    </Grid>
+                                                    </Grid>
+                                                }
+
+                                                {growthOpportunityTraitResults?.length > 0 &&
+                                                    <Grid item xs={12} md={6}>
+                                                    <Grid container spacing={1}>
+                                                        <Grid item xs={12}>
+                                                        <Chip label="GROWTH OPPORTUNITY" size="small" color="error" className="small-chip" />
+                                                        </Grid>
+                                                        {growthOpportunityTraitResults?.map((traitResult, traitResultIndex) => {
+                                                        return (
+                                                            <Grid key={traitResultIndex} item xs={12}>
+                                                            <ButtonBase component={Link} onClick={() => { handleOpenTraitDetails(traitResult); }} underline="none">
+                                                                <Typography variant="h5" sx={{ mr: 1.25 }} >{traitResult?.trait?.hrPage?.title}</Typography>
+                                                                <RightOutlined />
+                                                            </ButtonBase>
+                                                            </Grid>
+                                                        );
+                                                        })}
+                                                    </Grid>
+                                                    </Grid>
+                                                }
+                                                
+                                                </Grid>
+                                            </Grid>
+                                            <Grid item xs={12}>
+                                                <Typography variant="h4">Results</Typography>
+                                            </Grid>
+                                            <Grid item xs={12}>
+                                                <Typography>{selectedPeraAssessment?.linkedAssessment?.assessment?.hrPage?.body}</Typography>
+                                            </Grid>
+
+                                            <Grid item xs={12} sx={{mt: 2}}>
+                                                <Grid container spacing={4}>
+                                                {selectedPeraAssessment?.traitResults?.map((item, index) => {
+                                                    return (
+                                                    <Grid key={index} item xs={12}>
+                                                        <Grid container spacing={1}>
+                                                        <Grid item xs={12} lg={4} md={5}>
+                                                            <ButtonBase component={Link} onClick={() => { handleOpenTraitDetails(item); }} underline="none">
+                                                            <Typography variant="h5" sx={{mr: 1.25}} >{item?.trait?.hrPage?.title}</Typography>
+                                                            <RightOutlined />
+                                                            {item?.isStrength && <Chip label="STRENGTH" size="small" color="success" className="small-chip button-h5-chip" />}
+                                                            {item?.isGrowthOpportunity && <Chip label="GROWTH OPPORTUNITY" size="small" color="error" className="small-chip button-h5-chip" />}
+                                                            </ButtonBase>
+                                                        </Grid>
+                                                        <Grid item xs={12} lg={8} md={7}>
+                                                            <Sectioned value={item?.percentile * 100} />
+                                                        </Grid>
+                                                        </Grid>
+                                                    </Grid>
+                                                    );
+                                                })}
+                                                </Grid>
+                                            </Grid>
+                                        
+                                        </Grid>
+                                    </MainCard>
+                                </Grid>
+                            );
+                        })}
+                    </Grid> 
+                </Grid>
+                <Grid item xs={12} lg={4}>  
+                    <Grid container spacing={3}>
+                        <Grid item xs={12}>
                             <MainCard>
                                 <Grid container spacing={3}>
                                     <Grid item xs={12}>
-                                        <Typography variant="h4">{selectedPeraAssessment?.linkedAssessment?.assessment?.name}</Typography>
+                                        <Typography variant="h4">Questions & Answers</Typography>
                                     </Grid>
-                                    <Grid item xs={12}>
-                                        <Typography variant="h5">{selectedPeraAssessment?.linkedAssessment?.assessment?.hrPage?.subtitle?.replace('{candidateName}', missionContractorMatch?.contractor?.firstName + ' ' + missionContractorMatch?.contractor?.lastName)}</Typography>
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <Sectioned value={selectedPeraAssessment?.percentile * 100} />
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <Grid container spacing={2}>
-
-                                        {strengthTraitResults?.length > 0 &&
-                                            <Grid item xs={12} md={6}>
-                                            <Grid container spacing={1}>
-                                                <Grid item xs={12}>
-                                                <Chip label="STRENGTH" size="small" color="success" className="small-chip" />
-                                                </Grid>
-                                                {strengthTraitResults?.map((traitResult, traitResultIndex) => {
-                                                return (
-                                                    <Grid key={traitResultIndex} item xs={12}>
-                                                    <ButtonBase component={Link} onClick={() => { handleOpenTraitDetails(traitResult); }} underline="none">
-                                                        <Typography variant="h5" sx={{ mr: 1.25 }} >{traitResult?.trait?.hrPage?.title}</Typography>
-                                                        <RightOutlined />
-                                                    </ButtonBase>
+                                    {missionContractorMatch?.contractorPeraSurveyResponse?.surveyAnswers ?
+                                    missionContractorMatch?.contractorPeraSurveyResponse?.surveyAnswers.map((surveyAnswer, surveyAnswerIndex) => {
+                                        return (
+                                            <Grid key={surveyAnswerIndex} item xs={12}>
+                                                <Grid container spacing={3} alignItems="center">
+                                                    <Grid item xs={12}>
+                                                    <Typography variant="h5">{surveyAnswer?.survey?.name}</Typography>
                                                     </Grid>
-                                                );
-                                                })}
-                                            </Grid>
-                                            </Grid>
-                                        }
-
-                                        {growthOpportunityTraitResults?.length > 0 &&
-                                            <Grid item xs={12} md={6}>
-                                            <Grid container spacing={1}>
-                                                <Grid item xs={12}>
-                                                <Chip label="GROWTH OPPORTUNITY" size="small" color="error" className="small-chip" />
-                                                </Grid>
-                                                {growthOpportunityTraitResults?.map((traitResult, traitResultIndex) => {
-                                                return (
-                                                    <Grid key={traitResultIndex} item xs={12}>
-                                                    <ButtonBase component={Link} onClick={() => { handleOpenTraitDetails(traitResult); }} underline="none">
-                                                        <Typography variant="h5" sx={{ mr: 1.25 }} >{traitResult?.trait?.hrPage?.title}</Typography>
-                                                        <RightOutlined />
-                                                    </ButtonBase>
-                                                    </Grid>
-                                                );
-                                                })}
-                                            </Grid>
-                                            </Grid>
-                                        }
-                                        
-                                        </Grid>
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <Typography variant="h4">Results</Typography>
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <Typography>{selectedPeraAssessment?.linkedAssessment?.assessment?.hrPage?.body}</Typography>
-                                    </Grid>
-
-                                    <Grid item xs={12} sx={{mt: 2}}>
-                                        <Grid container spacing={4}>
-                                        {selectedPeraAssessment?.traitResults?.map((item, index) => {
-                                            return (
-                                            <Grid key={index} item xs={12}>
-                                                <Grid container spacing={1}>
-                                                <Grid item xs={12} lg={4} md={5}>
-                                                    <ButtonBase component={Link} onClick={() => { handleOpenTraitDetails(item); }} underline="none">
-                                                    <Typography variant="h5" sx={{mr: 1.25}} >{item?.trait?.hrPage?.title}</Typography>
-                                                    <RightOutlined />
-                                                    {item?.isStrength && <Chip label="STRENGTH" size="small" color="success" className="small-chip button-h5-chip" />}
-                                                    {item?.isGrowthOpportunity && <Chip label="GROWTH OPPORTUNITY" size="small" color="error" className="small-chip button-h5-chip" />}
-                                                    </ButtonBase>
-                                                </Grid>
-                                                <Grid item xs={12} lg={8} md={7}>
-                                                    <Sectioned value={item?.percentile * 100} />
-                                                </Grid>
+                                                    {surveyAnswer?.answers?.map((answer, answerIndex) => {
+                                                    return (
+                                                        <Grid key={answerIndex} item xs={12}>
+                                                        <Grid container spacing={2}>
+                                                            <Grid item>
+                                                            <Avatar>
+                                                                <FileTextOutlined />
+                                                            </Avatar>
+                                                            </Grid>
+                                                            <Grid item xs zeroMinWidth>
+                                                            <Typography align="left" variant="h6">
+                                                                {answer?.question?.page?.title}
+                                                            </Typography>
+                                                            <Typography align="left" variant="body1" color="secondary">
+                                                                {answer?.body}
+                                                            </Typography>
+                                                            </Grid>
+                                                        </Grid>
+                                                        </Grid>
+                                                    );
+                                                    })}
                                                 </Grid>
                                             </Grid>
-                                            );
-                                        })}
-                                        </Grid>
-                                    </Grid>
-                                
+                                        );
+                                    }) : <Grid item xs={12}><Typography>No data.</Typography></Grid>}
                                 </Grid>
                             </MainCard>
                         </Grid>
-                    );
-                })}
-
-                <Grid item xs={12}>
-                    <MainCard>
-                        <Grid container spacing={3}>
-                            <Grid item xs={12}>
-                                <Typography variant="h4">Questions & Answers</Typography>
-                            </Grid>
-                            {missionContractorMatch?.contractorPeraSurveyResponse?.surveyAnswers ?
-                             missionContractorMatch?.contractorPeraSurveyResponse?.surveyAnswers.map((surveyAnswer, surveyAnswerIndex) => {
-                                return (
-                                    <Grid key={surveyAnswerIndex} item xs={12}>
-                                        <Grid container spacing={3} alignItems="center">
-                                            <Grid item xs={12}>
-                                            <Typography variant="h5">{surveyAnswer?.survey?.name}</Typography>
-                                            </Grid>
-                                            {surveyAnswer?.answers?.map((answer, answerIndex) => {
-                                            return (
-                                                <Grid key={answerIndex} item xs={12}>
-                                                <Grid container spacing={2}>
-                                                    <Grid item>
-                                                    <Avatar>
-                                                        <FileTextOutlined />
-                                                    </Avatar>
-                                                    </Grid>
-                                                    <Grid item xs zeroMinWidth>
-                                                    <Typography align="left" variant="h6">
-                                                        {answer?.question?.page?.title}
-                                                    </Typography>
-                                                    <Typography align="left" variant="body1" color="secondary">
-                                                        {answer?.body}
-                                                    </Typography>
-                                                    </Grid>
-                                                </Grid>
-                                                </Grid>
-                                            );
-                                            })}
-                                        </Grid>
-                                    </Grid>
-                                );
-                            }) : <Grid item xs={12}><Typography>No data.</Typography></Grid>}
-                        </Grid>
-                    </MainCard>
+                    </Grid>
                 </Grid>
             </Grid>
 

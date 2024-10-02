@@ -1,41 +1,32 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useKeycloak } from '@react-keycloak/web';
-import { useTheme } from '@mui/material/styles';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { prepareApiBody } from 'utils/stringUtils';
+import { Dialog, DialogTitle, DialogContent, Divider, IconButton } from '@mui/material';
+import { PopupTransition } from 'components/@extended/Transitions';
 
 import {
   Button,
-  Chip,
-  ListItem,
   Stack,
-  Box,
   Grid,
   Typography,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  useMediaQuery
 } from '@mui/material';
 
 import SanitizedHTML from 'react-sanitized-html';
 import MissionContractorMatchEmployerNotes from 'sections/mission/MissionContractorMatchEmployerNotes';
 import MissionContractorMatchAdminNotes from 'sections/mission/MissionContractorMatchAdminNotes';
-import { FileOutlined } from '@ant-design/icons';
+import { FileOutlined, CheckOutlined, MinusOutlined, CloseOutlined } from '@ant-design/icons';
 
 const MissionContractorMatchDetails = ({ missionContractorMatch, setMissionContractorMatch, missionId, contractorId, missionContractor, setMissionContractor }) => {
   const { keycloak } = useKeycloak();
   const dispatch = useDispatch();
-  const theme = useTheme();
-  const matchDownSm = useMediaQuery(theme.breakpoints.down('sm'));
   const [isCreatingInvitation, setIsCreatingInvitation] = useState(false);
   const [isDeletingInvitation, setIsDeletingInvitation] = useState(false);
   const [isCreatingApproval, setIsCreatingApproval] = useState(false);
   const [isDeletingApproval, setIsDeletingApproval] = useState(false);
   const [isTogglingMatch, setIsTogglingMatch] = useState(false);
-  const [isExpandNotes, setIsExpandNotes] = useState(!matchDownSm);
-
+  const [isNotesModalOpen, setIsNotesModalOpen] = useState(false);
   const handleInviteButtonClick = async () => {
     try {
       setIsCreatingInvitation(true);
@@ -272,153 +263,118 @@ const MissionContractorMatchDetails = ({ missionContractorMatch, setMissionContr
   }
 
   return (
-    <Grid container spacing={3}>
-      <Grid item xs={12}>
-        <Stack alignItems="center">
-          <Typography variant="h5">{missionContractorMatch?.contractor?.firstName} matches mission &quot;{missionContractorMatch?.mission?.title}&quot;</Typography>
-        </Stack>
+    <>
+      <Grid item sx={{mr: 1.5}}>
+        <Button startIcon={<FileOutlined />} color="secondary" variant="contained" sx={{ width: '85px', height: '27px', marginBottom: 1.5}} onClick={() => {setIsNotesModalOpen(true)}}>
+          Notes
+        </Button>
       </Grid>
-      <Grid item xs={12}>
-        <Stack alignItems="center">
-
-          <Stack spacing={0.5} alignItems="center">
-            <Box
-              sx={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                listStyle: 'none',
-                p: 0.5,
-                m: 0
-              }}
-              component="ul"
-            >
-              {missionContractorMatch?.isMatch &&
-                <ListItem disablePadding sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
-                  <Chip variant="outlined" color="success" size="small" label="Matched" />
-                </ListItem>
-              }
-              {missionContractorMatch?.invitation &&
-                <ListItem disablePadding sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
-                  <Chip variant="outlined" color="success" size="small" label="Invited" />
-                </ListItem>
-              }
-              {missionContractorMatch?.application &&
-                <ListItem disablePadding sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
-                  <Chip variant="outlined" color="success" size="small" label="Applied" />
-                </ListItem>
-              }
-              {missionContractorMatch?.approval &&
-                <ListItem disablePadding sx={{ width: 'auto', pr: 0.75, pb: 0.75 }}>
-                  <Chip variant="outlined" color="success" size="small" label="Approved" />
-                </ListItem>
-              }
-            </Box>
-          </Stack>
-          <Stack direction="row" spacing={1}>
-            {missionContractorMatch?.invitation ?
-              (
-                <Button color="primary" variant="contained" onClick={handleUninviteButtonClick} disabled={isDeletingInvitation}>
-                  Uninvite
-                </Button>
-              )
-              :
-              (
-                <Button color="success" variant="contained" onClick={handleInviteButtonClick} disabled={isCreatingInvitation}>
-                  Invite
-                </Button>
-              )
-            }
-
-            {missionContractorMatch?.approval ?
-              (
-                <Button color="primary" variant="contained" onClick={handleUnapproveButtonClick} disabled={isDeletingApproval}>
-                  Unapprove
-                </Button>
-              )
-              :
-              (
-                <Button color="success" variant="contained" onClick={handleApproveButtonClick} disabled={isCreatingApproval}>
-                  Approve
-                </Button>
-              )
-            }
-
-            {keycloak.tokenParsed.roles.includes('admin') &&
-              <Button color={missionContractorMatch?.isMatch ? "primary" : "success"} variant="contained" onClick={handleToggleMatchButtonClick} disabled={isTogglingMatch}>
-                {missionContractorMatch?.isMatch ? "Unmatch" : "Match"}
-              </Button>
-            }
-          </Stack>
-
-        </Stack>
-      </Grid>
-      <Grid item xs={12}>
-        <Box
-          sx={{
-            '& .MuiAccordion-root': {
-              borderColor: theme.palette.divider,
-              '& .MuiAccordionSummary-root': {
-                bgcolor: 'secondary',
-                flexDirection: 'row'
-              },
-              '& .MuiAccordionDetails-root': {
-                borderColor: theme.palette.divider
-              },
-              '& .Mui-expanded': {
-                color: theme.palette.primary.main
-              }
+      <Grid item sx={{mr: 1.5}}>
+        <Button 
+          startIcon={missionContractorMatch?.invitation ? <CheckOutlined /> : <MinusOutlined />}
+          color={missionContractorMatch?.invitation ? "success" : "error"}
+          variant={missionContractorMatch?.invitation ? "contained" : "outlined"}
+          disabled={isDeletingInvitation || isCreatingInvitation} 
+          sx={{ width: '90px', height: '27px', marginBottom: 1.5}}
+          onClick={() => {
+            if(missionContractorMatch?.invitation) {
+              handleUninviteButtonClick();
+            } else {
+              handleInviteButtonClick();
             }
           }}
         >
-          <Accordion expanded={isExpandNotes} onChange={() => {setIsExpandNotes(!isExpandNotes)}}>
-            <AccordionSummary>
-              <Stack direction="row" spacing={1.5} alignItems="center">
-                <FileOutlined />
-                <Typography variant="h6">Notes</Typography>
-              </Stack>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Grid container spacing={3}>
-                <Grid item xs={12}>
-                  <MissionContractorMatchEmployerNotes
-                    missionId={missionId}
-                    contractorId={contractorId}
-                    employerNotes={missionContractor?.employerNotes}
-                    setEmployerNotes={setEmployerNotes}>
-                  </MissionContractorMatchEmployerNotes>
-                </Grid>
+          {missionContractorMatch?.invitation ? "Invited" : "Invite"}
+        </Button>
+      </Grid>
+      <Grid item sx={{mr: 1.5}}>
+        <Button 
+          startIcon={missionContractorMatch?.approval ? <CheckOutlined /> : <MinusOutlined />}
+          color={missionContractorMatch?.approval ? "success" : "error"}
+          variant={missionContractorMatch?.approval ? "contained" : "outlined"}
+          disabled={isDeletingApproval || isCreatingApproval} 
+          sx={{ width: '110px', height: '27px', marginBottom: 1.5}}
+          onClick={() => {
+            if(missionContractorMatch?.approval) {
+              handleUnapproveButtonClick();
+            } else {
+              handleApproveButtonClick();
+            }
+          }}
+        >
+          {missionContractorMatch?.approval ? "Approved" : "Approve"}
+        </Button>
+      </Grid>
+      <Grid item sx={{mr: 1.5}}>
+        {keycloak.tokenParsed.roles.includes('admin') &&
+          <Button 
+            startIcon={missionContractorMatch?.isMatch ? <CheckOutlined /> : <MinusOutlined />}
+            color={missionContractorMatch?.isMatch ? "success" : "error"}
+            variant={missionContractorMatch?.isMatch ? "contained" : "outlined"}
+            disabled={isTogglingMatch} 
+            sx={{ width: '100px', height: '27px', marginBottom: 1.5}}
+            onClick={() => {
+              handleToggleMatchButtonClick();
+            }}
+          >
+            {missionContractorMatch?.isMatch ? "Matched" : "Match"}
+          </Button>
+        }
+      </Grid>
+      <Dialog
+        maxWidth="sm"
+        fullWidth
+        TransitionComponent={PopupTransition}
+        onClose={() => {setIsNotesModalOpen(false)}}
+        open={isNotesModalOpen}
+        sx={{ '& .MuiDialog-paper': { p: 0 } }}
+        >
+        <DialogTitle sx={{ display: 'flex', alignItems: 'center' }}>
+          <Typography variant="h4">Notes</Typography>
+          <IconButton sx={{ ml: 'auto' }} onClick={() => {setIsNotesModalOpen(false)}}>
+            <CloseOutlined />
+          </IconButton>
+        </DialogTitle>
+        <Divider />
+        <DialogContent sx={{ p: 2.5 }}>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <MissionContractorMatchEmployerNotes
+                missionId={missionId}
+                contractorId={contractorId}
+                employerNotes={missionContractor?.employerNotes}
+                setEmployerNotes={setEmployerNotes}>
+              </MissionContractorMatchEmployerNotes>
+            </Grid>
 
-                {missionContractor?.contractorNotes?.showContractorNotesToEmployer &&
+            {missionContractor?.contractorNotes?.showContractorNotesToEmployer &&
+              <Grid item xs={12}>
+                <Grid container spacing={3}>
                   <Grid item xs={12}>
-                    <Grid container spacing={3}>
-                      <Grid item xs={12}>
-                        <Typography variant="h5">Talent Notes</Typography>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Stack spacing={0.5}>
-                          <Typography color="secondary">Talent Notes About the Mission</Typography>
-                          <SanitizedHTML html={missionContractor?.contractorNotes?.missionNotes} />
-                        </Stack>
-                      </Grid>
-                    </Grid>
+                    <Typography variant="h5">Talent Notes</Typography>
                   </Grid>
-                }
-
-                <Grid item xs={12}>
-                  <MissionContractorMatchAdminNotes
-                    missionId={missionId}
-                    contractorId={contractorId}
-                    adminNotes={missionContractor?.adminNotes}
-                    setAdminNotes={setAdminNotes}>
-                  </MissionContractorMatchAdminNotes>
+                  <Grid item xs={12}>
+                    <Stack spacing={0.5}>
+                      <Typography color="secondary">Talent Notes About the Mission</Typography>
+                      <SanitizedHTML html={missionContractor?.contractorNotes?.missionNotes} />
+                    </Stack>
+                  </Grid>
                 </Grid>
               </Grid>
-            </AccordionDetails>
-          </Accordion>
-        </Box>
-      </Grid>
-      
-    </Grid>
+            }
+
+            <Grid item xs={12}>
+              <MissionContractorMatchAdminNotes
+                missionId={missionId}
+                contractorId={contractorId}
+                adminNotes={missionContractor?.adminNotes}
+                setAdminNotes={setAdminNotes}>
+              </MissionContractorMatchAdminNotes>
+            </Grid>
+          </Grid>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 
