@@ -21,21 +21,22 @@ import {
 	ValidationSchema,
 } from '@/lib/db/validation'
 
+import { TooltipInfo } from '@/components/UserNavigation/tooltip'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { DeliveryItem } from '@prisma/client'
 import { Pencil } from 'lucide-react'
 import { usePathname } from 'next/navigation'
+import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
-import { TooltipInfo } from './tooltip'
 
 interface Props {
 	item: DeliveryItem
 }
 
-export const DeliveryFormEditDialog = ({ item }: Props) => {
+export const DeliveryFormEditDialog: React.FC<Props> = ({ item }) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const [autoCityData, setAutoCityData] = useState<string>(item?.city!)
 	const pathName = usePathname()

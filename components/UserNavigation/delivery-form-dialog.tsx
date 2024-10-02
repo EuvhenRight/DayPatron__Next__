@@ -23,6 +23,7 @@ import {
 } from '@/lib/db/validation'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -34,10 +35,10 @@ interface Props {
 	typeOfDelivery: string
 }
 
-export const DeliveryFormDialog = ({
+export const DeliveryFormDialog: React.FC<Props> = ({
 	typeOfDelivery,
 	setTypeOfDelivery,
-}: Props) => {
+}) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const [autoCityData, setAutoCityData] = useState<string>('')
 	// TODO: Add Debounce hook

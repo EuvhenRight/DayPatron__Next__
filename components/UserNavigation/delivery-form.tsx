@@ -10,13 +10,13 @@ import {
 import { Label } from '@/components/ui/label'
 import { DeliveryWithItems } from '@/lib/types/types'
 import Image from 'next/image'
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 interface Props {
 	currentDelivery: DeliveryWithItems | null
 }
 
-export const DeliveryForm = ({ currentDelivery }: Props) => {
+export const DeliveryForm: React.FC<Props> = ({ currentDelivery }) => {
 	const [typeOfDelivery, setTypeOfDelivery] = useState<string>('')
 
 	return (

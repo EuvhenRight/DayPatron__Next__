@@ -69,23 +69,28 @@ export const ProfileFormDialog = ({
 			toast.error('Щось пішло не так, спробуйте ще раз')
 			return
 		}
-		// UPDATE USER SONNER INFO
-		let userPromise: Promise<User>
+
 		try {
-			userPromise = new Promise<User>(resolve => {
-				resolve(editInfoUser(currentUser.id, firstName, lastName, phone))
-			})
+			const userPromise = editInfoUser(
+				currentUser.id,
+				firstName,
+				lastName,
+				phone
+			)
+
 			// UPDATE USER PROMISE AND TOAST
 			await toast.promise(userPromise, {
 				loading: 'Зачекаємо...',
 				success: 'Ваш профіль було оновлено!',
 				error: 'Щось пішло не так, спробуйте ще раз',
 			})
+
 			if (onChange) {
 				onChange(data)
 			}
+
 			setOpenProfileDialog(false)
-			return setIsOpen(!isOpen)
+			setIsOpen(!isOpen)
 		} catch (error) {
 			toast.error('Щось пішло не так, спробуйте ще раз')
 		}
