@@ -27,7 +27,7 @@
 		"**/*.ts",
 		"**/*.tsx",
 		".next/types/**/*.ts",
-		"app/api/register/test.ts"
+		"app/api/register/route.ts"
 	],
 	"exclude": ["node_modules"]
 }
