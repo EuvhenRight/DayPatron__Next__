@@ -3,6 +3,9 @@ import { UserProfile } from '@/components/UserNavigation/user-profile'
 import { getDelivery } from '@/lib/services/delivery'
 import { NextResponse } from 'next/server'
 
+// Ensure dynamic rendering
+export const dynamic = 'force-dynamic'
+
 const UserProfilePage = async () => {
 	const [currentUser, currentDelivery] = await Promise.all([
 		getCurrentUser(),

@@ -3,6 +3,10 @@ import { CheckoutForm } from '@/components/CheckoutForm/checkout-form'
 import { getCart } from '@/lib/services/cart'
 import { getDelivery } from '@/lib/services/delivery'
 import { getManyOrders, getOrder } from '@/lib/services/order'
+
+// Ensure dynamic rendering
+export const dynamic = 'force-dynamic'
+
 export default async function Checkouts() {
 	const [currentDelivery, cart, currentUser, order, orders] = await Promise.all(
 		[getDelivery(), getCart(), getCurrentUser(), getOrder(), getManyOrders()]
