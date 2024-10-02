@@ -26,7 +26,7 @@ import { PhoneInput } from 'react-international-phone'
 import 'react-international-phone/style.css'
 import { z } from 'zod'
 interface Props {
-	currentUser: User | null
+	currentUser?: User | null
 }
 
 export const FeedBackForm: React.FC<Props> = ({ currentUser: user }) => {
