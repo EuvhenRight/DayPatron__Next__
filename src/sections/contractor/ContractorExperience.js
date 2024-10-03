@@ -13,6 +13,7 @@ import SanitizedHTML from 'react-sanitized-html';
 
 import { ShopOutlined, FileDoneOutlined } from '@ant-design/icons';
 import languages from 'data/languages';
+import countries from 'data/countries';
 import jobRoles from 'data/jobRoles';
 import industries from 'data/industries';
 import jobClusters from 'data/jobClusters';
@@ -174,6 +175,20 @@ const ContractorExperience = () => {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Stack spacing={0.5}>
+                                        <Typography variant="h5">Countries</Typography>
+                                        <Box>
+                                            {missionContractorMatch?.contractor?.expertise?.countries?.length > 0 ? 
+                                                missionContractorMatch?.contractor?.expertise?.countries?.map((country, countryIndex) => {
+                                                return (                            
+                                                    <Chip sx={{float: 'left', marginTop: '5px', marginRight: '5px'}} key={countryIndex} color="secondary" variant="outlined" size="small" label={countries.find(x => x.code === country)?.label} />);
+                                                }) :
+                                                (<Typography>No data.</Typography>)
+                                            }
+                                        </Box>
+                                    </Stack>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Stack spacing={0.5}>
                                         <Typography variant="h5">Languages</Typography>
                                         <Box>
                                             {missionContractorMatch?.contractor?.expertise?.languages?.length > 0 ? 
@@ -185,7 +200,6 @@ const ContractorExperience = () => {
                                             }
                                         </Box>
                                     </Stack>
-                                    
                                 </Grid>
                             </Grid>
 
