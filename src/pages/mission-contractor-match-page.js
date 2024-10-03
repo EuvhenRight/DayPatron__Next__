@@ -2,12 +2,15 @@ import { useState, useEffect } from 'react';
 import { useKeycloak } from '@react-keycloak/web';
 import { useLocation, useParams, Link, Outlet  } from 'react-router-dom';
 import countries from 'data/countries';
+import jobRoles from 'data/jobRoles';
+import workplaces from 'data/workplaces';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import {
   Button,
+  Chip,
   Grid,
   Stack,
   Typography,
@@ -18,7 +21,8 @@ import {
 } from '@mui/material';
 
 import MissionContractorMatchDetails from 'sections/mission/MissionContractorMatchDetails';
-import { EnvironmentOutlined, EuroOutlined, FileTextOutlined, MessageOutlined, RobotOutlined, CalendarOutlined, FileDoneOutlined, BulbOutlined } from '@ant-design/icons';
+import ShowMoreText from 'components/ShowMoreText';
+import { EnvironmentOutlined, EuroOutlined, FileTextOutlined, MessageOutlined, RobotOutlined, CalendarOutlined, FileDoneOutlined, LaptopOutlined } from '@ant-design/icons';
 
 import Avatar from 'components/@extended/Avatar';
 import { PopupModal } from "react-calendly";
@@ -87,111 +91,193 @@ const MissionContractorMatchPage = () => {
 
   return (
     <Grid container spacing={2.5} sx={{position: 'relative'}}>
-      
-      <Grid item xs={matchDownSm ? 12 : null}>
-        <Stack direction="row" justifyContent="center">
-          <Avatar src={missionContractorMatch?.contractor?.mainImageUrl} size={matchDownSm ? 'xxxxl' : 'xxxl'} />
-        </Stack>
-      </Grid>
-      <Grid item xs zeroMinWidth>
-        <Stack alignItems={matchDownSm ? 'center' : 'default'} spacing={0.5}>
-          <Typography variant='h3'>{missionContractorMatch?.contractor?.firstName + ' ' + missionContractorMatch?.contractor?.lastName}</Typography>
-          <Typography variant="h6">{missionContractorMatch?.contractor?.headline}</Typography>
-          <Grid container sx={{ justifyContent: {xs: "center", sm: "flex-start"}, alignItems: "center"}}>
-            {missionContractorMatch?.contractor?.country && 
-              <Grid item sx={{mr: 1.5}}>
-                <Stack direction="row" spacing={0.5} alignItems="center">
-                  <EnvironmentOutlined />
-                  <Typography color="secondary">
-                    {countries.find(x => x.code === missionContractorMatch?.contractor?.country)?.label}
-                  </Typography>
+      <Grid item xs={12}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} lg={8}>
+            <Grid container spacing={3}>
+              <Grid item xs={matchDownSm ? 12 : null}>
+                <Stack direction="row" justifyContent="center">
+                  <Avatar src={missionContractorMatch?.contractor?.mainImageUrl} size={matchDownSm ? 'xxxxl' : 'xxxl'} />
                 </Stack>
               </Grid>
-            }
-            {missionContractorMatch?.contractor?.preferences?.rate?.lowerLimitWithMargin && 
-              <Grid item sx={{mr: 1.5}}>
-                <Stack direction="row" spacing={0.5} alignItems="center">
-                  <EuroOutlined />
-                  <Typography color="secondary">
-                    {missionContractorMatch?.contractor?.preferences?.rate?.lowerLimitWithMargin} - {missionContractorMatch?.contractor?.preferences?.rate?.upperLimitWithMargin} / hour
-                  </Typography>
+              <Grid item xs zeroMinWidth>
+                <Stack alignItems={matchDownSm ? 'center' : 'default'} spacing={0.5}>
+                  <Typography variant='h3'>{missionContractorMatch?.contractor?.firstName + ' ' + missionContractorMatch?.contractor?.lastName}</Typography>
+                  <Typography variant="h6">{missionContractorMatch?.contractor?.headline}</Typography>
+                  <Grid container sx={{ justifyContent: {xs: "center", sm: "flex-start"}, alignItems: "center"}}>
+                    
+                      {missionContractorMatch?.contractor?.expertise?.jobRoles?.map((jobRole, jobRoleIndex) => {
+                        return (                            
+                          <Grid key={jobRoleIndex} item sx={{mr: 0.5}}>
+                            <Chip color="secondary" variant="outlined" sx={{fontSize: '12px', height: '22px', '& .MuiChip-label': {pl: '5px', pr: '5px'}}} label={jobRoles.find(x => x.code === jobRole)?.label} />
+                          </Grid>
+                        )
+                      })}
+                    
+                  </Grid>
+                  <Grid container sx={{ justifyContent: {xs: "center", sm: "flex-start"}, alignItems: "center"}}>
+                    {missionContractorMatch?.contractor?.country && 
+                      <Grid item sx={{mr: 1.5}}>
+                        <Stack direction="row" spacing={0.5} alignItems="center">
+                          <EnvironmentOutlined />
+                          <Typography color="secondary">
+                            {countries.find(x => x.code === missionContractorMatch?.contractor?.country)?.label}
+                          </Typography>
+                        </Stack>
+                      </Grid>
+                    }
+                    {missionContractorMatch?.contractor?.preferences?.rate?.lowerLimitWithMargin && 
+                      <Grid item sx={{mr: 1.5}}>
+                        <Stack direction="row" spacing={0.5} alignItems="center">
+                          <EuroOutlined />
+                          <Typography color="secondary">
+                            {missionContractorMatch?.contractor?.preferences?.rate?.lowerLimitWithMargin} - {missionContractorMatch?.contractor?.preferences?.rate?.upperLimitWithMargin} / hour
+                          </Typography>
+                        </Stack>
+                      </Grid>
+                    }
+                    {missionContractorMatch?.contractor?.expertise?.startYear && 
+                      <Grid item sx={{mr: 1.5}}>
+                        <Stack direction="row" spacing={0.5} alignItems="center">
+                          <FileDoneOutlined />
+                          <Typography color="secondary">
+                            {new Date().getFullYear() - missionContractorMatch?.contractor?.expertise?.startYear + ' year(s) experience'}
+                          </Typography>
+                        </Stack>
+                      </Grid>
+                    }
+                  </Grid>
+                  
+                  <Grid container sx={{ justifyContent: {xs: "center", sm: "flex-start"}, alignItems: "center"}}>
+                    <Grid item sx={{mr: 1.5}}>
+                      <Button 
+                        sx={{ width: '100px', height: '27px', marginBottom: 1.5}}
+                        startIcon={<MessageOutlined />}
+                        variant="contained" 
+                        onClick={() => {navigate('/messaging', { state: { targetUserId: missionContractorMatch?.contractor?.messagingProviderUserId} })}}>
+                        Message
+                      </Button>
+                    </Grid>
+                    {missionContractorMatch?.contractor?.calendlyUrl &&
+                      <Grid item sx={{mr: 1.5}}>
+                        <Button 
+                          color="secondary"
+                          variant="contained" 
+                          startIcon={<CalendarOutlined />}
+                          onClick={() => { setIsCalendlyOpen(true); }} 
+                          sx={{ width: '182px', height: '27px', marginBottom: 1.5}}>
+                          Schedule a Meeting
+                        </Button>
+                        <PopupModal
+                          url={missionContractorMatch?.contractor?.calendlyUrl}
+                          onModalClose={() => { setIsCalendlyOpen(false); }}
+                          open={isCalendlyOpen}
+                          rootElement={document.getElementById("root")}
+                          prefill={{
+                            email: personalInformation?.email,
+                            firstName: personalInformation?.firstName,
+                            lastName: personalInformation?.lastName,
+                            name: personalInformation?.firstName + ' ' + personalInformation?.lastName,
+                            date: new Date(Date.now() + 86400000)
+                          }}
+                          pageSettings={{
+                            backgroundColor: theme.palette.common.white,
+                            hideEventTypeDetails: false,
+                            hideLandingPageDetails: false,
+                            primaryColor: theme.palette.primary.main,
+                            textColor: theme.palette.text.primary
+                          }}
+                        />
+                      </Grid>
+                    }
+                    <MissionContractorMatchDetails 
+                      missionContractorMatch={missionContractorMatch} 
+                      setMissionContractorMatch={setMissionContractorMatch} 
+                      missionId={missionId} 
+                      contractorId={contractorId} 
+                      missionContractor={missionContractor}
+                      setMissionContractor={setMissionContractor} />
+                  </Grid>
+                  
                 </Stack>
               </Grid>
-            }
-            {missionContractorMatch?.contractor?.expertise?.startYear && 
-              <Grid item sx={{mr: 1.5}}>
-                <Stack direction="row" spacing={0.5} alignItems="center">
-                  <FileDoneOutlined />
-                  <Typography color="secondary">
-                    {new Date().getFullYear() - missionContractorMatch?.contractor?.expertise?.startYear + ' year(s) experience'}
-                  </Typography>
-                </Stack>
-              </Grid>
-            }
-          </Grid>
-          
-          <Grid container sx={{ justifyContent: {xs: "center", sm: "flex-start"}, alignItems: "center"}}>
-            <Grid item sx={{mr: 1.5}}>
-              <Button 
-                sx={{ width: '100px', height: '27px', marginBottom: 1.5}}
-                startIcon={<MessageOutlined />}
-                variant="contained" 
-                onClick={() => {navigate('/messaging', { state: { targetUserId: missionContractorMatch?.contractor?.messagingProviderUserId} })}}>
-                Message
-              </Button>
             </Grid>
-            {missionContractorMatch?.contractor?.calendlyUrl &&
-              <Grid item sx={{mr: 1.5}}>
-                <Button 
-                  color="secondary"
-                  variant="contained" 
-                  startIcon={<CalendarOutlined />}
-                  onClick={() => { setIsCalendlyOpen(true); }} 
-                  sx={{ width: '182px', height: '27px', marginBottom: 1.5}}>
-                  Schedule a Meeting
-                </Button>
-                <PopupModal
-                  url={missionContractorMatch?.contractor?.calendlyUrl}
-                  onModalClose={() => { setIsCalendlyOpen(false); }}
-                  open={isCalendlyOpen}
-                  rootElement={document.getElementById("root")}
-                  prefill={{
-                    email: personalInformation?.email,
-                    firstName: personalInformation?.firstName,
-                    lastName: personalInformation?.lastName,
-                    name: personalInformation?.firstName + ' ' + personalInformation?.lastName,
-                    date: new Date(Date.now() + 86400000)
-                  }}
-                  pageSettings={{
-                    backgroundColor: theme.palette.common.white,
-                    hideEventTypeDetails: false,
-                    hideLandingPageDetails: false,
-                    primaryColor: theme.palette.primary.main,
-                    textColor: theme.palette.text.primary
-                  }}
-                />
-              </Grid>
-            }
-            <MissionContractorMatchDetails 
-              missionContractorMatch={missionContractorMatch} 
-              setMissionContractorMatch={setMissionContractorMatch} 
-              missionId={missionId} 
-              contractorId={contractorId} 
-              missionContractor={missionContractor}
-              setMissionContractor={setMissionContractor} />
           </Grid>
-          
-        </Stack>
+          <Grid item xs={12} lg={4}>
+            <Box>
+              {missionContractorMatch?.contractor?.professionalExperiences
+              ?.filter((value, index, array) => 
+                array.findIndex(x => x.companyLinkedInProfileUrl === value.companyLinkedInProfileUrl) === index && value?.companyLogoUrl
+              )
+              ?.map((professionalExperience, professionalExperienceIndex) => 
+                <img
+                  key={professionalExperienceIndex}
+                  style={{ width: 35, height: 35, textDecoration: 'none', opacity: 1, float: 'left', marginRight: '15px', marginBottom: '5px' }}
+                  alt={professionalExperience?.company}
+                  src={professionalExperience?.companyLogoUrl}
+                />
+              )}
+              {missionContractorMatch?.contractor?.educations
+              ?.filter((value, index, array) => 
+                array.findIndex(x => x.schoolLinkedInProfileUrl === value.schoolLinkedInProfileUrl) === index && value?.schoolLogoUrl
+              )
+              ?.map((education, educationIndex) => 
+                <img
+                  key={educationIndex}
+                  style={{ width: 35, height: 35, textDecoration: 'none', opacity: 1, float: 'left', marginRight: '15px', marginBottom: '5px' }}
+                  alt={education?.school}
+                  src={education?.schoolLogoUrl}
+                />
+              )}
+            </Box>
+          </Grid>
+        </Grid>
       </Grid>
+      
       {missionContractorMatch?.contractor?.summary &&
         <Grid item xs={12}>
           <Grid container spacing={3}>
             <Grid item xs={12} lg={8}>
-              <Stack direction="row" spacing={0.5} alignItems="flex-start" sx={{marginTop: 0.5, marginBottom: 0.5}}> 
-                <BulbOutlined style={{fontSize: 25, marginTop: "2px", marginRight: "5px"}} />
-                <Typography>{missionContractorMatch?.contractor?.summary}</Typography>
-              </Stack>
-              
+              <Box sx={{borderLeft: 2, borderColor: theme.palette.grey.A800, paddingLeft: '15px'}}>
+                <ShowMoreText text={missionContractorMatch?.contractor?.summary} maxLength={600} />
+              </Box>
+            </Grid>
+            <Grid item xs={12} lg={4}>
+              <Grid container spacing={1}>
+                <Grid item xs={6}>
+                  <Stack direction="row" spacing={0.5} alignItems="center">
+                    <EnvironmentOutlined />
+                    <Typography variant="h5">
+                    {countries.find(x => x.code === missionContractorMatch?.contractor?.country)?.label}
+                    </Typography>
+                  </Stack>
+                </Grid>
+                <Grid item xs={6}>
+                  <Stack direction="row" spacing={0.5} alignItems="center">
+                    <EuroOutlined />
+                    <Typography variant="h5">
+                      {missionContractorMatch?.contractor?.preferences?.rate?.lowerLimitWithMargin} - {missionContractorMatch?.contractor?.preferences?.rate?.upperLimitWithMargin} / hour
+                    </Typography>
+                  </Stack>
+                </Grid>
+                <Grid item xs={6}>
+                  <Stack direction="row" spacing={0.5} alignItems="center">
+                    <FileDoneOutlined />
+                    <Typography variant="h5">
+                      {new Date().getFullYear() - missionContractorMatch?.contractor?.expertise?.startYear + ' year(s) experience'}
+                    </Typography>
+                  </Stack>
+                </Grid>
+                <Grid item xs={6}>
+                  
+                  <Stack direction="row" spacing={0.5} alignItems="center">
+                      <LaptopOutlined />
+                      <Typography variant="h5">
+                        {missionContractorMatch?.contractor?.preferences?.workplaces?.map(workplace => workplaces.find(x => x.code === workplace)?.label).join(', ')}
+                      </Typography>
+                    </Stack>
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>

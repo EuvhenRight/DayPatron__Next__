@@ -87,15 +87,15 @@ function getSizeStyle(size) {
           return {
             border: '3px solid',
             fontSize: '1.5rem',
-            width: 120,
-            height: 120
+            width: 145,
+            height: 145
           };
       case 'xxxxl':
         return {
           border: '3px solid',
           fontSize: '1.5rem',
-          width: 150,
-          height: 150
+          width: 160,
+          height: 160
         };
     case 'md':
     default:
