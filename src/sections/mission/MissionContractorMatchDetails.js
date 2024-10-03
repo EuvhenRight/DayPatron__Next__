@@ -264,18 +264,18 @@ const MissionContractorMatchDetails = ({ missionContractorMatch, setMissionContr
 
   return (
     <>
-      <Grid item sx={{mr: 1.5}}>
-        <Button startIcon={<FileOutlined />} color="secondary" variant="contained" sx={{ width: '85px', height: '27px', marginBottom: 1.5}} onClick={() => {setIsNotesModalOpen(true)}}>
+      <Grid item sx={{mr: 0.5}}>
+        <Button startIcon={<FileOutlined />} color="secondary" variant="contained" sx={{ width: '85px', height: '27px', marginBottom: 0.5}} onClick={() => {setIsNotesModalOpen(true)}}>
           Notes
         </Button>
       </Grid>
-      <Grid item sx={{mr: 1.5}}>
+      <Grid item sx={{mr: 0.5}}>
         <Button 
           startIcon={missionContractorMatch?.invitation ? <CheckOutlined /> : <MinusOutlined />}
           color={missionContractorMatch?.invitation ? "success" : "error"}
           variant={missionContractorMatch?.invitation ? "contained" : "outlined"}
           disabled={isDeletingInvitation || isCreatingInvitation} 
-          sx={{ width: '90px', height: '27px', marginBottom: 1.5}}
+          sx={{ width: '90px', height: '27px', marginBottom: 0.5}}
           onClick={() => {
             if(missionContractorMatch?.invitation) {
               handleUninviteButtonClick();
@@ -287,13 +287,13 @@ const MissionContractorMatchDetails = ({ missionContractorMatch, setMissionContr
           {missionContractorMatch?.invitation ? "Invited" : "Invite"}
         </Button>
       </Grid>
-      <Grid item sx={{mr: 1.5}}>
+      <Grid item sx={{mr: 0.5}}>
         <Button 
           startIcon={missionContractorMatch?.approval ? <CheckOutlined /> : <MinusOutlined />}
           color={missionContractorMatch?.approval ? "success" : "error"}
           variant={missionContractorMatch?.approval ? "contained" : "outlined"}
           disabled={isDeletingApproval || isCreatingApproval} 
-          sx={{ width: '110px', height: '27px', marginBottom: 1.5}}
+          sx={{ width: '110px', height: '27px', marginBottom: 0.5}}
           onClick={() => {
             if(missionContractorMatch?.approval) {
               handleUnapproveButtonClick();
@@ -305,14 +305,14 @@ const MissionContractorMatchDetails = ({ missionContractorMatch, setMissionContr
           {missionContractorMatch?.approval ? "Approved" : "Approve"}
         </Button>
       </Grid>
-      <Grid item sx={{mr: 1.5}}>
+      <Grid item sx={{mr: 0.5}}>
         {keycloak.tokenParsed.roles.includes('admin') &&
           <Button 
             startIcon={missionContractorMatch?.isMatch ? <CheckOutlined /> : <MinusOutlined />}
             color={missionContractorMatch?.isMatch ? "success" : "error"}
             variant={missionContractorMatch?.isMatch ? "contained" : "outlined"}
             disabled={isTogglingMatch} 
-            sx={{ width: '100px', height: '27px', marginBottom: 1.5}}
+            sx={{ width: '100px', height: '27px', marginBottom: 0.5}}
             onClick={() => {
               handleToggleMatchButtonClick();
             }}

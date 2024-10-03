@@ -118,9 +118,9 @@ const MissionContractorMatchPage = () => {
                   
                   
                   <Grid container sx={{ justifyContent: {xs: "center", sm: "flex-start"}, alignItems: "center"}}>
-                    <Grid item sx={{mr: 1.5}}>
+                    <Grid item sx={{mr: 0.5}}>
                       <Button 
-                        sx={{ width: '100px', height: '27px', marginBottom: 1.5}}
+                        sx={{ width: '100px', height: '27px', marginBottom: 0.5}}
                         startIcon={<MessageOutlined />}
                         variant="contained" 
                         onClick={() => {navigate('/messaging', { state: { targetUserId: missionContractorMatch?.contractor?.messagingProviderUserId} })}}>
@@ -128,13 +128,13 @@ const MissionContractorMatchPage = () => {
                       </Button>
                     </Grid>
                     {missionContractorMatch?.contractor?.calendlyUrl &&
-                      <Grid item sx={{mr: 1.5}}>
+                      <Grid item sx={{mr: 0.5}}>
                         <Button 
                           color="secondary"
                           variant="contained" 
                           startIcon={<CalendarOutlined />}
                           onClick={() => { setIsCalendlyOpen(true); }} 
-                          sx={{ width: '182px', height: '27px', marginBottom: 1.5}}>
+                          sx={{ width: '182px', height: '27px', marginBottom: 0.5}}>
                           Schedule a Meeting
                         </Button>
                         <PopupModal
@@ -173,32 +173,34 @@ const MissionContractorMatchPage = () => {
             </Grid>
           </Grid>
           <Grid item xs={12} lg={4}>
-            <Box>
+            <Grid container sx={{ justifyContent: {xs: "center", sm: "flex-start"}, alignItems: "center"}}>
               {missionContractorMatch?.contractor?.professionalExperiences
               ?.filter((value, index, array) => 
                 array.findIndex(x => x.companyLinkedInProfileUrl === value.companyLinkedInProfileUrl) === index && value?.companyLogoUrl
               )
               ?.map((professionalExperience, professionalExperienceIndex) => 
-                <img
-                  key={professionalExperienceIndex}
-                  style={{ width: 35, height: 35, textDecoration: 'none', opacity: 1, float: 'left', marginRight: '15px', marginBottom: '5px' }}
-                  alt={professionalExperience?.company}
-                  src={professionalExperience?.companyLogoUrl}
-                />
+                <Grid key={professionalExperienceIndex} item sx={{mr: 1.5}}>
+                  <img
+                    style={{ width: 35, height: 35, textDecoration: 'none', opacity: 1 }}
+                    alt={professionalExperience?.company}
+                    src={professionalExperience?.companyLogoUrl}
+                  />
+                </Grid>
               )}
               {missionContractorMatch?.contractor?.educations
               ?.filter((value, index, array) => 
                 array.findIndex(x => x.schoolLinkedInProfileUrl === value.schoolLinkedInProfileUrl) === index && value?.schoolLogoUrl
               )
               ?.map((education, educationIndex) => 
-                <img
-                  key={educationIndex}
-                  style={{ width: 35, height: 35, textDecoration: 'none', opacity: 1, float: 'left', marginRight: '15px', marginBottom: '5px' }}
-                  alt={education?.school}
-                  src={education?.schoolLogoUrl}
-                />
+                <Grid key={educationIndex} item sx={{mr: 1.5}}>
+                  <img
+                    style={{ width: 35, height: 35, textDecoration: 'none', opacity: 1 }}
+                    alt={education?.school}
+                    src={education?.schoolLogoUrl}
+                  />
+                </Grid>
               )}
-            </Box>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
@@ -253,7 +255,7 @@ const MissionContractorMatchPage = () => {
       <Grid item xs={12}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%' }}>
           <Tabs value={selectedTab} variant="scrollable" scrollButtons="auto" aria-label="mission tabs">
-            <Tab label="Experience" component={Link} to={'/missions/' + missionId + '/matches/' + contractorId + '/experience'} icon={<FileTextOutlined />} iconPosition="start" />
+            <Tab label="Background" component={Link} to={'/missions/' + missionId + '/matches/' + contractorId + '/background'} icon={<FileTextOutlined />} iconPosition="start" />
             <Tab label="AI Screening" component={Link} to={'/missions/' + missionId + '/matches/' + contractorId + '/ai-screening'} icon={<RobotOutlined />} iconPosition="start" />
           </Tabs>
         </Box>

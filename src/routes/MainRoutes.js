@@ -149,7 +149,7 @@ const MainRoutes = {
                       element: <ContractorExperienceSection />
                     },
                     {
-                      path: 'experience',
+                      path: 'background',
                       element: <ContractorExperienceSection />
                     },
                     {
