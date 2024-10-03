@@ -218,31 +218,31 @@ const MissionContractorMatchPage = () => {
                 <Grid item xs={6}>
                   <Stack direction="row" spacing={0.5} alignItems="center">
                     <EnvironmentOutlined />
-                    <Typography variant="h5">
-                    {countries.find(x => x.code === missionContractorMatch?.contractor?.country)?.label}
-                    </Typography>
-                  </Stack>
-                </Grid>
-                <Grid item xs={6}>
-                  <Stack direction="row" spacing={0.5} alignItems="center">
-                    <EuroOutlined />
-                    <Typography variant="h5">
-                      {missionContractorMatch?.contractor?.preferences?.rate?.lowerLimitWithMargin} - {missionContractorMatch?.contractor?.preferences?.rate?.upperLimitWithMargin} / hour
+                    <Typography variant="h5" sx={{textWrap: 'nowrap'}}>
+                      {countries.find(x => x.code === missionContractorMatch?.contractor?.country)?.label}
                     </Typography>
                   </Stack>
                 </Grid>
                 <Grid item xs={6}>
                   <Stack direction="row" spacing={0.5} alignItems="center">
                     <FileDoneOutlined />
-                    <Typography variant="h5">
+                    <Typography variant="h5" sx={{textWrap: 'nowrap'}}>
                       {new Date().getFullYear() - missionContractorMatch?.contractor?.expertise?.startYear + ' year(s) experience'}
                     </Typography>
                   </Stack>
                 </Grid>
                 <Grid item xs={6}>
                   <Stack direction="row" spacing={0.5} alignItems="center">
+                    <EuroOutlined />
+                    <Typography variant="h5" sx={{textWrap: 'nowrap'}}>
+                      {missionContractorMatch?.contractor?.preferences?.rate?.lowerLimitWithMargin} - {missionContractorMatch?.contractor?.preferences?.rate?.upperLimitWithMargin} / hour
+                    </Typography>
+                  </Stack>
+                </Grid>
+                <Grid item xs={6}>
+                  <Stack direction="row" spacing={0.5} alignItems="center">
                       <LaptopOutlined />
-                      <Typography variant="h5">
+                      <Typography variant="h5" sx={{textWrap: 'nowrap'}}>
                         {missionContractorMatch?.contractor?.preferences?.workplaces?.map(workplace => workplaces.find(x => x.code === workplace)?.label).join(', ')}
                       </Typography>
                     </Stack>
