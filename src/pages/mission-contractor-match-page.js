@@ -109,44 +109,13 @@ const MissionContractorMatchPage = () => {
                       {missionContractorMatch?.contractor?.expertise?.jobRoles?.map((jobRole, jobRoleIndex) => {
                         return (                            
                           <Grid key={jobRoleIndex} item sx={{mr: 0.5}}>
-                            <Chip color="secondary" variant="outlined" sx={{fontSize: '12px', height: '22px', '& .MuiChip-label': {pl: '5px', pr: '5px'}}} label={jobRoles.find(x => x.code === jobRole)?.label} />
+                            <Chip color="secondary" variant="outlined" sx={{mb: '3px', fontSize: '12px', height: '22px', '& .MuiChip-label': {pl: '5px', pr: '5px'}}} label={jobRoles.find(x => x.code === jobRole)?.label} />
                           </Grid>
                         )
                       })}
                     
                   </Grid>
-                  <Grid container sx={{ justifyContent: {xs: "center", sm: "flex-start"}, alignItems: "center"}}>
-                    {missionContractorMatch?.contractor?.country && 
-                      <Grid item sx={{mr: 1.5}}>
-                        <Stack direction="row" spacing={0.5} alignItems="center">
-                          <EnvironmentOutlined />
-                          <Typography color="secondary">
-                            {countries.find(x => x.code === missionContractorMatch?.contractor?.country)?.label}
-                          </Typography>
-                        </Stack>
-                      </Grid>
-                    }
-                    {missionContractorMatch?.contractor?.preferences?.rate?.lowerLimitWithMargin && 
-                      <Grid item sx={{mr: 1.5}}>
-                        <Stack direction="row" spacing={0.5} alignItems="center">
-                          <EuroOutlined />
-                          <Typography color="secondary">
-                            {missionContractorMatch?.contractor?.preferences?.rate?.lowerLimitWithMargin} - {missionContractorMatch?.contractor?.preferences?.rate?.upperLimitWithMargin} / hour
-                          </Typography>
-                        </Stack>
-                      </Grid>
-                    }
-                    {missionContractorMatch?.contractor?.expertise?.startYear && 
-                      <Grid item sx={{mr: 1.5}}>
-                        <Stack direction="row" spacing={0.5} alignItems="center">
-                          <FileDoneOutlined />
-                          <Typography color="secondary">
-                            {new Date().getFullYear() - missionContractorMatch?.contractor?.expertise?.startYear + ' year(s) experience'}
-                          </Typography>
-                        </Stack>
-                      </Grid>
-                    }
-                  </Grid>
+                  
                   
                   <Grid container sx={{ justifyContent: {xs: "center", sm: "flex-start"}, alignItems: "center"}}>
                     <Grid item sx={{mr: 1.5}}>
@@ -269,7 +238,6 @@ const MissionContractorMatchPage = () => {
                   </Stack>
                 </Grid>
                 <Grid item xs={6}>
-                  
                   <Stack direction="row" spacing={0.5} alignItems="center">
                       <LaptopOutlined />
                       <Typography variant="h5">
