@@ -8,6 +8,10 @@ export const {
 	handlers: { GET, POST },
 	auth,
 } = NextAuth({
+	pages: {
+		signIn: '/auth/login',
+		error: '/auth/error',
+	},
 	adapter: PrismaAdapter(prisma),
 	session: { strategy: 'jwt' },
 	callbacks: {

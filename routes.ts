@@ -24,7 +24,7 @@ export const publicRoutes = [
  * These routes will redirect to the dashboard page.
  * @type {string}
  */
-export const authRoutes = ['/auth/register', '/auth/login']
+export const authRoutes = ['/auth/register', '/auth/login', '/auth/error']
 
 /**
  * The prefix for API authentication routes.

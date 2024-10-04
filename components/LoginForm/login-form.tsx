@@ -24,9 +24,8 @@ import {
 	SUCCESS_MESSAGE_REGISTER,
 } from '@/lib/services/constance'
 import { zodResolver } from '@hookform/resolvers/zod'
-import axios from 'axios'
 import { signIn } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
@@ -35,6 +34,11 @@ export const LoginForm = () => {
 	const [errorMessage, setErrorMessage] = useState<string | undefined>('')
 	const [isSuccess, setSuccess] = useState<string | undefined>('')
 	const [isButtonDisabled, setIsButtonDisabled] = useState(false)
+	const searchParams = useSearchParams()
+	const urlError =
+		searchParams.get('error') === 'OAuthAccountNotLinked'
+			? 'Будь ласка, перевірте свою пошту або пароль'
+			: ''
 	const router = useRouter()
 
 	// FORM VALIDATION AND ERROR HANDLING
@@ -61,21 +65,20 @@ export const LoginForm = () => {
 		setSuccess('')
 
 		try {
-			const response = await axios({
-				method: 'POST',
-				url: `${process.env.NEXTAUTH_URL}/api/login`,
-				data: {
-					email,
-					password,
-				},
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			})
+			const response = await fetch(
+				`${process.env.NEXT_PUBLIC_API_URL}/api/register`,
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({ email, password }),
+				}
+			)
 
-			const responseData = response.data
+			const responseData = await response.json()
 
-			if (response.status !== 200) {
+			if (!response.ok) {
 				throw new Error(responseData.error || 'An error occurred')
 			}
 
@@ -186,7 +189,7 @@ export const LoginForm = () => {
 							)}
 						/>
 						<FormSuccess message={isSuccess} />
-						<FormError message={errorMessage} />
+						<FormError message={errorMessage || urlError} />
 					</div>
 					<Button
 						type='submit'

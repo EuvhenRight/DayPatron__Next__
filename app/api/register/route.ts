@@ -6,7 +6,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import cron from 'node-cron'
 
 export async function POST(request: NextRequest) {
-	console.log(request, 'click1')
 	const generatedPassword: string = generateRandomPassword()
 	const requestData = await request.json()
 
@@ -16,7 +15,6 @@ export async function POST(request: NextRequest) {
 		if (!validatedBody.success) {
 			return NextResponse.json(validatedBody.error.errors, { status: 400 })
 		}
-		console.log('click2')
 		// Send email with the new password
 		// await sendEmail({
 		// 	to: requestData.email,
@@ -38,7 +36,7 @@ export async function POST(request: NextRequest) {
 				email: requestData.email,
 			},
 		})
-		console.log('click3')
+
 		if (existingUser) {
 			// If the user exists, update the password
 			const updatedUser = await prisma.user.update({
