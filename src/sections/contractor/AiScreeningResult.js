@@ -38,6 +38,9 @@ const AiScreeningResult = () => {
     const handleCloseTraitDetails = async () => {
       setSelectedTraitResult(null);
     }
+    
+    if(!missionContractorMatch?.contractorPeraSurveyResponse)
+        return (<MainCard><Typography>No data.</Typography></MainCard>);
 
     return (
         <>
@@ -152,8 +155,7 @@ const AiScreeningResult = () => {
                                     <Grid item xs={12}>
                                         <Typography variant="h4">Questions & Answers</Typography>
                                     </Grid>
-                                    {missionContractorMatch?.contractorPeraSurveyResponse?.surveyAnswers ?
-                                    missionContractorMatch?.contractorPeraSurveyResponse?.surveyAnswers.map((surveyAnswer, surveyAnswerIndex) => {
+                                    {missionContractorMatch?.contractorPeraSurveyResponse?.surveyAnswers.map((surveyAnswer, surveyAnswerIndex) => {
                                         return (
                                             <Grid key={surveyAnswerIndex} item xs={12}>
                                                 <Grid container spacing={3} alignItems="center">
@@ -184,7 +186,7 @@ const AiScreeningResult = () => {
                                                 </Grid>
                                             </Grid>
                                         );
-                                    }) : <Grid item xs={12}><Typography>No data.</Typography></Grid>}
+                                    })}
                                 </Grid>
                             </MainCard>
                         </Grid>

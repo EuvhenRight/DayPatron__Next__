@@ -215,38 +215,46 @@ const MissionContractorMatchPage = () => {
             </Grid>
             <Grid item xs={12} lg={4}>
               <Grid container spacing={1}>
-                <Grid item xs={6}>
-                  <Stack direction="row" spacing={0.5} alignItems="center">
-                    <EnvironmentOutlined />
-                    <Typography variant="h5" sx={{textWrap: 'nowrap'}}>
-                      {countries.find(x => x.code === missionContractorMatch?.contractor?.country)?.label}
-                    </Typography>
-                  </Stack>
-                </Grid>
-                <Grid item xs={6}>
-                  <Stack direction="row" spacing={0.5} alignItems="center">
+                {missionContractorMatch?.contractor?.country &&
+                  <Grid item xs={6}>
+                    <Stack direction="row" spacing={0.5} alignItems="center">
+                      <EnvironmentOutlined />
+                      <Typography variant="h5" sx={{textWrap: 'nowrap'}}>
+                        {countries.find(x => x.code === missionContractorMatch?.contractor?.country)?.label}
+                      </Typography>
+                    </Stack>
+                  </Grid>
+                }
+                {missionContractorMatch?.contractor?.expertise?.startYear &&
+                  <Grid item xs={6}>
+                    <Stack direction="row" spacing={0.5} alignItems="center">
                     <FileDoneOutlined />
                     <Typography variant="h5" sx={{textWrap: 'nowrap'}}>
                       {new Date().getFullYear() - missionContractorMatch?.contractor?.expertise?.startYear + ' year(s) experience'}
                     </Typography>
-                  </Stack>
-                </Grid>
-                <Grid item xs={6}>
-                  <Stack direction="row" spacing={0.5} alignItems="center">
+                    </Stack>
+                  </Grid>
+                }
+                {missionContractorMatch?.contractor?.preferences?.rate?.lowerLimitWithMargin &&
+                  <Grid item xs={6}>
+                    <Stack direction="row" spacing={0.5} alignItems="center">
                     <EuroOutlined />
-                    <Typography variant="h5" sx={{textWrap: 'nowrap'}}>
-                      {missionContractorMatch?.contractor?.preferences?.rate?.lowerLimitWithMargin} - {missionContractorMatch?.contractor?.preferences?.rate?.upperLimitWithMargin} / hour
-                    </Typography>
-                  </Stack>
-                </Grid>
-                <Grid item xs={6}>
-                  <Stack direction="row" spacing={0.5} alignItems="center">
+                      <Typography variant="h5" sx={{textWrap: 'nowrap'}}>
+                        {missionContractorMatch?.contractor?.preferences?.rate?.lowerLimitWithMargin} - {missionContractorMatch?.contractor?.preferences?.rate?.upperLimitWithMargin} / hour
+                      </Typography>
+                    </Stack>
+                  </Grid>
+                }
+                {missionContractorMatch?.contractor?.preferences?.workplaces?.length > 0 &&
+                  <Grid item xs={6}>
+                    <Stack direction="row" spacing={0.5} alignItems="center">
                       <LaptopOutlined />
                       <Typography variant="h5" sx={{textWrap: 'nowrap'}}>
                         {missionContractorMatch?.contractor?.preferences?.workplaces?.map(workplace => workplaces.find(x => x.code === workplace)?.label).join(', ')}
                       </Typography>
                     </Stack>
-                </Grid>
+                  </Grid>
+                }
               </Grid>
             </Grid>
           </Grid>
