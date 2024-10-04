@@ -27,7 +27,7 @@ export default function Sectioned({ value }) {
   }
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+    <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
       <Box sx={{ width: '20%', mr: 1 }}>
         <Stack textAlign="center">
           <StyledLinearProgress variant="determinate" value={getSectionValue(0, value)} />

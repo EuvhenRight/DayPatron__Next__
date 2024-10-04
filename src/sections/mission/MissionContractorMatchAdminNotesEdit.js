@@ -117,7 +117,7 @@ const MissionContractorMatchAdminNotes = ({ missionId, contractorId, adminNotes,
 
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <Typography variant="h3">Admin Notes</Typography>
+            <Typography variant="h5">Admin Notes</Typography>
           </Grid>
           <Grid item xs={12}>
             <Stack spacing={1.25}>

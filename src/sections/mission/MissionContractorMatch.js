@@ -330,7 +330,15 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
 
   const handleChangeTraitDetailsTabs = (event, newValue) => {
     setTraitDetailsTabsValue(newValue);
-  };
+  }
+
+  const handleOpenTraitDetails = async (traitResult) => {
+    setSelectedTraitResult(traitResult);
+  }
+
+  const handleCloseTraitDetails = async () => {
+    setSelectedTraitResult(null);
+  }
 
   const handleTabClick = (group, index) => {
     var indexSuffix = '';
@@ -369,14 +377,6 @@ const MissionContractorMatch = ({ missionId, contractorId }) => {
     } catch (error) {
       console.log(error);
     }
-  }
-
-  const handleOpenTraitDetails = async (traitResult) => {
-    setSelectedTraitResult(traitResult);
-  }
-
-  const handleCloseTraitDetails = async () => {
-    setSelectedTraitResult(null);
   }
 
   useEffect(() => {

@@ -83,6 +83,20 @@ function getSizeStyle(size) {
           width: 100,
           height: 100
         };
+        case 'xxxl':
+          return {
+            border: '3px solid',
+            fontSize: '1.5rem',
+            width: 130,
+            height: 130
+          };
+      case 'xxxxl':
+        return {
+          border: '3px solid',
+          fontSize: '1.5rem',
+          width: 150,
+          height: 150
+        };
     case 'md':
     default:
       return {
