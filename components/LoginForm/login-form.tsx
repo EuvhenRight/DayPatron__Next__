@@ -81,16 +81,17 @@ export const LoginForm = () => {
 
 			// SIGN IN CREDENTIALS
 			await signIn('credentials', {
-				...data,
+				credentials: {
+					email,
+					password,
+				},
 				redirect: false,
 			})
 
 			// REDIRECT TO DASHBOARD PAGE
 			router.push('/dashboard/profile')
 		} catch (error) {
-			const errorMessage =
-				error instanceof Error ? error.message : ERROR_MESSAGE
-			setErrorMessage(errorMessage)
+			setErrorMessage(ERROR_MESSAGE)
 		} finally {
 			setIsButtonDisabled(false)
 		}
