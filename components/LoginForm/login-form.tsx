@@ -19,8 +19,12 @@ import {
 	InputOTPSlot,
 } from '@/components/ui/input-otp'
 import { ValidationSchema } from '@/lib/db/validation'
-import { ERROR_MESSAGE } from '@/lib/services/constance'
+import {
+	ERROR_MESSAGE,
+	SUCCESS_MESSAGE_REGISTER,
+} from '@/lib/services/constance'
 import { zodResolver } from '@hookform/resolvers/zod'
+import axios from 'axios'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -57,26 +61,26 @@ export const LoginForm = () => {
 		setSuccess('')
 
 		try {
-			const response = await fetch(
-				`${process.env.NEXT_PUBLIC_API_URL}/api/login`,
-				{
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify({
-						email,
-						password,
-					}),
-				}
-			)
+			const response = await axios({
+				method: 'POST',
+				url: `${process.env.NEXTAUTH_URL}/api/login`,
+				data: {
+					email,
+					password,
+				},
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			})
 
-			const responseData = await response.json()
+			const responseData = response.data
 
-			// HANDLE ERROR RESPONSE
-			if (!response.ok) {
-				setErrorMessage(responseData.error || ERROR_MESSAGE)
-				return
+			if (response.status !== 200) {
+				throw new Error(responseData.error || 'An error occurred')
+			}
+
+			if (responseData?.id) {
+				setSuccess(SUCCESS_MESSAGE_REGISTER)
 			}
 
 			// SIGN IN CREDENTIALS
