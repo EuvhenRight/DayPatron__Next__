@@ -7,7 +7,7 @@ import workplaces from 'data/workplaces';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-
+import { getEllipsis } from 'utils/stringUtils';
 import {
   Button,
   Chip,
@@ -102,7 +102,10 @@ const MissionContractorMatchPage = () => {
               </Grid>
               <Grid item xs zeroMinWidth>
                 <Stack alignItems={matchDownSm ? 'center' : 'default'} spacing={0.5}>
-                  <Typography variant='h3'>{missionContractorMatch?.contractor?.firstName + ' ' + missionContractorMatch?.contractor?.lastName}</Typography>
+                  <Stack direction={matchDownSm ? 'column' : 'row'} alignItems="center" spacing={0.5}>
+                    <Typography variant='h3'>{missionContractorMatch?.contractor?.firstName + ' ' + missionContractorMatch?.contractor?.lastName}</Typography>
+                    <Chip color="primary" variant="outlined" sx={{fontSize: '12px', height: '22px', '& .MuiChip-label': {pl: '5px', pr: '5px'}}} label={getEllipsis('"' + missionContractorMatch?.mission?.title + '" match', 30)} />
+                  </Stack>
                   <Typography variant="h6">{missionContractorMatch?.contractor?.headline}</Typography>
                   <Grid container sx={{ justifyContent: {xs: "center", sm: "flex-start"}, alignItems: "center"}}>
                     
@@ -263,8 +266,8 @@ const MissionContractorMatchPage = () => {
       <Grid item xs={12}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider', width: '100%' }}>
           <Tabs value={selectedTab} variant="scrollable" scrollButtons="auto" aria-label="mission tabs">
-            <Tab label="Background" component={Link} to={'/missions/' + missionId + '/matches/' + contractorId + '/background'} icon={<FileTextOutlined />} iconPosition="start" />
-            <Tab label="AI Screening" component={Link} to={'/missions/' + missionId + '/matches/' + contractorId + '/ai-screening'} icon={<RobotOutlined />} iconPosition="start" />
+            <Tab label="Background" component={Link} to={'/missions/' + missionId + '/matches/' + contractorId + '/background'} state={{preventScrollToTop: true}} icon={<FileTextOutlined />} iconPosition="start" />
+            <Tab label="AI Screening" component={Link} to={'/missions/' + missionId + '/matches/' + contractorId + '/ai-screening'} state={{preventScrollToTop: true}} icon={<RobotOutlined />} iconPosition="start" />
           </Tabs>
         </Box>
       </Grid>
