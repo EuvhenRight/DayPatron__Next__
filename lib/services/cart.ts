@@ -3,8 +3,9 @@ import prisma from '@/lib/db/client'
 import { CartWithVariants } from '@/lib/types/types'
 import { Cart } from '@prisma/client'
 import { cookies } from 'next/headers'
+import { cache } from 'react'
 
-export async function getCart(): Promise<CartWithVariants | null> {
+export const getCart = cache(async (): Promise<CartWithVariants | null> => {
 	const session = await auth()
 
 	let cart: CartWithVariants | null = null
@@ -30,7 +31,7 @@ export async function getCart(): Promise<CartWithVariants | null> {
 	}
 
 	return { ...cart }
-}
+})
 
 export async function createCart(): Promise<CartWithVariants> {
 	const session = await auth()

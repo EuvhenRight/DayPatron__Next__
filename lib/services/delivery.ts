@@ -2,33 +2,35 @@ import { auth } from '@/auth'
 import prisma from '@/lib/db/client'
 import { DeliveryWithItems } from '@/lib/types/types'
 import { Delivery } from '@prisma/client'
+import { cache } from 'react'
 
-export async function getDelivery(): Promise<DeliveryWithItems | null> {
-	const session = await auth()
+export const getDelivery = cache(
+	async (): Promise<DeliveryWithItems | null> => {
+		const session = await auth()
 
-	let delivery: DeliveryWithItems | null = null
+		let delivery: DeliveryWithItems | null = null
 
-	if (session) {
-		delivery = await prisma.delivery.findFirst({
-			where: { userId: session.user.id },
-			include: {
-				items: {
-					orderBy: {
-						updatedAt: 'desc',
+		if (session) {
+			delivery = await prisma.delivery.findFirst({
+				where: { userId: session.user.id },
+				include: {
+					items: {
+						orderBy: {
+							updatedAt: 'desc',
+						},
 					},
 				},
-			},
-		})
-	} else {
-		return null
+			})
+		} else {
+			return null
+		}
+		if (!delivery) {
+			return null
+		}
+		return delivery
 	}
+)
 
-	if (!delivery) {
-		return null
-	}
-
-	return delivery
-}
 export async function createDelivery(): Promise<DeliveryWithItems> {
 	const session = await auth()
 

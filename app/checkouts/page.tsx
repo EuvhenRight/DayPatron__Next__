@@ -1,8 +1,8 @@
-import { getCurrentUser } from '@/actions/user'
 import { CheckoutForm } from '@/components/CheckoutForm/checkout-form'
 import { getCart } from '@/lib/services/cart'
 import { getDelivery } from '@/lib/services/delivery'
 import { getManyOrders, getOrder } from '@/lib/services/order'
+import { getCurrentUser } from '@/lib/services/user'
 
 // Ensure dynamic rendering
 export const dynamic = 'force-dynamic'

@@ -14,35 +14,6 @@ declare module 'next-auth' {
 	}
 }
 
-export const getCurrentSession = async () => {
-	try {
-		const session = await auth()
-		return session
-	} catch (error) {
-		console.log(error, 'Щось пішло не так. Будь ласка, спробуйте знову пізніше')
-	}
-}
-
-export const getCurrentUser = async () => {
-	try {
-		const session = await auth()
-
-		const currentUser = await prisma.user.findUnique({
-			where: {
-				email: session?.user?.email as string,
-			},
-		})
-
-		if (!currentUser) {
-			return null
-		}
-
-		return currentUser
-	} catch (error) {
-		console.log(error, 'Щось пішло не так. Будь ласка, спробуйте знову пізніше')
-	}
-}
-
 export const getCurrentUserById = async ({ id }: { id: string }) => {
 	try {
 		const currentUser = await prisma.user.findUnique({

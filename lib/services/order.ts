@@ -1,63 +1,66 @@
 import { auth } from '@/auth'
 import prisma from '@/lib/db/client'
 import { OrderWithItemsWithVariants } from '@/lib/types/types'
+import { cache } from 'react'
 import { z } from 'zod'
 import { orderItemScheme } from '../db/validation'
 import { OrderWithItems } from '../types/types'
 
-export async function getOrder(): Promise<OrderWithItemsWithVariants | null> {
-	const session = await auth()
+export const getOrder = cache(
+	async (): Promise<OrderWithItemsWithVariants | null> => {
+		const session = await auth()
 
-	let order: OrderWithItemsWithVariants | null = null
+		let order: OrderWithItemsWithVariants | null = null
 
-	if (session) {
-		order = await prisma.order.findFirst({
-			where: { userId: session.user.id },
-			include: {
-				address: true,
-				user: true,
-				item: {
-					include: {
-						variant: true,
+		if (session) {
+			order = await prisma.order.findFirst({
+				where: { userId: session.user.id },
+				include: {
+					address: true,
+					user: true,
+					item: {
+						include: {
+							variant: true,
+						},
 					},
 				},
-			},
-		})
-	} else {
-		return null
+			})
+		} else {
+			return null
+		}
+
+		return order
 	}
+)
 
-	return order
-}
+export const getManyOrders = cache(
+	async (): Promise<OrderWithItemsWithVariants[] | null> => {
+		const session = await auth()
 
-export async function getManyOrders(): Promise<
-	OrderWithItemsWithVariants[] | null
-> {
-	const session = await auth()
+		let orders: OrderWithItemsWithVariants[] | null = null
 
-	let orders: OrderWithItemsWithVariants[] | null = null
-
-	if (session) {
-		orders = await prisma.order.findMany({
-			where: { userId: session.user.id },
-			include: {
-				item: {
-					include: {
-						variant: true,
+		if (session) {
+			orders = await prisma.order.findMany({
+				where: { userId: session.user.id },
+				include: {
+					item: {
+						include: {
+							variant: true,
+						},
 					},
+					status: true,
+					user: true,
+					address: true,
 				},
-				status: true,
-				user: true,
-				address: true,
-			},
-			orderBy: {
-				createdAt: 'desc',
-			},
-		})
-	}
+				orderBy: {
+					createdAt: 'desc',
+				},
+			})
+		}
 
-	return orders
-}
+		return orders
+	}
+)
 
 export async function createOrder(
 	data: z.infer<typeof orderItemScheme>
@@ -105,29 +108,31 @@ export async function createOrder(
 	return { ...order, item: [] }
 }
 // FIND EXISTING PRODUCTS IN ORDERS
-export async function findProductsInOrderItems(
-	userId: string,
-	productId: string
-): Promise<OrderWithItemsWithVariants[] | null> {
-	const verifiedOrders = await prisma?.order.findMany({
-		where: {
-			userId: userId,
-			item: {
-				some: {
-					variant: {
-						productId: productId,
+export const findProductsInOrderItems = cache(
+	async (
+		userId: string,
+		productId: string
+	): Promise<OrderWithItemsWithVariants[] | null> => {
+		const verifiedOrders = await prisma?.order.findMany({
+			where: {
+				userId: userId,
+				item: {
+					some: {
+						variant: {
+							productId: productId,
+						},
 					},
 				},
 			},
-		},
-		include: {
-			item: {
-				include: {
-					variant: true,
+			include: {
+				item: {
+					include: {
+						variant: true,
+					},
 				},
 			},
-		},
-	})
+		})
 
-	return verifiedOrders
-}
+		return verifiedOrders
+	}
+)

@@ -13,29 +13,34 @@ export const {
 		error: '/auth/error',
 	},
 	adapter: PrismaAdapter(prisma),
-	session: { strategy: 'jwt' },
+	session: { strategy: 'jwt', maxAge: 60 * 60 },
 	callbacks: {
 		async session({ session, token }) {
 			if (token.sub && session.user) {
 				session.user.id = token.sub
 			}
-			if (token.role && session.user) {
-				session.user.role = token.role as 'ADMIN' | 'USER'
+			if (token.role && !session.user.role) {
+				session.user.role = token.role as 'ADMIN' | 'USER' // Only set if not already present
 			}
-			if (token.name && session.user) {
-				session.user.name = token.name
+			if (token.name && !session.user.name) {
+				session.user.name = token.name // Only set if not already present
 			}
 			return session
 		},
 		async jwt({ token }) {
+			// Return the token as-is if no user id is present
 			if (!token.sub) return token
+			// Check if user role and name are already in the token
+			if (token.role && token.name) {
+				return token // If data is already available, return the token
+			}
 			// GET USER FROM DB
 			const existingUser = await getUserById(token.sub)
-
-			if (!existingUser) return token
-			// ADD ROLE TO JWT
+			if (!existingUser) return token // Return token if user not found
+			// ADD ROLE AND NAME TO JWT if not already present
 			token.role = existingUser.role
 			token.name = existingUser.name
+
 			return token
 		},
 	},

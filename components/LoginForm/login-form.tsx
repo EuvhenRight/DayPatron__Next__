@@ -93,7 +93,7 @@ export const LoginForm = () => {
 			})
 
 			if (result?.error) {
-				setErrorMessage(result.error)
+				setErrorMessage(ERROR_MESSAGE)
 			} else {
 				// REDIRECT TO DASHBOARD PAGE
 				router.push('/dashboard/profile')
