@@ -21,6 +21,7 @@ import {
 import { ValidationSchema } from '@/lib/db/validation'
 import {
 	ERROR_MESSAGE,
+	ERROR_MESSAGE_SIGNIN,
 	SUCCESS_MESSAGE_REGISTER,
 } from '@/lib/services/constance'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -37,7 +38,7 @@ export const LoginForm = () => {
 	const searchParams = useSearchParams()
 	const urlError =
 		searchParams.get('error') === 'OAuthAccountNotLinked'
-			? 'Будь ласка, перевірте свою пошту або пароль!'
+			? ERROR_MESSAGE_SIGNIN
 			: ''
 	const router = useRouter()
 
