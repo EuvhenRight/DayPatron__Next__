@@ -53,10 +53,10 @@ export async function POST(request: NextRequest) {
 					// Include any other fields you want to return in the response
 				},
 			})
-			// Schedule a task to delete the password after 15 minutes
-			// schedulePasswordDeletion(updatedUser.id, 15)
+			//Schedule a task to delete the password after 15 minutes
+			schedulePasswordDeletion(updatedUser.id, 15)
 			// // Generate token for the new user
-			// console.log('click4')
+
 			return NextResponse.json({ ...updatedUser }, { status: 201 })
 		} else {
 			// If the user doesn't exist, create a new user

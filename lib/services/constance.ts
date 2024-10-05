@@ -7,5 +7,5 @@ export const SUCCESS_MESSAGE_LOGIN =
 	'Невірний логін або пароль, спробуйте ще раз'
 
 // UNIVERSAL ERRORS
-export const ERROR_MESSAGE = 'Виникла помилка, спробуйте ще раз'
+export const ERROR_MESSAGE = 'Виникла помилка, спробуйте ще раз!'
 // TODO: ADD constance's to JSON File

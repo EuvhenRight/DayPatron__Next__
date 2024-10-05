@@ -37,7 +37,7 @@ export const LoginForm = () => {
 	const searchParams = useSearchParams()
 	const urlError =
 		searchParams.get('error') === 'OAuthAccountNotLinked'
-			? 'Будь ласка, перевірте свою пошту або пароль'
+			? 'Будь ласка, перевірте свою пошту або пароль!'
 			: ''
 	const router = useRouter()
 
@@ -66,7 +66,7 @@ export const LoginForm = () => {
 
 		try {
 			const response = await fetch(
-				`${process.env.NEXT_PUBLIC_API_URL}/api/register`,
+				`${process.env.NEXT_PUBLIC_API_URL}/api/login`,
 				{
 					method: 'POST',
 					headers: {
@@ -85,18 +85,19 @@ export const LoginForm = () => {
 			if (responseData?.id) {
 				setSuccess(SUCCESS_MESSAGE_REGISTER)
 			}
-
 			// SIGN IN CREDENTIALS
-			await signIn('credentials', {
-				credentials: {
-					email,
-					password,
-				},
+			const result = await signIn('credentials', {
+				email: data.email,
+				password: data.password,
 				redirect: false,
 			})
 
-			// REDIRECT TO DASHBOARD PAGE
-			router.push('/dashboard/profile')
+			if (result?.error) {
+				setErrorMessage(result.error)
+			} else {
+				// REDIRECT TO DASHBOARD PAGE
+				router.push('/dashboard/profile')
+			}
 		} catch (error) {
 			setErrorMessage(ERROR_MESSAGE)
 		} finally {
