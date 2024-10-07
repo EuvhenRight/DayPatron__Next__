@@ -232,7 +232,6 @@ const ContractorExperience = () => {
                     </Grid>
                     <Grid item xs={12}>
                         <MainCard>
-                                    
                             <Grid container spacing={2.5}>
                                 <Grid item xs={12}>
                                     <Typography variant="h4">Certification</Typography>
@@ -266,7 +265,6 @@ const ContractorExperience = () => {
                                     </Grid>)
                                 }
                             </Grid>
-
                         </MainCard>
                     </Grid>
                     
