@@ -295,8 +295,6 @@ const ContractorExperience = () => {
                 </Grid>
                 
             </Grid>
-            
-            
         </Grid>
     );
 };
