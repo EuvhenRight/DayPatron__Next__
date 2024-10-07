@@ -18,7 +18,8 @@ import {
   Grid,
   InputLabel,
   Stack,
-  TextField
+  TextField,
+  createFilterOptions
 } from '@mui/material';
 
 // third party
@@ -40,7 +41,7 @@ const ProfilePersonal = () => {
 
   const maxDate = new Date();
   maxDate.setFullYear(maxDate.getFullYear() - 18);
-
+  const filter = createFilterOptions();
   const dispatch = useDispatch();
   const state = useSelector(state => state.personalInformation);
   const inputRef = useInputRef();
@@ -60,6 +61,7 @@ const ProfilePersonal = () => {
           calendlyUrl: state.calendlyUrl,
           headline: state.headline,
           summary: state.summary,
+          hobbies: state.hobbies,
           submit: null
         }}
         validationSchema={Yup.object().shape({
@@ -73,6 +75,7 @@ const ProfilePersonal = () => {
           calendlyUrl: Yup.string().max(255).nullable(true),
           headline: Yup.string().max(5000).nullable(true),
           summary: Yup.string().max(9999999).nullable(true),
+          hobbies: Yup.array().of(Yup.string()).nullable(true),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
@@ -346,56 +349,111 @@ const ProfilePersonal = () => {
                     )}
                   </Stack>
                 </Grid>
-              
-              <Grid item xs={12}>
-                <Stack spacing={1.25}>
-                  <InfoWrapper tooltipText="personal_information_headline_tooltip">
-                    <InputLabel htmlFor="personal-headline">Headline</InputLabel>
-                  </InfoWrapper>
-                  <TextField
-                    fullWidth
-                    id="personal-headline"
-                    value={normalizeInputValue(values.headline)}
-                    name="headline"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    placeholder="Headline"
-                    autoFocus
-                    inputRef={inputRef}
-                  />
-                  {touched.headline && errors.headline && (
-                    <FormHelperText error id="personal-headline-helper">
-                      {errors.headline}
-                    </FormHelperText>
-                  )}
-                </Stack>
-              </Grid>
-              
-              <Grid item xs={12}>
-                <Stack spacing={1.25}>
-                  <InfoWrapper tooltipText="personal_information_summary_tooltip">
-                    <InputLabel htmlFor="personal-summary">Summary</InputLabel>
-                  </InfoWrapper>
-                  <TextField
-                    multiline
-                    rows={5}
-                    fullWidth
-                    id="personal-summary"
-                    value={normalizeInputValue(values.summary)}
-                    name="summary"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    placeholder="Summary"
-                    autoFocus
-                    inputRef={inputRef}
-                  />
-                  {touched.summary && errors.summary && (
-                    <FormHelperText error id="personal-summary-helper">
-                      {errors.summary}
-                    </FormHelperText>
-                  )}
-                </Stack>
-              </Grid>
+                
+                <Grid item xs={12}>
+                  <Stack spacing={1.25}>
+                    <InfoWrapper tooltipText="personal_information_headline_tooltip">
+                      <InputLabel htmlFor="personal-headline">Headline</InputLabel>
+                    </InfoWrapper>
+                    <TextField
+                      fullWidth
+                      id="personal-headline"
+                      value={normalizeInputValue(values.headline)}
+                      name="headline"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      placeholder="Headline"
+                      autoFocus
+                      inputRef={inputRef}
+                    />
+                    {touched.headline && errors.headline && (
+                      <FormHelperText error id="personal-headline-helper">
+                        {errors.headline}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                </Grid>
+                
+                <Grid item xs={12}>
+                  <Stack spacing={1.25}>
+                    <InfoWrapper tooltipText="personal_information_summary_tooltip">
+                      <InputLabel htmlFor="personal-summary">Summary</InputLabel>
+                    </InfoWrapper>
+                    <TextField
+                      multiline
+                      rows={5}
+                      fullWidth
+                      id="personal-summary"
+                      value={normalizeInputValue(values.summary)}
+                      name="summary"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      placeholder="Summary"
+                      autoFocus
+                      inputRef={inputRef}
+                    />
+                    {touched.summary && errors.summary && (
+                      <FormHelperText error id="personal-summary-helper">
+                        {errors.summary}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                </Grid>
+                
+                <Grid item xs={12}>
+                  <Stack spacing={1.25}>
+                    <InfoWrapper tooltipText="personal_information_hobbies_tooltip">
+                      <InputLabel htmlFor="personal-hobbies">Hobbies</InputLabel>
+                    </InfoWrapper>
+                    <Autocomplete
+                      multiple
+                      fullWidth
+                      options={values?.hobbies ?? []}
+                      value={values?.hobbies ?? []}
+                      onBlur={handleBlur}
+                      onChange={(event, newValue) => {
+                        setFieldValue('hobbies', newValue);
+                      }}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          placeholder="Select hobbies"
+                          name="hobbies"
+                          inputProps={{
+                            ...params.inputProps,
+                            autoComplete: 'new-password'
+                          }}
+                          onKeyDown={e => {
+                            if (e.key === 'Enter' && e.target.value) {
+                              e.preventDefault();
+                              let newHobbies = (values?.hobbies ?? []);
+                              newHobbies.push(e.target.value);
+                              setFieldValue('hobbies', newHobbies);
+                            }
+                          }}
+                        />
+                      )}
+                      filterOptions={(options, params) => {
+                        let filtered = filter(options, params);
+
+                        if (params.inputValue !== "") {
+                          filtered.push(params.inputValue);
+                        }
+
+                        filtered = filtered?.filter((value, index, array) => {
+                          return array.indexOf(value) === index;
+                        });
+
+                        return filtered;
+                      }}
+                    />
+                    {touched.hobbies && errors.hobbies && (
+                      <FormHelperText error id="personal-hobbies-helper">
+                        {errors.hobbies}
+                      </FormHelperText>
+                    )}
+                  </Stack>
+                </Grid>
 
               </Grid>
             </Box>
