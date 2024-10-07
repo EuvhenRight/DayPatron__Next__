@@ -104,7 +104,7 @@ const MissionContractorMatchPage = () => {
                 <Stack alignItems={matchDownSm ? 'center' : 'default'} spacing={0.5}>
                   <Stack direction={matchDownSm ? 'column' : 'row'} alignItems="center" spacing={0.5}>
                     <Typography variant='h3'>{missionContractorMatch?.contractor?.firstName + ' ' + missionContractorMatch?.contractor?.lastName}</Typography>
-                    <Chip color="primary" variant="outlined" sx={{fontSize: '12px', height: '22px', '& .MuiChip-label': {pl: '5px', pr: '5px'}}} label={getEllipsis('"' + missionContractorMatch?.mission?.title + '" match', 30)} />
+                    <Chip color="primary" variant="outlined" sx={{fontSize: '12px', height: '22px', '& .MuiChip-label': {pl: '5px', pr: '5px'}}} label={getEllipsis('"' + missionContractorMatch?.mission?.title + '" match', 50)} />
                   </Stack>
                   <Typography variant="h6">{missionContractorMatch?.contractor?.headline}</Typography>
                   <Grid container sx={{ justifyContent: {xs: "center", sm: "flex-start"}, alignItems: "center"}}>
