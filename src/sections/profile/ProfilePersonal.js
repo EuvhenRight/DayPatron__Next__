@@ -399,6 +399,7 @@ const ProfilePersonal = () => {
                     )}
                   </Stack>
                 </Grid>
+                
                 <Grid item xs={12}>
                   <Stack spacing={1.25}>
                     <InfoWrapper tooltipText="personal_information_hobbies_tooltip">
