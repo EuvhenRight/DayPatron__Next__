@@ -42,13 +42,16 @@ export const RegisterForm = () => {
 		const { email } = data
 
 		try {
-			const response = await fetch(`${process.env.NEXTAUTH_URL}/api/register`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ email }),
-			})
+			const response = await fetch(
+				`${process.env.NEXT_PUBLIC_API_URL}/api/register`,
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({ email }),
+				}
+			)
 
 			const responseData = await response.json()
 
