@@ -66,16 +66,13 @@ export const LoginForm = () => {
 		setSuccess('')
 
 		try {
-			const response = await fetch(
-				`${process.env.NEXT_PUBLIC_API_URL}/api/login`,
-				{
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify({ email, password }),
-				}
-			)
+			const response = await fetch(`${process.env.NEXTAUTH_URL}/api/login`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ email, password }),
+			})
 
 			const responseData = await response.json()
 
