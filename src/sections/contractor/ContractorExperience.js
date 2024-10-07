@@ -269,6 +269,29 @@ const ContractorExperience = () => {
 
                         </MainCard>
                     </Grid>
+                    
+                    <Grid item xs={12}>
+                        <MainCard>
+                                    
+                            <Grid container spacing={2.5}>
+                                <Grid item xs={12}>
+                                    <Typography variant="h4">Hobbies</Typography>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Box>
+                                        {missionContractorMatch?.contractor?.hobbies?.length > 0 ? 
+                                            missionContractorMatch?.contractor?.hobbies?.map((hobby, hobbyIndex) => {
+                                                return (                            
+                                                    <Chip sx={{float: 'left', marginTop: '5px', marginRight: '5px'}} key={hobbyIndex} color="secondary" variant="outlined" size="small" label={hobby} />);
+                                                }) :
+                                            (<Typography>No data.</Typography>)
+                                        }
+                                    </Box>
+                                </Grid>
+                            </Grid>
+
+                        </MainCard>
+                    </Grid>
                 </Grid>
                 
             </Grid>
