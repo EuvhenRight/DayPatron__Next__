@@ -54,16 +54,13 @@ export const FeedBackForm: React.FC<Props> = ({ currentUser: user }) => {
 			setLoading(true)
 			setSuccess(true)
 
-			const response = await fetch(
-				`${process.env.NEXT_PUBLIC_API_URL}/api/feedback`,
-				{
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify(data),
-				}
-			)
+			const response = await fetch(`${process.env.AUTH_URL}/api/feedback`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(data),
+			})
 
 			if (!response.ok) {
 				throw new Error('Something went wrong')

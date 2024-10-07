@@ -35,5 +35,5 @@ export default {
 			},
 		}),
 	],
-	trustHost: true, // NEXT_PUBLIC_API_URL
+	trustHost: true, // AUTH_URL
 } satisfies NextAuthConfig
