@@ -42,7 +42,7 @@ export const RegisterForm = () => {
 		const { email } = data
 
 		try {
-			const response = await fetch(`${process.env.AUTH_URL}/api/register`, {
+			const response = await fetch(`/api/register`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',

@@ -54,7 +54,7 @@ export const FeedBackForm: React.FC<Props> = ({ currentUser: user }) => {
 			setLoading(true)
 			setSuccess(true)
 
-			const response = await fetch(`${process.env.AUTH_URL}/api/feedback`, {
+			const response = await fetch(`/api/feedback`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
