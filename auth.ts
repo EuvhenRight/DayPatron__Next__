@@ -3,6 +3,7 @@ import prisma from '@/lib/db/client'
 import { getUserById } from '@/lib/services/user'
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import NextAuth from 'next-auth'
+import { type Adapter } from 'next-auth/adapters'
 
 export const {
 	handlers: { GET, POST },
@@ -12,7 +13,7 @@ export const {
 		signIn: '/auth/login',
 		error: '/auth/error',
 	},
-	adapter: PrismaAdapter(prisma),
+	adapter: PrismaAdapter(prisma) as Adapter,
 	session: { strategy: 'jwt', maxAge: 60 * 60 },
 	callbacks: {
 		async session({ session, token }) {

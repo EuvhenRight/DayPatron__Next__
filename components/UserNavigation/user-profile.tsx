@@ -8,10 +8,15 @@ import { ProfileForm } from './profile-form'
 interface Props {
 	currentUser: User
 	currentDelivery: DeliveryWithItems | null
+	session: any
 }
-export const UserProfile = ({ currentUser, currentDelivery }: Props) => {
+export const UserProfile = ({
+	currentUser,
+	currentDelivery,
+	session,
+}: Props) => {
 	const [openProfileDialog, setOpenProfileDialog] = useState(false)
-
+	console.log(session, 'session')
 	useEffect(() => {
 		if (typeof window !== 'undefined') {
 			// CHECK IF FIRST TIME VISIT
