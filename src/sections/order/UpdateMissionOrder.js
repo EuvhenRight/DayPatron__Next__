@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { format } from 'date-fns';
 import Rte from 'components/Rte';
 import InfoWrapper from 'components/InfoWrapper';
 
@@ -22,15 +23,18 @@ import {
   Box
 } from '@mui/material';
 
-// third-party
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+
 import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
 
-// project imports
 import { openSnackbar } from 'store/reducers/snackbar';
 
-// assets
-import { normalizeInputValue, prepareApiBody } from 'utils/stringUtils';
+import { addHours, addDays, addMonths } from "date-fns";
+
+import { normalizeInputValue, prepareApiBody, normalizeNullableInputValue } from 'utils/stringUtils';
 import { useKeycloak } from '@react-keycloak/web';
 import rateTypes from 'data/rateTypes';
 import countries from 'data/countries';
@@ -39,6 +43,11 @@ import countries from 'data/countries';
 const getInitialValues = (missionOrder) => {
   const result = {
     id: missionOrder?.id,
+
+    rateType: missionOrder?.rateType,
+    duration: missionOrder?.duration,
+    startDate: missionOrder?.startDate ? new Date(missionOrder?.startDate) : null,
+    endDate: missionOrder?.endDate ? new Date(missionOrder?.endDate) : null,
 
     contractorServiceOrderDescription: missionOrder?.contractorServiceOrder?.description,
     contractorServiceOrderDuration: missionOrder?.contractorServiceOrder?.duration,
@@ -115,6 +124,15 @@ const UpdateMissionOrder = ({ missionOrderId }) => {
   }, [missionOrderId, keycloak?.idToken]);
 
   const MissionSchema = Yup.object().shape({
+    
+    rateType: Yup.string().max(255).required('Required').nullable(true),
+    duration: Yup.number().test('is-decimal', 'Invalid duration', value => {
+      if (!value)
+        return true;
+      return (value + "").match(/^\d*\.?\d*$/);
+    }).max(0).max(999999).nullable(true),
+    startDate: Yup.string().required('Required').nullable(true),
+
     contractorServiceOrderDescription: Yup.string().max(5000).required('Required').nullable(true),
     contractorServiceOrderDuration: Yup.number().test('is-decimal', 'Invalid duration', value => {
       if (!value)
@@ -166,6 +184,10 @@ const UpdateMissionOrder = ({ missionOrderId }) => {
     onSubmit: async (values, { setSubmitting }) => {
       try {
         var body = {
+          rateType: values.rateType,
+          duration: values.duration,
+          startDate: values.startDate,
+
           contractorLegalEntityName: values.contractorLegalEntityName,
           contractorLegalEntityRepresentativeName: values.contractorLegalEntityRepresentativeName,
           contractorStreet: values.contractorStreet,
@@ -247,34 +269,54 @@ const UpdateMissionOrder = ({ missionOrderId }) => {
     }
   });
 
-  const getContractorServiceOrderDescription = (description) => {
-    if (description)
-      return description;
-
-    return `<ul>
-  <li>Start: week commencing {{startDate}} for {{durationMonths}} months.</li>
-  <li>All Fees are in Euro and are excluding VAT.</li>
-  <li>Payments are due as soon as the payment from the customer is received.</li>
-  <li>This proposal is subject to the <a href="https://10x.team/10x-talent-terms-of-service/" target="_blank">10x Terms of Service</a> and <a href="https://10x.team/privacypolicy/" target="_blank">Privacy Statement</a>.</li>
-</ul>`;
-  }
-
-  const getEmployerServiceOrderDescription = (description) => {
-
-    if (description)
-      return description;
-
-    return `<ul>
-  <li>Start: week commencing {{startDate}} for {{durationMonths}} months.</li>
-  <li>All Fees are in Euro and are excluding VAT.</li>
-  <li>Payments are due within 14 days after the date of the invoice.</li>
-  <li>This proposal is valid until 7 days after the proposal date.</li>
-  <li>Invoice schedule: 75% in advance, 25% afterwards.</li>
-  <li>This proposal is subject to the <a href="https://10x.team/10x-client-terms-of-service/" target="_blank">10x Terms of Service</a>.</li>
-</ul>`;
-  }
-
   const { errors, handleBlur, handleChange, touched, handleSubmit, isSubmitting, setFieldValue, values } = formik;
+
+  const setOrderEndDate = (rateType, startDate, duration) => {
+    if (!rateType || !startDate || !duration){
+      setFieldValue('endDate', null);
+      return;
+    }
+
+    if(rateType === 'Daily') {
+      let result = addDays(startDate, duration); 
+      setFieldValue('endDate', result);
+      return;
+    }
+    
+    if(rateType === 'Hourly') {
+      let result = addHours(startDate, duration);
+      setFieldValue('endDate', result);
+      return;
+    }
+    
+    if(rateType === 'Monthly') {
+      let result = addMonths(startDate, duration);
+      setFieldValue('endDate', result);
+      return;
+    }
+    
+    if(rateType === 'Fixed') {
+      let result = addMonths(startDate, duration);
+      setFieldValue('endDate', result);
+      return;
+    }
+    
+    setFieldValue('endDate', null);
+  }
+
+  useEffect(() => {
+    (async () => {
+      setFieldValue('employerServiceOrderRateType', values?.rateType);
+      setFieldValue('contractorServiceOrderRateType', values?.rateType);
+    })();
+  }, [values?.rateType]);
+
+  useEffect(() => {
+    (async () => {
+      setFieldValue('employerServiceOrderDuration', values?.duration);
+      setFieldValue('contractorServiceOrderDuration', values?.duration);
+    })();
+  }, [values?.duration]);
 
   if (!keycloak.tokenParsed.roles.includes('admin'))
     return <Typography>Unauthrozied</Typography>
@@ -282,10 +324,97 @@ const UpdateMissionOrder = ({ missionOrderId }) => {
   return (
     <>
       <FormikProvider value={formik}>
-        <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
 
           <DialogContent sx={{ p: 2.5 }}>
             <Grid container spacing={3}>
+              <Grid item xs={12} sm={6}>
+                <Stack spacing={1.25}>
+                  <InfoWrapper tooltipText="mission_order_rate_type_tooltip">
+                    <InputLabel htmlFor="rateType">Rate Type</InputLabel>
+                  </InfoWrapper>
+
+                  <Select
+                    id="rateType"
+                    name="rateType"
+                    displayEmpty
+                    value={normalizeInputValue(values.rateType)}
+                    onChange={(e) => {
+                      setFieldValue('rateType', e.target.value);
+                      setOrderEndDate(e.target.value, values?.startDate, values?.duration);
+                    }}
+                  >
+                    {rateTypes.map((rateType) => (
+                      <MenuItem key={rateType.code} value={rateType.code}>
+                        {rateType.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  {touched.rateType && errors.rateType && (
+                    <FormHelperText error id="order-rate-type-helper">
+                      {errors.rateType}
+                    </FormHelperText>
+                  )}
+                </Stack>
+              </Grid>
+
+              <Grid item xs={12} md={6}>
+                <Stack spacing={1.25}>
+                  <InfoWrapper tooltipText="mission_order_duration_tooltip">
+                    <InputLabel htmlFor="duration">Effort</InputLabel>
+                  </InfoWrapper>
+                  <TextField
+                    fullWidth
+                    id="duration"
+                    placeholder="Enter duration"
+                    value={normalizeInputValue(values.duration)}
+                    name="duration"
+                    onBlur={handleBlur}
+                    onChange={(e) => {
+                      setFieldValue('duration', e.target.value);
+                      setOrderEndDate(values?.rateType, values?.startDate, e.target.value);
+                    }}
+                  />
+                  {touched.duration && errors.duration && (
+                    <FormHelperText error id="order-duration-helper">
+                      {errors.duration}
+                    </FormHelperText>
+                  )}
+                </Stack>
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <Stack spacing={1.25}>
+                  <InputLabel htmlFor="startDate">Start Date</InputLabel>
+                  <DesktopDatePicker
+                    value={normalizeNullableInputValue(values.startDate)}
+                    inputFormat="yyyy-MM-dd hh:mm:ss"
+                    onChange={(date) => {
+                      setFieldValue('startDate', date);
+                      setOrderEndDate(values?.rateType, date, values?.duration);
+                    }}
+                    renderInput={(props) => (
+                      <>
+                        <TextField id="startDate" fullWidth {...props} placeholder="Start Date" name="startDate" />
+                        {touched.startDate && errors.startDate && (
+                          <FormHelperText error id="order-start-date-helper">
+                            {errors.startDate}
+                          </FormHelperText>
+                        )}
+                      </>
+                    )}
+                  />
+                </Stack>
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <Stack spacing={1.25}>
+                  <InputLabel htmlFor="endDate">End Date</InputLabel>
+                  <TextField disabled={true} fullWidth value={values?.endDate ? format(values?.endDate, "yyyy-MM-dd hh:mm:ss") : ''} />
+                </Stack>
+              </Grid>
+
               <Grid item xs={12}>
                 <Typography variant="h5">Company Service Order</Typography>
               </Grid>
@@ -296,7 +425,7 @@ const UpdateMissionOrder = ({ missionOrderId }) => {
                   </InfoWrapper>
                   <Rte
                     id="mission-order-employer-service-order-description"
-                    value={getEmployerServiceOrderDescription(values.employerServiceOrderDescription)}
+                    value={values?.employerServiceOrderDescription}
                     onChange={(e) => setFieldValue('employerServiceOrderDescription', e)}
                   />
                   {touched.employerServiceOrderDescription && errors.employerServiceOrderDescription && (
@@ -317,7 +446,7 @@ const UpdateMissionOrder = ({ missionOrderId }) => {
                     id="employerServiceOrderRateType"
                     name="employerServiceOrderRateType"
                     displayEmpty
-                    value={normalizeInputValue(values.employerServiceOrderRateType)}
+                    value={normalizeInputValue(values?.employerServiceOrderRateType)}
                     onChange={handleChange}
                   >
                     {rateTypes.map((rateType) => (
@@ -366,7 +495,7 @@ const UpdateMissionOrder = ({ missionOrderId }) => {
                     fullWidth
                     id="employer-service-order-duration"
                     placeholder="Enter duration"
-                    value={normalizeInputValue(values.employerServiceOrderDuration)}
+                    value={normalizeInputValue(values?.employerServiceOrderDuration)}
                     name="employerServiceOrderDuration"
                     onBlur={handleBlur}
                     onChange={handleChange}
@@ -389,7 +518,7 @@ const UpdateMissionOrder = ({ missionOrderId }) => {
                   </InfoWrapper>
                   <Rte
                     id="mission-order-contractor-service-order-description"
-                    value={getContractorServiceOrderDescription(values.contractorServiceOrderDescription)}
+                    value={values?.contractorServiceOrderDescription}
                     onChange={(e) => setFieldValue('contractorServiceOrderDescription', e)}
                   />
                   {touched.contractorServiceOrderDescription && errors.contractorServiceOrderDescription && (
@@ -410,7 +539,7 @@ const UpdateMissionOrder = ({ missionOrderId }) => {
                     id="contractorServiceOrderRateType"
                     name="contractorServiceOrderRateType"
                     displayEmpty
-                    value={normalizeInputValue(values.contractorServiceOrderRateType)}
+                    value={normalizeInputValue(values?.contractorServiceOrderRateType)}
                     onChange={handleChange}
                   >
                     {rateTypes.map((rateType) => (
@@ -459,7 +588,7 @@ const UpdateMissionOrder = ({ missionOrderId }) => {
                     fullWidth
                     id="contractor-service-order-duration"
                     placeholder="Enter duration"
-                    value={normalizeInputValue(values.contractorServiceOrderDuration)}
+                    value={normalizeInputValue(values?.contractorServiceOrderDuration)}
                     name="contractorServiceOrderDuration"
                     onBlur={handleBlur}
                     onChange={handleChange}
@@ -874,7 +1003,8 @@ const UpdateMissionOrder = ({ missionOrderId }) => {
               </Button>
             </Stack>
           </DialogActions>
-        </Form>
+          </Form>
+        </LocalizationProvider>
       </FormikProvider>
     </>
   );
