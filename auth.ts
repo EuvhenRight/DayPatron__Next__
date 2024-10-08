@@ -33,9 +33,7 @@ export const {
 			return token
 		},
 		async session({ session, token }) {
-			if (token.sub && session.user) {
-				session.user.id = token.sub
-			}
+			console.log(session, 'session')
 			if (token.role && !session.user.role) {
 				session.user.role = token.role as 'ADMIN' | 'USER' // Only set if not already present
 			}

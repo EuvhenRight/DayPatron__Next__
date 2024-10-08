@@ -59,7 +59,10 @@ export const LoginForm = () => {
 		}
 	}, [form])
 
-	const onSubmit = async (data: z.infer<typeof ValidationSchema.loginUser>) => {
+	const onSubmit = async (
+		data: z.infer<typeof ValidationSchema.loginUser>,
+		event: any
+	) => {
 		const { email, password } = data
 		setIsButtonDisabled(true)
 		setErrorMessage('')
@@ -83,6 +86,7 @@ export const LoginForm = () => {
 			if (responseData?.id) {
 				setSuccess(SUCCESS_MESSAGE_REGISTER)
 			}
+			event.preventDefault()
 			// SIGN IN CREDENTIALS
 			const result = await signIn('credentials', {
 				email: data.email,
