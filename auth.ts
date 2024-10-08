@@ -3,6 +3,7 @@ import prisma from '@/lib/db/client'
 import { getUserById } from '@/lib/services/user'
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import NextAuth from 'next-auth'
+import type { Adapter } from 'next-auth/adapters'
 
 export const {
 	handlers: { GET, POST },
@@ -10,10 +11,6 @@ export const {
 	signIn,
 	signOut,
 } = NextAuth({
-<<<<<<< Updated upstream
-	adapter: PrismaAdapter(prisma),
-	session: { strategy: 'jwt' },
-=======
 	pages: {
 		signIn: '/auth/login',
 		error: '/auth/error',
@@ -21,7 +18,6 @@ export const {
 	adapter: PrismaAdapter(prisma) as Adapter,
 	session: { strategy: 'jwt', maxAge: 60 * 60 },
 	debug: true,
->>>>>>> Stashed changes
 	callbacks: {
 		async signIn({ user, account }) {
 			if (account?.provider !== 'credentials') return true

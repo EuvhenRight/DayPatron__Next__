@@ -20,16 +20,9 @@ import {
 	InputOTPSlot,
 } from '@/components/ui/input-otp'
 import { ValidationSchema } from '@/lib/db/validation'
-<<<<<<< Updated upstream
 import { ERROR_MESSAGE } from '@/lib/services/constance'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-=======
-import { ERROR_MESSAGE, ERROR_MESSAGE_SIGNIN } from '@/lib/services/constance'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useRouter, useSearchParams } from 'next/navigation'
->>>>>>> Stashed changes
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
@@ -63,42 +56,9 @@ export const LoginForm = () => {
 		setSuccess('')
 
 		try {
-<<<<<<< Updated upstream
-			const response = await fetch(
-				`${process.env.NEXT_PUBLIC_API_URL}/api/login`,
-				{
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify({
-						email,
-						password,
-					}),
-				}
-			)
-
-			const responseData = await response.json()
-
-			// HANDLE ERROR RESPONSE
-			if (!response.ok) {
-				setErrorMessage(responseData.error || ERROR_MESSAGE)
-				return
-			}
-
-			// SIGN IN CREDENTIALS
-			await signIn('credentials', {
-				...data,
-				redirect: false,
-			})
-
-			// REDIRECT TO DASHBOARD PAGE
-			router.push('/dashboard/profile')
-=======
 			const response = await enter(data)
 
 			return response
->>>>>>> Stashed changes
 		} catch (error) {
 			const errorMessage =
 				error instanceof Error ? error.message : ERROR_MESSAGE
