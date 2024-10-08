@@ -1,4 +1,5 @@
 'use client'
+import { enter } from '@/actions/enter'
 import { CardWrapper } from '@/components/LoginForm/card-wrapper'
 import { Button } from '@/components/ui/button'
 import {
@@ -19,10 +20,16 @@ import {
 	InputOTPSlot,
 } from '@/components/ui/input-otp'
 import { ValidationSchema } from '@/lib/db/validation'
+<<<<<<< Updated upstream
 import { ERROR_MESSAGE } from '@/lib/services/constance'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+=======
+import { ERROR_MESSAGE, ERROR_MESSAGE_SIGNIN } from '@/lib/services/constance'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter, useSearchParams } from 'next/navigation'
+>>>>>>> Stashed changes
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
@@ -51,12 +58,12 @@ export const LoginForm = () => {
 	}, [form])
 
 	const onSubmit = async (data: z.infer<typeof ValidationSchema.loginUser>) => {
-		const { email, password } = data
 		setIsButtonDisabled(true)
 		setErrorMessage('')
 		setSuccess('')
 
 		try {
+<<<<<<< Updated upstream
 			const response = await fetch(
 				`${process.env.NEXT_PUBLIC_API_URL}/api/login`,
 				{
@@ -87,6 +94,11 @@ export const LoginForm = () => {
 
 			// REDIRECT TO DASHBOARD PAGE
 			router.push('/dashboard/profile')
+=======
+			const response = await enter(data)
+
+			return response
+>>>>>>> Stashed changes
 		} catch (error) {
 			const errorMessage =
 				error instanceof Error ? error.message : ERROR_MESSAGE

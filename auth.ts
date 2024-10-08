@@ -7,11 +7,33 @@ import NextAuth from 'next-auth'
 export const {
 	handlers: { GET, POST },
 	auth,
+	signIn,
+	signOut,
 } = NextAuth({
+<<<<<<< Updated upstream
 	adapter: PrismaAdapter(prisma),
 	session: { strategy: 'jwt' },
+=======
+	pages: {
+		signIn: '/auth/login',
+		error: '/auth/error',
+	},
+	adapter: PrismaAdapter(prisma) as Adapter,
+	session: { strategy: 'jwt', maxAge: 60 * 60 },
+	debug: true,
+>>>>>>> Stashed changes
 	callbacks: {
+		async signIn({ user, account }) {
+			if (account?.provider !== 'credentials') return true
+
+			const existingUser = await getUserById(user.id!)
+
+			if (!existingUser) return false
+
+			return true
+		},
 		async session({ session, token }) {
+			console.log(token, 'token')
 			if (token.sub && session.user) {
 				session.user.id = token.sub
 			}
