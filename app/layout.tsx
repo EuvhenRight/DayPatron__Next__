@@ -43,6 +43,8 @@ export const metadata: Metadata = {
 
 async function RootLayout({ children }: { children: React.ReactNode }) {
 	// FETCH USER
+	await new Promise(resolve => setTimeout(resolve, 1500))
+
 	const [session, cart, products] = await Promise.all([
 		getSession(),
 		getCart(),
