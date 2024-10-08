@@ -1,8 +1,8 @@
-import { auth } from '@/auth'
 import Footer from '@/components/Footer/Footer'
 import { Header } from '@/components/Header/Header'
 import { Toaster } from '@/components/ui/sonner'
 import { getCart } from '@/lib/services/cart'
+import getSession from '@/lib/services/getSession'
 import { getAllProducts } from '@/lib/services/products'
 import { mulish } from '@/lib/utils/font'
 import { Metadata } from 'next'
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
 async function RootLayout({ children }: { children: React.ReactNode }) {
 	// FETCH USER
 	const [session, cart, products] = await Promise.all([
-		auth(),
+		getSession(),
 		getCart(),
 		getAllProducts(),
 	])

@@ -1,8 +1,8 @@
 'use server'
-import { auth } from '@/auth'
 import prisma from '@/lib/db/client'
 import { orderItemScheme } from '@/lib/db/validation'
 import { createEmailHtml } from '@/lib/services/e-mail-order'
+import getSession from '@/lib/services/getSession'
 import { sendEmail } from '@/lib/services/mail-password'
 import { createOrder } from '@/lib/services/order'
 import { OrderForm } from '@/lib/types/types'
@@ -13,7 +13,7 @@ export async function addOrderItem(data: z.infer<typeof orderItemScheme>) {
 	try {
 		// FIND EXISTING ORDER
 		const order = await createOrder(data)
-		const user = await auth()
+		const user = await getSession()
 
 		if (!order) {
 			return new Error('Error creating order')

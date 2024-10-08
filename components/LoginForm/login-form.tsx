@@ -89,7 +89,6 @@ export const LoginForm = () => {
 				password: data.password,
 				redirect: false,
 			})
-
 			if (result?.error) {
 				setErrorMessage(ERROR_MESSAGE)
 			} else {
@@ -97,7 +96,7 @@ export const LoginForm = () => {
 				router.push('/dashboard/profile')
 			}
 		} catch (error) {
-			setErrorMessage(ERROR_MESSAGE)
+			return setErrorMessage(ERROR_MESSAGE)
 		} finally {
 			setIsButtonDisabled(false)
 		}
