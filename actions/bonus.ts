@@ -1,5 +1,5 @@
 'use server'
-import prisma from '@/lib/db/client'
+import prisma from '@/lib/prisma'
 import { BonusCode } from '@prisma/client'
 
 interface Props {

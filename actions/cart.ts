@@ -1,7 +1,7 @@
 'use server'
 // pages/api/cart/[cartId]/items.ts
 import { calculateTotalDiscount } from '@/actions/calculateTotalDiscount'
-import prisma from '@/lib/db/client'
+import prisma from '@/lib/prisma'
 import { createCart, getCart } from '@/lib/services/cart'
 import { revalidatePath } from 'next/cache'
 

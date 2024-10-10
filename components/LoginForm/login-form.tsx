@@ -67,7 +67,6 @@ export const LoginForm = () => {
 		setIsButtonDisabled(true)
 		setErrorMessage('')
 		setSuccess('')
-
 		try {
 			const response = await fetch(`/api/login`, {
 				method: 'POST',

@@ -1,5 +1,5 @@
 import authConfig from '@/auth.config'
-import prisma from '@/lib/db/client'
+import prisma from '@/lib/prisma'
 import { getUserById } from '@/lib/services/user'
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import NextAuth from 'next-auth'
@@ -18,13 +18,13 @@ export const {
 	callbacks: {
 		async jwt({ token }) {
 			// Return the token as-is if no user id is present
-			if (!token.sub) return token
+			// if (!token.sub) return token
 			// Check if user role and name are already in the token
 			if (token.role && token.name) {
 				return token // If data is already available, return the token
 			}
 			// GET USER FROM DB
-			const existingUser = await getUserById(token.sub)
+			const existingUser = await getUserById(token.sub!)
 			if (!existingUser) return token // Return token if user not found
 			// ADD ROLE AND NAME TO JWT if not already present
 			token.role = existingUser.role
@@ -33,7 +33,6 @@ export const {
 			return token
 		},
 		async session({ session, token }) {
-			console.log(session, 'session')
 			if (token.role && !session.user.role) {
 				session.user.role = token.role as 'ADMIN' | 'USER' // Only set if not already present
 			}

@@ -1,5 +1,5 @@
 import { auth } from '@/auth'
-import prisma from '@/lib/db/client'
+import prisma from '@/lib/prisma'
 import { DeliveryWithItems } from '@/lib/types/types'
 import { Delivery } from '@prisma/client'
 import { cache } from 'react'

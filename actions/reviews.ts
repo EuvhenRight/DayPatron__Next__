@@ -1,6 +1,6 @@
 'use server'
-import prisma from '@/lib/db/client'
 import { ValidationSchema } from '@/lib/db/validation'
+import prisma from '@/lib/prisma'
 import { createReviewEmailHtml } from '@/lib/services/e-mail-new-user'
 import { sendEmail } from '@/lib/services/mail-password'
 import { findProductsInOrderItems } from '@/lib/services/order'

@@ -1,4 +1,4 @@
-import prisma from '@/lib/db/client'
+import prisma from '@/lib/prisma'
 import { Reviews } from '@prisma/client'
 import { cache } from 'react'
 import { ReviewsWithItems } from '../types/types'

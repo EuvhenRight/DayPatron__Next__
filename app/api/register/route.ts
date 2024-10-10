@@ -1,6 +1,6 @@
 // app/api/user/auth/route.ts
-import prisma from '@/lib/db/client'
 import { ValidationSchema } from '@/lib/db/validation'
+import prisma from '@/lib/prisma'
 import { generateRandomPassword } from '@/lib/services/mail-password'
 import { NextRequest, NextResponse } from 'next/server'
 import cron from 'node-cron'

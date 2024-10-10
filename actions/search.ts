@@ -1,6 +1,6 @@
 'use server'
 
-import prisma from '@/lib/db/client'
+import prisma from '@/lib/prisma'
 
 export async function getSearch(searchQuery: string) {
 	try {

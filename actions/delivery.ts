@@ -1,6 +1,6 @@
 'use server'
-import prisma from '@/lib/db/client'
 import { DeliveryAddress, DeliveryBranch } from '@/lib/db/validation'
+import prisma from '@/lib/prisma'
 import { createDelivery, getDelivery } from '@/lib/services/delivery'
 import { DeliveryWithItems } from '@/lib/types/types'
 import { revalidatePath } from 'next/cache'

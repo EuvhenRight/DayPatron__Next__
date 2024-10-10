@@ -1,5 +1,5 @@
 'use server'
-import prisma from '@/lib/db/client'
+import prisma from '@/lib/prisma'
 import { CartWithVariants } from '@/lib/types/types'
 import { format } from 'date-fns'
 import { revalidatePath } from 'next/cache'

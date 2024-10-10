@@ -1,6 +1,6 @@
 'use server'
 import { auth } from '@/auth'
-import prisma from '@/lib/db/client'
+import prisma from '@/lib/prisma'
 import { type DefaultSession } from 'next-auth'
 import { revalidatePath } from 'next/cache'
 

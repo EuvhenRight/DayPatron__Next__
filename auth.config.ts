@@ -1,3 +1,4 @@
+import prisma from '@/lib/prisma'
 import type { NextAuthConfig } from 'next-auth'
 import CredentialProvider from 'next-auth/providers/credentials'
 import Google from 'next-auth/providers/google'

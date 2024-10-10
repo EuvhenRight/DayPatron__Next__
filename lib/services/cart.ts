@@ -1,5 +1,5 @@
 import { auth } from '@/auth'
-import prisma from '@/lib/db/client'
+import prisma from '@/lib/prisma'
 import { CartWithVariants } from '@/lib/types/types'
 import { Cart } from '@prisma/client'
 import { cookies } from 'next/headers'

@@ -1,5 +1,5 @@
 import { auth } from '@/auth'
-import prisma from '@/lib/db/client'
+import prisma from '@/lib/prisma'
 import { cache } from 'react'
 
 export const getCurrentSession = cache(async () => {

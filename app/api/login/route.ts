@@ -1,6 +1,6 @@
 // app/api/user/login-route.ts
-import prisma from '@/lib/db/client'
 import { ValidationSchema } from '@/lib/db/validation'
+import prisma from '@/lib/prisma'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
 				{ status: 401 }
 			)
 		}
-
+		console.log('existingUser', existingUser)
 		return NextResponse.json({ existingUser }, { status: 200 })
 	} catch (error) {
 		console.error('Error processing login request:', error)
