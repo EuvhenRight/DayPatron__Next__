@@ -8,7 +8,6 @@ import { Avatar } from '@mui/material';
 import './UserList.css';
 
 import { InviteIcon } from 'assets/images/streamio';
-import userTypes from 'data/userTypes';
 
 const ListContainer = (props) => {
   const { children } = props;
@@ -41,7 +40,7 @@ const UserItem = (props) => {
   };
 
   const getUserLabel = (user) => {
-    let result = (user.name || user.messagingProviderUserId) + ' (' + userTypes.find(item => item.code === user.userType)?.label + ')';
+    let result = (user.name || user.messagingProviderUserId);
     return result;
   };
 

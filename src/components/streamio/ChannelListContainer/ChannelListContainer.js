@@ -3,7 +3,6 @@ import { useKeycloak } from '@react-keycloak/web';
 import { useDispatch, useSelector } from 'react-redux';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { prepareApiBody } from 'utils/stringUtils';
-import userTypes from 'data/userTypes';
 import { useTheme } from '@mui/material/styles';
 
 import { ChannelList, useChatContext } from 'stream-chat-react';
@@ -123,7 +122,7 @@ export const ChannelListContainer = (props) => {
   const getUserLabel = (user) => {
     if(!user)
       return 'Unknown';
-    let result = (user.name || user.messagingProviderUserId) + ' (' + userTypes.find(item => item.code === user.userType)?.label + ')';
+    let result = (user.name || user.messagingProviderUserId);
     let suffix = client?.userID === user.messagingProviderUserId ? ' (Me)' : '';
     result += suffix;
     return result;
