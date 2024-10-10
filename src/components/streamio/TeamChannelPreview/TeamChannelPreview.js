@@ -7,7 +7,6 @@ import { CheckOutlined, TeamOutlined } from '@ant-design/icons';
 import { useTheme } from '@mui/material/styles';
 import * as dayjs from 'dayjs';
 import dayJsRelativeTime from 'dayjs/plugin/relativeTime';
-import userTypes from 'data/userTypes';
 
 import './TeamChannelPreview.css';
 
@@ -52,7 +51,7 @@ export const TeamChannelPreview = (props) => {
   };
 
   const getUserLabel = (user) => {
-    let result = (user.name || user.id) + ' (' + userTypes.find(item => item.code === user.tenxUserType)?.label + ')';
+    let result = (user.name || user.id);
     return result;
   };
 
