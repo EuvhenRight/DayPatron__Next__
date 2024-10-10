@@ -346,7 +346,6 @@ const UpdateMissionOrder = ({ missionOrderId }) => {
                     inputFormat="yyyy-MM-dd"
                     onChange={(date) => {
                       setFieldValue('startDate', date);
-                      setOrderEndDate(values?.rateType, date, values?.duration);
                     }}
                     renderInput={(props) => (
                       <>
