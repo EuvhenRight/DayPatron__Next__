@@ -31,7 +31,6 @@ import { useFormik, Form, FormikProvider } from 'formik';
 
 import { openSnackbar } from 'store/reducers/snackbar';
 
-import { addHours, addDays, addMonths } from "date-fns";
 import { normalizeInputValue, prepareApiBody, normalizeNullableInputValue } from 'utils/stringUtils';
 import { useKeycloak } from '@react-keycloak/web';
 import rateTypes from 'data/rateTypes';
@@ -150,6 +149,7 @@ const CreateMissionOrder = () => {
       return (value + "").match(/^\d*\.?\d*$/);
     }).max(0).max(999999).nullable(true),
     startDate: Yup.string().required('Required').nullable(true),
+    endDate: Yup.string().required('Required').nullable(true),
 
     contractorServiceOrderDescription: Yup.string().max(5000).required('Required').nullable(true),
     contractorServiceOrderDuration: Yup.number().test('is-decimal', 'Invalid duration', value => {
@@ -191,6 +191,7 @@ const CreateMissionOrder = () => {
           rateType: values.rateType,
           duration: values.duration,
           startDate: values.startDate,
+          endDate: values.endDate,
 
           contractorServiceOrder: {
             description: values.contractorServiceOrderDescription,
@@ -255,25 +256,6 @@ const CreateMissionOrder = () => {
       }
     }
   });
-
-  const getOrderEndDate = (rateType, startDate, duration) => {
-    if (!rateType || !startDate || !duration)
-      return '';
-
-    let end = '';
-
-    if(rateType === 'Daily') {
-      end = addDays(startDate, duration); 
-    }
-    else if(rateType === 'Hourly') {
-      end = addHours(startDate, duration);
-    }
-    else {
-      end = addMonths(startDate, duration);
-    }
-
-    return format(end, "yyyy-MM-dd hh:mm:ss");
-  }
 
   const getContractorServiceOrderDescription = (values) => {
     let startDatePattern = '{{startDate}}';
@@ -346,20 +328,6 @@ const CreateMissionOrder = () => {
   }
 
   const { errors, handleBlur, handleChange, touched, handleSubmit, isSubmitting, setFieldValue, values } = formik;
-
-  useEffect(() => {
-    (async () => {
-      setFieldValue('employerServiceOrderRateType', values?.rateType);
-      setFieldValue('contractorServiceOrderRateType', values?.rateType);
-    })();
-  }, [values?.rateType]);
-
-  useEffect(() => {
-    (async () => {
-      setFieldValue('employerServiceOrderDuration', values?.duration);
-      setFieldValue('contractorServiceOrderDuration', values?.duration);
-    })();
-  }, [values?.duration]);
 
   useEffect(() => {
     (async () => {
@@ -479,7 +447,11 @@ const CreateMissionOrder = () => {
                       name="rateType"
                       displayEmpty
                       value={normalizeInputValue(values.rateType)}
-                      onChange={handleChange}
+                      onChange={(event) => { 
+                        handleChange(event); 
+                        setFieldValue('employerServiceOrderRateType', event.target.value); 
+                        setFieldValue('contractorServiceOrderRateType', event.target.value); 
+                      }}
                     >
                       {rateTypes.map((rateType) => (
                         <MenuItem key={rateType.code} value={rateType.code}>
@@ -503,11 +475,15 @@ const CreateMissionOrder = () => {
                     <TextField
                       fullWidth
                       id="duration"
-                      placeholder="Enter duration"
+                      placeholder="Enter effort"
                       value={normalizeInputValue(values.duration)}
                       name="duration"
                       onBlur={handleBlur}
-                      onChange={handleChange}
+                      onChange={(event) => { 
+                        handleChange(event); 
+                        setFieldValue('employerServiceOrderDuration', event.target.value); 
+                        setFieldValue('contractorServiceOrderDuration', event.target.value); 
+                      }}
                     />
                     {touched.duration && errors.duration && (
                       <FormHelperText error id="order-duration-helper">
@@ -521,8 +497,8 @@ const CreateMissionOrder = () => {
                   <Stack spacing={1.25}>
                     <InputLabel htmlFor="startDate">Start Date</InputLabel>
                     <DesktopDatePicker
+                      inputFormat="yyyy-MM-dd"
                       value={normalizeNullableInputValue(values.startDate)}
-                      inputFormat="yyyy-MM-dd hh:mm:ss"
                       onChange={(date) => {
                         setFieldValue('startDate', date);
                       }}
@@ -543,7 +519,23 @@ const CreateMissionOrder = () => {
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1.25}>
                     <InputLabel htmlFor="endDate">End Date</InputLabel>
-                    <TextField disabled={true} fullWidth value={getOrderEndDate(values.rateType, values.startDate, values.duration)} />
+                    <DesktopDatePicker
+                      value={normalizeNullableInputValue(values.endDate)}
+                      inputFormat="yyyy-MM-dd"
+                      onChange={(date) => {
+                        setFieldValue('endDate', date);
+                      }}
+                      renderInput={(props) => (
+                        <>
+                          <TextField id="endDate" fullWidth {...props} placeholder="End Date" name="endDate" />
+                          {touched.endDate && errors.endDate && (
+                            <FormHelperText error id="order-end-date-helper">
+                              {errors.endDate}
+                            </FormHelperText>
+                          )}
+                        </>
+                      )}
+                    />
                   </Stack>
                 </Grid>
 

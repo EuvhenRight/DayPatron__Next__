@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { format } from 'date-fns';
 import Rte from 'components/Rte';
 import InfoWrapper from 'components/InfoWrapper';
 
@@ -31,8 +30,6 @@ import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
 
 import { openSnackbar } from 'store/reducers/snackbar';
-
-import { addHours, addDays, addMonths } from "date-fns";
 
 import { normalizeInputValue, prepareApiBody, normalizeNullableInputValue } from 'utils/stringUtils';
 import { useKeycloak } from '@react-keycloak/web';
@@ -132,6 +129,7 @@ const UpdateMissionOrder = ({ missionOrderId }) => {
       return (value + "").match(/^\d*\.?\d*$/);
     }).max(0).max(999999).nullable(true),
     startDate: Yup.string().required('Required').nullable(true),
+    endDate: Yup.string().required('Required').nullable(true),
 
     contractorServiceOrderDescription: Yup.string().max(5000).required('Required').nullable(true),
     contractorServiceOrderDuration: Yup.number().test('is-decimal', 'Invalid duration', value => {
@@ -187,6 +185,7 @@ const UpdateMissionOrder = ({ missionOrderId }) => {
           rateType: values.rateType,
           duration: values.duration,
           startDate: values.startDate,
+          endDate: values.endDate,
 
           contractorLegalEntityName: values.contractorLegalEntityName,
           contractorLegalEntityRepresentativeName: values.contractorLegalEntityRepresentativeName,
@@ -271,53 +270,6 @@ const UpdateMissionOrder = ({ missionOrderId }) => {
 
   const { errors, handleBlur, handleChange, touched, handleSubmit, isSubmitting, setFieldValue, values } = formik;
 
-  const setOrderEndDate = (rateType, startDate, duration) => {
-    if (!rateType || !startDate || !duration){
-      setFieldValue('endDate', null);
-      return;
-    }
-
-    if(rateType === 'Daily') {
-      let result = addDays(startDate, duration); 
-      setFieldValue('endDate', result);
-      return;
-    }
-    
-    if(rateType === 'Hourly') {
-      let result = addHours(startDate, duration);
-      setFieldValue('endDate', result);
-      return;
-    }
-    
-    if(rateType === 'Monthly') {
-      let result = addMonths(startDate, duration);
-      setFieldValue('endDate', result);
-      return;
-    }
-    
-    if(rateType === 'Fixed') {
-      let result = addMonths(startDate, duration);
-      setFieldValue('endDate', result);
-      return;
-    }
-    
-    setFieldValue('endDate', null);
-  }
-
-  useEffect(() => {
-    (async () => {
-      setFieldValue('employerServiceOrderRateType', values?.rateType);
-      setFieldValue('contractorServiceOrderRateType', values?.rateType);
-    })();
-  }, [values?.rateType]);
-
-  useEffect(() => {
-    (async () => {
-      setFieldValue('employerServiceOrderDuration', values?.duration);
-      setFieldValue('contractorServiceOrderDuration', values?.duration);
-    })();
-  }, [values?.duration]);
-
   if (!keycloak.tokenParsed.roles.includes('admin'))
     return <Typography>Unauthrozied</Typography>
 
@@ -340,9 +292,10 @@ const UpdateMissionOrder = ({ missionOrderId }) => {
                     name="rateType"
                     displayEmpty
                     value={normalizeInputValue(values.rateType)}
-                    onChange={(e) => {
-                      setFieldValue('rateType', e.target.value);
-                      setOrderEndDate(e.target.value, values?.startDate, values?.duration);
+                    onChange={(event) => { 
+                      handleChange(event); 
+                      setFieldValue('employerServiceOrderRateType', event.target.value); 
+                      setFieldValue('contractorServiceOrderRateType', event.target.value); 
                     }}
                   >
                     {rateTypes.map((rateType) => (
@@ -367,13 +320,14 @@ const UpdateMissionOrder = ({ missionOrderId }) => {
                   <TextField
                     fullWidth
                     id="duration"
-                    placeholder="Enter duration"
+                    placeholder="Enter effort"
                     value={normalizeInputValue(values.duration)}
                     name="duration"
                     onBlur={handleBlur}
-                    onChange={(e) => {
-                      setFieldValue('duration', e.target.value);
-                      setOrderEndDate(values?.rateType, values?.startDate, e.target.value);
+                    onChange={(event) => { 
+                      handleChange(event); 
+                      setFieldValue('employerServiceOrderDuration', event.target.value); 
+                      setFieldValue('contractorServiceOrderDuration', event.target.value); 
                     }}
                   />
                   {touched.duration && errors.duration && (
@@ -389,7 +343,7 @@ const UpdateMissionOrder = ({ missionOrderId }) => {
                   <InputLabel htmlFor="startDate">Start Date</InputLabel>
                   <DesktopDatePicker
                     value={normalizeNullableInputValue(values.startDate)}
-                    inputFormat="yyyy-MM-dd hh:mm:ss"
+                    inputFormat="yyyy-MM-dd"
                     onChange={(date) => {
                       setFieldValue('startDate', date);
                       setOrderEndDate(values?.rateType, date, values?.duration);
@@ -409,11 +363,27 @@ const UpdateMissionOrder = ({ missionOrderId }) => {
               </Grid>
 
               <Grid item xs={12} sm={6}>
-                <Stack spacing={1.25}>
-                  <InputLabel htmlFor="endDate">End Date</InputLabel>
-                  <TextField disabled={true} fullWidth value={values?.endDate ? format(values?.endDate, "yyyy-MM-dd hh:mm:ss") : ''} />
-                </Stack>
-              </Grid>
+                  <Stack spacing={1.25}>
+                    <InputLabel htmlFor="endDate">End Date</InputLabel>
+                    <DesktopDatePicker
+                      value={normalizeNullableInputValue(values.endDate)}
+                      inputFormat="yyyy-MM-dd"
+                      onChange={(date) => {
+                        setFieldValue('endDate', date);
+                      }}
+                      renderInput={(props) => (
+                        <>
+                          <TextField id="endDate" fullWidth {...props} placeholder="End Date" name="endDate" />
+                          {touched.endDate && errors.endDate && (
+                            <FormHelperText error id="order-end-date-helper">
+                              {errors.endDate}
+                            </FormHelperText>
+                          )}
+                        </>
+                      )}
+                    />
+                  </Stack>
+                </Grid>
 
               <Grid item xs={12}>
                 <Typography variant="h5">Company Service Order</Typography>
