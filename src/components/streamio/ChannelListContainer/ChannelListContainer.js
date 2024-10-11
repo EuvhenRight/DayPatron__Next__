@@ -112,7 +112,7 @@ export const ChannelListContainer = (props) => {
   const onGrouplessUserSelected = async (grouplessUser) => {
     setIsCreating(false);
     setIsEditing(false);
-    let newChannelId = await createChannelForUser(grouplessUser?.messagingProviderUserId);
+    let newChannelId = await createChannelForUser({targetUserId: grouplessUser?.messagingProviderUserId});
     await bindGrouplessUsers();
     await activateChannelById(newChannelId);
     onChannelSelected();
