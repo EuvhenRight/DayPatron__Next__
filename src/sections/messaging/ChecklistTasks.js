@@ -14,7 +14,7 @@ const [REACT_TO_MESSAGE, RUN_GIPHY, SEND_YOUTUBE, DRAG_DROP, START_THREAD, SEND_
   'send-youtube',
   'drag-drop-image',
   'start-thread',
-  'send-message',
+  'send-message'
 ];
 
 export const useChecklist = (chatClient, targetOrigin) => {
@@ -33,8 +33,7 @@ export const useChecklist = (chatClient, targetOrigin) => {
           if (message.attachments.length) {
             if (
               message.attachments[0].type === 'video' &&
-              (message.attachments[0].og_scrape_url === YOUTUBE_LINK ||
-                YOUTUBE_LINK_RE.test(message.attachments[0].og_scrape_url))
+              (message.attachments[0].og_scrape_url === YOUTUBE_LINK || YOUTUBE_LINK_RE.test(message.attachments[0].og_scrape_url))
             ) {
               notify(SEND_YOUTUBE);
               break;
