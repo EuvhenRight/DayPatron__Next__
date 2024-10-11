@@ -4,6 +4,7 @@ import prisma from '@/lib/prisma'
 import { generateRandomPassword } from '@/lib/services/mail-password'
 import { NextRequest, NextResponse } from 'next/server'
 import cron from 'node-cron'
+import { sendEmail } from '@/lib/services/mail-password'
 
 export async function POST(request: NextRequest) {
 	const generatedPassword: string = generateRandomPassword()
@@ -15,20 +16,20 @@ export async function POST(request: NextRequest) {
 		if (!validatedBody.success) {
 			return NextResponse.json(validatedBody.error.errors, { status: 400 })
 		}
-		// Send email with the new password
-		// await sendEmail({
-		// 	to: requestData.email,
-		// 	subject: 'DayPatron 6-значний пароль',
-		// 	text: `Ваш 6-значний пароль: ${generatedPassword} Цей код може бути використаний лише один раз. Він закінчується через 15 хвилин.
-		// 	© 2023 DayPatron Inc. Усі права захищені`,
-		// 	html: `<p style="font-size: 14px; color: #666;">Ваш 6-значний пароль: <strong>${generatedPassword}</strong></p>
-		// 	<p style="font-size: 14px; color: #666;">Цей код може бути використаний лише один раз. Він закінчується через 15 хвилин.</p>
-		// 			<p>З повагою,<br>Команда підтримки DayPatron<br>
-		// 	<img src="process.env.PUBLIC_IMAGE_URL/DayLogo_black.svg" alt="DayPatron Logo" style="display: block; width: 150px; height: 50px;">
-		// 	</p>
-		// 			<p style="font-size: 12px; color: #999;">телефон:  +38 (099) 730-21-26 <br>ел.пошта: daypatronteam@gmail.com <br>cайт: http://www.daypatron.com</p>
-		// 	<p style="font-size: 12px; color: #999; text-align: center">© 2023 DayPatron Inc. Усі права захищені</p>`,
-		// })
+		//Send email with the new password
+		await sendEmail({
+			to: requestData.email,
+			subject: 'DayPatron 6-значний пароль',
+			text: `Ваш 6-значний пароль: ${generatedPassword} Цей код може бути використаний лише один раз. Він закінчується через 15 хвилин.
+			© 2023 DayPatron Inc. Усі права захищені`,
+			html: `<p style="font-size: 14px; color: #666;">Ваш 6-значний пароль: <strong>${generatedPassword}</strong></p>
+			<p style="font-size: 14px; color: #666;">Цей код може бути використаний лише один раз. Він закінчується через 15 хвилин.</p>
+					<p>З повагою,<br>Команда підтримки DayPatron<br>
+			<img src="process.env.PUBLIC_IMAGE_URL/DayLogo_black.svg" alt="DayPatron Logo" style="display: block; width: 150px; height: 50px;">
+			</p>
+					<p style="font-size: 12px; color: #999;">телефон:  +38 (099) 730-21-26 <br>ел.пошта: daypatronteam@gmail.com <br>cайт: http://www.daypatron.com</p>
+			<p style="font-size: 12px; color: #999; text-align: center">© 2023 DayPatron Inc. Усі права захищені</p>`,
+		})
 
 		// Check if the email already exists in the database
 		const existingUser = await prisma.user.findUnique({
