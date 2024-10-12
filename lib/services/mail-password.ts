@@ -22,7 +22,7 @@ type EmailType = {
 	html?: string
 }
 
-export const sendEmail = async ({
+export const sendEmail = ({
 	to,
 	subject,
 	text,
@@ -30,7 +30,6 @@ export const sendEmail = async ({
 }: EmailType): Promise<void> => {
 	// Create a transporter object using your email service provider's SMTP settings
 	const transporter = nodeMailer.createTransport({
-		// service: "Yahoo", // e.g., 'Gmail', 'Yahoo', 'Outlook', etc.
 		pool: true,
 		host: 'smtp.gmail.com',
 		port: 465,
@@ -53,11 +52,16 @@ export const sendEmail = async ({
 		html,
 	}
 
-	try {
-		// Send the email
-		const info = await transporter.sendMail(mailOptions)
-	} catch (error) {
-		console.error('Error sending email:', error)
-		throw error
-	}
+	// Return a promise
+	return new Promise((resolve, reject) => {
+		transporter.sendMail(mailOptions, (error, info) => {
+			if (error) {
+				console.error('Error sending email:', error)
+				reject(error)
+			} else {
+				console.log('Email sent: ' + info.response)
+				resolve()
+			}
+		})
+	})
 }
