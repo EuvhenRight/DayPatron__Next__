@@ -31,6 +31,7 @@ export const sendEmail = async ({
 	// Create a transporter object using your email service provider's SMTP settings
 	const transporter = nodeMailer.createTransport({
 		// service: "Yahoo", // e.g., 'Gmail', 'Yahoo', 'Outlook', etc.
+		pool: true,
 		host: 'smtp.gmail.com',
 		port: 465,
 		secure: true,
