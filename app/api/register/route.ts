@@ -1,10 +1,9 @@
 // app/api/user/auth/route.ts
 import { ValidationSchema } from '@/lib/db/validation'
 import prisma from '@/lib/prisma'
-import { generateRandomPassword } from '@/lib/services/mail-password'
+import { generateRandomPassword, sendEmail } from '@/lib/services/mail-password'
 import { NextRequest, NextResponse } from 'next/server'
 import cron from 'node-cron'
-import { sendEmail } from '@/lib/services/mail-password'
 
 export async function POST(request: NextRequest) {
 	const generatedPassword: string = generateRandomPassword()
@@ -78,10 +77,22 @@ export async function POST(request: NextRequest) {
 		}
 	} catch (error) {
 		console.error('Error processing request:', error)
-		return NextResponse.json(
-			{ error: 'Internal Server Error' },
-			{ status: 500 }
-		)
+
+		let errorMessage = 'An unexpected error occurred'
+
+		if (error instanceof Error) {
+			errorMessage = error.message
+		} else if (typeof error === 'string') {
+			errorMessage = error
+		} else if (
+			typeof error === 'object' &&
+			error !== null &&
+			'message' in error
+		) {
+			errorMessage = (error as any).message
+		}
+
+		return NextResponse.json({ error: errorMessage }, { status: 500 })
 	}
 }
 
