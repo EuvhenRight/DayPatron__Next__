@@ -30,14 +30,16 @@ export const sendEmail = ({
 }: EmailType): Promise<void> => {
 	// Create a transporter object using your email service provider's SMTP settings
 	const transporter = nodeMailer.createTransport({
-		pool: true,
-		host: 'smtp.gmail.com',
-		port: 465,
-		secure: true,
+		// pool: true,
+		// host: 'smtp.gmail.com',
+		// port: 465,
+		// secure: true,
+		service: 'gmail',
 		auth: {
 			user: process.env.KEY_USER_MAIL,
 			pass: process.env.KEY_PASSWORD_APP,
 		},
+		tls: { rejectUnauthorized: false },
 	})
 
 	// Ensure the `to` field is a string, even if it's an array
