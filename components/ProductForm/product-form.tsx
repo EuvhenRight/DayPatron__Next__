@@ -112,14 +112,14 @@ export const ProductForm = ({ product, cart }: Props) => {
 					}}
 				>
 					<Rating
-						rating={product.reviews.ratingTotal}
+						rating={product?.reviews?.ratingTotal!}
 						totalStars={5}
 						size={32}
 						className='flex flex-col justify-center items-end'
 						variant='yellow'
 						showText={true}
 						disabled={true}
-						totalReviews={product.reviews.messageTotal}
+						totalReviews={product?.reviews?.messageTotal!}
 					/>
 				</div>
 				{/* VARIANTS */}
