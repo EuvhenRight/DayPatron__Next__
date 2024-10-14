@@ -25,14 +25,14 @@ const ThreadHeader = (props) => {
 
   return (
     <>
-    <div className='custom-thread-header'>
-      <div className='custom-thread-header__left'>
-        <p className='custom-thread-header__left-title'>Thread</p>
-        <p className='custom-thread-header__left-count'>{getReplyCount()}</p>
+      <div className="custom-thread-header">
+        <div className="custom-thread-header__left">
+          <p className="custom-thread-header__left-title">Thread</p>
+          <p className="custom-thread-header__left-count">{getReplyCount()}</p>
+        </div>
+        <CloseThreadIcon {...{ closeThread, setPinsOpen }} />
       </div>
-      <CloseThreadIcon {...{ closeThread, setPinsOpen }} />
-    </div>
-    <Divider />
+      <Divider />
     </>
   );
 };
@@ -48,7 +48,7 @@ export const ChannelContainer = (props) => {
     const filters = {};
 
     return (
-      <MainCard content={false} className='str-chat tenx-messages-container'>
+      <MainCard content={false} className="str-chat tenx-messages-container">
         <CreateChannel {...{ filters, setIsCreating, connectAsAdmin }} />
       </MainCard>
     );
@@ -65,39 +65,33 @@ export const ChannelContainer = (props) => {
     }
 
     return (
-      <MainCard content={false} className='str-chat tenx-messages-container'>
+      <MainCard content={false} className="str-chat tenx-messages-container">
         <EditChannel {...{ filters, setIsEditing, connectAsAdmin }} />
       </MainCard>
     );
   }
 
-  if(!channel) {
-    return (<></>);
+  if (!channel) {
+    return <></>;
   }
 
   return (
-    <MainCard content={false} className='tenx-messages-container'>
+    <MainCard content={false} className="tenx-messages-container">
       <Channel
         EmptyStateIndicator={ChannelEmptyState}
-        Message={(messageProps, i) => (
-          <TeamMessage
-            key={i}
-            {...messageProps}
-            {...{ setPinsOpen }}
-          />
-        )}
+        Message={(messageProps, i) => <TeamMessage key={i} {...messageProps} {...{ setPinsOpen }} />}
         ThreadHeader={(threadProps) => <ThreadHeader {...threadProps} {...{ setPinsOpen }} />}
         TypingIndicator={() => null}
       >
-          <ChannelInner
-            {...{
-              pinsOpen,
-              setIsEditing,
-              setPinsOpen,
-              onShowChannelSelector,
-              isChannelSelectorVisible
-            }}
-          />
+        <ChannelInner
+          {...{
+            pinsOpen,
+            setIsEditing,
+            setPinsOpen,
+            onShowChannelSelector,
+            isChannelSelectorVisible
+          }}
+        />
       </Channel>
     </MainCard>
   );

@@ -1,16 +1,8 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import {
-  Box,
-  ClickAwayListener,
-  List,
-  ListItemButton,
-  Paper,
-  Popper,
-  useMediaQuery
-} from '@mui/material';
+import { Box, ClickAwayListener, List, ListItemButton, Paper, Popper, useMediaQuery } from '@mui/material';
 
 // project import
 import MainCard from 'components/MainCard';
@@ -56,6 +48,20 @@ const Message = () => {
 
   const iconBackColorOpen = theme.palette.mode === 'dark' ? 'grey.200' : 'grey.300';
   const iconBackColor = theme.palette.mode === 'dark' ? 'background.default' : 'grey.100';
+
+  useEffect(() => {
+    try {
+      let response = fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/messages', {
+        method: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + keycloak.idToken
+        }
+      });
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
   return (
     <Box sx={{ flexShrink: 0, ml: 0.75 }}>
@@ -103,12 +109,7 @@ const Message = () => {
               }}
             >
               <ClickAwayListener onClickAway={handleClose}>
-                <MainCard
-                  title="Messages"
-                  elevation={0}
-                  border={false}
-                  content={false}
-                >
+                <MainCard title="Messages" elevation={0} border={false} content={false}>
                   <List
                     component="nav"
                     sx={{
@@ -120,10 +121,7 @@ const Message = () => {
                       }
                     }}
                   >
-                    
-                    <ListItemButton sx={{ textAlign: 'center' }}>
-                      No messages
-                    </ListItemButton>
+                    <ListItemButton sx={{ textAlign: 'center' }}>No message</ListItemButton>
                   </List>
                 </MainCard>
               </ClickAwayListener>

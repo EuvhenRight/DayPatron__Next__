@@ -2,17 +2,7 @@ import { useRef, useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import {
-  Badge,
-  Box,
-  ClickAwayListener,
-  List,
-  ListItemButton,
-  Paper,
-  Popper,
-  Tooltip,
-  useMediaQuery
-} from '@mui/material';
+import { Badge, Box, ClickAwayListener, List, ListItemButton, Paper, Popper, Tooltip, useMediaQuery } from '@mui/material';
 
 // project import
 import MainCard from 'components/MainCard';
@@ -139,9 +129,7 @@ const Notification = () => {
                       }
                     }}
                   >
-                    <ListItemButton sx={{ textAlign: 'center', py: `${12}px !important` }}>
-                      No notifications
-                    </ListItemButton>
+                    <ListItemButton sx={{ textAlign: 'center', py: `${12}px !important` }}>No notifications</ListItemButton>
                   </List>
                 </MainCard>
               </ClickAwayListener>

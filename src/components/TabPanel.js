@@ -1,6 +1,4 @@
-import {
-  Box
-} from '@mui/material';
+import { Box } from '@mui/material';
 
 const TabPanel = ({ children, value, index, ...other }) => {
   return (

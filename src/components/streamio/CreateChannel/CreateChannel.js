@@ -15,7 +15,7 @@ import { CloseCreateChannel } from 'assets/images/streamio';
 export const CreateChannel = (props) => {
   const { keycloak } = useKeycloak();
   const dispatch = useDispatch();
-  const personalInformation = useSelector(state => state.personalInformation);
+  const personalInformation = useSelector((state) => state.personalInformation);
   const { filters, setIsCreating, connectAsAdmin } = props;
 
   const { client, setActiveChannel } = useChatContext();
@@ -26,45 +26,45 @@ export const CreateChannel = (props) => {
     event.preventDefault();
 
     try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/messages/groups',
-        {
-          method: 'POST',
-          headers: {
-            'Authorization': 'Bearer ' + keycloak.idToken,
-            'Content-Type': 'application/json'
-          },
-          body: prepareApiBody({targetMessagingProviderUserIds: selectedUsers, sourceEmployerUserId: connectAsAdmin ? null : personalInformation?.id})
-        }
-      );
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/messages/groups', {
+        method: 'POST',
+        headers: {
+          Authorization: 'Bearer ' + keycloak.idToken,
+          'Content-Type': 'application/json'
+        },
+        body: prepareApiBody({
+          targetMessagingProviderUserIds: selectedUsers,
+          sourceEmployerUserId: connectAsAdmin ? null : personalInformation?.id
+        })
+      });
 
       if (!response.ok) {
-        dispatch(openSnackbar({open: true, message: 'Failed.', variant: 'alert', alert: { color: 'error' }, close: false }));
+        dispatch(openSnackbar({ open: true, message: 'Failed.', variant: 'alert', alert: { color: 'error' }, close: false }));
         return;
       }
 
       let json = await response.json();
 
       if (!json?.groupId) {
-        dispatch(openSnackbar({open: true, message: 'Failed.', variant: 'alert', alert: { color: 'error' }, close: false }));
+        dispatch(openSnackbar({ open: true, message: 'Failed.', variant: 'alert', alert: { color: 'error' }, close: false }));
         return;
       }
 
-      dispatch(openSnackbar({open: true, message: 'Saved.', variant: 'alert', alert: { color: 'success' }, close: false}));
+      dispatch(openSnackbar({ open: true, message: 'Saved.', variant: 'alert', alert: { color: 'success' }, close: false }));
 
       setIsCreating(false);
       setSelectedUsers([client.userID]);
 
-      let newChannelQueryResponse = await client.queryChannels({id: json.groupId});
-      if(newChannelQueryResponse.length === 1)
-        setActiveChannel(newChannelQueryResponse[0]);
+      let newChannelQueryResponse = await client.queryChannels({ id: json.groupId });
+      if (newChannelQueryResponse.length === 1) setActiveChannel(newChannelQueryResponse[0]);
     } catch (err) {
       console.log(err);
     }
   };
 
   return (
-    <div className='create-channel__container'>
-      <div className='create-channel__header'>
+    <div className="create-channel__container">
+      <div className="create-channel__header">
         <p>Create a New Chat</p>
         <CloseCreateChannel {...{ setIsCreating }} />
       </div>

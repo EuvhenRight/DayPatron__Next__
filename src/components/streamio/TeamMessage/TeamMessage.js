@@ -5,10 +5,7 @@ import './TeamMessage.css';
 export const TeamMessage = (props) => {
   const { setPinsOpen } = props;
 
-  const {
-    handleOpenThread,
-    message,
-  } = useMessageContext();
+  const { handleOpenThread, message } = useMessageContext();
 
   const handleOpenThreadOverride = (event) => {
     if (setPinsOpen) setPinsOpen(false);

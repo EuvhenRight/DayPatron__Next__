@@ -15,25 +15,26 @@ import { CloseCreateChannel } from 'assets/images/streamio';
 export const EditChannel = (props) => {
   const { keycloak } = useKeycloak();
   const dispatch = useDispatch();
-  const personalInformation = useSelector(state => state.personalInformation);
+  const personalInformation = useSelector((state) => state.personalInformation);
   const { filters, setIsEditing, connectAsAdmin } = props;
   const { channel } = useChatContext();
   const [selectedUsers, setSelectedUsers] = useState(Object.keys(channel?.state?.members));
 
   const updateChannel = async (event) => {
-    try
-    {
+    try {
       event.preventDefault();
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/messages/groups',
-        {
-          method: 'PUT',
-          headers: {
-            'Authorization': 'Bearer ' + keycloak.idToken,
-            'Content-Type': 'application/json'
-          },
-          body: prepareApiBody({groupId: channel.data.id, targetMessagingProviderUserIds: selectedUsers, sourceEmployeruserId: connectAsAdmin ? null : personalInformation?.id})
-        }
-      );
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/messages/groups', {
+        method: 'PUT',
+        headers: {
+          Authorization: 'Bearer ' + keycloak.idToken,
+          'Content-Type': 'application/json'
+        },
+        body: prepareApiBody({
+          groupId: channel.data.id,
+          targetMessagingProviderUserIds: selectedUsers,
+          sourceEmployeruserId: connectAsAdmin ? null : personalInformation?.id
+        })
+      });
 
       if (!response.ok) {
         dispatch(
@@ -72,8 +73,8 @@ export const EditChannel = (props) => {
   };
 
   return (
-    <div className='edit-channel__container'>
-      <div className='edit-channel__header'>
+    <div className="edit-channel__container">
+      <div className="edit-channel__header">
         <p>Edit Chat</p>
         <CloseCreateChannel {...{ setIsEditing }} />
       </div>

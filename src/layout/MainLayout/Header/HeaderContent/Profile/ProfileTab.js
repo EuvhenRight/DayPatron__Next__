@@ -13,16 +13,19 @@ const ProfileTab = ({ handleLogout }) => {
   const navigate = useNavigate();
   const intl = useIntl();
 
-  
   return (
     <List component="nav" sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32 } }}>
-      <ListItemButton onClick={() => { navigate('/personal-information'); }}>
+      <ListItemButton
+        onClick={() => {
+          navigate('/personal-information');
+        }}
+      >
         <ListItemIcon>
           <EditOutlined />
         </ListItemIcon>
-        <ListItemText primary={intl.formatMessage({ id: 'personal-information'})} />
+        <ListItemText primary={intl.formatMessage({ id: 'personal-information' })} />
       </ListItemButton>
-      
+
       <ListItemButton onClick={handleLogout}>
         <ListItemIcon>
           <LogoutOutlined />
