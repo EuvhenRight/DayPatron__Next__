@@ -52,10 +52,6 @@ export const RegisterForm = () => {
 
 			const responseData = await response.json()
 
-			if (!response.ok) {
-				throw new Error(responseData.error || 'An error occurred')
-			}
-
 			if (responseData?.id) {
 				setSuccess(SUCCESS_MESSAGE_REGISTER)
 			}
@@ -65,7 +61,7 @@ export const RegisterForm = () => {
 			const errorMessage =
 				error instanceof Error ? error.message : ERROR_MESSAGE
 			setErrorMessage(errorMessage)
-			console.error(error)
+			console.error(errorMessage)
 		} finally {
 			setIsButtonDisabled(false)
 		}

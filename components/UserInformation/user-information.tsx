@@ -13,7 +13,7 @@ import { formatPriceUa } from '@/lib/services/format'
 import { OrderWithItemsWithVariants } from '@/lib/types/types'
 
 interface Props {
-	orders?: OrderWithItemsWithVariants[]
+	orders?: OrderWithItemsWithVariants[] | null
 }
 export const UserInformation = ({ orders }: Props) => {
 	// COUNTS INVOICES IN TABLE

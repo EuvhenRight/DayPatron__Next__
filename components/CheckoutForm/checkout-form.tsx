@@ -56,7 +56,7 @@ export const CheckoutForm = ({ cart, currentDelivery, currentUser }: Props) => {
 			profile: {
 				firstName: currentUser?.firstName || '',
 				lastName: currentUser?.lastName || '',
-				email: currentUser?.email || '',
+				email: currentUser?.email,
 				phone: currentUser?.phone || '',
 			},
 			payment: payment,
@@ -129,8 +129,6 @@ export const CheckoutForm = ({ cart, currentDelivery, currentUser }: Props) => {
 										<ProfileForm
 											onChange={field.onChange}
 											currentUser={currentUser!}
-											openProfileDialog={false}
-											setOpenProfileDialog={() => {}}
 										/>
 									</FormControl>
 									<FormMessage />

@@ -1,31 +1,32 @@
 import { auth } from '@/auth'
+import { orderItemScheme } from '@/lib/db/validation'
 import prisma from '@/lib/prisma'
-import { OrderWithItemsWithVariants } from '@/lib/types/types'
+import { OrderWithItems, OrderWithItemsWithVariants } from '@/lib/types/types'
 import { cache } from 'react'
 import { z } from 'zod'
-import { orderItemScheme } from '../db/validation'
-import { OrderWithItems } from '../types/types'
 
 export const getOrder = cache(
 	async (): Promise<OrderWithItemsWithVariants | null> => {
 		const session = await auth()
 
-		let order: OrderWithItemsWithVariants | null = null
+		if (!session) {
+			console.warn('No session found.')
+			return null
+		}
 
-		if (session) {
-			order = await prisma.order.findFirst({
-				where: { userId: session.user.id },
-				include: {
-					address: true,
-					user: true,
-					item: {
-						include: {
-							variant: true,
-						},
+		const order = await prisma.order.findFirst({
+			where: { userId: session.user.id },
+			include: {
+				address: true,
+				item: {
+					include: {
+						variant: true,
 					},
 				},
-			})
-		} else {
+			},
+		})
+
+		if (!order) {
 			return null
 		}
 
@@ -37,25 +38,29 @@ export const getManyOrders = cache(
 	async (): Promise<OrderWithItemsWithVariants[] | null> => {
 		const session = await auth()
 
-		let orders: OrderWithItemsWithVariants[] | null = null
+		if (!session) {
+			console.warn('No session found.')
+			return null
+		}
 
-		if (session) {
-			orders = await prisma.order.findMany({
-				where: { userId: session.user.id },
-				include: {
-					item: {
-						include: {
-							variant: true,
-						},
+		const orders = await prisma.order.findMany({
+			where: { userId: session.user.id },
+			include: {
+				item: {
+					include: {
+						variant: true,
 					},
-					status: true,
-					user: true,
-					address: true,
 				},
-				orderBy: {
-					createdAt: 'desc',
-				},
-			})
+				status: true,
+				address: true,
+			},
+			orderBy: {
+				createdAt: 'desc',
+			},
+		})
+
+		if (!orders) {
+			return null
 		}
 
 		return orders

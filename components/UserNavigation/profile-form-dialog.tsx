@@ -22,7 +22,7 @@ import { ValidationSchema } from '@/lib/db/validation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { User } from '@prisma/client'
 import { Pencil } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { PhoneInput } from 'react-international-phone'
 import 'react-international-phone/style.css'
@@ -31,29 +31,16 @@ import { z } from 'zod'
 interface Props {
 	currentUser: User
 	onChange?: (value: z.infer<typeof ValidationSchema.profileUser>) => void
-	openProfileDialog: boolean
-	setOpenProfileDialog: (value: boolean) => void
 }
 
-export const ProfileFormDialog = ({
-	currentUser,
-	onChange,
-	openProfileDialog,
-	setOpenProfileDialog,
-}: Props) => {
+export const ProfileFormDialog = ({ currentUser, onChange }: Props) => {
 	const [isOpen, setIsOpen] = useState(false)
-
-	useEffect(() => {
-		if (openProfileDialog) {
-			setIsOpen(true)
-		}
-	}, [openProfileDialog, isOpen, setIsOpen])
 
 	// FORM VALIDATION AND ERROR HANDLING
 	const form = useForm<z.infer<typeof ValidationSchema.profileUser>>({
 		resolver: zodResolver(ValidationSchema.profileUser),
 		defaultValues: {
-			email: currentUser.email || '',
+			email: currentUser.email,
 			firstName: currentUser.firstName || '',
 			lastName: currentUser.lastName || '',
 			phone: currentUser.phone || '',
@@ -89,8 +76,7 @@ export const ProfileFormDialog = ({
 				onChange(data)
 			}
 
-			setOpenProfileDialog(false)
-			setIsOpen(!isOpen)
+			setIsOpen(!open)
 		} catch (error) {
 			toast.error('Щось пішло не так, спробуйте ще раз')
 		}
@@ -168,27 +154,23 @@ export const ProfileFormDialog = ({
 								)}
 							/>
 							{/* EMAIL */}
-							<FormField
-								name='email'
-								disabled={true}
-								render={({ field }) => (
-									<FormItem>
-										<FormLabel>Email</FormLabel>
-										<Input type='email' {...field} placeholder='Name' />
-									</FormItem>
-								)}
-							/>
+							<FormItem>
+								<FormLabel>Email</FormLabel>
+								<Input
+									type='email'
+									name='email'
+									value={currentUser.email}
+									disabled
+									placeholder='введіть Email'
+								/>
+							</FormItem>
 							<p className='text-zinc-700 text-[12px] text-start px-2'>
 								Ви не можете змінити електронну адресу в цьому профілі!
 							</p>
 							<div className='flex items-center justify-end relative mt-4'>
 								{/* BUTTON CLOSE */}
 								<DialogClose asChild>
-									<Button
-										variant='link'
-										type='button'
-										disabled={openProfileDialog}
-									>
+									<Button variant='link' type='button'>
 										Скасувати
 									</Button>
 								</DialogClose>

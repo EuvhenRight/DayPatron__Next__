@@ -20,7 +20,8 @@ import {
 } from '@/components/ui/input-otp'
 import { ValidationSchema } from '@/lib/db/validation'
 import {
-	ERROR_MESSAGE,
+	ERROR_MESSAGE_LOGIN,
+	ERROR_MESSAGE_SERVER,
 	ERROR_MESSAGE_SIGNIN,
 	SUCCESS_MESSAGE_REGISTER,
 } from '@/lib/services/constance'
@@ -78,10 +79,6 @@ export const LoginForm = () => {
 
 			const responseData = await response.json()
 
-			if (!response.ok) {
-				throw new Error(responseData.error || 'An error occurred')
-			}
-
 			if (responseData?.id) {
 				setSuccess(SUCCESS_MESSAGE_REGISTER)
 			}
@@ -93,13 +90,13 @@ export const LoginForm = () => {
 				redirect: false,
 			})
 			if (result?.error) {
-				setErrorMessage(ERROR_MESSAGE)
+				setErrorMessage(ERROR_MESSAGE_LOGIN)
 			} else {
 				// REDIRECT TO DASHBOARD PAGE
 				router.push('/dashboard/profile')
 			}
 		} catch (error) {
-			return setErrorMessage(ERROR_MESSAGE)
+			return setErrorMessage(ERROR_MESSAGE_SERVER || urlError)
 		} finally {
 			setIsButtonDisabled(false)
 		}

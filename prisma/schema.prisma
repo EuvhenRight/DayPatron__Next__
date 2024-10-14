@@ -292,8 +292,8 @@ model Product {
 
   image     Image[]
   variant   Variant[]
-  reviews   Reviews   @relation(fields: [reviewsId], references: [id])
-  reviewsId String    @db.ObjectId
+  reviews   Reviews?  @relation(fields: [reviewsId], references: [id])
+  reviewsId String?   @db.ObjectId
 
   @@map("products")
 }

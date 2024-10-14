@@ -1,6 +1,11 @@
 // app/api/user/login-route.ts
 import { ValidationSchema } from '@/lib/db/validation'
 import prisma from '@/lib/prisma'
+import {
+	ERROR_MESSAGE_PASSWORD_NOT_MATCH,
+	ERROR_MESSAGE_SERVER,
+	ERROR_MESSAGE_USER_NOT_FOUND,
+} from '@/lib/services/constance'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
@@ -21,7 +26,7 @@ export async function POST(request: NextRequest) {
 		if (!existingUser) {
 			// User doesn't exist
 			return NextResponse.json(
-				{ error: 'User not found. Please register first.' },
+				{ error: ERROR_MESSAGE_USER_NOT_FOUND },
 				{ status: 404 }
 			)
 		}
@@ -29,17 +34,14 @@ export async function POST(request: NextRequest) {
 		if (existingUser.password !== requestData.password) {
 			// Password doesn't match
 			return NextResponse.json(
-				{ error: 'Incorrect password. Please try again.' },
+				{ error: ERROR_MESSAGE_PASSWORD_NOT_MATCH },
 				{ status: 401 }
 			)
 		}
-		console.log('existingUser', existingUser)
+
 		return NextResponse.json({ existingUser }, { status: 200 })
 	} catch (error) {
 		console.error('Error processing login request:', error)
-		return NextResponse.json(
-			{ error: 'Internal Server Error' },
-			{ status: 500 }
-		)
+		return NextResponse.json({ error: ERROR_MESSAGE_SERVER }, { status: 500 })
 	}
 }

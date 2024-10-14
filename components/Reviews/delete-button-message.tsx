@@ -35,8 +35,8 @@ export const DeleteButtonMessage = ({ message, product }: Props) => {
 				success: 'Ваш відгук видалено!',
 				error: 'Щось пішло не так, спробуйте ще раз',
 			})
-		} catch (err) {
-			console.log(err)
+		} catch (error) {
+			console.log(error)
 		}
 	}
 	return (
