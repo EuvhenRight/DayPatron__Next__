@@ -45,6 +45,33 @@
 
     <!-- this is to resolve issue in old safari browser in tablet -->
     <script src="https://cdn.jsdelivr.net/npm/resize-observer-polyfill@1.5.1/dist/ResizeObserver.min.js"></script>
+    <script>
+      const addMaximumScaleToMetaViewport = () => {
+        const el = document.querySelector('meta[name=viewport]');
+
+        if (el !== null) {
+          let content = el.getAttribute('content');
+          let re = /maximum\-scale=[0-9\.]+/g;
+
+          if (re.test(content)) {
+              content = content.replace(re, 'maximum-scale=1.0');
+          } else {
+              content = [content, 'maximum-scale=1.0'].join(', ')
+          }
+
+          el.setAttribute('content', content);
+        }
+      };
+
+      const disableIosTextFieldZoom = addMaximumScaleToMetaViewport;
+
+      const checkIsIOS = () =>
+        /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+      if (checkIsIOS()) {
+        disableIosTextFieldZoom();
+      }
+    </script>
   </head>
   <body>
       <noscript>You need to enable JavaScript to run this app.</noscript>
