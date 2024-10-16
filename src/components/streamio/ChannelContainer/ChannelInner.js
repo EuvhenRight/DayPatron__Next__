@@ -67,7 +67,7 @@ export const ChannelInner = (props) => {
         <Window>
           <TeamChannelHeader {...{ setIsEditing, setPinsOpen, onShowChannelSelector, isChannelSelectorVisible }} />
           <MessageList disableQuotedMessages pinPermissions={pinnedPermissions} />
-          <MessageInput audioRecordingEnabled overrideSubmitHandler={overrideSubmitHandler}  />
+          <MessageInput grow audioRecordingEnabled overrideSubmitHandler={overrideSubmitHandler}  />
         </Window>
       }
       <Thread />
