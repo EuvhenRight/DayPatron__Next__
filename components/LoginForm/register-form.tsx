@@ -24,6 +24,8 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 
+export const runtime = 'edge'
+export const dynamic = 'force-dynamic'
 export const RegisterForm = () => {
 	const [errorMessage, setErrorMessage] = useState<string | undefined>('')
 	const [isButtonDisabled, setIsButtonDisabled] = useState(false)
@@ -46,6 +48,7 @@ export const RegisterForm = () => {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
+					Authorization: `Bearer ${process.env.KEY_PASSWORD_APP}`,
 				},
 				body: JSON.stringify({ email }),
 			})

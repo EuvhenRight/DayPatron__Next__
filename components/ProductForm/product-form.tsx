@@ -69,8 +69,6 @@ export const ProductForm = ({ product, cart }: Props) => {
 		setItemInCart(check || null)
 	}, [cart, product, currentIndex])
 
-	console.log(product.reviews, 'product.reviews')
-
 	return (
 		<div className='flex lg:flex-row flex-col lg:justify-center'>
 			<div className='lg:w-1/2'>
