@@ -22,10 +22,7 @@ type EmailType = {
 	html?: string
 }
 
-export const runtime = 'edge'
-export const dynamic = 'force-dynamic'
-
-export const sendEmail = ({
+export const sendEmail = async ({
 	to,
 	subject,
 	text,
@@ -33,7 +30,6 @@ export const sendEmail = ({
 }: EmailType): Promise<void> => {
 	// Create a transporter object using your email service provider's SMTP settings
 	const transporter = nodeMailer.createTransport({
-		// pool: true,
 		host: 'smtp.gmail.com',
 		port: 465,
 		secure: true,
@@ -42,7 +38,19 @@ export const sendEmail = ({
 			user: process.env.KEY_USER_MAIL,
 			pass: process.env.KEY_PASSWORD_APP,
 		},
-		tls: { rejectUnauthorized: false },
+	})
+
+	await new Promise((resolve, reject) => {
+		// verify connection configuration
+		transporter.verify(function (error, success) {
+			if (error) {
+				console.log(error)
+				reject(error)
+			} else {
+				console.log('Server is ready to take our messages')
+				resolve(success)
+			}
+		})
 	})
 
 	// Ensure the `to` field is a string, even if it's an array
@@ -57,16 +65,18 @@ export const sendEmail = ({
 		html,
 	}
 
-	// Return a promise
-	return new Promise((resolve, reject) => {
-		transporter.sendMail(mailOptions, (error, info) => {
-			if (error) {
-				console.error('Error sending email:', error)
-				reject(error)
+	await new Promise((resolve, reject) => {
+		// send mail
+		transporter.sendMail(mailOptions, (err, info) => {
+			if (err) {
+				console.error(err)
+				reject(err)
 			} else {
-				console.log('Email sent: ' + info.response)
-				resolve()
+				console.log(info)
+				resolve(info)
 			}
 		})
 	})
+
+	console.log('Email sent successfully')
 }
