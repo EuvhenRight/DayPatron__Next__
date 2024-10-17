@@ -15,11 +15,13 @@ const UserProfilePage = async () => {
 	if (!currentUser) return NextResponse.redirect('/auth/register')
 
 	return (
-		<UserProfile
-			currentUser={currentUser}
-			currentDelivery={currentDelivery}
-			session={session}
-		/>
+		<>
+			<UserProfile
+				currentUser={currentUser}
+				currentDelivery={currentDelivery}
+				session={session}
+			/>
+		</>
 	)
 }
 

@@ -1,4 +1,5 @@
 import nodeMailer from 'nodemailer'
+
 export const generateRandomPassword = () => {
 	// You can customize this function to generate a random password as per your requirements.
 	// For example, you can use a library like `crypto` to generate a secure random password.
@@ -28,6 +29,13 @@ export const sendEmail = async ({
 	text,
 	html,
 }: EmailType): Promise<void> => {
+	// // Set up OAuth2 credentials
+	// const oauth2Client = new google.auth.OAuth2(
+	// 	process.env.KEY_USER_CLIENT_ID,
+	// 	process.env.KEY_USER_CLIENT_SECRET,
+	// 	'YOUR_REDIRECT_URL'
+	// )
+
 	// Create a transporter object using your email service provider's SMTP settings
 	const transporter = nodeMailer.createTransport({
 		host: 'smtp.gmail.com',
