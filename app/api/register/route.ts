@@ -72,7 +72,6 @@ export async function POST(request: NextRequest) {
 			})
 			// Schedule a task to delete the password after 15 minutes
 			schedulePasswordDeletion(newUser.id, 15)
-
 			return NextResponse.json({ ...newUser }, { status: 201 })
 		}
 	} catch (error) {
