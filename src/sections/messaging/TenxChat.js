@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useKeycloak } from '@react-keycloak/web';
-import { useSelector } from 'react-redux';
-import { Chat, useCreateChatClient, enTranslations, Streami18n } from 'stream-chat-react';
-import { prepareApiBody } from 'utils/stringUtils';
+import { useChatContext } from 'chat-context'; // Import the ChatContext
+import { Chat } from 'stream-chat-react';
 
 import 'stream-chat-react/dist/css/v2/index.css';
 import 'assets/css/streamio.css';
@@ -12,58 +10,21 @@ import { ChannelContainer } from 'components/streamio/ChannelContainer/ChannelCo
 import { ChannelListContainer } from 'components/streamio/ChannelListContainer/ChannelListContainer';
 import { Grid, Stack, Typography, Switch, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { useKeycloak } from '@react-keycloak/web';
 
-const apiKey = process.env.REACT_APP_STREAM_KEY;
 const urlParams = new URLSearchParams(window.location.search);
 const targetOrigin = urlParams.get('target_origin') || process.env.REACT_APP_TARGET_ORIGIN;
-
-const i18nInstance = new Streami18n({
-  language: 'en',
-  translationsForLanguage: {
-    ...enTranslations
-  }
-});
-
-const options = { state: true, watch: true, presence: true, limit: 100 };
-const sort = { last_message_at: -1, updated_at: -1 };
-
-let keycloakParent = null;
-let employerUserIdParent = null;
-const getToken = async () => {
-  let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/messages/auth-tokens', {
-    method: 'POST',
-    headers: {
-      Authorization: 'Bearer ' + keycloakParent?.idToken,
-      'Content-Type': 'application/json'
-    },
-    body: prepareApiBody({ employerUserId: employerUserIdParent })
-  });
-
-  let json = await response.json();
-  return json.token;
-};
 
 const TenxChat = ({ targetEntity, setTargetEntity }) => {
   const theme = useTheme();
   const matchDownMD = useMediaQuery(theme.breakpoints.down('md'));
   const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [connectAsAdmin, setConnectAsAdmin] = useState(true);
   const [isChannelSelectorVisible, setIsChannelSelectorVisible] = useState(true);
   const [isMessagesContainerVisible, setIsMessagesContainerVisible] = useState(true);
-
   const { keycloak } = useKeycloak();
-  const personalInformation = useSelector((state) => state.personalInformation);
-  keycloakParent = keycloak;
-  employerUserIdParent = connectAsAdmin ? null : personalInformation?.id;
 
-  const client = useCreateChatClient({
-    apiKey,
-    tokenOrProvider: getToken,
-    userData: {
-      id: connectAsAdmin ? personalInformation?.messagingProviderAdminUserId : personalInformation?.messagingProviderUserId
-    }
-  });
+  const { client, i18nInstance, options, sort, connectAsAdmin, setConnectAsAdmin } = useChatContext(); // Use the context
 
   const onChannelSelected = () => {
     if (matchDownMD) {

@@ -9,33 +9,41 @@ const InfoWrapper = ({ children, tooltipText }) => {
   const theme = useTheme();
   const intl = useIntl();
 
-  return tooltipText && intl.formatMessage({ id: tooltipText, defaultMessage: '__null' }) != '__null' ?
-    (
-      <Stack direction="row" alignItems="center" spacing={0.8}>
-        {children}
+  return tooltipText && intl.formatMessage({ id: tooltipText, defaultMessage: '__null' }) != '__null' ? (
+    <Stack direction="row" alignItems="center" spacing={0.8}>
+      {children}
 
-        <ClickAwayListener onClickAway={() => { setOpen(false); }}>
-          <Tooltip
-            PopperProps={{
-              disablePortal: true,
+      <ClickAwayListener
+        onClickAway={() => {
+          setOpen(false);
+        }}
+      >
+        <Tooltip
+          PopperProps={{
+            disablePortal: true
+          }}
+          onClose={() => {
+            setOpen(false);
+          }}
+          open={open}
+          disableFocusListener
+          disableHoverListener
+          disableTouchListener
+          title={intl.formatMessage({ id: tooltipText })}
+          placement="top"
+        >
+          <InfoCircleTwoTone
+            twoToneColor={theme.palette.primary[400]}
+            onClick={() => {
+              setOpen(true);
             }}
-            onClose={() => { setOpen(false); }}
-            open={open}
-            disableFocusListener
-            disableHoverListener
-            disableTouchListener
-            title={intl.formatMessage({ id: tooltipText })}
-            placement="top"
-          >
-            <InfoCircleTwoTone twoToneColor={theme.palette.primary[400]} onClick={() => { setOpen(true); }} />
-          </Tooltip>
-        </ClickAwayListener>
-
-      </Stack>
-    ) :
-    (
-      <>{children}</>
-    );
+          />
+        </Tooltip>
+      </ClickAwayListener>
+    </Stack>
+  ) : (
+    <>{children}</>
+  );
 };
 
 export default InfoWrapper;
