@@ -4,6 +4,7 @@ import { useKeycloak } from '@react-keycloak/web';
 import { useSelector } from 'react-redux';
 import { prepareApiBody } from 'utils/stringUtils';
 
+// create context
 const ChatContext = createContext();
 
 const apiKey = process.env.REACT_APP_STREAM_KEY;
@@ -21,6 +22,7 @@ const sort = { last_message_at: -1, updated_at: -1 };
 let keycloakParent = null;
 let employerUserIdParent = null;
 
+// fetch token
 const getToken = async () => {
   let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/messages/auth-tokens', {
     method: 'POST',
@@ -43,6 +45,8 @@ export const ChatProvider = ({ children }) => {
   keycloakParent = keycloak;
   employerUserIdParent = connectAsAdmin ? null : personalInformation?.id;
 
+
+// create chat client
   const client = useCreateChatClient({
     apiKey,
     tokenOrProvider: getToken,
