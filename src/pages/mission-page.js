@@ -146,7 +146,7 @@ const MissionPage = () => {
         dispatch(
           openSnackbar({
             open: true,
-            message: 'Failed applying for mission.',
+            message: (await response.text()) ?? 'Failed applying for mission.',
             variant: 'alert',
             alert: {
               color: 'error'

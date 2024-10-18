@@ -1,8 +1,9 @@
 // material-ui
-import { Grid } from '@mui/material';
+import { Grid, Stack } from '@mui/material';
 
 // project import
 import ProfileHeadshot from 'sections/profile/ProfileHeadshot';
+import ProfileAdmin from 'sections/profile/ProfileAdmin';
 import ProfilePersonal from 'sections/profile/ProfilePersonal';
 import ProfileDocuments from 'sections/profile/ProfileDocuments';
 
@@ -14,7 +15,10 @@ const ProfilePersonalPage = () => {
   return (
     <Grid container spacing={3}>
       <Grid item xs={12} md={3}>
-        <ProfileHeadshot />
+        <Stack spacing={3}>
+          <ProfileHeadshot />
+          <ProfileAdmin />
+        </Stack>
       </Grid>
       <Grid item xs={12} md={9}>
         <ProfilePersonal />
