@@ -165,7 +165,7 @@ export const SliderWithProducts = ({
 								key={index}
 							>
 								<Image
-									src={`${process.env.PUBLIC_IMAGE_URL}/${item.url}`}
+									src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/${item.url}`}
 									alt={item.url}
 									width={100}
 									height={100}

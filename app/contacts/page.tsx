@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 		type: 'website',
 		images: [
 			{
-				url: `${process.env.PUBLIC_IMAGE_URL}/DayLogo_black.svg`,
+				url: `${process.env.NEXT_PUBLIC_IMAGE_URL}/DayLogo_black.svg`,
 				width: 800,
 				height: 600,
 				alt: 'Ukraine',
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
 		description: 'Звяжіться з нами, щоб дізнатися більше про нас.',
 		site: 'https://daypatron.com',
 		creator: 'daypatronteam',
-		images: `${process.env.PUBLIC_IMAGE_URL}/DayLogo_black.svg`,
+		images: `${process.env.NEXT_PUBLIC_IMAGE_URL}/DayLogo_black.svg`,
 	},
 }
 

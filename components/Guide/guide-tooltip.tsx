@@ -27,7 +27,7 @@ export const GuideTooltip = ({ product }: Props) => {
 					<Image
 						width={150}
 						height={150}
-						src={`${process.env.PUBLIC_IMAGE_URL}/${image}`}
+						src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/${image}`}
 						alt='tooltip'
 					/>
 				</TooltipContent>

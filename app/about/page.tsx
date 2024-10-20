@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 		type: 'website',
 		images: [
 			{
-				url: `${process.env.PUBLIC_IMAGE_URL}/DayLogo_ukraine.svg`,
+				url: `${process.env.NEXT_PUBLIC_IMAGE_URL}/DayLogo_ukraine.svg`,
 				width: 800,
 				height: 600,
 				alt: 'Ukraine',
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
 			'Наша місія полягає в тому, щоб зробити найкращі засоби для догляду за зброєю стандартом індустрії.',
 		site: 'https://daypatron.com',
 		creator: 'daypatronteam',
-		images: `${process.env.PUBLIC_IMAGE_URL}/DayLogo_ukraine.svg`,
+		images: `${process.env.NEXT_PUBLIC_IMAGE_URL}/DayLogo_ukraine.svg`,
 	},
 }
 

@@ -43,7 +43,7 @@ export const GoogleMapComponent = () => {
 
 				const MarkerImg = document.createElement('img')
 				// PICTURE
-				MarkerImg.src = `${process.env.PUBLIC_IMAGE_URL}/favicon.svg`
+				MarkerImg.src = `${process.env.NEXT_PUBLIC_IMAGE_URL}/favicon.svg`
 				MarkerImg.style.width = '64px'
 
 				new AdvancedMarkerElement({

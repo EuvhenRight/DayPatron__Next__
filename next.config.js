@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	env: {
-		PUBLIC_IMAGE_URL: '/images',
-		PUBLIC_VIDEO_URL: '/videos',
+		NEXT_PUBLIC_IMAGE_URL: '/images', // Now it's accessible client-side
+		NEXT_PUBLIC_VIDEO_URL: '/videos', // Now it's accessible client-side
 	},
 	async headers() {
 		return [

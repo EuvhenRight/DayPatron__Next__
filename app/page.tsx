@@ -18,7 +18,7 @@ export default async function Home() {
 	return (
 		<>
 			<video
-				src={`${process.env.PUBLIC_VIDEO_URL}/video2.mp4`}
+				src={`${process.env.NEXT_PUBLIC_VIDEO_URL}/video2.mp4`}
 				autoPlay
 				loop
 				muted

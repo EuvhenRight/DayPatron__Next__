@@ -46,7 +46,7 @@ export const TriangleAnimation = () => {
 				className='absolute'
 			>
 				<Image
-					src={`${process.env.PUBLIC_IMAGE_URL}/clean.svg`}
+					src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/clean.svg`}
 					width={0}
 					height={0}
 					alt='clean'
@@ -59,7 +59,7 @@ export const TriangleAnimation = () => {
 				className='absolute'
 			>
 				<Image
-					src={`${process.env.PUBLIC_IMAGE_URL}/protect.svg`}
+					src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/protect.svg`}
 					width={0}
 					height={0}
 					alt='protect'
@@ -71,7 +71,7 @@ export const TriangleAnimation = () => {
 				animate={controlsTriangle}
 			>
 				<Image
-					src={`${process.env.PUBLIC_IMAGE_URL}/lube.svg`}
+					src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/lube.svg`}
 					width={0}
 					height={0}
 					alt='lube'

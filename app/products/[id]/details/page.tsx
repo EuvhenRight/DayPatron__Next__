@@ -24,23 +24,23 @@ export const generateMetadata = async ({
 			title: `${product.name} - DayPatron`,
 			locale: 'uk-UA',
 			description: product.UTP,
-			url: `${process.env.PUBLIC_IMAGE_URL}/${product?.image[5].url}`,
+			url: `${process.env.NEXT_PUBLIC_IMAGE_URL}/${product?.image[5].url}`,
 			type: 'website',
 			images: [
 				{
-					url: `${process.env.PUBLIC_IMAGE_URL}/${product?.image[5].url}`,
+					url: `${process.env.NEXT_PUBLIC_IMAGE_URL}/${product?.image[5].url}`,
 					width: 1200,
 					height: 630,
 					alt: product.name,
 				},
 				{
-					url: `${process.env.PUBLIC_IMAGE_URL}/${product?.image[5].url}`,
+					url: `${process.env.NEXT_PUBLIC_IMAGE_URL}/${product?.image[5].url}`,
 					width: 800,
 					height: 418,
 					alt: product.name,
 				},
 				{
-					url: `${process.env.PUBLIC_IMAGE_URL}/${product?.image[5].url}`,
+					url: `${process.env.NEXT_PUBLIC_IMAGE_URL}/${product?.image[5].url}`,
 					width: 600,
 					height: 315,
 					alt: product.name,
@@ -51,7 +51,7 @@ export const generateMetadata = async ({
 			card: 'summary_large_image',
 			title: `${product.name} - DayPatron`,
 			description: product.UTP,
-			images: `${process.env.PUBLIC_IMAGE_URL}/${product?.image[5].url}`,
+			images: `${process.env.NEXT_PUBLIC_IMAGE_URL}/${product?.image[5].url}`,
 		},
 	}
 }

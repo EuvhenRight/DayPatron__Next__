@@ -168,7 +168,7 @@ export const createEmailHtml = (order: OrderForm): string => {
 			</tr>
 		</table>
 			<p>З повагою,<br>Команда підтримки DayPatron<br>
-			<img src="process.env.PUBLIC_IMAGE_URL/DayLogo_black.svg" alt="DayPatron Logo" style="display: block; width: 150px; height: 50px;">
+			<img src="process.env.NEXT_PUBLIC_IMAGE_URL/DayLogo_black.svg" alt="DayPatron Logo" style="display: block; width: 150px; height: 50px;">
 			</p> 
 					<p style="font-size: 12px; color: #999;">телефон:  +38 (099) 730-21-26 <br>ел.пошта: daypatronteam@gmail.com <br>cайт: http://www.daypatron.com</p>
 		<div>
