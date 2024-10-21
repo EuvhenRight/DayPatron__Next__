@@ -16,7 +16,8 @@ import {
   Pagination,
   Typography,
   Dialog,
-  DialogContent
+  DialogContent,
+  DialogTitle
 } from '@mui/material';
 
 // project import
@@ -227,15 +228,26 @@ const MyProductsPage = () => {
 
       <Dialog
         open={openProductUpsertedDialog}
-        onClose={() => { setOpenProductUpsertedDialog(false);} }
+        onClose={() => { 
+          setOpenProductUpsertedDialog(false);
+        }}
         keepMounted
         TransitionComponent={PopupTransition}
         maxWidth="xs"
       >
+        <DialogTitle>
+          Solution review
+        </DialogTitle>
         <DialogContent sx={{ mt: 2, my: 1 }}>
-          <Typography>10x will approve, reject or come back to you with feedback about the changes to your solution.</Typography>
-          <Stack direction="row" justifyContent="flex-end">
-              <Button variant="contained" onClick={() => {setOpenProductUpsertedDialog(false);}}>OK</Button>
+          <Stack spacing={2}>
+            <Typography>10x will approve, reject or come back to you with feedback about the changes to your solution.</Typography>
+            <Stack direction="row" justifyContent="flex-end">
+                <Button variant="contained" 
+                  onClick={() => { 
+                    setOpenProductUpsertedDialog(false);
+                  }}
+                >OK</Button>
+            </Stack>
           </Stack>
         </DialogContent>
       </Dialog>
