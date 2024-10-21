@@ -27,16 +27,10 @@ import {
 } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-
-// third-party
 import _ from 'lodash';
 import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
-
-// project imports
 import { openSnackbar } from 'store/reducers/snackbar';
-
-// assets
 import { CameraOutlined } from '@ant-design/icons';
 import { normalizeInputValue, prepareApiBody } from 'utils/stringUtils';
 import { useKeycloak } from '@react-keycloak/web';
@@ -44,7 +38,6 @@ import { useKeycloak } from '@react-keycloak/web';
 import jobClusters from 'data/jobClusters';
 const avatarImage = require.context('assets/images/products', true);
 
-// constant
 const getInitialValues = (product) => {
   const newProduct = {
     id: null,
@@ -284,7 +277,7 @@ const UpsertProduct = ({ productId }) => {
             return;
           }
 
-          navigate('/solutions/my');
+          navigate('/solutions/my', { state: { showProductUpsertedDialog: true} });
 
           dispatch(
             openSnackbar({
@@ -327,7 +320,7 @@ const UpsertProduct = ({ productId }) => {
             return;
           }
 
-          navigate('/solutions/my');
+          navigate('/solutions/my', { state: { showProductUpsertedDialog: true}});
 
           dispatch(
             openSnackbar({

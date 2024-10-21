@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 
 // material-ui
 import {
@@ -13,7 +14,9 @@ import {
   Box,
   Slide,
   Pagination,
-  Typography
+  Typography,
+  Dialog,
+  DialogContent
 } from '@mui/material';
 
 // project import
@@ -31,6 +34,7 @@ import { useKeycloak } from '@react-keycloak/web';
 import { compareSortValues } from 'utils/stringUtils';
 import MainCard from 'components/MainCard';
 import WelcomeBanner from 'sections/WelcomeBanner';
+import { PopupTransition } from 'components/@extended/Transitions';
 
 // ==============================|| PRODUCTS - PAGE ||============================== //
 
@@ -51,6 +55,7 @@ const allColumns = [
 
 const MyProductsPage = () => {
   const { keycloak } = useKeycloak();
+  const location = useLocation();
   const personalInformation = useSelector(state => state.personalInformation);
   const navigate = useNavigate();
   const matchDownSM = useMediaQuery((theme) => theme.breakpoints.down('sm'));
@@ -62,7 +67,8 @@ const MyProductsPage = () => {
   const [page, setPage] = useState(1);
   const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
-
+  const [openProductUpsertedDialog, setOpenProductUpsertedDialog] = useState(location.state?.showProductUpsertedDialog ? true : false);
+  
   const bindProducts = async () => {
     try {
       let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(personalInformation.id) + '/products',
@@ -218,6 +224,21 @@ const MyProductsPage = () => {
       </Grid>
 
       <AlertProductDelete product={productToDelete} open={openDeleteAlert} handleClose={handleDeleteAlertClose} onArchive={bindProducts} />
+
+      <Dialog
+        open={openProductUpsertedDialog}
+        onClose={() => { setOpenProductUpsertedDialog(false);} }
+        keepMounted
+        TransitionComponent={PopupTransition}
+        maxWidth="xs"
+      >
+        <DialogContent sx={{ mt: 2, my: 1 }}>
+          <Typography>10x will approve, reject or come back to you with feedback about the changes to your solution.</Typography>
+          <Stack direction="row" justifyContent="flex-end">
+              <Button variant="contained" onClick={() => {setOpenProductUpsertedDialog(false);}}>OK</Button>
+          </Stack>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
