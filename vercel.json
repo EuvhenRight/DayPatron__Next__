@@ -1,21 +1,8 @@
 {
-	"version": 2,
 	"crons": [
 		{
 			"path": "/api/register/delete-password",
 			"schedule": "*/15 * * * *"
-		}
-	],
-	"builds": [
-		{
-			"src": "api/**/*",
-			"use": "@vercel/node"
-		}
-	],
-	"routes": [
-		{
-			"src": "/api/(.*)",
-			"dest": "/api/$1"
 		}
 	]
 }

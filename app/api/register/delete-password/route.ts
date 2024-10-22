@@ -1,63 +1,39 @@
 // app/api/user/auth/delete-password/route.ts
 import prisma from '@/lib/prisma'
-import { NextRequest, NextResponse } from 'next/server'
-import cron from 'node-cron'
+import { NextResponse } from 'next/server'
 
-let jobScheduled = false
-
-function schedulePasswordDeletion(email: string) {
-	if (jobScheduled) {
-		console.log('Password deletion job is already scheduled.')
-		return
-	}
-
-	// Schedule a job to run every minute
-	const job = cron.schedule('*/15 * * * *', async () => {
-		try {
-			// Get the current time
-			const currentTime = new Date()
-
-			// Find the user by email whose password has expired
-			const user = await prisma.user.findUnique({
-				where: { email },
-			})
-
-			if (user && user.passwordExpiresAt! <= currentTime) {
-				// Delete the password for the expired user
-				await prisma.user.update({
-					where: { id: user.id },
-					data: {
-						password: null,
-						passwordExpiresAt: null,
-					},
-				})
-
-				console.log(`Deleted password for user with email ${email}`)
-			}
-		} catch (error) {
-			console.error('Error checking for expired passwords:', error)
-		}
-	})
-
-	job.start() // Start the cron job
-	jobScheduled = true // Mark job as scheduled
-}
-
-export async function POST(request: NextRequest) {
-	const requestData = await request.json()
-
+export async function GET() {
 	try {
-		const { email } = requestData // Extract the email from request data
+		// Get the current time
+		const currentTime = new Date()
 
-		// Schedule the job for this specific email
-		schedulePasswordDeletion(email)
+		// Find all users whose passwords have expired
+		const users = await prisma.user.findMany({
+			where: {
+				passwordExpiresAt: {
+					lte: currentTime,
+				},
+			},
+		})
+
+		// Update all found users
+		for (const user of users) {
+			await prisma.user.update({
+				where: { id: user.id },
+				data: {
+					password: null,
+					passwordExpiresAt: null,
+				},
+			})
+			console.log(`Deleted password for user with email ${user.email}`)
+		}
 
 		return NextResponse.json(
-			{ message: `Password deletion scheduled for ${email}.` },
+			{ message: `Password deletion process completed.` },
 			{ status: 200 }
 		)
 	} catch (error) {
-		console.error('Error scheduling password deletion:', error)
+		console.error('Error checking for expired passwords:', error)
 
 		let errorMessage = 'An unexpected error occurred'
 		if (error instanceof Error) {
