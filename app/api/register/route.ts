@@ -3,9 +3,10 @@ import { ValidationSchema } from '@/lib/db/validation'
 import prisma from '@/lib/prisma'
 import { sendLoginPassword } from '@/lib/services/email-template'
 import { generateRandomPassword } from '@/lib/services/mail-password'
+import { verifySignatureAppRouter } from '@upstash/qstash/nextjs'
 import { NextRequest, NextResponse } from 'next/server'
 
-export async function POST(request: NextRequest) {
+export async function handler(request: NextRequest) {
 	const generatedPassword: string = generateRandomPassword()
 	const requestData = await request.json()
 
@@ -106,5 +107,6 @@ async function schedulePasswordDeletionAPI(email: string) {
 		console.log(data.message)
 	} catch (error) {
 		console.error(error)
-	} // Log the success message from the API
+	}
 }
+export const POST = verifySignatureAppRouter(handler) // Wrap the handler with middleware
