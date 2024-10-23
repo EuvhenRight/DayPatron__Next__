@@ -2,52 +2,43 @@
 import prisma from '@/lib/prisma'
 import { NextResponse } from 'next/server'
 
-export async function GET() {
+export async function POST(request: Request) {
 	try {
-		// Get the current time
-		const currentTime = new Date()
+		const { email } = await request.json()
 
-		// Find all users whose passwords have expired
-		const users = await prisma.user.findMany({
-			where: {
-				passwordExpiresAt: {
-					lte: currentTime,
-				},
+		if (!email) {
+			return NextResponse.json({ error: 'Missing userId' }, { status: 400 })
+		}
+
+		// Find the user based on userId
+		const user = await prisma.user.findUnique({
+			where: { email },
+			select: { id: true, email: true },
+		})
+
+		if (!user) {
+			return NextResponse.json({ error: 'User not found' }, { status: 404 })
+		}
+
+		// Update the user's password and expiration date
+		await prisma.user.update({
+			where: { id: user.id },
+			data: {
+				password: null,
+				passwordExpiresAt: null,
 			},
 		})
 
-		// Update all found users
-		for (const user of users) {
-			await prisma.user.update({
-				where: { id: user.id },
-				data: {
-					password: null,
-					passwordExpiresAt: null,
-				},
-			})
-			console.log(`Deleted password for user with email ${user.email}`)
-		}
-
+		console.log(`Deleted password for user with ID ${user.id}`)
 		return NextResponse.json(
-			{ message: `Password deletion process completed.` },
+			{ message: `Password deleted for user with ID ${user.id}` },
 			{ status: 200 }
 		)
 	} catch (error) {
-		console.error('Error checking for expired passwords:', error)
-
-		let errorMessage = 'An unexpected error occurred'
-		if (error instanceof Error) {
-			errorMessage = error.message
-		} else if (typeof error === 'string') {
-			errorMessage = error
-		} else if (
-			typeof error === 'object' &&
-			error !== null &&
-			'message' in error
-		) {
-			errorMessage = (error as any).message
-		}
-
-		return NextResponse.json({ error: errorMessage }, { status: 500 })
+		console.error('Error deleting password:', error)
+		return NextResponse.json(
+			{ error: 'An unexpected error occurred' },
+			{ status: 500 }
+		)
 	}
 }

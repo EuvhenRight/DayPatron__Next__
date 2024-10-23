@@ -83,22 +83,28 @@ export async function POST(request: NextRequest) {
 }
 
 async function schedulePasswordDeletionAPI(email: string) {
-	const response = await fetch(
-		`${process.env.NEXT_PUBLIC_API_URL}/api/register/delete-password`,
-		{
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({ email }),
+	try {
+		const response = await fetch(
+			`https://qstash.upstash.io/v2/publish/${process.env.NEXT_PUBLIC_API_URL}/api/register/delete-password`,
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Upstash-Timeout': '1m',
+					Authorization: `Bearer ${process.env.QSTASH_TOKEN}`,
+				},
+				body: JSON.stringify({ email }),
+			}
+		)
+
+		if (!response.ok) {
+			const errorMessage = await response.text()
+			throw new Error(`Failed to schedule password deletion: ${errorMessage}`)
 		}
-	)
 
-	if (!response.ok) {
-		const errorMessage = await response.text()
-		throw new Error(`Failed to schedule password deletion: ${errorMessage}`)
-	}
-
-	const data = await response.json()
-	console.log(data.message) // Log the success message from the API
+		const data = await response.json()
+		console.log(data.message)
+	} catch (error) {
+		console.error(error)
+	} // Log the success message from the API
 }
