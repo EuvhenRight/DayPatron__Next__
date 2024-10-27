@@ -87,6 +87,7 @@ async function schedulePasswordDeletionAPI(email: string) {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
+				Authorization: `Bearer ${process.env.QSTASH_TOKEN}`,
 			},
 			body: JSON.stringify({ email }), // Pass the userId for deletion
 		}
