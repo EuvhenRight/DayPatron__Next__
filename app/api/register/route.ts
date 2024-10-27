@@ -3,10 +3,9 @@ import { ValidationSchema } from '@/lib/db/validation'
 import prisma from '@/lib/prisma'
 import { sendLoginPassword } from '@/lib/services/email-template'
 import { generateRandomPassword } from '@/lib/services/mail-password'
-import { verifySignatureAppRouter } from '@upstash/qstash/nextjs'
 import { NextRequest, NextResponse } from 'next/server'
 
-export async function handler(request: NextRequest) {
+export async function POST(request: NextRequest) {
 	const generatedPassword: string = generateRandomPassword()
 	const requestData = await request.json()
 
@@ -42,7 +41,7 @@ export async function handler(request: NextRequest) {
 
 			// Call the delete-password API to schedule the deletion
 			await schedulePasswordDeletionAPI(updatedUser.email)
-			console.log(updatedUser, 'updatedUser')
+
 			return NextResponse.json({ ...updatedUser }, { status: 201 })
 		} else {
 			// If the user doesn't exist, create a new user
@@ -83,30 +82,20 @@ export async function handler(request: NextRequest) {
 	}
 }
 
+// Function to call the deletion endpoint
 async function schedulePasswordDeletionAPI(email: string) {
-	try {
-		const response = await fetch(
-			`https://qstash.upstash.io/v2/publish/${process.env.NEXT_PUBLIC_API_URL}/api/register/delete-password`,
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'Upstash-Timeout': '1m',
-					Authorization: `Bearer ${process.env.QSTASH_TOKEN}`,
-				},
-				body: JSON.stringify({ email }),
-			}
-		)
-
-		if (!response.ok) {
-			const errorMessage = await response.text()
-			throw new Error(`Failed to schedule password deletion: ${errorMessage}`)
+	const res = await fetch(
+		`${process.env.NEXT_PUBLIC_BASE_URL}/api/register/delete-password`,
+		{
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ email }), // Pass the userId for deletion
 		}
+	)
 
-		const data = await response.json()
-		console.log(data.message)
-	} catch (error) {
-		console.error(error)
+	if (!res.ok) {
+		throw new Error('Failed to schedule password deletion.')
 	}
 }
-export const POST = verifySignatureAppRouter(handler) // Wrap the handler with middleware

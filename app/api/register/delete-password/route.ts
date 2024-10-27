@@ -1,44 +1,31 @@
-// app/api/user/auth/delete-password/route.ts
+// app/api/register/delete-password.ts
+
 import prisma from '@/lib/prisma'
-import { NextResponse } from 'next/server'
+import { User } from '@prisma/client'
+import { serve } from '@upstash/workflow/nextjs'
 
-export async function POST(request: Request) {
-	try {
-		const { email } = await request.json()
+export const { POST } = serve<User>(async context => {
+	// Get the email from the request payload
+	const { email } = context.requestPayload
 
-		if (!email) {
-			return NextResponse.json({ error: 'Missing userId' }, { status: 400 })
-		}
-
-		// Find the user based on userId
-		const user = await prisma.user.findUnique({
-			where: { email },
-			select: { id: true, email: true },
-		})
-
-		if (!user) {
-			return NextResponse.json({ error: 'User not found' }, { status: 404 })
-		}
-
-		// Update the user's password and expiration date
-		await prisma.user.update({
-			where: { id: user.id },
-			data: {
-				password: null,
-				passwordExpiresAt: null,
-			},
-		})
-
-		console.log(`Deleted password for user with ID ${user.id}`)
-		return NextResponse.json(
-			{ message: `Password deleted for user with ID ${user.id}` },
-			{ status: 200 }
-		)
-	} catch (error) {
-		console.error('Error deleting password:', error)
-		return NextResponse.json(
-			{ error: 'An unexpected error occurred' },
-			{ status: 500 }
-		)
+	if (!email) {
+		throw new Error('Email is required.')
 	}
-}
+
+	// Calculate the date for 15 minutes from now
+	const fifteenMinutesFromNow = new Date()
+	fifteenMinutesFromNow.setMinutes(fifteenMinutesFromNow.getMinutes() + 15)
+
+	// Wait until the calculated date
+	await context.sleepUntil('wait-for-fifteen-minutes', fifteenMinutesFromNow)
+
+	await prisma.user.update({
+		where: { email: email },
+		data: {
+			password: null,
+			passwordExpiresAt: null,
+		},
+	})
+
+	console.log(`Password for user ${email} deleted after 15 minutes.`)
+})

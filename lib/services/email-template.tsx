@@ -16,7 +16,7 @@ export async function sendLoginPassword({ email, generatedPassword }: Props) {
 			html: `<p style="font-size: 14px; color: #666;">Ваш 6-значний пароль: 		<strong>${generatedPassword}</strong></p>
       <p style="font-size: 14px; color: #666;">Цей код може бути використаний лише один раз. Він закінчується через 15 хвилин.</p>
 			<p>З повагою,<br>Команда підтримки DayPatron<br>
-			<img src="${process.env.NEXT_PUBLIC_IMAGE_URL}/DayLogo.svg" alt="DayPatron_Logo" style="display: block; width: 150px; height: 50px; padding: 10px 0;">
+			<img src="${process.env.NEXT_PUBLIC_IMAGE_URL}/DayLogo.svg" alt="DayPatron_Logo" style="display: block; width: 150px; height: 50px; padding: 10px 0;"/>
 			</p> 
       <p style="font-size: 12px; color: #999;">телефон:  +38 (099) 730-21-26 <br>ел.пошта: daypatronteam@gmail.com <br>cайт: http://www.daypatron.com</p>
       <p style="font-size: 12px; color: #999; text-align: center">© 2023 DayPatron Inc. Усі права захищені</p>`,
