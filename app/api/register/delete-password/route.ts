@@ -1,5 +1,4 @@
 // app/api/register/delete-password.ts
-
 import prisma from '@/lib/prisma'
 import { User } from '@prisma/client'
 import { serve } from '@upstash/workflow/nextjs'

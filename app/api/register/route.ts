@@ -3,11 +3,13 @@ import { ValidationSchema } from '@/lib/db/validation'
 import prisma from '@/lib/prisma'
 import { sendLoginPassword } from '@/lib/services/email-template'
 import { generateRandomPassword } from '@/lib/services/mail-password'
+import { Client } from '@upstash/qstash'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
 	const generatedPassword: string = generateRandomPassword()
 	const requestData = await request.json()
+
 	try {
 		// Validate the request body
 		const validatedBody = ValidationSchema.authUser.safeParse(requestData)
@@ -79,21 +81,20 @@ export async function POST(request: NextRequest) {
 	}
 }
 
+const qstashClient = new Client({ token: process.env.QSTASH_URL as string })
 // Function to call the deletion endpoint
 async function schedulePasswordDeletionAPI(email: string) {
-	const res = await fetch(
-		`${process.env.NEXT_PUBLIC_BASE_URL}/api/register/delete-password`,
-		{
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${process.env.QSTASH_TOKEN}`,
-			},
-			body: JSON.stringify({ email }), // Pass the userId for deletion
+	try {
+		if (!email) {
+			throw new Error('Failed to schedule password deletion.')
 		}
-	)
 
-	if (!res.ok) {
-		throw new Error('Failed to schedule password deletion.')
+		// Call the delete-password API
+		await qstashClient.publishJSON({
+			url: `${process.env.UPSTASH_WORKFLOW_URL}/api/register/delete-password`,
+			body: JSON.stringify({ email }), // Pass the userId for deletion
+		})
+	} catch (error) {
+		console.error('Error scheduling password deletion:', error)
 	}
 }
