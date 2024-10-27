@@ -8,17 +8,14 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function POST(request: NextRequest) {
 	const generatedPassword: string = generateRandomPassword()
 	const requestData = await request.json()
-
 	try {
 		// Validate the request body
 		const validatedBody = ValidationSchema.authUser.safeParse(requestData)
 		if (!validatedBody.success) {
 			return NextResponse.json(validatedBody.error.errors, { status: 400 })
 		}
-
 		// Send email with the new password
 		await sendLoginPassword({ email: requestData.email, generatedPassword })
-
 		// Check if the email already exists in the database
 		const existingUser = await prisma.user.findUnique({
 			where: {
