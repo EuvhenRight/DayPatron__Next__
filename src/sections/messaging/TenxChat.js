@@ -52,15 +52,14 @@ const getToken = async () => {
 };
 
 const TenxChat = ({targetEntity, setTargetEntity}) => {
+  const { keycloak } = useKeycloak();
   const theme = useTheme();
   const matchDownMD = useMediaQuery(theme.breakpoints.down('md'));
   const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [connectAsAdmin, setConnectAsAdmin] = useState(true);
+  const [connectAsAdmin, setConnectAsAdmin] = useState(keycloak.tokenParsed.roles.includes('admin'));
   const [isChannelSelectorVisible, setIsChannelSelectorVisible] = useState(true);
   const [isMessagesContainerVisible, setIsMessagesContainerVisible] = useState(true);
-
-  const { keycloak } = useKeycloak();
   const personalInformation = useSelector(state => state.personalInformation);
   keycloakParent = keycloak;
   contractorIdParent = connectAsAdmin ? null : personalInformation?.id;
