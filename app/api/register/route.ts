@@ -94,7 +94,7 @@ async function schedulePasswordDeletionAPI(email: string) {
 		// Call the delete-password API
 		await qstashClient.publishJSON({
 			url: `${process.env.NEXT_PUBLIC_UPSTASH_WORKFLOW_URL}/api/register/delete-password`,
-			body: JSON.stringify({ email }), // Pass the userId for deletion
+			body: { email }, // Pass the userId for deletion
 		})
 	} catch (error) {
 		console.error('Error scheduling password deletion:', error)
