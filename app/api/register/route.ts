@@ -82,18 +82,18 @@ export async function POST(request: NextRequest) {
 }
 
 const qstashClient = new Client({
-	token: process.env.UPSTASH_WORKFLOW_URL as string,
+	token: process.env.QSTASH_TOKEN as string,
 })
 // Function to call the deletion endpoint
 async function schedulePasswordDeletionAPI(email: string) {
 	try {
 		if (!email) {
-			throw new Error('Failed to schedule password deletion.')
+			throw new Error('Email is required')
 		}
 
 		// Call the delete-password API
 		await qstashClient.publishJSON({
-			url: `${process.env.UPSTASH_WORKFLOW_URL}/api/register/delete-password`,
+			url: `${process.env.NEXT_PUBLIC_UPSTASH_WORKFLOW_URL}/api/register/delete-password`,
 			body: JSON.stringify({ email }), // Pass the userId for deletion
 		})
 	} catch (error) {

@@ -13,7 +13,7 @@ export const { POST } = serve<User>(async context => {
 
 	// Calculate the date for 15 minutes from now
 	const fifteenMinutesFromNow = new Date()
-	fifteenMinutesFromNow.setMinutes(fifteenMinutesFromNow.getMinutes() + 1)
+	fifteenMinutesFromNow.setMinutes(fifteenMinutesFromNow.getMinutes() + 15)
 
 	// Wait until the calculated date
 	await context.sleepUntil('wait-for-fifteen-minutes', fifteenMinutesFromNow)
