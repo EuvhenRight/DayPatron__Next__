@@ -81,7 +81,9 @@ export async function POST(request: NextRequest) {
 	}
 }
 
-const qstashClient = new Client({ token: process.env.QSTASH_URL as string })
+const qstashClient = new Client({
+	token: process.env.UPSTASH_WORKFLOW_URL as string,
+})
 // Function to call the deletion endpoint
 async function schedulePasswordDeletionAPI(email: string) {
 	try {
