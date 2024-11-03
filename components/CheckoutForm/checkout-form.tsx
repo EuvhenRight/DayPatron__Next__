@@ -14,11 +14,7 @@ import {
 } from '@/components/ui/form'
 import { ProfileForm } from '@/components/UserNavigation/profile-form'
 import { orderItemScheme } from '@/lib/db/validation'
-import {
-	CartWithVariants,
-	DeliveryWithItems,
-	OrderWithItems,
-} from '@/lib/types/types'
+import { CartWithVariants, DeliveryWithItems } from '@/lib/types/types'
 import { rubikGlitch } from '@/lib/utils/font'
 import { cn } from '@/lib/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -35,9 +31,7 @@ import { z } from 'zod'
 interface Props {
 	cart?: CartWithVariants | null
 	currentDelivery?: DeliveryWithItems | null
-	currentUser?: User | null
-	order?: OrderWithItems | null
-	orders: OrderWithItems[] | null
+	currentUser?: User
 }
 
 export const CheckoutForm = ({ cart, currentDelivery, currentUser }: Props) => {

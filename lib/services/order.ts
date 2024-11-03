@@ -1,21 +1,22 @@
-import { auth } from '@/auth'
 import { orderItemScheme } from '@/lib/db/validation'
 import prisma from '@/lib/prisma'
 import { OrderWithItems, OrderWithItemsWithVariants } from '@/lib/types/types'
+import { User } from '@prisma/client'
 import { cache } from 'react'
 import { z } from 'zod'
+import { getCurrentUser } from './user'
 
 export const getOrder = cache(
 	async (): Promise<OrderWithItemsWithVariants | null> => {
-		const session = await auth()
+		const user = await getCurrentUser()
 
-		if (!session) {
-			console.warn('No session found.')
+		if (!user) {
+			console.warn('No user found.')
 			return null
 		}
 
 		const order = await prisma.order.findFirst({
-			where: { userId: session.user.id },
+			where: { userId: user?.id },
 			include: {
 				address: true,
 				item: {
@@ -36,15 +37,15 @@ export const getOrder = cache(
 
 export const getManyOrders = cache(
 	async (): Promise<OrderWithItemsWithVariants[] | null> => {
-		const session = await auth()
+		const user = await getCurrentUser()
 
-		if (!session) {
-			console.warn('No session found.')
+		if (!user) {
+			console.warn('No user found.')
 			return null
 		}
 
 		const orders = await prisma.order.findMany({
-			where: { userId: session.user.id },
+			where: { userId: user?.id },
 			include: {
 				item: {
 					include: {
@@ -69,10 +70,11 @@ export const getManyOrders = cache(
 
 export async function createOrder(
 	data: z.infer<typeof orderItemScheme>
-): Promise<OrderWithItems | null> {
-	const session = await auth()
+): Promise<OrderWithItemsWithVariants | null> {
+	const user = (await getCurrentUser()) as User
 
-	if (!session || !session.user?.id) {
+	if (!user) {
+		console.warn('No user found.')
 		return null
 	}
 
@@ -89,11 +91,16 @@ export async function createOrder(
 		where: { id: data.address },
 	})
 
-	if (session) {
+	if (!deliveryItem) {
+		console.warn('No delivery item found.')
+		return null
+	}
+
+	if (!order) {
 		order = await prisma.order.create({
 			data: {
 				item: { create: [] },
-				userId: session.user.id,
+				userId: user.id,
 				cartId: data.cartId,
 				deliveryItemId: deliveryItem?.id!,
 				itemsTotal: 0,

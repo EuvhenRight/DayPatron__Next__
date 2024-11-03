@@ -27,6 +27,7 @@ interface Props {
 }
 export const BonusForm = ({ cart }: Props) => {
 	const [error, setError] = useState<string | null>(null)
+
 	// VALIDATION SCHEMA
 	const form = useForm<z.infer<typeof ValidationSchema.bonusCode>>({
 		resolver: zodResolver(ValidationSchema.bonusCode),
@@ -61,7 +62,7 @@ export const BonusForm = ({ cart }: Props) => {
 			return response
 		} catch (error) {
 			console.log(error)
-			setError('Щось пішло не так. Будь ласка, спробуйте знову пізніше.')
+			setError((error as Error).message)
 		}
 	}
 	return (

@@ -8,20 +8,20 @@ import { getCurrentUser } from '@/lib/services/user'
 export const dynamic = 'force-dynamic'
 
 export default async function Checkouts() {
-	const [currentDelivery, cart, currentUser, order, orders] = await Promise.all(
-		[getDelivery(), getCart(), getCurrentUser(), getOrder(), getManyOrders()]
-	)
-
-	// Ensure you are not trying to access any headers or dynamic server features here
+	const [currentDelivery, cart, currentUser] = await Promise.all([
+		getDelivery(),
+		getCart(),
+		getCurrentUser(),
+		getOrder(),
+		getManyOrders(),
+	])
 
 	return (
 		<div>
 			<CheckoutForm
 				currentDelivery={currentDelivery}
 				cart={cart}
-				currentUser={currentUser}
-				order={order}
-				orders={orders}
+				currentUser={currentUser!}
 			/>
 		</div>
 	)

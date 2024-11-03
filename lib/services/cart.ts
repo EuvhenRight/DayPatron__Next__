@@ -1,18 +1,18 @@
-import { auth } from '@/auth'
 import prisma from '@/lib/prisma'
 import { CartWithVariants } from '@/lib/types/types'
 import { Cart } from '@prisma/client'
 import { cookies } from 'next/headers'
 import { cache } from 'react'
+import { getCurrentUser } from './user'
 
 export const getCart = cache(async (): Promise<CartWithVariants | null> => {
-	const session = await auth()
+	const user = await getCurrentUser()
 
 	let cart: CartWithVariants | null = null
 
-	if (session) {
+	if (user) {
 		cart = await prisma.cart.findFirst({
-			where: { userId: session.user.id },
+			where: { userId: user?.id },
 			include: { items: { include: { variant: true } } },
 		})
 	} else {
@@ -34,15 +34,15 @@ export const getCart = cache(async (): Promise<CartWithVariants | null> => {
 })
 
 export async function createCart(): Promise<CartWithVariants> {
-	const session = await auth()
+	const user = await getCurrentUser()
 
 	let cart: Cart | null = null
 
-	if (session) {
+	if (user) {
 		cart = await prisma.cart.create({
 			data: {
 				items: { create: [] },
-				userId: session.user.id,
+				userId: user?.id,
 				itemsTotal: 0,
 				originalTotal: 0,
 				subTotal: 0,
