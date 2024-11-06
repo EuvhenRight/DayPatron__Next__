@@ -29,7 +29,8 @@ export const ChannelListContainer = (props) => {
       if((targetEntity?.targetUserId || targetEntity?.targetEmployerId) && client && setActiveChannel && keycloak.idToken) {
         var newChannelId = await createChannelForUser(targetEntity);
         await activateChannelById(newChannelId);
-        setTargetEntity(null);
+        if(setTargetEntity)
+          setTargetEntity(null);
       }
     })();
   }, [connectAsAdmin, targetEntity, client, setActiveChannel, keycloak.idToken]);
