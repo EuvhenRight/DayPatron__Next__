@@ -10,13 +10,7 @@ import 'assets/css/streamio.css';
 import { useChecklist } from './ChecklistTasks';
 import { ChannelContainer } from 'components/streamio/ChannelContainer/ChannelContainer';
 import { ChannelListContainer } from 'components/streamio/ChannelListContainer/ChannelListContainer';
-import { 
-  Grid, 
-  Stack,
-  Typography,
-  Switch,
-  useMediaQuery 
-} from '@mui/material';
+import { Grid, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 const apiKey = process.env.REACT_APP_STREAM_KEY;
@@ -26,8 +20,8 @@ const targetOrigin = urlParams.get('target_origin') || process.env.REACT_APP_TAR
 const i18nInstance = new Streami18n({
   language: 'en',
   translationsForLanguage: {
-    ...enTranslations,
-  },
+    ...enTranslations
+  }
 });
 
 const options = { state: true, watch: true, presence: true, limit: 100 };
@@ -36,56 +30,54 @@ const sort = { last_message_at: -1, updated_at: -1 };
 let keycloakParent = null;
 let contractorIdParent = null;
 const getToken = async () => {
-  let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/messages/auth-tokens',
-    {
-      method: 'POST',
-      headers: {
-        'Authorization': 'Bearer ' + keycloakParent?.idToken,
-        'Content-Type': 'application/json'
-      },
-      body: prepareApiBody({contractorId: contractorIdParent})
-    }
-  );
+  let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/messages/auth-tokens', {
+    method: 'POST',
+    headers: {
+      Authorization: 'Bearer ' + keycloakParent?.idToken,
+      'Content-Type': 'application/json'
+    },
+    body: prepareApiBody({ contractorId: contractorIdParent })
+  });
 
   let json = await response.json();
   return json.token;
 };
 
-const TenxChat = ({targetEntity, setTargetEntity}) => {
+const TenxChat = ({ targetEntity, setTargetEntity }) => {
   const { keycloak } = useKeycloak();
   const theme = useTheme();
   const matchDownMD = useMediaQuery(theme.breakpoints.down('md'));
   const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [connectAsAdmin, setConnectAsAdmin] = useState(keycloak.tokenParsed.roles.includes('admin'));
   const [isChannelSelectorVisible, setIsChannelSelectorVisible] = useState(true);
   const [isMessagesContainerVisible, setIsMessagesContainerVisible] = useState(true);
-  const personalInformation = useSelector(state => state.personalInformation);
+  const personalInformation = useSelector((state) => state.personalInformation);
+  const admin = useSelector((state) => state.admin);
   keycloakParent = keycloak;
-  contractorIdParent = connectAsAdmin ? null : personalInformation?.id;
+  contractorIdParent = admin?.workAsAdmin ? null : personalInformation?.id;
 
   const client = useCreateChatClient({
     apiKey,
     tokenOrProvider: getToken,
-    userData: { 
-      id: connectAsAdmin ? personalInformation?.messagingProviderAdminUserId : personalInformation?.messagingProviderUserId
+    userData: {
+      id: admin?.workAsAdmin ? personalInformation?.messagingProviderAdminUserId : personalInformation?.messagingProviderUserId
     }
   });
-  
+
   const onChannelSelected = () => {
-    if(matchDownMD) {
+    if (matchDownMD) {
       setIsChannelSelectorVisible(false);
       setIsMessagesContainerVisible(true);
     }
-  }
+  };
 
   const onShowChannelSelector = () => {
-    if(matchDownMD) {
+    if (matchDownMD) {
       setIsChannelSelectorVisible(true);
       setIsMessagesContainerVisible(false);
     }
-  }
-  
+  };
+
   useChecklist(client, targetOrigin);
 
   useEffect(() => {
@@ -93,7 +85,7 @@ const TenxChat = ({targetEntity, setTargetEntity}) => {
   }, [client]);
 
   useEffect(() => {
-    if(matchDownMD) {
+    if (matchDownMD) {
       setIsChannelSelectorVisible(true);
       setIsMessagesContainerVisible(false);
     } else {
@@ -106,7 +98,6 @@ const TenxChat = ({targetEntity, setTargetEntity}) => {
 
   return (
     <Chat {...{ client, i18nInstance }}>
-
       <Grid container spacing={1}>
         <Grid item xs={12} md={4} className={isChannelSelectorVisible ? '' : 'tenx-hidden'}>
           <ChannelListContainer
@@ -116,26 +107,14 @@ const TenxChat = ({targetEntity, setTargetEntity}) => {
               setIsCreating,
               setIsEditing,
               sort,
-              targetEntity, 
+              targetEntity,
               setTargetEntity,
               onChannelSelected,
-              connectAsAdmin,
-              headerPlaceholder: keycloak.tokenParsed.roles.includes('admin') ?
-                <Stack direction="row" alignItems="center" spacing={1}>
-                  <Typography>Connect as admin</Typography>
-                  <Switch
-                    checked={connectAsAdmin}
-                    onChange={(event, checked) => {
-                      setConnectAsAdmin(checked);
-                    }}
-                  />
-                </Stack>
-                :
-                <></>
+              connectAsAdmin: admin.workAsAdmin
             }}
           />
         </Grid>
-      
+
         <Grid item xs={12} md={8} className={isMessagesContainerVisible ? '' : 'tenx-hidden'}>
           <ChannelContainer
             {...{
@@ -145,15 +124,13 @@ const TenxChat = ({targetEntity, setTargetEntity}) => {
               setIsEditing,
               onShowChannelSelector,
               isChannelSelectorVisible,
-              connectAsAdmin
+              connectAsAdmin: admin.workAsAdmin
             }}
           />
         </Grid>
-      
       </Grid>
     </Chat>
   );
-
 };
 
 export default TenxChat;
