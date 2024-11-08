@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 
 // project imports
 import Loader from 'components/Loader';
-import { LOGIN, LOGOUT, PERSONAL_INFORMATION_GET } from 'store/reducers/actions';
+import { LOGIN, LOGOUT, PERSONAL_INFORMATION_GET, ADMIN_UPDATE } from 'store/reducers/actions';
 import authReducer from 'store/reducers/auth';
 
 import { useKeycloak } from '@react-keycloak/web';
@@ -32,11 +32,12 @@ export const KeycloakProvider = ({ children }) => {
         contractorIdentifier = localStorage.getItem('adminSelectedContractorId');
       }
 
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(contractorIdentifier),
+      let response = await fetch(
+        process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/contractors/' + encodeURIComponent(contractorIdentifier),
         {
           method: 'GET',
           headers: {
-            'Authorization': 'Bearer ' + keycloak.idToken
+            Authorization: 'Bearer ' + keycloak.idToken
           }
         }
       );
@@ -45,7 +46,7 @@ export const KeycloakProvider = ({ children }) => {
     } catch (error) {
       return { success: false };
     }
-  }
+  };
 
   useEffect(() => {
     (async () => {
@@ -64,34 +65,35 @@ export const KeycloakProvider = ({ children }) => {
         if (fetchContractorResponse.success) {
           dispatchGlobal({ type: PERSONAL_INFORMATION_GET, payload: fetchContractorResponse.data });
         }
+
+        let workAsAdminLocalStorage = localStorage.getItem('workAsAdmin');
+        let workAsAdmin = workAsAdminLocalStorage?.toLocaleLowerCase() === 'true';
+        if (!workAsAdminLocalStorage)
+          workAsAdmin = keycloak?.tokenParsed?.roles?.includes('admin');
+        dispatchGlobal({ type: ADMIN_UPDATE, payload: { workAsAdmin } });
       }
     })();
-  },
-    [
-      keycloak?.authenticated,
-      keycloak?.tokenParsed?.email,
-      keycloak?.tokenParsed?.name,
-      keycloak?.idTokenParsed?.preferred_username,
-      keycloak?.tokenParsed?.roles,
-      keycloak?.idToken,
-      localStorage.getItem('adminSelectedContractorId')
-    ]
-  );
+  }, [
+    keycloak?.authenticated,
+    keycloak?.tokenParsed?.email,
+    keycloak?.tokenParsed?.name,
+    keycloak?.idTokenParsed?.preferred_username,
+    keycloak?.tokenParsed?.roles,
+    keycloak?.idToken,
+    localStorage.getItem('adminSelectedContractorId'),
+    localStorage.getItem('workAsAdmin')
+  ]);
 
   const logout = () => {
     keycloak.logout();
     dispatch({ type: LOGOUT });
   };
-  
+
   if (state.isInitialized !== undefined && !state.isInitialized) {
     return <Loader />;
   }
 
-  return (
-    <KeycloakContext.Provider value={{ ...state, logout }}>
-      {children}
-    </KeycloakContext.Provider>
-  );
+  return <KeycloakContext.Provider value={{ ...state, logout }}>{children}</KeycloakContext.Provider>;
 };
 
 KeycloakProvider.propTypes = {

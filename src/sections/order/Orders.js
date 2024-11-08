@@ -2,18 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import {
-  Grid,
-  Stack,
-  useMediaQuery,
-  FormControl,
-  Select,
-  MenuItem,
-  Box,
-  Slide,
-  Pagination,
-  Typography
-} from '@mui/material';
+import { Grid, Stack, useMediaQuery, FormControl, Select, MenuItem, Box, Slide, Pagination, Typography } from '@mui/material';
 
 import EmptyCardList from 'components/cards/skeleton/EmptyCardList';
 import MissionOrderCard from 'sections/order/MissionOrderCard';
@@ -47,7 +36,8 @@ const allColumns = [
 const Orders = () => {
   const { keycloak } = useKeycloak();
   const navigate = useNavigate();
-  const personalInformation = useSelector(state => state.personalInformation);
+  const personalInformation = useSelector((state) => state.personalInformation);
+  const admin = useSelector((state) => state.admin);
   const matchDownSM = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   const [sortBy, setSortBy] = useState('Id');
@@ -65,7 +55,7 @@ const Orders = () => {
     (async () => {
       await bindOrders();
     })();
-  }, [personalInformation?.id, keycloak?.idToken]);
+  }, [personalInformation?.id, keycloak?.idToken, admin?.workAsAdmin]);
 
   useEffect(() => {
     const newOrders = orders.filter((value) => {
@@ -80,14 +70,14 @@ const Orders = () => {
 
   const bindOrders = async () => {
     try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/orders?contractorId=' + encodeURIComponent(personalInformation.id),
-        {
-          method: 'GET',
-          headers: {
-            'Authorization': 'Bearer ' + keycloak.idToken
-          }
+      let urlParams = admin.workAsAdmin ? '' : '?contractorId=' + encodeURIComponent(personalInformation.id);
+
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/orders' + urlParams, {
+        method: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + keycloak.idToken
         }
-      );
+      });
 
       let json = await response.json();
 
@@ -95,7 +85,7 @@ const Orders = () => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const handleChangeSort = (event) => {
     setSortBy(event.target.value);
@@ -170,15 +160,11 @@ const Orders = () => {
             .map((order, index) => (
               <Slide key={index} direction="up" in={true} timeout={50}>
                 <Grid item xs={12} sm={6} lg={4}>
-                  {order.type === 'MissionOrder' &&
-                    <MissionOrderCard order={order} handleApproveClick={handleApproveMissionOrderClick} />
-                  }
-                  {order.type === 'ProductOrder' &&
-                    <ProductOrderCard order={order} handleApproveClick={handleApproveProductOrderClick} />
-                  }
-                  {order.type === 'SubscriptionOrder' &&
+                  {order.type === 'MissionOrder' && <MissionOrderCard order={order} handleApproveClick={handleApproveMissionOrderClick} />}
+                  {order.type === 'ProductOrder' && <ProductOrderCard order={order} handleApproveClick={handleApproveProductOrderClick} />}
+                  {order.type === 'SubscriptionOrder' && (
                     <SubscriptionOrderCard order={order} handleApproveClick={handleApproveSubscriptionOrderClick} />
-                  }
+                  )}
                 </Grid>
               </Slide>
             ))
