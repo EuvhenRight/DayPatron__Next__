@@ -14,16 +14,18 @@ import './globals.css'
 export const metadata: Metadata = {
 	title: 'DayPatron',
 	description:
-		'DAY Patron – ідеальний супутник для тих, хто цінує бездоганність та догляд за своєю зброєю.',
+		'Ідеальний супутник для тих, хто цінує бездоганність та догляд за своєю зброєю.',
 	openGraph: {
 		title: 'DayPatron',
 		description:
-			'DAY Patron – ідеальний супутник для тих, хто цінує бездоганність та догляд за своєю зброєю.',
+			'Ідеальний деальний супутник для тих, хто цінує бездоганність та догляд за своєю зброєю.',
 		url: 'https://www.daypatron.com/', // Ensure your URL is correct
 		type: 'website',
 		images: [
 			{
 				url: `${process.env.NEXT_PUBLIC_IMAGE_URL}/DayLogo_black.png`,
+				width: 800,
+				height: 300,
 				alt: 'DayPatron logo and product',
 			},
 		],
