@@ -12,11 +12,30 @@ import './globals.css'
 //TODO: add generatedStaticParams
 
 export const metadata: Metadata = {
-	title: 'DayPatron',
+	title: 'DayPatron – ідеальний супутник для догляду за вашою зброєю', // Update title (optimized length)
 	description:
 		'DAY Patron – ідеальний супутник для тих, хто цінує бездоганність та догляд за своєю зброєю.',
+	openGraph: {
+		title: 'DayPatron – ідеальний супутник для догляду за вашою зброєю', // Same update for Open Graph
+		description:
+			'DAY Patron – ідеальний супутник для тих, хто цінує бездоганність та догляд за своєю зброєю.',
+		url: 'https://www.daypatron.com/', // Ensure your URL is correct
+		type: 'website',
+		images: [
+			{
+				url: `${process.env.NEXT_PUBLIC_IMAGE_URL}/opengraph-image.png`,
+				width: 1200,
+				height: 630,
+				alt: 'DayPatron logo and product',
+			},
+		],
+	},
 	twitter: {
-		card: 'summary_large_image',
+		card: 'summary_large_image', // Correct card type for large image
+		title: 'DayPatron – ідеальний супутник для догляду за вашою зброєю', // Same update for Twitter
+		description:
+			'DAY Patron – ідеальний супутник для тих, хто цінує бездоганність та догляд за своєю зброєю.',
+		images: `${process.env.NEXT_PUBLIC_IMAGE_URL}/opengraph-image.png`, // Ensure this points to the same image
 	},
 }
 
