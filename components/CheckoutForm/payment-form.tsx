@@ -67,8 +67,7 @@ export const PaymentForm = ({ onChange, payment, setPayment }: Props) => {
 								</AccordionTrigger>
 								<AccordionContent>
 									<p>
-										{/* ADD TEXT <br /> */}
-										{item.text.split('\n').map((line, index) => (
+										{(item.text || '').split('\n').map((line, index) => (
 											<React.Fragment key={index}>
 												{line}
 												<br />

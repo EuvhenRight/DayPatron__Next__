@@ -19,6 +19,7 @@ export const FeaturedCard = ({ item, variants }: Props) => {
 						src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/partners/${item.image}`}
 						width={250}
 						height={100}
+						style={{ width: '100%', height: 'auto' }}
 						alt={item.image}
 						//TODO: add sizes images
 					/>
