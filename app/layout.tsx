@@ -5,41 +5,10 @@ import { getCart } from '@/lib/services/cart'
 import getSession from '@/lib/services/getSession'
 import { getAllProducts } from '@/lib/services/products'
 import { mulish } from '@/lib/utils/font'
-import { Metadata } from 'next'
+import SEO from '@/next-seo.config'
 import { SessionProvider } from 'next-auth/react'
+import { DefaultSeo } from 'next-seo'
 import './globals.css'
-
-// METADATA GENERATOR
-export const metadata: Metadata = {
-	title: 'DayPatron',
-	description:
-		'Ідеальний супутник для тих, хто цінує бездоганність та догляд за своєю зброєю.',
-	openGraph: {
-		title: 'DayPatron',
-		locale: 'uk-UA',
-		description:
-			'Ідеальний супутник для тих, хто цінує бездоганність та догляд за своєю зброєю.',
-		url: `https://daypatron.com`,
-		type: 'website',
-		images: [
-			{
-				url: `${process.env.NEXT_PUBLIC_IMAGE_URL}/DayLogo_black.svg`,
-				width: 800,
-				height: 600,
-				alt: 'DayPatronLogo',
-			},
-		],
-	},
-	twitter: {
-		card: 'summary_large_image',
-		title: 'DayPatron',
-		description:
-			'Ідеальний супутник для тих, хто цінує бездоганність та догляд за своєю зброєю.',
-		site: 'https://daypatron.com',
-		creator: 'daypatronteam',
-		images: `${process.env.NEXT_PUBLIC_IMAGE_URL}/DayLogo_black.svg`,
-	},
-}
 
 async function RootLayout({ children }: { children: React.ReactNode }) {
 	// FETCH USER
@@ -55,6 +24,7 @@ async function RootLayout({ children }: { children: React.ReactNode }) {
 		<SessionProvider session={session}>
 			<html lang='en'>
 				<body className={mulish.className}>
+					<DefaultSeo {...SEO} />
 					<Header cart={cart} />
 					<main className='mt-28 sm:min-h-screen'>
 						{children}
