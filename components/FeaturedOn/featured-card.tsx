@@ -21,7 +21,6 @@ export const FeaturedCard = ({ item, variants }: Props) => {
 						height={100}
 						style={{ width: '100%', height: 'auto' }}
 						alt={item.image}
-						//TODO: add sizes images
 					/>
 				</div>
 			</Link>
