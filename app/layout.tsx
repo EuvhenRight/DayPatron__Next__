@@ -12,11 +12,11 @@ import './globals.css'
 //TODO: add generatedStaticParams
 
 export const metadata: Metadata = {
-	title: 'Український виробник засобів догляду за зброєю DayPatron 🇺🇦',
-	description: 'НАЙКРАЩІ ЦІНИ, АКЦІІ, ЗАМОВИТИ! 🎯🔥',
+	title: 'НАЙКРАЩІ ЦІНИ, АКЦІІ, ЗАМОВИТИ! 🎯🔥',
+	description: 'Український виробник засобів догляду за зброєю DayPatron 🇺🇦',
 	openGraph: {
-		title: 'Український виробник засобів догляду за зброєю DayPatron 🇺🇦',
-		description: 'НАЙКРАЩІ ЦІНИ, АКЦІІ, ЗАМОВИТИ! 🎯🔥',
+		title: 'НАЙКРАЩІ ЦІНИ, АКЦІІ, ЗАМОВИТИ! 🎯🔥',
+		description: 'Український виробник засобів догляду за зброєю DayPatron 🇺🇦',
 		url: 'https://www.daypatron.com/',
 		type: 'website',
 		images: [
@@ -30,9 +30,8 @@ export const metadata: Metadata = {
 	},
 	twitter: {
 		card: 'summary_large_image',
-		title: 'Український виробник засобів догляду за зброєю DayPatron 🇺🇦',
-		description:
-			'Ідеальний супутник для тих, хто цінує бездоганність та догляд за своєю зброєю. 🎯🔥',
+		title: 'НАЙКРАЩІ ЦІНИ, АКЦІІ, ЗАМОВИТИ! 🎯🔥',
+		description: 'Український виробник засобів догляду за зброєю DayPatron 🇺🇦',
 		images: `${process.env.NEXT_PUBLIC_IMAGE_URL}/2024.png`,
 	},
 }
