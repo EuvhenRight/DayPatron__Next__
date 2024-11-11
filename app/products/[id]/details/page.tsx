@@ -19,11 +19,11 @@ export const generateMetadata = async ({
 
 	return {
 		title: `${product.name} 100, 250, 500 мл - DayPatron`,
-		description: product.UTP + 'НАЙКРАЩІ ЦІНИ, АКЦІІ, ЗАМОВИТИ! 🎯🔥',
+		description: product.UTP + ' ' + 'НАЙКРАЩІ ЦІНИ, АКЦІІ, ЗАМОВИТИ! 🎯🔥',
 		openGraph: {
 			title: `${product.name} 100, 250, 500 мл - DayPatron`,
 			locale: 'uk-UA',
-			description: product.UTP + 'НАЙКРАЩІ ЦІНИ, АКЦІІ, ЗАМОВИТИ! 🎯🔥',
+			description: product.UTP + ' ' + 'НАЙКРАЩІ ЦІНИ, АКЦІІ, ЗАМОВИТИ! 🎯🔥',
 			url: `${process.env.NEXT_PUBLIC_IMAGE_URL}/test_2.png`,
 			type: 'website',
 			images: {
@@ -36,7 +36,7 @@ export const generateMetadata = async ({
 		twitter: {
 			card: 'summary_large_image',
 			title: `${product.name} 100, 250, 500 мл - DayPatron`,
-			description: product.UTP + 'НАЙКРАЩІ ЦІНИ, АКЦІІ, ЗАМОВИТИ! 🎯🔥',
+			description: product.UTP + ' ' + 'НАЙКРАЩІ ЦІНИ, АКЦІІ, ЗАМОВИТИ! 🎯🔥',
 			images: `${process.env.NEXT_PUBLIC_IMAGE_URL}/test_2.png`,
 		},
 	}
