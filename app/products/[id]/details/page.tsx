@@ -18,26 +18,26 @@ export const generateMetadata = async ({
 	const product = await getProduct(id)
 
 	return {
-		title: `${product.name}`,
+		title: `${product.name} 100, 250, 500 мл - DayPatron`,
 		description: product.UTP + 'НАЙКРАЩІ ЦІНИ, АКЦІІ, ЗАМОВИТИ! 🎯🔥',
 		openGraph: {
-			title: `${product.name}`,
+			title: `${product.name} 100, 250, 500 мл - DayPatron`,
 			locale: 'uk-UA',
 			description: product.UTP + 'НАЙКРАЩІ ЦІНИ, АКЦІІ, ЗАМОВИТИ! 🎯🔥',
-			url: `${process.env.NEXT_PUBLIC_IMAGE_URL}/Carbon-Killer-500ml_seo.png`,
+			url: `${process.env.NEXT_PUBLIC_IMAGE_URL}/${product.image[0].url}`,
 			type: 'website',
 			images: {
-				url: `${process.env.NEXT_PUBLIC_IMAGE_URL}/Carbon-Killer-500ml_seo.png`,
-				width: 630,
-				height: 1200,
+				url: `${process.env.NEXT_PUBLIC_IMAGE_URL}/${product.image[0].url}`,
+				width: 1200,
+				height: 630,
 				alt: product.name,
 			},
 		},
 		twitter: {
 			card: 'summary_large_image',
-			title: `${product.name} - DayPatron`,
-			description: product.UTP,
-			images: `${process.env.NEXT_PUBLIC_IMAGE_URL}/Carbon-Killer-500ml_seo.png`,
+			title: `${product.name} 100, 250, 500 мл - DayPatron`,
+			description: product.UTP + 'НАЙКРАЩІ ЦІНИ, АКЦІІ, ЗАМОВИТИ! 🎯🔥',
+			images: `${process.env.NEXT_PUBLIC_IMAGE_URL}/${product.image[0].url}`,
 		},
 	}
 }
