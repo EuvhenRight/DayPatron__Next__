@@ -18,40 +18,26 @@ export const generateMetadata = async ({
 	const product = await getProduct(id)
 
 	return {
-		title: `${product.name} - DayPatron`,
-		description: product.UTP,
+		title: `${product.name}`,
+		description: product.UTP + 'НАЙКРАЩІ ЦІНИ, АКЦІІ, ЗАМОВИТИ! 🎯🔥',
 		openGraph: {
-			title: `${product.name} - DayPatron`,
+			title: `${product.name}`,
 			locale: 'uk-UA',
-			description: product.UTP,
-			url: `${process.env.NEXT_PUBLIC_IMAGE_URL}/${product?.image[5].url}`,
+			description: product.UTP + 'НАЙКРАЩІ ЦІНИ, АКЦІІ, ЗАМОВИТИ! 🎯🔥',
+			url: `${process.env.NEXT_PUBLIC_IMAGE_URL}/Carbon-Killer-500ml_seo.png`,
 			type: 'website',
-			images: [
-				{
-					url: `${process.env.NEXT_PUBLIC_IMAGE_URL}/${product?.image[5].url}`,
-					width: 1200,
-					height: 630,
-					alt: product.name,
-				},
-				{
-					url: `${process.env.NEXT_PUBLIC_IMAGE_URL}/${product?.image[5].url}`,
-					width: 800,
-					height: 418,
-					alt: product.name,
-				},
-				{
-					url: `${process.env.NEXT_PUBLIC_IMAGE_URL}/${product?.image[5].url}`,
-					width: 600,
-					height: 315,
-					alt: product.name,
-				},
-			],
+			images: {
+				url: `${process.env.NEXT_PUBLIC_IMAGE_URL}/Carbon-Killer-500ml_seo.png`,
+				width: 1200,
+				height: 630,
+				alt: product.name,
+			},
 		},
 		twitter: {
 			card: 'summary_large_image',
 			title: `${product.name} - DayPatron`,
 			description: product.UTP,
-			images: `${process.env.NEXT_PUBLIC_IMAGE_URL}/${product?.image[5].url}`,
+			images: `${process.env.NEXT_PUBLIC_IMAGE_URL}/Carbon-Killer-500ml_seo.png`,
 		},
 	}
 }
