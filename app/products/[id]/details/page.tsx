@@ -28,8 +28,8 @@ export const generateMetadata = async ({
 			type: 'website',
 			images: {
 				url: `${process.env.NEXT_PUBLIC_IMAGE_URL}/Carbon-Killer-500ml_seo.png`,
-				width: 1200,
-				height: 630,
+				width: 630,
+				height: 1200,
 				alt: product.name,
 			},
 		},
