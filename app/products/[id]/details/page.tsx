@@ -24,10 +24,10 @@ export const generateMetadata = async ({
 			title: `${product.name} 100, 250, 500 мл - DayPatron`,
 			locale: 'uk-UA',
 			description: product.UTP + ' ' + 'НАЙКРАЩІ ЦІНИ, АКЦІІ, ЗАМОВИТИ! 🎯🔥',
-			url: `${process.env.NEXT_PUBLIC_IMAGE_URL}/seo-caboon.png`,
+			url: `${process.env.NEXT_PUBLIC_IMAGE_URL}/${product.seo_image}`,
 			type: 'website',
 			images: {
-				url: `${process.env.NEXT_PUBLIC_IMAGE_URL}/seo-caboon.png`,
+				url: `${process.env.NEXT_PUBLIC_IMAGE_URL}/${product.seo_image}`,
 				width: 1200,
 				height: 630,
 				alt: product.name,
@@ -37,7 +37,7 @@ export const generateMetadata = async ({
 			card: 'summary_large_image',
 			title: `${product.name} 100, 250, 500 мл - DayPatron`,
 			description: product.UTP + ' ' + 'НАЙКРАЩІ ЦІНИ, АКЦІІ, ЗАМОВИТИ! 🎯🔥',
-			images: `${process.env.NEXT_PUBLIC_IMAGE_URL}/seo-caboon.png`,
+			images: `${process.env.NEXT_PUBLIC_IMAGE_URL}/${product.seo_image}`,
 		},
 	}
 }
