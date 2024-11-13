@@ -29,13 +29,6 @@ export const sendEmail = async ({
 	text,
 	html,
 }: EmailType): Promise<void> => {
-	// // Set up OAuth2 credentials
-	// const oauth2Client = new google.auth.OAuth2(
-	// 	process.env.KEY_USER_CLIENT_ID,
-	// 	process.env.KEY_USER_CLIENT_SECRET,
-	// 	'YOUR_REDIRECT_URL'
-	// )
-
 	// Create a transporter object using your email service provider's SMTP settings
 	const transporter = nodeMailer.createTransport({
 		host: 'smtp.gmail.com',

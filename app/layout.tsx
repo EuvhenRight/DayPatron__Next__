@@ -12,7 +12,7 @@ import './globals.css'
 //TODO: add generatedStaticParams
 
 export const metadata: Metadata = {
-	title: 'НАЙКРАЩІ ЦІНИ, АКЦІІ, ЗАМОВИТИ! 🎯🔥',
+	title: 'Головна | DayPatron',
 	description: 'Український виробник засобів догляду за зброєю DayPatron 🇺🇦',
 	openGraph: {
 		title: 'НАЙКРАЩІ ЦІНИ, АКЦІІ, ЗАМОВИТИ! 🎯🔥',
