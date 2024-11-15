@@ -447,7 +447,7 @@ const MissionPage = () => {
                   <Grid item xs={12} md={6}>
                     <Stack spacing={0.5}>
                       <Typography color="secondary">About the Company</Typography>
-                      <SanitizedHTML html={mission?.aboutTheCompany} />
+                      <SanitizedHTML html={mission?.employerDescription} />
                     </Stack>
                   </Grid>
                   <Grid item xs={12} md={6}>
