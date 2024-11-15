@@ -18,7 +18,7 @@ import { useTheme } from '@mui/material/styles';
 
 import './TeamChannelHeader.css';
 
-export const TeamChannelHeader = ({ setIsEditing, onShowChannelSelector, isChannelSelectorVisible }) => {
+export const TeamChannelHeader = ({ setIsEditing, onShowChannelSelector, isChannelSelectorVisible, showSingleChannel }) => {
   const personalInformation = useSelector(state => state.personalInformation);
   const { channel } = useChannelStateContext();
   const { client } = useChatContext();
@@ -72,7 +72,7 @@ export const TeamChannelHeader = ({ setIsEditing, onShowChannelSelector, isChann
     <>
       <Stack direction="row" justifyContent="space-between" sx={{ padding: "10px 20px 10px 20px" }} alignItems="center">
         <Stack direction="row" alignItems="center" spacing={1} sx={{overflowX: 'hidden'}} className="channel-header-avatar-group">
-          {!isChannelSelectorVisible && 
+          {!isChannelSelectorVisible && !showSingleChannel &&
             <IconButton sx={{ width: 22, height: 22 }}
               onClick={() => {onShowChannelSelector();}} 
               size="large" 

@@ -39,11 +39,11 @@ const SimpleBarStyle = styled(SimpleBar)(({ theme }) => ({
 
 // ==============================|| SIMPLE SCROLL BAR  ||============================== //
 
-export default function SimpleBarScroll({ children, sx, ...other }) {
+export default function SimpleBarScroll({ children, sx, scrollableNodeProps, ...other }) {
   return (
     <>
       <RootStyle>
-        <SimpleBarStyle timeout={500} clickOnTrack={false} sx={sx} {...other}>
+        <SimpleBarStyle timeout={500} clickOnTrack={false} sx={sx} scrollableNodeProps={scrollableNodeProps} {...other}>
           {children}
         </SimpleBarStyle>
       </RootStyle>

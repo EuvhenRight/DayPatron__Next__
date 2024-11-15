@@ -26,7 +26,7 @@ export const ChannelListContainer = (props) => {
   
   useEffect(() => {
     (async () => {
-      if((targetEntity?.targetUserId || targetEntity?.targetEmployerId) && client && setActiveChannel && keycloak.idToken) {
+      if((targetEntity?.targetUserIds || targetEntity?.targetEmployerId) && client && setActiveChannel && keycloak.idToken) {
         var newChannelId = await createChannelForUser(targetEntity);
         await activateChannelById(newChannelId);
         if(setTargetEntity)
@@ -50,7 +50,7 @@ export const ChannelListContainer = (props) => {
             'Authorization': 'Bearer ' + keycloak.idToken,
             'Content-Type': 'application/json'
           },
-          body: prepareApiBody({groupName: null, targetMessagingProviderUserIds: targetEntity?.targetUserId ? [targetEntity.targetUserId] : null, targetEmployerIds: targetEntity?.targetEmployerId ? [targetEntity.targetEmployerId] : null, returnExisting: true, sourceContractorId: connectAsAdmin ? null : personalInformation?.id})
+          body: prepareApiBody({groupName: null, targetMessagingProviderUserIds: targetEntity.targetUserIds, targetEmployerIds: targetEntity?.targetEmployerId ? [targetEntity.targetEmployerId] : null, returnExisting: true, sourceContractorId: connectAsAdmin ? null : personalInformation?.id})
         }
       );
 
@@ -113,7 +113,7 @@ export const ChannelListContainer = (props) => {
   const onGrouplessUserSelected = async (grouplessUser) => {
     setIsCreating(false);
     setIsEditing(false);
-    let newChannelId = await createChannelForUser({targetUserId: grouplessUser?.messagingProviderUserId});
+    let newChannelId = await createChannelForUser({targetUserIds: [grouplessUser?.messagingProviderUserId]});
     await bindGrouplessUsers();
     await activateChannelById(newChannelId);
     onChannelSelected();

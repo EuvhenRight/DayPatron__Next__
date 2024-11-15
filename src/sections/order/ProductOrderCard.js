@@ -21,7 +21,7 @@ import ProductContractorServiceOrderPdfCard from 'sections/order/ProductContract
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import InfoWrapper from 'components/InfoWrapper';
-import { ShoppingCartOutlined, DownloadOutlined, LoadingOutlined, LinkOutlined } from '@ant-design/icons';
+import { ShoppingCartOutlined, DownloadOutlined, LoadingOutlined, LinkOutlined, MessageOutlined } from '@ant-design/icons';
 import { useTheme } from '@mui/material/styles';
 import { useKeycloak } from '@react-keycloak/web';
 
@@ -35,19 +35,25 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
 
   const getStatusComponent = (approvalStatus, role, subOrderType) => {
     if (approvalStatus === 'Pending' && keycloak.tokenParsed.roles.includes(role)) {
-      return <Stack direction="row" spacing={0.5}>
-        <Typography>{approvalStatus}</Typography>
-        <Stack direction="row">
-          (<Link className="clickable" onClick={() => handleApproveClick(order, subOrderType, role)}>Approve</Link>)
+      return (
+        <Stack direction="row" spacing={0.5}>
+          <Typography>{approvalStatus}</Typography>
+          <Stack direction="row">
+            (
+            <Link className="clickable" onClick={() => handleApproveClick(order, subOrderType, role)}>
+              Approve
+            </Link>
+            )
+          </Stack>
         </Stack>
-      </Stack>;
+      );
     }
 
     return <Typography>{approvalStatus}</Typography>;
-  }
+  };
 
   const handleDownloadPdf = async (pdfDocument) => {
-    const blob = await pdf((pdfDocument)).toBlob();
+    const blob = await pdf(pdfDocument).toBlob();
     var fileUrl = URL.createObjectURL(blob);
     window.open(fileUrl, '_blank');
 
@@ -55,18 +61,16 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
       setTimeout(function () {
         URL.revokeObjectURL(fileUrl);
       }, 120000);
-  }
-  
+  };
+
   const handleProjectOrderTermsClick = async () => {
     try {
-      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/products/orders/project-order-terms',
-        {
-          method: 'GET',
-          headers: {
-            'Authorization': 'Bearer ' + keycloak.idToken
-          }
+      let response = await fetch(process.env.REACT_APP_JOBMARKET_API_BASE_URL + '/products/orders/project-order-terms', {
+        method: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + keycloak.idToken
         }
-      );
+      });
 
       let file = await response.blob();
       var fileUrl = URL.createObjectURL(file);
@@ -80,7 +84,7 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   return (
     <>
@@ -88,8 +92,7 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
         <Grid id="print" container spacing={2.25}>
           <Grid item xs={12}>
             <List sx={{ width: 1, p: 0 }}>
-              <ListItem
-                disablePadding>
+              <ListItem disablePadding>
                 <ListItemAvatar>
                   <ShoppingCartOutlined style={{ color: theme.palette.primary.main, fontSize: '2.5rem' }} />
                 </ListItemAvatar>
@@ -104,16 +107,22 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
               </ListItem>
 
               <ListItem disablePadding>
-                <Stack direction="row" spacing={1}>
-                  <Button variant="outlined"  onClick={() => { 
-                    navigate('/messaging', { state: { targetEmployerId: order?.employerId} });
-                  }}>
-                    Message
-                  </Button>
-                </Stack>
+                <Grid container sx={{ justifyContent: 'flex-start', alignItems: 'center' }}>
+                  <Grid item sx={{ mr: 0.5 }}>
+                    <Button
+                      sx={{ width: '100px', height: '27px', marginBottom: 0.5 }}
+                      startIcon={<MessageOutlined />}
+                      variant="outlined"
+                      onClick={() => {
+                        navigate('/messaging', { state: { targetEmployerId: order?.employerId} });
+                      }}
+                    >
+                      Message
+                    </Button>
+                  </Grid>
+                </Grid>
               </ListItem>
             </List>
-
           </Grid>
           <Grid item xs={12}>
             <Divider />
@@ -121,7 +130,6 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
           <Grid item xs={12}>
             <Stack direction="column" spacing={2}>
               <Stack direction="column" spacing={1}>
-
                 <Stack direction="row" justifyContent="space-between" alignItems="flex-end">
                   <InfoWrapper tooltipText="product_order_card_company_service_order_title_tooltip">
                     <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
@@ -129,35 +137,26 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
                     </Typography>
                   </InfoWrapper>
                 </Stack>
-                
+
                 <Divider />
 
                 <List component="nav" aria-label="main mailbox folders" sx={{ py: 0, '& .MuiListItem-root': { p: 0, py: 0 } }}>
-
                   <ListItem>
                     <ListItemText>
                       <InfoWrapper tooltipText="product_order_card_company_service_order_admin_approval_status_tooltip">
-                        <Typography>
-                          10x Team B.V. Approval Status
-                        </Typography>
+                        <Typography>10x Team B.V. Approval Status</Typography>
                       </InfoWrapper>
                     </ListItemText>
-                    <ListItemSecondaryAction>
-                      {order?.employerServiceOrder?.adminStatus}
-                    </ListItemSecondaryAction>
+                    <ListItemSecondaryAction>{order?.employerServiceOrder?.adminStatus}</ListItemSecondaryAction>
                   </ListItem>
 
                   <ListItem>
                     <ListItemText>
                       <InfoWrapper tooltipText="product_order_card_company_service_order_company_approval_status_tooltip">
-                        <Typography>
-                          Company Approval Status
-                        </Typography>
+                        <Typography>Company Approval Status</Typography>
                       </InfoWrapper>
                     </ListItemText>
-                    <ListItemSecondaryAction>
-                      {order?.employerServiceOrder?.employerStatus}
-                    </ListItemSecondaryAction>
+                    <ListItemSecondaryAction>{order?.employerServiceOrder?.employerStatus}</ListItemSecondaryAction>
                   </ListItem>
                 </List>
               </Stack>
@@ -170,45 +169,38 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
                     </Typography>
                   </InfoWrapper>
 
-                  {downloadingContractorServiceOrderId == order?.id ?
-                    (
-                      <Stack sx={{ mr: 2.2, mb: 0.5 }}>
-                        <LoadingOutlined sx={{ width: 22, height: 22 }} />
-                      </Stack>
-                    )
-                    :
-                    (
-                      <IconButton sx={{ width: 22, height: 22, mr: 1.5 }} onClick={async () => {
+                  {downloadingContractorServiceOrderId == order?.id ? (
+                    <Stack sx={{ mr: 2.2, mb: 0.5 }}>
+                      <LoadingOutlined sx={{ width: 22, height: 22 }} />
+                    </Stack>
+                  ) : (
+                    <IconButton
+                      sx={{ width: 22, height: 22, mr: 1.5 }}
+                      onClick={async () => {
                         setDownloadingContractorServiceOrderId(order?.id);
                         await handleDownloadPdf(<ProductContractorServiceOrderPdfCard order={order} />);
                         setDownloadingContractorServiceOrderId(null);
-                      }}>
-                        <DownloadOutlined />
-                      </IconButton>
-                    )
-                  }
+                      }}
+                    >
+                      <DownloadOutlined />
+                    </IconButton>
+                  )}
                 </Stack>
                 <Divider />
                 <List component="nav" aria-label="main mailbox folders" sx={{ py: 0, '& .MuiListItem-root': { p: 0, py: 0 } }}>
                   <ListItem>
                     <ListItemText>
                       <InfoWrapper tooltipText="product_order_card_talent_service_order_admin_approval_status_tooltip">
-                        <Typography>
-                          10x Team B.V. Approval Status
-                        </Typography>
+                        <Typography>10x Team B.V. Approval Status</Typography>
                       </InfoWrapper>
                     </ListItemText>
-                    <ListItemSecondaryAction>
-                      {order?.contractorServiceOrder?.adminStatus}
-                    </ListItemSecondaryAction>
+                    <ListItemSecondaryAction>{order?.contractorServiceOrder?.adminStatus}</ListItemSecondaryAction>
                   </ListItem>
 
                   <ListItem>
                     <ListItemText>
                       <InfoWrapper tooltipText="product_order_card_talent_service_order_talent_approval_status_tooltip">
-                        <Typography>
-                          Talent Approval Status
-                        </Typography>
+                        <Typography>Talent Approval Status</Typography>
                       </InfoWrapper>
                     </ListItemText>
                     <ListItemSecondaryAction>
@@ -219,9 +211,7 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
                   <ListItem>
                     <ListItemText>
                       <InfoWrapper tooltipText="product_order_card_talent_service_order_amount_tooltip">
-                        <Typography>
-                          Amount
-                        </Typography>
+                        <Typography>Amount</Typography>
                       </InfoWrapper>
                     </ListItemText>
                     <ListItemSecondaryAction>
@@ -232,7 +222,6 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
               </Stack>
 
               <Stack direction="column" spacing={1}>
-
                 <Stack direction="row" justifyContent="space-between" alignItems="flex-end">
                   <InfoWrapper tooltipText="product_order_card_project_order_title_tooltip">
                     <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
@@ -240,22 +229,22 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
                     </Typography>
                   </InfoWrapper>
 
-                  <IconButton sx={{ width: 22, height: 22, mr: 1.5 }} onClick={async () => {
-                    await handleProjectOrderTermsClick();
-                  }}>
+                  <IconButton
+                    sx={{ width: 22, height: 22, mr: 1.5 }}
+                    onClick={async () => {
+                      await handleProjectOrderTermsClick();
+                    }}
+                  >
                     <LinkOutlined />
                   </IconButton>
                 </Stack>
 
                 <Divider />
                 <List component="nav" aria-label="main mailbox folders" sx={{ py: 0, '& .MuiListItem-root': { p: 0, py: 0 } }}>
-
                   <ListItem>
                     <ListItemText>
                       <InfoWrapper tooltipText="product_order_card_project_order_company_approval_status_tooltip">
-                        <Typography>
-                          Company Approval Status
-                        </Typography>
+                        <Typography>Company Approval Status</Typography>
                       </InfoWrapper>
                     </ListItemText>
                     <ListItemSecondaryAction>
@@ -265,19 +254,15 @@ const ProductOrderCard = ({ order, handleApproveClick }) => {
                   <ListItem>
                     <ListItemText>
                       <InfoWrapper tooltipText="product_order_card_project_order_talent_approval_status_tooltip">
-                        <Typography>
-                          Talent Approval Status
-                        </Typography>
+                        <Typography>Talent Approval Status</Typography>
                       </InfoWrapper>
                     </ListItemText>
                     <ListItemSecondaryAction>
                       <Typography>{order?.employerContractorProjectOrder?.contractorStatus}</Typography>
                     </ListItemSecondaryAction>
                   </ListItem>
-
                 </List>
               </Stack>
-
             </Stack>
           </Grid>
         </Grid>

@@ -43,13 +43,13 @@ const getToken = async () => {
   return json.token;
 };
 
-const TenxChat = ({ targetEntity, setTargetEntity }) => {
+const TenxChat = ({ targetEntity, setTargetEntity, showSingleChannel }) => {
   const { keycloak } = useKeycloak();
   const theme = useTheme();
   const matchDownMD = useMediaQuery(theme.breakpoints.down('md'));
   const [isCreating, setIsCreating] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [isChannelSelectorVisible, setIsChannelSelectorVisible] = useState(true);
+  const [isChannelSelectorVisible, setIsChannelSelectorVisible] = useState(!showSingleChannel);
   const [isMessagesContainerVisible, setIsMessagesContainerVisible] = useState(true);
   const personalInformation = useSelector((state) => state.personalInformation);
   const admin = useSelector((state) => state.admin);
@@ -86,10 +86,10 @@ const TenxChat = ({ targetEntity, setTargetEntity }) => {
 
   useEffect(() => {
     if (matchDownMD) {
-      setIsChannelSelectorVisible(true);
-      setIsMessagesContainerVisible(false);
+      setIsChannelSelectorVisible(!showSingleChannel);
+      setIsMessagesContainerVisible(!!showSingleChannel);
     } else {
-      setIsChannelSelectorVisible(true);
+      setIsChannelSelectorVisible(!showSingleChannel);
       setIsMessagesContainerVisible(true);
     }
   }, [matchDownMD]);
@@ -98,7 +98,7 @@ const TenxChat = ({ targetEntity, setTargetEntity }) => {
 
   return (
     <Chat {...{ client, i18nInstance }}>
-      <Grid container spacing={1}>
+      <Grid container spacing={showSingleChannel ? 0 : 1}>
         <Grid item xs={12} md={4} className={isChannelSelectorVisible ? '' : 'tenx-hidden'}>
           <ChannelListContainer
             {...{
@@ -115,7 +115,7 @@ const TenxChat = ({ targetEntity, setTargetEntity }) => {
           />
         </Grid>
 
-        <Grid item xs={12} md={8} className={isMessagesContainerVisible ? '' : 'tenx-hidden'}>
+        <Grid item xs={12} md={showSingleChannel ? 12 : 8} className={isMessagesContainerVisible ? '' : 'tenx-hidden'}>
           <ChannelContainer
             {...{
               isCreating,
@@ -124,7 +124,8 @@ const TenxChat = ({ targetEntity, setTargetEntity }) => {
               setIsEditing,
               onShowChannelSelector,
               isChannelSelectorVisible,
-              connectAsAdmin: admin.workAsAdmin
+              connectAsAdmin: admin.workAsAdmin,
+              showSingleChannel
             }}
           />
         </Grid>

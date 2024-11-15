@@ -17,7 +17,7 @@ import { TeamChannelHeader } from '../TeamChannelHeader/TeamChannelHeader';
 export const GiphyContext = React.createContext({});
 
 export const ChannelInner = (props) => {
-  const { pinsOpen, setIsEditing, setPinsOpen, onShowChannelSelector, isChannelSelectorVisible } = props;
+  const { pinsOpen, setIsEditing, setPinsOpen, onShowChannelSelector, isChannelSelectorVisible, showSingleChannel } = props;
 
   const [giphyState, setGiphyState] = useState(false);
 
@@ -65,7 +65,7 @@ export const ChannelInner = (props) => {
     <GiphyContext.Provider value={giphyStateObj}>
       {!thread && !pinsOpen && 
         <Window>
-          <TeamChannelHeader {...{ setIsEditing, setPinsOpen, onShowChannelSelector, isChannelSelectorVisible }} />
+          <TeamChannelHeader {...{ setIsEditing, setPinsOpen, onShowChannelSelector, isChannelSelectorVisible, showSingleChannel }} />
           <MessageList disableQuotedMessages pinPermissions={pinnedPermissions} />
           <MessageInput grow audioRecordingEnabled overrideSubmitHandler={overrideSubmitHandler}  />
         </Window>
