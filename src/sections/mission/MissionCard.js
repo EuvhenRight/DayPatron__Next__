@@ -20,15 +20,14 @@ import {
   Chip
 } from '@mui/material';
 
-// third-party
-import { PDFDownloadLink } from '@react-pdf/renderer';
+//import { PDFDownloadLink } from '@react-pdf/renderer';
 import SanitizedHTML from 'react-sanitized-html';
 
 // project import
 import MainCard from 'components/MainCard';
 import Avatar from 'components/@extended/Avatar';
 import IconButton from 'components/@extended/IconButton';
-import MissionPdfCard from 'sections/mission/MissionPdfCard';
+//import MissionPdfCard from 'sections/mission/MissionPdfCard';
 
 // assets
 import { MoreOutlined, EnvironmentOutlined, FieldTimeOutlined } from '@ant-design/icons';
@@ -86,9 +85,9 @@ const MissionCard = ({ mission }) => {
     navigate('/missions/' + mission.id);
   };
 
-  const handleClickExportPdf = () => {
+  /*const handleClickExportPdf = () => {
     setAnchorEl(null);
-  };
+  };*/
 
   const [anchorEl, setAnchorEl] = useState(null);
   const openMenu = Boolean(anchorEl);
@@ -147,14 +146,14 @@ const MissionCard = ({ mission }) => {
                 horizontal: 'right'
               }}
             >
-              <MenuItem sx={{ a: { textDecoration: 'none', color: 'inherit' } }}>
+              {/*<MenuItem sx={{ a: { textDecoration: 'none', color: 'inherit' } }}>
                 <>
                   {' '}
                   <PDFDownloadLink onClick={handleClickExportPdf} document={<MissionPdfCard mission={mission} />} fileName={`mission-${mission.title}.pdf`}>
                     Export PDF
                   </PDFDownloadLink>
                 </>
-              </MenuItem>
+            </MenuItem>*/}
               <MenuItem onClick={handleClickDetails}>Details</MenuItem>
             </Menu>
           </Grid>
