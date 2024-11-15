@@ -215,6 +215,31 @@ const ContractorSubscriptionServiceOrder = ({ orderId, isEditable, hideTitle }) 
               </ListItemSecondaryAction>
             </ListItem>
 
+            {orderParam?.contractorServiceOrder?.startDate && (
+              <ListItem>
+                <ListItemText>
+                  <Typography>Start Date</Typography>
+                </ListItemText>
+                <ListItemSecondaryAction>
+                  {format(new Date(orderParam?.contractorServiceOrder?.startDate), 'yyyy-MM-dd')}
+                </ListItemSecondaryAction>
+              </ListItem>
+            )}
+            {orderParam?.contractorServiceOrder?.duration && (
+              <ListItem>
+                <ListItemText>
+                  <Typography>Duration (monthly)</Typography>
+                </ListItemText>
+                <ListItemSecondaryAction>{orderParam?.contractorServiceOrder?.duration}</ListItemSecondaryAction>
+              </ListItem>
+            )}
+            <ListItem>
+              <ListItemText>
+                <Typography>Talent Status</Typography>
+              </ListItemText>
+              <ListItemSecondaryAction>{orderParam?.contractorServiceOrder?.contractorStatus}</ListItemSecondaryAction>
+            </ListItem>
+
             <ListItem>
               <ListItemText>
                 <Typography sx={{ fontWeight: 'bold' }}>Total Amount</Typography>
@@ -250,8 +275,7 @@ const ContractorSubscriptionServiceOrder = ({ orderId, isEditable, hideTitle }) 
       .max(0)
       .max(999999)
       .nullable(true),
-    startDate: Yup.string().required('Required').nullable(true),
-    endDate: Yup.string().required('Required').nullable(true)
+    startDate: Yup.string().required('Required').nullable(true)
   });
 
   const formik = useFormik({
@@ -280,7 +304,7 @@ const ContractorSubscriptionServiceOrder = ({ orderId, isEditable, hideTitle }) 
           dispatch(
             openSnackbar({
               open: true,
-              message: 'Update failed.',
+              message: (await response.text()) ?? 'Update failed.',
               variant: 'alert',
               alert: {
                 color: 'error'
@@ -360,7 +384,7 @@ const ContractorSubscriptionServiceOrder = ({ orderId, isEditable, hideTitle }) 
                       <TextField
                         fullWidth
                         id="duration"
-                        placeholder="Enter effort"
+                        placeholder="Enter duration"
                         value={normalizeInputValue(values.duration)}
                         name="duration"
                         onBlur={handleBlur}
