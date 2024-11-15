@@ -21,7 +21,7 @@ import SubscriptionContractorServiceOrderPdfCard from 'sections/order/Subscripti
 import IconButton from 'components/@extended/IconButton';
 import MainCard from 'components/MainCard';
 import InfoWrapper from 'components/InfoWrapper';
-import { ShoppingCartOutlined, DownloadOutlined, LoadingOutlined, LinkOutlined, MessageOutlined } from '@ant-design/icons';
+import { ShoppingCartOutlined, DownloadOutlined, LoadingOutlined, LinkOutlined, MessageOutlined, ControlOutlined } from '@ant-design/icons';
 import { useTheme } from '@mui/material/styles';
 import { useKeycloak } from '@react-keycloak/web';
 
@@ -110,11 +110,23 @@ const SubscriptionOrderCard = ({ order, handleApproveClick }) => {
                 <Grid container sx={{ justifyContent: 'flex-start', alignItems: 'center' }}>
                   <Grid item sx={{ mr: 0.5 }}>
                     <Button
+                      sx={{ width: '150px', height: '27px', marginBottom: 0.5 }}
+                      startIcon={<ControlOutlined />}
+                      variant="contained"
+                      onClick={() => {
+                        navigate('/orders/subscription-orders/' + order?.id + '/terms');
+                      }}
+                    >
+                      Manage Terms
+                    </Button>
+                  </Grid>
+                  <Grid item sx={{ mr: 0.5 }}>
+                    <Button
                       sx={{ width: '100px', height: '27px', marginBottom: 0.5 }}
                       startIcon={<MessageOutlined />}
                       variant="outlined"
                       onClick={() => {
-                        navigate('/messaging', { state: { targetEmployerId: order?.employerId} });
+                        navigate('/messaging', { state: { targetEmployerId: order?.employerId } });
                       }}
                     >
                       Message
