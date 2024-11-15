@@ -7,7 +7,7 @@ import ContractorSubscriptionServiceOrder from 'sections/order/ContractorSubscri
 
 const SubscriptionOrderTermsPage = () => {
   const { keycloak } = useKeycloak();
-  let { subscriptionOrderId: orderId } = useParams();
+  let { orderId } = useParams();
   const [order, setOrder] = useState(null);
   const [targetEntity, setTargetEntity] = useState(null);
 
