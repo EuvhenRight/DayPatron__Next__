@@ -11,6 +11,7 @@ interface Props {
 		id: string
 	}
 }
+
 // METADATA GENERATOR
 export const generateMetadata = async ({
 	params: { id },

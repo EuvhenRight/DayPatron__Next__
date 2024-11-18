@@ -17,6 +17,7 @@ export const publicRoutes = [
 	'/icons/*',
 	'/videos/*',
 	'/privacy',
+	'/sitemap.xml',
 ]
 
 /**
