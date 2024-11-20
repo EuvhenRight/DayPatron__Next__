@@ -123,11 +123,11 @@ export const SliderWithProducts = ({
 		const swipeThreshold = 100 // Minimum distance to consider a swipe
 
 		if (swipeDistance > -swipeThreshold) {
-			handlePrevClick() // Swipe left (next image)
+			handleNextClick() // Swipe right (previous image)
 		}
 
 		if (swipeDistance < -swipeThreshold) {
-			handleNextClick() // Swipe right (previous image)
+			handlePrevClick() // Swipe left (next image)
 		}
 
 		// Reset touch positions
