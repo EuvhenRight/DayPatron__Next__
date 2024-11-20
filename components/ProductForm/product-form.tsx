@@ -16,6 +16,7 @@ import { rubikGlitch } from '@/lib/utils/font'
 import { cn } from '@/lib/utils/utils'
 import { AiOutlineCheckSquare } from 'react-icons/ai'
 import { toast } from 'sonner'
+import { ShareButton } from '../Share/social-share'
 import { Rating } from '../ui/rating'
 
 interface Props {
@@ -33,6 +34,8 @@ export const ProductForm = ({ product, cart }: Props) => {
 	const [itemInCart, setItemInCart] = useState<CartItemWithVariants | null>(
 		null
 	)
+	// FULL LINK
+	const [fullLink, setFullLink] = useState<string>(``)
 
 	//SERVER ACTION ADD TO CART
 	const addItemToCart = async (variantId: string): Promise<boolean> => {
@@ -69,6 +72,13 @@ export const ProductForm = ({ product, cart }: Props) => {
 		setItemInCart(check || null)
 	}, [cart, product, currentIndex])
 
+	useEffect(() => {
+		// This code will run only on the client side
+		if (typeof window !== 'undefined') {
+			setFullLink(window.location.href)
+		}
+	}, [])
+
 	return (
 		<div className='flex lg:flex-row flex-col lg:justify-center'>
 			<div className='lg:w-1/2'>
@@ -97,7 +107,12 @@ export const ProductForm = ({ product, cart }: Props) => {
 				>
 					{product.name}
 				</h1>
-				<p className='font-bold italic my-2 text-center'>{product.UTP}</p>
+				<div className='font-bold italic my-2 text-center flex items-center gap-2'>
+					<div>
+						<ShareButton />
+					</div>
+					{product.UTP}
+				</div>
 				<div
 					className='my-4 flex justify-end gap-2 mt-6 cursor-pointer'
 					// NAVIGATE TO REVIEWS
@@ -147,7 +162,6 @@ export const ProductForm = ({ product, cart }: Props) => {
 						Додати до кошика
 					</Button>
 				)}
-
 				{/* INFO BLOCK INFORMATION */}
 				<div className='text-justify'>
 					<article className='py-2'>{product.description}</article>

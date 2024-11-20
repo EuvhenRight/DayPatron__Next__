@@ -19,10 +19,10 @@ export const generateMetadata = async ({
 	const product = await getProduct(id)
 
 	return {
-		title: `${product.name} 500, 250, 100 мл - DayPatron`,
+		title: `${product.name} - 500, 250, 100 мл, DayPatron`,
 		description: product.UTP + ' ' + 'НАЙКРАЩІ ЦІНИ, АКЦІІ, ЗАМОВИТИ! 🎯🔥',
 		openGraph: {
-			title: `${product.name} 500, 250, 100 мл - DayPatron`,
+			title: `${product.name} - 500, 250, 100 мл, DayPatron`,
 			locale: 'uk-UA',
 			description: product.UTP + ' ' + 'НАЙКРАЩІ ЦІНИ, АКЦІІ, ЗАМОВИТИ! 🎯🔥',
 			url: `${process.env.NEXT_PUBLIC_IMAGE_URL}/${product.seo_image}`,
@@ -36,7 +36,7 @@ export const generateMetadata = async ({
 		},
 		twitter: {
 			card: 'summary_large_image',
-			title: `${product.name} 500, 250, 100 мл - DayPatron`,
+			title: `${product.name} - 500, 250, 100 мл, DayPatron`,
 			description: product.UTP + ' ' + 'НАЙКРАЩІ ЦІНИ, АКЦІІ, ЗАМОВИТИ! 🎯🔥',
 			images: `${process.env.NEXT_PUBLIC_IMAGE_URL}/${product.seo_image}`,
 		},
