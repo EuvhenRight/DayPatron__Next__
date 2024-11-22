@@ -23,6 +23,7 @@ const ProfileCertificationPage = Loadable(lazy(() => import('pages/profile-certi
 const ProfilePreferencesPage = Loadable(lazy(() => import('pages/profile-preferences-page')));
 const ProfileAvailabilityPage = Loadable(lazy(() => import('pages/profile-availability-page')));
 const ProfileAiPage = Loadable(lazy(() => import('pages/profile-ai-page')));
+const ReviewsPage = Loadable(lazy(() => import('pages/reviews-page')));
 
 const MissionPage = Loadable(lazy(() => import('pages/mission-page')));
 const MissionsPage = Loadable(lazy(() => import('pages/missions-page')));
@@ -112,6 +113,10 @@ const MainRoutes = {
                   ]
                 }
               ]
+            },
+            {
+              path: 'reviews',
+              element: <ReviewsPage />
             }
           ]
         },

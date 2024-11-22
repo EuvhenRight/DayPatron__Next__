@@ -10,7 +10,8 @@ import {
   RobotOutlined,
   LaptopOutlined,
   EditOutlined,
-  FileProtectOutlined
+  FileProtectOutlined,
+  FileSearchOutlined
 } from '@ant-design/icons';
 
 // icons
@@ -22,7 +23,8 @@ const icons = {
   RobotOutlined,
   LaptopOutlined,
   EditOutlined,
-  FileProtectOutlined
+  FileProtectOutlined,
+  FileSearchOutlined
 };
 
 // ==============================|| MENU ITEMS - PROFILE ||============================== //
@@ -89,6 +91,13 @@ const profile = {
       type: 'item',
       url: '/profile/ai',
       icon: icons.RobotOutlined
+    },
+    {
+      id: 'reviews',
+      title: <FormattedMessage id="reviews" />,
+      type: 'item',
+      url: '/profile/reviews',
+      icon: icons.FileSearchOutlined
     }
   ]
 };
