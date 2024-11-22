@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useKeycloak } from '@react-keycloak/web';
 
@@ -88,12 +88,22 @@ const AddReview = () => {
         setFieldValue('score', null);
         setFieldValue('body', null);
         setSubmitting(false);
-        
       } catch (error) {
         console.error(error);
       }
     }
   });
+
+  useEffect(() => {
+    if (window.location.hash) {
+      const element = document.getElementById(window.location.hash.replace('#', ''));
+      if (element) {
+        setTimeout(function () {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }, 2000);
+      }
+    }
+  }, [window.location]);
 
   const { handleBlur, handleChange, handleSubmit, isSubmitting, values, setFieldValue } = formik;
 
@@ -102,7 +112,9 @@ const AddReview = () => {
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Grid container spacing={1}>
           <Grid item xs={12}>
-            <Typography variant="h5">New review</Typography>
+            <Typography variant="h5" id="new-review">
+              New review
+            </Typography>
           </Grid>
           <Grid item xs={12}>
             <Rating
