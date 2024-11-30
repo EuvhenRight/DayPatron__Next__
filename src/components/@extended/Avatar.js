@@ -76,6 +76,34 @@ function getSizeStyle(size) {
         width: 64,
         height: 64
       };
+    case 'xxl':
+      return {
+        border: '3px solid',
+        fontSize: '1.5rem',
+        width: 100,
+        height: 100
+      };
+    case 'xxml':
+      return {
+        border: '3px solid',
+        fontSize: '1.5rem',
+        width: 120,
+        height: 120
+      };
+    case 'xxxl':
+      return {
+        border: '3px solid',
+        fontSize: '1.5rem',
+        width: 130,
+        height: 130
+      };
+    case 'xxxxl':
+      return {
+        border: '3px solid',
+        fontSize: '1.5rem',
+        width: 150,
+        height: 150
+      };
     case 'md':
     default:
       return {
