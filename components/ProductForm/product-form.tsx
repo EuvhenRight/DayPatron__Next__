@@ -119,21 +119,20 @@ export const ProductForm = ({ product, cart }: Props) => {
 				whileInView='onscreen'
 				variants={cardVariants}
 				viewport={{ once: true, amount: 0.15 }}
-				whileHover={{ scale: 1.1 }}
-				className='flex flex-col items-end lg:w-1/2'
+				className='flex flex-col lg:w-1/2 justify-center lg:justify-end'
 			>
-				<div className='hidden lg:block'>
+				<div className='hidden lg:flex justify-end items-end'>
 					<BreadcrumbProduct product={product} />
 				</div>
 				<h1
 					className={cn(
 						rubikGlitch.className,
-						'text-2xl lg:text-3xl font-bold uppercase space-y-2 line-height-[1.5] text-center lg:text-end my-5'
+						'text-2xl lg:text-3xl font-bold uppercase space-y-2 line-height-[1.5] text-center lg:text-end my-5 items-center lg:items-end'
 					)}
 				>
 					{product.name}
 				</h1>
-				<div className='font-bold italic text-center flex items-center gap-2'>
+				<div className='font-bold italic text-center flex justify-center items-center lg:justify-end gap-2'>
 					<div>
 						<ShareButton />
 					</div>
@@ -154,7 +153,7 @@ export const ProductForm = ({ product, cart }: Props) => {
 						rating={product?.reviews?.ratingTotal!}
 						totalStars={5}
 						size={32}
-						className='flex flex-col justify-center items-end'
+						className='flex flex-col justify-end items-end'
 						variant='yellow'
 						showText={true}
 						disabled={true}
@@ -162,19 +161,21 @@ export const ProductForm = ({ product, cart }: Props) => {
 					/>
 				</div>
 				{/* VARIANTS */}
-				<Variants
-					variantsProduct={product?.variant}
-					currentIndex={currentIndex!}
-					setCurrentIndex={setCurrentIndex}
-					setAnimate={setAnimate}
-					stock={stock}
-				/>
+				<div className='flex items-end flex-col'>
+					<Variants
+						variantsProduct={product?.variant}
+						currentIndex={currentIndex!}
+						setCurrentIndex={setCurrentIndex}
+						setAnimate={setAnimate}
+						stock={stock}
+					/>
+				</div>
 				{/* SHOW PRODUCT IN CART */}
 				{itemInCart ? (
-					<p className='p-2 w-1/2 text-lg my-2 flex gap-4 justify-end items-center'>
+					<div className='p-2 text-lg my-2 gap-4 flex items-end flex-row-reverse'>
 						<AiOutlineCheckSquare size={25} />
 						<span>Товар у кошику</span>
-					</p>
+					</div>
 				) : (
 					<Button
 						variant={'destructive'}

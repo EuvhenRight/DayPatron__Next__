@@ -210,7 +210,7 @@ export const SliderWithProducts = ({
 					<Image
 						src={imageUrl || '/images/DayLogo.svg'}
 						priority
-						className={`cursor-zoom-in w-auto h-auto lg:px-24 lg:max-h-[650px] xl:max-h-[650px] object-contain ${
+						className={`cursor-zoom-in w-auto h-auto lg:px-24 lg:max-h-[550px] xl:max-h-[550px] object-contain ${
 							// APPLY ANIMATION CLASS
 							animate
 								? slideDirection === 'left'
