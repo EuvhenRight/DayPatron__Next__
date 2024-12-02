@@ -50,7 +50,7 @@
 			"title": "Задати нам питання",
 			"feedback_sent_message": "Ваш запит надіслано, дякуємо!",
 			"send_another_feedback_button": "Надіслати ще один запит?",
-			"surname_label": "Прізвище",
+			"surname_label": "Імʼя",
 			"surname_placeholder": "введіть повне прізвище",
 			"phone_label": "Номер телефону",
 			"phone_placeholder": "введіть номер телефону",
@@ -67,7 +67,7 @@
 			"manufacturer_link": "www.ekokemika.ua",
 			"distributor": "Постачальник та компанія для претензій: TOB 'Деззе'",
 			"email": "Email: info@dezze.com.ua",
-			"phone": "Телефон: +38 (050) 123-45-67",
+			"phone": "Телефон: +38 (099) 730-21-26",
 			"email_daypatron": "Email: daypatronteam@gmail.com",
 			"web_daypatron": "www.daypatron.com.ua"
 		}

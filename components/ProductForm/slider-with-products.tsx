@@ -4,7 +4,6 @@ import Image from 'next/image'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
 import { GoDotFill } from 'react-icons/go'
-import Zoom from 'react-medium-image-zoom'
 
 interface Props {
 	product: ProductsWithVariants
@@ -170,6 +169,7 @@ export const SliderWithProducts = ({
 									width={100}
 									height={100}
 									className='lg:h-auto hidden lg:block w-auto'
+									priority
 								/>
 								<GoDotFill className='lg:hidden' />
 							</li>
@@ -207,27 +207,25 @@ export const SliderWithProducts = ({
 					onTouchMove={handleTouchMove}
 					onTouchEnd={handleTouchEnd}
 				>
-					<Zoom>
-						<Image
-							src={imageUrl || '/images/DayLogo.svg'}
-							priority={true}
-							className={`cursor-zoom-in w-auto h-auto lg:px-24 lg:max-h-[500px] xl:max-h-[650px] object-contain ${
-								// APPLY ANIMATION CLASS
-								animate
-									? slideDirection === 'left'
-										? 'animate-slide-left'
-										: 'animate-slide-right'
-									: ''
-							}`}
-							alt={product.name}
-							width={650}
-							height={355}
-							onAnimationEnd={() => {
-								// RESET ANIMATION CLASS
-								setAnimate(false)
-							}}
-						/>
-					</Zoom>
+					<Image
+						src={imageUrl || '/images/DayLogo.svg'}
+						priority
+						className={`cursor-zoom-in w-auto h-auto lg:px-24 lg:max-h-[650px] xl:max-h-[650px] object-contain ${
+							// APPLY ANIMATION CLASS
+							animate
+								? slideDirection === 'left'
+									? 'animate-slide-left'
+									: 'animate-slide-right'
+								: ''
+						}`}
+						alt={product.name}
+						width={355}
+						height={650}
+						onAnimationEnd={() => {
+							// RESET ANIMATION CLASS
+							setAnimate(false)
+						}}
+					/>
 				</div>
 				<button
 					onClick={handleNextClick}

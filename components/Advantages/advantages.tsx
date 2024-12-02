@@ -65,7 +65,8 @@ export const Advantages = ({ category }: Props) => {
 							alt={item.title}
 							width={150}
 							height={150}
-							className='mr-2 lg:w-36 lg:h-36 w-16 h-16'
+							className='mr-2 lg:w-36 lg:h-36 w-28 h-28'
+							priority
 						/>
 						<div>
 							<h2

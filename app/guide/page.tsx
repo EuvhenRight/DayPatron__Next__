@@ -38,7 +38,6 @@ export const metadata: Metadata = {
 async function Guide() {
 	// FETCH ALL PRODUCTS
 	const dataProducts = await getAllProducts()
-	// TODO: ADD VIDEO FROM YOUTUBE
 	return (
 		<div>
 			<section className='container'>

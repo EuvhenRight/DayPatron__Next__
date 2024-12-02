@@ -99,7 +99,7 @@ export const Rating = ({
 			<div className='flex items-center' onMouseEnter={handleMouseEnter}>
 				{showText && initialRating !== 0 && (
 					<>
-						<span className='mr-3 text-5xl'>{initialRating}</span>
+						<span className='mr-3 text-3xl md:text-5xl'>{initialRating}</span>
 					</>
 				)}
 				{[...Array(fullStars)].map((_, i) =>

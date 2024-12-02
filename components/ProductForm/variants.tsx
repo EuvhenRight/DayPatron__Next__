@@ -36,7 +36,7 @@ export const Variants = ({
 		<>
 			{/* PRICE */}
 			{currentIndex !== null ? (
-				<div className='flex gap-2 items-center my-6 text-xl'>
+				<div className='flex gap-2 items-center my-3 text-3xl'>
 					<p className={discountPrice > 0 ? 'line-through' : ''}>
 						{<PriceTag price={variantsProduct[currentIndex]?.original_price} />}
 					</p>
@@ -52,7 +52,7 @@ export const Variants = ({
 					) : null}
 				</div>
 			) : (
-				<div className='my-6 text-xl'>Please choose a SIZE</div>
+				<div className='my-4 text-lg'>Будь ласка, виберіть розмір мл.</div>
 			)}
 			{/* VOLUME */}
 			<ul className='flex gap-5 items-center my-2' onBlur={handleContainerBlur}>
@@ -63,7 +63,7 @@ export const Variants = ({
 							// FOCUS VOLUME BUTTON
 							className={cn(
 								rubikGlitch.className,
-								'cursor-pointer rounded-md border border-gray-600 px-2 py-1 snap-center text-lg focus:ring-2 focus:ring-current focus:outline-none shadow-lg'
+								'cursor-pointer rounded-md border border-gray-600 px-2 py-1 snap-center text-sm lg:text-lg focus:ring-2 focus:ring-current focus:outline-none shadow-lg'
 							)}
 							key={index}
 							tabIndex={0}

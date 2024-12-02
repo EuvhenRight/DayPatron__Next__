@@ -6,6 +6,7 @@ import type {
 	CartWithVariants,
 	ProductWithVariantsWithReviews,
 } from '@/lib/types/types'
+import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import 'react-medium-image-zoom/dist/styles.css'
 
@@ -36,6 +37,23 @@ export const ProductForm = ({ product, cart }: Props) => {
 	)
 	// FULL LINK
 	const [fullLink, setFullLink] = useState<string>(``)
+
+	// ANIMATION
+	const cardVariants = {
+		offscreen: {
+			y: 300,
+			opacity: 0,
+		},
+		onscreen: {
+			y: 0,
+			opacity: 1,
+			transition: {
+				type: 'spring',
+				bounce: 0.4,
+				duration: 0.8,
+			},
+		},
+	}
 
 	//SERVER ACTION ADD TO CART
 	const addItemToCart = async (variantId: string): Promise<boolean> => {
@@ -95,19 +113,27 @@ export const ProductForm = ({ product, cart }: Props) => {
 					currentIndex={currentIndex!}
 				/>
 			</div>
-			<div className='flex flex-col items-end lg:w-1/2'>
+			{/* Animation */}
+			<motion.div
+				initial='offscreen'
+				whileInView='onscreen'
+				variants={cardVariants}
+				viewport={{ once: true, amount: 0.15 }}
+				whileHover={{ scale: 1.1 }}
+				className='flex flex-col items-end lg:w-1/2'
+			>
 				<div className='hidden lg:block'>
 					<BreadcrumbProduct product={product} />
 				</div>
 				<h1
 					className={cn(
 						rubikGlitch.className,
-						'text-xl md:text-2xl lg:text-3xl font-bold uppercase space-y-2 line-height-[1.5] text-center lg:text-end my-1 lg:my-5 mt-0'
+						'text-2xl lg:text-3xl font-bold uppercase space-y-2 line-height-[1.5] text-center lg:text-end my-5'
 					)}
 				>
 					{product.name}
 				</h1>
-				<div className='font-bold italic my-2 text-center flex items-center gap-2'>
+				<div className='font-bold italic text-center flex items-center gap-2'>
 					<div>
 						<ShareButton />
 					</div>
@@ -178,7 +204,7 @@ export const ProductForm = ({ product, cart }: Props) => {
 						{product.useTo}
 					</article>
 				</div>
-			</div>
+			</motion.div>
 		</div>
 	)
 }
