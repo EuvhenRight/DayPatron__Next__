@@ -1,4 +1,4 @@
-import { rubikGlitch } from '@/lib/utils/font'
+import { rubikDirt } from '@/lib/utils/font'
 import { cn } from '@/lib/utils/utils'
 import { Metadata } from 'next'
 import { ComebackButton } from './comeback-button'
@@ -15,7 +15,7 @@ export default function OrderSuccess() {
 			<div className='max-w-md w-full bg-white shadow-md rounded-xl p-6 space-y-6'>
 				<h1
 					className={cn(
-						rubikGlitch.className,
+						rubikDirt.className,
 						'text-2xl text-center tracking-tight mt-1 uppercase opacity-65'
 					)}
 				>

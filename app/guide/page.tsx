@@ -3,7 +3,7 @@ import { TableOilsProducts } from '@/components/Guide/guide-oils'
 import { SpecificationCard } from '@/components/Guide/specification-card'
 import { VideoLibrary } from '@/components/Guide/video-lybrary'
 import { getAllProducts } from '@/lib/services/products'
-import { rubikGlitch } from '@/lib/utils/font'
+import { rubikDirt } from '@/lib/utils/font'
 import { cn } from '@/lib/utils/utils'
 import { Metadata } from 'next'
 
@@ -44,7 +44,7 @@ async function Guide() {
 				<div className='text-center pt-1'>
 					<h1
 						className={cn(
-							rubikGlitch.className,
+							rubikDirt.className,
 							'text-xl md:text-3xl font-black my-14 text-center uppercase text-neutral-800'
 						)}
 					>

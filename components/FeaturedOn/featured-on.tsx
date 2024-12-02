@@ -1,7 +1,7 @@
 'use client'
 import { FeaturedCard } from '@/components/FeaturedOn/featured-card'
 import data from '@/lib/db/content.json'
-import { rubikGlitch } from '@/lib/utils/font'
+import { rubikDirt } from '@/lib/utils/font'
 import { partnersLibrary } from '@/lib/utils/library'
 import { cn } from '@/lib/utils/utils'
 import { motion, useAnimation, useInView } from 'framer-motion'
@@ -41,7 +41,7 @@ export const FeaturedOn = () => {
 			{path === '/' ? (
 				<h1
 					className={cn(
-						rubikGlitch.className,
+						rubikDirt.className,
 						'text-xl md:text-3xl font-black my-14 md:my-20 text-center uppercase'
 					)}
 				>
@@ -50,7 +50,7 @@ export const FeaturedOn = () => {
 			) : (
 				<h1
 					className={cn(
-						rubikGlitch.className,
+						rubikDirt.className,
 						'text-xl md:text-3xl font-black my-14 text-center  uppercase text-neutral-800'
 					)}
 				>

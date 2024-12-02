@@ -1,7 +1,7 @@
 'use client'
 import { PriceTag } from '@/components/PriceTag'
 import { ProductsWithVariants } from '@/lib/types/types'
-import { rubikGlitch } from '@/lib/utils/font'
+import { rubikDirt } from '@/lib/utils/font'
 import { cn } from '@/lib/utils/utils'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -41,13 +41,13 @@ export const ProductsCard = ({ product }: Props) => {
 						</h2>
 						<h3
 							className={cn(
-								rubikGlitch.className,
+								rubikDirt.className,
 								'text-base tracking-tight mt-1 uppercase opacity-65'
 							)}
 						>
 							{product.UTP}
 						</h3>
-						<p className={cn(rubikGlitch.className, 'my-3 text-xl')}>
+						<p className={cn(rubikDirt.className, 'my-3 text-xl')}>
 							від
 							<span className='ml-2'>
 								{<PriceTag price={product.variant[0].original_price!} />}

@@ -14,7 +14,7 @@ import { PrivacyPolicyInfo } from '@/components/ui/privacy-policy'
 import { Textarea } from '@/components/ui/textarea'
 import data from '@/lib/db/content.json'
 import { ValidationSchema } from '@/lib/db/validation'
-import { rubikGlitch } from '@/lib/utils/font'
+import { rubikDirt } from '@/lib/utils/font'
 import { cn } from '@/lib/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { User } from '@prisma/client'
@@ -86,7 +86,7 @@ export const FeedBackForm: React.FC<Props> = ({ currentUser: user }) => {
 			{/* FEEDBACK SENT */}
 			{loading && !success ? (
 				<div className='text-center text-2xl'>
-					<p className={cn(rubikGlitch.className, 'text-2xl')}>
+					<p className={cn(rubikDirt.className, 'text-2xl')}>
 						{ContentContactsPage.form.feedback_sent_message}
 					</p>
 					<Button
@@ -102,7 +102,7 @@ export const FeedBackForm: React.FC<Props> = ({ currentUser: user }) => {
 				<>
 					<h1
 						className={cn(
-							rubikGlitch.className,
+							rubikDirt.className,
 							'text-2xl font-bold text-center pb-10'
 						)}
 					>

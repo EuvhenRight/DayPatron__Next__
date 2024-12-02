@@ -1,5 +1,5 @@
 'use client'
-import { rubikGlitch } from '@/lib/utils/font'
+import { rubikDirt } from '@/lib/utils/font'
 import { cn } from '@/lib/utils/utils'
 import { motion, useAnimation, useInView } from 'framer-motion'
 import {
@@ -99,7 +99,7 @@ export const SpecificationCard = () => {
 				>
 					<motion.div variants={itemVariant}>
 						<Droplet size={20} />
-						<span className={cn(rubikGlitch.className, 'ml-2 font-light')}>
+						<span className={cn(rubikDirt.className, 'ml-2 font-light')}>
 							100 мл
 						</span>
 					</motion.div>
@@ -146,7 +146,7 @@ export const SpecificationCard = () => {
 				>
 					<motion.div variants={itemVariant}>
 						<Droplet size={20} />
-						<span className={cn(rubikGlitch.className, 'ml-2 font-light')}>
+						<span className={cn(rubikDirt.className, 'ml-2 font-light')}>
 							250 мл
 						</span>
 					</motion.div>
@@ -193,7 +193,7 @@ export const SpecificationCard = () => {
 				>
 					<motion.div variants={itemVariant}>
 						<Droplet size={20} />
-						<span className={cn(rubikGlitch.className, 'ml-2 font-light')}>
+						<span className={cn(rubikDirt.className, 'ml-2 font-light')}>
 							500 мл
 						</span>
 					</motion.div>

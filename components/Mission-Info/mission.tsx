@@ -1,5 +1,5 @@
 'use client'
-import { rubikGlitch } from '@/lib/utils/font'
+import { rubikDirt } from '@/lib/utils/font'
 import { cn } from '@/lib/utils/utils'
 import { TriangleAnimation } from '../Animation/triangle'
 
@@ -10,7 +10,7 @@ export const MissionInfo = () => {
 				{/* MISSION */}
 				<h1
 					className={cn(
-						rubikGlitch.className,
+						rubikDirt.className,
 						'text-3xl md:text-5xl px-4 text-start text-neutral-800 flex items-center justify-start mb-10 ml-2 md:ml-20'
 					)}
 				>

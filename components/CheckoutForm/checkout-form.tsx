@@ -15,7 +15,7 @@ import {
 import { ProfileForm } from '@/components/UserNavigation/profile-form'
 import { orderItemScheme } from '@/lib/db/validation'
 import { CartWithVariants, DeliveryWithItems } from '@/lib/types/types'
-import { rubikGlitch } from '@/lib/utils/font'
+import { rubikDirt } from '@/lib/utils/font'
 import { cn } from '@/lib/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Payment, User } from '@prisma/client'
@@ -99,7 +99,7 @@ export const CheckoutForm = ({ cart, currentDelivery, currentUser }: Props) => {
 				</button>
 				<h2
 					className={cn(
-						rubikGlitch.className,
+						rubikDirt.className,
 						'text-xl text-center font-bold my-2'
 					)}
 				>

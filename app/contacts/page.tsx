@@ -4,7 +4,7 @@ import { FeedBackForm } from '@/components/FeedbackForm/feedback-form'
 import data from '@/lib/db/content.json'
 import { contactData } from '@/lib/services/contacts'
 import { getCurrentUser } from '@/lib/services/user'
-import { rubikGlitch } from '@/lib/utils/font'
+import { rubikDirt } from '@/lib/utils/font'
 import { cn } from '@/lib/utils/utils'
 import { Metadata } from 'next'
 
@@ -48,7 +48,7 @@ export default async function ContactsPage() {
 		<div>
 			<section className='container lg:pt-10 relative flex flex-col md:flex-row w-full pt-2 mb-4'>
 				<div className='w-full md:w-1/2 text-start'>
-					<h1 className={cn(rubikGlitch.className, 'text-2xl font-bold')}>
+					<h1 className={cn(rubikDirt.className, 'text-2xl font-bold')}>
 						{ContentContactsPage.page.title}
 					</h1>
 					<ul className='my-2 pt-4 *:my-4'>

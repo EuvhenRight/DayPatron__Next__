@@ -1,4 +1,4 @@
-import { Manrope, Mulish, Rubik_Glitch } from 'next/font/google'
+import { Manrope, Mulish, Rubik_Dirt, Rubik_Glitch } from 'next/font/google'
 
 export const rubikGlitch = Rubik_Glitch({
 	weight: '400', // Rubik_Glitch only comes in regular (400)
@@ -15,4 +15,10 @@ export const mulish = Mulish({
 export const manrope = Manrope({
 	weight: ['200', '300', '400', '500', '600', '700', '800'],
 	subsets: ['latin'],
+})
+
+export const rubikDirt = Rubik_Dirt({
+	weight: '400',
+	subsets: ['latin'],
+	preload: false,
 })

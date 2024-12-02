@@ -13,7 +13,7 @@ import 'react-medium-image-zoom/dist/styles.css'
 import { addItem } from '@/actions/cart'
 import { SliderWithProducts } from '@/components/ProductForm/slider-with-products'
 import { Button } from '@/components/ui/button'
-import { rubikGlitch } from '@/lib/utils/font'
+import { rubikDirt } from '@/lib/utils/font'
 import { cn } from '@/lib/utils/utils'
 import { AiOutlineCheckSquare } from 'react-icons/ai'
 import { toast } from 'sonner'
@@ -126,7 +126,7 @@ export const ProductForm = ({ product, cart }: Props) => {
 				</div>
 				<h1
 					className={cn(
-						rubikGlitch.className,
+						rubikDirt.className,
 						'text-2xl lg:text-3xl font-bold uppercase space-y-2 line-height-[1.5] text-center lg:text-end my-5 items-center lg:items-end'
 					)}
 				>

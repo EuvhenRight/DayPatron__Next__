@@ -4,7 +4,7 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { rubikGlitch } from '@/lib/utils/font'
+import { rubikDirt } from '@/lib/utils/font'
 import { cn } from '@/lib/utils/utils'
 import { Product } from '@prisma/client'
 import Image from 'next/image'
@@ -23,7 +23,7 @@ export const GuideTooltip = ({ product }: Props) => {
 					<span>{name}</span>
 				</TooltipTrigger>
 				<TooltipContent>
-					<p className={cn(rubikGlitch.className)}>{name}</p>
+					<p className={cn(rubikDirt.className)}>{name}</p>
 					<Image
 						width={150}
 						height={150}

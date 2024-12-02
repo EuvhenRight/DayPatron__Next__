@@ -3,7 +3,7 @@ import { MissionInfo } from '@/components/Mission-Info/mission'
 import { ProductsCard } from '@/components/Slider/products-card'
 import { getAllProducts } from '@/lib/services/products'
 import { ProductsWithVariants } from '@/lib/types/types'
-import { rubikGlitch } from '@/lib/utils/font'
+import { rubikDirt } from '@/lib/utils/font'
 import { cn } from '@/lib/utils/utils'
 import Link from 'next/link'
 
@@ -33,7 +33,7 @@ export default async function Home() {
 			<section className='container'>
 				<h1
 					className={cn(
-						rubikGlitch.className,
+						rubikDirt.className,
 						'text-4xl uppercase text-neutral-800 text-center my-0 md:my-10'
 					)}
 				>

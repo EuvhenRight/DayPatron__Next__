@@ -1,5 +1,5 @@
 'use client'
-import { rubikGlitch } from '@/lib/utils/font'
+import { rubikDirt } from '@/lib/utils/font'
 import { advantageLibrary } from '@/lib/utils/library'
 import { cn } from '@/lib/utils/utils'
 import { motion, Variants } from 'framer-motion'
@@ -71,7 +71,7 @@ export const Advantages = ({ category }: Props) => {
 						<div>
 							<h2
 								className={cn(
-									rubikGlitch.className,
+									rubikDirt.className,
 									`${color} 'text-sm lg:text-xl uppercase font-bold py-4`
 								)}
 							>
