@@ -579,7 +579,7 @@ const MissionPage = () => {
             <Grid container item xs={12} md={4} spacing={2} direction="column" sx={{ height: '100%' }}>
               <Grid item xs={12} md={4}>
                 <MainCard>
-                  <Stack spacing={0.5} alignItems="center">
+                  <Stack spacing={0.5} alignItems="left">
                     <Typography color="primary" variant="h6">
                       About the Company
                     </Typography>
