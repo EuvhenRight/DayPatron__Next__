@@ -592,18 +592,20 @@ const MissionPage = () => {
                 <MainCard>
                   <Stack spacing={0.5} alignItems="left">
                     {/* Role */}
-                    <Stack spacing={0.5} alignItems="center" sx={{ '& .MuiStack-root': { mt: 2 } }}>
+                    <Stack spacing={0.5} sx={{ '& .MuiStack-root': { mt: 2 } }}>
                       <Typography color="primary" variant="h6">
                         Role
                       </Typography>
-                      <Chip
-                        color="secondary"
-                        variant="outlined"
-                        sx={{ mb: '3px', fontSize: '12px', height: '22px', '& .MuiChip-label': { pl: '5px', pr: '5px' } }}
-                        label={mission?.role}
-                      />
+                      <Grid item sx={{ mr: 0.5 }}>
+                        <Chip
+                          color="secondary"
+                          variant="outlined"
+                          sx={{ mb: '3px', fontSize: '12px', height: '22px', '& .MuiChip-label': { pl: '5px', pr: '5px' } }}
+                          label={mission?.role}
+                        />
+                      </Grid>
                     </Stack>
-                    <Stack spacing={0.5} alignItems="center">
+                    <Stack spacing={0.5}>
                       <Typography color="primary" variant="h6">
                         Alternative Roles
                       </Typography>
@@ -622,19 +624,21 @@ const MissionPage = () => {
                       </Stack>
                     </Stack>
                     {/* Industry */}
-                    <Stack spacing={0.5} alignItems="center">
+                    <Stack spacing={0.5}>
                       <Typography color="primary" variant="h6">
                         Industry
                       </Typography>
-                      <Chip
-                        color="secondary"
-                        variant="outlined"
-                        sx={{ mb: '3px', fontSize: '12px', height: '22px', '& .MuiChip-label': { pl: '5px', pr: '5px' } }}
-                        label={mission?.industry}
-                      />
+                      <Grid item sx={{ mr: 0.5 }}>
+                        <Chip
+                          color="secondary"
+                          variant="outlined"
+                          sx={{ mb: '3px', fontSize: '12px', height: '22px', '& .MuiChip-label': { pl: '5px', pr: '5px' } }}
+                          label={mission?.industry}
+                        />
+                      </Grid>
                     </Stack>
                     {/* Alternative Industries */}
-                    <Stack spacing={0.5} alignItems="center">
+                    <Stack spacing={0.5}>
                       <Typography color="primary" variant="h6">
                         Alternative Industries
                       </Typography>
@@ -652,48 +656,53 @@ const MissionPage = () => {
                       </Stack>
                     </Stack>
                     {/* Years Experience */}
-                    <Stack spacing={0.5} alignItems="center">
-                      <Typography color="primary" variant="h6" textAlign={'center'}>
+                    <Stack spacing={0.5}>
+                      <Typography color="primary" variant="h6">
                         Years Experience
                       </Typography>
-                      <Chip
-                        color="secondary"
-                        variant="outlined"
-                        sx={{ mb: '3px', fontSize: '12px', height: '22px', '& .MuiChip-label': { pl: '5px', pr: '5px' } }}
-                        label={mission?.yearsExperience}
-                      />
+                      <Grid item sx={{ mr: 0.5 }}>
+                        <Chip
+                          color="secondary"
+                          variant="outlined"
+                          sx={{ mb: '3px', fontSize: '12px', height: '22px', '& .MuiChip-label': { pl: '5px', pr: '5px' } }}
+                          label={mission?.yearsExperience}
+                        />
+                      </Grid>
                     </Stack>
                     {/* Number of hour per week(indicative) */}
-                    <Stack spacing={0.5} alignItems="center">
-                      <Typography color="primary" variant="h6" textAlign={'center'}>
+                    <Stack spacing={0.5}>
+                      <Typography color="primary" variant="h6">
                         Number of hour per week(indicative)
                       </Typography>
-                      <Chip
-                        color="secondary"
-                        variant="outlined"
-                        sx={{ mb: '3px', fontSize: '12px', height: '22px', '& .MuiChip-label': { pl: '5px', pr: '5px' } }}
-                        label={mission?.effortHours}
-                      />
+                      <Grid item sx={{ mr: 0.5 }}>
+                        <Chip
+                          color="secondary"
+                          variant="outlined"
+                          sx={{ mb: '3px', fontSize: '12px', height: '22px', '& .MuiChip-label': { pl: '5px', pr: '5px' } }}
+                          label={mission?.effortHours}
+                        />
+                      </Grid>
                     </Stack>
                     {/* Workplace Type */}
-                    <Stack spacing={0.5} alignItems="center">
-                      <Typography color="primary" variant="h6" textAlign={'center'}>
+                    <Stack spacing={0.5}>
+                      <Typography color="primary" variant="h6">
                         Workplace Type
                       </Typography>
-                      <Chip
-                        color="secondary"
-                        variant="outlined"
-                        sx={{ mb: '3px', fontSize: '12px', height: '22px', '& .MuiChip-label': { pl: '5px', pr: '5px' } }}
-                        label={'Hybrid||Remote|Onsite'}
-                      />
+                      <Grid item sx={{ mr: 0.5 }}>
+                        <Chip
+                          color="secondary"
+                          variant="outlined"
+                          sx={{ mb: '3px', fontSize: '12px', height: '22px', '& .MuiChip-label': { pl: '5px', pr: '5px' } }}
+                          label={'Hybrid||Remote|Onsite'}
+                        />
+                      </Grid>
                     </Stack>
                     {/* Languages */}
-                    <Stack spacing={0.5} alignItems="center">
-                      <Typography color="primary" variant="h6" textAlign={'center'}>
+                    <Stack spacing={0.5}>
+                      <Typography color="primary" variant="h6">
                         Languages
                       </Typography>
                       <Stack direction="row" spacing={1}>
-                        {/* Languages */}
                         {mission?.requiredLanguages.map((language, index) => (
                           <Grid key={index} item sx={{ mr: 0.5 }}>
                             <Chip
@@ -707,9 +716,10 @@ const MissionPage = () => {
                       </Stack>
                     </Stack>
                   </Stack>
-                  <Stack spacing={0.5} sx={{ justifyContent: 'center', mt: 2 }}>
-                    <Stack spacing={0.5} alignItems="center" textAlign={'flex-start'}>
-                      <Typography color="primary" variant="h6" textAlign={'center'}>
+                  {/* Start and End Date */}
+                  <Stack spacing={0.5} sx={{ mt: 2 }}>
+                    <Stack spacing={0.5}>
+                      <Typography color="primary" variant="h6">
                         Start and End Date(indicative)
                       </Typography>
                       <Typography>
