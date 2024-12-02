@@ -34,7 +34,7 @@ export default async function Home() {
 				<h1
 					className={cn(
 						rubikDirt.className,
-						'text-4xl uppercase text-neutral-800 text-center my-0 md:my-10'
+						'text-4xl uppercase text-neutral-800 text-center mb-4 md:my-10'
 					)}
 				>
 					Лідери продажів
