@@ -21,6 +21,9 @@ export const getCurrentUserById = async ({ id }: { id: string }) => {
 				id,
 			},
 		})
+
+		if (!currentUser) return null
+
 		return currentUser
 	} catch (error) {
 		console.log(error, 'Щось пішло не так. Будь ласка, спробуйте знову пізніше')

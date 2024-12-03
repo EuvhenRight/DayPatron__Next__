@@ -193,15 +193,15 @@ export const ProductForm = ({ product, cart }: Props) => {
 				<div className='text-justify'>
 					<article className='py-2'>{product.description}</article>
 					<article className='py-2'>
-						<b>строк зберігання: </b>
+						<b>Термін зберігання: </b>
 						{product.shelfLife}
 					</article>
 					<article className='py-2'>
-						<b>склад: </b>
+						<b>Склад: </b>
 						{product.ingredients}
 					</article>
 					<article className='py-2'>
-						<b>використання: </b>
+						<b>Інструкція з використання: </b>
 						{product.useTo}
 					</article>
 				</div>

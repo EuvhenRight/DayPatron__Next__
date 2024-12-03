@@ -17,7 +17,7 @@ const UserProfilePage = async () => {
 	return (
 		<>
 			<UserProfile
-				currentUser={currentUser}
+				currentUser={currentUser!}
 				currentDelivery={currentDelivery}
 				session={session}
 			/>

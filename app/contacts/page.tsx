@@ -60,7 +60,7 @@ export default async function ContactsPage() {
 					</ul>
 				</div>
 				<div className='w-full md:w-1/2 flex flex-col justify-start'>
-					<FeedBackForm currentUser={currentUser} />
+					<FeedBackForm currentUser={currentUser!} />
 				</div>
 			</section>
 			<section>

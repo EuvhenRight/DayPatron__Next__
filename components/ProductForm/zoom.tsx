@@ -38,7 +38,7 @@ export const Zoom: React.FC<ZoomProps> = ({
 			</div>
 			<button
 				onClick={onClose}
-				className='absolute top-4 right-4 text-white text-2xl'
+				className='absolute top-4 right-4 text-white text-2xl z-10'
 			>
 				<CircleX className='w-8 h-8 text-white' />
 			</button>
