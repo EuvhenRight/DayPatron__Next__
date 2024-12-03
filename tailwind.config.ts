@@ -77,6 +77,9 @@ const config = {
 			},
 		},
 	},
+	zIndex: {
+		'100': '100',
+	},
 	plugins: [require('tailwindcss-animate')],
 } satisfies Config
 

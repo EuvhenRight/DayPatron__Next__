@@ -1,5 +1,5 @@
 'use client'
-
+import { Zoom } from '@/components/ProductForm/zoom'
 import { ProductsWithVariants } from '@/lib/types/types'
 import Image from 'next/image'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -33,6 +33,7 @@ export const SliderWithProducts = ({
 	const [slideDirection, setSlideDirection] = useState<'left' | 'right'>(
 		'right'
 	)
+	const [isZoomed, setIsZoomed] = useState<boolean>(false)
 	const countImages = product.image.length
 	const imagesRef = useRef<HTMLUListElement>(null)
 
@@ -109,6 +110,25 @@ export const SliderWithProducts = ({
 		setTouchEndX(null)
 	}
 
+	const handleCloseZoom = () => {
+		setIsZoomed(false)
+	}
+
+	const handleOpenZoom = () => {
+		setIsZoomed(true)
+	}
+
+	if (isZoomed) {
+		return (
+			<Zoom
+				imageUrl={imageUrl}
+				handlePrevClick={handlePrevClick}
+				handleNextClick={handleNextClick}
+				onClose={handleCloseZoom}
+			/>
+		)
+	}
+
 	return (
 		<div className='flex lg:flex-row flex-col-reverse lg:sticky lg:top-5 lg:mt-3 items-center'>
 			<div className='lg:w-24 z-10 lg:flex lg:justify-center lg:items-center lg:flex-col'>
@@ -177,7 +197,8 @@ export const SliderWithProducts = ({
 					<AiOutlineLeft />
 				</button>
 				<div
-					className='w-1/2 lg:w-full lg:h-auto'
+					className='w-1/2 lg:w-full lg:h-auto cursor-zoom-in'
+					onClick={handleOpenZoom}
 					onTouchStart={handleTouchStart}
 					onTouchMove={handleTouchMove}
 					onTouchEnd={handleTouchEnd}
