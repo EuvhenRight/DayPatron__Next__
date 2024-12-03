@@ -1,4 +1,5 @@
 'use client'
+
 import { ProductsWithVariants } from '@/lib/types/types'
 import Image from 'next/image'
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -16,6 +17,7 @@ interface Props {
 	setCurrentIndex: React.Dispatch<React.SetStateAction<number | null>>
 	currentIndex: number | null
 }
+
 export const SliderWithProducts = ({
 	product,
 	imageIndex,
@@ -31,67 +33,43 @@ export const SliderWithProducts = ({
 	const [slideDirection, setSlideDirection] = useState<'left' | 'right'>(
 		'right'
 	)
-	// ON/OFF ANIMATION
 	const countImages = product.image.length
-	// REF TO IMAGE LIST
 	const imagesRef = useRef<HTMLUListElement>(null)
+
 	const handleNextClick = useCallback(() => {
-		// CHECK IF CURRENT IMAGE IS NOT NULL OR UNDEFINED AND NOT ALREADY AT THE LAST IMAGE
-		if (typeof arrowToggle === 'number' && arrowToggle < countImages - 1) {
-			// INCREMENT CURRENT IMAGE TO MOVE TO THE NEXT IMAGE
+		if (arrowToggle < countImages - 1) {
 			setArrowToggle(arrowToggle + 1)
 			setImageIndex(arrowToggle + 1)
 			setAnimate(true)
 			setSlideDirection('left')
-			if (imagesRef.current) {
-				const children = imagesRef.current
-					.children as HTMLCollectionOf<HTMLLIElement>
-				// SET FOCUS TO THE NEXT IMAGE
-				children[arrowToggle + 1].focus()
-			}
 		}
 	}, [arrowToggle, countImages, setAnimate, setArrowToggle, setImageIndex])
 
 	const handlePrevClick = useCallback(() => {
-		// CHECK IF CURRENT IMAGE IS NOT NULL OR UNDEFINED AND NOT ALREADY AT THE FIRST IMAGE
-		if (typeof arrowToggle === 'number' && arrowToggle > 0) {
-			// DECREMENT CURRENT IMAGE TO MOVE TO THE PREVIOUS IMAGE
+		if (arrowToggle > 0) {
 			setArrowToggle(arrowToggle - 1)
 			setImageIndex(arrowToggle - 1)
 			setAnimate(true)
 			setSlideDirection('right')
-			if (imagesRef.current) {
-				const children = imagesRef.current
-					.children as HTMLCollectionOf<HTMLLIElement>
-				// SET FOCUS TO THE PREVIOUS IMAGE
-				children[arrowToggle - 1].focus()
-			}
 		}
 	}, [arrowToggle, setAnimate, setArrowToggle, setImageIndex])
-	// TOGGLE IMAGE
+
 	const toggleImage = useCallback(
 		(index: number) => {
 			setAnimate(true)
 			setImageIndex(index)
 			setArrowToggle(index)
-			setSlideDirection(index > arrowToggle ? 'left' : 'right') // Determine direction based on index
+			setSlideDirection(index > arrowToggle ? 'left' : 'right')
 		},
 		[setAnimate, setImageIndex, setArrowToggle, setSlideDirection, arrowToggle]
 	)
 
-	// SET CURRENT IMAGE
 	useEffect(() => {
 		if (imageIndex !== null) {
-			setImageUrl(`/images/${product.image[imageIndex!].url}`)
+			setImageUrl(`/images/${product.image[imageIndex].url}`)
 			setCurrentIndex(null)
 			setImageIndex(null)
-		} else if (currentIndex === 2) {
-			setImageIndex(null)
-			setImageUrl(`/images/${product.variant[currentIndex].image}`)
-		} else if (currentIndex === 1) {
-			setImageIndex(null)
-			setImageUrl(`/images/${product.variant[currentIndex].image}`)
-		} else if (currentIndex === 0) {
+		} else if (currentIndex !== null) {
 			setImageIndex(null)
 			setImageUrl(`/images/${product.variant[currentIndex].image}`)
 		}
@@ -104,40 +82,37 @@ export const SliderWithProducts = ({
 		setImageUrl,
 	])
 
-	const [touchStart, setTouchStart] = useState<number | null>(null)
-	const [touchEnd, setTouchEnd] = useState<number | null>(null)
+	const [touchStartX, setTouchStartX] = useState<number | null>(null)
+	const [touchEndX, setTouchEndX] = useState<number | null>(null)
 
 	const handleTouchStart = (e: React.TouchEvent) => {
-		setTouchStart(e.targetTouches[0].clientX)
+		setTouchStartX(e.targetTouches[0].clientX)
 	}
 
 	const handleTouchMove = (e: React.TouchEvent) => {
-		setTouchEnd(e.targetTouches[0].clientX)
+		setTouchEndX(e.targetTouches[0].clientX)
 	}
 
 	const handleTouchEnd = () => {
-		if (!touchStart || !touchEnd) return
+		if (!touchStartX || !touchEndX) return
 
-		const swipeDistance = touchStart - touchEnd
-		const swipeThreshold = 100 // Minimum distance to consider a swipe
+		const swipeDistance = touchStartX - touchEndX
+		const swipeThreshold = 50 // Minimum distance to consider a swipe
 
-		if (swipeDistance > -swipeThreshold) {
-			handleNextClick() // Swipe right (previous image)
+		if (swipeDistance > swipeThreshold) {
+			handleNextClick()
+		} else if (swipeDistance < -swipeThreshold) {
+			handlePrevClick()
 		}
 
-		if (swipeDistance < -swipeThreshold) {
-			handlePrevClick() // Swipe left (next image)
-		}
-
-		// Reset touch positions
-		setTouchStart(null)
-		setTouchEnd(null)
+		setTouchStartX(null)
+		setTouchEndX(null)
 	}
 
 	return (
 		<div className='flex lg:flex-row flex-col-reverse lg:sticky lg:top-5 lg:mt-3 items-center'>
 			<div className='lg:w-24 z-10 lg:flex lg:justify-center lg:items-center lg:flex-col'>
-				{/* ALWAYS RENDER ARROW TOP */}
+				{/* Arrow Up (Previous) */}
 				<div
 					className={`${arrowToggle === 0 ? 'opacity-0' : ''} hidden lg:block`}
 				>
@@ -150,33 +125,33 @@ export const SliderWithProducts = ({
 						<AiOutlineLeft className='rotate-90' />
 					</button>
 				</div>
-				{/* IMAGES CAROUSEL */}
+				{/* Image Carousel */}
 				<ul
 					className='px-1 flex lg:block mt-2 lg:mt-0 lg:overflow-y-scroll xl:h-[650px]'
 					ref={imagesRef}
 				>
-					{product.image.map((item, index) => {
-						return (
-							<li
-								tabIndex={0}
-								onClick={() => toggleImage(index)}
-								className='focus:outline-none lg:border rounded-md lg:border-gray-600 lg:focus:ring-2 lg:focus:ring-current lg:focus:ring-inset m-1 lg:m-2 lg:gap-2 cursor-pointer focus:text-red-500 lg:focus:text-black text-gray-500'
-								key={index}
-							>
-								<Image
-									src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/${item.url}`}
-									alt={item.url}
-									width={100}
-									height={100}
-									className='lg:h-auto hidden lg:block w-auto'
-									priority
-								/>
-								<GoDotFill className='lg:hidden' />
-							</li>
-						)
-					})}
+					{product.image.map((item, index) => (
+						<li
+							tabIndex={0}
+							onClick={() => toggleImage(index)}
+							className={`focus:outline-none lg:border rounded-md lg:border-gray-600 m-1 lg:m-2 lg:gap-2 cursor-pointer text-gray-500 ${
+								arrowToggle === index ? 'border-red-500 text-red-500' : ''
+							}`}
+							key={index}
+						>
+							<Image
+								src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/${item.url}`}
+								alt={item.url}
+								width={100}
+								height={100}
+								className='lg:h-auto hidden lg:block w-auto'
+								loading='lazy'
+							/>
+							<GoDotFill className='lg:hidden' />
+						</li>
+					))}
 				</ul>
-				{/* ALWAYS RENDER ARROW BOTTOM */}
+				{/* Arrow Down (Next) */}
 				<div
 					className={`${
 						arrowToggle! < countImages - 1 ? '' : 'opacity-0'
@@ -192,7 +167,7 @@ export const SliderWithProducts = ({
 					</button>
 				</div>
 			</div>
-			{/* MAIN IMAGE */}
+			{/* Main Image */}
 			<div className='flex items-center justify-between lg:block max-w-[550px]'>
 				<button
 					onClick={handlePrevClick}
@@ -209,9 +184,8 @@ export const SliderWithProducts = ({
 				>
 					<Image
 						src={imageUrl || '/images/DayLogo.svg'}
-						priority
+						loading='lazy'
 						className={`cursor-zoom-in w-auto h-auto lg:px-24 lg:max-h-[550px] xl:max-h-[550px] object-contain ${
-							// APPLY ANIMATION CLASS
 							animate
 								? slideDirection === 'left'
 									? 'animate-slide-left'
@@ -221,10 +195,7 @@ export const SliderWithProducts = ({
 						alt={product.name}
 						width={355}
 						height={650}
-						onAnimationEnd={() => {
-							// RESET ANIMATION CLASS
-							setAnimate(false)
-						}}
+						onAnimationEnd={() => setAnimate(false)}
 					/>
 				</div>
 				<button
