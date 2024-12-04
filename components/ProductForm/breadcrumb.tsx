@@ -15,7 +15,6 @@ import { usePathname } from 'next/navigation'
 interface Props {
 	product?: Product
 }
-
 export const BreadcrumbProduct = ({ product }: Props) => {
 	const path = usePathname()
 	const fixedText = path.substring(1)
