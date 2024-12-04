@@ -3,6 +3,7 @@ import { PriceTag } from '@/components/PriceTag'
 import { ProductsWithVariants } from '@/lib/types/types'
 import { rubikDirt } from '@/lib/utils/font'
 import { cn } from '@/lib/utils/utils'
+import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -11,9 +12,32 @@ interface Props {
 }
 
 export const ProductsCard = ({ product }: Props) => {
+	// ANIMATION
+	const animateVariants = {
+		offscreen: {
+			y: 300,
+			opacity: 0,
+		},
+		onscreen: {
+			y: 0,
+			opacity: 1,
+			transition: {
+				type: 'tween',
+				duration: 0.8,
+				ease: 'easeOut',
+			},
+		},
+	}
+
 	return (
 		<Link href={`/products/${product.id}/details`}>
-			<div className='group relative cursor-pointer xl:w-80 h-[600px] hover:transform hover:scale-105 transition-all'>
+			<motion.div
+				initial='offscreen'
+				whileInView='onscreen'
+				variants={animateVariants}
+				viewport={{ once: true, amount: 0.1 }}
+				className='group relative cursor-pointer xl:w-80 h-[600px] hover:transform hover:scale-105 transition-all'
+			>
 				{product.NEW && (
 					<div
 						className={cn(
@@ -65,7 +89,7 @@ export const ProductsCard = ({ product }: Props) => {
 						</p>
 					</div>
 				</div>
-			</div>
+			</motion.div>
 		</Link>
 	)
 }

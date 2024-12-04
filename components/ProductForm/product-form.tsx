@@ -39,7 +39,7 @@ export const ProductForm = ({ product, cart }: Props) => {
 	const [fullLink, setFullLink] = useState<string>(``)
 
 	// ANIMATION
-	const cardVariants = {
+	const animateVariants = {
 		offscreen: {
 			y: 300,
 			opacity: 0,
@@ -117,7 +117,7 @@ export const ProductForm = ({ product, cart }: Props) => {
 			<motion.div
 				initial='offscreen'
 				whileInView='onscreen'
-				variants={cardVariants}
+				variants={animateVariants}
 				viewport={{ once: true, amount: 0.15 }}
 				className='flex flex-col lg:w-1/2 justify-center lg:justify-end'
 			>
