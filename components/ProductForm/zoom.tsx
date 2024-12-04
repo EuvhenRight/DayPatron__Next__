@@ -1,6 +1,6 @@
 import { CircleX } from 'lucide-react'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
 
 interface ZoomProps {
@@ -22,6 +22,34 @@ export const Zoom: React.FC<ZoomProps> = ({
 	const handleImageClick = () => {
 		// Toggle zoom in/out on image click
 		setIsZoomedIn(prev => !prev)
+	}
+
+	// Disable page scrolling when zoom modal is open
+	useEffect(() => {
+		document.body.style.overflow = 'hidden'
+
+		// Cleanup when the modal is closed
+		return () => {
+			document.body.style.overflow = 'auto'
+		}
+	}, [])
+
+	// Touch event handling for mobile
+	const touchStartY = useRef<number | null>(null)
+
+	const handleTouchStart = (e: React.TouchEvent) => {
+		if (isZoomedIn) {
+			touchStartY.current = e.touches[0].clientY
+		}
+	}
+
+	const handleTouchMove = (e: React.TouchEvent) => {
+		if (isZoomedIn && touchStartY.current !== null) {
+			const touchEndY = e.touches[0].clientY
+			const touchDeltaY = touchStartY.current - touchEndY
+			e.currentTarget.scrollTop += touchDeltaY
+			touchStartY.current = touchEndY
+		}
 	}
 
 	return (
@@ -46,7 +74,8 @@ export const Zoom: React.FC<ZoomProps> = ({
 				className={`overflow-y-auto flex items-center justify-center ${
 					isZoomedIn ? 'max-h-full' : 'max-h-screen'
 				}`}
-				style={{ touchAction: 'none' }} // Disable touch actions to prevent unwanted scrolling
+				onTouchStart={handleTouchStart}
+				onTouchMove={handleTouchMove}
 			>
 				<Image
 					src={imageUrl}
