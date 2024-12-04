@@ -98,7 +98,30 @@ export const ProductForm = ({ product, cart }: Props) => {
 	}, [])
 
 	return (
-		<div className='flex lg:flex-row flex-col lg:justify-center'>
+		<div className='flex lg:flex-row flex-col lg:justify-center relative'>
+			{/* RATING - APPEARS ON MOBILE */}
+			<div
+				className='my-4 md:flex md:justify-end gap-2 mt-6 absolute cursor-pointer -top-12 right-1 lg:hidden'
+				// NAVIGATE TO REVIEWS
+				onClick={() => {
+					document.getElementById(`reviews`)?.scrollIntoView({
+						behavior: 'smooth',
+						block: 'start',
+						inline: 'nearest',
+					})
+				}}
+			>
+				<Rating
+					rating={product?.reviews?.ratingTotal!}
+					totalStars={5}
+					size={32}
+					className='flex flex-col justify-end items-end'
+					variant='yellow'
+					showText={true}
+					disabled={true}
+					totalReviews={product?.reviews?.messageTotal!}
+				/>
+			</div>
 			<div className='lg:w-1/2'>
 				{/* IMAGE LIST */}
 				<SliderWithProducts
@@ -119,7 +142,7 @@ export const ProductForm = ({ product, cart }: Props) => {
 				whileInView='onscreen'
 				variants={animateVariants}
 				viewport={{ once: true, amount: 0.15 }}
-				className='flex flex-col lg:w-1/2 justify-center lg:justify-end'
+				className='flex flex-col lg:w-1/2 justify-end items-end'
 			>
 				<div className='hidden lg:flex justify-end items-end'>
 					<BreadcrumbProduct product={product} />
@@ -138,8 +161,9 @@ export const ProductForm = ({ product, cart }: Props) => {
 					</div>
 					{product.UTP}
 				</div>
+				{/* RATING */}
 				<div
-					className='my-4 flex justify-end gap-2 mt-6 cursor-pointer'
+					className='my-4 lg:flex lg:justify-end gap-2 mt-6 cursor-pointer hidden lg:static'
 					// NAVIGATE TO REVIEWS
 					onClick={() => {
 						document.getElementById(`reviews`)?.scrollIntoView({
@@ -179,7 +203,7 @@ export const ProductForm = ({ product, cart }: Props) => {
 				) : (
 					<Button
 						variant={'destructive'}
-						className='p-2 my-2 text-lg hover:scale-105 transition-all ease-in-out duration-300 shadow-lg'
+						className='p-2 my-2 text-lg hover:scale-105 transition-all ease-in-out duration-300 shadow-lg md:w-1/2 flex items-end'
 						size='lg'
 						disabled={!stock}
 						onClick={() => {

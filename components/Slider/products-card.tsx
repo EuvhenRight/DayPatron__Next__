@@ -15,7 +15,7 @@ export const ProductsCard = ({ product }: Props) => {
 	// ANIMATION
 	const animateVariants = {
 		offscreen: {
-			y: 300,
+			y: 100,
 			opacity: 0,
 		},
 		onscreen: {

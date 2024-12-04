@@ -147,7 +147,8 @@ export const SliderWithProducts = ({
 				</div>
 				{/* Image Carousel */}
 				<ul
-					className='px-1 flex lg:block mt-2 lg:mt-0 lg:overflow-y-scroll xl:h-[650px]'
+					className='px-1 flex lg:block mt-2 lg:mt-0 lg:overflow-y-scroll x
+					lg:h-[650px]'
 					ref={imagesRef}
 				>
 					{product.image.map((item, index) => (
