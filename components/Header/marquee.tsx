@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 
 export const Marquee: React.FC = () => {
 	// TEXT PHRASE
-	const phrase = 'Зроблено з гордістю в Україні'
+	const phrase = 'Зроблено в Україні'
 
 	// State to hold the screen width
 	const [isMobile, setIsMobile] = useState(false)

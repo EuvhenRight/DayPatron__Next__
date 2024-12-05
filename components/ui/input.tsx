@@ -8,6 +8,17 @@ export interface InputProps
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
 	({ className, type, ...props }, ref) => {
+		// Prevent focus on mouse click but still allow keyboard input
+		const handleMouseDown = (e: React.MouseEvent<HTMLInputElement>) => {
+			// This prevents the default focus action when clicked
+			e.preventDefault()
+
+			// Explicitly focus the input programmatically only when clicked (but after preventing default)
+			const inputElement = e.currentTarget
+			setTimeout(() => {
+				inputElement.focus() // Focus it after the mouse down to avoid default behavior
+			}, 0)
+		}
 		return (
 			<input
 				type={type}
@@ -17,6 +28,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 				)}
 				ref={ref}
 				{...props}
+				onMouseDown={handleMouseDown}
 			/>
 		)
 	}
