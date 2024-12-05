@@ -29,7 +29,7 @@ export const SliderWithProducts = ({
 	setCurrentIndex,
 	currentIndex,
 }: Props) => {
-	const [arrowToggle, setArrowToggle] = useState<number>(1)
+	const [arrowToggle, setArrowToggle] = useState<number>(0)
 	const [slideDirection, setSlideDirection] = useState<'left' | 'right'>(
 		'right'
 	)
@@ -166,7 +166,7 @@ export const SliderWithProducts = ({
 								width={100}
 								height={100}
 								className='lg:h-auto hidden lg:block w-auto'
-								loading='lazy'
+								priority={true}
 							/>
 							<GoDotFill className='lg:hidden' />
 						</li>
@@ -189,7 +189,7 @@ export const SliderWithProducts = ({
 				</div>
 			</div>
 			{/* Main Image */}
-			<div className='flex items-center justify-between lg:block max-w-[550px]'>
+			<div className='flex items-center justify-between lg:block max-w-[750px]'>
 				<button
 					onClick={handlePrevClick}
 					aria-label='Prev'
@@ -206,8 +206,8 @@ export const SliderWithProducts = ({
 				>
 					<Image
 						src={imageUrl || '/images/DayLogo.svg'}
-						loading='lazy'
-						className={`cursor-zoom-in w-auto h-auto lg:px-24 lg:max-h-[550px] xl:max-h-[550px] object-contain ${
+						priority={true}
+						className={`cursor-zoom-in w-auto h-auto lg:px-24 object-contain ${
 							animate
 								? slideDirection === 'left'
 									? 'animate-slide-left'

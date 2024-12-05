@@ -14,7 +14,7 @@ import { CurrentUser } from '@/lib/hooks/currentUser'
 import { ProductsWithVariantsWithReviews } from '@/lib/types/types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { User } from '@prisma/client'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import * as z from 'zod'
 import { Rating } from '../ui/rating'
@@ -117,21 +117,28 @@ export const ReviewsForm = ({ product, setOpen, setEdit }: Props) => {
 						<FormItem>
 							<FormLabel>Оцінка</FormLabel>
 							<FormControl>
-								<Rating
-									rating={field.value}
-									totalStars={5}
-									size={32}
-									variant='yellow'
-									className='h-1 pb-8 cursor-pointer'
-									showText={false}
-									disabled={false}
-									onRatingChange={field.onChange}
+								<Controller
+									control={form.control}
+									name='rating'
+									render={({ field }) => (
+										<Rating
+											rating={field.value}
+											totalStars={5}
+											size={32}
+											variant='yellow'
+											className='h-1 pb-8 cursor-pointer'
+											showText={false}
+											disabled={false}
+											onRatingChange={field.onChange}
+										/>
+									)}
 								/>
 							</FormControl>
 							<FormMessage />
 						</FormItem>
 					)}
 				/>
+				{/* MESSAGE */}
 				<FormField
 					control={form.control}
 					name='message'

@@ -12,13 +12,20 @@ import 'react-medium-image-zoom/dist/styles.css'
 
 import { addItem } from '@/actions/cart'
 import { SliderWithProducts } from '@/components/ProductForm/slider-with-products'
+import { ShareButton } from '@/components/Share/social-share'
+import {
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
+} from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
+import { Rating } from '@/components/ui/rating'
+import data from '@/lib/db/content.json'
 import { rubikDirt } from '@/lib/utils/font'
 import { cn } from '@/lib/utils/utils'
 import { AiOutlineCheckSquare } from 'react-icons/ai'
 import { toast } from 'sonner'
-import { ShareButton } from '../Share/social-share'
-import { Rating } from '../ui/rating'
 
 interface Props {
 	product: ProductWithVariantsWithReviews
@@ -37,6 +44,7 @@ export const ProductForm = ({ product, cart }: Props) => {
 	)
 	// FULL LINK
 	const [fullLink, setFullLink] = useState<string>(``)
+	const productContent = data.products.find(item => product.id === item.id)
 
 	// ANIMATION
 	const animateVariants = {
@@ -122,7 +130,7 @@ export const ProductForm = ({ product, cart }: Props) => {
 					totalReviews={product?.reviews?.messageTotal!}
 				/>
 			</div>
-			<div className='lg:w-1/2'>
+			<div className='lg:w-3/4'>
 				{/* IMAGE LIST */}
 				<SliderWithProducts
 					product={product}
@@ -213,21 +221,33 @@ export const ProductForm = ({ product, cart }: Props) => {
 						Додати до кошика
 					</Button>
 				)}
-				{/* INFO BLOCK INFORMATION */}
-				<div className='text-justify'>
-					<article className='py-2'>{product.description}</article>
-					<article className='py-2'>
-						<b>Термін зберігання: </b>
-						{product.shelfLife}
-					</article>
-					<article className='py-2'>
-						<b>Склад: </b>
-						{product.ingredients}
-					</article>
-					<article className='py-2'>
-						<b>Інструкція з використання: </b>
-						{product.useTo}
-					</article>
+				{/* INFO BLOCK INFORMATION  */}
+				{/* TODO: fix texts mistakes */}
+				<div className='text-justify px-2 lg:px-0'>
+					<article className='py-2'>{productContent?.description}</article>
+					<ul className='pb-2 lg:pl-4 list-disc'>
+						{productContent?.properties.map((property, index) => (
+							<li key={index}>{property.text}</li>
+						))}
+					</ul>
+					<ul className='pb-2 lg:pl-4 list-disc'>
+						<li className='py-1'>
+							Термін зберігання: {productContent?.shelfLife}
+						</li>
+						<li className='py-1'>Склад: {productContent?.ingredients}</li>
+						<li className='py-1'>
+							<Accordion type='single' collapsible>
+								<AccordionItem value='item-1'>
+									<AccordionTrigger className='rounded-md border border-gray-600 p-2 snap-center text-sm lg:text-md shadow-lg'>
+										Інструкція з використання:
+									</AccordionTrigger>
+									<AccordionContent className='mt-2'>
+										{productContent?.howToUse}
+									</AccordionContent>
+								</AccordionItem>
+							</Accordion>
+						</li>
+					</ul>
 				</div>
 			</motion.div>
 		</div>
