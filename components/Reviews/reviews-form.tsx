@@ -83,6 +83,7 @@ export const ReviewsForm = ({ product, setOpen, setEdit }: Props) => {
 									<Input
 										type='text'
 										{...field}
+										onBlur={e => e.target.blur()}
 										placeholder='введіть повне Ім&rsquo;я'
 									/>
 								</FormControl>
@@ -102,6 +103,7 @@ export const ReviewsForm = ({ product, setOpen, setEdit }: Props) => {
 										type='email'
 										{...field}
 										placeholder='john.doe@example.com'
+										onBlur={e => e.target.blur()}
 									/>
 								</FormControl>
 								<FormMessage />
@@ -126,7 +128,7 @@ export const ReviewsForm = ({ product, setOpen, setEdit }: Props) => {
 									showText={false}
 									disabled={false}
 									onRatingChange={field.onChange}
-									onMouseDown={e => e.preventDefault()}
+									onBlur={e => e.target.blur()}
 								/>
 							</FormControl>
 							<FormMessage />
@@ -140,7 +142,11 @@ export const ReviewsForm = ({ product, setOpen, setEdit }: Props) => {
 						<FormItem>
 							<FormLabel>Відгук</FormLabel>
 							<FormControl>
-								<Textarea {...field} placeholder='введіть відгук' />
+								<Textarea
+									{...field}
+									placeholder='введіть відгук'
+									onBlur={e => e.target.blur()}
+								/>
 							</FormControl>
 							<FormMessage />
 						</FormItem>
