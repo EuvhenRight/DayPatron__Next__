@@ -71,7 +71,7 @@ export const ReviewsForm = ({ product, setOpen, setEdit }: Props) => {
 				className='flex flex-col w-full gap-5'
 				onSubmit={form.handleSubmit(onSubmit)}
 			>
-				<div className='flex gap-5 w-1/2 *:w-full'>
+				<div className='flex gap-5 lg:w-1/2 *:w-full'>
 					{/* NAME */}
 					<FormField
 						control={form.control}
@@ -83,7 +83,6 @@ export const ReviewsForm = ({ product, setOpen, setEdit }: Props) => {
 									<Input
 										type='text'
 										{...field}
-										onBlur={e => e.target.blur()}
 										placeholder='введіть повне Ім&rsquo;я'
 									/>
 								</FormControl>
@@ -103,7 +102,6 @@ export const ReviewsForm = ({ product, setOpen, setEdit }: Props) => {
 										type='email'
 										{...field}
 										placeholder='john.doe@example.com'
-										onBlur={e => e.target.blur()}
 									/>
 								</FormControl>
 								<FormMessage />
@@ -128,7 +126,6 @@ export const ReviewsForm = ({ product, setOpen, setEdit }: Props) => {
 									showText={false}
 									disabled={false}
 									onRatingChange={field.onChange}
-									onBlur={e => e.target.blur()}
 								/>
 							</FormControl>
 							<FormMessage />
@@ -142,11 +139,7 @@ export const ReviewsForm = ({ product, setOpen, setEdit }: Props) => {
 						<FormItem>
 							<FormLabel>Відгук</FormLabel>
 							<FormControl>
-								<Textarea
-									{...field}
-									placeholder='введіть відгук'
-									onBlur={e => e.target.blur()}
-								/>
+								<Textarea {...field} placeholder='введіть відгук' />
 							</FormControl>
 							<FormMessage />
 						</FormItem>

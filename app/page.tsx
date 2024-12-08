@@ -5,7 +5,7 @@ import { getAllProducts } from '@/lib/services/products'
 import { ProductsWithVariants } from '@/lib/types/types'
 import { rubikDirt } from '@/lib/utils/font'
 import { cn } from '@/lib/utils/utils'
-import Link from 'next/link'
+import { ButtonBack } from './button-back'
 
 export default async function Home() {
 	const dataProducts: ProductsWithVariants[] = await getAllProducts()
@@ -46,14 +46,7 @@ export default async function Home() {
 						</li>
 					))}
 				</ul>
-				<div className='flex justify-center mb-14 mt-6'>
-					<Link
-						href='/products'
-						className='border border-zinc-700 text-zinc-700 py-2 px-4 rounded-md hover:scale-110 ease-out transition-all'
-					>
-						Переглянути всі товари
-					</Link>
-				</div>
+				<ButtonBack text='Переглянути всі товари' />
 			</section>
 		</>
 	)

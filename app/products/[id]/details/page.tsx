@@ -1,3 +1,4 @@
+import { ButtonBack } from '@/app/button-back'
 import { AdvantagesWrapper } from '@/components/Advantages/advantages-wrapper'
 import { ProductForm } from '@/components/ProductForm/product-form'
 import { ReviewsComponent } from '@/components/Reviews/reviews'
@@ -60,6 +61,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
 			<section className='max-w-screen-xl mx-auto'>
 				<ReviewsComponent reviews={reviews!} product={product} />
 			</section>
+			<ButtonBack text='Назад' back={true} />
 		</div>
 	)
 }
