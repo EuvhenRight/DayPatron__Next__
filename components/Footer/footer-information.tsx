@@ -21,6 +21,9 @@ export const FooterInformation = () => {
 				<li className='py-2  hover:text-white'>
 					<Link href='/guide'>{ContentFooter.links.guide}</Link>
 				</li>
+				<li className='py-2  hover:text-white'>
+					<Link href='/rules-reviews'>{ContentFooter.links.rules_reviews}</Link>
+				</li>
 			</ul>
 		</div>
 	)

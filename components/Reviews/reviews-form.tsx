@@ -17,6 +17,7 @@ import { User } from '@prisma/client'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import * as z from 'zod'
+import { RulesRPolicyInfo } from '../ui/privacy-reviews-ruls'
 import { Rating } from '../ui/rating'
 import { Textarea } from '../ui/textarea'
 import { ReviewCancelButton } from './review-cancel-button'
@@ -145,7 +146,8 @@ export const ReviewsForm = ({ product, setOpen, setEdit }: Props) => {
 						</FormItem>
 					)}
 				/>
-				<div className='flex justify-end'>
+				<div className='flex justify-end items-center gap-4'>
+					<RulesRPolicyInfo label='"Відправити"' />
 					<ReviewCancelButton
 						labelCancel='Відмінити'
 						setEdit={setEdit}

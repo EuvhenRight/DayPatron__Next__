@@ -18,6 +18,8 @@ export const publicRoutes = [
 	'/videos/*',
 	'/privacy',
 	'/sitemap.xml',
+	'/rules-reviews',
+	'/robots.txt',
 ]
 
 /**

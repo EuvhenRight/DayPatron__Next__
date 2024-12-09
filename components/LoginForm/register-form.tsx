@@ -75,7 +75,7 @@ export const RegisterForm = () => {
 			headerLabel='Введіть свою електронну адресу, і ми надішлемо вам код входу'
 			buttonBackHref=''
 			buttonPrivacyHref='/privacy'
-			buttonPrivacyLabel='Політика конфіденційності'
+			buttonPrivacyLabel='"Надіслати код входу"'
 			showSocial
 		>
 			<Form {...form}>

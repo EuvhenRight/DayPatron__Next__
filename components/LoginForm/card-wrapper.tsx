@@ -1,10 +1,10 @@
 'use client'
 import { BackButton } from '@/components/LoginForm/back-button'
 import { Header } from '@/components/LoginForm/header'
-import { PrivacyButton } from '@/components/LoginForm/privacy-button'
 import { ShowSocial } from '@/components/LoginForm/show-social'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 
+import { PrivacyPolicyInfo } from '@/components/ui/privacy-policy'
 import React from 'react'
 
 interface Props {
@@ -41,8 +41,8 @@ export const CardWrapper = ({
 					<BackButton label={buttonBackLabel} href={buttonBackHref} />
 				</CardFooter>
 			)}
-			<CardFooter className='justify-center'>
-				<PrivacyButton label={buttonPrivacyLabel} href={buttonPrivacyHref} />
+			<CardFooter className='w-full'>
+				<PrivacyPolicyInfo label={buttonPrivacyLabel} />
 			</CardFooter>
 		</Card>
 	)
