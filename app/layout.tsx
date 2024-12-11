@@ -44,7 +44,6 @@ async function RootLayout({ children }: { children: React.ReactNode }) {
 		getCart(),
 		getAllProducts(),
 	])
-
 	return (
 		<SessionProvider session={session}>
 			<html lang='en'>
