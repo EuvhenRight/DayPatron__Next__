@@ -41,7 +41,7 @@ export const DeliveryFormDialog: React.FC<Props> = ({
 }) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const [autoCityData, setAutoCityData] = useState<string>('')
-	// TODO: Add Debounce hook
+
 	// USE EFFECT ADD CITY DATA TO FORM
 	useEffect(() => {
 		form.setValue('city', autoCityData)

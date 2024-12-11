@@ -17,4 +17,3 @@ export default function robots(): MetadataRoute.Robots {
 		sitemap: `${process.env.NEXT_PUBLIC_API_URL}/sitemap.xml`,
 	}
 }
-// TODO: add setup to google analytics

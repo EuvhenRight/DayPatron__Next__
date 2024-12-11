@@ -133,15 +133,7 @@ export const SearchDialog = () => {
 								</p>
 								{data?.map((item, index) => (
 									<li key={index} className='py-4'>
-										<Link
-											href={`/products/${item.id}/details`}
-											onClick={() => {
-												// CLOSE AND CLEAR DATA
-												setOpen(false)
-												form.reset()
-												setData(undefined)
-											}}
-										>
+										<Link href={`/products/${item.id}/details`} target='_blank'>
 											<p className='text-sm font-bold pb-2'>Назва</p>
 											<div
 												className='hover:bg-neutral-50 hover:rounded-md p-2'

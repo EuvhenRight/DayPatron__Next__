@@ -16,4 +16,3 @@ export const ERROR_MESSAGE = 'Виникла помилка, будь ласка
 
 export const ERROR_MESSAGE_SIGNIN =
 	'Ви більше не можете увійти до свого аккаунту за допомогою провайдера Google. Будь ласка, оберіть інший спосіб аутентифікації.'
-// TODO: ADD constance's to JSON File

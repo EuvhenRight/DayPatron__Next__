@@ -22,7 +22,6 @@ interface Props {
 	product: ProductsWithVariantsWithReviews
 }
 export const DeleteButtonMessage = ({ message, product }: Props) => {
-	// TODO: Fix mobile layout
 	const handleDelete = async () => {
 		try {
 			// DELETE REVIEW

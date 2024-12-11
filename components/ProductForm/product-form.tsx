@@ -222,7 +222,6 @@ export const ProductForm = ({ product, cart }: Props) => {
 					</Button>
 				)}
 				{/* INFO BLOCK INFORMATION  */}
-				{/* TODO: fix texts mistakes */}
 				<div className='text-justify px-2 lg:px-0'>
 					<article className='py-2'>{productContent?.description}</article>
 					<ul className='pb-2 lg:pl-4 list-disc'>

@@ -27,4 +27,3 @@ export async function sendLoginPassword({ email, generatedPassword }: Props) {
 		console.error(error)
 	}
 }
-// TODO: ADD DOMEN TEMPLATE TO IMAGE

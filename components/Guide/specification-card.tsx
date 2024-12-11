@@ -18,7 +18,6 @@ export const SpecificationCard = () => {
 	const ref = useRef(null)
 	const isInView = useInView(ref)
 
-	// Update screen size state on window resize TODO: fix animation
 	useEffect(() => {
 		const handleResize = () => {
 			setIsMobile(window.innerWidth <= 768)

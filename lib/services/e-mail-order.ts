@@ -1,7 +1,7 @@
 import { formatPriceUa } from '@/lib/services/format'
 import { OrderForm } from '@/lib/types/types'
 import { ExtraUser, User } from '@prisma/client'
-// TODO: update logo DayPatron
+
 const createAddressSection = (delivery: OrderForm): string => {
 	const address = delivery?.address
 	return address?.typeOfDelivery === 'У відділення'
