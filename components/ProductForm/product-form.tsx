@@ -130,7 +130,7 @@ export const ProductForm = ({ product, cart }: Props) => {
 					totalReviews={product?.reviews?.messageTotal!}
 				/>
 			</div>
-			<div className='lg:w-3/4'>
+			<div className='lg:w-1/2 mt-6 lg:-mt-12'>
 				{/* IMAGE LIST */}
 				<SliderWithProducts
 					product={product}
@@ -155,23 +155,21 @@ export const ProductForm = ({ product, cart }: Props) => {
 				<div className='hidden lg:flex justify-end items-end'>
 					<BreadcrumbProduct product={product} />
 				</div>
-				<h1
-					className={cn(
-						rubikDirt.className,
-						'text-2xl lg:text-3xl font-bold uppercase space-y-2 line-height-[1.5] text-center lg:text-end my-5 items-center lg:items-end'
-					)}
-				>
-					{product.name}
-				</h1>
-				<div className='font-bold italic text-center flex justify-center items-center lg:justify-end gap-2'>
-					<div>
-						<ShareButton />
-					</div>
-					{product.UTP}
+				{/* NAME */}
+				<div className='flex flex-row items-center gap-2 lg:px-0'>
+					<ShareButton />
+					<h1
+						className={cn(
+							rubikDirt.className,
+							'text-2xl lg:text-3xl uppercase space-y-2 line-height-[1.5] text-center lg:text-end my-5 items-center lg:items-end'
+						)}
+					>
+						{product.name}
+					</h1>
 				</div>
 				{/* RATING */}
 				<div
-					className='my-4 lg:flex lg:justify-end gap-2 mt-6 cursor-pointer hidden lg:static'
+					className='my-4 lg:flex lg:justify-end gap-2 cursor-pointer hidden lg:static'
 					// NAVIGATE TO REVIEWS
 					onClick={() => {
 						document.getElementById(`reviews`)?.scrollIntoView({

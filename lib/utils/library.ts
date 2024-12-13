@@ -168,4 +168,29 @@ export const partnersLibrary = [
 		image: 'Ibis.svg',
 		url: 'https://ibis.net.ua/ua/products/sredstva/search/day-patron/',
 	},
+	{
+		image: 'Prof_1.svg',
+		url: 'https://prof1group.ua/daypatron/nabory-i-sredstva-dlya-chistki-orujiya',
+	},
+	{
+		image: 'Tactica.png',
+		url: 'https://tactica.kiev.ua/shop_1/cleaning_maintenance/&p_val=[0:3235]&a_val=[168:DAY%20PATRON]&limit=15&sort=p.quantity&order=DESC&page=1/',
+	},
+
+	{
+		image: 'Alfa-bravo.png',
+		url: 'https://alphabravo.store/catalog/accessories/sort-rating/',
+	},
+	{
+		image: 'Krula.png',
+		url: 'http://krilagromu.ua/',
+	},
+	{
+		image: 'Tsar.png',
+		url: 'https://tsarskyshootingclub.com/',
+	},
+	{
+		image: 'Vepr.png',
+		url: 'https://vepr.te.ua/',
+	},
 ]

@@ -1,4 +1,4 @@
-import { rubikDirt } from '@/lib/utils/font'
+import { mulish } from '@/lib/utils/font'
 import { cn } from '@/lib/utils/utils'
 import { motion, useAnimation, useInView } from 'framer-motion'
 import Image from 'next/image'
@@ -82,7 +82,7 @@ export const TriangleAnimation = () => {
 				animate={controlsBoll}
 				initial={{ scale: 0.1 }}
 				className={cn(
-					rubikDirt.className,
+					mulish.className,
 					// base screen styling
 					`text-lg font-bold absolute top-[20%] left-[29%] 
 					rounded-full hover:scale-105 transition-all ease-in-out duration-300 w-36 h-36 text-center items-center justify-center flex text-white bg-neutral-800 p-2`,

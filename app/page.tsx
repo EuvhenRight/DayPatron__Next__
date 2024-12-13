@@ -16,38 +16,40 @@ export default async function Home() {
 	//  GET BEST TWO PRODUCT
 	const bestSellers = matchingProducts.slice(0, 2)
 	return (
-		<>
+		<div className='relative'>
 			<video
 				src={`${process.env.NEXT_PUBLIC_VIDEO_URL}/video.mp4`}
 				autoPlay
 				loop
 				muted
 				playsInline
-				className='top-0 left-0 h-full w-full aspect-video object-cover'
+				className='h-full w-full aspect-video object-cover lg:-mt-32'
 			/>
-			<section className='container'>
-				<FeaturedOn />
-				<MissionInfo />
-			</section>
-			{/* BEST SELLERS */}
-			<section className='container'>
-				<h1
-					className={cn(
-						rubikDirt.className,
-						'text-4xl uppercase text-neutral-800 text-center mb-4 md:my-10'
-					)}
-				>
-					Лідери продажів
-				</h1>
-				<ul className='grid grid-cols-1 md:grid-cols-2 gap-2 justify-items-center'>
-					{bestSellers.map(product => (
-						<li key={product.id}>
-							<ProductsCard product={product} />
-						</li>
-					))}
-				</ul>
-				<ButtonBack text='Переглянути всі товари' />
-			</section>
-		</>
+			<div className='relative z-10'>
+				<section className='container'>
+					<FeaturedOn />
+					<MissionInfo />
+				</section>
+				{/* BEST SELLERS */}
+				<section className='container'>
+					<h1
+						className={cn(
+							rubikDirt.className,
+							'text-4xl uppercase text-neutral-800 text-center mb-4 md:my-10'
+						)}
+					>
+						Лідери продажів
+					</h1>
+					<ul className='grid grid-cols-1 md:grid-cols-2 gap-2 justify-items-center'>
+						{bestSellers.map(product => (
+							<li key={product.id}>
+								<ProductsCard product={product} />
+							</li>
+						))}
+					</ul>
+					<ButtonBack text='Переглянути всі товари' />
+				</section>
+			</div>
+		</div>
 	)
 }

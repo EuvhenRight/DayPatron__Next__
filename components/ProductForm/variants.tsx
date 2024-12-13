@@ -36,7 +36,12 @@ export const Variants = ({
 		<>
 			{/* PRICE */}
 			{currentIndex !== null ? (
-				<div className='flex gap-2 items-center my-3 text-3xl'>
+				<div
+					className={cn(
+						rubikDirt.className,
+						'flex gap-2 items-center my-3 text-4xl font-bold'
+					)}
+				>
 					<p className={discountPrice > 0 ? 'line-through' : ''}>
 						{<PriceTag price={variantsProduct[currentIndex]?.original_price} />}
 					</p>
@@ -101,13 +106,13 @@ export const Variants = ({
 					</div>
 				)}
 			</div>
-			{currentIndex !== null ? (
+			{/* {currentIndex !== null ? (
 				<p className='mb-4'>
-					article: {variantsProduct[currentIndex]?.article}
+					артикул: {variantsProduct[currentIndex]?.article}
 				</p>
 			) : (
 				<p className='mb-4'>article: ----</p>
-			)}
+			)} */}
 		</>
 	)
 }
