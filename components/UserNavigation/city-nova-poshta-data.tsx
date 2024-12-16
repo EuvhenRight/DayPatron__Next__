@@ -13,7 +13,7 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from '@/components/ui/popover'
-import { useSearchDataDivision } from '@/lib/hooks/search'
+import { useSearchCityData } from '@/lib/hooks/search'
 import { cn } from '@/lib/utils/utils'
 import { Check, ChevronsUpDown } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -23,28 +23,34 @@ interface Props {
 	setAutoCityData: (value: string) => void
 }
 
-export const Combobox = ({ onChange, setAutoCityData }: Props) => {
+export const ComboboxCityData = ({ onChange, setAutoCityData }: Props) => {
 	const [open, setOpen] = useState<boolean>(false)
-	const [currentData, setCurrentData] = useState<string>('')
-	const [searchNumber, setSearchNumber] = useState('')
+	const [currentData, setCurrentData] = useState<string | null>(null)
+	const [searchCity, setSearchCity] = useState('')
 	// GET DATA FROM API
-	const { data, loading } = useSearchDataDivision(searchNumber)
-
+	const { cityName, loading } = useSearchCityData(searchCity)
 	const handleOnChange = (value: string) => {
-		setSearchNumber(value)
+		setSearchCity(value)
 	}
 
 	const handleOnSelect = (currentValue: string) => {
-		setCurrentData(currentValue === currentData ? '' : currentValue)
+		const selectedItem = cityName?.find(
+			item =>
+				`${item.SettlementTypeDescription} ${item.Description} ${item.AreaDescription}` ===
+				currentValue
+		)
+		if (selectedItem) {
+			setCurrentData(currentValue === currentData ? '' : currentValue)
+			setAutoCityData(
+				currentValue === currentData ? '' : selectedItem.Description
+			)
+		}
 		setOpen(false)
 	}
 
 	useEffect(() => {
-		onChange(currentData)
-		setAutoCityData(
-			data?.find(item => item.Description === currentData)?.CityDescription!
-		)
-	}, [currentData, onChange, setAutoCityData, data])
+		onChange(currentData || '')
+	}, [currentData, onChange, cityName])
 
 	return (
 		<Popover open={open} onOpenChange={setOpen}>
@@ -56,44 +62,45 @@ export const Combobox = ({ onChange, setAutoCityData }: Props) => {
 						aria-expanded={open}
 						className='w-full justify-between whitespace-pre-line'
 					>
-						{currentData
-							? `${
-									data?.find(item => item.Description === currentData)
-										?.Description
-							  }`
-							: 'Пошук по номеру відділення'}
+						{currentData ? `${currentData} обл.` : 'Місто для доставки'}
 						<ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
 					</Button>
 				</PopoverTrigger>
-				<PopoverContent className='p-0 md:w-[700px] w-min-full'>
+				<PopoverContent
+					side='bottom'
+					align='start'
+					sideOffset={5}
+					className='p-0 md:w-[700px] h-[300px] data-[side=bottom]:animate-slideDown'
+				>
 					<Command className='bg-gray-200'>
 						<CommandInput
-							value={searchNumber || ''}
+							value={searchCity || ''}
 							onValueChange={handleOnChange}
 						/>
 						<CommandList>
 							<CommandEmpty>Нічого не знайдено</CommandEmpty>
 							<CommandGroup>
-								{data?.map(item => (
+								{cityName?.map((item, index) => (
 									<CommandItem
 										className='cursor-pointer'
-										key={item.SiteKey}
-										value={item.Description}
+										key={index}
+										value={`${item.SettlementTypeDescription} ${item.Description} ${item.AreaDescription}`}
 										onSelect={handleOnSelect}
-										disabled={item.Description === currentData}
 									>
 										<Check
 											className={cn(
 												'mr-2 h-4 w-4',
-												currentData === item.Description
-													? 'opacity-100'
-													: 'opacity-0'
+												currentData === item.Ref ? 'opacity-100' : 'opacity-0'
 											)}
 										/>
-										{item.Description}
 										<span className='ml-1 font-bold'>
-											м. {item.CityDescription}
+											{item.SettlementTypeDescription} {item.Description}
 										</span>
+										<span className='ml-1'>
+											{item.RegionsDescription}
+											{item.RegionsDescription && ' р-н'}
+										</span>
+										<span className='ml-1'>{item.AreaDescription} обл.</span>
 									</CommandItem>
 								))}
 							</CommandGroup>

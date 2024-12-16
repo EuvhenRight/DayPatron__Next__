@@ -23,7 +23,7 @@ export async function addItem(
 
 		// CHECK VERIFIED USER
 		const verifiedOrders = await findProductsInOrderItems(userId!, productId)
-		console.log(verifiedOrders, 'verifiedOrders')
+
 		// CREATE REVIEW ITEM
 		await prisma?.reviewItem.create({
 			data: {

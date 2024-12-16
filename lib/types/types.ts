@@ -92,6 +92,19 @@ export type Division = {
 	Description: string
 }
 
+export type CityName = {
+	SiteKey: string
+	Number: string
+	ShortAddress: string
+	CityDescription: string
+	Description: string
+	RegionsDescription: string
+	AreaDescription: string
+	SettlementTypeDescription: string
+	Area: string
+	Ref: string
+}
+
 export type ReviewItemInputs = {
 	message: string
 	email: string

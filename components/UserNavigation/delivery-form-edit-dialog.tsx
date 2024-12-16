@@ -4,6 +4,7 @@ import {
 	Dialog,
 	DialogClose,
 	DialogContent,
+	DialogTitle,
 	DialogTrigger,
 } from '@/components/ui/dialog'
 import {
@@ -133,7 +134,12 @@ export const DeliveryFormEditDialog: React.FC<Props> = ({ item }) => {
 			<DialogTrigger className='hover:text-green-500 text-green-700 px-2'>
 				<Pencil style={{ width: '20px', height: '20px' }} />
 			</DialogTrigger>
-			<DialogContent className='sm:max-w-[768px]'>
+			<DialogContent
+				aria-labelledby={'delivery-edit-form-dialog'}
+				aria-describedby={'delivery-edit-form-dialog-description'}
+				className='sm:max-w-[768px]'
+			>
+				<DialogTitle className='hidden'>Title for Screen Readers</DialogTitle>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)} id='combobox'>
 						{item.typeOfDelivery === 'У відділення' ? (

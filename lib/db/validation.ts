@@ -216,10 +216,15 @@ export const ValidationSchema = {
 			.string({ invalid_type_error: 'Виберіть тип доставки' })
 			.min(3, 'Bиберіть тип доставки'),
 		branchNumber: z
-			.string({ required_error: "Поле номер відділення є обов'язковим" })
-			.min(1, 'Має містити 1 або більше елементів')
-			.nullable(),
-		city: z.string({ required_error: "Поле місто є обов'язковим" }),
+			.string({
+				required_error: "Поле відділення є обов'язковим",
+			})
+			.min(3, "Поле відділення є обов'язковим"),
+		city: z
+			.string({
+				required_error: "Поле населений пункт є обов'язковим",
+			})
+			.min(3, "Поле населений пункт є обов'язковим"),
 	}) as ZodSchema<DeliveryBranch>,
 	// SEARCH
 	searchInput: z.object({

@@ -71,7 +71,7 @@ export const DeliveryForm: React.FC<Props> = ({ currentDelivery }) => {
 											</Label>
 											{item.branchNumber}
 											<Label className='py-3 font-bold'>Населений пункт:</Label>
-											{item.city}
+											{item.city} обл.
 										</div>
 									) : (
 										<>

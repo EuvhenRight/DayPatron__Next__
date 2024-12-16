@@ -32,7 +32,10 @@ export const LogOutModal = () => {
 	return (
 		<AlertDialog>
 			<AlertDialogTrigger>Вийти з системи</AlertDialogTrigger>
-			<AlertDialogContent>
+			<AlertDialogContent
+				aria-labelledby='alert-dialog'
+				aria-describedby='alert-dialog-description'
+			>
 				<AlertDialogHeader>
 					{error && <p style={{ color: 'red' }}>{error}</p>}
 					<AlertDialogTitle>Ви дійсно хочете вийти?</AlertDialogTitle>

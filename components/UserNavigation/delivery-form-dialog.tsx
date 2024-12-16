@@ -4,6 +4,7 @@ import {
 	Dialog,
 	DialogClose,
 	DialogContent,
+	DialogTitle,
 	DialogTrigger,
 } from '@/components/ui/dialog'
 import {
@@ -28,7 +29,9 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
-import { Combobox } from './delivery-nova-poshta-data'
+import { ComboboxCityData } from './city-nova-poshta-data'
+import { ComboboxDivisionData } from './division-nova-poshta-data copy'
+import { TooltipInfo } from './tooltip'
 
 interface Props {
 	setTypeOfDelivery: React.Dispatch<React.SetStateAction<string>>
@@ -41,12 +44,6 @@ export const DeliveryFormDialog: React.FC<Props> = ({
 }) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const [autoCityData, setAutoCityData] = useState<string>('')
-
-	// USE EFFECT ADD CITY DATA TO FORM
-	useEffect(() => {
-		form.setValue('city', autoCityData)
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [autoCityData])
 
 	// STATE AND HANDLERS
 	const getValidationSchema = (typeOfDelivery: string) => {
@@ -122,12 +119,19 @@ export const DeliveryFormDialog: React.FC<Props> = ({
 		}
 	}, [isOpen, setTypeOfDelivery, form])
 
+	const blockInformation = 'Перший крок: спочатку виберіть населений пункт'
+
 	return (
 		<Dialog open={isOpen} onOpenChange={setIsOpen}>
 			<DialogTrigger className='hover:text-green-500 text-green-700 px-2'>
 				+ Додати
 			</DialogTrigger>
-			<DialogContent className='w-full sm:max-w-[768px] z-40'>
+			<DialogContent
+				aria-labelledby={'delivery-form-dialog'}
+				aria-describedby={'delivery-form-dialog-description'}
+				className='w-full sm:max-w-[768px] z-40'
+			>
+				<DialogTitle className='hidden'>Title for Screen Readers</DialogTitle>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)} id='combobox'>
 						{typeOfDelivery === 'У відділення' ? (
@@ -149,24 +153,6 @@ export const DeliveryFormDialog: React.FC<Props> = ({
 										</FormItem>
 									)}
 								/>
-								{/* BRANCH NUMBER */}
-								<FormField
-									control={form.control}
-									name='branchNumber'
-									render={({ field }) => (
-										<FormItem className='w-full'>
-											<FormLabel>Номер відділення</FormLabel>
-											<FormControl>
-												<Combobox
-													{...field}
-													setAutoCityData={setAutoCityData} // SET CITY DATA
-													onChange={field.onChange}
-												/>
-											</FormControl>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
 								{/* CITY */}
 								<FormField
 									control={form.control}
@@ -175,11 +161,29 @@ export const DeliveryFormDialog: React.FC<Props> = ({
 										<FormItem className='mt-10'>
 											<FormLabel>Населений пункт</FormLabel>
 											<FormControl>
-												<Input
-													type='text'
+												<ComboboxCityData
 													{...field}
-													value={autoCityData} // GET CITY DATA
-													placeholder='Вкажи назву населеного пункту'
+													onChange={field.onChange}
+													setAutoCityData={setAutoCityData}
+												/>
+											</FormControl>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+								{/* BRANCH NUMBER */}
+								<FormField
+									control={form.control}
+									name='branchNumber'
+									render={({ field }) => (
+										<FormItem className='w-full'>
+											<FormLabel>Відділення</FormLabel>
+											<TooltipInfo text={blockInformation} />
+											<FormControl>
+												<ComboboxDivisionData
+													{...field}
+													onChange={field.onChange}
+													autoCityData={autoCityData}
 												/>
 											</FormControl>
 											<FormMessage />
@@ -331,7 +335,10 @@ export const DeliveryFormDialog: React.FC<Props> = ({
 							<DialogClose asChild>
 								<Button
 									variant='link'
-									onClick={() => form.reset()}
+									onClick={() => {
+										setAutoCityData('')
+										form.reset()
+									}}
 									type='button'
 								>
 									Скасувати

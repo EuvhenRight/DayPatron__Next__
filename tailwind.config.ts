@@ -19,6 +19,10 @@ const config = {
 		},
 		extend: {
 			keyframes: {
+				slideDown: {
+					'0%': { opacity: '0', transform: 'translateY(-10px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' },
+				},
 				'accordion-down': {
 					from: { height: '0' },
 					to: { height: 'var(--radix-accordion-content-height)' },
@@ -67,6 +71,7 @@ const config = {
 				},
 			},
 			animation: {
+				slideDown: 'slideDown 0.3s ease-out',
 				marquee: 'marquee 15s linear infinite',
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
@@ -79,6 +84,9 @@ const config = {
 	},
 	zIndex: {
 		'100': '100',
+	},
+	variants: {
+		animation: ['responsive', 'hover', 'focus, data-side'],
 	},
 	plugins: [require('tailwindcss-animate')],
 } satisfies Config

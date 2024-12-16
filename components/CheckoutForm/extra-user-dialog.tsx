@@ -54,7 +54,10 @@ export const ExtraUserDialog = ({ onChange, setExtraUser }: Props) => {
 			<DialogTrigger className='hover:text-green-500 text-green-700 px-2'>
 				<Pencil style={{ width: '20px', height: '20px' }} />
 			</DialogTrigger>
-			<DialogContent>
+			<DialogContent
+				aria-labelledby='extra-user-dialog'
+				aria-describedby='extra-user-dialog-description'
+			>
 				<DialogHeader>
 					<DialogTitle>Змінити інформацію профілю</DialogTitle>
 				</DialogHeader>

@@ -87,7 +87,10 @@ export const ProfileFormDialog = ({ currentUser, onChange }: Props) => {
 			<DialogTrigger className='hover:text-green-500 text-green-700 px-2'>
 				<Pencil style={{ width: '20px', height: '20px' }} />
 			</DialogTrigger>
-			<DialogContent>
+			<DialogContent
+				aria-labelledby='profile-form-dialog'
+				aria-describedby='profile-form-dialog-description'
+			>
 				<DialogHeader>
 					<DialogTitle>Змінити інформацію профілю</DialogTitle>
 					<DialogDescription></DialogDescription>
