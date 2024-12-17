@@ -222,23 +222,32 @@ export const ProductForm = ({ product, cart }: Props) => {
 				{/* INFO BLOCK INFORMATION  */}
 				<div className='text-justify px-2 lg:px-0'>
 					<article className='py-2'>{productContent?.description}</article>
-					<ul className='pb-2 lg:pl-4 list-disc'>
+					<ul className='py-2 lg:pl-4 list-disc ml-5'>
 						{productContent?.properties.map((property, index) => (
-							<li key={index}>{property.text}</li>
+							<li key={index} className='py-2'>
+								<span className='font-extrabold mr-2 text-lg'>
+									{property.title}
+								</span>
+								{property.text}
+							</li>
 						))}
 					</ul>
-					<ul className='pb-2 lg:pl-4 list-disc'>
+					<ul className='pb-2 lg:pl-4 list-disc ml-5'>
 						<li className='py-1'>
-							Термін зберігання: {productContent?.shelfLife}
+							<b>Термін зберігання: </b>
+							{productContent?.shelfLife}
 						</li>
-						<li className='py-1'>Склад: {productContent?.ingredients}</li>
+						<li className='py-1'>
+							<b>Склад: </b>
+							{productContent?.ingredients}
+						</li>
 						<li className='py-1'>
 							<Accordion type='single' collapsible>
 								<AccordionItem value='item-1'>
-									<AccordionTrigger className='rounded-md border border-gray-600 p-2 snap-center text-sm lg:text-md shadow-lg'>
+									<AccordionTrigger className='p-2 snap-center font-bold'>
 										Інструкція з використання:
 									</AccordionTrigger>
-									<AccordionContent className='mt-2'>
+									<AccordionContent className='mt-2 text-base'>
 										{productContent?.howToUse}
 									</AccordionContent>
 								</AccordionItem>

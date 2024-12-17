@@ -1,10 +1,11 @@
 import { motion } from 'framer-motion'
-import Image from 'next/image'
+import { Handshake } from 'lucide-react'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 export const Marquee: React.FC = () => {
 	// TEXT PHRASE
-	const phrase = 'Зроблено в Україні'
+	const phrase = 'БАЖАЄШ СТАТИ НАШИМ ПАРТНЕРОМ?'
 
 	// State to hold the screen width
 	const [isMobile, setIsMobile] = useState(false)
@@ -27,8 +28,8 @@ export const Marquee: React.FC = () => {
 				? ['100vw', '10vw', '10vw', '-100vw']
 				: ['100vw', '40vw', '40vw', '-100vw'],
 			transition: {
-				duration: 8,
-				ease: 'linear',
+				duration: 18,
+				ease: 'easeInOut',
 				repeat: Infinity,
 				times: [0, 0.2, 0.5, 1],
 			},
@@ -44,15 +45,12 @@ export const Marquee: React.FC = () => {
 				animate='animate'
 				exit='exit'
 			>
-				<span className='mx-4 text-white'>{phrase}</span>
-				<Image
-					src='/images/ukraine.svg'
-					priority={true}
-					alt='Marquee'
-					width={0}
-					height={0}
-					className='mx-4 aspect-auto w-8 h-auto'
-				/>
+				<Link className='text-white' href='/contacts'>
+					{phrase}
+				</Link>
+				<div className='m-2'>
+					<Handshake size={24} className='text-white' />
+				</div>
 			</motion.div>
 		</div>
 	)

@@ -1,6 +1,6 @@
 'use client'
 import { mulish } from '@/lib/utils/font'
-import { advantageLibrary } from '@/lib/utils/library'
+import { advantageLibrary } from '@/lib/utils/partners-library'
 import { cn } from '@/lib/utils/utils'
 import { motion, Variants } from 'framer-motion'
 import Image from 'next/image'
@@ -72,7 +72,7 @@ export const Advantages = ({ category }: Props) => {
 							<h2
 								className={cn(
 									mulish.className,
-									`${color} 'text-sm lg:text-xl uppercase font-bold py-4`
+									`${color} 'text-sm lg:text-2xl uppercase font-extrabold py-4`
 								)}
 							>
 								{item.title}

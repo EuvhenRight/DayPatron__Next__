@@ -103,7 +103,7 @@ export const FeedBackForm: React.FC<Props> = ({ currentUser: user }) => {
 					<h1
 						className={cn(
 							rubikDirt.className,
-							'text-2xl font-bold text-center pb-10'
+							'text-2xl font-bold text-center pb-10 mx-10'
 						)}
 					>
 						{ContentContactsPage.form.title}

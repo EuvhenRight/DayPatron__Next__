@@ -1,5 +1,5 @@
 import { rubikDirt } from '@/lib/utils/font'
-import { videoLibrary } from '@/lib/utils/library'
+import { videoLibrary } from '@/lib/utils/partners-library'
 import { cn } from '@/lib/utils/utils'
 import { VideoCard } from '../Slider/video-card'
 

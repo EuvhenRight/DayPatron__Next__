@@ -178,7 +178,7 @@ export const partnersLibrary = [
 	},
 
 	{
-		image: 'Alfa-bravo.png',
+		image: 'AlfaBravo.png',
 		url: 'https://alphabravo.store/catalog/accessories/sort-rating/',
 	},
 	{
@@ -186,7 +186,7 @@ export const partnersLibrary = [
 		url: 'http://krilagromu.ua/',
 	},
 	{
-		image: 'Tsar.png',
+		image: 'Tsarsky.png',
 		url: 'https://tsarskyshootingclub.com/',
 	},
 	{

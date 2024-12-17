@@ -4,7 +4,7 @@ import { Toaster } from '@/components/ui/sonner'
 import { getCart } from '@/lib/services/cart'
 import getSession from '@/lib/services/getSession'
 import { getAllProducts } from '@/lib/services/products'
-import { mulish } from '@/lib/utils/font'
+import { geologica } from '@/lib/utils/font'
 import { Analytics } from '@vercel/analytics/react'
 import { Metadata } from 'next'
 import { SessionProvider } from 'next-auth/react'
@@ -47,7 +47,7 @@ async function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<SessionProvider session={session}>
 			<html lang='en'>
-				<body className={mulish.className}>
+				<body className={geologica.className}>
 					<Analytics />
 					<Header cart={cart} />
 					<main className='mt-28 sm:min-h-screen'>
