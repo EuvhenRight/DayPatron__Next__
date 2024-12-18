@@ -24,7 +24,7 @@ import { Rating } from '@/components/ui/rating'
 import data from '@/lib/db/content.json'
 import { rubikDirt } from '@/lib/utils/font'
 import { cn } from '@/lib/utils/utils'
-import { AiOutlineCheckSquare } from 'react-icons/ai'
+import { AiOutlineCheckSquare, AiOutlineShoppingCart } from 'react-icons/ai'
 import { toast } from 'sonner'
 
 interface Props {
@@ -186,14 +186,15 @@ export const ProductForm = ({ product, cart }: Props) => {
 				) : (
 					<Button
 						variant={'destructive'}
-						className='p-2 my-2 text-lg hover:scale-105 transition-all ease-in-out duration-300 shadow-lg md:w-1/2 flex items-end'
+						className='p-2 my-2 text-md hover:scale-105 transition-all ease-in-out duration-300 shadow-lg md:w-1/3 flex items-end'
 						size='lg'
 						disabled={!stock}
 						onClick={() => {
 							addItemToCart(product.variant[currentIndex!].id)
 						}}
 					>
-						Додати до кошика
+						<AiOutlineShoppingCart size={25} className='mr-2' />
+						КУПИТИ
 					</Button>
 				)}
 				{/* INFO BLOCK INFORMATION  */}
