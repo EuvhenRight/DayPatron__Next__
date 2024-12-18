@@ -1,34 +1,155 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# DAYPaTRON- The Power is in Each of Us
 
-## Getting Started
+## Demo
 
-First, run the development server:
+Check out the live demo: [DayPatron Demo](https://day-patron-next.vercel.app/)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+## Overview
+
+DayPatron is a web application where you can learn about products, understand how they are used, make purchases, and write reviews.
+
+### Pages
+
+The project consists of 15 pages:
+
+- **Home Page**: Provides main information about DAYPATRON products, video content, and mission statement.
+- **About Page**: Offers users detailed information about DAYPATRON.
+- **Products Page**: Displays all products available on the website.
+- **Partners Page**: Information about DAYPATRON's partners and collaborations.
+- **Contacts Page**: Contact information and form for inquiries.
+- **Dashboard**: User dashboard for managing personal information and settings.
+
+### Support Pages
+
+- **Warranty**: Information about product warranties.
+- **Rules & Reviews**: Guidelines for writing and submitting reviews.
+- **Privacy**: Details about the privacy policy.
+- **Guide**: Instructions and guides for using the website.
+
+### Technologies Used
+
+- **TypeScript**: A strongly typed programming language that builds on JavaScript.
+- **Next.js**: A React framework for server-side rendering and generating static websites.
+- **Auth.js**: Authentication library for secure user authentication.
+- **Prisma**: An ORM for seamless database interaction.
+- **MongoDB**: NoSQL database for flexible and scalable data storage.
+- **Vercel**: Deployment and hosting platform for web applications.
+- **Tailwind CSS**: Utility-first CSS framework for rapid UI development.
+- **React**: A JavaScript library for building user interfaces.
+
+### SEO Optimization
+
+This project follows best practices for SEO optimization:
+
+- **Server-side Rendering**: With Next.js, pages are rendered on the server to ensure that search engines can index the content effectively.
+
+- **Meta Tags**: Essential meta tags for SEO, such as title, description, and keywords, are included.
+- **Responsive Design**: Ensures that the website is accessible and looks great on all devices, enhancing user experience and search engine rankings.
+- **Clean URLs**: Uses clean and descriptive URLs to improve search engine readability.
+- **Performance Optimization**: Optimized images, lazy loading, and efficient coding practices are employed to ensure fast loading times, which is crucial for SEO.
+
+## Home_Page
+
+![Home_Page](/public/images/readme-img/Home.png)
+
+## Products
+
+![Products_Page](/public/images/readme-img/Products.png)
+
+## Product
+
+![Product_Page](/public/images/readme-img/Product.png)
+
+## Drawer
+
+![Cart](/public/images/readme-img/Cart.png)
+
+## Registration
+
+![Registration](/public/images/readme-img/Registr.png)
+
+## Guid
+
+![Guid_Page](/public/images/readme-img/Cart.png)
+
+## Response_design
+
+### Mobile
+
+![Response_design](/public/images/readme-img/Mobile-1.png)
+![Response_design](/public/images/readme-img/Mobile-2.png)
+
+### Tablet
+
+![Response_design](/public/images/readme-img/Tablet.png)
+
+## Code Structure
+
+``
+DayPatron
+│
+├── public
+│ └── images
+│
+└── src
+├── actions
+└── cart.ts
+...
+..
+.
+├── api
+│ └── auth.ts
+│ │ └── [...nextauth]
+│ │ └── route.ts
+│ │
+├── Products.tsx
+│ │ ├── Checkout.tsx
+│ │ ├── Dashboard.tsx
+│ │ ├── AboutUs.tsx
+│ │ └── Contacts.tsx
+...
+..
+.
+│ ├── components
+│ │
+│ ├── lib
+│ │ └── db
+│ │ └── content.json
+│ │
+│ │ ├── hooks
+│ │ ├── services
+│ │ └── types.ts
+│ │
+│ ├── Utils
+│ │ ├── font.ts
+│ │ └── formatPrice.ts
+│ │
+│ ├── prisma.ts
+│ ...
+│ ..
+│ .
+└── middleware.ts
+
+``
+
+## Tech Stack
+
+<p align="left">
+  <a href="https://nextjs.org/" target="_blank" rel="noreferrer">
+    <img src="https://techicons.dev/icons/nextjs" alt="Vue" width="100" height="100"/>
+  </a>
+  <a href="https://tailwindcss.com/" target="_blank" rel="noreferrer">
+    <img src="https://i.gyazo.com/967cdb89a3774e1f3e3ca6cf6baee755.png" alt="Tailwind" width="100" height="100"/>
+  </a>
+  <a href="https://www.w3.org/html/" target="_blank" rel="noreferrer">
+    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original-wordmark.svg" alt="HTML5" width="100" height="100"/>
+  </a>
+  <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noreferrer">
+    <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="JavaScript" width="100" height="100" />
+  </a>
+  <a href="https://www.typescriptlang.org/" target="_blank" rel="noreferrer">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Typescript_logo_2020.svg" alt="TypeScript" width="100" height="100" />
+    <a href="https://pinia.vuejs.org/" target="_blank" rel="noreferrer">
+    <img src="https://pinia.vuejs.org/logo.svg" alt="Pinia" width="100" height="100" />
+</p>
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
