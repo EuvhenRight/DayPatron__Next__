@@ -85,24 +85,24 @@ This project follows best practices for SEO optimization:
 
 ## Code Structure
 
-``
+```
 DayPatron
 │
 ├── public
 │ └── images
 │
-└── src
-├── actions
-└── cart.ts
+│ ├── src
+│ ├── actions
+│ └── cart.ts
 ...
 ..
 .
-├── api
-│ └── auth.ts
-│ │ └── [...nextauth]
+│ ├── api
+│ │ ├── auth.ts
+│ │ ├── [...nextauth]
 │ │ └── route.ts
 │ │
-├── Products.tsx
+│ ├── Products.tsx
 │ │ ├── Checkout.tsx
 │ │ ├── Dashboard.tsx
 │ │ ├── AboutUs.tsx
@@ -113,12 +113,11 @@ DayPatron
 │ ├── components
 │ │
 │ ├── lib
-│ │ └── db
-│ │ └── content.json
-│ │
+│ │ ├── db
+│ │ │ └── content.json
 │ │ ├── hooks
-│ │ ├── services
-│ │ └── types.ts
+│ │ └── services
+│ │   └── types.ts
 │ │
 │ ├── Utils
 │ │ ├── font.ts
@@ -130,7 +129,7 @@ DayPatron
 │ .
 └── middleware.ts
 
-``
+```
 
 ## Tech Stack
 
