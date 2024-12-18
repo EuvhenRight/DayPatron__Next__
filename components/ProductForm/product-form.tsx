@@ -107,29 +107,6 @@ export const ProductForm = ({ product, cart }: Props) => {
 
 	return (
 		<div className='flex lg:flex-row flex-col lg:justify-center relative'>
-			{/* RATING - APPEARS ON MOBILE */}
-			<div
-				className='my-4 md:flex md:justify-end gap-2 mt-6 absolute cursor-pointer -top-12 right-1 lg:hidden'
-				// NAVIGATE TO REVIEWS
-				onClick={() => {
-					document.getElementById(`reviews`)?.scrollIntoView({
-						behavior: 'smooth',
-						block: 'start',
-						inline: 'nearest',
-					})
-				}}
-			>
-				<Rating
-					rating={product?.reviews?.ratingTotal!}
-					totalStars={5}
-					size={32}
-					className='flex flex-col justify-end items-end'
-					variant='yellow'
-					showText={true}
-					disabled={true}
-					totalReviews={product?.reviews?.messageTotal!}
-				/>
-			</div>
 			<div className='lg:w-1/2 mt-6 lg:-mt-12'>
 				{/* IMAGE LIST */}
 				<SliderWithProducts
@@ -156,12 +133,12 @@ export const ProductForm = ({ product, cart }: Props) => {
 					<BreadcrumbProduct product={product} />
 				</div>
 				{/* NAME */}
-				<div className='flex flex-row items-center gap-2 lg:px-0'>
+				<div className='flex flex-row items-start lg:items-center gap-2 lg:px-0 my-1 lg:my-5'>
 					<ShareButton />
 					<h1
 						className={cn(
 							rubikDirt.className,
-							'text-2xl lg:text-3xl uppercase space-y-2 line-height-[1.5] text-center lg:text-end my-5 items-center lg:items-end'
+							'text-xl lg:text-3xl uppercase space-y-2 line-height-[1.5] text-center lg:text-end items-center lg:items-end'
 						)}
 					>
 						{product.name}
@@ -169,7 +146,7 @@ export const ProductForm = ({ product, cart }: Props) => {
 				</div>
 				{/* RATING */}
 				<div
-					className='my-4 lg:flex lg:justify-end gap-2 cursor-pointer hidden lg:static'
+					className='my-1 lg:flex lg:justify-end gap-2 cursor-pointer lg:static'
 					// NAVIGATE TO REVIEWS
 					onClick={() => {
 						document.getElementById(`reviews`)?.scrollIntoView({
@@ -182,7 +159,7 @@ export const ProductForm = ({ product, cart }: Props) => {
 					<Rating
 						rating={product?.reviews?.ratingTotal!}
 						totalStars={5}
-						size={32}
+						size={20}
 						className='flex flex-col justify-end items-end'
 						variant='yellow'
 						showText={true}
@@ -225,7 +202,7 @@ export const ProductForm = ({ product, cart }: Props) => {
 					<ul className='py-2 lg:pl-4 list-disc ml-5'>
 						{productContent?.properties.map((property, index) => (
 							<li key={index} className='py-2'>
-								<span className='font-extrabold mr-2 text-lg'>
+								<span className='font-extrabold mr-2 text-lg text-start lg:text-justify'>
 									{property.title}
 								</span>
 								{property.text}

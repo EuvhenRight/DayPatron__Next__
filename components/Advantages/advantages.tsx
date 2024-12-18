@@ -1,5 +1,5 @@
 'use client'
-import { mulish } from '@/lib/utils/font'
+import { geologica } from '@/lib/utils/font'
 import { advantageLibrary } from '@/lib/utils/partners-library'
 import { cn } from '@/lib/utils/utils'
 import { motion, Variants } from 'framer-motion'
@@ -71,8 +71,8 @@ export const Advantages = ({ category }: Props) => {
 						<div>
 							<h2
 								className={cn(
-									mulish.className,
-									`${color} 'text-sm lg:text-2xl uppercase font-extrabold py-4`
+									geologica.className,
+									`${color} text-lg lg:text-2xl uppercase font-extrabold py-4`
 								)}
 							>
 								{item.title}

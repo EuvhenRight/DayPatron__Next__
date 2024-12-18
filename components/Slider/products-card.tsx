@@ -66,7 +66,7 @@ export const ProductsCard = ({ product }: Props) => {
 						height={1000}
 						alt={product.name}
 					/>
-					<button className='group-hover:opacity-100 group-hover:-translate-y-3 opacity-100 rounded-md w-full bg-red-600 text-white py-2 px-1 transition ease-in delay-150 mt-2 xl:opacity-0 xl:-translate-y-0'>
+					<button className='group-hover:opacity-100 group-hover:-translate-y-3 opacity-100 rounded-md w-full bg-red-600 text-white py-2 px-1 transition ease-in delay-150 my-2 xl:opacity-0 xl:-translate-y-0'>
 						Докладніше
 					</button>
 					<div className='text-center px-5 pb-5'>

@@ -17,13 +17,23 @@ export default async function Home() {
 	const bestSellers = matchingProducts.slice(0, 2)
 	return (
 		<div className='relative'>
+			{/* MOBILE */}
+			<video
+				src={`${process.env.NEXT_PUBLIC_VIDEO_URL}/video-mobile.mp4`}
+				autoPlay
+				loop
+				muted
+				playsInline
+				className='h-screen w-full lg:h-full aspect-video object-cover -mt-20 block lg:hidden'
+			/>
+			{/* LAPTOP */}
 			<video
 				src={`${process.env.NEXT_PUBLIC_VIDEO_URL}/video.mp4`}
 				autoPlay
 				loop
 				muted
 				playsInline
-				className='h-full w-full aspect-video object-cover lg:-mt-32'
+				className='h-screen w-full lg:h-full aspect-video object-cover lg:-mt-32 lg:block hidden'
 			/>
 			<div className='relative z-10'>
 				<section className='container'>

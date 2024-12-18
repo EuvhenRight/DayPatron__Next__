@@ -34,7 +34,7 @@ interface RatingProps extends React.HTMLAttributes<HTMLDivElement> {
 export const Rating = ({
 	rating: initialRating,
 	totalStars = 5,
-	size = 20,
+	size = 12,
 	fill = true,
 	Icon = <Star />,
 	variant = 'default',
@@ -89,52 +89,58 @@ export const Rating = ({
 		) : null
 
 	return (
-		<div
-			className={cn('flex w-fit flex-col gap-2 relative', {
-				'pointer-events-none': disabled,
-			})}
-			onMouseLeave={handleMouseLeave}
-			{...props}
-		>
-			<div className='flex items-center' onMouseEnter={handleMouseEnter}>
-				{showText && initialRating !== 0 && (
-					<>
-						<span className='mr-3 text-3xl md:text-5xl'>{initialRating}</span>
-					</>
-				)}
-				{[...Array(fullStars)].map((_, i) =>
-					React.cloneElement(Icon, {
-						key: i,
-						size,
-						className: cn(
-							fill ? 'fill-current stroke-1' : 'fill-transparent',
-							ratingVariants[variant].star
+		<div className='flex items-center'>
+			<div
+				className={cn('flex w-fit gap-2 relative', {
+					'pointer-events-none': disabled,
+				})}
+				onMouseLeave={handleMouseLeave}
+				{...props}
+			>
+				<div className='flex items-center' onMouseEnter={handleMouseEnter}>
+					{showText && initialRating !== 0 && (
+						<>
+							<span className='mr-3 text-2xl md:text-3xl'>{initialRating}</span>
+						</>
+					)}
+					{[...Array(fullStars)].map((_, i) =>
+						React.cloneElement(Icon, {
+							key: i,
+							size,
+							className: cn(
+								fill ? 'fill-current stroke-1' : 'fill-transparent',
+								ratingVariants[variant].star
+							),
+							onClick: handleClick,
+							onMouseEnter: handleMouseEnter,
+							'data-star-index': i + 1,
+						})
+					)}
+					{partialStar}
+					{[
+						...Array(
+							Math.max(0, totalStars - fullStars - (partialStar ? 1 : 0))
 						),
-						onClick: handleClick,
-						onMouseEnter: handleMouseEnter,
-						'data-star-index': i + 1,
-					})
-				)}
-				{partialStar}
-				{[
-					...Array(Math.max(0, totalStars - fullStars - (partialStar ? 1 : 0))),
-				].map((_, i) =>
-					React.cloneElement(Icon, {
-						key: i + fullStars + 1,
-						size,
-						className: cn('stroke-1', ratingVariants[variant].emptyStar),
-						onClick: handleClick,
-						onMouseEnter: handleMouseEnter,
-						'data-star-index': i + fullStars + 1,
-					})
-				)}
+					].map((_, i) =>
+						React.cloneElement(Icon, {
+							key: i + fullStars + 1,
+							size,
+							className: cn('stroke-1', ratingVariants[variant].emptyStar),
+							onClick: handleClick,
+							onMouseEnter: handleMouseEnter,
+							'data-star-index': i + fullStars + 1,
+						})
+					)}
+				</div>
 			</div>
 			{showText && (
-				<>
-					<span className='my-1'>
-						на основі <b className='mx-1'>{totalReviews}</b>відгуків
-					</span>
-				</>
+				<div
+					className={`my-1 underline ${
+						totalReviews! > 0 ? ' text-black-500' : 'text-gray-500'
+					}`}
+				>
+					<b className='mx-1'>{totalReviews}</b>відгуків
+				</div>
 			)}
 		</div>
 	)

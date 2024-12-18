@@ -59,7 +59,7 @@ export const ExtraUserDialog = ({ onChange, setExtraUser }: Props) => {
 				aria-describedby='extra-user-dialog-description'
 			>
 				<DialogHeader>
-					<DialogTitle>Змінити інформацію профілю</DialogTitle>
+					<DialogTitle>Змінити інформацію додаткового отримувача</DialogTitle>
 				</DialogHeader>
 				<div>
 					<Form {...form}>
