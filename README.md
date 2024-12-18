@@ -76,12 +76,12 @@ This project follows best practices for SEO optimization:
 
 ### Mobile
 
-![Response_design](/public/images/readme-img/Mobile-1.png)
-![Response_design](/public/images/readme-img/Mobile-2.png)
+<img src="/public/images/readme-img/Mobile-1.png" alt="Response Design Mobile 1" width="200" />
+<img src="/public/images/readme-img/Mobile-2.png" alt="Response Design Mobile 2" width="200" />
 
 ### Tablet
 
-![Response_design](/public/images/readme-img/Tablet.png)
+<img src="/public/images/readme-img/Tablet.png" alt="Response Design Tablet" width="300" />
 
 ## Code Structure
 
@@ -93,20 +93,20 @@ DayPatron
 │
 │ ├── src
 │ ├── actions
-│ └── cart.ts
+│ │ └── cart.ts
 ...
 ..
 .
 │ ├── api
 │ │ ├── auth.ts
-│ │ ├── [...nextauth]
-│ │ └── route.ts
+│ │ └── [...nextauth]
+│ │   └── route.ts
 │ │
 │ ├── Products.tsx
 │ │ ├── Checkout.tsx
 │ │ ├── Dashboard.tsx
-│ │ ├── AboutUs.tsx
-│ │ └── Contacts.tsx
+│ │ └── AboutUs.tsx
+│ │   └── Contacts.tsx
 ...
 ..
 .
