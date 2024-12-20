@@ -14,8 +14,6 @@ import { PrivacyPolicyInfo } from '@/components/ui/privacy-policy'
 import { Textarea } from '@/components/ui/textarea'
 import data from '@/lib/db/content.json'
 import { ValidationSchema } from '@/lib/db/validation'
-import { rubikDirt } from '@/lib/utils/font'
-import { cn } from '@/lib/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { User } from '@prisma/client'
 import { Asterisk } from 'lucide-react'
@@ -86,7 +84,7 @@ export const FeedBackForm: React.FC<Props> = ({ currentUser: user }) => {
 			{/* FEEDBACK SENT */}
 			{loading && !success ? (
 				<div className='text-center text-2xl'>
-					<p className={cn(rubikDirt.className, 'text-2xl')}>
+					<p className='text-2xl'>
 						{ContentContactsPage.form.feedback_sent_message}
 					</p>
 					<Button
@@ -100,12 +98,7 @@ export const FeedBackForm: React.FC<Props> = ({ currentUser: user }) => {
 			) : (
 				// FEEDBACK FORM
 				<>
-					<h1
-						className={cn(
-							rubikDirt.className,
-							'text-2xl font-bold text-center pb-10 mx-10'
-						)}
-					>
+					<h1 className='text-2xl text-center pb-10 mx-10'>
 						{ContentContactsPage.form.title}
 					</h1>
 					<Form {...form}>

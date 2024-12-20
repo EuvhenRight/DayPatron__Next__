@@ -4,8 +4,6 @@ import { FeedBackForm } from '@/components/FeedbackForm/feedback-form'
 import data from '@/lib/db/content.json'
 import { contactData } from '@/lib/services/contacts'
 import { getCurrentUser } from '@/lib/services/user'
-import { rubikDirt } from '@/lib/utils/font'
-import { cn } from '@/lib/utils/utils'
 import { Metadata } from 'next'
 
 //METADATA GENERATOR
@@ -48,9 +46,7 @@ export default async function ContactsPage() {
 		<div>
 			<section className='container lg:pt-10 relative flex flex-col md:flex-row w-full pt-2 mb-4'>
 				<div className='w-full md:w-1/2 text-start'>
-					<h1 className={cn(rubikDirt.className, 'text-2xl font-bold')}>
-						{ContentContactsPage.page.title}
-					</h1>
+					<h1 className='text-2xl'>{ContentContactsPage.page.title}</h1>
 					<ul className='my-2 pt-4 *:my-4'>
 						{contactData.map(({ icon, text, link }, index) => (
 							<li key={index} className='flex items-center justify-start gap-2'>
