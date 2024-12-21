@@ -22,9 +22,9 @@ export const ProductsCard = ({ product }: Props) => {
 			y: 0,
 			opacity: 1,
 			transition: {
-				type: 'tween',
-				duration: 0.2,
-				ease: 'easeInOut',
+				type: 'spring',
+				bounce: 0.4,
+				duration: 0.8,
 			},
 		},
 	}
