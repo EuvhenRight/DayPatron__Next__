@@ -3,16 +3,17 @@ import prisma from '@/lib/prisma'
 import { DeliveryWithItems } from '@/lib/types/types'
 import { Delivery } from '@prisma/client'
 import { cache } from 'react'
+import { getCurrentUser } from './user'
 
 export const getDelivery = cache(
 	async (): Promise<DeliveryWithItems | null> => {
 		const session = await auth()
-
+		const user = await getCurrentUser()
 		let delivery: DeliveryWithItems | null = null
 
 		if (session) {
 			delivery = await prisma.delivery.findFirst({
-				where: { userId: session.user.id },
+				where: { userId: user?.id },
 				include: {
 					items: {
 						orderBy: {
@@ -33,6 +34,7 @@ export const getDelivery = cache(
 
 export async function createDelivery(): Promise<DeliveryWithItems> {
 	const session = await auth()
+	const user = await getCurrentUser()
 
 	let delivery: Delivery | null = null
 
@@ -40,7 +42,7 @@ export async function createDelivery(): Promise<DeliveryWithItems> {
 		delivery = await prisma.delivery.create({
 			data: {
 				items: { create: [] },
-				userId: session.user.id,
+				userId: user?.id,
 			},
 			include: { items: true },
 		})
