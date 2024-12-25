@@ -125,6 +125,8 @@ export const SliderWithProducts = ({
 				handlePrevClick={handlePrevClick}
 				handleNextClick={handleNextClick}
 				onClose={handleCloseZoom}
+				arrowToggle={arrowToggle}
+				countImages={countImages}
 			/>
 		)
 	}
