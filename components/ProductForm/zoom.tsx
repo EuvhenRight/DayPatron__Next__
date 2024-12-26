@@ -21,43 +21,53 @@ export const Zoom: React.FC<ZoomProps> = ({
 	countImages,
 }) => {
 	const [isZoomedIn, setIsZoomedIn] = useState(false) // State to manage zoom-in or not
-	const [scrolling, setScrolling] = useState(false) // State to track scroll interaction
+	const containerRef = useRef<HTMLDivElement | null>(null)
+	const touchStartX = useRef<number | null>(null)
+	const touchStartY = useRef<number | null>(null)
+
+	useEffect(() => {
+		// Disable page scrolling when zoom modal is open
+		document.body.style.overflow = 'hidden'
+
+		return () => {
+			// Cleanup when the modal is closed
+			document.body.style.overflow = 'auto'
+		}
+	}, [])
 
 	const handleImageClick = () => {
 		// Toggle zoom in/out on image click
 		setIsZoomedIn(prev => !prev)
 	}
 
-	// Disable page scrolling when zoom modal is open
-	useEffect(() => {
-		document.body.style.overflow = 'hidden'
-
-		// Cleanup when the modal is closed
-		return () => {
-			document.body.style.overflow = 'auto'
-		}
-	}, [])
-
-	// Touch event handling for mobile
-	const touchStartY = useRef<number | null>(null)
-
 	const handleTouchStart = (e: React.TouchEvent) => {
 		if (isZoomedIn) {
+			touchStartX.current = e.touches[0].clientX
 			touchStartY.current = e.touches[0].clientY
 		}
 	}
 
 	const handleTouchMove = (e: React.TouchEvent) => {
-		if (isZoomedIn && touchStartY.current !== null) {
+		if (isZoomedIn && containerRef.current) {
+			const touchEndX = e.touches[0].clientX
 			const touchEndY = e.touches[0].clientY
-			const touchDeltaY = touchStartY.current - touchEndY
-			e.currentTarget.scrollTop += touchDeltaY
-			touchStartY.current = touchEndY
+
+			if (touchStartX.current !== null && touchStartY.current !== null) {
+				const touchDeltaX = touchStartX.current - touchEndX
+				const touchDeltaY = touchStartY.current - touchEndY
+
+				containerRef.current.scrollLeft += touchDeltaX
+				containerRef.current.scrollTop += touchDeltaY
+
+				// Update the starting positions for the next move
+				touchStartX.current = touchEndX
+				touchStartY.current = touchEndY
+			}
 		}
 	}
 
 	return (
-		<div className='fixed inset-0 z-[1000] flex items-center justify-center bg-black bg-opacity-100 overflow-auto'>
+		<div className='fixed inset-0 z-[1000] flex items-center justify-center bg-black bg-opacity-100'>
 			<div className='absolute top-1/2 z-10 left-4 right-4 flex justify-between'>
 				<button onClick={handlePrevClick}>
 					<AiOutlineLeft
