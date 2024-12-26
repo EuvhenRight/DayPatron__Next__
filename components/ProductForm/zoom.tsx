@@ -91,7 +91,7 @@ export const Zoom: React.FC<ZoomProps> = ({
 				<CircleX className='w-8 h-8 text-white' />
 			</button>
 			<div
-				className={`overflow-auto touch-auto flex items-center justify-center ${
+				className={`overscroll-contain touch-auto flex items-center justify-center ${
 					isZoomedIn ? 'max-h-full' : 'max-h-screen'
 				}`}
 				onTouchStart={handleTouchStart}
@@ -102,7 +102,7 @@ export const Zoom: React.FC<ZoomProps> = ({
 					alt='Zoomed image'
 					width={isZoomedIn ? 1200 : 800} // Adjust size on zoom
 					height={isZoomedIn ? 1200 : 800}
-					className={`cursor-zoom-in object-contain transition-transform overflow-auto duration-300 ${
+					className={`cursor-zoom-in object-contain transition-transform overscroll-contain duration-300 ${
 						isZoomedIn ? 'scale-150' : 'scale-100' // Apply scaling on zoom-in
 					}`}
 					onClick={handleImageClick}
