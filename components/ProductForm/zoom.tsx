@@ -56,21 +56,19 @@ export const Zoom: React.FC<ZoomProps> = ({
 		}
 	}
 
-	console.log(arrowToggle, 'arrowToggle', countImages, 'countImages')
-
 	return (
 		<div className='fixed inset-0 z-[1000] flex items-center justify-center bg-black bg-opacity-100'>
-			<div className='absolute top-1/2 left-4 right-4 flex justify-between'>
+			<div className='absolute top-1/2 z-10 left-4 right-4 flex justify-between'>
 				<button onClick={handlePrevClick}>
 					<AiOutlineLeft
-						className={`lg:text-white text-4xl ml-5 z-10 rounded-full bg-white lg:bg-transparent hover:translate-x-1 transition-transform ${
+						className={`lg:text-white text-4xl ml-5 z-50 rounded-full bg-white lg:bg-transparent hover:translate-x-1 transition-transform ${
 							arrowToggle === 0 ? 'hidden' : ''
 						}`}
 					/>
 				</button>
 				<button onClick={handleNextClick}>
 					<AiOutlineRight
-						className={`lg:text-white text-4xl ml-5 z-10 rounded-full bg-white lg:bg-transparent hover:-translate-x-1 transition-transform ${
+						className={`lg:text-white text-4xl ml-5 z-50 rounded-full bg-white lg:bg-transparent hover:-translate-x-1 transition-transform ${
 							arrowToggle == countImages - 1 ? 'hidden' : ''
 						}`}
 					/>
