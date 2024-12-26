@@ -70,7 +70,7 @@ This project follows best practices for SEO optimization:
 
 ## Guid
 
-![Guid_Page](/public/images/readme-img/Cart.png)
+![Guid_Page](/public/images/readme-img/Guid.png)
 
 ## Response_design
 

@@ -57,7 +57,7 @@ export const Zoom: React.FC<ZoomProps> = ({
 	}
 
 	return (
-		<div className='fixed inset-0 z-[1000] flex items-center justify-center bg-black bg-opacity-100'>
+		<div className='fixed inset-0 z-[1000] flex items-center justify-center bg-black bg-opacity-100 overflow-auto'>
 			<div className='absolute top-1/2 z-10 left-4 right-4 flex justify-between'>
 				<button onClick={handlePrevClick}>
 					<AiOutlineLeft
@@ -92,7 +92,7 @@ export const Zoom: React.FC<ZoomProps> = ({
 					alt='Zoomed image'
 					width={isZoomedIn ? 1200 : 800} // Adjust size on zoom
 					height={isZoomedIn ? 1200 : 800}
-					className={`cursor-zoom-in object-contain transition-transform duration-300 ${
+					className={`cursor-zoom-in object-contain transition-transform overflow-auto duration-300 ${
 						isZoomedIn ? 'scale-150' : 'scale-100' // Apply scaling on zoom-in
 					}`}
 					onClick={handleImageClick}
