@@ -81,7 +81,7 @@ export const Zoom: React.FC<ZoomProps> = ({
 				<CircleX className='w-8 h-8 text-white' />
 			</button>
 			<div
-				className={`overflow-y-auto touch-auto flex items-center justify-center ${
+				className={`overflow-auto touch-auto flex items-center justify-center ${
 					isZoomedIn ? 'max-h-full' : 'max-h-screen'
 				}`}
 				onTouchStart={handleTouchStart}
