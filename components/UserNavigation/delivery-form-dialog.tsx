@@ -31,7 +31,6 @@ import { toast } from 'sonner'
 import { z } from 'zod'
 import { ComboboxCityData } from './city-nova-poshta-data'
 import { ComboboxDivisionData } from './division-nova-poshta-data copy'
-import { TooltipInfo } from './tooltip'
 
 interface Props {
 	setTypeOfDelivery: React.Dispatch<React.SetStateAction<string>>
@@ -159,7 +158,9 @@ export const DeliveryFormDialog: React.FC<Props> = ({
 									name='city'
 									render={({ field }) => (
 										<FormItem className='mt-10'>
-											<FormLabel>Населений пункт</FormLabel>
+											<FormLabel className='text-[12px] md:text-sm'>
+												Населений пункт
+											</FormLabel>
 											<FormControl>
 												<ComboboxCityData
 													{...field}
@@ -177,8 +178,9 @@ export const DeliveryFormDialog: React.FC<Props> = ({
 									name='branchNumber'
 									render={({ field }) => (
 										<FormItem className='w-full'>
-											<FormLabel>Відділення</FormLabel>
-											<TooltipInfo text={blockInformation} />
+											<FormLabel className='text-[12px] md:text-sm'>
+												Відділення
+											</FormLabel>
 											<FormControl>
 												<ComboboxDivisionData
 													{...field}
@@ -217,7 +219,9 @@ export const DeliveryFormDialog: React.FC<Props> = ({
 										name='city'
 										render={({ field }) => (
 											<FormItem>
-												<FormLabel>Населений пункт</FormLabel>
+												<FormLabel className='text-[12px] md:text-sm'>
+													Населений пункт
+												</FormLabel>
 												<FormControl>
 													<Input
 														type='text'
@@ -235,7 +239,9 @@ export const DeliveryFormDialog: React.FC<Props> = ({
 										name='zipCode'
 										render={({ field }) => (
 											<FormItem>
-												<FormLabel>Поштовий індекс</FormLabel>
+												<FormLabel className='text-[12px] md:text-sm'>
+													Поштовий індекс
+												</FormLabel>
 												<FormControl>
 													<Input
 														type='text'
@@ -254,7 +260,9 @@ export const DeliveryFormDialog: React.FC<Props> = ({
 									name='street'
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel>Вулиця</FormLabel>
+											<FormLabel className='text-[12px] md:text-sm'>
+												Вулиця
+											</FormLabel>
 											<FormControl>
 												<Input
 													type='text'
@@ -273,7 +281,9 @@ export const DeliveryFormDialog: React.FC<Props> = ({
 										name='houseNumber'
 										render={({ field }) => (
 											<FormItem>
-												<FormLabel>Будинок</FormLabel>
+												<FormLabel className='text-[12px] md:text-sm'>
+													Будинок
+												</FormLabel>
 												<FormControl>
 													<Input
 														type='number'
@@ -294,7 +304,9 @@ export const DeliveryFormDialog: React.FC<Props> = ({
 										name='additionNumber'
 										render={({ field }) => (
 											<FormItem>
-												<FormLabel>Додаткова літера(опціонально)</FormLabel>
+												<FormLabel className='text-[12px] md:text-sm'>
+													Додаткова літера(опціонально)
+												</FormLabel>
 												<FormControl>
 													<Input
 														type='text'
@@ -312,7 +324,9 @@ export const DeliveryFormDialog: React.FC<Props> = ({
 										name='apartmentNumber'
 										render={({ field }) => (
 											<FormItem>
-												<FormLabel>Квартира</FormLabel>
+												<FormLabel className='text-[12px] md:text-sm'>
+													Квартира
+												</FormLabel>
 												<FormControl>
 													<Input
 														type='number'

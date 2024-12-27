@@ -18,7 +18,7 @@ export const TooltipInfo = ({ text }: Props) => {
 					<CircleHelp className='ml-1 text-green-500' />
 				</TooltipTrigger>
 				<TooltipContent>
-					<p>{text}</p>
+					<p className='text-sm w-60'>{text}</p>
 				</TooltipContent>
 			</Tooltip>
 		</TooltipProvider>
