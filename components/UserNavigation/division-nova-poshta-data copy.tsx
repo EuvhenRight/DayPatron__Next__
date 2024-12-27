@@ -65,7 +65,7 @@ export const ComboboxDivisionData = ({ onChange, autoCityData }: Props) => {
 						<ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
 					</Button>
 				</PopoverTrigger>
-				<PopoverContent className='p-0 md:w-[700px] h-[300px]'>
+				<PopoverContent className='p-0 md:w-[700px] h-48 md:h-[300px]'>
 					<Command className='bg-gray-200'>
 						<CommandInput
 							value={searchNumber || ''}
