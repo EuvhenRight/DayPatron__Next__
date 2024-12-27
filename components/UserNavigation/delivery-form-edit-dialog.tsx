@@ -127,7 +127,7 @@ export const DeliveryFormEditDialog: React.FC<Props> = ({ item }) => {
 	}, [autoCityData])
 
 	const blockInformation =
-		'Не можна змінювати дані у цьому діалозі. Ви можете видалити цей тип доставки та створити новий.'
+		'Не можна змінювати дані у цьому випадку. Ви можете видалити цей тип доставки та створити новий.'
 
 	return (
 		<Dialog open={isOpen} onOpenChange={setIsOpen}>

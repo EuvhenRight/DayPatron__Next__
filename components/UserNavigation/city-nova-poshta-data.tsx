@@ -70,7 +70,7 @@ export const ComboboxCityData = ({ onChange, setAutoCityData }: Props) => {
 					side='bottom'
 					align='start'
 					sideOffset={5}
-					className='p-0 md:w-[700px] h-52 md:h-[300px] data-[side=bottom]:animate-slideDown'
+					className='p-0 md:w-[700px] h-48 md:h-[300px] data-[side=bottom]:animate-slideDown'
 				>
 					<Command className='bg-gray-200'>
 						<CommandInput
