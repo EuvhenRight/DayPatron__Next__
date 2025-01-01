@@ -60,6 +60,9 @@ export default async function Home() {
 					<ButtonBack text='Переглянути всі товари' />
 				</section>
 			</div>
+			{/* <div>
+				<BannerForm />
+			</div> */}
 		</div>
 	)
 }

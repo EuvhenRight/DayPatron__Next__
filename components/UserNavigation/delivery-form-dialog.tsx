@@ -31,6 +31,7 @@ import { toast } from 'sonner'
 import { z } from 'zod'
 import { ComboboxCityData } from './city-nova-poshta-data'
 import { ComboboxDivisionData } from './division-nova-poshta-data copy'
+import { PopoverInfo } from './popover'
 
 interface Props {
 	setTypeOfDelivery: React.Dispatch<React.SetStateAction<string>>
@@ -178,8 +179,8 @@ export const DeliveryFormDialog: React.FC<Props> = ({
 									name='branchNumber'
 									render={({ field }) => (
 										<FormItem className='w-full'>
-											<FormLabel className='text-[12px] md:text-sm'>
-												Відділення
+											<FormLabel className='text-[12px] md:text-sm flex mt-2'>
+												Відділення <PopoverInfo text={blockInformation} />
 											</FormLabel>
 											<FormControl>
 												<ComboboxDivisionData

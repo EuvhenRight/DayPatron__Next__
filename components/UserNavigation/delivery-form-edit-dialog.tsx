@@ -22,7 +22,6 @@ import {
 	ValidationSchema,
 } from '@/lib/db/validation'
 
-import { TooltipInfo } from '@/components/UserNavigation/tooltip'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { DeliveryItem } from '@prisma/client'
 import { Pencil } from 'lucide-react'
@@ -32,6 +31,7 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
+import { PopoverInfo } from './popover'
 
 interface Props {
 	item: DeliveryItem
@@ -152,7 +152,7 @@ export const DeliveryFormEditDialog: React.FC<Props> = ({ item }) => {
 										<FormItem>
 											<FormLabel className='flex justify-start items-center'>
 												Тип доставки
-												<TooltipInfo text={blockInformation} />
+												<PopoverInfo text={blockInformation} />
 											</FormLabel>
 											<FormControl>
 												<Input type='text' {...field} disabled />
