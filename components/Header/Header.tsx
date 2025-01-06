@@ -85,7 +85,7 @@ export const Header: React.FC<Props> = ({ cart }) => {
 					</motion.div>
 				)}
 			</AnimatePresence>
-			<nav className='flex justify-between p-3 items-center container'>
+			<nav className='flex justify-between p-3 items-center container relative'>
 				{/* LOGO */}
 				<Link href='/' onClick={() => toggleActive('/')}>
 					<Image

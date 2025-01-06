@@ -16,7 +16,7 @@ export default async function Home() {
 	//  GET BEST TWO PRODUCT
 	const bestSellers = matchingProducts.slice(0, 2)
 	return (
-		<div className='relative'>
+		<div className='relative flex flex-col justify-center items-center'>
 			{/* MOBILE */}
 			<video
 				src={`${process.env.NEXT_PUBLIC_VIDEO_URL}/video-mobile.mp4`}
@@ -33,7 +33,7 @@ export default async function Home() {
 				loop
 				muted
 				playsInline
-				className='h-screen w-full lg:h-full aspect-video object-cover lg:-mt-32 lg:block hidden'
+				className='h-screen w-full max-w-[1536px] lg:h-full aspect-video object-cover lg:-mt-32 lg:block hidden '
 			/>
 			<div className='relative z-10'>
 				<section className='container'>
@@ -60,9 +60,6 @@ export default async function Home() {
 					<ButtonBack text='Переглянути всі товари' />
 				</section>
 			</div>
-			{/* <div>
-				<BannerForm />
-			</div> */}
 		</div>
 	)
 }

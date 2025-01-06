@@ -8,6 +8,7 @@ interface Props {
 	cart?: CartWithVariants | null
 }
 export const InvoiceForm = ({ cart }: Props) => {
+	console.log(cart, 'cart')
 	return (
 		<>
 			{/* SECOND PART CHECKOUT */}

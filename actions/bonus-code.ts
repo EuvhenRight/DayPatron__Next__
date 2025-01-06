@@ -55,7 +55,7 @@ export async function applyBonusCode(
 
 		// Calculate the discount amount based on percentage
 		const discountAmount = (cart.subTotal * discountValue) / 100
-		const totalAfterDiscount = discountAmount
+		const totalAfterDiscount = cart.subTotal - discountAmount
 
 		// Ensure total doesn't go negative
 		const finalTotal = totalAfterDiscount < 0 ? 0 : totalAfterDiscount
@@ -64,7 +64,8 @@ export async function applyBonusCode(
 		await prisma.cart.update({
 			where: { id: cart.id },
 			data: {
-				discountTotal: finalTotal,
+				discountTotal: discountAmount,
+				subTotal: totalAfterDiscount,
 				bonusCodeId: validBonusCode.id, // Link the bonus code to the cart
 			},
 		})

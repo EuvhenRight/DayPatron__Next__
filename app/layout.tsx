@@ -1,3 +1,4 @@
+import { SaleComponent } from '@/components/Banner/sale-component'
 import Footer from '@/components/Footer/Footer'
 import { Header } from '@/components/Header/Header'
 import { Toaster } from '@/components/ui/sonner'
@@ -5,6 +6,7 @@ import { getCart } from '@/lib/services/cart'
 import getSession from '@/lib/services/getSession'
 import { getAllProducts } from '@/lib/services/products'
 import { geologica } from '@/lib/utils/font'
+import { cn } from '@/lib/utils/utils'
 import { Analytics } from '@vercel/analytics/react'
 import { Metadata } from 'next'
 import { SessionProvider } from 'next-auth/react'
@@ -47,9 +49,10 @@ async function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<SessionProvider session={session}>
 			<html lang='en'>
-				<body className={geologica.className}>
+				<body className={cn(geologica.className, 'font-light')}>
 					<Analytics />
 					<Header cart={cart} />
+					<SaleComponent />
 					<main className='mt-28 sm:min-h-screen'>
 						{children}
 						<Toaster richColors />

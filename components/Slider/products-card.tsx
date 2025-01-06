@@ -1,8 +1,6 @@
 'use client'
 import { PriceTag } from '@/components/PriceTag'
 import { ProductsWithVariants } from '@/lib/types/types'
-import { rubikDirt } from '@/lib/utils/font'
-import { cn } from '@/lib/utils/utils'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -10,22 +8,17 @@ import Link from 'next/link'
 interface Props {
 	product: ProductsWithVariants
 }
-
 export const ProductsCard = ({ product }: Props) => {
-	// ANIMATION
 	const animateVariants = {
 		offscreen: {
 			y: 200,
 			opacity: 0,
+			scale: 0,
 		},
 		onscreen: {
 			y: 0,
 			opacity: 1,
-			transition: {
-				type: 'spring',
-				bounce: 0.4,
-				duration: 0.8,
-			},
+			scale: 1,
 		},
 	}
 
@@ -39,22 +32,12 @@ export const ProductsCard = ({ product }: Props) => {
 				className='group relative cursor-pointer xl:w-80 h-[600px] hover:transform hover:scale-105 transition-all'
 			>
 				{product.NEW && (
-					<div
-						className={cn(
-							rubikDirt.className,
-							'animate-pulse absolute rounded-md top-0 right-10 bg-green-800 text-white py-2 px-1'
-						)}
-					>
+					<div className='animate-pulse absolute rounded-md top-0 right-10 bg-green-800 text-white py-2 px-1'>
 						НОВИНКА
 					</div>
 				)}
 				{product.HIT && (
-					<div
-						className={cn(
-							rubikDirt.className,
-							'animate-pulse absolute rounded-md top-0 right-10 bg-red-500 text-white py-2 px-1'
-						)}
-					>
+					<div className='animate-pulse absolute rounded-md top-0 right-10 bg-red-500 text-white py-2 px-1'>
 						ХИТ
 					</div>
 				)}
@@ -73,15 +56,10 @@ export const ProductsCard = ({ product }: Props) => {
 						<h2 className='text-lg font-bold uppercase -tracking-2 mb-3'>
 							{product.name}
 						</h2>
-						<h3
-							className={cn(
-								rubikDirt.className,
-								'text-base tracking-tight mt-1 uppercase opacity-65'
-							)}
-						>
+						<h3 className='text-base tracking-tight mt-1 uppercase opacity-65'>
 							{product.UTP}
 						</h3>
-						<p className={cn(rubikDirt.className, 'my-3 text-xl')}>
+						<p className='my-3 text-xl'>
 							від
 							<span className='ml-2'>
 								{<PriceTag price={product.variant[0].original_price!} />}

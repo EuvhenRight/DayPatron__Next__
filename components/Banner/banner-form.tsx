@@ -10,25 +10,26 @@ import {
 	FormMessage,
 } from '@/components/ui/form'
 import { FormError } from '@/components/ui/form-error'
-import { FormSuccess } from '@/components/ui/form-success'
 import { Input } from '@/components/ui/input'
 import { ValidationSchema } from '@/lib/db/validation'
-import {
-	ERROR_MESSAGE,
-	SUCCESS_MESSAGE_REGISTER,
-} from '@/lib/services/constance'
+import { ERROR_MESSAGE } from '@/lib/services/constance'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useState } from 'react'
+import { Gift } from 'lucide-react'
+import { Dispatch, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { BannerWrapper } from './banner-wrapper'
 
 export const runtime = 'edge'
 export const dynamic = 'force-dynamic'
-export const BannerForm = () => {
+
+interface Props {
+	setGift: Dispatch<React.SetStateAction<boolean>>
+	setShowBanner: React.Dispatch<React.SetStateAction<boolean>>
+}
+export const BannerForm = ({ setGift, setShowBanner }: Props) => {
 	const [errorMessage, setErrorMessage] = useState<string | undefined>('')
-	const [isButtonDisabled, setIsButtonDisabled] = useState(false)
-	const [isSuccess, setSuccess] = useState<string | undefined>('')
+	const [isSuccess, setSuccess] = useState<boolean>(false)
 
 	const form = useForm<z.infer<typeof ValidationSchema.authUser>>({
 		resolver: zodResolver(ValidationSchema.authUser),
@@ -38,11 +39,10 @@ export const BannerForm = () => {
 	})
 
 	const onSubmit = async (data: z.infer<typeof ValidationSchema.authUser>) => {
-		setIsButtonDisabled(true)
 		const { email } = data
 
 		try {
-			const response = await fetch(`/api/register`, {
+			const response = await fetch(`/api/subscription`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -54,23 +54,23 @@ export const BannerForm = () => {
 			const responseData = await response.json()
 
 			if (responseData?.id) {
-				setSuccess(SUCCESS_MESSAGE_REGISTER)
+				setSuccess(true)
 			}
 		} catch (error) {
 			const errorMessage =
 				error instanceof Error ? error.message : ERROR_MESSAGE
 			setErrorMessage(errorMessage)
 			console.error(errorMessage)
-		} finally {
-			setIsButtonDisabled(false)
 		}
 	}
 
 	return (
 		<BannerWrapper
 			headerLabel='Дізнавайтеся першими про нові продукти, майбутні події та інші оновлення.'
-			buttonBackHref='Дякую, не цікаво'
 			buttonBackLabel='Дякую, не цікаво'
+			isSuccess={isSuccess}
+			setShowBanner={setShowBanner}
+			setGift={setGift}
 		>
 			<Form {...form}>
 				<form
@@ -82,7 +82,7 @@ export const BannerForm = () => {
 						name='email'
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Email</FormLabel>
+								<FormLabel className='text-white font-light'>Email</FormLabel>
 								<FormControl>
 									<Input
 										type='email'
@@ -94,16 +94,15 @@ export const BannerForm = () => {
 							</FormItem>
 						)}
 					/>
-					<FormSuccess message={isSuccess} />
 					<FormError message={errorMessage} />
 					<Button
 						type='submit'
-						className='w-full'
-						variant='office'
-						disabled={isButtonDisabled}
+						className='w-full flex gap-2'
+						variant='destructive'
 					>
 						{/* CONDITION LOADING */}
 						Відкрити пропозицію
+						<Gift />
 					</Button>
 				</form>
 			</Form>

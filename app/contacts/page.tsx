@@ -44,7 +44,7 @@ export default async function ContactsPage() {
 
 	return (
 		<div>
-			<section className='container lg:pt-10 relative flex flex-col md:flex-row w-full pt-2 mb-4'>
+			<section className='container lg:pt-10 relative flex flex-col md:flex-row w-full pt-2'>
 				<div className='w-full md:w-1/2 text-start'>
 					<h1 className='text-2xl'>{ContentContactsPage.page.title}</h1>
 					<ul className='my-2 pt-4 *:my-4'>
@@ -59,7 +59,7 @@ export default async function ContactsPage() {
 					<FeedBackForm currentUser={currentUser!} />
 				</div>
 			</section>
-			<section>
+			<section className='justify-center flex items-center'>
 				<GoogleMapComponent />
 			</section>
 		</div>

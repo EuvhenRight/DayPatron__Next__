@@ -6,10 +6,10 @@ interface Props {
 export const Header = ({ label }: Props) => {
 	return (
 		<>
-			<h1 className='font-bold text-2xl text-white'>
+			<h1 className='text-[32px] text-white text-center'>
 				Отримайте знижку 20% на ваше перше замовлення!
 			</h1>
-			<p className='text-sm py-1 text-center text-white'>{label}</p>
+			<p className='text-md font-light py-5 text-center text-white'>{label}</p>
 		</>
 	)
 }

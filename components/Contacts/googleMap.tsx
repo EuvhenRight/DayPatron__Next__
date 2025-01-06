@@ -64,6 +64,7 @@ export const GoogleMapComponent = () => {
 	const containerStyle = {
 		width: '100%',
 		height: '500px',
+		maxWidth: '1536px',
 	}
 
 	return <div id='map' style={containerStyle}></div>

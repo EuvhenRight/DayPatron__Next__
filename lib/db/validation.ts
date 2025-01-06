@@ -240,8 +240,8 @@ export const ValidationSchema = {
 			.regex(/^[\u0400-\u04FF0-9!.,",?;:() -]+$/, {
 				message: 'Використовуйте тільки кириличні символи',
 			})
-			.min(12, 'Має містити 12 елементів')
-			.max(12, 'Має містити 12 елементів'),
+			.min(8, 'Має містити 8 - 20 елементів')
+			.max(20, 'Має містити 8-20 елементів'),
 	}) as ZodSchema<BonusCodeFormSchema>,
 }
 // CART VALIDATION
