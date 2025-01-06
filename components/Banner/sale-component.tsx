@@ -14,7 +14,7 @@ export const SaleComponent = () => {
 		if (!bannerSeen) {
 			const timer = setTimeout(() => {
 				setShowBanner(true)
-			}, 5000) // Show after 20 seconds
+			}, 20000) // Show after 20 seconds
 			console.log('show banner')
 			return () => clearTimeout(timer)
 		}

@@ -11,14 +11,17 @@ interface Props {
 export const ProductsCard = ({ product }: Props) => {
 	const animateVariants = {
 		offscreen: {
-			y: 200,
+			y: 100,
 			opacity: 0,
-			scale: 0,
 		},
 		onscreen: {
 			y: 0,
 			opacity: 1,
-			scale: 1,
+			transition: {
+				type: 'spring',
+				stiffness: 50,
+				damping: 10,
+			},
 		},
 	}
 
@@ -28,7 +31,7 @@ export const ProductsCard = ({ product }: Props) => {
 				initial='offscreen'
 				whileInView='onscreen'
 				variants={animateVariants}
-				viewport={{ once: true, amount: 0.15 }}
+				viewport={{ once: true, amount: 0.25 }}
 				className='group relative cursor-pointer xl:w-80 h-[600px] hover:transform hover:scale-105 transition-all'
 			>
 				{product.NEW && (
