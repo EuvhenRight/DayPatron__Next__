@@ -45,7 +45,7 @@ export const sendEmail = async ({
 		// verify connection configuration
 		transporter.verify(function (error, success) {
 			if (error) {
-				console.log(error)
+				error
 				reject(error)
 			} else {
 				console.log('Server is ready to take our messages')

@@ -1,6 +1,7 @@
 // app/api/user/auth/route.ts
 import { ValidationSchema } from '@/lib/db/validation'
 import prisma from '@/lib/prisma'
+import { mailBannerHtml } from '@/lib/services/mail-banner-layout'
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -23,8 +24,8 @@ export async function POST(request: NextRequest) {
 		})
 
 		if (existingUser) {
-			// // Call the delete-password API to schedule the deletion
-			// await schedulePasswordDeletionAPI(updatedUser.email)
+			// If the user exists, send email
+			await mailBannerHtml({ email: requestData.email })
 
 			cookies().set('bannerSeen', existingUser.id)
 
@@ -36,9 +37,9 @@ export async function POST(request: NextRequest) {
 					email: requestData.email,
 				},
 			})
+			// Send email
+			await mailBannerHtml({ email: requestData.email })
 
-			// // Call the delete-password API to schedule the deletion
-			// await schedulePasswordDeletionAPI(newUser.email)
 			cookies().set('bannerSeen', newUser.id)
 			return NextResponse.json({ ...newUser }, { status: 201 })
 		}

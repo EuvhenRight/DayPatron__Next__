@@ -1,22 +1,16 @@
-// app/api/feedback/route.ts
-import { sendEmail } from '@/lib/services/mail-password'
+'use server'
 import { NextRequest, NextResponse } from 'next/server'
+import { Resend } from 'resend'
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(request: NextRequest) {
 	try {
 		const requestData = await request.json()
 
-		await sendEmail({
-			to: requestData.email,
+		await resend.emails.send({
+			from: 'info@daypatron.com.ua',
+			to: [requestData.email, 'daypatronteam@gmail.com'],
 			subject: 'Повідомлення до підтримки клієнтів DayPatron',
-			text: `Шановний(а) ${requestData.name},
-		
-		Дякуємо за ваше повідомлення: "${requestData.message}". Ми високо цінуємо ваш інтерес до наших послуг. Наша команда підтримки уважно розгляне ваш запит і зв'яжеться з вами найближчим часом.
-		
-		Контактні дані клієнта:
-		Електронна пошта: ${requestData.email}
-		Телефон: ${requestData.phone}`,
-
 			html: `<p style="font-size: 14px; color: #666;">Шановний(а) ${requestData.name}</p>
 			<p style="font-size: 14px; color: #666;">Дякуємо за ваше повідомлення: <strong>"${requestData.message}"</strong></p>
 			<p style="font-size: 14px; color: #666;">Ми високо цінуємо ваш інтерес до наших послуг. Наша команда підтримки уважно розгляне ваш запит і зв'яжеться з вами найближчим часом.</p>

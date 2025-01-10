@@ -3,7 +3,6 @@ import { orderItemScheme } from '@/lib/db/validation'
 import prisma from '@/lib/prisma'
 import { createEmailHtml } from '@/lib/services/e-mail-order'
 import getSession from '@/lib/services/getSession'
-import { sendEmail } from '@/lib/services/mail-password'
 import { createOrder } from '@/lib/services/order'
 import { OrderForm } from '@/lib/types/types'
 import { revalidatePath } from 'next/cache'
@@ -94,12 +93,7 @@ export async function addOrderItem(data: z.infer<typeof orderItemScheme>) {
 				},
 			})
 
-			await sendEmail({
-				to: ['eu@gembird.nl', `${user?.user.email}`],
-				subject: 'Замовлення від DayPatron',
-				text: `© 2023 DayPatron Inc. Усі права захищені`,
-				html: createEmailHtml(lastOrder as OrderForm),
-			})
+			await createEmailHtml(user?.user.email as string, lastOrder as OrderForm)
 		})
 		return order
 	} catch (error) {

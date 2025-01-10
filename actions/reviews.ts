@@ -2,7 +2,6 @@
 import { ValidationSchema } from '@/lib/db/validation'
 import prisma from '@/lib/prisma'
 import { createReviewEmailHtml } from '@/lib/services/e-mail-new-user'
-import { sendEmail } from '@/lib/services/mail-password'
 import { findProductsInOrderItems } from '@/lib/services/order'
 import { getReviewsWithItem } from '@/lib/services/reviews'
 import { revalidatePath } from 'next/cache'
@@ -44,12 +43,7 @@ export async function addItem(
 
 		// SEND EMAIL IF USER DOES NOT EXIST
 		if (!checkUser) {
-			await sendEmail({
-				to: ['eu@gembird.nl', `${data.email}`],
-				subject: `Дякуємо ${data.fullName}, за відгук на сайті DayPatron`,
-				text: `© 2023 DayPatron Inc. Усі права захищені`,
-				html: createReviewEmailHtml({ message: data }),
-			})
+			await createReviewEmailHtml({ message: data })
 		}
 
 		// UPDATE REVIEW

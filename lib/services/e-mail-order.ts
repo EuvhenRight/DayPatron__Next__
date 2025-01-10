@@ -1,6 +1,9 @@
+'use server'
 import { formatPriceUa } from '@/lib/services/format'
 import { OrderForm } from '@/lib/types/types'
 import { ExtraUser, User } from '@prisma/client'
+import { Resend } from 'resend'
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 const createAddressSection = (delivery: OrderForm): string => {
 	const address = delivery?.address
@@ -91,17 +94,24 @@ const createExtraUserSection = (extraUser: ExtraUser | null): string => {
 	`
 }
 
-export const createEmailHtml = (order: OrderForm): string => {
+export const createEmailHtml = async (email: string, order: OrderForm) => {
 	// Create order number
 	const orderNumber = order.id.slice(-4)
-	return `
+
+	// TODO: Change to order subtotal
+
+	const item = resend.emails.send({
+		from: 'info@daypatron.com.ua',
+		to: [email, 'daypatronteam@gmail.com'],
+		subject: 'Нове замовлення з сайту DayPatron',
+		html: `
 		<table style="font-size: 14px; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
 			<tr>
 				<td colspan="2" style="text-align: center; padding: 10px 0;">
 					<h1>Дякуємо за Ваше замовлення!</h1>
 					<h3>Замовлення №${orderNumber} від ${new Date(
-		order.createdAt
-	).toLocaleDateString()}</h2>
+			order.createdAt
+		).toLocaleDateString()}</h2>
 				</td>
 			</tr>
 			<tr>
@@ -176,5 +186,7 @@ export const createEmailHtml = (order: OrderForm): string => {
 		<div>
 			<p style="font-size: 12px; text-align: center; color: #999;">© 2023 DayPatron Inc. Усі права захищені</p>
 		</div>
-	`
+	`,
+	})
+	return item
 }

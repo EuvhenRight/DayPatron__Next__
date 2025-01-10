@@ -69,20 +69,19 @@ export const FeedBackForm: React.FC<Props> = ({ currentUser: user }) => {
 		} catch (err) {
 			console.error(err) // Change to console.error for better error logging
 		} finally {
-			setSuccess(false)
 			setLoading(false) // Ensure loading state is reset
 		}
 	}
 
 	// LOADER
-	if (success) {
+	if (loading) {
 		return <ContactsLoader />
 	}
 
 	return (
 		<div>
 			{/* FEEDBACK SENT */}
-			{loading && !success ? (
+			{!loading && success ? (
 				<div className='text-center text-2xl'>
 					<p className='text-2xl'>
 						{ContentContactsPage.form.feedback_sent_message}
@@ -90,7 +89,7 @@ export const FeedBackForm: React.FC<Props> = ({ currentUser: user }) => {
 					<Button
 						className='my-4'
 						variant='default'
-						onClick={() => setLoading(false)}
+						onClick={() => setSuccess(false)}
 					>
 						{ContentContactsPage.form.send_another_feedback_button}
 					</Button>
