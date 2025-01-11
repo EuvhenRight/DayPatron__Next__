@@ -18,7 +18,7 @@ export const GiftPresents = ({ setGift, setShowBanner }: Props) => {
 			initial={{ opacity: 0, scale: 0 }}
 			animate={{ opacity: 1, scale: 1 }}
 			exit={{ opacity: 0, scale: 0 }}
-			className='fixed left-0 bottom-0 md:left-5 md:bottom-5 z-50 cursor-pointer'
+			className='fixed left-2 bottom-2 md:left-5 md:bottom-5 z-50 cursor-pointer'
 			onClick={handleOpen}
 		>
 			<Image
@@ -26,7 +26,7 @@ export const GiftPresents = ({ setGift, setShowBanner }: Props) => {
 				width={100}
 				height={100}
 				alt='gift'
-				className='w-12 h-12 md:w-28 md:h-28'
+				className='w-20 h-20 md:w-28 md:h-28'
 			/>
 		</motion.div>
 	)
