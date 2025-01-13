@@ -44,6 +44,9 @@ export const getUserByEmail = cache(async (email: string) => {
 				email,
 			},
 		})
+		if (!user) {
+			return null
+		}
 		return user
 	} catch {
 		return null
@@ -57,6 +60,9 @@ export const getUserById = async (id: string) => {
 				id,
 			},
 		})
+		if (!user) {
+			return null
+		}
 		return user
 	} catch (error) {
 		console.log(error)

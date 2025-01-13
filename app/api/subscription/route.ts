@@ -7,6 +7,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
 	const requestData = await request.json()
+	const currentEmail = requestData.email.toLowerCase()
 
 	try {
 		// Validate the request body
@@ -14,18 +15,18 @@ export async function POST(request: NextRequest) {
 		if (!validatedBody.success) {
 			return NextResponse.json(validatedBody.error.errors, { status: 400 })
 		}
-		// // Send email with the new password
-		// await sendLoginPassword({ email: requestData.email, generatedPassword })
+		// Send email with the new password
+
 		// Check if the email already exists in the database
 		const existingUser = await prisma.user.findUnique({
 			where: {
-				email: requestData.email,
+				email: currentEmail,
 			},
 		})
 
 		if (existingUser) {
 			// If the user exists, send email
-			await mailBannerHtml({ email: requestData.email })
+			await mailBannerHtml({ email: currentEmail })
 
 			cookies().set('bannerSeen', existingUser.id)
 
@@ -34,11 +35,11 @@ export async function POST(request: NextRequest) {
 			// If the user doesn't exist, create a new user
 			const newUser = await prisma.user.create({
 				data: {
-					email: requestData.email,
+					email: currentEmail,
 				},
 			})
 			// Send email
-			await mailBannerHtml({ email: requestData.email })
+			await mailBannerHtml({ email: currentEmail })
 
 			cookies().set('bannerSeen', newUser.id)
 			return NextResponse.json({ ...newUser }, { status: 201 })

@@ -144,7 +144,7 @@ export const findProductsInOrderItems = cache(
 				},
 			},
 		})
-
+		console.log(verifiedOrders, 'verifiedOrders')
 		return verifiedOrders
 	}
 )

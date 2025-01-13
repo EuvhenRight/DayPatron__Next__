@@ -1,4 +1,5 @@
 'use client'
+import { addCookieToBannerOut } from '@/actions/subscription'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
@@ -26,6 +27,7 @@ export const BannerWrapper = ({
 	const handleClose = () => {
 		setShowBanner(false)
 		setGift(true)
+		addCookieToBannerOut()
 	}
 
 	const closeInformation = () => {

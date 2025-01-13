@@ -4,6 +4,7 @@ import { getUserById } from '@/lib/services/user'
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import NextAuth from 'next-auth'
 import { type Adapter } from 'next-auth/adapters'
+import { mergeAnonymousCartWithUserCart } from './lib/services/cart'
 
 export const {
 	handlers: { GET, POST },
@@ -40,6 +41,11 @@ export const {
 				session.user.name = token.name // Only set if not already present
 			}
 			return session
+		},
+	},
+	events: {
+		signIn: async ({ user }) => {
+			await mergeAnonymousCartWithUserCart(user.id as string)
 		},
 	},
 	...authConfig,

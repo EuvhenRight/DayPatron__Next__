@@ -9,6 +9,7 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function POST(request: NextRequest) {
 	const generatedPassword: string = generateRandomPassword()
 	const requestData = await request.json()
+	const currentEmail = requestData.email.toLowerCase()
 
 	try {
 		// Validate the request body
@@ -17,11 +18,11 @@ export async function POST(request: NextRequest) {
 			return NextResponse.json(validatedBody.error.errors, { status: 400 })
 		}
 		// Send email with the new password
-		await sendLoginPassword({ email: requestData.email, generatedPassword })
+		await sendLoginPassword({ email: currentEmail, generatedPassword })
 		// Check if the email already exists in the database
 		const existingUser = await prisma.user.findUnique({
 			where: {
-				email: requestData.email,
+				email: currentEmail,
 			},
 		})
 
@@ -29,7 +30,7 @@ export async function POST(request: NextRequest) {
 			// If the user exists, update the password
 			const updatedUser = await prisma.user.update({
 				where: {
-					email: requestData.email,
+					email: currentEmail,
 				},
 				data: {
 					password: generatedPassword,
@@ -46,7 +47,7 @@ export async function POST(request: NextRequest) {
 			// If the user doesn't exist, create a new user
 			const newUser = await prisma.user.create({
 				data: {
-					email: requestData.email,
+					email: currentEmail,
 					password: generatedPassword,
 					// 15 minutes expiration
 					passwordExpiresAt: new Date(Date.now() + 15 * 60 * 1000),

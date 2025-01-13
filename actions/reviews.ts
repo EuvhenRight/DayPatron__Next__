@@ -23,11 +23,12 @@ export async function addItem(
 		// CHECK VERIFIED USER
 		const verifiedOrders = await findProductsInOrderItems(userId!, productId)
 
+		const currentEmail = data.email.toLowerCase()
 		// CREATE REVIEW ITEM
 		await prisma?.reviewItem.create({
 			data: {
 				message: data.message,
-				email: data.email,
+				email: currentEmail,
 				fullName: data.fullName,
 				rating: data.rating,
 				verified: verifiedOrders?.length ?? 0 > 0 ? true : false,
@@ -37,7 +38,7 @@ export async function addItem(
 		})
 		const checkUser = await prisma?.user.findUnique({
 			where: {
-				email: data.email,
+				email: currentEmail,
 			},
 		})
 
