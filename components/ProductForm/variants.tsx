@@ -1,5 +1,4 @@
 'use client'
-
 import { PriceTag } from '@/components/PriceTag'
 import { rubikDirt } from '@/lib/utils/font'
 import { cn } from '@/lib/utils/utils'
@@ -26,8 +25,11 @@ export const Variants = ({
 			setCurrentIndex(index)
 		}
 	}
-	const handleContainerBlur = () => {
-		setCurrentIndex(currentIndex)
+	const handleContainerBlur = (e: React.FocusEvent<HTMLUListElement>) => {
+		// Check if the new focused element is outside the current container
+		if (!e.currentTarget.contains(e.relatedTarget)) {
+			setCurrentIndex(null) // Clear the current index
+		}
 	}
 	// DISCOUNT
 	const discountPrice = variantsProduct[currentIndex]?.discount_price
@@ -57,7 +59,7 @@ export const Variants = ({
 					) : null}
 				</div>
 			) : (
-				<div className='my-4 text-lg'>Будь ласка, виберіть розмір мл.</div>
+				<div className='my-4 text-lg'>Будь ласка, виберіть об&apos;єм мл.</div>
 			)}
 			{/* VOLUME */}
 			<ul className='flex gap-5 items-center my-2' onBlur={handleContainerBlur}>
@@ -73,13 +75,6 @@ export const Variants = ({
 							key={index}
 							tabIndex={0}
 							onClick={() => handleVolumeClick(index)}
-							onBlur={e => {
-								// only re-focus if the user clicked on something
-								// that was NOT an input element
-								if (e.relatedTarget === null) {
-									e.target.focus()
-								}
-							}}
 						>
 							{variant.volume}
 						</li>
@@ -102,7 +97,7 @@ export const Variants = ({
 							<span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-btnPrimary opacity-75'></span>
 							<span className='relative inline-flex rounded-full h-3 w-3 bg-btnPrimary'></span>
 						</span>
-						<span>Немає в наявності</span>
+						<span>Недоступно</span>
 					</div>
 				)}
 			</div>

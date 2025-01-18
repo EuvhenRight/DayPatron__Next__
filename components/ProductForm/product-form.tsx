@@ -49,7 +49,7 @@ export const ProductForm = ({ product, cart }: Props) => {
 	// ANIMATION
 	const animateVariants = {
 		offscreen: {
-			y: 200,
+			y: 50,
 			opacity: 0,
 		},
 		onscreen: {
@@ -147,14 +147,14 @@ export const ProductForm = ({ product, cart }: Props) => {
 				{/* RATING */}
 				<div
 					className='my-1 lg:flex lg:justify-end gap-2 cursor-pointer lg:static'
-					// // NAVIGATE TO REVIEWS
-					// onClick={() => {
-					// 	document.getElementById(`reviews`)?.scrollIntoView({
-					// 		behavior: 'smooth',
-					// 		block: 'start',
-					// 		inline: 'nearest',
-					// 	})
-					// }}
+					// NAVIGATE TO REVIEWS
+					onClick={() => {
+						document.getElementById(`reviews`)?.scrollIntoView({
+							behavior: 'smooth',
+							block: 'start',
+							inline: 'nearest',
+						})
+					}}
 				>
 					<Rating
 						rating={product?.reviews?.ratingTotal!}
