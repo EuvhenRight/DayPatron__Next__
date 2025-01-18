@@ -28,7 +28,7 @@ export const Variants = ({
 	const handleContainerBlur = (e: React.FocusEvent<HTMLUListElement>) => {
 		// Check if the new focused element is outside the current container
 		if (!e.currentTarget.contains(e.relatedTarget)) {
-			setCurrentIndex(null) // Clear the current index
+			setCurrentIndex(currentIndex) // Clear the current index
 		}
 	}
 	// DISCOUNT
@@ -72,7 +72,9 @@ export const Variants = ({
 							// FOCUS VOLUME BUTTON
 							className={cn(
 								rubikDirt.className,
-								'cursor-pointer rounded-md border border-gray-600 px-2 py-1 snap-center text-sm lg:text-lg focus:ring-2 focus:ring-current focus:outline-none shadow-lg'
+								currentIndex === index
+									? 'cursor-pointer rounded-md border-[3px] border-black px-2 py-1 snap-center text-sm lg:text-lg shadow-lg active:scale-95'
+									: 'cursor-pointer rounded-md border border-gray-600 px-2 py-1 snap-center text-sm lg:text-lg shadow-lg'
 							)}
 							key={index}
 							tabIndex={0}
