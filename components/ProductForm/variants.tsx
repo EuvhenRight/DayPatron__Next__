@@ -59,7 +59,9 @@ export const Variants = ({
 					) : null}
 				</div>
 			) : (
-				<div className='my-4 text-lg'>Будь ласка, виберіть об&apos;єм мл.</div>
+				<div className='my-1 lg:my-4 text-sm lg:text-lg'>
+					Будь ласка, виберіть об&apos;єм мл.
+				</div>
 			)}
 			{/* VOLUME */}
 			<ul className='flex gap-5 items-center my-2' onBlur={handleContainerBlur}>
@@ -92,12 +94,12 @@ export const Variants = ({
 						<span>Є в наявності</span>
 					</div>
 				) : (
-					<div className='flex gap-5 items-center my-4'>
+					<div className='flex gap-5 items-center my-1 lg:my-4'>
 						<span className='relative flex h-3 w-3'>
 							<span className='animate-ping absolute inline-flex h-full w-full rounded-full bg-btnPrimary opacity-75'></span>
 							<span className='relative inline-flex rounded-full h-3 w-3 bg-btnPrimary'></span>
 						</span>
-						<span>Недоступно</span>
+						<span className='text-sm lg:text:lg'>Недоступно</span>
 					</div>
 				)}
 			</div>

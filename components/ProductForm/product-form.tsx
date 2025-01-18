@@ -107,7 +107,7 @@ export const ProductForm = ({ product, cart }: Props) => {
 
 	return (
 		<div className='flex lg:flex-row flex-col lg:justify-center relative'>
-			<div className='lg:w-1/2 mt-6 lg:-mt-12'>
+			<div className='lg:w-1/2 mt-0 md:mt-6 lg:-mt-12'>
 				{/* IMAGE LIST */}
 				<SliderWithProducts
 					product={product}

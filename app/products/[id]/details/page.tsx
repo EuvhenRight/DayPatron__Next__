@@ -52,7 +52,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
 	])
 	return (
 		<div>
-			<section className='container pt-8'>
+			<section className='container pt-1 lg:pt-8'>
 				<ProductForm product={product} cart={cart} />
 			</section>
 			<section className='py-10'>

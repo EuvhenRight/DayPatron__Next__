@@ -59,8 +59,8 @@ export const Zoom: React.FC<ZoomProps> = ({
 				<Image
 					src={imageUrl}
 					alt='Zoomed image'
-					width={isZoomedIn ? 1200 : 800} // Adjust size on zoom
-					height={isZoomedIn ? 1200 : 800}
+					width={isZoomedIn ? 1000 : 600} // Adjust size on zoom
+					height={isZoomedIn ? 1000 : 600}
 					className={`cursor-zoom-in object-fill transition-transform duration-300 ${
 						isZoomedIn ? 'scale-150' : 'scale-100' // Apply scaling on zoom-in
 					}`}
