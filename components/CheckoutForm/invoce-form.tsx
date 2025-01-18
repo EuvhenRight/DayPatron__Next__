@@ -21,12 +21,14 @@ export const InvoiceForm = ({ cart }: Props) => {
 							<PriceTag price={cart?.originalTotal!} />
 						</h2>
 					</div>
-					<div className='flex justify-between'>
-						<h2>Знижка</h2>
-						<h2 className='text-green-500'>
-							-{<PriceTag price={cart?.discountTotal!} />}
-						</h2>
-					</div>
+					{cart?.discountTotal! > 0 && (
+						<div className='flex justify-between'>
+							<h2>Знижка</h2>
+							<h2 className='text-green-500'>
+								-{<PriceTag price={cart?.discountTotal!} />}
+							</h2>
+						</div>
+					)}
 					<div className='flex justify-between py-2 font-bold'>
 						<h2>До оплати без доставки:</h2>
 						<h2>{<PriceTag price={cart?.subTotal!} />}</h2>
