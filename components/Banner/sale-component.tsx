@@ -8,9 +8,8 @@ export const SaleComponent = () => {
 	const [gift, setGift] = useState<boolean>(false)
 	const [showBanner, setShowBanner] = useState(false)
 	const bannerOut = document.cookie.includes('bannerOut')
+	const bannerSeen = document.cookie.includes('bannerSeen')
 	useEffect(() => {
-		const bannerSeen = document.cookie.includes('bannerSeen')
-
 		if (bannerOut) {
 			setGift(true)
 		}
@@ -19,20 +18,19 @@ export const SaleComponent = () => {
 			const timer = setTimeout(() => {
 				setShowBanner(true)
 			}, 20000) // Show after 20 seconds
-			console.log('show banner')
 			return () => clearTimeout(timer)
 		}
-	}, [bannerOut])
+	}, [bannerOut, bannerSeen])
 	return (
 		<AnimatePresence mode='wait'>
-			{showBanner && (
+			{showBanner && !bannerSeen && (
 				<BannerForm
 					key='bannerForm'
 					setGift={setGift}
 					setShowBanner={setShowBanner}
 				/>
 			)}
-			{gift && bannerOut && (
+			{gift && bannerOut && !bannerSeen && (
 				<GiftPresents
 					key='giftPresents'
 					setGift={setGift}

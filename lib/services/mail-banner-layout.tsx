@@ -11,62 +11,48 @@ export const mailBannerHtml = async ({ email }: Props) => {
 			from: 'info@daypatron.com.ua',
 			to: [email],
 			subject: 'Дякуємо! Ви успішно підписались на розсилку DayPatron',
-			html: `<div style="display: flex; flex-direction: column; width: 600px; height: auto; background-color: black; margin: 0 auto;">
+			html: `
+<table style="width: 100%; max-width: 600px; margin: 0 auto;">
   <!-- Header -->
-  <div>
-    <div style="display: flex; justify-content: center; width: 100%;">
-      <img  src="https://day-patron-next.vercel.app/images/DayLogo.svg"  alt='logo' style="width: 50%; padding: 8px;" />
-    </div>
-    <nav style="color: white; font-size: 18px; display: flex; justify-content: center;">
-      <a style="padding: 16px; color: white; text-decoration: none;" href='https://day-patron-next.vercel.app/'>
-        Головна
-      </a>
-      <a style="padding: 16px; color: white; text-decoration: none;" href='https://day-patron-next.vercel.app/products'>
-        Продукти
-      </a>
-      <a style="padding: 16px; color: white; text-decoration: none;" href='https://day-patron-next.vercel.app/about'>
-        Про нас
-      </a>
-      <a style="padding: 16px; color: white; text-decoration: none;" href='https://day-patron-next.vercel.app/partners'>
-        Партнери
-      </a>
-    </nav>
-  </div>
-
+  <tr>
+    <td style="background-color: white; color: #B3B3B3; text-align: center;">
+     <img src="https://day-patron-next.vercel.app/images/DayLogo_black.png" alt="DayPatron Logo" style="width: 250px; height: auto; margin: 16px 0;" />
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: center; padding: 4px 8px; background-color: white; color: #B3B3B3;">
+      <a href="https://day-patron-next.vercel.app/" style="font-size: 18px; text-decoration: none; margin: 0 8px;">Головна</a>
+      <a href="https://day-patron-next.vercel.app/products" style="font-size: 18px; text-decoration: none; margin: 0 8px;">Продукти</a>
+      <a href="https://day-patron-next.vercel.app/about" style="font-size: 18px; text-decoration: none; margin: 0 8px;">Про нас</a>
+      <a href="https://day-patron-next.vercel.app/partners" style="font-size: 18px; text-decoration: none; margin: 0 8px;">Партнери</a>
+    </td>
+  </tr>
   <!-- Body -->
-  <div style="color: white; font-size: 18px; padding: 16px; relative;">
-    <img  src="https://day-patron-next.vercel.app/images/2024.png" alt='promo' style="padding: 8px; width: 100%;" />
-    <h1 style="padding: 8px; color: white; font-size: 24px; text-align: center;">
-      Використовуйте промокод "СТАРТ-20" під час оформлення замовлення та отримайте знижку 20%.
-    </h1>
-    <p style="padding: 8px; color: #B3B3B3;">
-      Цей промокод можна використати лише один раз! Вводьте його під час оформлення замовлення точно так, як зазначено.
-    </p>
-  </div>
-
+  <tr>
+    <td style="padding: 16px;">
+      <img src="https://day-patron-next.vercel.app/images/2024.png" alt="Promo" style="width: 100%; height: auto;" />
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: center; padding: 16px; background-color: white; color: #B3B3B3;">
+      <h1 style="color: #B3B3B3; font-size: 24px; margin: 16px 0;">Використовуйте промокод "СТАРТ-20" під час оформлення замовлення та отримайте знижку 20%.</h1>
+      <p style="color: #B3B3B3; font-size: 14px;">Цей промокод можна використати лише один раз! Вводьте його під час оформлення замовлення точно так, як зазначено.</p>
+    </td>
+  </tr>
   <!-- Footer -->
-  <div style="background-color: #333; color: #B3B3B3; font-size: 14px; padding: 16px; margin-top: 16px;">
-    <div style="display: flex; flex-direction: column; align-items: start;">
-      <p style="text-align: center; margin-bottom: 16px;">
-        З повагою,<br />
-        Команда підтримки DayPatron
-      </p>
-      <img 
-        src="https://day-patron-next.vercel.app/images/opengraph-image.png" 
-        alt='DayPatron Logo' 
-        style="width: 150px; height: 50px; margin-bottom: 16px;"
-      />
-      <div style="text-align: center; margin-bottom: 16px;">
-        <p>Телефон: +38 (099) 730-21-26</p>
-        <p>Ел. пошта: daypatronteam@gmail.com</p>
-        <p>Сайт: <a href='http://www.daypatron.com' style="color: #1E90FF; text-decoration: none;">www.daypatron.com</a></p>
-      </div>
-    </div>
-    <div style="text-align: center; border-top: 1px solid #555; padding-top: 16px;">
+  <tr>
+    <td style="padding: 16px; background-color: white; color: black; text-align: center;">
+      <p>З повагою,<br />Команда підтримки DayPatron</p>
+      <img src="https://day-patron-next.vercel.app/images/DayLogo_black.png" alt="DayPatron Logo" style="width: 100px; height: auto; margin: 4px 0;" />
+      <p>Телефон: +38 (099) 730-21-26</p>
+      <p>Ел. пошта: daypatronteam@gmail.com</p>
+      <p>Сайт: <a href="http://www.daypatron.com" style="color: #1E90FF; text-decoration: none;">www.daypatron.com</a></p>
+      <hr style="border: 0; border-top: 1px solid #555; margin: 16px 0;" />
       <p>© 2023 DayPatron Inc. Усі права захищені</p>
-    </div>
-  </div>
-</div>`,
+    </td>
+  </tr>
+</table>
+			`,
 		})
 		return item
 	} catch (error) {
