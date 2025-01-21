@@ -1,6 +1,6 @@
 const RulesReviews = () => {
 	return (
-		<div className='container w-9/12 mx-auto *:my-2 *:text-justify .h1:underline'>
+		<div className='container mb-10 w-full lg:w-9/12 mx-auto *:my-2 *:text-justify .h1:underline'>
 			<h1 className='text-2xl font-bold mb-4 pt-10'>
 				Правила публікації відгуків на сайті daypatron.com.ua
 			</h1>

@@ -63,9 +63,13 @@ export const UserInformation = ({ orders }: Props) => {
 							})}
 						</TableCell>
 						{/* COUNTS */}
-						<TableCell className='w-1/6'>{order.comment}</TableCell>
+						<TableCell className='w-1/6'>
+							{order.comment} {order.bonus && 'Бонус: ' + order.bonus}
+						</TableCell>
 						<TableCell className='text-center'>{order.itemsTotal}</TableCell>
-						<TableCell className='text-center'>
+						<TableCell
+							className={`text-right ${order.bonus && 'text-orange-600'}`}
+						>
 							{formatPriceUa(order.subTotal)}
 						</TableCell>
 					</TableRow>

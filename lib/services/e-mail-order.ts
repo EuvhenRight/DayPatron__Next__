@@ -98,8 +98,6 @@ export const createEmailHtml = async (email: string, order: OrderForm) => {
 	// Create order number
 	const orderNumber = order.id.slice(-4)
 
-	// TODO: Change to order subtotal
-
 	const item = resend.emails.send({
 		from: 'info@daypatron.com.ua',
 		to: [email, 'daypatronteam@gmail.com'],
@@ -154,11 +152,21 @@ export const createEmailHtml = async (email: string, order: OrderForm) => {
 						order.itemsTotal
 					} </p>
 				</td>
+				${
+					order.bonus
+						? `
 				<td style="padding: 10px 0;">
-					<p style="font-size: 14px;"><strong>Сума замовлення:</strong> ${formatPriceUa(
+					<p style="font-size: 14px; color: red;"><strong>Сума замовлення:</strong> ${formatPriceUa(
 						order.subTotal
-					)}</p>
+					)}
 				</td>
+			`
+						: `<td style="padding: 10px 0;">
+				<p style="font-size: 14px;"><strong>Сума замовлення:</strong> ${formatPriceUa(
+					order.subTotal
+				)}</p>`
+				}
+			</td>
 			</tr>
 			<tr>
 				<td colspan="2" style="padding: 10px 0;">
@@ -172,7 +180,8 @@ export const createEmailHtml = async (email: string, order: OrderForm) => {
 			<tr>
 				<td colspan="2" style="padding: 10px 0;">
 					<p style="font-size: 12px;"><strong>Коментар до замовлення:</strong> ${
-						order.comment === null ? '' : order.comment
+						(order.comment === null ? '' : order.comment,
+						order.bonus && 'Використання промокода: ' + order.bonus)
 					}</p>
 				</td>
 			</tr>

@@ -31,15 +31,17 @@ export async function addOrderItem(data: z.infer<typeof orderItemScheme>) {
 				return new Error('Cart is empty')
 			}
 
-			const totalPrice = orderItem.reduce((acc, item) => {
-				const price =
-					item.variant.discount_price !== 0
-						? item.variant.discount_price
-						: item.variant.original_price
-				return acc + price * item.quantity
-			}, 0)
+			const cart = await tx.cart.findUnique({
+				where: {
+					id: data.cartId,
+				},
+			})
 
-			const totalItems = orderItem.reduce((acc, item) => acc + item.quantity, 0)
+			const bonus = cart?.bonusCodeId
+				? await tx.bonusCode.findUnique({
+						where: { id: cart.bonusCodeId },
+				  })
+				: null
 
 			await tx.cartItem.deleteMany({
 				where: {
@@ -63,8 +65,9 @@ export async function addOrderItem(data: z.infer<typeof orderItemScheme>) {
 			await tx.order.update({
 				where: { id: order.id },
 				data: {
-					subTotal: totalPrice,
-					itemsTotal: totalItems,
+					bonus: bonus?.code || '',
+					subTotal: cart?.subTotal,
+					itemsTotal: cart?.itemsTotal,
 					status: {
 						connect: {
 							id: orderEvent.id,
