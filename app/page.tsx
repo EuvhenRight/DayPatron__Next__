@@ -7,6 +7,8 @@ import { rubikDirt } from '@/lib/utils/font'
 import { cn } from '@/lib/utils/utils'
 import { ButtonBack } from './button-back'
 
+export const dynamic = 'force-dynamic'
+
 export default async function Home() {
 	const dataProducts: ProductsWithVariants[] = await getAllProducts()
 	//  FILTER PRODUCTS

@@ -7,6 +7,8 @@ import { rubikDirt } from '@/lib/utils/font'
 import { cn } from '@/lib/utils/utils'
 import { Metadata } from 'next'
 
+export const dynamic = 'force-dynamic'
+
 // METADATA GENERATOR
 export const metadata: Metadata = {
 	title: 'Посібник для покупців DayPatron',

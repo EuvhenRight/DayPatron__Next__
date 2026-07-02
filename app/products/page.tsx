@@ -2,6 +2,8 @@ import { BreadcrumbProduct } from '@/components/ProductForm/breadcrumb'
 import { ProductsCard } from '@/components/Slider/products-card'
 import { getAllProducts } from '@/lib/services/products'
 
+export const dynamic = 'force-dynamic'
+
 const Products = async () => {
 	// FETCH ALL PRODUCTS
 	const dataProducts = await getAllProducts()
