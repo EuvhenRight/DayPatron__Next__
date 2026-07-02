@@ -38,18 +38,15 @@ export const metadata: Metadata = {
 }
 
 async function RootLayout({ children }: { children: React.ReactNode }) {
-	// FETCH USER
-	await new Promise(resolve => setTimeout(resolve, 1500))
-
 	const [session, cart, products] = await Promise.all([
 		getSession(),
 		getCart(),
 		getAllProducts(),
 	])
 	return (
-		<SessionProvider session={session}>
-			<html lang='en'>
-				<body className={cn(geologica.className, 'font-light')}>
+		<html lang='en'>
+			<body className={cn(geologica.className, 'font-light')}>
+				<SessionProvider session={session}>
 					<Analytics />
 					<Header cart={cart} />
 					<SaleComponent />
@@ -58,9 +55,9 @@ async function RootLayout({ children }: { children: React.ReactNode }) {
 						<Toaster richColors />
 					</main>
 					<Footer products={products} />
-				</body>
-			</html>
-		</SessionProvider>
+				</SessionProvider>
+			</body>
+		</html>
 	)
 }
 
